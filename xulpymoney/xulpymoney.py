@@ -2,6 +2,14 @@
 import sys
 import platform
 import logging
+import signal
+from colorama import init,  Style, Fore
+
+def signal_handler(signal, frame):
+        logging.warning(Style.BRIGHT+Fore.RED+app.translate("devicesinlan","You pressed 'Ctrl+C', exiting..."))
+        sys.exit(0)
+######################
+init(autoreset=True)
 
 #Por defecto se pone WARNING y mostrar´ia ERROR y CRITICAL
 logFormat = "%(asctime)s %(levelname)s %(module)s:%(lineno)d at %(funcName)s. %(message)s"
@@ -35,6 +43,9 @@ app.setOrganizationName("Mariano Muñoz ©")
 app.setOrganizationDomain("turulomio.users.sourceforge.net")
 app.setApplicationName("Xulpymoney")
 
+
+
+signal.signal(signal.SIGINT, signal_handler)
 
 
 mem=MemXulpymoney()

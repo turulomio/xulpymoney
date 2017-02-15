@@ -7864,7 +7864,6 @@ class MemXulpymoney:
         self.zones=SetZones(self)
         self.zones.load_all()
         self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
-        print(self.localzone.now(),  self.localzone.now().utcoffset(),  self.localzone.now().tzinfo)
         
         self.tiposoperaciones=SetOperationTypes(self)
         self.tiposoperaciones.load()
@@ -7902,7 +7901,7 @@ class MemXulpymoney:
         self.favorites=string2list(self.settingsdb.value("mem/favorites", ""))
         self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
         
-        print ("Loading db data took {}".format(datetime.datetime.now()-inicio))
+        logging.info("Loading db data took {}".format(datetime.datetime.now()-inicio))
         
     def save_MemSettingsDB(self):
         self.settingsdb.setValue("mem/localcurrency", self.localcurrency.id)
@@ -7914,7 +7913,7 @@ class MemXulpymoney:
         self.settingsdb.setValue("mem/favorites", list2string(self.favorites))
         self.settingsdb.setValue("mem/benchmarkid", self.data.benchmark.id)
         self.settingsdb.setValue("mem/fillfromyear", self.fillfromyear)
-        print ("Saved Database settings")
+        logging.info ("Saved Database settings")
         
         
     def qicon_admin(self):

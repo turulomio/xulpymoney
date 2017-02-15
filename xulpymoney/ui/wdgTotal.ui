@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1512</width>
-    <height>615</height>
+    <height>815</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -33,7 +33,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>true</bool>
@@ -612,6 +612,142 @@
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_5">
+              <attribute name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Make ends meet</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <item>
+                  <widget class="myQTableWidget" name="tblMakeEndsMeet">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                   </property>
+                   <property name="selectionBehavior">
+                    <enum>QAbstractItemView::SelectItems</enum>
+                   </property>
+                   <property name="sortingEnabled">
+                    <bool>false</bool>
+                   </property>
+                   <row>
+                    <property name="text">
+                     <string>Incomes</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Expenses</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Incomes - Expenses</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Result</string>
+                    </property>
+                   </row>
+                   <column>
+                    <property name="text">
+                     <string>January</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>February</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>March</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>April</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>May</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>June</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>July</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>August</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>September</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>October</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>November</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>December</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Total</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lblMakeEndsMeet">
+                   <property name="text">
+                    <string/>
                    </property>
                   </widget>
                  </item>

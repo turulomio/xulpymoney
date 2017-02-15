@@ -7,6 +7,7 @@ from decimal import Decimal
 from canvaschart import VCTemporalSeries
 from Ui_wdgTotal import Ui_wdgTotal
 import datetime
+import logging
 
 
 
@@ -238,6 +239,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.settings(self.mem, "wdgTotal")
         self.tblTargets.settings(self.mem, "wdgTotal")
         self.tblInvestOrWork.settings(self.mem,  "wdgTotal")
+        self.tblMakeEndsMeet.settings(self.mem, "wdgTotal")
         
         self.annualtarget=None#AnnualTarget Object
         
@@ -246,23 +248,19 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
         self.view=None#QChart view
-#        self.canvas=canvasTotal(self.mem,  self)
-#        self.ntb = NavigationToolbar2QT(self.canvas, self)
-#        
-#        self.tabGraphTotal.addWidget(self.canvas)
-#        self.tabGraphTotal.addWidget(self.ntb)
+
         
         self.tab.setCurrentIndex(0)
         self.load_data()
         self.load_targets()
         self.load_invest_or_work()
+        self.load_make_ends_meet()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
 
 
 
-    def load_data(self):        
-        print ("loading data")
+    def load_data(self):
         self.table.clearContents()
         self.table.applySettings()
         inicio=datetime.datetime.now()     
@@ -295,10 +293,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)
         final=datetime.datetime.now()          
-        print ("wdgTotal > load_data: {0}".format(final-inicio))
+        logging.info("wdgTotal > load_data: {0}".format(final-inicio))
 
     def load_targets(self):
-        print ("loading targets")
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
         self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.annualtarget.lastyear_assests)))
         self.spinTarget.setValue(float(self.annualtarget.percentage))
@@ -324,7 +321,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+self.tr("Green color shows that target has been reached.")
         self.lblTargets.setText(s)
         
-        print ("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
+        logging.info("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
     def load_invest_or_work(self):
         def qresult(dg_e):
             """Returns a qtablewidgetitem with work or invest
@@ -342,7 +339,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 item.setBackground(QColor(148, 255, 148))
             return item            
         ##------------------------------------------------
-        print ("loading invest or work")
         inicio=datetime.datetime.now()    
         self.tblInvestOrWork.clearContents()
         self.tblInvestOrWork.applySettings()
@@ -364,12 +360,46 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+self.tr("Difference between total gains and expenses shows if user could cover his expenses with his total gains")+"\n\n"
         s=s+self.tr("Investment taxes are not evaluated in this report")
         self.lblInvestOrWork.setText(s)
-        print ("wdgTotal > load invest or work: {0}".format(datetime.datetime.now()  -inicio))
+        logging.info ("wdgTotal > load invest or work: {0}".format(datetime.datetime.now()  -inicio))
+
+    def load_make_ends_meet(self):
+        def qresult(res):
+            """Returns a qtablewidgetitem with yes or no
+            """
+            item=qcenter("")
+            if res.isZero():
+                return item
+            if not res.isGETZero():
+                item.setText(self.tr("No"))
+                item.setBackground(QColor(255, 148, 148))
+            else:
+                item.setText(self.tr("Yes"))
+                item.setBackground(QColor(148, 255, 148))
+            return item            
+        ##------------------------------------------------
+        inicio=datetime.datetime.now()    
+        self.tblMakeEndsMeet.clearContents()
+        self.tblMakeEndsMeet.applySettings()
+        for i in range(1, 13): 
+            m=self.setData.find(self.setData.year, i)
+            self.tblMakeEndsMeet.setItem(0, i-1, m.incomes().qtablewidgetitem())
+            self.tblMakeEndsMeet.setItem(1, i-1, m.expenses().qtablewidgetitem())
+            self.tblMakeEndsMeet.setItem(3, i-1, (m.incomes()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
+            self.tblMakeEndsMeet.setItem(5, i-1, qresult(m.incomes()+m.expenses()))
+        self.tblMakeEndsMeet.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
+        self.tblMakeEndsMeet.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
+        self.tblMakeEndsMeet.setItem(3, 12, (self.setData.incomes()+self.setData.expenses()).qtablewidgetitem())
+        self.tblMakeEndsMeet.setItem(5, 12, qresult(self.setData.incomes()+self.setData.expenses()))
+        self.tblMakeEndsMeet.setCurrentCell(2, datetime.date.today().month-1)   
+        
+        s=""
+        s=s+self.tr("This report shows if the user makes ends meet") +"\n\n"
+        s=s+self.tr("Difference between incomes and expenses shows if user could cover his expenses with his incomes")
+        self.lblMakeEndsMeet.setText(s)
+        logging.info("wdgTotal > load_make_ends_meet: {0}".format(datetime.datetime.now()  -inicio))
 
 
-    def load_graphic(self, savefile=None):   
-        print("loading graphic")
-            
+    def load_graphic(self, savefile=None):               
         inicio=datetime.datetime.now()  
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
@@ -410,12 +440,13 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.tabGraphTotal.addWidget(self.view)
         
-        print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
+        logging.info("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
     def on_wyData_mychanged(self):
         self.load_data()    
         self.load_targets()
         self.load_invest_or_work()
+        self.load_make_ends_meet()
 
     def on_wyChart_mychanged(self):
         self.load_graphic()      
