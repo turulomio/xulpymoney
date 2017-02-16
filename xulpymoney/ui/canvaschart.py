@@ -137,7 +137,9 @@ class VCPie(QChartView):
         for slice in self.serie.slices():
             tooltip=tooltip+"{}: {} ({})\n".format(slice.label(), c(slice.value()), Percentage(slice.percentage(), 1)).upper()
             slice.setLabel("{}: {}".format(slice.label(), Percentage(slice.percentage(), 1)).upper())
-        tooltip=tooltip+"Total: {}".format(c(self.serie.sum())).upper()
+            if slice.percentage()<0.005:
+                slice.setLabelVisible(False)
+        tooltip=tooltip+"*** Total: {} ***".format(c(self.serie.sum())).upper()
         self.setChart(self.chart)
         self.chart.addSeries(self.serie)
         
@@ -146,6 +148,7 @@ class VCPie(QChartView):
         
     def clear(self):
         self.chart=QChart()
+        self.chart.legend().hide()
         font=QFont()
         font.setBold(True)
         font.setPointSize(12)

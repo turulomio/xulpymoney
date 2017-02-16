@@ -17,14 +17,13 @@ import inspect
 import threading
 import argparse
 import getpass
-
 from decimal import Decimal, getcontext
 getcontext().prec=20
 
-version="20160713"
-version_date=datetime.date(2016, 7, 13)
+version="2010216"
+version_date=datetime.date(2017, 2, 16)
 class Connection(QObject):
-    """Futuro conection object"""
+    
     inactivity_timeout=pyqtSignal()
     def __init__(self):
         QObject.__init__(self)
@@ -1292,7 +1291,7 @@ class SetConcepts(SetCommons):
             else:
                 v[2]=Decimal(100)*v[1]/totalexpenses
         
-        arr=sorted(arr, key=lambda o:o[0].name)
+        arr=sorted(arr, key=lambda o:o[1])
         return (arr, totalexpenses,  totalmedia_mensual)
 
 
@@ -3674,12 +3673,10 @@ class DBData:
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
         self.benchmark.result.basic.load_from_db()
         
-        
         self.currencies=SetProducts(self.mem)
         self.currencies.load_from_db("select * from products where type=6")
         for p in self.currencies.arr:
             p.result.get_all()
-        
         
         self.banks=SetBanks(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
@@ -3696,20 +3693,7 @@ class DBData:
         self.investments=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
         
-        
-        print("Cargando data",  datetime.datetime.now()-inicio)
-
-#    def reload_prices(self):
-#        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(self.products.length()),None, 0,self.products.length())
-#        pd.setModal(True)
-#        pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
-#        pd.forceShow()
-#        for i, p in enumerate(self.products.arr):
-#            pd.setValue(i)
-#            pd.update()
-#            QApplication.processEvents()
-#            p.result.basic.load_from_db()
-#        self.mem.data.benchmark.result.basic.load_from_db()        
+        logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
         
         
     def accounts_active(self):        

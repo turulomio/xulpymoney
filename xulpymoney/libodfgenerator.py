@@ -476,7 +476,7 @@ to bottom)"""
                     for j,column in enumerate(row):
                         self.addCell(OdfCell(letter_add(letter, j), number_add(number, i), result[i][j], style))
                 else:
-                    print(row.__class__, "ROW CLASS NOT FOUND",  row)
+                    logging.warning(row.__class__, "ROW CLASS NOT FOUND",  row)
 
     def generate(self, ods):
         # Start the table
@@ -559,7 +559,6 @@ class OdfMoney:
         if self.currency==money.currency:
             return OdfMoney(self.amount+money.amount, self.currency)
         else:
-            print (self.currency, money.currency )
             logging.error("Before adding, please convert to the same currency")
             raise "OdfMoneyOperationException"
             
@@ -667,7 +666,7 @@ class OdfPercentage:
         elif o.__class__==OdfPercentage:
             return o.value
         else:
-            print (o.__class__)
+            logging.warning (o.__class__)
             return None
         
     def __repr__(self):

@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QApplication
+import logging
 class Update:
     """DB update system
     Cuando vaya a crear una nueva modificación pondre otro if con menor que current date para uqe se ejecute solo una vez al final, tendra que 
@@ -35,7 +36,7 @@ class Update:
         
     def set_database_version(self, valor):
         """Tiene el commit"""
-        print ("**** Updating database from {} to {}".format(self.dbversion, valor))
+        logging.info ("**** Updating database from {} to {}".format(self.dbversion, valor))
         cur=self.mem.con.cursor()
         if self.dbversion==None:
             cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
@@ -48,11 +49,9 @@ class Update:
     def need_update(self):
         """Returns if update must be done"""
         if self.dbversion>self.lastcodeupdate:
-            print ("WARNING. DBVEERSION > LAST CODE UPDATE, PLEASE UPDATE LASTCODEUPDATE IN CLASS")
+            logging.warning ("DBVEERSION > LAST CODE UPDATE, PLEASE UPDATE LASTCODEUPDATE IN CLASS")
             return
-            
-            
-        
+
         if self.dbversion==self.lastcodeupdate:
             return False
         return True
@@ -1882,4 +1881,4 @@ LANGUAGE plpgsql;""")
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
-        print ("**** Database already updated")
+        logging.info ("**** Database already updated")
