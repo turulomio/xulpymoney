@@ -995,7 +995,7 @@ def sync_data(con_source, con_target, progress=None):
         else:#Hay registro y selecciona los posteriores a el
             cur_source.execute("select * from quotes where id=%s and datetime>%s", (row['id'], max))
         if cur_source.rowcount!=0:
-            logging.info("  - Syncing {} since {} ".format(row['name'], max),end="")
+            print("  - Syncing {} since {} ".format(row['name'], max),end="")
             for  row_source in cur_source: #Inserts them 
                 cur2_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
                 quotes=quotes+1
