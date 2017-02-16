@@ -1,3 +1,4 @@
+import logging
 import os
 import urllib.request
 import time
@@ -109,7 +110,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.source.statusChanged.connect(self.on_statusChanged)
 
     def on_statusChanged(self, status):
-        print("wdgSource statusChanged", status)
+        logging.debug("wdgSource statusChanged", status)
         if status==SourceStatus.Prepared:
             self.cmdRun.setEnabled(False)     
             self.chkUserOnly.setEnabled(False)
@@ -332,14 +333,14 @@ class Source(QObject):
         
         (self.inserted, self.ignored, self.modified, self.bad)=self.quotes.save()
         #El commit se hace dentro porque hay veces hay muchas
-        print("{} finished. {} inserted, {} ignored, {} modified and {} bad. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.bad.length(), self.quotes.length()))
+        logging.info("{} finished. {} inserted, {} ignored, {} modified and {} bad. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.bad.length(), self.quotes.length()))
             
     def errors_show(self):
         """Shwo errors aappended with log"""
         if len(self.errors)>0:
-            print ("{} Errors in {}:".format(len(self.errors), self.__class__.__name__))
+            logging.warning ("{} Errors in {}:".format(len(self.errors), self.__class__.__name__))
             for e in self.errors:
-                print ("  + {}".format(e))
+                logging.warning ("  + {}".format(e))
         
     def load_page(self, url ):
         """Función que devuelve la salida del comando urllib es un objeto HTTPResponse, normalmente es el parametro web o None si ha salido mal la descarga
@@ -358,11 +359,11 @@ class Source(QObject):
         
         
     def setSQL(self, useronly):
-        print ("This function must be overrided in Worker")
+        logging.info ("This function must be overrided in Worker")
         
     def steps(self):
         """Define  the number of steps of the source run"""
-        print ("This function must be overrided in Worker")
+        logging.info ("This function must be overrided in Worker")
 
         
 class SourceParsePage(Source):
@@ -453,7 +454,7 @@ class SourceIterateProducts(Source):
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
             if self.stopping==True:
-                print ("Stopping")
+                logging.debug ("Stopping")
                 self.quotes.clear()
                 break
             self.execute_product.emit(product.id)
@@ -471,7 +472,7 @@ class WorkerMercadoContinuo(SourceParsePage):
         
     def on_load_page(self):
         self.frame = self.webView.page().mainFrame()      
-        print (self.webView.page().bytesReceived())  
+        logging.debug (self.webView.page().bytesReceived())  
         self.frame.evaluateJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
         if self.frame.toHtml().find("Completo")==-1:
             self.web=self.frame.toHtml().split("\n")
@@ -612,7 +613,7 @@ class WorkerMorningstar(Source):
                         sys.stdout.write("\b"*1000+stri)
                         sys.stdout.flush()
                     if self.stopping==True:
-                        print ("Stopping")
+                        logging.debug ("Stopping")
                         self.quotes.clear()
                         break
                 self.next_step()
@@ -748,7 +749,7 @@ class WorkerYahoo(SourceParsePage):
     def my_load_page(self, setproducts):
         "Overrides SourceParsePage"
         self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
-        print(self.url)
+        logging.debug(self.url)
 
         web=self.load_page(self.url)
         if web==None:
@@ -763,7 +764,7 @@ class WorkerYahoo(SourceParsePage):
     def my_parse_page(self):
         "Overrides SourceParsePage"
         for i in self.web:
-            print(i)
+            logging.debug(i)
             try:
                 datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
                 product=self.products.find_by_ticker(datos[0][1:-1])
@@ -799,7 +800,7 @@ class WorkerYahoo(SourceParsePage):
         self.products.load_from_db(self.sql)    
         items=150
         
-        print (self.products.length())
+        logging.debug (self.products.length())
                
         for i in range(int(self.products.length()/items)+1) :#Creo tantos SetProducts como bloques de 150
             self.agrupation.append(SetProducts(self.mem))
@@ -808,7 +809,7 @@ class WorkerYahoo(SourceParsePage):
             self.agrupation[int(i/items)].append(p)#Añado en array que correspoonda el p
             
         for setproduct in self.agrupation:  
-            print ("setproduct length",  setproduct.length())
+            logging.debug ("setproduct length",  setproduct.length())
             self.my_load_page(setproduct)
             self.next_step()
             self.my_parse_page()
@@ -935,7 +936,7 @@ class WorkerYahooHistorical(Source):
                         sys.stdout.write("\b"*1000+stri)
                         sys.stdout.flush()
                     if self.stopping==True:
-                        print ("Stopping")
+                        logging.debug ("Stopping")
                         self.quotes.clear()
                         break
                 self.next_step()
@@ -970,7 +971,7 @@ def sync_data(con_source, con_target, progress=None):
     cur_target.execute("select value from globals where id_globals=1")
     
     if cur_source.fetchone()[0]!=cur_target.fetchone()[0]:
-        print ("Databases has diferent versions, please update them")
+        logging.critical ("Databases has diferent versions, please update them")
         sys.exit(0)
     
     quotes=0#Number of quotes synced
@@ -981,7 +982,7 @@ def sync_data(con_source, con_target, progress=None):
     
     #Iterate all products
     cur_target.execute("select id,name from products where id>0 order by name;")
-    print ("Syncing {} products".format (cur_target.rowcount))
+    logging.info ("Syncing {} products".format (cur_target.rowcount))
     for row in cur_target:
         output="{}: ".format(row['name'])
         ## QUOTES #####################################################################
@@ -994,7 +995,7 @@ def sync_data(con_source, con_target, progress=None):
         else:#Hay registro y selecciona los posteriores a el
             cur_source.execute("select * from quotes where id=%s and datetime>%s", (row['id'], max))
         if cur_source.rowcount!=0:
-            print("  - Syncing {} since {} ".format(row['name'], max),end="")
+            logging.info("  - Syncing {} since {} ".format(row['name'], max),end="")
             for  row_source in cur_source: #Inserts them 
                 cur2_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
                 quotes=quotes+1
@@ -1047,7 +1048,7 @@ def sync_data(con_source, con_target, progress=None):
                 
         if output!="{}: ".format(row['name']):
             products=products+1
-            print(output)
+            logging.info(output)
             
         if progress!=None:#If there's a progress bar
             progress.setValue(cur_target.rownumber)
