@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
 from libxulpymoney import Assets, qmessagebox,  Percentage
 from Ui_wdgConcepts import Ui_wdgConcepts
 from wdgConceptsHistorical import wdgConceptsHistorical
+from canvaschart import VCPie
 
 class wdgConcepts(QWidget, Ui_wdgConcepts):
     def __init__(self, mem,  parent=None):
@@ -13,6 +14,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.mem=mem
         self.selected=None
         
+        self.viewIncomes=VCPie()
+        self.layIncomes.addWidget(self.viewIncomes)
+        self.viewExpenses=VCPie()
+        self.layExpenses.addWidget(self.viewExpenses)
         self.expenses=self.mem.conceptos.clone_x_tipooperacion(1)
         self.expenseslist=None
         self.incomes=self.mem.conceptos.clone_x_tipooperacion(2)
@@ -25,11 +30,15 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
         self.wdgYM.changed.connect(self.on_wdgYM_changed)
         
+        
         self.on_wdgYM_changed()
         
         self.tab.setCurrentIndex(0)
         
     def load_gastos(self,  year,  month):
+        self.viewExpenses.clear()
+        self.viewExpenses.chart.setTitle(self.tr("Concepts chart"))   
+        self.viewExpenses.setCurrency(self.mem.localcurrency)
         
         (self.expenseslist, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
         self.tblExpenses.applySettings()
@@ -47,6 +56,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                     self.tblExpenses.item(i, 1).setBackground( QColor(182, 255, 182))          
                 else:
                     self.tblExpenses.item(i, 1).setBackground( QColor(255, 182, 182))      
+                self.viewExpenses.appendData(a[0].name.upper(), a[1])
+        self.viewExpenses.display()
                 
         self.tblExpenses.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblExpenses.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
@@ -54,6 +65,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.tblExpenses.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
+        self.viewIncomes.clear()
+        self.viewIncomes.chart.setTitle(self.tr("Concepts chart"))   
+        self.viewIncomes.setCurrency(self.mem.localcurrency)
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
         self.tblIncomes.applySettings()
         self.tblIncomes.clearContents()
@@ -70,7 +84,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                     self.tblIncomes.item(i, 1).setBackground( QColor(182, 255, 182))          
                 else:
                     self.tblIncomes.item(i, 1).setBackground( QColor(255, 182, 182))      
-                
+                self.viewIncomes.appendData(a[0].name.upper(), a[1])
+        self.viewIncomes.display()
         self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblIncomes.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
         self.tblIncomes.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
