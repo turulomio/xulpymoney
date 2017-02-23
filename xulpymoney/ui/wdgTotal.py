@@ -227,8 +227,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
-         
-        
         self.setData=None#Será un TotalYear
         self.setGraphic=None #Será un TotalGraphic
         
@@ -249,8 +247,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         self.view=None#QChart view
 
-        
         self.tab.setCurrentIndex(0)
+        self.tabData.setCurrentIndex(0)
+
         self.load_data()
         self.load_targets()
         self.load_invest_or_work()
