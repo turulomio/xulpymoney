@@ -1,19 +1,21 @@
 #!/usr/bin/python3
 import argparse
+import datetime
 import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import cpu_count
 
 def shell(*args):
-	print(args)
+	print(" ".join(args))
 	subprocess.call(args,shell=True)
 
 def command(*args):
-	print (args)
+	print(" ".join(args))
 	subprocess.call(args)
 
 
 if __name__ == '__main__':
+	start=datetime.datetime.now()
 	parser=argparse.ArgumentParser(prog='Makefile.py', description='Makefile in python', epilog="Developed by Mariano Muñoz", formatter_class=argparse.RawTextHelpFormatter)
 	parser.add_argument('--man', help="Generate docs and i18n",action="store_true",default=False)
 	parser.add_argument('--destdir', help="Dir to installn",action="store",default="/")
@@ -92,8 +94,6 @@ if __name__ == '__main__':
 			futures.append(executor.submit(command, "pyuic5","ui/wdgYearMonth.ui","-o","ui/Ui_wdgYearMonth.py"))
 			futures.append(executor.submit(command, "pyuic5","ui/wdgYear.ui","-o","ui/Ui_wdgYear.py"))
 
-#		for i,  future in enumerate(as_completed(futures)):
-#			print(".",end="")
 		command("install", "-o", "root", "-d", prefixbin)
 		command("install", "-o", "root", "-d", prefixlib)
 		command("install", "-o", "root", "-d", prefixshare)
@@ -116,17 +116,4 @@ if __name__ == '__main__':
 		command("install", "-m", "644", "-o", "root", "GPL-3.txt", "CHANGELOG.txt", "AUTHORS.txt", "RELEASES.txt", prefixshare)
 		command("install", "-m", "644", "-o", "root", "sql/xulpymoney.sql", prefixshare+"/sql")
 		command("install", "-m", "644", "-o", "root", "odf/report.odt", prefixshare)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	print ("*** Process took {} using {} processors ***".format(datetime.datetime.now()-start , cpu_count()))
