@@ -49,7 +49,6 @@ def winversion():
     versio=version.replace("+","")
     return versio[:-4]+"."+versio[4:-2]+"."+versio[6:]+"."+lastpoint
 
-print ("Building for", sys.platform, winversion())
 name="xulpymoney"
 
 
@@ -95,20 +94,4 @@ setup(name=name,
       description = 'Finances support',
       options = options,
       executables = executables)
-
-#Post setup
-if sys.platform=="win32":
-    os.chdir(build_dir())
-    
-    inno="c:/Program Files (x86)/Inno Setup 5/ISCC.exe"
-    if platform.architecture()[0]=="32bit":
-        inno=inno.replace(" (x86)", "")
-    
-    subprocess.call([inno,  "/o../",  "/DVERSION_NAME={}".format(winversion()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
-else:   #Linux
-    print (build_dir(), filename_output(), os.getcwd())
-    pwd=os.getcwd()
-    os.chdir(build_dir())
-    print (build_dir(), filename_output(), os.getcwd())
-    os.system("tar cvz -f '{0}/build/{1}.tar.gz' * -C '{0}/{2}/'".format(pwd, filename_output(),  build_dir()))
 
