@@ -15,6 +15,7 @@ if __name__ == '__main__':
 	parser.add_argument('--man', help="Generate docs and i18n",action="store_true",default=False)
 	parser.add_argument('--destdir', help="Dir to installn",action="store",default="/")
 	parser.add_argument('--uninstall', help="Uninstall",action="store_true",default=False)
+	parser.add_argument('--dist_sources', help="Make a sources tar", action="store_true",default=False)
 	args=parser.parse_args()
 
 	prefixbin=args.destdir+"/usr/bin"
@@ -32,6 +33,8 @@ if __name__ == '__main__':
 		shell("rm -Rf " + prefixshare)
 		shell("rm -fr " + prefixpixmaps + "/xulpymoney.png")
 		shell("rm -fr " + prefixapplications +"/xulpymoney.desktop")
+	elif args.dist_sources==True:
+		shell("python3 setup2.py sdist")
 	else:
 		futures=[]
 		with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
