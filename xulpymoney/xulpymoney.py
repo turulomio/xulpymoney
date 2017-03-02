@@ -21,7 +21,8 @@ else:
 from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import QApplication,  QDialog
 import libdbupdates
-from libxulpymoney import MemXulpymoney,  qmessagebox,  version, version_date
+from libxulpymoney import MemXulpymoney,  qmessagebox
+from libxulpymoneyversion import version, version_date
 from frmAccess import frmAccess
 from frmMain import frmMain
 
@@ -37,10 +38,10 @@ signal.signal(signal.SIGINT, signal_handler)
 parser=argparse.ArgumentParser(
         prog='xulpymoney', 
         description=app.translate("Core",'Personal accounting system'),  
-        epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(version_date.year)),
+        epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(version_date().year)),
         formatter_class=argparse.RawTextHelpFormatter
     )
-parser.add_argument('--version', action='version', version="{} ({})".format(version, version_date))
+parser.add_argument('--version', action='version', version="{} ({})".format(version, version_date()))
 parser.add_argument('--debug', help=app.translate("devicesinlan", "Debug program information"), default="INFO")
 args=parser.parse_args()        
 

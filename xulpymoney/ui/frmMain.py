@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport,  version_date,  list2string, qmessagebox,  Product
+from libxulpymoney import AssetsReport, list2string, qmessagebox, Product
+from libxulpymoneyversion import version_date
 from libsources import sync_data
 from frmAccess import frmAccess
 from wdgTotal import wdgTotal
@@ -44,16 +45,15 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=QWidget()       
 
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
-        
+
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
-       
+  
         if self.mem.con.is_superuser():
-            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date.year))
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date().year))
             self.setWindowIcon(self.mem.qicon_admin())
         else:
-            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
-          
-        
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date().year))
+
 #        model=ReinvestModel(mem, [2500, 3500, 12000, 12000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
 #        model.print()
 #        model=ReinvestModel(mem, [5000, 7000, 24000, 24000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))

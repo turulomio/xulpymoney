@@ -18,10 +18,10 @@ import threading
 import argparse
 import getpass
 from decimal import Decimal, getcontext
+from libxulpymoneyversion import version
 getcontext().prec=20
 
-version="2010216"
-version_date=datetime.date(2017, 2, 16)
+
 class Connection(QObject):
     
     inactivity_timeout=pyqtSignal()

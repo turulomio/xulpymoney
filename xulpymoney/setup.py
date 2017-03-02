@@ -41,7 +41,7 @@ def filename_output():
             pl="x86"
     return "xulpymoney-{}-{}.{}".format(so,  version, pl)
 
-def winversion():
+def version_windows():
     lastpoint="0"
     if version.find("+")!=-1:
         lastpoint="1"
@@ -49,7 +49,7 @@ def winversion():
     versio=version.replace("+","")
     return versio[:-4]+"."+versio[4:-2]+"."+versio[6:]+"."+lastpoint
 
-print ("Building for", sys.platform, winversion())
+print ("Building for", sys.platform, version_windows())
 name="xulpymoney"
 
 
@@ -90,7 +90,7 @@ executables = [
 ]
 
 setup(name=name,
-      version = winversion(),
+      version = version_windows(),
       author = 'Mariano Muñoz',
       description = 'Finances support',
       options = options,
@@ -104,7 +104,7 @@ if sys.platform=="win32":
     if platform.architecture()[0]=="32bit":
         inno=inno.replace(" (x86)", "")
     
-    subprocess.call([inno,  "/o../",  "/DVERSION_NAME={}".format(winversion()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
+    subprocess.call([inno,  "/o../",  "/DVERSION_NAME={}".format(version_windows()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
 else:   #Linux
     print (build_dir(), filename_output(), os.getcwd())
     pwd=os.getcwd()
