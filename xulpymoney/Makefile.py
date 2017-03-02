@@ -24,12 +24,10 @@ if __name__ == '__main__':
 	prefixapplications=args.destdir+"/usr/share/applications"
 
 	if args.man==True:
-		shell("install -o root -d "+ prefixlib)
 		shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
 		shell("lrelease xulpymoney.pro")
-		shell("install -m 644 -o root i18n/*.qm " + prefixlib)
 	elif args.uninstall==True:
-		shell("rm "+prefixbin+"/xulpymoney*")
+		shell("rm " + prefixbin + "/xulpymoney*")
 		shell("rm -Rf " + prefixlib)
 		shell("rm -Rf " + prefixshare)
 		shell("rm -fr " + prefixpixmaps + "/xulpymoney.png")
