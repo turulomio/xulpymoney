@@ -11,7 +11,7 @@ mkdir -p $DIR/test
 mkdir -p $DIR/sources
 mkdir -p $DIR/ui
 
-cp      Makefile \
+cp      Makefile.py \
         AUTHORS.txt \
         CHANGELOG.txt \
         GPL-3.txt \
