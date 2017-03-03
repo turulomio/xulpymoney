@@ -1,3 +1,4 @@
+import logging
 from libxulpymoney import Quote, qmessagebox
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
@@ -17,10 +18,12 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
         self.on_cmbSameProduct_currentIndexChanged(int(self.mem.settingsdb.value("wdgLastCurrent/viewode", 0)))
-        
+#        self.cmbSameProduct.setCurrentIndex(int(self.mem.settingsdb.value("wdgLastCurrent/viewmode",0)))
+#        self.cmbSameProduct.currentIndexChanged.emit(int(self.mem.settingsdb.value("wdgLastCurrent/viewode", 0)))
+
     def tblInvestments_reload(self):
         self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
-        
+
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.investments.selected, self)
@@ -151,8 +154,10 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         else:
             self.on_actionCalculate_triggered()
 
-    @pyqtSlot(int)      
+    @pyqtSlot(int)
     def on_cmbSameProduct_currentIndexChanged(self, index):
+        self.cmbSameProduct.setCurrentIndex(index)
+        logging.debug("Changing to {} {}".format(index,index.__class__))
         if index==0:
             self.investments=self.mem.data.investments_active()
             self.on_actionSortTPCLast_triggered()
