@@ -4,10 +4,10 @@ import datetime
 import os
 import sys
 import platform
-from subprocess import call
+from subprocess import call, check_call
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
-from libxulpymoneyversion import version
+from libxulpymoneyversion import version,version_windows
 
 def shell(*args):
     print(" ".join(args))
@@ -47,22 +47,24 @@ def filename_output():
 
 if __name__ == '__main__':
     start=datetime.datetime.now()
+    print(sys.platform, os.getcwd())
     parser=argparse.ArgumentParser(prog='Makefile.py', description='Makefile in python', epilog="Developed by Mariano Muñoz", formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--man', help="Generate docs and i18n",action="store_true",default=False)
-    parser.add_argument('--destdir', help="Dir to installn",action="store",default="/")
+    parser.add_argument('--doc', help="Generate docs and i18n",action="store_true",default=False)
+    parser.add_argument('--install', help="Dir to installn",action="store",default="/")
     parser.add_argument('--uninstall', help="Uninstall",action="store_true",default=False)
     parser.add_argument('--dist_sources', help="Make a sources tar", action="store_true",default=False)
     parser.add_argument('--dist_linux', help="Make a Linux binary distribution", action="store_true",default=False)
     parser.add_argument('--dist_windows', help="Make a Windows binary distribution", action="store_true",default=False)
+    parser.add_argument('--python', help="Python path", action="store",default='/usr/bin/python3')
     args=parser.parse_args()
 
-    prefixbin=args.destdir+"/usr/bin"
-    prefixlib=args.destdir+"/usr/lib/xulpymoney"
-    prefixshare=args.destdir+"/usr/share/xulpymoney"
-    prefixpixmaps=args.destdir+"/usr/share/pixmaps"
-    prefixapplications=args.destdir+"/usr/share/applications"
+    prefixbin=args.install+"/usr/bin"
+    prefixlib=args.install+"/usr/lib/xulpymoney"
+    prefixshare=args.install+"/usr/share/xulpymoney"
+    prefixpixmaps=args.install+"/usr/share/pixmaps"
+    prefixapplications=args.install+"/usr/share/applications"
 
-    if args.man==True:
+    if args.doc==True:
         shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         shell("lrelease xulpymoney.pro")
     elif args.uninstall==True:
@@ -72,17 +74,23 @@ if __name__ == '__main__':
         shell("rm -fr " + prefixpixmaps + "/xulpymoney.png")
         shell("rm -fr " + prefixapplications +"/xulpymoney.desktop")
     elif args.dist_sources==True:
-        shell("python3 setup2.py sdist")
+        shell("{} setup.py sdist".format(args.python))
     elif args.dist_linux==True:
-        shell("python3 setup2.py build_exe")    
+        shell("{} setup.py build_exe".format(args.python))    
         print (build_dir(), filename_output(), os.getcwd())
         pwd=os.getcwd()
         os.chdir(build_dir())
         print (build_dir(), filename_output(), os.getcwd())
         os.system("tar cvz -f '{0}/dist/{1}.tar.gz' * -C '{0}/{2}/'".format(pwd, filename_output(),  build_dir()))
-
     elif args.dist_windows==True:
-        shell("python3 setup2.py sdist")
+        check_call([sys.executable, "setup.py","bdist_msi"])
+#        os.chdir(build_dir())
+#        inno="c:/Program Files (x86)/Inno Setup 5/ISCC.exe"
+##    if platform.architecture()[0]=="32bit":
+##        inno=inno.replace(" (x86)", "")
+#
+#        check_call([inno,  "/o../",  "/DVERSION_NAME={}".format(version_windows()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
+
     else:
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:

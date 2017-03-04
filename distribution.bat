@@ -1,3 +1,3 @@
-call Makefile.bat
-c:/python34/python.exe setup.py build_exe
+rem para instalar con pip abrir consola en modo administrador pip
+call "c:\Program Files\Python35\python.exe" Makefile.py --dist_windows
 pause

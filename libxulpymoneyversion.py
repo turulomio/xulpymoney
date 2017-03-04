@@ -6,9 +6,8 @@ def version_windows():
     lastpoint="0"
     if version.find("+")!=-1:
         lastpoint="1"
-        
-    versio=version.replace("+","")
-    return versio[:-4]+"."+versio[4:-2]+"."+versio[6:]+"."+lastpoint
+    vd=version_date()
+    return "{}.{}.{}.{}".format(vd.year, vd.month, vd.day, lastpoint)
     
 def version_date():
     versio=version.replace("+","")
