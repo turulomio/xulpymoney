@@ -1252,12 +1252,20 @@ class SetConcepts(SetCommons):
 
 
     def clone_x_tipooperacion(self, id_tiposoperaciones):
+        """SSe usa clone y no init ya que ya están cargados en MEM"""
         resultado=SetConcepts(self.mem)
         for c in self.arr:
             if c.tipooperacion.id==id_tiposoperaciones:
                 resultado.append(c)
         return resultado
         
+    def clone_editables(self):
+        """SSe usa clone y no init ya que ya están cargados en MEM"""
+        resultado=SetConcepts(self.mem)
+        for c in self.arr:
+            if c.editable==True:
+                resultado.append(c)
+        return resultado
         
     def percentage_monthly(self, year, month):
         """ Generates an arr with:
@@ -3356,16 +3364,20 @@ class Concept:
                             
     def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
+        if self.uses()>0 and self.editable==True:
+            return False
+        return True
+        
+    def uses(self):
+        """Returns the number of uses in opercuenta and opertarjetas"""
         cur=self.mem.con.cursor()
         cur.execute("select count(*) from opercuentas where id_conceptos=%s", (self.id, ))
         opercuentas=cur.fetchone()[0]
         cur.execute("select count(*) from opertarjetas where id_conceptos=%s", (self.id, ))
         opertarjetas=cur.fetchone()[0]
         cur.close()
-        if opercuentas+opertarjetas!=0:
-            return False
-        return True
-        
+        return opercuentas+opertarjetas
+
     def borrar(self):
         if self.es_borrable():
             cur=self.mem.con.cursor()        
