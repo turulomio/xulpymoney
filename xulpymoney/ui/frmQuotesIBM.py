@@ -43,7 +43,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
-        if self.txtQuote.decimal()==None:
+        if not self.txtQuote.isValid():
             qmessagebox(self.tr("Incorrect data. Try again."))
             return
         if self.quote==None:#insert              

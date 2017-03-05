@@ -3,11 +3,11 @@ import datetime
 version="20170216"
 
 def version_windows():
-    lastpoint="0"
-    if version.find("+")!=-1:
-        lastpoint="1"
+#    lastpoint="0"
+#    if version.find("+")!=-1:
+#        lastpoint="1"
     vd=version_date()
-    return "{}.{}.{}.{}".format(vd.year, vd.month, vd.day, lastpoint)
+    return "{}.{}.{}".format(vd.year, vd.month, vd.day)
     
 def version_date():
     versio=version.replace("+","")

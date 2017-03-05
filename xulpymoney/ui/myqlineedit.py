@@ -49,7 +49,12 @@ class myQLineEdit(QLineEdit):
     def decimal(self):
         """Devuelve el decimal o un None si hay error"""
         try:
-            return Decimal(self.text())
+            #Due to database precision (18,6) debe redondear a 10^12
+            a=Decimal(self.text())
+            if a<Decimal(1000000000000):
+                return a
+            else:
+                return None
         except:
             return None
 

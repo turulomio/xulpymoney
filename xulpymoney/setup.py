@@ -17,7 +17,7 @@ include_files.append(("sql/xulpymoney.sql", "sql/xulpymoney.sql"))
 
 #Build options
 if sys.platform=='win32':
-    finalversion="0.1"#version_windows()
+    finalversion=version_windows()
     base = 'Win32GUI'
     include_files.append("xulpymoney.iss")
     include_files.append(pytz.__path__[0])
@@ -46,9 +46,11 @@ executables = [
 ]
 
 setup(name=name,
-      version = finalversion,
-      author = 'Mariano Muñoz',
-      description = 'Finances support',
-      options = options,
-      executables = executables)
+    version = finalversion,
+    author = 'Mariano Muñoz',
+    author_email="turulomio@yahoo.es", 
+    description = 'Personal and finances accounting system',
+    options = options,
+    url="https://sourceforge.net/projects/xulpymoney/", 
+    executables = executables)
 

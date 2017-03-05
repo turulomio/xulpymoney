@@ -7,7 +7,7 @@ import platform
 from subprocess import call, check_call
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
-from libxulpymoneyversion import version,version_windows
+from libxulpymoneyversion import version
 
 def shell(*args):
     print(" ".join(args))
@@ -44,13 +44,15 @@ def filename_output():
         else:
             pl="x86"
     return "xulpymoney-{}-{}.{}".format(so,  version, pl)
+    
+
 
 if __name__ == '__main__':
     start=datetime.datetime.now()
-    print(sys.platform, os.getcwd())
     parser=argparse.ArgumentParser(prog='Makefile.py', description='Makefile in python', epilog="Developed by Mariano Muñoz", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--doc', help="Generate docs and i18n",action="store_true",default=False)
-    parser.add_argument('--install', help="Dir to installn",action="store",default="/")
+    parser.add_argument('--compile', help="App compilation",action="store_true",default=False)
+    parser.add_argument('--destdir', help="Directory to install",action="store",default="/")
     parser.add_argument('--uninstall', help="Uninstall",action="store_true",default=False)
     parser.add_argument('--dist_sources', help="Make a sources tar", action="store_true",default=False)
     parser.add_argument('--dist_linux', help="Make a Linux binary distribution", action="store_true",default=False)
@@ -58,15 +60,18 @@ if __name__ == '__main__':
     parser.add_argument('--python', help="Python path", action="store",default='/usr/bin/python3')
     args=parser.parse_args()
 
-    prefixbin=args.install+"/usr/bin"
-    prefixlib=args.install+"/usr/lib/xulpymoney"
-    prefixshare=args.install+"/usr/share/xulpymoney"
-    prefixpixmaps=args.install+"/usr/share/pixmaps"
-    prefixapplications=args.install+"/usr/share/applications"
+    prefixbin=args.destdir+"/usr/bin"
+    prefixlib=args.destdir+"/usr/lib/xulpymoney"
+    prefixshare=args.destdir+"/usr/share/xulpymoney"
+    prefixpixmaps=args.destdir+"/usr/share/pixmaps"
+    prefixapplications=args.destdir+"/usr/share/applications"   
 
     if args.doc==True:
         shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         shell("lrelease xulpymoney.pro")
+        os.chdir("doc")
+        shell("doxygen .doxygen")
+        os.chdir("..")
     elif args.uninstall==True:
         shell("rm " + prefixbin + "/xulpymoney*")
         shell("rm -Rf " + prefixlib)
@@ -83,15 +88,17 @@ if __name__ == '__main__':
         print (build_dir(), filename_output(), os.getcwd())
         os.system("tar cvz -f '{0}/dist/{1}.tar.gz' * -C '{0}/{2}/'".format(pwd, filename_output(),  build_dir()))
     elif args.dist_windows==True:
-        check_call([sys.executable, "setup.py","bdist_msi"])
-#        os.chdir(build_dir())
-#        inno="c:/Program Files (x86)/Inno Setup 5/ISCC.exe"
-##    if platform.architecture()[0]=="32bit":
-##        inno=inno.replace(" (x86)", "")
-#
-#        check_call([inno,  "/o../",  "/DVERSION_NAME={}".format(version_windows()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
-
-    else:
+        if platform.system()=="Windows":
+            check_call([sys.executable, "setup.py","bdist_msi"])
+            #        os.chdir(build_dir())
+            #        inno="c:/Program Files (x86)/Inno Setup 5/ISCC.exe"
+            ##    if platform.architecture()[0]=="32bit":
+            ##        inno=inno.replace(" (x86)", "")
+            #
+            #        check_call([inno,  "/o../",  "/DVERSION_NAME={}".format(version_windows()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
+        else:
+            print("You need to launch this script in a Windows environment")
+    elif args.compile==True:
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
             futures.append(executor.submit(shell, "pyrcc5 images/xulpymoney.qrc -o images/xulpymoney_rc.py"))
@@ -145,7 +152,7 @@ if __name__ == '__main__':
             futures.append(executor.submit(shell, "pyuic5 ui/wdgMergeCodes.ui -o ui/Ui_wdgMergeCodes.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgYearMonth.ui -o ui/Ui_wdgYearMonth.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgYear.ui -o ui/Ui_wdgYear.py"))
-
+    else:
         shell("install -o root -d "+ prefixbin)
         shell("install -o root -d "+ prefixlib)
         shell("install -o root -d "+ prefixshare)

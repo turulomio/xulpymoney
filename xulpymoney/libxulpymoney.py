@@ -8206,15 +8206,15 @@ class AssetsReport(ODT):
 
 def ampm_to_24(hora, pmam):
     #    Conversión de AM/PM a 24 horas
-    #  	  	 
-    #  	Para la primera hora del día (de medianoche a 12:59 AM), resta 12 horas
-    #  	  	Ejemplos: 12 de medianoche = 0:00, 12:35 AM = 0:35
-    #  	  	 
-    #  	De 1:00 AM a 12:59 PM, no hay cambios
-    #  	  	Ejemplos: 11:20 AM = 11:20, 12:30 PM = 12:30
-    #  	  	 
-    #  	De 1:00 PM a 11:59 PM, suma 12 horas
-    #  	  	Ejemplos: 4:45 PM = 16:45, 11:50 PM = 23:50
+    #        
+    #   Para la primera hora del día (de medianoche a 12:59 AM), resta 12 horas
+    #       Ejemplos: 12 de medianoche = 0:00, 12:35 AM = 0:35
+    #        
+    #   De 1:00 AM a 12:59 PM, no hay cambios
+    #       Ejemplos: 11:20 AM = 11:20, 12:30 PM = 12:30
+    #        
+    #   De 1:00 PM a 11:59 PM, suma 12 horas
+    #       Ejemplos: 4:45 PM = 16:45, 11:50 PM = 23:50
     if pmam=="am" and hora==12:
         return 12-12
     elif pmam=="pm" and hora >=1 and hora<= 11:
