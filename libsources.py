@@ -4,7 +4,7 @@ import urllib.request
 import time
 import datetime
 import sys
-from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess, QUrl
 from PyQt5.QtGui import QIcon
@@ -467,7 +467,7 @@ class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem):
         SourceParsePage.__init__(self, mem)   
         self.setName(self.tr("Mercado Continuo source"))
-        self.webView= QWebView()
+        self.webView= QWebEngineView()
         self.webView.loadFinished.connect(self.on_load_page)
         
     def on_load_page(self):
