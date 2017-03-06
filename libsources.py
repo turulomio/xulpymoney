@@ -471,9 +471,9 @@ class WorkerMercadoContinuo(SourceParsePage):
         self.webView.loadFinished.connect(self.on_load_page)
         
     def on_load_page(self):
-        self.frame = self.webView.page().mainFrame()      
-        logging.debug (self.webView.page().bytesReceived())  
-        self.frame.evaluateJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
+        self.frame = self.webView.page()
+#        logging.debug (self.webView.page().bytesReceived())  
+        self.frame.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
         if self.frame.toHtml().find("Completo")==-1:
             self.web=self.frame.toHtml().split("\n")
             self.toWebLog(self.web)

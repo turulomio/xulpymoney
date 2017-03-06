@@ -98,9 +98,7 @@ class VCTemporalSeries(QChartView):
             self.maxx=x
         if x<self.minx:
             self.minx=x
-        
-        
-        
+
     def display(self):
         self.setChart(self.chart)
         self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
