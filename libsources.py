@@ -4,7 +4,7 @@ import urllib.request
 import time
 import datetime
 import sys
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess, QUrl
 from PyQt5.QtGui import QIcon
@@ -327,6 +327,8 @@ class Source(QObject):
         elif object.__class__.__name__=='list':
             for line in object:
                 self.weblog=self.weblog+line +"\n"
+        else:
+            self.weblog=self.weblog+str(object)+"\n"
 
     def quotes_save(self):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
@@ -463,22 +465,26 @@ class SourceIterateProducts(Source):
         print("")
 
     
-class WorkerMercadoContinuo(SourceParsePage):
+class WorkerMercadoContinuo(Source):
     def __init__(self,  mem):
         SourceParsePage.__init__(self, mem)   
         self.setName(self.tr("Mercado Continuo source"))
-        self.webView= QWebEngineView()
-        self.webView.loadFinished.connect(self.on_load_page)
+#        self.webView= QWebEngineView()
+        self.lasthtml=None
+        
+    def callbackHTML(self, html):
+        self.lasthtml=html
         
     def on_load_page(self):
-        self.frame = self.webView.page()
-#        logging.debug (self.webView.page().bytesReceived())  
-        self.frame.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
-        if self.frame.toHtml().find("Completo")==-1:
-            self.web=self.frame.toHtml().split("\n")
-            self.toWebLog(self.web)
-            for l in self.web:
+        self.numpage=self.numpage+1
+        if self.numpage==1:#URL loaded
+            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
+        elif self.numpage==2:#COmpleto loaded
+            self.page.toHtml(self.callbackHTML)
+            self.toWebLog(html)
+            for l in html.split("\n"):
                 if l.find("ISIN=")!=-1:
+                    print(l)
                     isin=l.split("ISIN=")[1].split('">')[0]
                     p=self.products.find_by_isin(isin)
                     if p!=None:
@@ -503,16 +509,28 @@ class WorkerMercadoContinuo(SourceParsePage):
             self.next_step()
             
             self.setStatus(SourceStatus.Finished)
+        print("ON LOAD", self.numpage)
+    
+    def run(self):
+        self.setStatus(SourceStatus.Running)
+        self.products.load_from_db(self.sql)     
+        self.next_step()
+        self.page=QWebEnginePage()
+        self.page.loadFinished.connect(self.on_load_page)
+        self.numpage=0
+        self.page.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))
+
+    def pressCompleto(self, html):
+        
+    def processCompleto(self, html):
+        """Process html after javascript"""
+
+        
 
     def steps(self):
         """Define  the number of steps of the source run"""
         return 3
 
-    def run(self):
-        self.setStatus(SourceStatus.Running)
-        self.products.load_from_db(self.sql)     
-        self.next_step()
-        self.webView.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))            
 
         
     def setSQL(self, useronly):

@@ -4,12 +4,14 @@ import platform
 import argparse
 import logging
 import signal
-from colorama import init,  Style, Fore
+from colorama import init, Style, Fore
 
 def signal_handler(signal, frame):
         logging.critical(Style.BRIGHT+Fore.RED+app.translate("Core","You pressed 'Ctrl+C', exiting..."))
         sys.exit(1)
+
 ######################
+
 init(autoreset=True)
 
 if platform.system()=="Windows":
