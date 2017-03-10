@@ -4,7 +4,7 @@ import urllib.request
 import time
 import datetime
 import sys
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess, QUrl
 from PyQt5.QtGui import QIcon
@@ -110,7 +110,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.source.statusChanged.connect(self.on_statusChanged)
 
     def on_statusChanged(self, status):
-        logging.debug("wdgSource statusChanged", status)
+        logging.debug("wdgSource statusChanged {}".format(status))
         if status==SourceStatus.Prepared:
             self.cmdRun.setEnabled(False)     
             self.chkUserOnly.setEnabled(False)
@@ -470,9 +470,14 @@ class WorkerMercadoContinuo(Source):
         SourceParsePage.__init__(self, mem)   
         self.setName(self.tr("Mercado Continuo source"))
         
-#    def callbackHTML(self, html):
-#        self.lasthtml=html
-#        print ("CALLBACK")
+    @pyqtSlot(str)
+    def callbackHTML(self, html):       
+        self.numpage=self.numpage+1
+        if self.numpage==1:
+            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
+        elif self.numpage==2:
+            self.processCompleto(html)
+#        logging.debug("Callback {}".format(self.numpage))
         
     def run(self):
         self.setStatus(SourceStatus.Running)
@@ -481,33 +486,22 @@ class WorkerMercadoContinuo(Source):
         self.numpage=0
         self.page=QWebEnginePage()
         self.page.loadFinished.connect(self.on_load_page)
-        self.page.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))
-        print("END RUN")
-         
+        self.page.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))#asincronou
+
     def on_load_page(self):
-#        self.page.loadFinished.disconnect()
-        self.numpage=self.numpage+1
-        print("ONLOAD", self.numpage)
-        if self.numpage==1:
-            self.page.toHtml(self.requestCompleto)
-#            print("BEFORE JS")
-#            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
-#            print("AFTER JS")
-#            self.page.toHtml(self.processCompleto)
+        """
+            Se ejecuta después de cargar la url y despues de ejecutar el Javascript
+        """
+        logging.debug("Page loaded")
+        self.page.toHtml(self.callbackHTML)
     
     @pyqtSlot(str)
-    def requestCompleto(self, html):
-        print("REQUEST CIMOKLET")
-        self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
-        self.page.toHtml(self.processCompleto)
-    
-    @pyqtSlot(str)
-    def processCompleto(self,  html):
-    #            self.page.toHtml(self.callbackHTML)
+    def processCompleto(self, html):
+        logging.debug("Processing completo")
         self.toWebLog(html)
         for l in html.split("\n"):
             if l.find("ISIN=")!=-1:
-                print(l)
+#                logging.debug(l)
                 isin=l.split("ISIN=")[1].split('">')[0]
                 p=self.products.find_by_isin(isin)
                 if p!=None:
@@ -533,45 +527,6 @@ class WorkerMercadoContinuo(Source):
         
         self.setStatus(SourceStatus.Finished)
 
-
-        
-#        print("ON LOAD STAERT", self.numpage)
-#        self.numpage=self.numpage+1
-#        if self.numpage==1:#URL loaded y lanzo javascript
-#            self.page.toHtml(self.callbackHTML)
-#            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
-#        elif self.numpage==2:#COmpleto loaded
-#            self.page.toHtml(self.callbackHTML)
-#            self.toWebLog(self.lasthtml)
-#            for l in self.lasthtml.split("\n"):
-#                if l.find("ISIN=")!=-1:
-#                    print(l)
-#                    isin=l.split("ISIN=")[1].split('">')[0]
-#                    p=self.products.find_by_isin(isin)
-#                    if p!=None:
-#                        arrdate=l.split('<td align="center">')[1].split("</td>")[0].split("/")
-#                        date=datetime.date(int(arrdate[2]),  int(arrdate[1]),  int(arrdate[0]))
-#                        strtime=l.split('class="Ult" align="center">')[1].split("</td>")[0]
-#                        if strtime=="Cierre":
-#                            time=p.stockmarket.closes
-#                        else:
-#                            arrtime=strtime.split(":")
-#                            time=datetime.time(int(arrtime[0]), int(arrtime[1]))
-#                        quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
-#                        datime=dt(date,time,p.stockmarket.zone)
-#                        quote=Quote(self.mem).init__create(p, datime, quot)    
-#                        self.quotes.append(quote)
-#                    else:
-#                        self.log("El isin {} no ha sido encontrado".format(isin))        
-#                        
-#            self.next_step()
-#            self.quotes_save()
-#            self.mem.con.commit()
-#            self.next_step()
-#            
-#            self.setStatus(SourceStatus.Finished)
-#        print("ON LOAD FINISH", self.numpage)
-    
     def steps(self):
         """Define  the number of steps of the source run"""
         return 3
