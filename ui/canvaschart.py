@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
+from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
 from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms
@@ -18,6 +18,7 @@ class VCTemporalSeries(QChartView):
     def __init__(self):
         QChartView.__init__(self)
         self.clear()
+        self._allowHideSeries=True
 
     def setAxisFormat(self, axis,  min, max, type, zone=None):
         """
@@ -41,6 +42,7 @@ class VCTemporalSeries(QChartView):
                 axis.setFormat("hh:mm")
             else:
                 axis.setFormat("yyyy-MMM")
+                
 
 
     def clear(self):
@@ -67,6 +69,10 @@ class VCTemporalSeries(QChartView):
         font.setPointSize(12)
         self.chart.setTitleFont(font)
 
+
+    def setAllowHideSeries(self, boolean):
+        self._allowHideSeries=boolean
+
     def appendSeries(self, name,  currency=None):
         """
             currency is a Currency object
@@ -76,6 +82,35 @@ class VCTemporalSeries(QChartView):
         ls.setName(name)
         self.series.append(ls)
         return ls
+
+    @pyqtSlot()
+    def on_marker_clicked(self):
+        marker=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
+        marker.series().setVisible(not marker.series().isVisible())
+        marker.setVisible(True)
+        if marker.series().isVisible():
+            alpha = 1
+        else:
+            alpha=0.5
+
+        lbrush=marker.labelBrush()
+        color=lbrush.color()
+        color.setAlphaF(alpha)
+        lbrush.setColor(color)
+        marker.setLabelBrush(lbrush)
+
+        brush=marker.brush()
+        color=brush.color()
+        color.setAlphaF(alpha)
+        brush.setColor(color)
+        marker.setBrush(brush)
+        
+        pen=marker.pen()
+        color=pen.color()
+        color.setAlphaF(alpha)
+        pen.setColor(color)
+        marker.setPen(pen)
+        
         
     def appendData(self, ls, x, y):
         """
@@ -110,6 +145,17 @@ class VCTemporalSeries(QChartView):
             s.attachAxis(self.axisX)
             s.attachAxis(self.axisY)
         self.axisY.setRange(self.miny, self.maxy)
+        
+        
+        if self._allowHideSeries==True:
+            for marker in self.chart.legend().markers():
+                try:
+                    marker.clicked.disconnect()
+                except:
+                    print("No estaba conectada")
+                marker.clicked.connect(self.on_marker_clicked)
+        
+        
         self.repaint()
 
 class VCPie(QChartView):
