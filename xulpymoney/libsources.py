@@ -821,8 +821,7 @@ class WorkerYahoo(SourceParsePage):
         for i, p in enumerate(self.products.arr):
             self.agrupation[int(i/items)].append(p)#Añado en array que correspoonda el p
             
-        for setproduct in self.agrupation:  
-            logging.debug ("setproduct length",  setproduct.length())
+        for setproduct in self.agrupation:
             self.my_load_page(setproduct)
             self.next_step()
             self.my_parse_page()
