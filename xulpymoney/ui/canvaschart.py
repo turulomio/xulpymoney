@@ -83,9 +83,29 @@ class VCTemporalSeries(QChartView):
         self.series.append(ls)
         return ls
 
+
+    def mouseMoveEvent(self, event):
+        """
+            event is a QMouseEvent
+        """
+        x=self.chart.mapToValue(event.pos()).x()
+        y=self.chart.mapToValue(event.pos()).y()
+#        for serie in self.series:
+#            sx=None
+#            sy=None
+#            for point in serie.points():
+#                if point.x()>x:
+#                    sx=point.x()
+#                    break
+#            for point in serie.points():
+#                if point.y()>y:
+#                    sy=point.y()
+#                    break
+#            print(serie, sx, sy)
+        print(x, y)
     @pyqtSlot()
     def on_marker_clicked(self):
-        marker=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
+        marker=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado, ya que estaban conectados varios objetos a una misma señal
         marker.series().setVisible(not marker.series().isVisible())
         marker.setVisible(True)
         if marker.series().isVisible():
