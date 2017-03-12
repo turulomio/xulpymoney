@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1045</width>
-    <height>775</height>
+    <height>890</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -651,7 +651,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -745,21 +745,6 @@
                      <attribute name="verticalHeaderVisible">
                       <bool>false</bool>
                      </attribute>
-                     <column>
-                      <property name="text">
-                       <string>Time</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Price</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>% Daily</string>
-                      </property>
-                     </column>
                     </widget>
                    </item>
                    <item>

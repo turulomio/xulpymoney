@@ -2,7 +2,7 @@ import datetime
 import logging
 import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
-from PyQt5.QtGui import QColor,  QIcon
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
@@ -319,7 +319,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            view.display()
             
         #Canvas Intradia
-        if len(self.product.result.intradia.arr)<2:
+        if self.product.result.intradia.length()<2:
             self.viewIntraday.hide()
         else:
             self.viewIntraday.show()
@@ -329,42 +329,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             for quote in self.product.result.intradia.arr:
                 self.viewIntraday.appendData(ls, quote.datetime, quote.quote)
             self.viewIntraday.display()
-        
-        
+
         #tblIntradia
-        if len(self.product.result.intradia.arr)==0:
-            self.tblIntradia.clear()
-        else:
-            self.tblIntradia.applySettings()
-            self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
-            QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
-    
-            ##Construye tabla
-            for i , q in enumerate(self.product.result.intradia.arr):
-                if q.datetime.microsecond==5:
-                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
-                    self.tblIntradia.item(i, 0).setBackground(QColor(255, 255, 148))
-                elif q.datetime.microsecond==4:
-                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
-                    self.tblIntradia.item(i, 0).setBackground(QColor(148, 148, 148))
-                else:
-                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
-                self.tblIntradia.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))       
-                if QuoteDayBefore!=None:
-                    tpcq=Percentage(q.quote-QuoteDayBefore.close, QuoteDayBefore.close)
-                    self.tblIntradia.setItem(i, 2, tpcq.qtablewidgetitem())
-                else:
-                    self.tblIntradia.setItem(i, 2, Percentage().qtablewidgetitem())    
-                if q==self.product.result.intradia.high():
-                    self.tblIntradia.item(i, 1).setBackground(QColor(148, 255, 148))
-                elif q==self.product.result.intradia.low():
-                    self.tblIntradia.item(i, 1).setBackground( QColor(255, 148, 148))  
-                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
-                
-            self.tblIntradia.setFocus()
-            self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)
-            self.tblIntradia.clearSelection()
-            
+        self.product.result.intradia.myqtablewidget(self.tblIntradia)
+        if self.product.result.intradia.length()>0:
+            self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
+
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:

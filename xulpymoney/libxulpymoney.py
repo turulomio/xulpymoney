@@ -6291,6 +6291,15 @@ class Product:
         set.load_from_db(sql,  progress=False)
         return set
         
+    def hasSameLocalCurrency(self):
+        """
+            Returns a boolean
+            Check if product currency is the same that local currency
+        """
+        if self.currency.id==self.mem.localcurrency.id:
+            return True
+        return False
+
     def has_basic_data(self):
         """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, endlastyear, thisyearestimation_dps)"""
         result=QuotesResult(self.mem, self)
@@ -6710,6 +6719,42 @@ class SetQuotesIntraday(SetQuotes):
         l=self.low().quote
         return Percentage(h-l, l)
 
+    def myqtablewidget(self, table): 
+        
+        if self.product.hasSameLocalCurrency():
+            table.setColumnCount(3)
+        else:
+            table.setColumnCount(5)
+            table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Price")))
+            table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","% Daily")))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Time")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","% Daily")))
+        table.applySettings()
+        table.clearContents()
+        table.setRowCount(self.length())
+        QuoteDayBefore=Quote(self.mem).init__from_query(self.product, day_start_from_date(self.date, self.mem.localzone))#day before as selected
+
+        ##Construye tabla
+        for i , q in enumerate(self.arr):
+            table.setItem(i, 0, qtime(q.datetime))
+            table.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))
+            tpcq=Percentage(q.quote-QuoteDayBefore.quote, QuoteDayBefore.quote)
+            table.setItem(i, 2, tpcq.qtablewidgetitem())
+            if self.product.hasSameLocalCurrency()==False:
+                moneybefore=QuoteDayBefore.money().convert(self.mem.localcurrency, q.datetime)
+                money=q.money().convert(self.mem.localcurrency, q.datetime)
+                table.setItem(i, 3, money.qtablewidgetitem(6))
+                tpcq=Percentage(money-moneybefore, moneybefore)
+                table.setItem(i, 4, tpcq.qtablewidgetitem())
+                
+            if q==self.high():
+                table.item(i, 1).setBackground(QColor(148, 255, 148))
+            elif q==self.product.result.intradia.low():
+                table.item(i, 1).setBackground( QColor(255, 148, 148))             
+        table.setCurrentCell(self.length()-1, 0)
+        table.clearSelection()
+
 class Quote:
     """Un quote no puede estar duplicado en un datetime solo puede haber uno"""
     def __init__(self, mem):
@@ -6768,6 +6813,11 @@ class Quote:
             r=False
         return r
         
+    def money(self):
+        """
+            Returns a MOney Object
+        """
+        return Money(self.mem, self.quote, self.product.currency)
         
     def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
@@ -8351,6 +8401,20 @@ def qdatetime(dt, zone):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 
+def qtime(dt):
+    """
+        Shows the time of a datetime
+    """
+    if dt.microsecond==5:
+        item=qleft(str(dt)[11:-13])
+        item.setBackground(QColor(255, 255, 148))
+    elif dt.microsecond==4:
+        item=qleft(str(dt)[11:-13])
+        item.setBackground(QColor(148, 148, 148))
+    else:
+        item=qleft(str(dt)[11:-6])
+    return item
+    
 def list2string(lista):
         """Covierte lista a string"""
         if  len(lista)==0:

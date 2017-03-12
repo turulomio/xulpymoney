@@ -102,7 +102,7 @@ class VCTemporalSeries(QChartView):
 #                    sy=point.y()
 #                    break
 #            print(serie, sx, sy)
-        print(x, y)
+#        print(x, y)
     @pyqtSlot()
     def on_marker_clicked(self):
         marker=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado, ya que estaban conectados varios objetos a una misma señal
