@@ -4284,7 +4284,7 @@ class Account:
 
     def resultsCurrency(self, type ):
         if type==2:
-            return self.account.currency
+            return self.currency
         elif type==3:
             return self.mem.localcurrency
         logging.critical("Rare account result currency: {}".format(type))
