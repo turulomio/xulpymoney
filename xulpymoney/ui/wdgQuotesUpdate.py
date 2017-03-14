@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
 from libsources import WorkerMercadoContinuo, WorkerMorningstar, WorkerYahoo, WorkerYahooHistorical, SetSources
+#from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor,   as_completed
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):
@@ -41,10 +42,14 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         for s in self.sources.runners:
             s.ui.on_cmdRun_released()
-#            
-#        with ProcessPoolExecutor(max_workers=4) as e:
+            
+#        futures=[]
+#        with ProcessPoolExecutor(max_workers=4) as executor:
 #            for s in self.sources.runners:
-#                e.map(s.ui.on_cmdRun_released)
+#                futures.append(executor.submit(s.ui.on_cmdRun_released))
+#            for i,  future in enumerate(as_completed(futures)):
+#                QCoreApplication.processEvents()    
+#                self.mem.frmMain.update()
         
     def on_source_statusChanged(self, status):
         if status==3:#Finished

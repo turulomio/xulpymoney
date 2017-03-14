@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201701140716
+        self.lastcodeupdate=201703140608
 
    
     def get_database_version(self):
@@ -1876,6 +1876,23 @@ LANGUAGE plpgsql;""")
             self.mem.con.commit()
             self.set_database_version(201701140716)      
             
+        if self.dbversion<201703140608:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 80262))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76250))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81127))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81129))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 80245))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 80246))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 80392))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81221))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 80201))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79076))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77462))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75659))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201703140608)         
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
