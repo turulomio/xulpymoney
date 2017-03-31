@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201703140608
+        self.lastcodeupdate=201703310608
 
    
     def get_database_version(self):
@@ -1893,6 +1893,19 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201703140608)         
+            
+            
+        if self.dbversion<201703310608:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81715, 'Deutsche Floating Rate Notes LC', 'LU0034353002 ', 'EUR', 2, '|f_cat_money|', '', None, None, None, 0, 'c', 1, 5, 'F0GBR04NQN', None,[8, ], "", False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81716, 'Aviva Investors Sterling Liquidity Fund 1 GBP Inc', 'IE0031619269', 'GBP', 2, '|f_cat_money|', '', None, None, None, 0, 'c', 1, 4, 'F0GBR06KUK', None,[8, ], "", False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81717, 'Amundi Cash Corporate IC', 'FR0010251660', 'EUR', 2, '|f_cat_money|', '', None, None, None, 0, 'c', 1, 3, 'F0GBR06QIE', None,[8, ], "", False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201703310608)         
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmProductReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.7.1
+# Created by: PyQt5 UI code generator 5.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -865,6 +865,11 @@ class Ui_frmProductReport(object):
         self.actionQuoteDeleteYears = QtWidgets.QAction(frmProductReport)
         self.actionQuoteDeleteYears.setIcon(icon13)
         self.actionQuoteDeleteYears.setObjectName("actionQuoteDeleteYears")
+        self.actionQuoteImport = QtWidgets.QAction(frmProductReport)
+        icon15 = QtGui.QIcon()
+        icon15.addPixmap(QtGui.QPixmap(":/xulpymoney/libreoffice_calc.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionQuoteImport.setIcon(icon15)
+        self.actionQuoteImport.setObjectName("actionQuoteImport")
 
         self.retranslateUi(frmProductReport)
         self.tab.setCurrentIndex(1)
@@ -1087,6 +1092,8 @@ class Ui_frmProductReport(object):
         self.actionQuoteDeleteMonths.setToolTip(_translate("frmProductReport", "Delete all prices from selected month"))
         self.actionQuoteDeleteYears.setText(_translate("frmProductReport", "Delete all prices from selected year"))
         self.actionQuoteDeleteYears.setToolTip(_translate("frmProductReport", "Delete all prices from selected year"))
+        self.actionQuoteImport.setText(_translate("frmProductReport", "Import quotes from Libreoffice ODS"))
+        self.actionQuoteImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
 
 from myqtablewidget import myQTableWidget
 from wdgProductSelector import wdgProductSelector

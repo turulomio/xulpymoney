@@ -5249,9 +5249,12 @@ class SetAgrupations(SetCommons):
         
         self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
         self.append(Agrupation(self.mem).init__create( "f_fr_CARMIGNAC","Gestora CARMIGNAC", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem).init__create("f_cat_money","Funds category: Money", self.mem.types.find_by_id(2),self.mem.stockmarkets.find_by_id(10)))
 
         self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(3) ))
         self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(1)))
+        
+        
   
     def clone_by_type(self,  type):
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
@@ -6894,6 +6897,7 @@ class Quote:
         
 class OHCL:
     def __init__(self,  mem):
+        self.mem=mem
         self.product=None
 #        self.datetime=datetime
         self.open=None

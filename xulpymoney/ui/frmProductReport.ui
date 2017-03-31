@@ -1786,6 +1786,18 @@
     <string>Delete all prices from selected year</string>
    </property>
   </action>
+  <action name="actionQuoteImport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/libreoffice_calc.png</normaloff>:/xulpymoney/libreoffice_calc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import quotes from Libreoffice ODS</string>
+   </property>
+   <property name="toolTip">
+    <string>Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

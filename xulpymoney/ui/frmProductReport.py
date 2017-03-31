@@ -3,10 +3,10 @@ import logging
 import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QFileDialog
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -15,7 +15,12 @@ from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
 from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
+from decimal import Decimal
 
+
+from odf.opendocument import load
+from odf.table import Table, TableRow, TableCell
+from odf.text import P
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
         """
@@ -421,6 +426,42 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         
     @pyqtSlot()
+    def on_actionQuoteImport_triggered(self):
+        filename=QFileDialog.getOpenFileName(self, "", "", "LibreOffice Calc (*.ods)")[0]
+        if filename!="":
+            set=SetQuotes(self.mem)
+            doc = load(filename)
+            table=doc.spreadsheet.getElementsByType(Table)[0]
+            rows = table.getElementsByType(TableRow)
+            for row in rows:
+                try:
+                    cells = row.getElementsByType(TableCell)
+                    
+                    #Date YYYY-MM-DD o YYYY-MM-DD HH:MM:SS
+                    p_list = cells[0].getElementsByType(P)
+                    for p in p_list:
+                        for node in p.childNodes:
+                            if node.nodeType == 3:
+                                s=node.data
+                                date=datetime.date(int(s[0:4]), int(s[5:7]), int(s[8:10])) 
+                                datet=dt(date, self.product.stockmarket.closes, self.product.stockmarket.zone)
+                    #value
+                    p_list = cells[1].getElementsByType(P)
+                    for p in p_list:
+                        for node in p.childNodes:
+                            if node.nodeType == 3:
+                                value=Decimal(node.data.replace(",", "."))
+                    print(date, value)
+                    set.append(Quote(self.mem).init__create(self.product, datet,  value))
+                except:
+                    pass
+            set.save()
+            self.mem.con.commit()
+            self.update_due_to_quotes_change()
+            
+                            
+        
+    @pyqtSlot()
     def on_actionQuoteNew_triggered(self):
         w=frmQuotesIBM(self.mem,  self.product)
         w.wdgDT.teDate.setSelectedDate(self.calendar.selectedDate())
@@ -617,6 +658,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteDays)        
+        menu.addSeparator()
+        menu.addAction(self.actionQuoteImport)
         menu.exec_(self.tblDaily.mapToGlobal(pos))
         
     def on_tblMonthly_itemSelectionChanged(self):
