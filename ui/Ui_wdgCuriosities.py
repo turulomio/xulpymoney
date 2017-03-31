@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgCuriosities.ui'
 #
-# Created by: PyQt5 UI code generator 5.7.1
+# Created by: PyQt5 UI code generator 5.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
