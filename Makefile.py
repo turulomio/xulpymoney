@@ -67,11 +67,11 @@ if __name__ == '__main__':
     prefixapplications=args.destdir+"/usr/share/applications"   
 
     if args.doc==True:
-        shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
-        shell("lrelease xulpymoney.pro")
         os.chdir("doc")
         shell("doxygen .doxygen")
         os.chdir("..")
+        shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
+        shell("lrelease xulpymoney.pro")
     elif args.uninstall==True:
         shell("rm " + prefixbin + "/xulpymoney*")
         shell("rm -Rf " + prefixlib)
