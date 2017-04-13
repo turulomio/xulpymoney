@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmAccountsReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,7 +37,6 @@ class Ui_frmAccountsReport(object):
         self.tabMovimientos = QtWidgets.QWidget()
         self.tabMovimientos.setObjectName("tabMovimientos")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tabMovimientos)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -176,7 +175,6 @@ class Ui_frmAccountsReport(object):
         self.tabTarjetas = QtWidgets.QWidget()
         self.tabTarjetas.setObjectName("tabTarjetas")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.tabTarjetas)
-        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -221,7 +219,6 @@ class Ui_frmAccountsReport(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.grpOperTarjetas = QtWidgets.QGroupBox(self.tab_2)
         self.grpOperTarjetas.setCheckable(False)
@@ -291,7 +288,6 @@ class Ui_frmAccountsReport(object):
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.tab_3)
-        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout()
         self.verticalLayout_9.setObjectName("verticalLayout_9")

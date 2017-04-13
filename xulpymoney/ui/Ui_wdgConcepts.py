@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgConcepts.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -55,7 +55,6 @@ class Ui_wdgConcepts(object):
         self.tabExpenses = QtWidgets.QWidget()
         self.tabExpenses.setObjectName("tabExpenses")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tabExpenses)
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.layExpenses = QtWidgets.QHBoxLayout()
         self.layExpenses.setObjectName("layExpenses")
@@ -84,7 +83,6 @@ class Ui_wdgConcepts(object):
         self.tabIncomes = QtWidgets.QWidget()
         self.tabIncomes.setObjectName("tabIncomes")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tabIncomes)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.layIncomes = QtWidgets.QHBoxLayout()
         self.layIncomes.setObjectName("layIncomes")

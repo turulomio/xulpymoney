@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmSellingPoint.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -103,7 +103,6 @@ class Ui_frmSellingPoint(object):
         self.tab_current = QtWidgets.QWidget()
         self.tab_current.setObjectName("tab_current")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_current)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.table = myQTableWidget(self.tab_current)
         self.table.setObjectName("table")
@@ -129,7 +128,6 @@ class Ui_frmSellingPoint(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.tableSP = myQTableWidget(self.tab_2)
         self.tableSP.setObjectName("tableSP")

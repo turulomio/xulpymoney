@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmInvestmentReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,7 +37,6 @@ class Ui_frmInvestmentReport(object):
         self.tab_12 = QtWidgets.QWidget()
         self.tab_12.setObjectName("tab_12")
         self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.tab_12)
-        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_15.setObjectName("horizontalLayout_15")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -158,7 +157,6 @@ class Ui_frmInvestmentReport(object):
         self.tabInvestmentCurrent = QtWidgets.QWidget()
         self.tabInvestmentCurrent.setObjectName("tabInvestmentCurrent")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.tabInvestmentCurrent)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout()
         self.verticalLayout_11.setObjectName("verticalLayout_11")
@@ -208,7 +206,6 @@ class Ui_frmInvestmentReport(object):
         self.tabOperacionesHistoricas = QtWidgets.QWidget()
         self.tabOperacionesHistoricas.setObjectName("tabOperacionesHistoricas")
         self.horizontalLayout_17 = QtWidgets.QHBoxLayout(self.tabOperacionesHistoricas)
-        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_17.setObjectName("horizontalLayout_17")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -250,7 +247,6 @@ class Ui_frmInvestmentReport(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout()
         self.verticalLayout_14.setObjectName("verticalLayout_14")
@@ -291,7 +287,6 @@ class Ui_frmInvestmentReport(object):
         self.tabDividends = QtWidgets.QWidget()
         self.tabDividends.setObjectName("tabDividends")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.tabDividends)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.verticalLayout_16 = QtWidgets.QVBoxLayout()
         self.verticalLayout_16.setObjectName("verticalLayout_16")

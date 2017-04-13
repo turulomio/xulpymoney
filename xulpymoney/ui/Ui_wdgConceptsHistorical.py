@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgConceptsHistorical.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -25,7 +25,6 @@ class Ui_wdgConceptsHistorical(object):
         self.widget = QtWidgets.QWidget()
         self.widget.setObjectName("widget")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.table = myQTableWidget(self.widget)
         self.table.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)

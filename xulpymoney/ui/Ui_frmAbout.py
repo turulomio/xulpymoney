@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmAbout.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -54,7 +54,6 @@ class Ui_frmAbout(object):
         self.tabGLParchis = QtWidgets.QWidget()
         self.tabGLParchis.setObjectName("tabGLParchis")
         self.hboxlayout = QtWidgets.QHBoxLayout(self.tabGLParchis)
-        self.hboxlayout.setContentsMargins(0, 0, 0, 0)
         self.hboxlayout.setObjectName("hboxlayout")
         self.textEdit = QtWidgets.QTextEdit(self.tabGLParchis)
         self.textEdit.setObjectName("textEdit")
@@ -63,7 +62,6 @@ class Ui_frmAbout(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.tblStatistics = myQTableWidget(self.tab_2)
         self.tblStatistics.setObjectName("tblStatistics")
@@ -128,7 +126,6 @@ class Ui_frmAbout(object):
         self.tabLicense = QtWidgets.QWidget()
         self.tabLicense.setObjectName("tabLicense")
         self.vboxlayout = QtWidgets.QVBoxLayout(self.tabLicense)
-        self.vboxlayout.setContentsMargins(0, 0, 0, 0)
         self.vboxlayout.setObjectName("vboxlayout")
         self.txtLicense = QtWidgets.QTextBrowser(self.tabLicense)
         self.txtLicense.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)

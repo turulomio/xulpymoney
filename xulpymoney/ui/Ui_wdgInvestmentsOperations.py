@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgInvestmentsOperations.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,7 +30,6 @@ class Ui_wdgInvestmentsOperations(object):
         self.tab_1 = QtWidgets.QWidget()
         self.tab_1.setObjectName("tab_1")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.tab_1)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -117,7 +116,6 @@ class Ui_wdgInvestmentsOperations(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.tblCurrent = myQTableWidget(self.tab_2)
         self.tblCurrent.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)

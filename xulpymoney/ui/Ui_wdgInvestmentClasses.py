@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgInvestmentClasses.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -50,7 +50,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tabTPCVariable = QtWidgets.QWidget()
         self.tabTPCVariable.setObjectName("tabTPCVariable")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tabTPCVariable)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.layTPC = QtWidgets.QHBoxLayout()
         self.layTPC.setObjectName("layTPC")
@@ -59,7 +58,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tabPCI = QtWidgets.QWidget()
         self.tabPCI.setObjectName("tabPCI")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.tabPCI)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.layPCI = QtWidgets.QVBoxLayout()
         self.layPCI.setObjectName("layPCI")
@@ -68,7 +66,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tabTipo = QtWidgets.QWidget()
         self.tabTipo.setObjectName("tabTipo")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tabTipo)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.layTipo = QtWidgets.QVBoxLayout()
         self.layTipo.setObjectName("layTipo")
@@ -77,7 +74,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.layApalancado = QtWidgets.QVBoxLayout()
         self.layApalancado.setObjectName("layApalancado")
@@ -86,7 +82,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.tab_3)
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.layCountry = QtWidgets.QHBoxLayout()
         self.layCountry.setObjectName("layCountry")
@@ -95,7 +90,6 @@ class Ui_wdgInvestmentClasses(object):
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.tab_4)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.layProduct = QtWidgets.QHBoxLayout()
         self.layProduct.setObjectName("layProduct")
