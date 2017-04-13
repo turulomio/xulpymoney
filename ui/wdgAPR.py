@@ -1,11 +1,12 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QSizePolicy, QWidget, QProgressDialog
 from Ui_wdgAPR import Ui_wdgAPR
-from libxulpymoney import Assets, Money, qcenter, Percentage
+from libxulpymoney import Assets, Money, qcenter, Percentage, none2decimal0,  qright
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
 from matplotlib.figure import Figure
+from decimal import Decimal
 import datetime
 
 # Matplotlib Figure object
@@ -184,6 +185,8 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         anoinicio=self.wdgYear.year
         anofinal=datetime.date.today().year
         sumgd=Money(self.mem, 0, self.mem.localcurrency)
+        sumtaxes=Decimal(0)
+        sumcomissions=Decimal(0)
         self.tblReport.applySettings()
         self.tblReport.setRowCount(anofinal-anoinicio+1+1)
         for i in range(anoinicio, anofinal+1):
@@ -201,14 +204,40 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 2, sbalance.qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 3, (sbalance-sinvested).qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 4, Percentage(sbalance-sinvested, sinvested).qtablewidgetitem())
-#            if sinvested.isGTZero():
-#                self.tblReport.setItem(i-anoinicio, 4, Percentage(sbalance-sinvested, sinvested).qtablewidgetitem())
-#            else:
-#                self.tblReport.setItem(i-anoinicio, 4,qtpc(None))
             self.tblReport.setItem(i-anoinicio, 6, gd.qtablewidgetitem())
+            
+            taxes=none2decimal0(self.mem.con.cursor_one_row("select sum(importe) from opercuentas where id_conceptos in (6,37) and date_part('year',datetime)={}".format(i))[0])
+            self.tblReport.setItem(i-anoinicio, 8, qright(taxes))
+            sumtaxes=sumtaxes+taxes
+            
+            comissions=none2decimal0(self.mem.con.cursor_one_row("""
+select 
+    sum(suma) 
+from (
+            select 
+                sum(importe) as suma 
+            from 
+                opercuentas 
+            where 
+                id_conceptos in (38,59) and  
+                date_part('year',datetime)={0}
+            union 
+            select 
+                -sum(comision) as suma 
+            from 
+                operinversiones 
+            where  
+                date_part('year',datetime)={0}
+        ) as uni""".format(i))[0])
+            self.tblReport.setItem(i-anoinicio, 9, qright(comissions))
+            sumcomissions=sumcomissions+comissions
+            
+            
 
         self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
         self.tblReport.setItem(anofinal-anoinicio+1, 6, sumgd.qtablewidgetitem())
+        self.tblReport.setItem(anofinal-anoinicio+1, 8, qright(sumtaxes))
+        self.tblReport.setItem(anofinal-anoinicio+1, 9, qright(sumcomissions))
         
         lastyear=datetime.date(datetime.date.today().year, 12, 31)
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, lastyear)-Assets(self.mem).invested(lastyear)

@@ -203,6 +203,21 @@
                <string>Net Gains + Dividends</string>
               </property>
              </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Taxes</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Comissions</string>
+              </property>
+             </column>
             </widget>
            </item>
            <item>
