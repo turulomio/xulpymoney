@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgInvestmentsRanking.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,7 +31,6 @@ class Ui_wdgInvestmentsRanking(object):
         self.tab_ = QtWidgets.QWidget()
         self.tab_.setObjectName("tab_")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tab_)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.tblCurrentOperations = myQTableWidget(self.tab_)
         self.tblCurrentOperations.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -48,7 +47,6 @@ class Ui_wdgInvestmentsRanking(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.tblOperations = myQTableWidget(self.tab_2)
         self.tblOperations.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)

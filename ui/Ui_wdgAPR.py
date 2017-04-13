@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgAPR.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -48,7 +48,6 @@ class Ui_wdgAPR(object):
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.tab_5)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.table = myQTableWidget(self.tab_5)
         self.table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -84,7 +83,6 @@ class Ui_wdgAPR(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -124,7 +122,6 @@ class Ui_wdgAPR(object):
         self.tabChart = QtWidgets.QWidget()
         self.tabChart.setObjectName("tabChart")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tabChart)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.tabGraph = QtWidgets.QVBoxLayout()
         self.tabGraph.setObjectName("tabGraph")

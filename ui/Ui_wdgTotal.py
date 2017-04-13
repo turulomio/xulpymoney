@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgTotal.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,7 +31,6 @@ class Ui_wdgTotal(object):
         self.tabDatos = QtWidgets.QWidget()
         self.tabDatos.setObjectName("tabDatos")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tabDatos)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -51,7 +50,6 @@ class Ui_wdgTotal(object):
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.tab_3)
-        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
@@ -139,7 +137,6 @@ class Ui_wdgTotal(object):
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.tab_4)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -224,7 +221,6 @@ class Ui_wdgTotal(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.tab_2)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -291,7 +287,6 @@ class Ui_wdgTotal(object):
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.tab_5)
-        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -356,7 +351,6 @@ class Ui_wdgTotal(object):
         self.tabGraphic = QtWidgets.QWidget()
         self.tabGraphic.setObjectName("tabGraphic")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.tabGraphic)
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabGraphTotal = QtWidgets.QVBoxLayout()
         self.tabGraphTotal.setObjectName("tabGraphTotal")

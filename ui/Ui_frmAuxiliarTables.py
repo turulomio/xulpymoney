@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmAuxiliarTables.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -33,7 +33,6 @@ class Ui_frmAuxiliarTables(object):
         self.tabConceptos = QtWidgets.QWidget()
         self.tabConceptos.setObjectName("tabConceptos")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tabConceptos)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")

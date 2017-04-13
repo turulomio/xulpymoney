@@ -7,6 +7,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgMergeCodes import wdgMergeCodes
 from canvaschart import canvasChartHistoricalBuy
 from frmEstimationsAdd import frmEstimationsAdd
+import logging
 
 class wdgProducts(QWidget, Ui_wdgProducts):
     def __init__(self, mem,  sql,  parent=None):
@@ -24,6 +25,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     
     def build_array(self, sql):
         self.sql=sql
+        logging.debug(sql)
         self.products.load_from_db(self.sql, True)
         self.products.order_by_upper_name()
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
@@ -148,13 +150,18 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if self.chkStockExchange.checkState()==Qt.Checked:
             bolsa=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
             stockmarketfilter=" and stockmarkets_id={0} ".format(bolsa.id)
+            
+        if self.chkObsolete.checkState()==Qt.Checked:
+            obsoletefilter=""
+        else:
+            obsoletefilter=" and obsolete=False "
 
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
                 "%' or upper(name) like '%"+(self.txt.text().upper())+
                 "%' or upper(isin) like '%"+(self.txt.text().upper())+
                 "%' or upper(ticker) like '%"+(self.txt.text().upper())+
                 "%' or upper(comment) like '%"+(self.txt.text().upper())+
-                "%') "+ stockmarketfilter)
+                "%') "+ stockmarketfilter +obsoletefilter)
         self.products.myqtablewidget(self.tblInvestments)          
 
 

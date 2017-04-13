@@ -12,7 +12,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QLabel" name="lbl">
        <property name="font">
@@ -41,7 +41,7 @@
        <property name="title">
         <string>Select your search</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
@@ -68,6 +68,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QCheckBox" name="chkObsolete">
+              <property name="text">
+               <string>Show obsolete products</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
                <widget class="QCheckBox" name="chkStockExchange">
@@ -76,16 +83,6 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_2">
-                <property name="enabled">
-                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Filter by stock exchange</string>
@@ -112,6 +109,16 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -399,22 +406,6 @@
   <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>chkStockExchange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>32</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>306</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>chkStockExchange</sender>
    <signal>toggled(bool)</signal>
