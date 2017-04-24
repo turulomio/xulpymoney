@@ -180,7 +180,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 self.wdg2CGross.setTextA(importe)
                 self.wdg2CNet.setTextA(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
             if id_tiposoperaciones==8:#Traspaso
-                importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimaAl(), 2))
+                importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
                 self.wdg2CGross.setTextA(importe)
                 self.wdg2CNet.setTextA(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
         except:
