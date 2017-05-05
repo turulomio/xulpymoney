@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,6 +27,15 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
+
+--
+-- Name: plpython3u; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
+
+CREATE OR REPLACE PROCEDURAL LANGUAGE plpython3u;
+
+
+ALTER PROCEDURAL LANGUAGE plpython3u OWNER TO postgres;
 
 --
 -- Name: plpythonu; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
@@ -1833,6 +1842,7 @@ INSERT INTO products VALUES ('AMR Corp.', NULL, 'USD', 1, NULL, 80433, NULL, NUL
 INSERT INTO products VALUES ('Amrep Corp.', NULL, 'USD', 1, NULL, 78899, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AXR||us||False', false);
 INSERT INTO products VALUES ('AMSTERDAM COMMOD.', 'NL0000313286', 'EUR', 1, '|EURONEXT|', 76423, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#NL0000313286||nl||False', false);
 INSERT INTO products VALUES ('AMT HOLDING', 'NL0000886968', 'EUR', 1, '|EURONEXT|', 75403, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#NL0000886968||nl||False', false);
+INSERT INTO products VALUES ('Amundi Cash Corporate IC', 'FR0010251660', 'EUR', 2, '|f_cat_money|', 81717, '', NULL, NULL, NULL, 0, 'c', 0, 3, 'F0GBR06QIE', NULL, '{8}', '', false);
 INSERT INTO products VALUES ('AMUNDI CORTO PLAZO, CLASE I', 'ES0126542036', 'EUR', 2, '|f_es_BMF|', 78654, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04Q4H', '{}', '{8}', 'ES0126542036||es||False', false);
 INSERT INTO products VALUES ('AMUNDI MULTIESTRATEGIA ALT.', 'ES0118556002', 'EUR', 2, '|f_es_BMF|', 74863, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0118556002||None||False', true);
 INSERT INTO products VALUES ('Anadarko Petroleum Corp.', '', 'USD', 1, '|SP500|', 76738, '', '', '', '', 100, 'c', 0, 2, 'APC', '{1}', '{3}', 'NYSE#APC||us||False', false);
@@ -2008,6 +2018,7 @@ INSERT INTO products VALUES ('AVIVA EUROBOLSA 2', 'ES0112351038', 'EUR', 2, '|f_
 INSERT INTO products VALUES ('AVIVA EUROBOLSA', 'ES0170141032', 'EUR', 2, '|f_es_BMF|', 76888, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04JYK', '{}', '{8}', 'ES0170141032||es||False', false);
 INSERT INTO products VALUES ('AVIVA FONVALOR EURO  CLASE A', 'ES0170136008', 'EUR', 2, '|f_es_BMF|', 76746, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F00000H0P5', '{}', '{8}', 'ES0170136008||es||False', false);
 INSERT INTO products VALUES ('AVIVA GESTION GLOBAL', 'ES0170136032', 'EUR', 2, '|f_es_BMF|', 76787, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04JYG', '{}', '{8}', 'ES0170136032||es||False', false);
+INSERT INTO products VALUES ('Aviva Investors Sterling Liquidity Fund 1 GBP Inc', 'IE0031619269', 'GBP', 2, '|f_cat_money|', 81716, '', NULL, NULL, NULL, 0, 'c', 0, 4, 'F0GBR06KUK', NULL, '{8}', '', false);
 INSERT INTO products VALUES ('Aviva PLC', NULL, 'USD', 1, NULL, 78507, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AV||us||False', false);
 INSERT INTO products VALUES ('AVIVA RENTA FIJA  CLASE A', 'ES0170138004', 'EUR', 2, '|f_es_BMF|', 76793, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F00000H0P6', '{}', '{8}', 'ES0170138004||es||False', false);
 INSERT INTO products VALUES ('AVIVA RENTA FIJA', 'ES0170138038', 'EUR', 2, '|f_es_BMF|', 76789, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04JYI', '{}', '{8}', 'ES0170138038||es||False', false);
@@ -2294,7 +2305,7 @@ INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 14', 'ES0184844035', 'EUR', 2
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 16', 'ES0155814033', 'EUR', 2, '|f_es_BMF|', 76362, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0155814033||es||False', true);
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 17', 'ES0184846030', 'EUR', 2, '|f_es_BMF|', 76415, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0184846030||es||False', false);
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 19', 'ES0133756033', 'EUR', 2, '|f_es_BMF|', 76143, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0133756033||es||False', true);
-INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 1', 'ES0133551038', 'EUR', 2, '|f_es_BMF|', 76250, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133551038||es||False', false);
+INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 1', 'ES0133551038', 'EUR', 2, '|f_es_BMF|', 76250, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133551038||es||False', true);
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 2012', 'ES0125624009', 'EUR', 2, '|f_es_BMF|', 76154, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0125624009||es||False', false);
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 2013', 'ES0138971033', 'EUR', 2, '|f_es_BMF|', 76247, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0138971033||es||False', true);
 INSERT INTO products VALUES ('BARCLAYS GARANTIZADO 8', 'ES0158322034', 'EUR', 2, '|f_es_BMF|', 76248, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158322034||es||False', false);
@@ -3394,7 +3405,7 @@ INSERT INTO products VALUES ('Carmignac Patrimoine (E)', 'FR0010306142', 'EUR', 
 INSERT INTO products VALUES ('Carmignac Profil Reactif 100', 'FR0010149211', 'EUR', 2, '|f_fr_CARMIGNAC|', 78066, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'F0GBR04IC2', '{}', '{8}', 'FR0010149211||fr||False', false);
 INSERT INTO products VALUES ('Carmignac Profil Réactif 50', 'FR0010149203', 'EUR', 2, '|f_fr_CARMIGNAC|', 78788, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'F0GBR04IC6', '{}', '{8}', 'FR0010149203||fr||False', false);
 INSERT INTO products VALUES ('Carmignac Profil Réactif 75', 'FR0010148999', 'EUR', 2, '|f_fr_CARMIGNAC|', 78036, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'F0GBR04F92', '{}', '{8}', 'FR0010148999||fr||False', false);
-INSERT INTO products VALUES ('Carmignac Sécurité', 'FR0010149120', 'EUR', 2, '|f_fr_CARMIGNAC|', 81479, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'F0GBR04F94', '{}', '{8}', 'FR0010149120||fr||False', false);
+INSERT INTO products VALUES ('Carmignac Sécurité', 'FR0010149120', 'EUR', 2, '|f_fr_CARMIGNAC|', 81479, NULL, NULL, NULL, NULL, 0, 'c', 0, 3, 'F0GBR04F94', '{}', '{8}', 'FR0010149120||fr||False', false);
 INSERT INTO products VALUES ('Carnival Corp.', '', 'USD', 1, '|SP500|', 79171, '', '', '', '', 100, 'c', 0, 2, 'CCL', '{1}', '{3}', 'NYSE#CCL||us||False', false);
 INSERT INTO products VALUES ('Carpenter Technology Corp.', NULL, 'USD', 1, NULL, 77875, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#CRS||us||False', false);
 INSERT INTO products VALUES ('CARPINIENNE PART.', 'FR0000064156', 'EUR', 1, '|EURONEXT|', 77234, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000064156||fr||False', false);
@@ -3859,6 +3870,7 @@ INSERT INTO products VALUES ('Deutsche Beteiligungs AG', 'DE0005508105', 'EUR', 
 INSERT INTO products VALUES ('Deutsche Börse AG', 'DE0005810055', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|', 79520, '', '', '', '', 100, 'c', 0, 5, 'DB1.DE', '{1}', '{3}', 'DEUTSCHEBOERSE#DE0005810055||de||False', false);
 INSERT INTO products VALUES ('Deutsche Börse tendered shares', 'DE000A1KRND6', 'EUR', 1, '|DEUTSCHEBOERSE|', 79572, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1KRND6||de||False', false);
 INSERT INTO products VALUES ('Deutsche EuroShop AG', 'DE0007480204', 'EUR', 1, '|DEUTSCHEBOERSE|', 79573, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0007480204||de||False', false);
+INSERT INTO products VALUES ('Deutsche Floating Rate Notes LC', 'LU0034353002 ', 'EUR', 2, '|f_cat_money|', 81715, '', NULL, NULL, NULL, 0, 'c', 0, 5, 'F0GBR04NQN', NULL, '{8}', '', false);
 INSERT INTO products VALUES ('Deutsche Lufthansa AG', 'DE0008232125', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|', 79574, '', '', '', '', 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0008232125||de||False', false);
 INSERT INTO products VALUES ('Deutsche Post AG', 'DE0005552004', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|EUROSTOXX|', 79588, '', '', '', '', 100, 'c', 0, 5, 'DPW.DE', '{1}', '{3}', 'DEUTSCHEBOERSE#DE0005552004||de||False', false);
 INSERT INTO products VALUES ('Deutsche Postbank AG', 'DE0008001009', 'u', 1, '|DAX|DEUTSCHEBOERSE|', 75762, '', '', '', '', 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0008001009||de||False', false);
@@ -4178,7 +4190,7 @@ INSERT INTO products VALUES ('ESPINOSA PARTNERS INVERSIONES', 'ES0133091035', 'E
 INSERT INTO products VALUES ('ESPIRITO SANTO BOLSA EUROPA SELECCION', 'ES0158761033', 'EUR', 2, '|f_es_BMF|', 80090, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158761033||es||False', false);
 INSERT INTO products VALUES ('ESPIRITO SANTO BOLSA SELECCION', 'ES0138517034', 'EUR', 2, '|f_es_BMF|', 80107, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04J94', '{}', '{8}', 'ES0138517034||es||False', false);
 INSERT INTO products VALUES ('ESPIRITO SANTO BOLSA USA', 'ES0133338030', 'EUR', 2, '|f_es_BMF|', 80108, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04K40', '{}', '{8}', 'ES0133338030||es||False', false);
-INSERT INTO products VALUES ('ESPIRITO SANTO CAPITAL PLUS', 'ES0125240038', 'EUR', 2, '|f_es_BMF|', 77408, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04PRL', '{}', '{8}', 'ES0125240038||es||False', false);
+INSERT INTO products VALUES ('ESPIRITO SANTO CAPITAL PLUS', 'ES0125240038', 'EUR', 2, '|f_es_BMF|', 77408, NULL, NULL, NULL, NULL, 0, 'c', 0, 1, 'F0GBR04PRL', '{}', '{8}', 'ES0125240038||es||False', false);
 INSERT INTO products VALUES ('ESPIRITO SANTO CARTERA ACTIVA, FI', 'ES0137942001', 'EUR', 2, '|f_es_BMF|', 79049, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F000000E7J', '{}', '{8}', 'ES0137942001||es||False', false);
 INSERT INTO products VALUES ('ESPIRITO SANTO DOBLE INDICE', 'ES0133092033', 'EUR', 2, '|f_es_BMF|', 80109, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133092033||es||False', false);
 INSERT INTO products VALUES ('ESPIRITO SANTO ESPAÑA 30', 'ES0158193039', 'EUR', 2, '|f_es_BMF|', 76371, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0158193039||es||False', true);
@@ -4259,9 +4271,9 @@ INSERT INTO products VALUES ('EUROVALOR BONOS ALTO RENDIMIENTO', 'ES0133478034',
 INSERT INTO products VALUES ('EUROVALOR BONOS CORPORATIVOS', 'ES0133485005', 'EUR', 2, '|f_es_BMF|', 80197, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0000044OL', '{}', '{8}', 'ES0133485005||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR BONOS EURO LARGO PLAZO', 'ES0133479032', 'EUR', 2, '|f_es_BMF|', 80198, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR06HEG', '{}', '{8}', 'ES0133479032||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR CONSERVACION DINAMICO', 'ES0133614034', 'EUR', 2, '|f_es_BMF|', 80199, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04LHQ', '{}', '{8}', 'ES0133614034||es||False', false);
-INSERT INTO products VALUES ('EUROVALOR CONSERVADOR DIN.PLUS', 'ES0133743031', 'EUR', 2, '|f_es_BMF|', 80201, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133743031||es||False', false);
+INSERT INTO products VALUES ('EUROVALOR CONSERVADOR DIN.PLUS', 'ES0133743031', 'EUR', 2, '|f_es_BMF|', 80201, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133743031||es||False', true);
 INSERT INTO products VALUES ('EUROVALOR CONSOLIDADO 5', 'ES0133742033', 'EUR', 2, '|f_es_BMF|', 75320, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04Q7T', '{}', '{8}', 'ES0133742033||es||False', false);
-INSERT INTO products VALUES ('EUROVALOR DEU.PUBLICA EUROPA AAA', 'ES0133528002', 'EUR', 2, '|f_es_BMF|', 79076, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133528002||es||False', false);
+INSERT INTO products VALUES ('EUROVALOR DEU.PUBLICA EUROPA AAA', 'ES0133528002', 'EUR', 2, '|f_es_BMF|', 79076, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133528002||es||False', true);
 INSERT INTO products VALUES ('EUROVALOR DIVIDENDO EUROPA', 'ES0127025031', 'EUR', 2, '|f_es_BMF|', 79115, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR06015', '{}', '{8}', 'ES0127025031||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR EMPRESAS VOLUMEN', 'ES0169533033', 'EUR', 2, '|f_es_BMF|', 79116, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04OCH', '{}', '{8}', 'ES0169533033||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR ESTADOS UNIDOS', 'ES0133525032', 'EUR', 2, '|f_es_BMF|', 79118, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04OPX', '{}', '{8}', 'ES0133525032||es||False', false);
@@ -4273,7 +4285,7 @@ INSERT INTO products VALUES ('EUROVALOR GARAN. GLOBAL', 'ES0133563033', 'EUR', 2
 INSERT INTO products VALUES ('EUROVALOR GARAN.MAS PROTECCION', 'ES0133502031', 'EUR', 2, '|f_es_BMF|', 79103, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133502031||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GARAN.RENTA FIJA', 'ES0133544009', 'EUR', 2, '|f_es_BMF|', 79106, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F000002T5C', '{}', '{8}', 'ES0133544009||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GARANT.EXTRASELECCION', 'ES0133662033', 'EUR', 2, '|f_es_BMF|', 79120, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04KX6', '{}', '{8}', 'ES0133662033||es||False', false);
-INSERT INTO products VALUES ('EUROVALOR GARANTIZADO CESTA SELECCION', 'ES0127027003', 'EUR', 2, '|f_es_BMF|', 75659, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0127027003||es||False', false);
+INSERT INTO products VALUES ('EUROVALOR GARANTIZADO CESTA SELECCION', 'ES0127027003', 'EUR', 2, '|f_es_BMF|', 75659, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0127027003||es||False', true);
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO CRECIMIENTO', 'ES0133527038', 'EUR', 2, '|f_es_BMF|', 79121, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133527038||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO DOLAR', 'ES0127024034', 'EUR', 2, '|f_es_BMF|', 79122, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0127024034||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO ELECCION USA', 'ES0133557035', 'EUR', 2, '|f_es_BMF|', 79092, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04O1M', '{}', '{8}', 'ES0133557035||es||False', false);
@@ -4283,7 +4295,7 @@ INSERT INTO products VALUES ('EUROVALOR GARANTIZADO EUROCONSOLIDACION', 'ES01702
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO MUNDIAL', 'ES0133543001', 'EUR', 2, '|f_es_BMF|', 75695, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133543001||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO ORO', 'ES0133580003', 'EUR', 2, '|f_es_BMF|', 75708, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0133580003||es||False', true);
 INSERT INTO products VALUES ('EUROVALOR GARANTIZADO ORO II', 'ES0133516007', 'EUR', 2, '|f_es_BMF|', 79123, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F000000KSB', '{}', '{8}', 'ES0133516007||es||False', false);
-INSERT INTO products VALUES ('EUROVALOR GARANT.REC.NATURALES', 'ES0133542037', 'EUR', 2, '|f_es_BMF|', 77462, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133542037||es||False', false);
+INSERT INTO products VALUES ('EUROVALOR GARANT.REC.NATURALES', 'ES0133542037', 'EUR', 2, '|f_es_BMF|', 77462, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0133542037||es||False', true);
 INSERT INTO products VALUES ('EUROVALOR GAR.PROYEC.EUROPA', 'ES0133562035', 'EUR', 2, '|f_es_BMF|', 75656, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR06UAE', '{}', '{8}', 'ES0133562035||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR GLOBAL CONVERTIBLES', 'ES0133579005', 'EUR', 2, '|f_es_BMF|', 79124, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F000000R6V', '{}', '{8}', 'ES0133579005||es||False', false);
 INSERT INTO products VALUES ('EUROVALOR IBEROAMERICA', 'ES0133576035', 'EUR', 2, '|f_es_BMF|', 75321, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04KXA', '{}', '{8}', 'ES0133576035||es||False', false);
@@ -4584,7 +4596,7 @@ INSERT INTO products VALUES ('FONDESPAÑA CONSOLIDA 3', 'ES0122066030', 'EUR', 2
 INSERT INTO products VALUES ('FONDESPAÑA CONSOLIDA 4', 'ES0182036030', 'EUR', 2, '|f_es_BMF|', 77491, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0182036030||es||False', true);
 INSERT INTO products VALUES ('FONDESPAÑA CRECIMIENTO', 'ES0138538030', 'EUR', 2, '|f_es_BMF|', 74980, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0138538030||None||False', true);
 INSERT INTO products VALUES ('FONDESPAÑA DINAMICO', 'ES0138666039', 'EUR', 2, '|f_es_BMF|', 80260, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04Q56', '{}', '{8}', 'ES0138666039||es||False', false);
-INSERT INTO products VALUES ('FONDESPAÑA DOLAR GARANTIZADO', 'ES0137813004', 'EUR', 2, '|f_es_BMF|', 80262, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0137813004||es||False', false);
+INSERT INTO products VALUES ('FONDESPAÑA DOLAR GARANTIZADO', 'ES0137813004', 'EUR', 2, '|f_es_BMF|', 80262, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0137813004||es||False', true);
 INSERT INTO products VALUES ('FONDESPAñA EMERGENTES', 'ES0138443033', 'EUR', 2, '|f_es_BMF|', 79245, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04JTS', '{}', '{8}', 'ES0138443033||es||False', false);
 INSERT INTO products VALUES ('FONDESPAÑA EMPRENDEDOR', 'ES0138337037', 'EUR', 2, '|f_es_BMF|', 80266, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04M4U', '{}', '{8}', 'ES0138337037||es||False', false);
 INSERT INTO products VALUES ('FONDESPAÑA EMPRENDEDOR PLUS', 'ES0138657038', 'EUR', 2, '|f_es_BMF|', 80289, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0138657038||es||False', false);
@@ -5507,12 +5519,12 @@ INSERT INTO products VALUES ('INVERMANRESA 2', 'ES0173447030', 'EUR', 2, '|f_es_
 INSERT INTO products VALUES ('INVERMANRESA', 'ES0155827035', 'EUR', 2, '|f_es_BMF|', 81123, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04J3S', '{}', '{8}', 'ES0155827035||es||False', false);
 INSERT INTO products VALUES ('INVERSABADELL 10', 'ES0184984039', 'EUR', 2, '|f_es_BMF|', 81125, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0184984039||es||False', false);
 INSERT INTO products VALUES ('INVERSABADELL 10 PREMIER', 'ES0155008032', 'EUR', 2, '|f_es_BMF|', 81126, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0000001TT', '{}', '{8}', 'ES0155008032||es||False', false);
-INSERT INTO products VALUES ('INVERSABADELL 25', 'ES0174417032', 'EUR', 2, '|f_es_BMF|', 81127, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0174417032||es||False', false);
+INSERT INTO products VALUES ('INVERSABADELL 25', 'ES0174417032', 'EUR', 2, '|f_es_BMF|', 81127, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0174417032||es||False', true);
 INSERT INTO products VALUES ('INVERSABADELL 25 PREMIER', 'ES0177124031', 'EUR', 2, '|f_es_BMF|', 81128, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0000001TU', '{}', '{8}', 'ES0177124031||es||False', false);
-INSERT INTO products VALUES ('INVERSABADELL 50', 'ES0155571039', 'EUR', 2, '|f_es_BMF|', 81129, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0155571039||es||False', false);
-INSERT INTO products VALUES ('INVERSABADELL 50 PREMIE', 'ES0144213032', 'EUR', 2, '|f_es_BMF|', 80245, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0144213032||es||False', false);
-INSERT INTO products VALUES ('INVERSABADELL 70', 'ES0138957032', 'EUR', 2, '|f_es_BMF|', 80246, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0138957032||es||False', false);
-INSERT INTO products VALUES ('INVERSABADELL 70 PREMIER', 'ES0155043039', 'EUR', 2, '|f_es_BMF|', 80392, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0155043039||es||False', false);
+INSERT INTO products VALUES ('INVERSABADELL 50', 'ES0155571039', 'EUR', 2, '|f_es_BMF|', 81129, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0155571039||es||False', true);
+INSERT INTO products VALUES ('INVERSABADELL 50 PREMIE', 'ES0144213032', 'EUR', 2, '|f_es_BMF|', 80245, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0144213032||es||False', true);
+INSERT INTO products VALUES ('INVERSABADELL 70', 'ES0138957032', 'EUR', 2, '|f_es_BMF|', 80246, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0138957032||es||False', true);
+INSERT INTO products VALUES ('INVERSABADELL 70 PREMIER', 'ES0155043039', 'EUR', 2, '|f_es_BMF|', 80392, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0155043039||es||False', true);
 INSERT INTO products VALUES ('INVERSIO ACTIVA', 'ES0152176006', 'EUR', 2, '|f_es_BMF|', 81130, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0152176006||es||False', false);
 INSERT INTO products VALUES ('INVERTRES FONDO 1', 'ES0156038038', 'EUR', 2, '|f_es_BMF|', 80393, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04JLH', '{}', '{8}', 'ES0156038038||es||False', false);
 INSERT INTO products VALUES ('INVESCO Ltd.', NULL, 'USD', 1, NULL, 79269, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#IVZ||us||False', false);
@@ -5786,7 +5798,7 @@ INSERT INTO products VALUES ('Lloyds Banking Group PLC', NULL, 'USD', 1, NULL, 7
 INSERT INTO products VALUES ('LLOYDS BOLSA', 'ES0158865032', 'EUR', 2, '|f_es_BMF|', 81208, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158865032||es||False', false);
 INSERT INTO products VALUES ('LLOYDS FONDO 1', 'ES0158862039', 'EUR', 2, '|f_es_BMF|', 81215, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04J8I', '{}', '{8}', 'ES0158862039||es||False', false);
 INSERT INTO products VALUES ('LLOYDS PREMIUM C.P.', 'ES0158866030', 'EUR', 2, '|f_es_BMF|', 81216, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158866030||es||False', false);
-INSERT INTO products VALUES ('LLOYDS RENTA FIJA C.P.', 'ES0158864035', 'EUR', 2, '|f_es_BMF|', 81221, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158864035||es||False', false);
+INSERT INTO products VALUES ('LLOYDS RENTA FIJA C.P.', 'ES0158864035', 'EUR', 2, '|f_es_BMF|', 81221, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{}', '{8}', 'ES0158864035||es||False', true);
 INSERT INTO products VALUES ('LOCINDUS', 'FR0000121352', 'EUR', 1, '|EURONEXT|', 80607, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000121352||fr||False', false);
 INSERT INTO products VALUES ('Lockheed Martin Corp.', NULL, 'USD', 1, NULL, 76876, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#LMT||us||False', false);
 INSERT INTO products VALUES ('Loewe AG', 'DE0006494107', 'EUR', 1, '|DEUTSCHEBOERSE|', 81290, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006494107||de||False', false);
@@ -8241,14 +8253,14 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201701140716');
+INSERT INTO globals VALUES (1, 'Version', '201705052014');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2500');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '7500');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '500');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
