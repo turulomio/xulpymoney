@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201703310608
+        self.lastcodeupdate=201705052014
 
    
     def get_database_version(self):
@@ -1906,6 +1906,22 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201703310608)         
+                        
+        if self.dbversion<201705052007:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set percentage=%s where id=%s;", (0, 77408))
+            cur.execute("update products set leveraged=%s where id=%s;", (0, 81715))
+            cur.execute("update products set leveraged=%s where id=%s;", (0, 81716))
+            cur.execute("update products set leveraged=%s where id=%s;", (0, 81717))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201705052007)         
+        if self.dbversion<201705052014:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set percentage=%s where id=%s;", (0, 81479))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201705052014)         
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
