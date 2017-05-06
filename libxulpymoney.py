@@ -602,6 +602,31 @@ class SetInvestments(SetCommons):
                     return o
         return None
             
+            
+    def revaluation_monthly(self, type_id,  year, month):
+        """
+            Used to get investments type_id revauation montyly
+            if type==2 I get current investment funds revaluation_annual
+            I must use current investment, because inactive has been contabilized in gains
+        """
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.setinvestments_filter_by_type(type_id).arr:
+            for o in inv.op_actual.arr:
+                r=r+o.revaluation_monthly(year, month, type=3)
+        return r
+                    
+    def revaluation_annual(self, type_id, year):
+        """
+            Used to get investments type_id revauation annual
+            if type==2 I get current investment funds revaluation_annual
+            I must use current investment, because inactive has been contabilized in gains
+        """
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.setinvestments_filter_by_type(type_id).arr:
+            for o in inv.op_actual.arr:
+                r=r+o.revaluation_annual(year, type=3)
+        return r
+            
     def gains_last_day(self):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
@@ -742,6 +767,18 @@ class SetInvestments(SetCommons):
         set.sort()
         return set
 
+    def setinvestments_filter_by_type(self,  type_id):
+        """
+            Returns a new setinvestments filtering original by type_id
+            For example to get all funds in the original setinvesmet
+        """
+        r=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark )
+        for inv in self.arr:
+            if inv.product.type.id==type_id:
+                r.append(inv)
+        return r
+        
+        
 
     def setInvestments_merging_investments_with_same_product_merging_operations(self):
         """
@@ -3028,6 +3065,49 @@ class InvestmentOperationCurrent:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            
+            
+    def revaluation_monthly(self, year, month, type=1):
+        """
+            Returns a money object with monthly reevaluation
+        """
+        dt_last= month_end(year, month, self.mem.localzone)
+        dt_first=month_start(year, month, self.mem.localzone)
+        if self.datetime>dt_first and self.datetime<dt_last:
+            dt_first=self.datetime
+        elif self.datetime>dt_last:
+            return Money(self.mem, 0, self.investment.product.currency)
+        first=Quote(self.mem).init__from_query( self.investment.product, dt_first).quote
+        last=Quote(self.mem).init__from_query( self.investment.product, dt_last).quote
+        money=Money(self.mem, (last-first)*self.acciones, self.investment.product.currency)
+        print("{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.acciones, dt_last, dt_first, last, first, last-first,  money))
+        if type==1:
+            return money
+        elif type==2:
+            return money.convert(self.investment.account.currency, dt_last)
+        elif type==3:
+            return money.convert(self.investment.account.currency, dt_last).local(dt_last)
+            
+            
+    def revaluation_annual(self, year, type=1):
+        """
+            Returns a money object with monthly reevaluation
+        """
+        dt_last= year_end(year, self.mem.localzone)
+        dt_first=year_start(year, self.mem.localzone)
+        if self.datetime>dt_first:
+            dt_first=self.datetime
+        first=Quote(self.mem).init__from_query( self.investment.product, dt_first).quote
+        last=Quote(self.mem).init__from_query( self.investment.product, dt_last).quote
+        money=Money(self.mem, (last-first)*self.acciones, self.investment.product.currency)
+        print("ANNUAL:{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.acciones, dt_last, dt_first, last, first, last-first,  money))
+        if type==1:
+            return money
+        elif type==2:
+            return money.convert(self.investment.account.currency, dt_last)
+        elif type==3:
+            return money.convert(self.investment.account.currency, dt_last).local(dt_last)
+            
             
     def gross(self, type=1):
         if type==1:
@@ -8494,6 +8574,42 @@ def day_end_from_date(date, zone):
     
 def day_start_from_date(date, zone):
     return dt(date, datetime.time(0, 0, 0), zone)
+    
+def month_start(year, month, zone):
+    """datetime primero de un mes
+    """
+    return day_start_from_date(datetime.date(year, month, 1), zone)
+    
+        
+def month_end(year, month, zone):
+    """datetime último de un mes
+    """
+    return day_end_from_date(month_last_date(year, month), zone)
+    
+def month_last_date(year, month):
+    """
+        Returns a date with the last day of a month
+    """
+    if month == 12:
+        return datetime.date(year, month, 31)
+    return datetime.date(year, month+1, 1) - datetime.timedelta(days=1)
+    
+    
+
+def year_start(year, zone):
+    """
+        returns an aware datetime with the start of year
+    """
+    return day_start_from_date(datetime.date(year, 1, 1), zone)
+    
+
+def year_end(year, zone):
+    """
+        returns an aware datetime with the last of year
+    """
+    return day_end_from_date(datetime.date(year, 12, 31), zone)
+    
+
     
 def days_to_year_month(days):
     years=days//365

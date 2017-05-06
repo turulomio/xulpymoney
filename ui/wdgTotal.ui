@@ -88,7 +88,7 @@
               <enum>QTabWidget::West</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="tab_3">
               <attribute name="icon">
@@ -289,7 +289,7 @@
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_3">
+                <layout class="QVBoxLayout" name="verticalLayout_8">
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_5">
                    <item>
@@ -349,125 +349,286 @@
                   </layout>
                  </item>
                  <item>
-                  <widget class="myQTableWidget" name="tblTargets">
-                   <property name="contextMenuPolicy">
-                    <enum>Qt::CustomContextMenu</enum>
+                  <widget class="QTabWidget" name="tabPlus">
+                   <property name="currentIndex">
+                    <number>1</number>
                    </property>
-                   <property name="editTriggers">
-                    <set>QAbstractItemView::NoEditTriggers</set>
-                   </property>
-                   <property name="selectionMode">
-                    <enum>QAbstractItemView::SingleSelection</enum>
-                   </property>
-                   <property name="selectionBehavior">
-                    <enum>QAbstractItemView::SelectItems</enum>
-                   </property>
-                   <property name="sortingEnabled">
-                    <bool>false</bool>
-                   </property>
-                   <row>
-                    <property name="text">
-                     <string>Monthly target</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Total Gains</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Accumulated target</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Accumulated total gains</string>
-                    </property>
-                   </row>
-                   <column>
-                    <property name="text">
-                     <string>January</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>February</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>March</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>April</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>May</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>June</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>July</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>August</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>September</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>October</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>November</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>December</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>Total</string>
-                    </property>
-                   </column>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="lblTargets">
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
+                   <widget class="QWidget" name="tab_6">
+                    <attribute name="title">
+                     <string>Consolidated Gains</string>
+                    </attribute>
+                    <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_3">
+                       <item>
+                        <widget class="myQTableWidget" name="tblTargets">
+                         <property name="contextMenuPolicy">
+                          <enum>Qt::CustomContextMenu</enum>
+                         </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="selectionMode">
+                          <enum>QAbstractItemView::SingleSelection</enum>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectItems</enum>
+                         </property>
+                         <property name="sortingEnabled">
+                          <bool>false</bool>
+                         </property>
+                         <row>
+                          <property name="text">
+                           <string>Monthly target</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Total Gains</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Accumulated target</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Accumulated total gains</string>
+                          </property>
+                         </row>
+                         <column>
+                          <property name="text">
+                           <string>January</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>February</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>March</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>April</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>May</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>June</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>July</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>August</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>September</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>October</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>November</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>December</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Total</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="lblTargets">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                   <widget class="QWidget" name="tab_7">
+                    <attribute name="title">
+                     <string>Consolidated Gains + funds revaluation</string>
+                    </attribute>
+                    <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_9">
+                       <item>
+                        <widget class="myQTableWidget" name="tblTargetsPlus">
+                         <property name="contextMenuPolicy">
+                          <enum>Qt::CustomContextMenu</enum>
+                         </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="selectionMode">
+                          <enum>QAbstractItemView::SingleSelection</enum>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectItems</enum>
+                         </property>
+                         <property name="sortingEnabled">
+                          <bool>false</bool>
+                         </property>
+                         <row>
+                          <property name="text">
+                           <string>Monthly target</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Total Gains</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Funds Revaluation</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Total</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Accumulated target</string>
+                          </property>
+                         </row>
+                         <row>
+                          <property name="text">
+                           <string>Accumulated total gains</string>
+                          </property>
+                         </row>
+                         <column>
+                          <property name="text">
+                           <string>January</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>February</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>March</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>April</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>May</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>June</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>July</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>August</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>September</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>October</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>November</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>December</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Total</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="lblTargetsPlus">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
                   </widget>
                  </item>
                 </layout>
