@@ -21,6 +21,7 @@ class TotalMonth:
         self.no_loses_value=None
         self.dividends_value=None
         self.incomes_value=None
+        self.funds_revaluation_value=None
         self.gains_value=None
         self.total_accounts_value=None
         self.total_investments_value=None
@@ -54,6 +55,11 @@ class TotalMonth:
         if self.gains_value==None:
             self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments, self.year, self.month)
         return self.gains_value
+        
+    def funds_revaluation(self):
+        if self.funds_revaluation_value==None:
+            self.funds_revaluation_value=self.mem.data.investments_active().revaluation_monthly(2, self.year, self.month)#2 if type funds
+        return self.funds_revaluation_value
         
     def name(self):
         return "{}-{}".format(self.year, self.month)
@@ -124,6 +130,10 @@ class TotalYear:
         
     def i_d_g_e(self):
         return self.incomes()+self.dividends()+self.gains()+self.expenses()
+        
+    def funds_revaluation(self):
+        return self.mem.data.investments_active().revaluation_annual(2, self.year)#2 if type funds
+        
         
     def incomes(self):
         result=Money(self.mem, 0, self.mem.localcurrency)
@@ -236,6 +246,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.table.settings(self.mem, "wdgTotal")
         self.tblTargets.settings(self.mem, "wdgTotal")
+        self.tblTargetsPlus.settings(self.mem, "wdgTotal")
         self.tblInvestOrWork.settings(self.mem,  "wdgTotal")
         self.tblMakeEndsMeet.settings(self.mem, "wdgTotal")
         
@@ -249,9 +260,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         self.tab.setCurrentIndex(0)
         self.tabData.setCurrentIndex(0)
+        self.tabPlus.setCurrentIndex(0)
 
         self.load_data()
         self.load_targets()
+        self.load_targets_with_funds_revaluation()
         self.load_invest_or_work()
         self.load_make_ends_meet()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
@@ -321,6 +334,37 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.lblTargets.setText(s)
         
         logging.info("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
+        
+    def load_targets_with_funds_revaluation(self):
+        self.tblTargetsPlus.clearContents()
+        self.tblTargetsPlus.applySettings()
+        inicio=datetime.datetime.now()     
+        sumd_g=Money(self.mem, 0, self.mem.localcurrency)
+        for i in range(1, 13): 
+            m=self.setData.find(self.setData.year, i)
+            sumd_g=sumd_g+m.d_g()+m.funds_revaluation()
+            self.tblTargetsPlus.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.tblTargetsPlus.setItem(1, i-1,m.d_g().qtablewidgetitem())
+            self.tblTargetsPlus.setItem(2, i-1, m.funds_revaluation().qtablewidgetitem())
+            self.tblTargetsPlus.setItem(3, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g().amount+m.funds_revaluation().amount))
+            
+            self.tblTargetsPlus.setItem(5, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
+            self.tblTargetsPlus.setItem(6, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g.amount, i))
+        self.tblTargetsPlus.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.tblTargetsPlus.setItem(1, 12, sumd_g.qtablewidgetitem())
+        self.tblTargetsPlus.setItem(2, 12, self.setData.funds_revaluation().qtablewidgetitem())
+        self.tblTargetsPlus.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g.amount))
+        self.tblTargetsPlus.setCurrentCell(2, datetime.date.today().month-1)   
+                
+        s=""
+        s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
+        s=s+self.tr("Total is the result of adding dividends to gain and funds revaluation")+"\n\n"
+        s=s+self.tr("The cumulative target row shows compliance of the target in the year.")+"\n\n"
+        s=s+self.tr("Green color shows that target has been reached.")
+        self.lblTargetsPlus.setText(s)
+        
+        logging.info("wdgTargets > load_data_targets_with_funds_revaluation: {0}".format(datetime.datetime.now()  -inicio))
+
     def load_invest_or_work(self):
         def qresult(dg_e):
             """Returns a qtablewidgetitem with work or invest
@@ -444,6 +488,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_wyData_mychanged(self):
         self.load_data()    
         self.load_targets()
+        self.load_targets_with_funds_revaluation()
         self.load_invest_or_work()
         self.load_make_ends_meet()
 
@@ -455,6 +500,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget.save()
         self.mem.con.commit()
         self.load_targets()
+        self.load_targets_with_funds_revaluation()
 
     def on_tab_currentChanged(self, index):
         if  index==1 and self.view==None: #If has not been plotted, plots it.

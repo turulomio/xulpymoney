@@ -62,6 +62,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 #        model=ReinvestModel(mem, [a, 2*a, 6*a, 18*a, 54*a], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
 #        model.print()
 
+
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)
