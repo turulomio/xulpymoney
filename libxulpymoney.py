@@ -7666,7 +7666,7 @@ class Split:
                 dividends=SetDividendsHomogeneus(self.mem, inv)
                 dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
                 for d in dividends.arr:
-                    if self.dtinitial.date()<=d.fecha and self.dtfinal.date()>=d.fecha:
+                    if self.dtinitial<=d.fecha and self.dtfinal>=d.fecha:
                         d.dpa=self.convertPrices(d.dpa)
                     d.save()
         
