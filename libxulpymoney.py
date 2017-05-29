@@ -5804,7 +5804,7 @@ class ProductComparation:
         last=self.set2.arr[idx].close
         r.append(last)
         for index in range(idx+1, self.set1.length()):
-            last=last*(1+ self.set1.percentage(index)/Decimal(100))
+            last=last*(1+ self.set1.arr[index-1].percentage(self.set1.arr[index]).value)
             r.append(last)
         return r 
         
@@ -5815,7 +5815,7 @@ class ProductComparation:
         last=self.set2.arr[idx].close
         r.append(last)
         for index in range(idx+1, self.set1.length()):
-            last=last*(1+ self.set1.percentage(index)/Decimal(100)/self.product1.leveraged.multiplier)
+            last=last*(1+ self.set1.arr[index-1].percentage(self.set1.arr[index]).value/self.product1.leveraged.multiplier)
             r.append(last)
         return r
             
