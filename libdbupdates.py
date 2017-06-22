@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201705052014
+        self.lastcodeupdate=201706221141
 
    
     def get_database_version(self):
@@ -1922,6 +1922,14 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201705052014)         
+            
+        if self.dbversion<201706221141:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81718, 'Renta 4 Renta Fija Corto PLazo FI', 'ES0176954008 ', 'EUR', 2, '|f_cat_money|', '', None, None, None, 0, 'c', 1, 1, 'F00000PUJZ', None,[8, ], "", False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201706221141)         
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -6957,6 +6957,7 @@ INSERT INTO products VALUES ('RENTA 4 MONETARIO', 'ES0128520006', 'EUR', 2, '|f_
 INSERT INTO products VALUES ('RENTA 4 OBLIGACIONES CONVERTIBLES 2011', '', 'EUR', 9, '', 75138, '', '', '', '', 80, 'c', 0, 1, NULL, '{}', '{}', 'RENTA 4 OBLIGACIONES CONVERTIBLES 2011||es||True', true);
 INSERT INTO products VALUES ('RENTA 4 PEGASUS', 'ES0173321003', 'EUR', 2, '|f_es_BMF|', 81436, '', '', '', '', 100, 'c', 0, 1, 'F000000F20', '{}', '{8}', 'ES0173321003||es||False', false);
 INSERT INTO products VALUES ('RENTA 4 PREMIER', NULL, 'EUR', 2, NULL, 75147, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'RENTA 4 PREMIER||es||True', true);
+INSERT INTO products VALUES ('Renta 4 Renta Fija Corto PLazo FI', 'ES0176954008 ', 'EUR', 2, '|f_cat_money|', 81718, '', NULL, NULL, NULL, 0, 'c', 1, 1, 'F00000PUJZ', NULL, '{8}', '', false);
 INSERT INTO products VALUES ('RENTA 4 TECNOLOGIA', 'ES0173364037', 'EUR', 2, '|f_es_BMF|', 81437, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04DKO', '{}', '{8}', 'ES0173364037||es||False', false);
 INSERT INTO products VALUES ('RENTABILIWEB (D)', 'BE0946620946', 'EUR', 1, '|EURONEXT|', 80461, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0946620946||be||False', false);
 INSERT INTO products VALUES ('RENTACASER', 'ES0173393036', 'EUR', 2, '|f_es_BMF|', 81450, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173393036||es||False', true);
@@ -8253,9 +8254,9 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201705052014');
+INSERT INTO globals VALUES (1, 'Version', '201706221141');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
