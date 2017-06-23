@@ -8636,6 +8636,14 @@ def dt(date, hour, zone):
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a
+def dt_with_pytz(date, hour, zonename):
+    """Función que devuleve un datetime con zone info.
+    Zone is an object."""
+    z=pytz.timezone(zonename)
+    a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
+    a=z.localize(a)
+    logging.debug("{} {} {} => {}".format(date, hour, zonename, a))
+    return a
     
 def str2bool(s):
     """Converts strings True or False to boolean"""

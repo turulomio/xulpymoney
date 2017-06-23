@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import urllib.request
@@ -10,7 +11,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProce
 from PyQt5.QtGui import QIcon
 from Ui_wdgSource import Ui_wdgSource
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Quote, SetProducts, SetQuotes, ampm_to_24, qleft, b2s, dt, qmessagebox
+from libxulpymoney import Quote, SetProducts, SetQuotes, ampm_to_24, qleft, b2s, dt, dt_with_pytz, qmessagebox
 from decimal import Decimal
 from concurrent.futures import ThreadPoolExecutor,  as_completed
 
@@ -21,8 +22,8 @@ class SourceStatus:
     Finished=3 # Finished
 
 class Sources:
-    WorkerYahoo=1
-    WorkerYahooHistorical=2
+    WorkerGoogle=1
+    WorkerGoogleHistorical=2
     WorkerMercadoContinuo=3
     WorkerMorningstar=4
 
@@ -37,10 +38,10 @@ class SetSources(QObject):
 
     def append(self, Worker, wdgSource=None):
         """Add a source especifing class, sql and wdgSource el widget"""
-        if Worker==WorkerYahooHistorical:
-            s=WorkerYahooHistorical(self.mem, 0)
-        elif Worker==WorkerYahoo:
-            s=WorkerYahoo(self.mem)
+        if Worker==WorkerGoogleHistorical:
+            s=WorkerGoogleHistorical(self.mem, 0)
+        elif Worker==WorkerGoogle:
+            s=WorkerGoogle(self.mem)
         elif Worker==WorkerMercadoContinuo:
             s=WorkerMercadoContinuo(self.mem)
         elif Worker==WorkerMorningstar:
@@ -720,11 +721,257 @@ class WorkerSGWarrants(SourceParsePage):
     def steps(self):
         """Define  the number of steps of the source run"""
         return 4 #CORRECT
-class WorkerYahoo(SourceParsePage):
+#class WorkerYahoo(SourceParsePage):
+#    """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
+#    def __init__(self, mem):
+#        SourceParsePage.__init__(self, mem)
+#        self.setName(self.tr("Yahoo source"))
+#
+#    def sum_tickers(self, setproducts):
+#        s=""
+#        for p in setproducts.arr:
+#            if p.ticker==None:
+#                continue
+#            if p.ticker=="":
+#                continue
+#            s=s+p.ticker+"+"
+#        return s[:-1]
+#                
+#    def setSQL(self, useronly):
+#        self.userinvestmentsonly=useronly
+#        if self.userinvestmentsonly==True:
+#            self.sql="""
+#                select * 
+#                from 
+#                    products 
+#                where 
+#                    priority[1]=1 and 
+#                    obsolete=false and 
+#                    id in 
+#                        (
+#                            select distinct(products_id) from inversiones UNION 
+#                            select id from products where id={} UNION 
+#                            select id from products where type=6
+#                        )
+#                order by name
+#            """.format(self.mem.data.benchmark.id)#type=76 divisas
+#            
+#        else:
+#            self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
+#        self.setStatus(SourceStatus.Prepared)
+#
+#    def my_load_page(self, setproducts):
+#        "Overrides SourceParsePage"
+#        self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
+#        logging.debug(self.url)
+#
+#        web=self.load_page(self.url)
+#        if web==None:
+#            self.web=None
+#            return
+#        self.web=[]
+#        ##TRansform httpresopone to list to iterate several times
+#        for line in web.readlines():
+#            self.web.append(b2s(line))
+#        self.toWebLog(self.web)
+#        
+#    def my_parse_page(self):
+#        "Overrides SourceParsePage"
+#        for i in self.web:
+#            logging.debug(i)
+#            try:
+#                datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
+#                product=self.products.find_by_ticker(datos[0][1:-1])
+#
+#                if product==None:
+#                    self.log("{} Not found".format(datos[0][1:-1] ))
+#                    continue                
+#                
+#                quote=Decimal(datos[1])
+#                d=int(datos[2][1:-1].split("/")[1])
+#                M=int(datos[2][1:-1].split("/")[0])
+#                Y=int(datos[2][1:-1].split("/")[2])
+#                H=int(datos[3][1:-1].split(":")[0])
+#                m=int(datos[3][1:-1].split(":")[1][:-2])
+#                pm=datos[3][1:-1].split(":")[1][2:]
+#                
+#                #Conversion
+#                H=ampm_to_24(H, pm)
+#                dat=datetime.date(Y, M, d)
+#                tim=datetime.time(H, m)
+#                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
+#                self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
+#            except:#
+#                self.log("Error parsing: {}".format(i[:-1]))
+#                continue                
+#                
+#    def run(self):
+#        """OVerrides ParsePage"""
+#        self.setStatus(SourceStatus.Running)
+#        self.agrupation=[]#used to iterate sets de products 
+#        self.totals=Source(self.mem)# Used to show totals of agrupation
+#        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+#        self.products.load_from_db(self.sql)    
+#        items=150
+#        
+#        logging.debug (self.products.length())
+#               
+#        for i in range(int(self.products.length()/items)+1) :#Creo tantos SetProducts como bloques de 150
+#            self.agrupation.append(SetProducts(self.mem))
+#            
+#        for i, p in enumerate(self.products.arr):
+#            self.agrupation[int(i/items)].append(p)#Añado en array que correspoonda el p
+#            
+#        for setproduct in self.agrupation:
+#            self.my_load_page(setproduct)
+#            self.next_step()
+#            self.my_parse_page()
+#            self.next_step()
+#            
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#            
+#        self.setStatus(SourceStatus.Finished)
+#
+#
+#
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return len(self.agrupation)*2 +1#CORRECT
+#
+#class WorkerYahooHistorical(Source):
+#    """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
+#    def __init__(self, mem, type,  sleep=0):
+#        Source.__init__(self, mem)
+#        self.setName(self.tr("Yahoo Historical source"))
+#        self.type=type
+#        self.sleep=sleep
+#        
+#    def on_execute_product(self,  product):
+#        """inico y fin son dos dates entre los que conseguir los datos."""
+#        quotes=[]
+#        ultima=product.fecha_ultima_actualizacion_historica()
+#        if ultima==datetime.date.today()-datetime.timedelta(days=1):
+#            return quotes
+#        inicio= ultima+datetime.timedelta(days=1)
+#        fin= datetime.date.today()
+#        url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
+#        mweb=self.load_page(url)
+#        if mweb==None:
+#            return quotes
+#        web=[]
+#        ##TRansform httpresopone to list to iterate several times
+#        for line in mweb.readlines():
+#            web.append(b2s(line)[:-1])
+#        web=web[1:]#Quita primera file de encabezado
+#        self.toWebLog(web)
+#        
+#        for i in web: 
+#            datos=i.split(",")
+#            fecha=datos[0].split("-")
+#            date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
+#            
+#            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
+#            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
+#            datetimefirst=datestart-datetime.timedelta(seconds=1)
+#            datetimelow=(datestart+(dateends-datestart)*1/3)
+#            datetimehigh=(datestart+(dateends-datestart)*2/3)
+#            datetimelast=dateends+datetime.timedelta(microseconds=4)
+#
+#            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
+#            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
+#            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
+#            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
+#        return quotes
+#
+#    def setSQL(self, useronly):
+#        self.userinvestmentsonly=useronly
+#        if self.userinvestmentsonly==True:
+#            self.sql="""
+#                select * 
+#                from 
+#                    products 
+#                where 
+#                    priorityhistorical[1]=3 and 
+#                    obsolete=false and 
+#                    id in 
+#                        (
+#                            select distinct(products_id) from inversiones UNION 
+#                            select id from products where id={} UNION 
+#                            select id from products where type=6
+#                        )
+#                order by name
+#            """.format(self.mem.data.benchmark.id)#type=76 divisas
+#        else:
+#            self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
+#        self.setStatus(SourceStatus.Loaded)
+#        
+#    def run(self):
+##        self.setStatus(SourceStatus.Running)
+##        self.products.load_from_db(self.sql)
+##        self.next_step()
+##        for i,  product in enumerate(self.products.arr): 
+##            if self.type==1:
+##                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+##                sys.stdout.write("\b"*1000+stri)
+##                sys.stdout.flush()
+##            if self.stopping==True:
+##                print ("Stopping")
+##                self.quotes.clear()
+##                break
+##            self.on_execute_product(product.id)
+##            self.next_step()
+##            time.sleep(self.sleep)#time step
+##        print("")
+##        self.quotes_save()
+##        self.mem.con.commit()
+##        self.next_step()
+##        
+##        self.setStatus(SourceStatus.Finished)
+##        
+#        
+#        #
+#        self.setStatus(SourceStatus.Running)
+#        self.products.load_from_db(self.sql)
+#        self.next_step()
+#        futures=[]
+#        with ThreadPoolExecutor(max_workers=10) as executor:
+#            for i,  product in enumerate(self.products.arr): 
+#
+#                futures.append(executor.submit(self.on_execute_product,  product))
+#            
+#            for i,  future in enumerate(as_completed(futures)):
+#                for quote in future.result():
+#                    self.quotes.append(quote)
+#                    if self.type==1:
+#                        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+#                        sys.stdout.write("\b"*1000+stri)
+#                        sys.stdout.flush()
+#                    if self.stopping==True:
+#                        logging.debug ("Stopping")
+#                        self.quotes.clear()
+#                        break
+#                self.next_step()
+#        print("")
+#
+#        
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#        
+#        self.setStatus(SourceStatus.Finished)
+#        
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return 2+self.products.length() #CORRECT
+#        
+        
+class WorkerGoogle(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
         SourceParsePage.__init__(self, mem)
-        self.setName(self.tr("Yahoo source"))
+        self.setName(self.tr("Google source"))
 
     def sum_tickers(self, setproducts):
         s=""
@@ -733,7 +980,7 @@ class WorkerYahoo(SourceParsePage):
                 continue
             if p.ticker=="":
                 continue
-            s=s+p.ticker+"+"
+            s=s+ticker2googleticker(p.ticker)+","
         return s[:-1]
                 
     def setSQL(self, useronly):
@@ -744,7 +991,7 @@ class WorkerYahoo(SourceParsePage):
                 from 
                     products 
                 where 
-                    priority[1]=1 and 
+                    priority[1] in(1,9) and 
                     obsolete=false and 
                     id in 
                         (
@@ -759,50 +1006,56 @@ class WorkerYahoo(SourceParsePage):
             self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
         self.setStatus(SourceStatus.Prepared)
 
+    @classmethod
+    def parse_stock(cls, data):
+        stock = {'c': data['c'],
+                 'c_fix': data['c_fix'],
+                 'cp': data['cp'],
+                 'cp_fix': data['cp_fix'],
+                 'l_fix': data['l_fix'],  #Quote
+                 'pcls_fix': data['pcls_fix'],
+                 'id': data['id'],
+                 'ccol': data['ccol'],
+                 'e': data['e'],
+                 't': data['t'],
+                 's': data['s'],
+                 'l_cur': data['l_cur'],
+                 'lt': data['lt'],  # u'Aug 22, 2:12PM GMT-3'
+                 'lt_dts': data['lt_dts'],  # u'2016-08-22T14:12:01Z'
+                 'ltt': data['ltt']  # u'2:12PM GMT-3'
+                 }
+        return stock
+        
     def my_load_page(self, setproducts):
         "Overrides SourceParsePage"
-        self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
+        #self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
+        
+        self.url = 'http://finance.google.com/finance/info?client=ig&q={}'.format(self.sum_tickers(setproducts))
         logging.debug(self.url)
 
         web=self.load_page(self.url)
         if web==None:
             self.web=None
             return
-        self.web=[]
-        ##TRansform httpresopone to list to iterate several times
-        for line in web.readlines():
-            self.web.append(b2s(line))
+        self.web=b2s(web.read()).replace("//", "")
+        all_data = json.loads(self.web)
+        for data in all_data:
+            stock = self.parse_stock(data)
+            googleticker="{}:{}".format(stock["e"], stock["t"])
+            if stock["lt_dts"]=="":
+                logging.debug("{} has no date".format(googleticker))
+                continue
+            product=self.products.find_by_ticker(googleticker2ticker(googleticker))
+            if product==None:
+                logging.error(stock)
+                logging.error("{} => {}".format(googleticker, googleticker2ticker(googleticker)))
+                continue
+            quote=Decimal(stock["l_fix"])
+            dat=datetime.datetime.strptime( stock["lt_dts"], "%Y-%m-%dT%H:%M:%SZ" )
+            self.quotes.append(Quote(self.mem).init__create(product,dt_with_pytz(dat.date(),dat.time(),googleticker2pytz(googleticker)), quote))
+            
+            
         self.toWebLog(self.web)
-        
-    def my_parse_page(self):
-        "Overrides SourceParsePage"
-        for i in self.web:
-            logging.debug(i)
-            try:
-                datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
-                product=self.products.find_by_ticker(datos[0][1:-1])
-
-                if product==None:
-                    self.log("{} Not found".format(datos[0][1:-1] ))
-                    continue                
-                
-                quote=Decimal(datos[1])
-                d=int(datos[2][1:-1].split("/")[1])
-                M=int(datos[2][1:-1].split("/")[0])
-                Y=int(datos[2][1:-1].split("/")[2])
-                H=int(datos[3][1:-1].split(":")[0])
-                m=int(datos[3][1:-1].split(":")[1][:-2])
-                pm=datos[3][1:-1].split(":")[1][2:]
-                
-                #Conversion
-                H=ampm_to_24(H, pm)
-                dat=datetime.date(Y, M, d)
-                tim=datetime.time(H, m)
-                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
-                self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
-            except:#
-                self.log("Error parsing: {}".format(i[:-1]))
-                continue                
                 
     def run(self):
         """OVerrides ParsePage"""
@@ -824,8 +1077,6 @@ class WorkerYahoo(SourceParsePage):
         for setproduct in self.agrupation:
             self.my_load_page(setproduct)
             self.next_step()
-            self.my_parse_page()
-            self.next_step()
             
         self.quotes_save()
         self.mem.con.commit()
@@ -837,13 +1088,13 @@ class WorkerYahoo(SourceParsePage):
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return len(self.agrupation)*2 +1#CORRECT
+        return len(self.agrupation) +1#CORRECT
 
-class WorkerYahooHistorical(Source):
+class WorkerGoogleHistorical(Source):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
     def __init__(self, mem, type,  sleep=0):
         Source.__init__(self, mem)
-        self.setName(self.tr("Yahoo Historical source"))
+        self.setName(self.tr("Google Historical source"))
         self.type=type
         self.sleep=sleep
         
@@ -855,7 +1106,8 @@ class WorkerYahooHistorical(Source):
             return quotes
         inicio= ultima+datetime.timedelta(days=1)
         fin= datetime.date.today()
-        url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
+        #https://www.google.com/finance/historical?cid=368894934436308&startdate=Jun+5%2C+2016&enddate=Jun+18%2C+2017&num=30&ei=op5MWbneEsSLUKDklIAF
+        url='http://www.google.com/finance/historical?q={}&output=csv'.format(product.ticker)#+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
         mweb=self.load_page(url)
         if mweb==None:
             return quotes
@@ -967,6 +1219,54 @@ class WorkerYahooHistorical(Source):
 
 
 ##################################
+
+def ticker2googleticker(ticker):
+    if  ticker[-3:]==".MC":
+        return "BME:{}".format(ticker[:-3])
+    if  ticker[-3:]==".DE":
+        return "FRA:{}".format(ticker[:-3])
+    if  ticker[-3:]==".PA":
+        return "EPA:{}".format(ticker[:-3])
+    if  ticker[-3:]==".MI":
+        return "BIT:{}".format(ticker[:-3])
+    if ticker=="^IBEX":
+        return "INDEXBME:IB"
+    if ticker in("AH.AS"):
+        return ""
+    if len(ticker.split("."))==1:##Americanas
+        return ticker
+    logging.debug("ticker2googleticker {} not found".format(ticker))
+    
+
+def googleticker2ticker(ticker):
+    a=ticker.split(":")
+    if  a[0]=="BME":
+        return "{}.MC".format(a[1])
+    if  a[0]=="FRA":
+        return "{}.DE".format(a[1])
+    if  a[0]=="EPA":
+        return "{}.PA".format(a[1])
+    if  a[0]=="BIT":
+        return "{}.MI".format(a[1])
+    if ticker=="INDEXBME:IB":
+        return "^IBEX"
+    if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
+        return "{}".format(a[1])
+    logging.debug("googleticker2ticker {} not found".format(ticker))
+    
+def googleticker2pytz(ticker):
+    a=ticker.split(":")
+    if a[0] in ("BME",  "INDEXBME"):
+        return "Europe/Madrid"
+    if a[0] in ("FRA", ):
+        return "Europe/Berlin"
+    if a[0] in ("EPA", ):
+        return "Europe/Paris"
+    if a[0] in ("BIT", ):
+        return "Europe/Rome"
+    if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
+        return "America/New_York"
+    return None
 
 def sync_data(con_source, con_target, progress=None):
     """con is con_target, 
