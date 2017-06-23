@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libsources import WorkerMercadoContinuo, WorkerMorningstar, WorkerGoogle, WorkerGoogleHistorical, SetSources
+from libsources import WorkerMorningstar, WorkerGoogle, WorkerGoogleHistorical, SetSources
 #from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor,   as_completed
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
@@ -12,9 +12,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.parent=parent
         
         self.sources=SetSources(self.mem)#All sources
-#        self.sources.append(WorkerGoogleHistorical, self.wgooglehistorical)
+        self.sources.append(WorkerGoogleHistorical, self.wgooglehistorical)
         self.sources.append(WorkerGoogle, self.wgoogle)
-        self.sources.append(WorkerMercadoContinuo,self.wmc)
         self.sources.append(WorkerMorningstar, self.wmorningstar)
         for s in self.sources.arr:
             s.statusChanged.connect(self.on_source_statusChanged)
@@ -31,7 +30,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             s.setSQL(s.ui.chkUserOnly.isChecked())
         
         #MAIL O DESACTIVAR TODO O CONTROLAR EL ESTADO
-        if self.wgoogle.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
+        if self.wgoogle.cmdRun.isEnabled()==False:
             self.cmdIntraday.setEnabled(False)
         if self.wgooglehistorical.cmdRun.isEnabled()==False and self.wmorningstar.isEnabled()==False:
             self.cmdDaily.setEnabled(False)
@@ -68,7 +67,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
     def on_cmdIntraday_released(self):
         self.sources.append_runners(self.wgoogle.source)
-        self.sources.append_runners(self.wmc.source)
         
         self.running_sources_run()
             

@@ -42,8 +42,6 @@ class SetSources(QObject):
             s=WorkerGoogleHistorical(self.mem, 0)
         elif Worker==WorkerGoogle:
             s=WorkerGoogle(self.mem)
-        elif Worker==WorkerMercadoContinuo:
-            s=WorkerMercadoContinuo(self.mem)
         elif Worker==WorkerMorningstar:
             s=WorkerMorningstar(self.mem, 0)
         self.arr.append(s)
@@ -465,79 +463,79 @@ class SourceIterateProducts(Source):
             time.sleep(self.sleep)#time step
         print("")
 
-    
-class WorkerMercadoContinuo(Source):
-    def __init__(self,  mem):
-        SourceParsePage.__init__(self, mem)   
-        self.setName(self.tr("Mercado Continuo source"))
-        
-    @pyqtSlot(str)
-    def callbackHTML(self, html):       
-        self.numpage=self.numpage+1
-        if self.numpage==1:
-            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
-        elif self.numpage==2:
-            self.processCompleto(html)
-#        logging.debug("Callback {}".format(self.numpage))
-        
-    def run(self):
-        self.setStatus(SourceStatus.Running)
-        self.products.load_from_db(self.sql)     
-        self.next_step()
-        self.numpage=0
-        self.page=QWebEnginePage()
-        self.page.loadFinished.connect(self.on_load_page)
-        self.page.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))#asincronou
-
-    def on_load_page(self):
-        """
-            Se ejecuta después de cargar la url y despues de ejecutar el Javascript
-        """
-        logging.debug("Page loaded")
-        self.page.toHtml(self.callbackHTML)
-    
-    @pyqtSlot(str)
-    def processCompleto(self, html):
-        logging.debug("Processing completo")
-        self.toWebLog(html)
-        for l in html.split("\n"):
-            if l.find("ISIN=")!=-1:
-#                logging.debug(l)
-                isin=l.split("ISIN=")[1].split('">')[0]
-                p=self.products.find_by_isin(isin)
-                if p!=None:
-                    arrdate=l.split('<td align="center">')[1].split("</td>")[0].split("/")
-                    date=datetime.date(int(arrdate[2]),  int(arrdate[1]),  int(arrdate[0]))
-                    strtime=l.split('class="Ult" align="center">')[1].split("</td>")[0]
-                    if strtime=="Cierre":
-                        time=p.stockmarket.closes
-                    else:
-                        arrtime=strtime.split(":")
-                        time=datetime.time(int(arrtime[0]), int(arrtime[1]))
-                    quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
-                    datime=dt(date,time,p.stockmarket.zone)
-                    quote=Quote(self.mem).init__create(p, datime, quot)    
-                    self.quotes.append(quote)
-                else:
-                    self.log("El isin {} no ha sido encontrado".format(isin))        
-                    
-        self.next_step()
-        self.quotes_save()
-        self.mem.con.commit()
-        self.next_step()
-        
-        self.setStatus(SourceStatus.Finished)
-
-    def steps(self):
-        """Define  the number of steps of the source run"""
-        return 3
-
-    def setSQL(self, useronly):
-        if useronly==True:
-            self.sql="select * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
-        else:
-            self.sql="select * from products where 9=any(priority) and obsolete=false order by name"
-        self.setStatus(SourceStatus.Prepared)
+#    
+#class WorkerMercadoContinuo(Source):
+#    def __init__(self,  mem):
+#        SourceParsePage.__init__(self, mem)   
+#        self.setName(self.tr("Mercado Continuo source"))
+#        
+#    @pyqtSlot(str)
+#    def callbackHTML(self, html):       
+#        self.numpage=self.numpage+1
+#        if self.numpage==1:
+#            self.page.runJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
+#        elif self.numpage==2:
+#            self.processCompleto(html)
+##        logging.debug("Callback {}".format(self.numpage))
+#        
+#    def run(self):
+#        self.setStatus(SourceStatus.Running)
+#        self.products.load_from_db(self.sql)     
+#        self.next_step()
+#        self.numpage=0
+#        self.page=QWebEnginePage()
+#        self.page.loadFinished.connect(self.on_load_page)
+#        self.page.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))#asincronou
+#
+#    def on_load_page(self):
+#        """
+#            Se ejecuta después de cargar la url y despues de ejecutar el Javascript
+#        """
+#        logging.debug("Page loaded")
+#        self.page.toHtml(self.callbackHTML)
+#    
+#    @pyqtSlot(str)
+#    def processCompleto(self, html):
+#        logging.debug("Processing completo")
+#        self.toWebLog(html)
+#        for l in html.split("\n"):
+#            if l.find("ISIN=")!=-1:
+##                logging.debug(l)
+#                isin=l.split("ISIN=")[1].split('">')[0]
+#                p=self.products.find_by_isin(isin)
+#                if p!=None:
+#                    arrdate=l.split('<td align="center">')[1].split("</td>")[0].split("/")
+#                    date=datetime.date(int(arrdate[2]),  int(arrdate[1]),  int(arrdate[0]))
+#                    strtime=l.split('class="Ult" align="center">')[1].split("</td>")[0]
+#                    if strtime=="Cierre":
+#                        time=p.stockmarket.closes
+#                    else:
+#                        arrtime=strtime.split(":")
+#                        time=datetime.time(int(arrtime[0]), int(arrtime[1]))
+#                    quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
+#                    datime=dt(date,time,p.stockmarket.zone)
+#                    quote=Quote(self.mem).init__create(p, datime, quot)    
+#                    self.quotes.append(quote)
+#                else:
+#                    self.log("El isin {} no ha sido encontrado".format(isin))        
+#                    
+#        self.next_step()
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#        
+#        self.setStatus(SourceStatus.Finished)
+#
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return 3
+#
+#    def setSQL(self, useronly):
+#        if useronly==True:
+#            self.sql="select * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
+#        else:
+#            self.sql="select * from products where 9=any(priority) and obsolete=false order by name"
+#        self.setStatus(SourceStatus.Prepared)
 
 
 class WorkerMorningstar(Source):
@@ -660,67 +658,67 @@ class WorkerMorningstar(Source):
         
         self.setStatus(SourceStatus.Finished)
 
-class WorkerSGWarrants(SourceParsePage):
-    """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, mem):
-        SourceParsePage.__init__(self, mem)
-        self.setName(self.tr("SG Warrants source"))
-        
-        
-    def on_load_page(self):
-        """Overrided this function because web needs to create a session"""
-        #driver = webdriver.HtmlUnitDriver()
-#        profile = webdriver.FirefoxProfile()
-#        profile.native_events_enabled = True
-##        driver = webdriver.Firefox(profile)
-##        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
-#        driver.get('https://es.warrants.com')
-#        form=driver.find_element_by_id('id3e9b')
-#        form.click()
-#        driver.quit()
-        sys.exit()
-
-    def on_parse_page(self):
-        "Overrides SourceParsePage"
-        for i in self.web.readlines():
-            try:
-                i=b2s(i)
-                datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
-                product=self.products.find_by_ticker(datos[0][1:-1])
-
-                if product==None:
-                    self.log("{} Not found".format(datos[0][1:-1] ))
-                    continue                
-                
-                quote=Decimal(datos[1])
-                d=int(datos[2][1:-1].split("/")[1])
-                M=int(datos[2][1:-1].split("/")[0])
-                Y=int(datos[2][1:-1].split("/")[2])
-                H=int(datos[3][1:-1].split(":")[0])
-                m=int(datos[3][1:-1].split(":")[1][:-2])
-                pm=datos[3][1:-1].split(":")[1][2:]
-                
-                #Conversion
-                H=ampm_to_24(H, pm)
-                dat=datetime.date(Y, M, d)
-                tim=datetime.time(H, m)
-                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
-                self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
-            except:#
-                self.log("Error parsing: {}".format(i[:-1]))
-                continue
-        
-    def setSQL(self, useronly):
-        self.userinvestmentsonly=useronly
-        if self.userinvestmentsonly==True:
-            self.sql="MALselect * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
-        else:
-            self.sql="MALselect * from products where 9=any(priority) and obsolete=false order by name".format(self.strUserOnly())
-        self.setStatus(SourceStatus.Prepared)
-
-    def steps(self):
-        """Define  the number of steps of the source run"""
-        return 4 #CORRECT
+#class WorkerSGWarrants(SourceParsePage):
+#    """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
+#    def __init__(self, mem):
+#        SourceParsePage.__init__(self, mem)
+#        self.setName(self.tr("SG Warrants source"))
+#        
+#        
+#    def on_load_page(self):
+#        """Overrided this function because web needs to create a session"""
+#        #driver = webdriver.HtmlUnitDriver()
+##        profile = webdriver.FirefoxProfile()
+##        profile.native_events_enabled = True
+###        driver = webdriver.Firefox(profile)
+###        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
+##        driver.get('https://es.warrants.com')
+##        form=driver.find_element_by_id('id3e9b')
+##        form.click()
+##        driver.quit()
+#        sys.exit()
+#
+#    def on_parse_page(self):
+#        "Overrides SourceParsePage"
+#        for i in self.web.readlines():
+#            try:
+#                i=b2s(i)
+#                datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
+#                product=self.products.find_by_ticker(datos[0][1:-1])
+#
+#                if product==None:
+#                    self.log("{} Not found".format(datos[0][1:-1] ))
+#                    continue                
+#                
+#                quote=Decimal(datos[1])
+#                d=int(datos[2][1:-1].split("/")[1])
+#                M=int(datos[2][1:-1].split("/")[0])
+#                Y=int(datos[2][1:-1].split("/")[2])
+#                H=int(datos[3][1:-1].split(":")[0])
+#                m=int(datos[3][1:-1].split(":")[1][:-2])
+#                pm=datos[3][1:-1].split(":")[1][2:]
+#                
+#                #Conversion
+#                H=ampm_to_24(H, pm)
+#                dat=datetime.date(Y, M, d)
+#                tim=datetime.time(H, m)
+#                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
+#                self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
+#            except:#
+#                self.log("Error parsing: {}".format(i[:-1]))
+#                continue
+#        
+#    def setSQL(self, useronly):
+#        self.userinvestmentsonly=useronly
+#        if self.userinvestmentsonly==True:
+#            self.sql="MALselect * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
+#        else:
+#            self.sql="MALselect * from products where 9=any(priority) and obsolete=false order by name".format(self.strUserOnly())
+#        self.setStatus(SourceStatus.Prepared)
+#
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return 4 #CORRECT
 #class WorkerYahoo(SourceParsePage):
 #    """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
 #    def __init__(self, mem):
@@ -1126,41 +1124,48 @@ class WorkerGoogleHistorical(Source):
         
     def on_execute_product(self,  product):
         """inico y fin son dos dates entre los que conseguir los datos."""
+        if product.id!=79329:
+            return []
         quotes=[]
         ultima=product.fecha_ultima_actualizacion_historica()
         if ultima==datetime.date.today()-datetime.timedelta(days=1):
             return quotes
-        inicio= ultima+datetime.timedelta(days=1)
-        fin= datetime.date.today()
+            
+            
+        googleticker=ticker2googleticker(product.ticker)
+        if googleticker==None:
+            self.log("ticker2googleticker {} failed".format(product.ticker))
         #https://www.google.com/finance/historical?cid=368894934436308&startdate=Jun+5%2C+2016&enddate=Jun+18%2C+2017&num=30&ei=op5MWbneEsSLUKDklIAF
-        url='http://www.google.com/finance/historical?q={}&output=csv'.format(product.ticker)#+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
+        url='http://www.google.com/finance/historical?q={}&output=csv'.format(googleticker)
+        print(url)
         mweb=self.load_page(url)
         if mweb==None:
             return quotes
         web=[]
         ##TRansform httpresopone to list to iterate several times
         for line in mweb.readlines():
-            web.append(b2s(line)[:-1])
-        web=web[1:]#Quita primera file de encabezado
-        self.toWebLog(web)
-        
-        for i in web: 
-            datos=i.split(",")
-            fecha=datos[0].split("-")
-            date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
-            
-            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
-            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
-            datetimefirst=datestart-datetime.timedelta(seconds=1)
-            datetimelow=(datestart+(dateends-datestart)*1/3)
-            datetimehigh=(datestart+(dateends-datestart)*2/3)
-            datetimelast=dateends+datetime.timedelta(microseconds=4)
-
-            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
-            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
-            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
-            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
-        return quotes
+            print(line)
+#            web.append(b2s(line)[:-1])
+#        web=web[1:]#Quita primera file de encabezado
+#        self.toWebLog(web)
+#        
+#        for i in web: 
+#            datos=i.split(",")
+#            fecha=datos[0].split("-")
+#            date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
+#            
+#            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
+#            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
+#            datetimefirst=datestart-datetime.timedelta(seconds=1)
+#            datetimelow=(datestart+(dateends-datestart)*1/3)
+#            datetimehigh=(datestart+(dateends-datestart)*2/3)
+#            datetimelast=dateends+datetime.timedelta(microseconds=4)
+#
+#            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
+#            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
+#            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
+#            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
+#        return quotes
 
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
