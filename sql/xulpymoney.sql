@@ -29,15 +29,6 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- Name: plpython3u; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
---
-
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpython3u;
-
-
-ALTER PROCEDURAL LANGUAGE plpython3u OWNER TO postgres;
-
---
 -- Name: plpythonu; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
@@ -8254,7 +8245,7 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718, 81479');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO globals VALUES (1, 'Version', '201706221141');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');

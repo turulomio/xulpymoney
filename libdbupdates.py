@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201706221141
+        self.lastcodeupdate=201706231332
 
    
     def get_database_version(self):
@@ -1930,6 +1930,12 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201706221141)         
+        if self.dbversion<201706231332:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set ticker=%s where id=%s;", ('A3M.MC', 78384))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201706231332)         
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
