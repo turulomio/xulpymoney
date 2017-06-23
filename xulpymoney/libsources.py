@@ -980,7 +980,11 @@ class WorkerGoogle(Source):
                 continue
             if p.ticker=="":
                 continue
-            s=s+ticker2googleticker(p.ticker)+","
+            ticker=ticker2googleticker(p.ticker)
+            if ticker==None:
+                self.log("ticker2googleticker {} failed".format(p.ticker))
+                continue
+            s=s+ticker+","
         return s[:-1]
                 
     def setSQL(self, useronly):
@@ -1042,17 +1046,39 @@ class WorkerGoogle(Source):
         for data in all_data:
             stock = self.parse_stock(data)
             googleticker="{}:{}".format(stock["e"], stock["t"])
+                                
+            ##ticker2googleticker is validated in sum_tickers
+            
+            ticker=googleticker2ticker(googleticker)
+            if ticker==None:
+                self.log("googleticker2ticker {} failed".format(googleticker))
+                continue
+
+            zone=googleticker2pytz(googleticker)
+            if zone==None:
+                self.log("googleticker2pytz {} failed".format(googleticker))
+                continue
+            
             if stock["lt_dts"]=="":
-                logging.debug("{} has no date".format(googleticker))
+                self.log("{} has no date".format(googleticker))
                 continue
-            product=self.products.find_by_ticker(googleticker2ticker(googleticker))
+            
+            product=self.products.find_by_ticker(ticker)
             if product==None:
-                logging.error(stock)
-                logging.error("{} => {}".format(googleticker, googleticker2ticker(googleticker)))
+                self.log("Product {} not found".format(ticker ))
                 continue
+                
+            product=self.products.find_by_ticker(ticker)
+            if product==None:
+                self.log("Product {} not found".format(ticker ))
+                continue
+
             quote=Decimal(stock["l_fix"])
+            if quote==Decimal(0):
+                self.log("Quote {} with 0 value".format(ticker ))
+                continue
             dat=datetime.datetime.strptime( stock["lt_dts"], "%Y-%m-%dT%H:%M:%SZ" )
-            self.quotes.append(Quote(self.mem).init__create(product,dt_with_pytz(dat.date(),dat.time(),googleticker2pytz(googleticker)), quote))
+            self.quotes.append(Quote(self.mem).init__create(product,dt_with_pytz(dat.date(),dat.time(),zone), quote))
             
             
         self.toWebLog(self.web)
