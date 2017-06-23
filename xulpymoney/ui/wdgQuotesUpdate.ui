@@ -69,15 +69,15 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>341</width>
-                 <height>292</height>
+                 <width>338</width>
+                 <height>261</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
                 <item>
                  <layout class="QGridLayout" name="layIntraday">
                   <item row="0" column="0">
-                   <widget class="wdgSource" name="wyahoo" native="true"/>
+                   <widget class="wdgSource" name="wgoogle" native="true"/>
                   </item>
                   <item row="1" column="0">
                    <widget class="wdgSource" name="wmc" native="true"/>
@@ -124,15 +124,15 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>341</width>
-                 <height>292</height>
+                 <width>338</width>
+                 <height>261</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_3">
                 <item>
                  <layout class="QVBoxLayout" name="layDaily">
                   <item>
-                   <widget class="wdgSource" name="wyahoohistorical" native="true"/>
+                   <widget class="wdgSource" name="wgooglehistorical" native="true"/>
                   </item>
                   <item>
                    <widget class="wdgSource" name="wmorningstar" native="true"/>

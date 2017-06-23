@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libsources import WorkerMercadoContinuo, WorkerMorningstar, WorkerYahoo, WorkerYahooHistorical, SetSources
+from libsources import WorkerMercadoContinuo, WorkerMorningstar, WorkerGoogle, WorkerGoogleHistorical, SetSources
 #from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor,   as_completed
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
@@ -12,15 +12,15 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.parent=parent
         
         self.sources=SetSources(self.mem)#All sources
-        self.sources.append(WorkerYahooHistorical, self.wyahoohistorical)
-        self.sources.append(WorkerYahoo, self.wyahoo)
+#        self.sources.append(WorkerGoogleHistorical, self.wgooglehistorical)
+        self.sources.append(WorkerGoogle, self.wgoogle)
         self.sources.append(WorkerMercadoContinuo,self.wmc)
         self.sources.append(WorkerMorningstar, self.wmorningstar)
         for s in self.sources.arr:
             s.statusChanged.connect(self.on_source_statusChanged)
         
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
-        self.wyahoohistorical.chkUserOnly.setCheckState(Qt.Unchecked)#Yahoo historical must check all products
+        self.wgooglehistorical.chkUserOnly.setCheckState(Qt.Unchecked)#Google historical must check all products
         
     
 
@@ -31,9 +31,9 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             s.setSQL(s.ui.chkUserOnly.isChecked())
         
         #MAIL O DESACTIVAR TODO O CONTROLAR EL ESTADO
-        if self.wyahoo.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
+        if self.wgoogle.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
             self.cmdIntraday.setEnabled(False)
-        if self.wyahoohistorical.cmdRun.isEnabled()==False and self.wmorningstar.isEnabled()==False:
+        if self.wgooglehistorical.cmdRun.isEnabled()==False and self.wmorningstar.isEnabled()==False:
             self.cmdDaily.setEnabled(False)
         if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
             self.cmdAll.setEnabled(False)
@@ -67,14 +67,14 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             s.ui.chkUserOnly.setCheckState(state)
         
     def on_cmdIntraday_released(self):
-        self.sources.append_runners(self.wyahoo.source)
+        self.sources.append_runners(self.wgoogle.source)
         self.sources.append_runners(self.wmc.source)
         
         self.running_sources_run()
             
         
     def on_cmdDaily_released(self):
-        self.sources.append_runners(self.wyahoohistorical.source)
+        self.sources.append_runners(self.wgooglehistorical.source)
         self.sources.append_runners(self.wmorningstar.source)
         
         self.running_sources_run()
