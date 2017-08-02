@@ -6331,8 +6331,10 @@ class Product:
         
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute(" select min(id)-1 from products;")
+            cur.execute("select min(id)-1 from products")
             id=cur.fetchone()[0]
+            if id>=0:
+                id=-1
             cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete))
             self.id=id
         else:
