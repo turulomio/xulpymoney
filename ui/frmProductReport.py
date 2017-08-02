@@ -24,8 +24,9 @@ from odf.text import P
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
         """
-            product=None #insertar
-            product es un objeto newInversioQ#modificar
+            self.product.id==None Insertar
+            self.product.id <0 Editar
+            self.product.id >0 Red ONly
         """
         QDialog.__init__(self,  parent)
         self.hide()
@@ -37,6 +38,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.investment=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=set([])
         
+        self.adding_new_product=False#Tag to know is I access this dialog adding a product
         self.selDPS=None
         self.selEstimationDPS=None
         self.selEstimationEPS=None
@@ -60,6 +62,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
 
         if self.product==None: #Insertar
+            self.adding_new_product=True
             self.product=Product(self.mem)
             self.cmdSave.setText(self.tr("Add a new product"))
             
@@ -141,6 +144,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
     def load_comparation(self):
         """Loads comparation canvas"""
+        if self.product.id==None: #Adding a product doesn't need to comparate products.
+            return
+            
         inicio=datetime.datetime.now()
         if self.pseCompare.selected==None:
             qmessagebox(self.tr("You must select a product to compare with."))
@@ -543,8 +549,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.comment=self.txtComentario.text()                
             self.product.save()
             self.mem.con.commit()  
-                        
-                        
+
             m=QMessageBox()
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
