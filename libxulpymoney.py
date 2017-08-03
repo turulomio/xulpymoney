@@ -6847,7 +6847,6 @@ class Quote:
         self.product=None
         self.quote=None
         self.datetime=None
-        self.datetimeasked=None
         
     def __repr__(self):
         return "Quote de {0} de fecha {1} vale {2}".format(self.product.name, self.datetime, self.quote)
@@ -6929,31 +6928,36 @@ class Quote:
         cur.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
         cur.close()
 
-    def init__db_row(self, row, product,   datetimeasked=None):
-        """si datetimeasked es none se pone la misma fecha"""
-        self.product=product
-        self.quote=row['quote']
-        self.datetime=row['datetime']
-        if datetimeasked==None:
-            self.datetimeasked=row['datetime']
-        return self
+    def init__db_row(self, row, product):
+        if row==None:
+            return self.init__create(product, None, None)
+        return self.init__create(product, row['datetime'], row['quote'])
+        
+
         
         
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
         cur=self.mem.con.cursor()
-        sql="select * from quote(%s, '%s'::timestamptz)" %(product.id,  dt)
-        cur.execute(sql)
+#        | if p_id==None:                                                                                                                                                 +>
+#   |             |           |     return { "id": None, "datetime": None, "quote": None }                                                                                                     +>
+#   |             |           | regq=plpy.execute("select quote, datetime from quotes where id={0} and datetime<='{1}' order by datetime desc limit 1".format(p_id,p_datetime))                +>
+#   |             |           | if len(regq)==1:                                                                                                                                               +>
+#   |             |           |   return { "id": p_id, "datetime": regq[0]["datetime"], "quote": regq[0]["quote"] }                                                                            +>
+#   |             |           | else:                                                                                                                                                          +>
+#   |             |           |   return { "id": p_id, "datetime": None, "quote": None }   
+#        if product==None or product.id==None:
+#            return self.init__create()
+        cur.execute("select quote,datetime from quotes where id=%s and datetime<=%s order by datetime desc limit 1", (product.id,  dt))
         row=cur.fetchone()
         cur.close()
-        return self.init__db_row(row, product,  dt)
+        return self.init__db_row(row, product)
                 
     def init__from_query_penultima(self,product,  lastdate=None):
         cur=self.mem.con.cursor()
         if lastdate==None:
-            cur.execute("select * from penultimate(%s)", (product.id, ))
-        else:
-            cur.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
+            lastdate=datetime.date.today()
+        cur.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
         row=cur.fetchone()
         cur.close()
         return self.init__db_row(row, product)        
@@ -6964,7 +6968,7 @@ class Quote:
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
         cur=self.mem.con.cursor()
         endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
-        cur.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
+        cur.execute("select id,datetime, quote from quote (%s, now()) union all select id,datetime,quote from penultimate(%s,now()::date) union all select id,datetime,quote from quote(%s,%s) order by datetime", (product.id, product.id,  product.id,  endlastyear))
         if cur.rowcount!=3:
             cur.close()
             return None

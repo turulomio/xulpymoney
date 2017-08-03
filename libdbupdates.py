@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201706231332
+        self.lastcodeupdate=201708031821
 
    
     def get_database_version(self):
@@ -1936,6 +1936,36 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201706231332)         
+        if self.dbversion<201708030922:
+            cur=self.mem.con.cursor()
+            cur.execute("DROP FUNCTION historic(text)")
+            cur.execute("DROP FUNCTION intraday(text, date)")
+            cur.execute("DROP FUNCTION inversion_acciones(integer,date)")
+            cur.execute("DROP FUNCTION inversion_acciones_saldo(integer,date,numeric)")
+            cur.execute("DROP FUNCTION inversion_saldo_segun_tpcvariable()")
+            cur.execute("DROP FUNCTION inversion_type(text)")
+            cur.execute("DROP FUNCTION multiout_simple_setof(integer)")
+            cur.execute("DROP FUNCTION quote2(integer[], timestamptz)")
+            cur.execute("DROP FUNCTION quote_endmonth(text)")          
+            cur.execute("DROP FUNCTION quote(integer, date)") 
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708030922)         
+        if self.dbversion<201708031821:
+            cur=self.mem.con.cursor()
+            cur.execute("DROP FUNCTION penultimate(integer)")         
+            cur.execute("DROP FUNCTION penultimate(integer,date)")          
+            cur.execute("""CREATE OR REPLACE FUNCTION penultimate(INOUT id integer, IN date date, OUT quote numeric (100,6), OUT datetime timestamptz, OUT searched timestamptz )
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    searched := format( '%s 23:59:59.999999', penultimate.date-integer '1')::timestamptz;
+    SELECT quotes.quote, quotes.datetime  INTO penultimate.quote, penultimate.datetime FROM quotes where quotes.id= penultimate.id and quotes.datetime <= searched order by quotes.datetime desc limit 1;
+END;
+$$;""")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708031821)        
             
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
