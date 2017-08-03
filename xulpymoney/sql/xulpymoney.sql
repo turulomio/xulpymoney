@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 10beta2
+-- Dumped by pg_dump version 10beta2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -28,28 +28,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
---
--- Name: plpythonu; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
---
-
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpythonu;
-
-
-ALTER PROCEDURAL LANGUAGE plpythonu OWNER TO postgres;
-
 SET search_path = public, pg_catalog;
-
---
--- Name: dblink_pkey_results; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE dblink_pkey_results AS (
-	"position" integer,
-	colname text
-);
-
-
-ALTER TYPE dblink_pkey_results OWNER TO postgres;
 
 --
 -- Name: quote; Type: TYPE; Schema: public; Owner: postgres
@@ -78,23 +57,6 @@ CREATE TYPE quote_type AS (
 
 
 ALTER TYPE quote_type OWNER TO postgres;
-
---
--- Name: quotehistoric_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE quotehistoric_type AS (
-	code text,
-	date date,
-	high numeric(18,6),
-	low numeric(18,6),
-	open numeric(18,6),
-	close numeric(18,6),
-	volumen numeric(18,6)
-);
-
-
-ALTER TYPE quotehistoric_type OWNER TO postgres;
 
 --
 -- Name: create_role_if_not_exists(name); Type: FUNCTION; Schema: public; Owner: postgres
@@ -161,283 +123,36 @@ $$;
 ALTER FUNCTION public.cuentas_saldo(fechaparametro date) OWNER TO postgres;
 
 --
--- Name: historic(text); Type: FUNCTION; Schema: public; Owner: postgres
+-- Name: penultimate(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION historic(p_code text) RETURNS SETOF quotehistoric_type
-    LANGUAGE plpythonu
-    AS $$  
-  reg=plpy.execute("SELECT * FROM quotes WHERE code='" + p_code + "' order by date;")
-  resultado=[]
-  for i in range(len(reg)):
-    if reg[i]["last"]=='close':
-      close=reg[i]["close"]
-    else:
-      close=reg[i][reg[i]["last"]]
-    resultado.append( { "code": reg[i]["code"], "date": reg[i]["date"],"high":reg[i]["high"] , "low": reg[i]["low"], "open": reg[i]["open"],"close": close,"volumen": reg[i]["volumen"]   })
-  return resultado
-$$;
-
-
-ALTER FUNCTION public.historic(p_code text) OWNER TO postgres;
-
---
--- Name: intraday(text, date); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION intraday(p_code text, p_date date) RETURNS SETOF quote_type
-    LANGUAGE plpythonu
-    AS $$  
-  reg=plpy.execute("SELECT * FROM quotes WHERE code='" + str(p_code) + "' and date='"+str(p_date)+"';")  
-  resultado=[]
-  if len(reg)==0:
-    return resultado
-  else:
-    for i in range(24):
-      for j in range(60):
-        campo=str(i).zfill(2)+str(j).zfill(2)
-        time=str(i)+":"+str(j)
-        quote=reg[0][campo]
-        if quote!=None:
-          resultado.append( { "code": p_code, "date": p_date,"time":time , "quote": quote, "zone": reg[0]["zone"]   })
-  return resultado
-
-$$;
-
-
-ALTER FUNCTION public.intraday(p_code text, p_date date) OWNER TO postgres;
-
---
--- Name: inversion_acciones(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) RETURNS numeric
-    LANGUAGE plpythonu
-    AS $$  resultado=0
-  reg=plpy.execute("SELECT acciones from operinversiones where id_inversiones={0} and fecha <='{1}'".format(p_id_inversiones,p_date))
-  for row in reg:
-    resultado=resultado+row['acciones']
-  return resultado
-
-$$;
-
-
-ALTER FUNCTION public.inversion_acciones(p_id_inversiones integer, p_date date) OWNER TO postgres;
-
---
--- Name: inversion_acciones_saldo(integer, date, numeric); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) RETURNS numeric[]
-    LANGUAGE plpythonu
-    AS $$  acciones=0
-  reg=plpy.execute("SELECT acciones from operinversiones where id_inversiones={0} and fecha <='{1}'".format(p_id_inversiones,p_date))
-  for row in reg:
-    acciones=acciones+row['acciones']
-  return [acciones,acciones*p_quote_in_p_date]
-
-$$;
-
-
-ALTER FUNCTION public.inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) OWNER TO postgres;
-
---
--- Name: inversion_saldo_segun_tpcvariable(); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_saldo_segun_tpcvariable() RETURNS SETOF record
-    LANGUAGE plpgsql ROWS 4
+CREATE FUNCTION penultimate(INOUT id integer, date date, OUT quote numeric, OUT datetime timestamp with time zone, OUT searched timestamp with time zone) RETURNS record
+    LANGUAGE plpgsql
     AS $$
-DECLARE
-re RECORD;
 BEGIN
-   FOR re in EXECUTE 'SELECT tpcvariable::integer, sum(inversiones_saldo(id_inversiones, date(now())))  FROM inversiones GROUP BY tpcvariable, in_activa HAVING in_activa=True ORDER BY tpcvariable' LOOP
-    RETURN next re;
-  END LOOP;
-  RETURN;
+    searched := format( '%s 23:59:59.999999', penultimate.date-integer '1')::timestamptz;
+    SELECT quotes.quote, quotes.datetime  INTO penultimate.quote, penultimate.datetime FROM quotes where quotes.id= penultimate.id and quotes.datetime <= searched order by quotes.datetime desc limit 1;
 END;
 $$;
 
 
-ALTER FUNCTION public.inversion_saldo_segun_tpcvariable() OWNER TO postgres;
-
---
--- Name: inversion_type(text); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_type(p_code text) RETURNS integer
-    LANGUAGE plpythonu
-    AS $$
-  if p_code==None:
-    return -1
-  reg=plpy.execute("SELECT quotes.* FROM dblink('dbname=myquotes','SELECT type from quotes where code=''"+ p_code+"''')")
-  return reg[0]['type']
-$$;
-
-
-ALTER FUNCTION public.inversion_type(p_code text) OWNER TO postgres;
-
---
--- Name: multiout_simple_setof(integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) RETURNS SETOF record
-    LANGUAGE plpythonu
-    AS $$
-return [(1, 2)] * n
-$$;
-
-
-ALTER FUNCTION public.multiout_simple_setof(n integer, OUT integer, OUT integer) OWNER TO postgres;
-
---
--- Name: penultimate(integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION penultimate(p_id integer) RETURNS quote
-    LANGUAGE plpythonu
-    AS $$  
-  if p_id==None:
-    return { "id": None, "datetime": None, "quote": None }
-  regp=plpy.execute("select datetime::date as date from quote({0}, now()::date)".format(p_id))
-  if len(regp)==0:
-    return { "id": p_id, "datetime": None, "quote": None }
-  if regp[0]["date"]==None:
-    return { "id": p_id, "datetime": None, "quote": None }
-  reg=plpy.execute("select * from quote({0},'{1}'::date-1)".format(p_id,regp[0]["date"]))
-  if len(reg)==1:
-    return { "id": p_id, "datetime": reg[0]["datetime"], "quote": reg[0]["quote"] }
-  else:
-    return { "id": p_id, "datetime": None, "quote": None }
-$$;
-
-
-ALTER FUNCTION public.penultimate(p_id integer) OWNER TO postgres;
-
---
--- Name: penultimate(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION penultimate(p_id integer, p_lastdate date) RETURNS quote
-    LANGUAGE plpythonu
-    AS $$  
-  if p_id==None:
-    return { "id": None, "datetime": None, "quote": None }
-  reg=plpy.execute("select * from quote({0},'{1}'::date-1)".format(p_id,p_lastdate))
-  if len(reg)==1:
-    return { "id": p_id, "datetime": reg[0]["datetime"], "quote": reg[0]["quote"] }
-  else:
-    return { "id": p_id, "datetime": None, "quote": None }
-$$;
-
-
-ALTER FUNCTION public.penultimate(p_id integer, p_lastdate date) OWNER TO postgres;
-
---
--- Name: FUNCTION penultimate(p_id integer, p_lastdate date); Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON FUNCTION penultimate(p_id integer, p_lastdate date) IS 'Función que calcula el penultimo valor en días
-Se pasa la fecha del ultimo valor y calcula la de ultimo-1=penultimo
-Se reduce más de 30 veces el tiempo de ejecución';
-
-
---
--- Name: quote(integer[], timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) RETURNS SETOF quote_type
-    LANGUAGE plpythonu
-    AS $$ 
-  resultado=[]
-  regq=plpy.execute(" select id, last(quote), last(datetime) from quotes where id in ({0}) ad datetime<='{1}' group by id".format(str(p_ids)[1:-1],p_datetime))
-  for r in regq:
-    resultado.append({ "id": r[0], "datetime": r[2], "quote": r[1] })
-  return resultado
-    
-    
-$$;
-
-
-ALTER FUNCTION public.quote(p_ids integer[], p_datetime timestamp with time zone) OWNER TO postgres;
-
---
--- Name: quote(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION quote(id integer, p_date date) RETURNS quote
-    LANGUAGE plpythonu
-    AS $$  
-  if id==None:
-    return { "id": None, "datetime": None, "quote": None }
-  dt=str(p_date)+" 23:59:59+0"
-  regq=plpy.execute("select datetime, quote from quote({0},'{1}'::timestamptz)".format(id,dt))
-  if len(regq)==1:
-    return { "id": id, "datetime": regq[0]["datetime"], "quote": regq[0]["quote"] }
-  else:
-    return { "id": id, "datetime": None, "quote": None }
-    
-$$;
-
-
-ALTER FUNCTION public.quote(id integer, p_date date) OWNER TO postgres;
+ALTER FUNCTION public.penultimate(INOUT id integer, date date, OUT quote numeric, OUT datetime timestamp with time zone, OUT searched timestamp with time zone) OWNER TO postgres;
 
 --
 -- Name: quote(integer, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION quote(p_id integer, p_datetime timestamp with time zone) RETURNS quote
-    LANGUAGE plpythonu
-    AS $$ 
-if p_id==None:
-    return { "id": None, "datetime": None, "quote": None }
-regq=plpy.execute("select quote, datetime from quotes where id={0} and datetime<='{1}' order by datetime desc limit 1".format(p_id,p_datetime))
-if len(regq)==1:
-  return { "id": p_id, "datetime": regq[0]["datetime"], "quote": regq[0]["quote"] }
-else:
-  return { "id": p_id, "datetime": None, "quote": None }
-    
+CREATE FUNCTION quote(INOUT id integer, INOUT datetime timestamp with time zone, OUT quote numeric, OUT searched timestamp with time zone) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    searched := quote.datetime;
+    SELECT quotes.quote, quotes.datetime  INTO quote.quote, quote.datetime FROM quotes where quotes.id= quote.id and quotes.datetime <= quote.datetime order by quotes.datetime desc limit 1;
+END;
 $$;
 
 
-ALTER FUNCTION public.quote(p_id integer, p_datetime timestamp with time zone) OWNER TO postgres;
-
---
--- Name: quote2(integer[], timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) RETURNS SETOF quote_type
-    LANGUAGE plpythonu
-    AS $$ 
-  resultado=[]
-  regq=plpy.execute(" select id, last(quote), last(datetime) from quotes where id in ({0}) ad datetime<='{1}' group by id".format(str(p_ids)[1:-1],p_datetime))
-  for r in regq:
-    resultado.append({ "id": r[0], "datetime": r[2], "quote": r[1] })
-  return resultado
-    
-    
-$$;
-
-
-ALTER FUNCTION public.quote2(p_ids integer[], p_datetime timestamp with time zone) OWNER TO postgres;
-
---
--- Name: quote_endmonth(text); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION quote_endmonth(p_code text) RETURNS SETOF quote_type
-    LANGUAGE plpythonu
-    AS $$  
-  resultado=[]
-  regq=plpy.execute("select max(date) from quotes group by date_part('month',date), date_part('year',date) order by date_part('year',date),  date_part('month',date)")
-  for date in regq:
-    reg=plpy.execute("select * from quote('"+p_code+"', '"+str(date['max'])+"')")
-    resultado.append({ "code": p_code, "date": reg[0]["date"],"time":reg[0]["time"] , "quote": reg[0]["quote"], "zone": reg[0]["zone"]   })
-  return resultado
-$$;
-
-
-ALTER FUNCTION public.quote_endmonth(p_code text) OWNER TO postgres;
+ALTER FUNCTION public.quote(INOUT id integer, INOUT datetime timestamp with time zone, OUT quote numeric, OUT searched timestamp with time zone) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -896,7 +611,7 @@ ALTER TABLE quotes_seq OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_conceptos
-    START WITH 1
+    START WITH 100
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -910,7 +625,7 @@ ALTER TABLE seq_conceptos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_cuentas
-    START WITH 0
+    START WITH 5
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 1000000
@@ -938,7 +653,7 @@ ALTER TABLE seq_dividendos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_entidadesbancarias
-    START WITH 0
+    START WITH 4
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 100000000
@@ -1709,7 +1424,6 @@ INSERT INTO products VALUES ('Alcatel-Lucent', NULL, 'USD', 1, NULL, 77831, NULL
 INSERT INTO products VALUES ('ALCATEL LUCENT NV', 'FR0010985861', 'EUR', 1, '|EURONEXT|', 77598, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010985861||fr||False', false);
 INSERT INTO products VALUES ('Alcoa Inc.', 'US0138171014', 'USD', 1, '|SP500|', 79310, '', '', '', '', 100, 'c', 0, 2, 'AA', '{1}', '{3}', 'NYSE#AA||us||False', false);
 INSERT INTO products VALUES ('ALDETA', 'FR0000036634', 'EUR', 1, '|EURONEXT|', 75505, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000036634||fr||False', false);
-INSERT INTO products VALUES ('ALDIDE S.A.', '', 'EUR', 1, '', -32, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'ALDIDE||es||True', true);
 INSERT INTO products VALUES ('aleo solar Aktiengesellschaft', 'DE000A0JM634', 'EUR', 1, '|DEUTSCHEBOERSE|', 78601, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JM634||de||False', false);
 INSERT INTO products VALUES ('Alere Inc.', NULL, 'USD', 1, NULL, 77128, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALR||us||False', false);
 INSERT INTO products VALUES ('Alexander & Baldwin Inc.', NULL, 'USD', 1, NULL, 78726, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALEX||us||False', false);
@@ -1966,7 +1680,7 @@ INSERT INTO products VALUES ('Atmos Energy Corp.', NULL, 'USD', 1, NULL, 77305, 
 INSERT INTO products VALUES ('ATOS', 'FR0000051732', 'EUR', 1, '|EURONEXT|', 79925, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000051732||fr||False', false);
 INSERT INTO products VALUES ('ATOS ORIGIN NV', 'FR0010979658', 'EUR', 1, '|EURONEXT|', 75194, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010979658||fr||False', false);
 INSERT INTO products VALUES ('ATOSS Software AG', 'DE0005104400', 'EUR', 1, '|DEUTSCHEBOERSE|', 78619, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005104400||de||False', false);
-INSERT INTO products VALUES ('ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.', 'ES0109427734', 'EUR', 1, '|MERCADOCONTINUO|', 78384, '', '', '', '', 100, 'c', 0, 1, 'A3TV.MC', '{9}', '{3}', 'MC#ES0109427734||es||False', false);
+INSERT INTO products VALUES ('ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.', 'ES0109427734', 'EUR', 1, '|MERCADOCONTINUO|', 78384, '', '', '', '', 100, 'c', 0, 1, 'A3M.MC', '{9}', '{3}', 'MC#ES0109427734||es||False', false);
 INSERT INTO products VALUES ('ATRIUM EUR REALEST', 'JE00B3DCF752', 'EUR', 1, '|EURONEXT|', 77698, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#JE00B3DCF752||nl||False', false);
 INSERT INTO products VALUES ('ATTIJARIWAFA BANK', 'MA0000011827', 'EUR', 1, '|EURONEXT|', 76500, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#MA0000011827||fr||False', false);
 INSERT INTO products VALUES ('AT&T Inc.', '', 'USD', 1, '|SP500|', 79502, '', '', '', '', 100, 'c', 0, 2, 'T', '{1}', '{3}', 'NYSE#T||us||False', false);
@@ -2838,7 +2552,6 @@ INSERT INTO products VALUES ('BRISA', 'PTBRI0AM0000', 'EUR', 1, '|EURONEXT|', 78
 INSERT INTO products VALUES ('Bristol-Myers Squibb Co.', '', 'USD', 1, '|SP500|', 78903, '', '', '', '', 100, 'c', 0, 2, 'BMY', '{1}', '{3}', 'NYSE#BMY||us||False', false);
 INSERT INTO products VALUES ('Bristow Group Inc.', NULL, 'USD', 1, NULL, 79055, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BRS||us||False', false);
 INSERT INTO products VALUES ('British Petroleum BP', 'GB0007980591', 'GBP', 1, '', 75006, '', '', '', '', 100, 'c', 0, 4, 'BP.L', '{1}', '{3}', 'BP.L||None||False', false);
-INSERT INTO products VALUES ('British petroleum for early xulpymoney', '', 'EUR', 11, '', -26, '', '', '', '', 100, 'c', 0, 4, NULL, '{}', '{}', '', true);
 INSERT INTO products VALUES ('Broadcom Corporation', 'US1113201073', 'USD', 1, '|NASDAQ100|SP500|', 76527, '', '', '', '', 100, 'c', 0, 2, 'BRCM', '{1}', '{3}', 'BRCM||us||False', false);
 INSERT INTO products VALUES ('Broadridge Financial Solutions Inc.', NULL, 'USD', 1, NULL, 77303, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BR||us||False', false);
 INSERT INTO products VALUES ('Brookdale Senior Living Inc.', NULL, 'USD', 1, NULL, 75521, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BKD||us||False', false);
@@ -3844,14 +3557,7 @@ INSERT INTO products VALUES ('Demand Media Inc.', NULL, 'USD', 1, NULL, 79902, N
 INSERT INTO products VALUES ('Denbury Resources Inc.', NULL, 'USD', 1, NULL, 77000, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#DNR||us||False', false);
 INSERT INTO products VALUES ('DENTSPLY International Inc.', 'US2490301072', 'USD', 1, '|NASDAQ100|', 77606, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'XRAY||us||False', false);
 INSERT INTO products VALUES ('DEOLEO', 'ES0110047919', 'EUR', 1, '|MERCADOCONTINUO|', 78473, '', '', '', '', 100, 'c', 0, 1, 'OLE.MC', '{9}', '{3}', 'MC#ES0110047919||es||False', false);
-INSERT INTO products VALUES ('DEPOSITO BANKINTER', '', 'EUR', 10, '', -3, '', '', '', '', 0, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BANKINTER||es||True', false);
-INSERT INTO products VALUES ('DEPOSITO BARCLAYS', NULL, 'EUR', 2, NULL, -4, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BARCLAYS||es||True', false);
-INSERT INTO products VALUES ('Depósito Estructurado Bankinter', '', 'EUR', 10, '', -9, '', '', '', '', 100, 'i', 0, 1, NULL, NULL, NULL, '', false);
-INSERT INTO products VALUES ('DEPOSITO IBERCAJA', '', 'EUR', 10, '', -5, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false);
-INSERT INTO products VALUES ('DEPOSITO LACAIXA', NULL, 'EUR', 2, NULL, -6, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO LACAIXA||es||True', false);
 INSERT INTO products VALUES ('Derby Cycle AG', 'DE000A1H6HN1', 'EUR', 1, '|DEUTSCHEBOERSE|', 79508, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1H6HN1||de||False', false);
-INSERT INTO products VALUES ('DERECHOS BANCO SANTANDER', NULL, 'EUR', 2, NULL, -7, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS BANCO DE SANTANDER||es||True', false);
-INSERT INTO products VALUES ('DERECHOS IBERDROLA', '', 'EUR', 1, '', -8, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS IBERDROLA||None||False', false);
 INSERT INTO products VALUES ('DERICHEBOURG', 'FR0000053381', 'EUR', 1, '|EURONEXT|', 79000, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000053381||fr||False', false);
 INSERT INTO products VALUES ('Desarrolladora Homex S.A.B. de C.V.', NULL, 'USD', 1, NULL, 78199, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#HXM||us||False', false);
 INSERT INTO products VALUES ('Deufol AG', 'DE0005101505', 'EUR', 1, '|DEUTSCHEBOERSE|', 78762, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005101505||de||False', false);
@@ -5957,7 +5663,6 @@ INSERT INTO products VALUES ('MANRESA PREMIUM', 'ES0117141038', 'EUR', 2, '|f_es
 INSERT INTO products VALUES ('MANRESA VALOR', 'ES0117142002', 'EUR', 2, '|f_es_BMF|', 77043, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0117142002||es||False', true);
 INSERT INTO products VALUES ('MAN SE St', 'DE0005937007', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|', 81294, '', '', '', '', 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937007||de||False', false);
 INSERT INTO products VALUES ('MAN SE Vz', 'DE0005937031', 'EUR', 1, '|DEUTSCHEBOERSE|', 81295, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937031||de||False', false);
-INSERT INTO products VALUES ('MANUEL PASCUAL SALCEDO S.A.', '', 'EUR', 1, '', -2, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'MANUEL PASCUAL SALCEDO||es||True', true);
 INSERT INTO products VALUES ('Manulife Financial Corp.', NULL, 'USD', 1, NULL, 78046, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MFC||us||False', false);
 INSERT INTO products VALUES ('MANUTAN INTL', 'FR0000032302', 'EUR', 1, '|EURONEXT|', 78308, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000032302||fr||False', false);
 INSERT INTO products VALUES ('Manz AG', 'DE000A0JQ5U3', 'EUR', 1, '|DEUTSCHEBOERSE|', 81300, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JQ5U3||de||False', false);
@@ -6584,7 +6289,6 @@ INSERT INTO products VALUES ('Piper Jaffray Cos.', NULL, 'USD', 1, NULL, 77179, 
 INSERT INTO products VALUES ('P&I Personal & Informatik AG', 'DE0006913403', 'EUR', 1, '|DEUTSCHEBOERSE|', 80580, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006913403||de||False', false);
 INSERT INTO products VALUES ('Pitney Bowes Inc.', NULL, 'USD', 1, NULL, 75166, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PBI||us||False', false);
 INSERT INTO products VALUES ('Plains Exploration & Production Co.', NULL, 'USD', 1, NULL, 75221, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PXP||us||False', false);
-INSERT INTO products VALUES ('Plan Caixa Equilibrio', '', 'EUR', 8, '', -33, '', '', '', '', 25, 'c', 0, 1, '', '{}', '{}', '', false);
 INSERT INTO products VALUES ('Plantronics Inc.', NULL, 'USD', 1, NULL, 79027, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PLT||us||False', false);
 INSERT INTO products VALUES ('PLANT.TERRES ROUG.', 'LU0012113584', 'EUR', 1, '|EURONEXT|', 79334, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#LU0012113584||fr||False', false);
 INSERT INTO products VALUES ('PLASTIC OMNIUM', 'FR0000124570', 'EUR', 1, '|EURONEXT|', 79484, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000124570||fr||False', false);
@@ -6957,7 +6661,6 @@ INSERT INTO products VALUES ('RENTA FIJA 21', 'ES0126517038', 'EUR', 2, '|f_es_B
 INSERT INTO products VALUES ('RENTMADRID 2', 'ES0173441033', 'EUR', 2, '|f_es_BMF|', 81455, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04PVZ', '{}', '{8}', 'ES0173441033||es||False', false);
 INSERT INTO products VALUES ('RENTMADRID', 'ES0173426034', 'EUR', 2, '|f_es_BMF|', 81451, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173426034||es||False', true);
 INSERT INTO products VALUES ('Reply Deutschland AG', 'DE0005501456', 'EUR', 1, '|DEUTSCHEBOERSE|', 80760, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005501456||de||False', false);
-INSERT INTO products VALUES ('REPO Obligaciones del tesoro público', '', 'EUR', 7, '', -18, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('REpower Systems SE', 'DE0006177033', 'EUR', 1, '|DEUTSCHEBOERSE|', 75455, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006177033||de||False', false);
 INSERT INTO products VALUES ('REPSOL YPF', 'ES0173516115', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', 79360, '', '', '', '', 100, 'c', 0, 1, 'REP.MC', '{9}', '{3}', 'MC#ES0173516115||es||False', false);
 INSERT INTO products VALUES ('Republic Services Inc.', NULL, 'USD', 1, NULL, 75384, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RSG||us||False', false);
@@ -8237,23 +7940,7 @@ INSERT INTO products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, '|EURON
 INSERT INTO products VALUES ('zooplus AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005111702||de||False', false);
 INSERT INTO products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010298901||fr||False', false);
 INSERT INTO products VALUES ('Zuoan Fashion Ltd.', NULL, 'USD', 1, NULL, 78062, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ZA||us||False', false);
-INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-33');
-INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
-INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
-INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
-INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
-INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
-INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
-INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718, 81479');
-INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201706221141');
-INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
-INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
-INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
-INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '7500');
-INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '500');
+INSERT INTO globals VALUES (1, 'Version', '201708031837');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;

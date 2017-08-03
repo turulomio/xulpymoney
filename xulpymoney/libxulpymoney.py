@@ -6948,7 +6948,7 @@ class Quote:
 #   |             |           |   return { "id": p_id, "datetime": None, "quote": None }   
 #        if product==None or product.id==None:
 #            return self.init__create()
-        cur.execute("select quote,datetime from quotes where id=%s and datetime<=%s order by datetime desc limit 1", (product.id,  dt))
+        cur.execute("select * from quote (%s,%s)", (product.id,  dt))
         row=cur.fetchone()
         cur.close()
         return self.init__db_row(row, product)
