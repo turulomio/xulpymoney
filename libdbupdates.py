@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201708031821
+        self.lastcodeupdate=201708031858
 
    
     def get_database_version(self):
@@ -1966,7 +1966,32 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201708031821)        
+        if self.dbversion<201708031837:
+            cur=self.mem.con.cursor()
+            cur.execute("DROP FUNCTION quote(integer,timestamptz)")         
+            cur.execute("DROP FUNCTION quote(integer[],timestamptz)")          
+            cur.execute("""CREATE OR REPLACE FUNCTION quote(INOUT id integer, INOUT datetime timestamptz, OUT quote numeric (100,6),  OUT searched timestamptz )
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    searched := quote.datetime;
+    SELECT quotes.quote, quotes.datetime  INTO quote.quote, quote.datetime FROM quotes where quotes.id= quote.id and quotes.datetime <= quote.datetime order by quotes.datetime desc limit 1;
+END;
+$$;""")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708031837)        
             
+        if self.dbversion<201708031858:
+            cur=self.mem.con.cursor()
+            cur.execute("DROP PROCEDURAL LANGUAGE plpythonu")
+            cur.execute("DROP TYPE dblink_pkey_results")
+            cur.execute("DROP TYPE quote")
+            cur.execute("DROP TYPE quote_type")
+            cur.execute("DROP TYPE quotehistoric_type")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708031858)         
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
