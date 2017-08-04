@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201708031858
+        self.lastcodeupdate=201708040826
 
    
     def get_database_version(self):
@@ -1993,6 +1993,77 @@ $$;""")
             self.mem.con.commit()
             self.set_database_version(201708031858)         
             
+        if self.dbversion<201708040648:
+            cur=self.mem.con.cursor()
+            cur.execute("""
+CREATE OR REPLACE FUNCTION penultimate(INOUT id integer, date date, OUT quote numeric, OUT datetime timestamp with time zone, OUT searched timestamp with time zone) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    last_datetime timestamptz;
+BEGIN
+    searched := format( '%s 23:59:59.999999', penultimate.date)::timestamptz;
+    select quotes.datetime INTO last_datetime from quote(penultimate.id, searched) quotes;
+    searched := format( '%s 23:59:59.999999', last_datetime::date-integer '1')::timestamptz;
+    SELECT quotes.quote, quotes.datetime  INTO penultimate.quote, penultimate.datetime FROM quotes where quotes.id= penultimate.id and quotes.datetime <= searched order by quotes.datetime desc limit 1;
+END;
+$$;""")
+            cur.execute("""
+CREATE OR REPLACE FUNCTION last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamptz, OUT last numeric(100,6), OUT penultimate_datetime timestamptz, OUT penultimate numeric(100,6),OUT lastyear_datetime timestamptz, OUT lastyear numeric(100,6) )
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    ly timestamptz;
+BEGIN
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.last, last_penultimate_lastyear.last_datetime FROM quote(id,now()) quotes;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.penultimate, last_penultimate_lastyear.penultimate_datetime FROM penultimate(id,now()::date) quotes;
+    ly := format( '%s-12-31 23:59:59.999999', EXTRACT(YEAR FROM TIMESTAMP 'now()')-1);
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.lastyear, last_penultimate_lastyear.lastyear_datetime FROM quote(id,ly) quotes;
+END;
+$$;
+
+""")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708040648)         
+            
+
+        if self.dbversion<201708040826:
+            cur=self.mem.con.cursor()
+            cur.execute("""
+CREATE OR REPLACE FUNCTION penultimate(INOUT id integer, IN date date, OUT quote numeric, OUT datetime timestamp with time zone, OUT searched timestamp with time zone) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    last_datetime timestamptz;
+    minus date;
+BEGIN
+    searched:=make_timestamptz(EXTRACT(YEAR FROM penultimate.date)::integer,EXTRACT(MONTH FROM penultimate.date)::integer, EXTRACT(DAY FROM penultimate.date)::integer, 23, 59, 59.999999::double precision) ;
+    select quotes.datetime INTO last_datetime from quote(penultimate.id, searched) quotes;
+    minus:=last_datetime::date - integer '1';
+    searched:=make_timestamptz(EXTRACT(YEAR FROM minus)::integer,EXTRACT(MONTH FROM minus)::integer, EXTRACT(DAY FROM minus)::integer, 23, 59, 59.999999::double precision) ;
+    SELECT quotes.quote, quotes.datetime  INTO penultimate.quote, penultimate.datetime FROM quotes where quotes.id= penultimate.id and quotes.datetime <= searched order by quotes.datetime desc limit 1;
+END;
+$$;
+""")
+            cur.execute("""
+CREATE OR REPLACE FUNCTION last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamptz, OUT last numeric(100,6), OUT penultimate_datetime timestamptz, OUT penultimate numeric(100,6),OUT lastyear_datetime timestamptz, OUT lastyear numeric(100,6) )
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    ly timestamptz;
+BEGIN
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.last, last_penultimate_lastyear.last_datetime FROM quote(id,now()) quotes;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.penultimate, last_penultimate_lastyear.penultimate_datetime FROM penultimate(id,now()::date) quotes;
+    ly:=make_timestamptz((EXTRACT(YEAR FROM  now())-1)::integer, 12, 31, 23, 59, 59.999999::double precision) ;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.lastyear, last_penultimate_lastyear.lastyear_datetime FROM quote(id,ly) quotes;
+END;
+$$;
+""")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201708040826)        
+
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
