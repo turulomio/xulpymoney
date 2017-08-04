@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10beta2
+-- Dumped from database version 9.6.3
 -- Dumped by pg_dump version 10beta2
 
 SET statement_timeout = 0;
@@ -29,34 +29,6 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
-
---
--- Name: quote; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE quote AS (
-	id integer,
-	datetime timestamp with time zone,
-	quote numeric(18,6)
-);
-
-
-ALTER TYPE quote OWNER TO postgres;
-
---
--- Name: quote_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE quote_type AS (
-	code text,
-	date date,
-	"time" time without time zone,
-	zone text,
-	quote numeric(100,6)
-);
-
-
-ALTER TYPE quote_type OWNER TO postgres;
 
 --
 -- Name: create_role_if_not_exists(name); Type: FUNCTION; Schema: public; Owner: postgres
@@ -123,14 +95,40 @@ $$;
 ALTER FUNCTION public.cuentas_saldo(fechaparametro date) OWNER TO postgres;
 
 --
+-- Name: last_penultimate_lastyear(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    ly timestamptz;
+BEGIN
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.last, last_penultimate_lastyear.last_datetime FROM quote(id,now()) quotes;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.penultimate, last_penultimate_lastyear.penultimate_datetime FROM penultimate(id,now()::date) quotes;
+    ly:=make_timestamptz((EXTRACT(YEAR FROM  now())-1)::integer, 12, 31, 23, 59, 59.999999::double precision) ;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.lastyear, last_penultimate_lastyear.lastyear_datetime FROM quote(id,ly) quotes;
+END;
+$$;
+
+
+ALTER FUNCTION public.last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) OWNER TO postgres;
+
+--
 -- Name: penultimate(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
 CREATE FUNCTION penultimate(INOUT id integer, date date, OUT quote numeric, OUT datetime timestamp with time zone, OUT searched timestamp with time zone) RETURNS record
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    last_datetime timestamptz;
+    minus date;
 BEGIN
-    searched := format( '%s 23:59:59.999999', penultimate.date-integer '1')::timestamptz;
+    searched:=make_timestamptz(EXTRACT(YEAR FROM penultimate.date)::integer,EXTRACT(MONTH FROM penultimate.date)::integer, EXTRACT(DAY FROM penultimate.date)::integer, 23, 59, 59.999999::double precision) ;
+    select quotes.datetime INTO last_datetime from quote(penultimate.id, searched) quotes;
+    minus:=last_datetime::date - integer '1';
+    searched:=make_timestamptz(EXTRACT(YEAR FROM minus)::integer,EXTRACT(MONTH FROM minus)::integer, EXTRACT(DAY FROM minus)::integer, 23, 59, 59.999999::double precision) ;
     SELECT quotes.quote, quotes.datetime  INTO penultimate.quote, penultimate.datetime FROM quotes where quotes.id= penultimate.id and quotes.datetime <= searched order by quotes.datetime desc limit 1;
 END;
 $$;
@@ -611,7 +609,7 @@ ALTER TABLE quotes_seq OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_conceptos
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -625,7 +623,7 @@ ALTER TABLE seq_conceptos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_cuentas
-    START WITH 5
+    START WITH 0
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 1000000
@@ -653,7 +651,7 @@ ALTER TABLE seq_dividendos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_entidadesbancarias
-    START WITH 4
+    START WITH 0
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 100000000
@@ -1424,6 +1422,7 @@ INSERT INTO products VALUES ('Alcatel-Lucent', NULL, 'USD', 1, NULL, 77831, NULL
 INSERT INTO products VALUES ('ALCATEL LUCENT NV', 'FR0010985861', 'EUR', 1, '|EURONEXT|', 77598, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010985861||fr||False', false);
 INSERT INTO products VALUES ('Alcoa Inc.', 'US0138171014', 'USD', 1, '|SP500|', 79310, '', '', '', '', 100, 'c', 0, 2, 'AA', '{1}', '{3}', 'NYSE#AA||us||False', false);
 INSERT INTO products VALUES ('ALDETA', 'FR0000036634', 'EUR', 1, '|EURONEXT|', 75505, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000036634||fr||False', false);
+INSERT INTO products VALUES ('ALDIDE S.A.', '', 'EUR', 1, '', -32, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'ALDIDE||es||True', true);
 INSERT INTO products VALUES ('aleo solar Aktiengesellschaft', 'DE000A0JM634', 'EUR', 1, '|DEUTSCHEBOERSE|', 78601, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JM634||de||False', false);
 INSERT INTO products VALUES ('Alere Inc.', NULL, 'USD', 1, NULL, 77128, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALR||us||False', false);
 INSERT INTO products VALUES ('Alexander & Baldwin Inc.', NULL, 'USD', 1, NULL, 78726, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALEX||us||False', false);
@@ -2552,6 +2551,7 @@ INSERT INTO products VALUES ('BRISA', 'PTBRI0AM0000', 'EUR', 1, '|EURONEXT|', 78
 INSERT INTO products VALUES ('Bristol-Myers Squibb Co.', '', 'USD', 1, '|SP500|', 78903, '', '', '', '', 100, 'c', 0, 2, 'BMY', '{1}', '{3}', 'NYSE#BMY||us||False', false);
 INSERT INTO products VALUES ('Bristow Group Inc.', NULL, 'USD', 1, NULL, 79055, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BRS||us||False', false);
 INSERT INTO products VALUES ('British Petroleum BP', 'GB0007980591', 'GBP', 1, '', 75006, '', '', '', '', 100, 'c', 0, 4, 'BP.L', '{1}', '{3}', 'BP.L||None||False', false);
+INSERT INTO products VALUES ('British petroleum for early xulpymoney', '', 'EUR', 11, '', -26, '', '', '', '', 100, 'c', 0, 4, NULL, '{}', '{}', '', true);
 INSERT INTO products VALUES ('Broadcom Corporation', 'US1113201073', 'USD', 1, '|NASDAQ100|SP500|', 76527, '', '', '', '', 100, 'c', 0, 2, 'BRCM', '{1}', '{3}', 'BRCM||us||False', false);
 INSERT INTO products VALUES ('Broadridge Financial Solutions Inc.', NULL, 'USD', 1, NULL, 77303, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BR||us||False', false);
 INSERT INTO products VALUES ('Brookdale Senior Living Inc.', NULL, 'USD', 1, NULL, 75521, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BKD||us||False', false);
@@ -2585,6 +2585,7 @@ INSERT INTO products VALUES ('CAAM MULTIFONDO BAJO RIESGO', 'ES0164371033', 'EUR
 INSERT INTO products VALUES ('CAAM MULTIFONDO GLOBAL', 'ES0126545039', 'EUR', 2, '|f_es_BMF|', 78547, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04Q4J', '{}', '{8}', 'ES0126545039||es||False', false);
 INSERT INTO products VALUES ('CAAM Multifondo VaR 6 FI', 'ES0162943031', 'EUR', 2, '|f_es_BMF|', 74864, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0162943031||None||False', true);
 INSERT INTO products VALUES ('Cabela''s Inc.', NULL, 'USD', 1, NULL, 75850, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#CAB||us||False', false);
+INSERT INTO products VALUES ('CABK Equilibrio', NULL, 'EUR', 8, NULL, -34, NULL, NULL, NULL, NULL, 25, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('Cablevision Systems Corp.', '', 'USD', 1, '|SP500|', 76258, '', '', '', '', 100, 'c', 0, 2, 'CVC', '{1}', '{3}', 'NYSE#CVC||us||False', false);
 INSERT INTO products VALUES ('Cabot Corp.', '', 'USD', 1, '|SP500|', 76720, '', '', '', '', 100, 'c', 0, 2, 'CBT', '{1}', '{3}', 'NYSE#CBT||us||False', false);
 INSERT INTO products VALUES ('Cabot Oil & Gas Corp.', NULL, 'USD', 1, NULL, 75368, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#COG||us||False', false);
@@ -3557,7 +3558,14 @@ INSERT INTO products VALUES ('Demand Media Inc.', NULL, 'USD', 1, NULL, 79902, N
 INSERT INTO products VALUES ('Denbury Resources Inc.', NULL, 'USD', 1, NULL, 77000, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#DNR||us||False', false);
 INSERT INTO products VALUES ('DENTSPLY International Inc.', 'US2490301072', 'USD', 1, '|NASDAQ100|', 77606, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'XRAY||us||False', false);
 INSERT INTO products VALUES ('DEOLEO', 'ES0110047919', 'EUR', 1, '|MERCADOCONTINUO|', 78473, '', '', '', '', 100, 'c', 0, 1, 'OLE.MC', '{9}', '{3}', 'MC#ES0110047919||es||False', false);
+INSERT INTO products VALUES ('DEPOSITO BANKINTER', '', 'EUR', 10, '', -3, '', '', '', '', 0, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BANKINTER||es||True', false);
+INSERT INTO products VALUES ('DEPOSITO BARCLAYS', NULL, 'EUR', 2, NULL, -4, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BARCLAYS||es||True', false);
+INSERT INTO products VALUES ('Depósito Estructurado Bankinter', '', 'EUR', 10, '', -9, '', '', '', '', 100, 'i', 0, 1, NULL, NULL, NULL, '', false);
+INSERT INTO products VALUES ('DEPOSITO IBERCAJA', '', 'EUR', 10, '', -5, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false);
+INSERT INTO products VALUES ('DEPOSITO LACAIXA', NULL, 'EUR', 2, NULL, -6, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO LACAIXA||es||True', false);
 INSERT INTO products VALUES ('Derby Cycle AG', 'DE000A1H6HN1', 'EUR', 1, '|DEUTSCHEBOERSE|', 79508, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1H6HN1||de||False', false);
+INSERT INTO products VALUES ('DERECHOS BANCO SANTANDER', NULL, 'EUR', 2, NULL, -7, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS BANCO DE SANTANDER||es||True', false);
+INSERT INTO products VALUES ('DERECHOS IBERDROLA', '', 'EUR', 1, '', -8, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS IBERDROLA||None||False', false);
 INSERT INTO products VALUES ('DERICHEBOURG', 'FR0000053381', 'EUR', 1, '|EURONEXT|', 79000, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000053381||fr||False', false);
 INSERT INTO products VALUES ('Desarrolladora Homex S.A.B. de C.V.', NULL, 'USD', 1, NULL, 78199, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#HXM||us||False', false);
 INSERT INTO products VALUES ('Deufol AG', 'DE0005101505', 'EUR', 1, '|DEUTSCHEBOERSE|', 78762, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005101505||de||False', false);
@@ -5663,6 +5671,7 @@ INSERT INTO products VALUES ('MANRESA PREMIUM', 'ES0117141038', 'EUR', 2, '|f_es
 INSERT INTO products VALUES ('MANRESA VALOR', 'ES0117142002', 'EUR', 2, '|f_es_BMF|', 77043, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0117142002||es||False', true);
 INSERT INTO products VALUES ('MAN SE St', 'DE0005937007', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|', 81294, '', '', '', '', 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937007||de||False', false);
 INSERT INTO products VALUES ('MAN SE Vz', 'DE0005937031', 'EUR', 1, '|DEUTSCHEBOERSE|', 81295, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937031||de||False', false);
+INSERT INTO products VALUES ('MANUEL PASCUAL SALCEDO S.A.', '', 'EUR', 1, '', -2, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'MANUEL PASCUAL SALCEDO||es||True', true);
 INSERT INTO products VALUES ('Manulife Financial Corp.', NULL, 'USD', 1, NULL, 78046, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MFC||us||False', false);
 INSERT INTO products VALUES ('MANUTAN INTL', 'FR0000032302', 'EUR', 1, '|EURONEXT|', 78308, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000032302||fr||False', false);
 INSERT INTO products VALUES ('Manz AG', 'DE000A0JQ5U3', 'EUR', 1, '|DEUTSCHEBOERSE|', 81300, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JQ5U3||de||False', false);
@@ -6289,6 +6298,7 @@ INSERT INTO products VALUES ('Piper Jaffray Cos.', NULL, 'USD', 1, NULL, 77179, 
 INSERT INTO products VALUES ('P&I Personal & Informatik AG', 'DE0006913403', 'EUR', 1, '|DEUTSCHEBOERSE|', 80580, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006913403||de||False', false);
 INSERT INTO products VALUES ('Pitney Bowes Inc.', NULL, 'USD', 1, NULL, 75166, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PBI||us||False', false);
 INSERT INTO products VALUES ('Plains Exploration & Production Co.', NULL, 'USD', 1, NULL, 75221, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PXP||us||False', false);
+INSERT INTO products VALUES ('Plan Caixa Equilibrio', '', 'EUR', 8, '', -33, '', '', '', '', 25, 'c', 0, 1, '', '{}', '{}', '', false);
 INSERT INTO products VALUES ('Plantronics Inc.', NULL, 'USD', 1, NULL, 79027, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PLT||us||False', false);
 INSERT INTO products VALUES ('PLANT.TERRES ROUG.', 'LU0012113584', 'EUR', 1, '|EURONEXT|', 79334, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#LU0012113584||fr||False', false);
 INSERT INTO products VALUES ('PLASTIC OMNIUM', 'FR0000124570', 'EUR', 1, '|EURONEXT|', 79484, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000124570||fr||False', false);
@@ -6661,6 +6671,7 @@ INSERT INTO products VALUES ('RENTA FIJA 21', 'ES0126517038', 'EUR', 2, '|f_es_B
 INSERT INTO products VALUES ('RENTMADRID 2', 'ES0173441033', 'EUR', 2, '|f_es_BMF|', 81455, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04PVZ', '{}', '{8}', 'ES0173441033||es||False', false);
 INSERT INTO products VALUES ('RENTMADRID', 'ES0173426034', 'EUR', 2, '|f_es_BMF|', 81451, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173426034||es||False', true);
 INSERT INTO products VALUES ('Reply Deutschland AG', 'DE0005501456', 'EUR', 1, '|DEUTSCHEBOERSE|', 80760, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005501456||de||False', false);
+INSERT INTO products VALUES ('REPO Obligaciones del tesoro público', '', 'EUR', 7, '', -18, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('REpower Systems SE', 'DE0006177033', 'EUR', 1, '|DEUTSCHEBOERSE|', 75455, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006177033||de||False', false);
 INSERT INTO products VALUES ('REPSOL YPF', 'ES0173516115', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', 79360, '', '', '', '', 100, 'c', 0, 1, 'REP.MC', '{9}', '{3}', 'MC#ES0173516115||es||False', false);
 INSERT INTO products VALUES ('Republic Services Inc.', NULL, 'USD', 1, NULL, 75384, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RSG||us||False', false);
@@ -7940,7 +7951,23 @@ INSERT INTO products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, '|EURON
 INSERT INTO products VALUES ('zooplus AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005111702||de||False', false);
 INSERT INTO products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010298901||fr||False', false);
 INSERT INTO products VALUES ('Zuoan Fashion Ltd.', NULL, 'USD', 1, NULL, 78062, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ZA||us||False', false);
-INSERT INTO globals VALUES (1, 'Version', '201708031837');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-33');
+INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
+INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
+INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
+INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
+INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
+INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
+INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718, 81479');
+INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
+INSERT INTO globals VALUES (1, 'Version', '201708040826');
+INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
+INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
+INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
+INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '7500');
+INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '500');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;

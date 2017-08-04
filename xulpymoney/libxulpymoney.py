@@ -6651,20 +6651,13 @@ class SetQuotesBasic:
        
     
     def load_from_db(self):
-        """Función que calcula last, penultimate y lastdate """
-        triplete=Quote(self.mem).init__from_query_triplete(self.product)
-        if triplete!=None:
-            self.endlastyear=triplete[0]
-            self.penultimate=triplete[1]
-            self.last=triplete[2]
-#            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
-        else:
-            self.last=Quote(self.mem).init__from_query(self.product,  self.mem.localzone.now())
-            if self.last.datetime!=None: #Solo si hay last puede haber penultimate
-                self.penultimate=Quote(self.mem).init__from_query_penultima(self.product, dt_changes_tz(self.last.datetime, self.mem.localzone).date())
-            else:
-                self.penultimate=Quote(self.mem).init__create(self.product, None, None)
-            self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
+        """Función que carga last, penultimate y lastdate """
+        cur=self.mem.con.cursor()
+        cur.execute("select * from last_penultimate_lastyear(%s)", (self.product.id, ))
+        row=cur.fetchone()
+        self.last=Quote(self.mem).init__create(self.product, row['last_datetime'], row['last'])
+        self.penultimate=Quote(self.mem).init__create(self.product, row['penultimate_datetime'], row['penultimate'])
+        self.lastyear=Quote(self.mem).init__create(self.product, row['lastyear_datetime'], row['lastyear'])
 
     def tpc_diario(self):
         if self.last.quote==None or self.penultimate.quote==None:
@@ -6939,15 +6932,6 @@ class Quote:
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
         cur=self.mem.con.cursor()
-#        | if p_id==None:                                                                                                                                                 +>
-#   |             |           |     return { "id": None, "datetime": None, "quote": None }                                                                                                     +>
-#   |             |           | regq=plpy.execute("select quote, datetime from quotes where id={0} and datetime<='{1}' order by datetime desc limit 1".format(p_id,p_datetime))                +>
-#   |             |           | if len(regq)==1:                                                                                                                                               +>
-#   |             |           |   return { "id": p_id, "datetime": regq[0]["datetime"], "quote": regq[0]["quote"] }                                                                            +>
-#   |             |           | else:                                                                                                                                                          +>
-#   |             |           |   return { "id": p_id, "datetime": None, "quote": None }   
-#        if product==None or product.id==None:
-#            return self.init__create()
         cur.execute("select * from quote (%s,%s)", (product.id,  dt))
         row=cur.fetchone()
         cur.close()
@@ -6961,25 +6945,7 @@ class Quote:
         row=cur.fetchone()
         cur.close()
         return self.init__db_row(row, product)        
-        
-    def init__from_query_triplete(self, product): 
-        """Función que busca el last, penultimate y endlastyear de golpe
-       Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
-      Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
-        cur=self.mem.con.cursor()
-        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
-        cur.execute("select id,datetime, quote from quote (%s, now()) union all select id,datetime,quote from penultimate(%s,now()::date) union all select id,datetime,quote from quote(%s,%s) order by datetime", (product.id, product.id,  product.id,  endlastyear))
-        if cur.rowcount!=3:
-            cur.close()
-            return None
-        resultado=[]
-        for row in  cur:
-            if row['datetime']==None: #Pierde el orden y no se sabe cual es cual
-                cur.close()
-                return None
-            resultado.append(Quote(self.mem).init__db_row(row, product))
-        cur.close()
-        return resultado
+
         
 class OHCL:
     def __init__(self,  mem):
