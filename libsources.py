@@ -4,14 +4,15 @@ import os
 import urllib.request
 import time
 import datetime
+import googlefinance.client as gfc
 import sys
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
+#from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess, QUrl
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess
 from PyQt5.QtGui import QIcon
 from Ui_wdgSource import Ui_wdgSource
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Quote, SetProducts, SetQuotes, ampm_to_24, qleft, b2s, dt, dt_with_pytz, qmessagebox
+from libxulpymoney import Quote, SetProducts, SetQuotes, qleft, b2s, dt, dt_with_pytz, qmessagebox
 from decimal import Decimal
 from concurrent.futures import ThreadPoolExecutor,  as_completed
 
@@ -365,103 +366,103 @@ class Source(QObject):
     def steps(self):
         """Define  the number of steps of the source run"""
         logging.info ("This function must be overrided in Worker")
-
-        
-class SourceParsePage(Source):
-    loaded_page=pyqtSignal()
-    parse_page=pyqtSignal()
-    def __init__(self, mem,  ):
-        Source.__init__(self, mem)
-
-        self.url="urlempty"
-        
-    def run(self):  
-        self.setStatus(SourceStatus.Running)
-        self.products.load_from_db(self.sql)     
-        self.next_step()
-        self.loaded_page.connect(self.on_load_page)
-        self.loaded_page.emit()
-        self.next_step()
-        
-        self.parse_page.connect(self.on_parse_page)
-        self.parse_page.emit()
-        self.next_step()
- 
-        self.quotes_save()
-        self.mem.con.commit()
-        self.next_step()
-        
-        self.setStatus(SourceStatus.Finished)
-        
-        
-    def steps(self):
-        """Define  the number of steps of the source run"""
-        return 5
-
-    def on_load_page(self):
-        self.web=self.load_page(self.url)
-        if self.web==None:
-            return
-
-    def on_parse_page(self):
-        """This is the function to override. In the overrided function I must add Quotes with self.quotes.append. Will be saved later"""
-        pass
-
-class SourceIterateProducts(Source):
-    """Several products in several pages
-    
-    Clase nueva para todas las sources
-    Debera:
-    - load_products
-    - fech_page
-    - parse_page
-    - check_quotes"""
-    execute_product=pyqtSignal(int)
-    def __init__(self, mem,  type=2, sleep=0):
-        Source.__init__(self, mem)
-        self.sleep=sleep#wait between products
-        self.type=type#0 silent in xulpymoney, 1 console
-
-        
-    def steps(self):
-        """Define  the number of steps of the source run"""
-        return self.products.length()+3
-        
-    def run(self):
-        self.setStatus(SourceStatus.Running)
-        self.products.load_from_db(self.sql)
-        self.next_step()
- 
-        self.products_iterate()
-        
-        self.quotes_save()
-        self.mem.con.commit()
-        self.next_step()
-        
-        self.setStatus(SourceStatus.Finished)
-        
-        
-        
 #
-#    def on_execute_product(self, id_product):
+#        
+#class SourceParsePage(Source):
+#    loaded_page=pyqtSignal()
+#    parse_page=pyqtSignal()
+#    def __init__(self, mem,  ):
+#        Source.__init__(self, mem)
+#
+#        self.url="urlempty"
+#        
+#    def run(self):  
+#        self.setStatus(SourceStatus.Running)
+#        self.products.load_from_db(self.sql)     
+#        self.next_step()
+#        self.loaded_page.connect(self.on_load_page)
+#        self.loaded_page.emit()
+#        self.next_step()
+#        
+#        self.parse_page.connect(self.on_parse_page)
+#        self.parse_page.emit()
+#        self.next_step()
+# 
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#        
+#        self.setStatus(SourceStatus.Finished)
+#        
+#        
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return 5
+#
+#    def on_load_page(self):
+#        self.web=self.load_page(self.url)
+#        if self.web==None:
+#            return
+#
+#    def on_parse_page(self):
 #        """This is the function to override. In the overrided function I must add Quotes with self.quotes.append. Will be saved later"""
 #        pass
-
-    def products_iterate(self):
-        """Makes iteration. When its cancelled clears self.quotes.arr"""
-        for i,  product in enumerate(self.products.arr): 
-            if self.type==1:
-                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
-                sys.stdout.write("\b"*1000+stri)
-                sys.stdout.flush()
-            if self.stopping==True:
-                logging.debug ("Stopping")
-                self.quotes.clear()
-                break
-            self.execute_product.emit(product.id)
-            self.next_step()
-            time.sleep(self.sleep)#time step
-        print("")
+##
+#class SourceIterateProducts(Source):
+#    """Several products in several pages
+#    
+#    Clase nueva para todas las sources
+#    Debera:
+#    - load_products
+#    - fech_page
+#    - parse_page
+#    - check_quotes"""
+#    execute_product=pyqtSignal(int)
+#    def __init__(self, mem,  type=2, sleep=0):
+#        Source.__init__(self, mem)
+#        self.sleep=sleep#wait between products
+#        self.type=type#0 silent in xulpymoney, 1 console
+#
+#        
+#    def steps(self):
+#        """Define  the number of steps of the source run"""
+#        return self.products.length()+3
+#        
+#    def run(self):
+#        self.setStatus(SourceStatus.Running)
+#        self.products.load_from_db(self.sql)
+#        self.next_step()
+# 
+#        self.products_iterate()
+#        
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#        
+#        self.setStatus(SourceStatus.Finished)
+#        
+#        
+#        
+##
+##    def on_execute_product(self, id_product):
+##        """This is the function to override. In the overrided function I must add Quotes with self.quotes.append. Will be saved later"""
+##        pass
+#
+#    def products_iterate(self):
+#        """Makes iteration. When its cancelled clears self.quotes.arr"""
+#        for i,  product in enumerate(self.products.arr): 
+#            if self.type==1:
+#                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+#                sys.stdout.write("\b"*1000+stri)
+#                sys.stdout.flush()
+#            if self.stopping==True:
+#                logging.debug ("Stopping")
+#                self.quotes.clear()
+#                break
+#            self.execute_product.emit(product.id)
+#            self.next_step()
+#            time.sleep(self.sleep)#time step
+#        print("")
 
 #    
 #class WorkerMercadoContinuo(Source):
@@ -968,7 +969,7 @@ class WorkerMorningstar(Source):
 class WorkerGoogle(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
-        SourceParsePage.__init__(self, mem)
+        Source.__init__(self, mem)
         self.setName(self.tr("Google source"))
 
     def sum_tickers(self, setproducts):
@@ -1124,48 +1125,55 @@ class WorkerGoogleHistorical(Source):
         
     def on_execute_product(self,  product):
         """inico y fin son dos dates entre los que conseguir los datos."""
-        if product.id!=79329:
-            return []
         quotes=[]
         ultima=product.fecha_ultima_actualizacion_historica()
         if ultima==datetime.date.today()-datetime.timedelta(days=1):
             return quotes
             
-            
+        days=(datetime.date.today()-ultima).days
+        months=int(days/30)+1
+        
         googleticker=ticker2googleticker(product.ticker)
         if googleticker==None:
             self.log("ticker2googleticker {} failed".format(product.ticker))
-        #https://www.google.com/finance/historical?cid=368894934436308&startdate=Jun+5%2C+2016&enddate=Jun+18%2C+2017&num=30&ei=op5MWbneEsSLUKDklIAF
-        url='http://www.google.com/finance/historical?q={}&output=csv'.format(googleticker)
-        print(url)
-        mweb=self.load_page(url)
-        if mweb==None:
-            return quotes
-        web=[]
-        ##TRansform httpresopone to list to iterate several times
-        for line in mweb.readlines():
-            print(line)
-#            web.append(b2s(line)[:-1])
-#        web=web[1:]#Quita primera file de encabezado
-#        self.toWebLog(web)
-#        
-#        for i in web: 
-#            datos=i.split(",")
-#            fecha=datos[0].split("-")
-#            date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
-#            
-#            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
-#            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
-#            datetimefirst=datestart-datetime.timedelta(seconds=1)
-#            datetimelow=(datestart+(dateends-datestart)*1/3)
-#            datetimehigh=(datestart+(dateends-datestart)*2/3)
-#            datetimelast=dateends+datetime.timedelta(microseconds=4)
-#
-#            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
-#            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
-#            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
-#            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
-#        return quotes
+            return []
+        
+        a=googleticker.split(":")
+        if len(a)==2:
+            pre=a[0]
+            suf=a[1]
+        else:
+            pre=a[0]
+            suf=""
+
+        # Dow Jones
+        param = {
+            'q': suf, # Stock symbol (ex: "AAPL")
+            'i': "86400", # Interval size in seconds ("86400" = 1 day intervals)
+            'x': pre, # Stock exchange symbol on which stock is traded (ex: "NASD")
+            'p': "{}M".format(months) # Period (Ex: "1Y" = 1 year)
+        }
+        # get price data (return pandas dataframe)
+        df = gfc.get_price_data(param)
+        ##TRansform htpresopone to list to iterate several times
+        for timestamp,  ohcl  in df.iterrows():
+            date=timestamp.to_pydatetime().date()
+            if ultima>date:
+                continue
+            print(googleticker, timestamp.to_pydatetime().date(),  ohcl['Close'])
+            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
+            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
+            datetimefirst=datestart-datetime.timedelta(seconds=1)
+            datetimelow=(datestart+(dateends-datestart)*1/3)
+            datetimehigh=(datestart+(dateends-datestart)*2/3)
+            datetimelast=dateends+datetime.timedelta(microseconds=4)
+
+            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(ohcl["Close"])))#closes
+            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(ohcl["Low"])))#low
+            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(ohcl["High"])))#high
+            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(ohcl["Open"])))#open
+        print(googleticker,"Ultima", ultima, days, months)
+        return quotes
 
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
@@ -1190,30 +1198,6 @@ class WorkerGoogleHistorical(Source):
         self.setStatus(SourceStatus.Loaded)
         
     def run(self):
-#        self.setStatus(SourceStatus.Running)
-#        self.products.load_from_db(self.sql)
-#        self.next_step()
-#        for i,  product in enumerate(self.products.arr): 
-#            if self.type==1:
-#                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
-#                sys.stdout.write("\b"*1000+stri)
-#                sys.stdout.flush()
-#            if self.stopping==True:
-#                print ("Stopping")
-#                self.quotes.clear()
-#                break
-#            self.on_execute_product(product.id)
-#            self.next_step()
-#            time.sleep(self.sleep)#time step
-#        print("")
-#        self.quotes_save()
-#        self.mem.con.commit()
-#        self.next_step()
-#        
-#        self.setStatus(SourceStatus.Finished)
-#        
-        
-        #
         self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)
         self.next_step()
