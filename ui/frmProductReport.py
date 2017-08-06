@@ -556,8 +556,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             m.setText(self.tr("You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product"))
             m.exec_()   
 
-            (last, penultimate, endlastyear, estimations_dps)=self.product.has_basic_data()
-            while (last, penultimate, endlastyear, estimations_dps)!=(True, True, True, True):
+            (last, penultimate, lastyear, estimations_dps)=self.product.has_basic_data()
+            while (last, penultimate, lastyear, estimations_dps)!=(True, True, True, True):
                 now=datetime.datetime.now()
                 if last==False:
                     w=frmQuotesIBM(self.mem,  self.product)
@@ -574,10 +574,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
                     w.exec_()    
                     
-                if endlastyear==False:
+                if lastyear==False:
                     w=frmQuotesIBM(self.mem,  self.product)
                     w.wdgDT.set(self.mem, datetime.datetime(now.year-1, 12, 31, self.product.stockmarket.closes.hour, self.product.stockmarket.closes.minute), self.mem.localzone)
-                    w.lblInvestment.setText(self.tr("Please add the product endlastyear quote"))
+                    w.lblInvestment.setText(self.tr("Please add the product lastyear quote"))
                     w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
                     w.exec_()    
                 
@@ -587,8 +587,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
                     d.exec_()   
                 
-                (last, penultimate, endlastyear, estimations_dps)=self.product.has_basic_data()
-                print(last, penultimate, endlastyear, estimations_dps)
+                (last, penultimate, lastyear, estimations_dps)=self.product.has_basic_data()
+                print(last, penultimate, lastyear, estimations_dps)
             self.done(0)
         elif self.product.id>0:
             m=QMessageBox()

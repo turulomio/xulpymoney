@@ -2276,7 +2276,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             tabla.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.balance(a.investment.product.result.basic.last, type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.pendiente(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8, a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.endlastyear, type=2).qtablewidgetitem())
+            tabla.setItem(rownumber, 8, a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.lastyear, type=2).qtablewidgetitem())
             tabla.setItem(rownumber, 9, a.tpc_tae(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             tabla.setItem(rownumber, 10, a.tpc_total(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -2517,7 +2517,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
 
         if quote==None:
             quote=self.investment.product.result.basic.last
-        quote_endlastyear=self.investment.product.result.basic.endlastyear
+        quote_lastyear=self.investment.product.result.basic.lastyear
 
         tabla.applySettings()
         tabla.clearContents()
@@ -2532,7 +2532,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
             tabla.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.tpc_anual(quote, quote_endlastyear, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.tpc_anual(quote, quote_lastyear, type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -3179,7 +3179,7 @@ class InvestmentOperationCurrent:
         elif type==3:
             return Money(self.mem, abs(self.acciones*penultimate.quote), self.investment.product.currency).convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
             
-    def tpc_anual(self,  last,  endlastyear, type=1):        
+    def tpc_anual(self,  last,  lastyear, type=1):        
         """
             last is a Money object with investment.product currency
             type puede ser:
@@ -3193,15 +3193,15 @@ class InvestmentOperationCurrent:
         mlast=self.investment.quote2money(last, type)
         
         if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
-            mendlastyear=self.price(type)
+            mlastyear=self.price(type)
         else:
-            mendlastyear=self.investment.quote2money(endlastyear, type)
+            mlastyear=self.investment.quote2money(lastyear, type)
             
-#        if mendlastyear.isZero():
+#        if mlastyear.isZero():
 #            return 0
 #            
-#        return 100*(mlast-mendlastyear).amount/mendlastyear.amount
-        return Percentage(mlast-mendlastyear, mendlastyear)
+#        return 100*(mlast-mlastyear).amount/mlastyear.amount
+        return Percentage(mlast-mlastyear, mlastyear)
     
     def tpc_total(self,  last,  type=1):
         """
@@ -6223,8 +6223,8 @@ class EstimationDPS:
         cur.close()
         
     def percentage(self):
-        """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
-        Necesita tener cargado en id el endlastyear """
+        """Hay que tener presente que lastyear (Objeto Quote) es el lastyear del año actual
+        Necesita tener cargado en id el lastyear """
         
 #        try:
 #            return self.estimation*100/self.product.result.basic.last.quote
@@ -6386,25 +6386,25 @@ class Product:
         return False
 
     def has_basic_data(self):
-        """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, endlastyear, thisyearestimation_dps)"""
+        """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, lastyear, thisyearestimation_dps)"""
         result=QuotesResult(self.mem, self)
         result.get_basic_and_ohcls()
         dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
         print (dps.estimation, dps)
-        (last, penultimate, endlastyear, estimation)=(False, False, False, False)
+        (last, penultimate, lastyear, estimation)=(False, False, False, False)
         if result.basic.last: 
             if result.basic.last.quote:
                 last=True
         if result.basic.penultimate: 
             if result.basic.penultimate.quote:
                 penultimate=True
-        if result.basic.endlastyear: 
-            if result.basic.endlastyear.quote:
-                endlastyear=True
+        if result.basic.lastyear: 
+            if result.basic.lastyear.quote:
+                lastyear=True
         if dps:
            if dps.estimation!=None:
                 estimation=True
-        return (last, penultimate, endlastyear, estimation)
+        return (last, penultimate, lastyear, estimation)
         
         
     def is_deletable(self):
@@ -6640,20 +6640,23 @@ class SetQuotesBasic:
     """Clase que agrupa quotes basic, last penultimate, lastyear """
     def __init__(self, mem, product):
         self.mem=mem
-        self.endlastyear=None
+        self.lastyear=None
         self.last=None
         self.penultimate=None
         self.product=product       
         
-    def init__create(self, last,  penultimate, endlastyear):
+    def init__create(self, last,  penultimate, lastyear):
         self.last=last
         self.penultimate=penultimate
-        self.endlastyear=endlastyear
+        self.lastyear=lastyear
         return self
        
     
     def load_from_db(self):
-        """Función que carga last, penultimate y lastdate """
+        """
+            Función que carga last, penultimate y lastdate 
+            To see if there is a good value, You must search for datetime!= None or quote!=None
+        """
         cur=self.mem.con.cursor()
         cur.execute("select * from last_penultimate_lastyear(%s)", (self.product.id, ))
         row=cur.fetchone()
@@ -6668,10 +6671,10 @@ class SetQuotesBasic:
             return Percentage(self.last.quote-self.penultimate.quote, self.penultimate.quote)
 
     def tpc_anual(self):
-        if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
+        if self.lastyear.quote==None or self.lastyear.quote==0 or self.last.quote==None:
             return Percentage()
         else:
-            return Percentage(self.last.quote-self.endlastyear.quote, self.endlastyear.quote)
+            return Percentage(self.last.quote-self.lastyear.quote, self.lastyear.quote)
 
 class SetQuotesIntraday(SetQuotes):
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
@@ -6846,25 +6849,6 @@ class Quote:
     def __repr__(self):
         return "Quote de {0} de fecha {1} vale {2}".format(self.product.name, self.datetime, self.quote)
         
-#        
-#    def money(self, currency=None):
-#        """
-#            Returns a Money object 
-#            If currency is None, money will have the product currency.id
-#            If currency is not None mouney witll be convert to the currency using quote.datetime
-#        
-#        """
-#        if self.quote==None:
-#            logging.critical("I can't convert a Quote to a Money object if quote is None. Returning None")
-#            return None
-#            
-#        if currency==None:
-#            return Money(self.mem, self.quote, self.product.currency)
-#        else:
-#            return Money(self.mem, self.quote, self.product.currency).convert(currency, self.datetime)
-            
-
-        
     def init__create(self,  product,  datetime,  quote):
         """Función que crea un Quote nuevo, con la finalidad de insertarlo
         quote must be a Decimal object."""
@@ -6897,6 +6881,9 @@ class Quote:
             Returns a MOney Object
         """
         return Money(self.mem, self.quote, self.product.currency)
+    
+    def none(self, product):
+        return self.init__create(product, None, None)
         
     def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
@@ -7263,18 +7250,18 @@ class SetOHCLDaily(SetOHCL):
         """Returns a SetQuotesBasic con los datos del setohcldairy"""
         last=None
         penultimate=None
-        endlastyear=None
+        lastyear=None
         if self.length()==0:
-            return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
+            return SetQuotesBasic(self.mem, self.product).init__create(Quote(self.mem).none(self.product), Quote(self.mem).none(self.product),  Quote(self.mem).none(self.product))
         ohcl=self.arr[self.length()-1]#last
         last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
             penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
-        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
+        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#lastyear
         if ohcl!=None:
-            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
-        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
+            lastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
+        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, lastyear)
 
     def dates(self):
         """Returns a list with all the dates of the array"""
