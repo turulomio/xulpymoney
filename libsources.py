@@ -1128,6 +1128,7 @@ class WorkerGoogleHistorical(Source):
         quotes=[]
         ultima=product.fecha_ultima_actualizacion_historica()
         if ultima==datetime.date.today()-datetime.timedelta(days=1):
+            print(product.name, ultima, "Omited")
             return quotes
             
         days=(datetime.date.today()-ultima).days
@@ -1160,7 +1161,6 @@ class WorkerGoogleHistorical(Source):
             date=timestamp.to_pydatetime().date()
             if ultima>date:
                 continue
-            print(googleticker, timestamp.to_pydatetime().date(),  ohcl['Close'])
             datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
             dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
             datetimefirst=datestart-datetime.timedelta(seconds=1)

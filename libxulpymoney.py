@@ -6443,13 +6443,13 @@ class Product:
         cur.execute("update products set priorityhistorical=%s", (str(self.priorityhistorical)))
 
     def fecha_ultima_actualizacion_historica(self):
-        resultado=datetime.date(self.mem.fillfromyear, 1, 1)
         cur=self.mem.con.cursor()
         cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
-        if cur.rowcount==1:
-            dat=cur.fetchone()[0]
-            if dat!=None:
-                resultado=dat
+        dat=cur.fetchone()[0]
+        if dat==None:
+            resultado=datetime.date(self.mem.fillfromyear, 1, 1)
+        else:
+            resultado=dat
         cur.close()
         return resultado
 
@@ -6496,6 +6496,9 @@ class SetQuotes:
         for q in self.arr:
             print(" * {}".format(q))
     
+    
+    
+    
     def save(self):
         """Recibe con code,  date,  time, value, zone
             Para poner el dato en close, el valor de time debe ser None
@@ -6520,8 +6523,7 @@ class SetQuotes:
                 
         print ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
         return (insertados, ignored, modificados, malos)
-             
-             
+
     def addTo(self, settoadd):
         """Añade los quotes en array a un nuevo set paasado por parametro"""
         for q in self.arr:

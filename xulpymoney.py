@@ -33,8 +33,6 @@ app.setOrganizationName("Mariano Muñoz ©")
 app.setOrganizationDomain("turulomio.users.sourceforge.net")
 app.setApplicationName("Xulpymoney")
 
-
-
 signal.signal(signal.SIGINT, signal_handler)
 
 parser=argparse.ArgumentParser(
@@ -65,7 +63,6 @@ else:
     logging.basicConfig(level=logging.CRITICAL, format=logFormat, datefmt=dateFormat)
     logging.critical("--debug parameter must be DEBUG, INFO, WARNING, ERROR or CRITICAL")
     sys.exit(1)
-    
 
 mem=MemXulpymoney()
 mem.setQTranslator(QTranslator(app))
@@ -88,8 +85,6 @@ if access.result()==QDialog.Accepted:
             qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
             sys.exit(2)
 
-
     mem.frmMain = frmMain(mem)
     mem.frmMain.show()
-
     sys.exit(app.exec_())
