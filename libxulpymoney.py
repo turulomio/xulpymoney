@@ -6428,6 +6428,8 @@ class Product:
                 return "INDEXBME:IB"
             if self.ticker=="^GSPC":
                 return "INDEXSP:.INX"
+            if self.ticker=="^VIX":
+                return "INDEXCBOE:VIX"
         elif self.type.id==6:#Currencies
             if self.ticker=="EURUSD=X":
                 return "EURUSD"
