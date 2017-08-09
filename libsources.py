@@ -550,9 +550,10 @@ class WorkerMorningstar(Source):
         
     def on_execute_product(self,  product):
         quotes=[]
-        if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
-            self.log("I already got yesterday's price: {}".format(product.name))
-            return quotes
+        if product.result.basic.last.datetime!=None:
+            if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
+                self.log("I already got yesterday's price: {}".format(product.name))
+                return quotes
 
         web2=self.load_page('http://www.morningstar.es/es/funds/snapshot/snapshot.aspx?id='+product.ticker)
         if web2==None:
@@ -972,19 +973,6 @@ class WorkerGoogle(Source):
         Source.__init__(self, mem)
         self.setName(self.tr("Google source"))
 
-    def sum_tickers(self, setproducts):
-        s=""
-        for p in setproducts.arr:
-            if p.ticker==None:
-                continue
-            if p.ticker=="":
-                continue
-            ticker=ticker2googleticker(p.ticker)
-            if ticker==None:
-                self.log("ticker2googleticker {} failed".format(p.ticker))
-                continue
-            s=s+ticker+","
-        return s[:-1]
                 
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
@@ -1033,7 +1021,8 @@ class WorkerGoogle(Source):
         "Overrides SourceParsePage"
         #self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
         
-        self.url = 'http://finance.google.com/finance/info?client=ig&q={}'.format(self.sum_tickers(setproducts))
+        self.url = 'http://finance.google.com/finance/info?client=ig&q={}'.format(setproducts.googletickers_string())
+        print(self.url)
         logging.debug(self.url)
 
         web=self.load_page(self.url)
@@ -1045,15 +1034,14 @@ class WorkerGoogle(Source):
         for data in all_data:
             stock = self.parse_stock(data)
             googleticker="{}:{}".format(stock["e"], stock["t"])
-                                
-            ##ticker2googleticker is validated in sum_tickers
-            
-            ticker=googleticker2ticker(googleticker)
-            if ticker==None:
-                self.log("googleticker2ticker {} failed".format(googleticker))
-                continue
 
-            zone=googleticker2pytz(googleticker)
+            product=setproducts.find_by_googleticker(googleticker)
+            if product==None:
+                self.log("Product {} not found".format(googleticker ))
+                continue
+                
+            ##googleticker is validated in sum_tickers
+            zone=product.googleticker2pytz(googleticker)
             if zone==None:
                 self.log("googleticker2pytz {} failed".format(googleticker))
                 continue
@@ -1061,20 +1049,11 @@ class WorkerGoogle(Source):
             if stock["lt_dts"]=="":
                 self.log("{} has no date".format(googleticker))
                 continue
-            
-            product=self.products.find_by_ticker(ticker)
-            if product==None:
-                self.log("Product {} not found".format(ticker ))
-                continue
-                
-            product=self.products.find_by_ticker(ticker)
-            if product==None:
-                self.log("Product {} not found".format(ticker ))
-                continue
+
 
             quote=Decimal(stock["l_fix"])
             if quote==Decimal(0):
-                self.log("Quote {} with 0 value".format(ticker ))
+                self.log("Quote {} with 0 value".format(product.ticker))
                 continue
             dat=datetime.datetime.strptime( stock["lt_dts"], "%Y-%m-%dT%H:%M:%SZ" )
             self.quotes.append(Quote(self.mem).init__create(product,dt_with_pytz(dat.date(),dat.time(),zone), quote))
@@ -1134,9 +1113,9 @@ class WorkerGoogleHistorical(Source):
         days=(datetime.date.today()-ultima).days
         months=int(days/30)+1
         
-        googleticker=ticker2googleticker(product.ticker)
+        googleticker=product.googleticker()
         if googleticker==None:
-            self.log("ticker2googleticker {} failed".format(product.ticker))
+            self.log("googleticker {} failed".format(product.ticker))
             return []
         
         a=googleticker.split(":")
@@ -1235,53 +1214,6 @@ class WorkerGoogleHistorical(Source):
 
 ##################################
 
-def ticker2googleticker(ticker):
-    if  ticker[-3:]==".MC":
-        return "BME:{}".format(ticker[:-3])
-    if  ticker[-3:]==".DE":
-        return "FRA:{}".format(ticker[:-3])
-    if  ticker[-3:]==".PA":
-        return "EPA:{}".format(ticker[:-3])
-    if  ticker[-3:]==".MI":
-        return "BIT:{}".format(ticker[:-3])
-    if ticker=="^IBEX":
-        return "INDEXBME:IB"
-    if ticker in("AH.AS"):
-        return ""
-    if len(ticker.split("."))==1:##Americanas
-        return ticker
-    logging.debug("ticker2googleticker {} not found".format(ticker))
-    
-
-def googleticker2ticker(ticker):
-    a=ticker.split(":")
-    if  a[0]=="BME":
-        return "{}.MC".format(a[1])
-    if  a[0]=="FRA":
-        return "{}.DE".format(a[1])
-    if  a[0]=="EPA":
-        return "{}.PA".format(a[1])
-    if  a[0]=="BIT":
-        return "{}.MI".format(a[1])
-    if ticker=="INDEXBME:IB":
-        return "^IBEX"
-    if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
-        return "{}".format(a[1])
-    logging.debug("googleticker2ticker {} not found".format(ticker))
-    
-def googleticker2pytz(ticker):
-    a=ticker.split(":")
-    if a[0] in ("BME",  "INDEXBME"):
-        return "Europe/Madrid"
-    if a[0] in ("FRA", ):
-        return "Europe/Berlin"
-    if a[0] in ("EPA", ):
-        return "Europe/Paris"
-    if a[0] in ("BIT", ):
-        return "Europe/Rome"
-    if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
-        return "America/New_York"
-    return None
 
 def sync_data(con_source, con_target, progress=None):
     """con is con_target, 

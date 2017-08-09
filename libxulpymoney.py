@@ -1027,6 +1027,17 @@ class SetProducts(SetCommons):
         self.mem=mem
         
 
+    def find_by_googleticker(self, ticker):
+        if ticker==None:
+            return None
+        for p in self.arr:
+            googleticker=p.googleticker()
+            if googleticker==None:
+                continue
+            if googleticker.upper()==ticker.upper():
+                return p
+        return None        
+
     def find_by_ticker(self, ticker):
         if ticker==None:
             return None
@@ -1062,7 +1073,23 @@ class SetProducts(SetCommons):
         ##Carga los products
         if len(lista)>0:
             self.load_from_db("select * from products where id in ("+lista+")", progress )
+
+
+    def googletickers_string(self):
+        s=""
+        for p in self.arr:
+            if p.ticker==None:
+                continue
+            if p.ticker=="":
+                continue
+            ticker=p.googleticker()
+            if ticker==None:
+                logging.debug("googleticker {} failed".format(p.ticker))
+                continue
+            s=s+ticker+","
+        return s[:-1]
         
+
     def load_from_db(self, sql,  progress=False):
         """sql es una query sobre la tabla inversiones
         Carga estimations_dbs, y basic
@@ -6375,6 +6402,72 @@ class Product:
         """.format(self.id)
         set.load_from_db(sql,  progress=False)
         return set
+        
+    def googleticker(self):
+        """
+            Uses ticker property. It's needed to search for a googleticker
+        """
+        if self.type.id in (1,4):#Acciones, etf
+            if  self.ticker[-3:]==".MC":
+                return "BME:{}".format(self.ticker[:-3])
+            if  self.ticker[-3:]==".DE":
+                return "FRA:{}".format(self.ticker[:-3])
+            if  self.ticker[-3:]==".PA":
+                return "EPA:{}".format(self.ticker[:-3])
+            if  self.ticker[-3:]==".MI":
+                return "BIT:{}".format(self.ticker[:-3])
+            if self.ticker in("AH.AS"):
+                return ""
+            if len(self.ticker.split("."))==1:##Americanas
+                if self.agrupations.dbstring()=="|NASDAQ100|":
+                    return "NASDAQ:{}".format(self.ticker)
+                if self.agrupations.dbstring()=="|SP500|":
+                    return "NYSE:{}".format(self.ticker)
+        elif self.type.id==3:#Indices   
+            if self.ticker=="^IBEX":
+                return "INDEXBME:IB"
+            if self.ticker=="^GSPC":
+                return "INDEXSP:.INX"
+        elif self.type.id==6:#Currencies
+            if self.ticker=="EURUSD=X":
+                return "EURUSD"
+        logging.debug("googleticker {} not found".format(self.ticker))
+        return None
+        
+
+#    def googleticker2ticker(self, ticker):
+#        """
+#            Should not be used. I should use the product.find_by_ticker
+#        """
+#        logging.info("Should not be used. I should use the product.find_by_ticker")
+#        a=ticker.split(":")
+#        if  a[0]=="BME":
+#            return "{}.MC".format(a[1])
+#        if  a[0]=="FRA":
+#            return "{}.DE".format(a[1])
+#        if  a[0]=="EPA":
+#            return "{}.PA".format(a[1])
+#        if  a[0]=="BIT":
+#            return "{}.MI".format(a[1])
+#        if ticker=="INDEXBME:IB":
+#            return "^IBEX"
+#        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
+#            return "{}".format(a[1])
+#        logging.debug("googleticker2ticker {} not found".format(ticker))
+    
+    def googleticker2pytz(self, ticker):
+        a=ticker.split(":")
+        if a[0] in ("BME",  "INDEXBME"):
+            return "Europe/Madrid"
+        if a[0] in ("FRA", ):
+            return "Europe/Berlin"
+        if a[0] in ("EPA", ):
+            return "Europe/Paris"
+        if a[0] in ("BIT", ):
+            return "Europe/Rome"
+        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
+            return "America/New_York"
+        return None
         
     def hasSameLocalCurrency(self):
         """
