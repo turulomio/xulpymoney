@@ -144,8 +144,6 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.source.setSQL(self.chkUserOnly.isChecked())
         self.source.run()
 
-
-
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
         self.source.stopping=True
@@ -995,7 +993,17 @@ class WorkerGoogle(Source):
             
         else:
             self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+        self.products.load_from_db(self.sql)    
         self.setStatus(SourceStatus.Prepared)
+        
+    def setSetProducts(self, set):
+        """
+            Allow to add a set of products instead of loading by a sql query
+        """
+        self.products=set
+        self.setStatus(SourceStatus.Prepared)
+        
 
     @classmethod
     def parse_stock(cls, data):
@@ -1066,8 +1074,6 @@ class WorkerGoogle(Source):
         self.setStatus(SourceStatus.Running)
         self.agrupation=[]#used to iterate sets de products 
         self.totals=Source(self.mem)# Used to show totals of agrupation
-        self.products=SetProducts(self.mem)#Total of products of an Agrupation
-        self.products.load_from_db(self.sql)    
         items=150
         
         logging.debug (self.products.length())
@@ -1096,10 +1102,9 @@ class WorkerGoogle(Source):
 
 class WorkerGoogleHistorical(Source):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type,  sleep=0):
+    def __init__(self, mem, sleep=0):
         Source.__init__(self, mem)
         self.setName(self.tr("Google Historical source"))
-        self.type=type
         self.sleep=sleep
         
     def on_execute_product(self,  product):
@@ -1114,7 +1119,7 @@ class WorkerGoogleHistorical(Source):
         months=int(days/30)+1
         
         googleticker=product.googleticker()
-        if googleticker==None:
+        if googleticker=="":
             self.log("googleticker {} failed".format(product.ticker))
             return []
         
@@ -1175,10 +1180,17 @@ class WorkerGoogleHistorical(Source):
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
         self.setStatus(SourceStatus.Loaded)
+
+
+    def setSetProducts(self, set):
+        """
+            Allow to add a set of products instead of loading by a sql query
+        """
+        self.products=set
+        self.setStatus(SourceStatus.Prepared)
         
     def run(self):
         self.setStatus(SourceStatus.Running)
-        self.products.load_from_db(self.sql)
         self.next_step()
         futures=[]
         with ThreadPoolExecutor(max_workers=10) as executor:
@@ -1189,10 +1201,9 @@ class WorkerGoogleHistorical(Source):
             for i,  future in enumerate(as_completed(futures)):
                 for quote in future.result():
                     self.quotes.append(quote)
-                    if self.type==1:
-                        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
-                        sys.stdout.write("\b"*1000+stri)
-                        sys.stdout.flush()
+#                        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+#                        sys.stdout.write("\b"*1000+stri)
+#                        sys.stdout.flush()
                     if self.stopping==True:
                         logging.debug ("Stopping")
                         self.quotes.clear()
