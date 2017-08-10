@@ -52,6 +52,7 @@ if __name__ == '__main__':
     parser=argparse.ArgumentParser(prog='Makefile.py', description='Makefile in python', epilog="Developed by Mariano Muñoz", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--doc', help="Generate docs and i18n",action="store_true",default=False)
     parser.add_argument('--compile', help="App compilation",action="store_true",default=False)
+    parser.add_argument('--compile_images', help="App compilation",action="store_true",default=False)
     parser.add_argument('--destdir', help="Directory to install",action="store",default="/")
     parser.add_argument('--uninstall', help="Uninstall",action="store_true",default=False)
     parser.add_argument('--dist_sources', help="Make a sources tar", action="store_true",default=False)
@@ -98,10 +99,11 @@ if __name__ == '__main__':
             #        check_call([inno,  "/o../",  "/DVERSION_NAME={}".format(version_windows()), "/DFILENAME={}".format(filename_output()),"xulpymoney.iss"], stdout=sys.stdout)
         else:
             print("You need to launch this script in a Windows environment")
+    elif args.compile_images==True:
+        shell("pyrcc5 images/xulpymoney.qrc -o images/xulpymoney_rc.py")
     elif args.compile==True:
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
-            futures.append(executor.submit(shell, "pyrcc5 images/xulpymoney.qrc -o images/xulpymoney_rc.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmAbout.ui -o ui/Ui_frmAbout.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmAccess.ui -o ui/Ui_frmAccess.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmDPSAdd.ui -o ui/Ui_frmDPSAdd.py"))

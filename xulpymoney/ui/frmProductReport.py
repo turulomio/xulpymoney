@@ -522,8 +522,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         source.setSetProducts(products)
         
         d=QDialog(self)     
-        d.resize(400, 300)
-        d.setWindowTitle(self.tr("Daily update").format())
+        d.resize(400, 200)
+        d.setWindowTitle(self.tr("Daily prices update").format())
         wdg=wdgSource(d)
         wdg.setSource(self.mem, source)
         lay = QVBoxLayout(d)
@@ -531,7 +531,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         d.show()
         self.update_due_to_quotes_change()
 
-    def on_cmdUpdateAnnualy_pressed(self):
+    def on_cmdUpdateHistorical_pressed(self):
         products=SetProducts(self.mem)
         products.append(self.product)
         
@@ -539,8 +539,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         source.setSetProducts(products)
         
         d=QDialog(self)     
-        d.resize(400, 300)
-        d.setWindowTitle(self.tr("Daily update").format())
+        d.resize(400, 200)
+        d.setWindowTitle(self.tr("Historical prices update").format())
         wdg=wdgSource(d)
         wdg.setSource(self.mem, source)
         lay = QVBoxLayout(d)

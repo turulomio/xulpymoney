@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 import urllib.request
 import time
 import datetime
@@ -8,7 +7,7 @@ import googlefinance.client as gfc
 import sys
 #from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication
 from PyQt5.QtGui import QIcon
 from Ui_wdgSource import Ui_wdgSource
 from myqtablewidget import myQTableWidget
@@ -221,21 +220,14 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.show()        
     @pyqtSlot() 
     def on_actionHTML_triggered(self):
-        if os.path.exists("/usr/bin/kwrite"):
-            file="/tmp/xulpymoney-weblog-{}.txt".format(self.source.getName())
-            f=open(file, "w")
-            f.write(self.source.weblog)
-            f.close()
-            QProcess.startDetached("kwrite", [file,  ] )
-        else:
-            d=QDialog(self)        
-            d.resize(800, 600)
-            d.setWindowTitle(self.tr("Showing HTML").format(self.source.getName()))
-            t=QTextEdit(d)
-            t.setText(self.source.weblog)
-            lay = QVBoxLayout(d)
-            lay.addWidget(t)
-            d.show()
+        d=QDialog(self)        
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Showing HTML").format(self.source.getName()))
+        t=QTextEdit(d)
+        t.setText(self.source.weblog)
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
 
 class Source(QObject):
     """Clase nueva para todas las sources
@@ -1179,7 +1171,9 @@ class WorkerGoogleHistorical(Source):
             """.format(self.mem.data.benchmark.id)#type=76 divisas
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
-        self.setStatus(SourceStatus.Loaded)
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+        self.products.load_from_db(self.sql)    
+        self.setStatus(SourceStatus.Prepared)
 
 
     def setSetProducts(self, set):

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1045</width>
-    <height>890</height>
+    <height>930</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -582,7 +582,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="cmdUpdateAnnualy">
+                   <widget class="QToolButton" name="cmdUpdateHistorical">
                     <property name="text">
                      <string/>
                     </property>
