@@ -1037,7 +1037,7 @@ class SetProducts(SetCommons):
                 continue
             if googleticker.upper()==ticker.upper():
                 return p
-            logging.info("I coudn't find this google ticker: {}".format(ticker))
+        logging.info("I coudn't find this google ticker: {}".format(ticker))
         return None        
 
     def find_by_ticker(self, ticker):
