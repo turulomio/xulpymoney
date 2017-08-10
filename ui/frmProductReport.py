@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QFileDialog
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetProducts, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -16,7 +16,7 @@ from frmDPSAdd import frmDPSAdd
 from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
-
+from libsources import WorkerGoogle,  WorkerGoogleHistorical, wdgSource
 
 from odf.opendocument import load
 from odf.table import Table, TableRow, TableCell
@@ -242,6 +242,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtName.setText(self.product.name)
         self.txtISIN.setText(self.product.isin)
         self.txtYahoo.setText(self.product.ticker)
+        self.txtGoogle.setText(self.product.googleticker())
         self.txtComentario.setText(self.product.comment)
         self.txtAddress.setText(self.product.address)
         self.txtWeb.setText(self.product.web)
@@ -512,6 +513,40 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
+            
+    def on_cmdUpdateDaily_pressed(self):
+        products=SetProducts(self.mem)
+        products.append(self.product)
+        
+        source=WorkerGoogle(self.mem)
+        source.setSetProducts(products)
+        
+        d=QDialog(self)     
+        d.resize(400, 300)
+        d.setWindowTitle(self.tr("Daily update").format())
+        wdg=wdgSource(d)
+        wdg.setSource(self.mem, source)
+        lay = QVBoxLayout(d)
+        lay.addWidget(wdg)
+        d.show()
+        self.update_due_to_quotes_change()
+
+    def on_cmdUpdateAnnualy_pressed(self):
+        products=SetProducts(self.mem)
+        products.append(self.product)
+        
+        source=WorkerGoogleHistorical(self.mem)
+        source.setSetProducts(products)
+        
+        d=QDialog(self)     
+        d.resize(400, 300)
+        d.setWindowTitle(self.tr("Daily update").format())
+        wdg=wdgSource(d)
+        wdg.setSource(self.mem, source)
+        lay = QVBoxLayout(d)
+        lay.addWidget(wdg)
+        d.show()
+        self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
         all=SetQuotesAllIntradays(self.mem)

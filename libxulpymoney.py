@@ -1029,13 +1029,15 @@ class SetProducts(SetCommons):
 
     def find_by_googleticker(self, ticker):
         if ticker==None:
-            return None
+            logging.info("I coudn't find a None google ticker")
+            return ""
         for p in self.arr:
             googleticker=p.googleticker()
-            if googleticker==None:
+            if googleticker=="":
                 continue
             if googleticker.upper()==ticker.upper():
                 return p
+            logging.info("I coudn't find this google ticker: {}".format(ticker))
         return None        
 
     def find_by_ticker(self, ticker):
@@ -6406,6 +6408,7 @@ class Product:
     def googleticker(self):
         """
             Uses ticker property. It's needed to search for a googleticker
+            Returns "" if doesn't exist in order to visualizate it better
         """
         if self.type.id in (1,4):#Acciones, etf
             if  self.ticker[-3:]==".MC":
@@ -6434,7 +6437,7 @@ class Product:
             if self.ticker=="EURUSD=X":
                 return "EURUSD"
         logging.debug("googleticker {} not found".format(self.ticker))
-        return None
+        return ""
         
 
 #    def googleticker2ticker(self, ticker):
