@@ -563,7 +563,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionIndexesAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by stockmarkets_id,name")
+        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=False order by stockmarkets_id,name")
         self.layout.addWidget(self.w)
         self.w.show()      
         
@@ -587,6 +587,19 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
 
+        self.layout.addWidget(self.w)
+        self.w.show()        
+    @pyqtSlot()  
+    def on_actionProductsWithoutQuotes_triggered(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select p.*,q.* from products p, quote(p.id, now()) q where p.id=q.id and q.quote is null and obsolete=False order by name")
+
+        self.layout.addWidget(self.w)
+        self.w.show()        
+    @pyqtSlot()  
+    def on_actionProductsWithOldPrice_triggered(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select p.* from products p, quote(p.id, now()) q where p.id=q.id and q.datetime<now() -interval '30 day' and obsolete=False order by name")
         self.layout.addWidget(self.w)
         self.w.show()    
         

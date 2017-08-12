@@ -6433,6 +6433,28 @@ class Product:
                 return "INDEXSP:.INX"
             if self.ticker=="^VIX":
                 return "INDEXCBOE:VIX"
+            if self.ticker=="PSI20.LS":
+                return "INDEXEURO:PSI20"
+            if self.ticker=="^STOXX50E":
+                return "INDEXSTOXX:SX5E"
+            if self.ticker=="^N225":
+                return "INDEXNIKKEI:NI225"
+            if self.ticker=="^NDX":
+                return "INDEXNASDAQ:NDX"
+            if self.ticker=="^IXIC":
+                return "INDEXNASDAQ:.IXIC"
+            if self.ticker=="^HSI":
+                return "INDEXHANGSENG:HSI"
+            if self.ticker=="FTSEMIB.MI":
+                return "INDEXFTSE:FTSEMIB"
+            if self.ticker=="^FTSE":
+                return "INDEXFTSE:UKX"
+            if self.ticker=="^DJI":
+                return "INDEXDJX:.DJI"
+            if self.ticker=="^FCHI":
+                return "INDEXEURO:PX1"
+            if self.ticker=="^GDAXI":
+                return "INDEXDB:DAX"
         elif self.type.id==6:#Currencies
             if self.ticker=="EURUSD=X":
                 return "EURUSD"
