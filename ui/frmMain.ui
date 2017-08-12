@@ -150,6 +150,9 @@
      </property>
      <addaction name="actionDividends"/>
      <addaction name="separator"/>
+     <addaction name="actionProductsWithoutQuotes"/>
+     <addaction name="actionProductsWithOldPrice"/>
+     <addaction name="separator"/>
      <addaction name="actionProductsAutoUpdate"/>
      <addaction name="actionProductsNotAutoUpdate"/>
      <addaction name="separator"/>
@@ -213,6 +216,11 @@
      <addaction name="actionWarrantsAll"/>
      <addaction name="separator"/>
      <addaction name="actionWarrantsObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menu">
+     <property name="title">
+      <string/>
+     </property>
     </widget>
     <addaction name="menuIndexes"/>
     <addaction name="menuShares"/>
@@ -1023,10 +1031,34 @@
      <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
    </property>
    <property name="text">
-    <string>Investment ranking</string>
+    <string>In&amp;vestment ranking</string>
    </property>
    <property name="toolTip">
     <string>Investment ranking</string>
+   </property>
+  </action>
+  <action name="actionProductsWithoutQuotes">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products without price</string>
+   </property>
+   <property name="toolTip">
+    <string>Products without price</string>
+   </property>
+  </action>
+  <action name="actionProductsWithOldPrice">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/expired.jpg</normaloff>:/xulpymoney/expired.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Products with old price</string>
+   </property>
+   <property name="toolTip">
+    <string>Products with old price</string>
    </property>
   </action>
  </widget>
