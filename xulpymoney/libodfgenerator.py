@@ -13,6 +13,12 @@ from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, Con
 from odf.office import Annotation
 from decimal import Decimal
 
+"""
+    This file is from the Xulpymoney project. if you want to change it. Ask to project administrator
+"""
+
+
+
 class ODF:
     def __init__(self, filename):
         self.filename=filename
@@ -28,9 +34,13 @@ class ODF:
     def addImage(self, path):
         self.images[path]=self.doc.addPicture(path)
         
-class ODT(ODF):
-    def __init__(self, filename, template=None):
+    def setLanguage(self, language, country):
+        """Set the main language of the document"""
+        self.language="es"
+        self.country="ES"
         
+class ODT(ODF):
+    def __init__(self, filename, template=None, language="es", country="ES"):
         def styleGraphics():
 #            >
 #    <style:style style:family="graphic" style:name="Graphics">
@@ -78,8 +88,33 @@ class ODT(ODF):
             
             standard= Style(name="Standard", family="paragraph",  autoupdate="true")
             standard.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"justify", "marginbottom":"0.2cm", "textindent":"1cm"}))
-            standard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
-            self.doc.styles.addElement(standard)
+            standard.addElement(TextProperties(attributes={"fontsize": "12pt", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(standard)   
+               
+            ImageCenter= Style(name="ImageCenter", family="paragraph",  autoupdate="true")
+            ImageCenter.addElement(ParagraphProperties(attributes={"margintop":"3cm", "textalign":"center", "marginbottom":"4cm"}))
+            ImageCenter.addElement(TextProperties(attributes={"fontsize": "12pt", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(ImageCenter)
+            
+            standardCenter= Style(name="standardCenter", family="paragraph",  autoupdate="true")
+            standardCenter.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"center", "marginbottom":"0.2cm", "textindent":"0cm"}))
+            standardCenter.addElement(TextProperties(attributes={"fontsize": "12pt", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(standardCenter)
+            
+            letra18= Style(name="Bold18Center", family="paragraph",  autoupdate="true")
+            letra18.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"center", "marginbottom":"0.2cm", "textindent":"0cm"}))
+            letra18.addElement(TextProperties(attributes={"fontsize": "18pt", "fontweight": "bold", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(letra18)
+            
+            letra16= Style(name="Bold16Center", family="paragraph",  autoupdate="true")
+            letra16.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"center", "marginbottom":"0.2cm", "textindent":"0cm"}))
+            letra16.addElement(TextProperties(attributes={"fontsize": "16pt", "fontweight": "bold", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(letra16)
+            
+            letra12= Style(name="Bold12Center", family="paragraph",  autoupdate="true")
+            letra12.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"center", "marginbottom":"0.2cm", "textindent":"0cm"}))
+            letra12.addElement(TextProperties(attributes={"fontsize": "12pt", "fontweight": "bold", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(letra12)
 
         def styleHeaders():
     #        #Header1
@@ -89,11 +124,11 @@ class ODT(ODF):
     #    </style:style>
             h1style = Style(name="Heading1", family="paragraph",  autoupdate="true", defaultoutlinelevel="1")
             h1style.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"justify", "marginbottom":"0.3cm"}))
-            h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold"}))
+            h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold", "country": self.country, "language": self.language}))
             self.doc.styles.addElement(h1style)
             h2style = Style(name="Heading2", family="paragraph",  autoupdate="true", defaultoutlinelevel="2")
             h2style.addElement(ParagraphProperties(attributes={"margintop":"0.5cm", "textalign":"justify", "marginbottom":"0.25cm"}))
-            h2style.addElement(TextProperties(attributes={"fontsize": "14pt", "fontweight": "bold"}))
+            h2style.addElement(TextProperties(attributes={"fontsize": "14pt", "fontweight": "bold", "country": self.country, "language": self.language}))
             self.doc.styles.addElement(h2style)
             out=OutlineStyle(name="Outline")
             outl=OutlineLevelStyle(level=1, numformat="1", numsuffix="  ")
@@ -111,7 +146,7 @@ class ODT(ODF):
         def styleList():
             liststandard= Style(name="ListStandard", family="paragraph",  autoupdate="true")
             liststandard.addElement(ParagraphProperties(attributes={"margintop":"0.1cm", "textalign":"justify", "marginbottom":"0.1cm", "textindent":"0cm"}))
-            liststandard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
+            liststandard.addElement(TextProperties(attributes={"fontsize": "12pt", "country": self.country, "language": self.language}))
             self.doc.styles.addElement(liststandard)
             
             # For Bulleted list
@@ -141,7 +176,7 @@ class ODT(ODF):
     #    </style:style>
             s= Style(name="Footer", family="paragraph",  autoupdate="true")
             s.addElement(ParagraphProperties(attributes={"margintop":"0cm", "textalign":"center", "marginbottom":"0cm", "textindent":"0cm"}))
-            s.addElement(TextProperties(attributes={"fontsize": "9pt"}))
+            s.addElement(TextProperties(attributes={"fontsize": "9pt", "country": self.country, "language": self.language}))
             self.doc.styles.addElement(s)
 
 
@@ -166,9 +201,8 @@ class ODT(ODF):
             self.doc.masterstyles.addElement(foot)
 
         #######################################
-        
-        
         ODF.__init__(self, filename)
+        self.setLanguage(language, country)
         self.doc=OpenDocumentText()
         
         self.seqTables=0#Sequence of tables
@@ -324,6 +358,7 @@ class ODT(ODF):
         """
             href must bu added before with addImage
             returns a Frame element
+            width and height must bu a int or float value
         """
         f = Frame(name="Frame_{}".format(self.seqFrames), anchortype="as-char", width="{}cm".format(width), height="{}cm".format(height)) #, width="2cm", height="2cm", zindex="0")
         img = Image(href=self.images[href], type="simple", show="embed", actuate="onLoad")
@@ -1042,7 +1077,7 @@ if __name__ == "__main__":
     
     
     #ODT#
-    doc=ODT("libodfgenerator.odt")
+    doc=ODT("libodfgenerator.odt", language="fr", country="FR")
     doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
     doc.header("Hola", 1)
     doc.simpleParagraph("Hola a todos")
