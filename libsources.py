@@ -324,6 +324,7 @@ class Source(QObject):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
         
         (self.inserted, self.ignored, self.modified, self.bad)=self.quotes.save()
+        self.inserted.save()
         #El commit se hace dentro porque hay veces hay muchas
         logging.info("{} finished. {} inserted, {} ignored, {} modified and {} bad. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.bad.length(), self.quotes.length()))
             
@@ -1079,9 +1080,10 @@ class WorkerGoogle(Source):
         for setproduct in self.agrupation:
             self.my_load_page(setproduct)
             self.next_step()
-            
+        
+        self.quotes.print()
         self.quotes_save()
-        self.mem.con.commit()
+        self.mem.con.rollback()
         self.next_step()
             
         self.setStatus(SourceStatus.Finished)
@@ -1207,7 +1209,7 @@ class WorkerGoogleHistorical(Source):
 
         
         self.quotes_save()
-        self.mem.con.commit()
+        self.mem.con.rollback()
         self.next_step()
         
         self.setStatus(SourceStatus.Finished)
