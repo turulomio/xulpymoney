@@ -1,5 +1,6 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
+from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
 from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qmessagebox,  Percentage, day_end_from_date
 from myqtablewidget import myQTableWidget
@@ -8,6 +9,7 @@ from canvaschart import VCTemporalSeries
 from Ui_wdgTotal import Ui_wdgTotal
 import datetime
 import logging
+import time
 
 
 
@@ -442,7 +444,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         logging.info("wdgTotal > load_make_ends_meet: {0}".format(datetime.datetime.now()  -inicio))
 
 
-    def load_graphic(self, savefile=None):               
+    def load_graphic(self, animations=True):               
         inicio=datetime.datetime.now()  
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
@@ -453,6 +455,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.view=VCTemporalSeries()
         self.view.chart.setTitle(self.tr("Total report"))
         
+        if animations==False:
+            self.view.chart.setAnimationOptions(QChart.NoAnimation)
                 #Series creation
         last=self.setGraphic.find(datetime.date.today().year, datetime.date.today().month)
         lsNoLoses=self.view.appendSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
@@ -482,8 +486,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.view.display()
         
         self.tabGraphTotal.addWidget(self.view)
+
+            
         
         logging.info("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
+
+    def save_graphic(self, savefile):
+        time.sleep(2)
+        pixmap=self.view.grab()
+        pixmap.save(savefile, quality=100)
+
 
     def on_wyData_mychanged(self):
         self.load_data()    
