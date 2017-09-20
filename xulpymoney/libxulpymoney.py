@@ -2,6 +2,7 @@ from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreAp
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout,  qApp,  QProgressDialog
 from libodfgenerator import ODT
+from odf.text import P
 import datetime
 import time
 import logging
@@ -8327,14 +8328,20 @@ class AssetsReport(ODT):
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
                 self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(setData.dividends()+setData.gains(), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
-        self.pageBreak()
+        self.pageBreak(True)
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
         
-        w=wdgTotal(self.mem)
-        w.load_graphic("{}/wdgTotal.png".format(self.dir))
-        self.image("{}/wdgTotal.png".format(self.dir), 15, 10)
-        self.simpleParagraph("")
+        self.mem.frmMain.on_actionTotalReport_triggered()
+        self.mem.frmMain.w.load_graphic(animations=False)
+        self.mem.frmMain.w.tab.setCurrentIndex(1)
+        savefile="{}/wdgTotal.png".format(self.dir)
+        self.mem.frmMain.w.save_graphic(savefile)
+        self.addImage(savefile)
+        
+        p = P(stylename="Standard")
+        p.addElement(self.image(savefile, 25, 14))
+        self.doc.text.addElement(p)
         
         self.pageBreak()
         
