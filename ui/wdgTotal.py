@@ -9,7 +9,6 @@ from canvaschart import VCTemporalSeries
 from Ui_wdgTotal import Ui_wdgTotal
 import datetime
 import logging
-import time
 
 
 
@@ -491,10 +490,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         logging.info("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
-    def save_graphic(self, savefile):
-        time.sleep(2)
-        pixmap=self.view.grab()
-        pixmap.save(savefile, quality=100)
 
 
     def on_wyData_mychanged(self):
