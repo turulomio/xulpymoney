@@ -160,6 +160,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgInvestmentClasses(self.mem, self)
                 
         self.layout.addWidget(self.w)
+        self.w.update()
         self.w.show()
 
     @pyqtSlot()  

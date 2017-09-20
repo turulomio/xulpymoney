@@ -20,6 +20,7 @@ import argparse
 import getpass
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
+from PyQt5.QtChart import QChart
 getcontext().prec=20
 
 
@@ -8329,6 +8330,7 @@ class AssetsReport(ODT):
                 self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
                 self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(setData.dividends()+setData.gains(), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
         self.pageBreak(True)
+        
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
         
@@ -8336,13 +8338,11 @@ class AssetsReport(ODT):
         self.mem.frmMain.w.load_graphic(animations=False)
         self.mem.frmMain.w.tab.setCurrentIndex(1)
         savefile="{}/wdgTotal.png".format(self.dir)
-        self.mem.frmMain.w.save_graphic(savefile)
+        self.mem.frmMain.w.view.save(savefile)
         self.addImage(savefile)
-        
         p = P(stylename="Standard")
         p.addElement(self.image(savefile, 25, 14))
         self.doc.text.addElement(p)
-        
         self.pageBreak()
         
         
@@ -8382,13 +8382,29 @@ class AssetsReport(ODT):
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
         self.pageBreak()
+        
+        
+        
         ### Graphics wdgInvestments clases
-        w=wdgInvestmentClasses(self.mem)
+        self.mem.frmMain.resize(800, 800)
+        self.mem.frmMain.w.close()
+        self.mem.frmMain.w=wdgInvestmentClasses(self.mem, self.mem.frmMain)
+        self.mem.frmMain.layout.addWidget(self.mem.frmMain.w)
+        self.mem.frmMain.w.show()
+        self.mem.frmMain.w.tab.setCurrentIndex(0)
+        self.mem.frmMain.w.viewTPC.chart.setAnimationOptions(QChart.NoAnimation)
+        self.mem.frmMain.w.update(animations=False)
         
 #        wit=15
         self.header(self.tr("Investments group by variable percentage"), 2)
+        savefile="{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir)
+        self.mem.frmMain.w.viewTPC.save(savefile)
+        self.addImage(savefile)
+        p = P(stylename="Standard")
+        p.addElement(self.image(savefile, 15, 10))
+        self.doc.text.addElement(p)
 #        w.canvasTPC.savePixmap("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir))
-#        wi, he=w.canvasTPC.savePixmapLegend("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir))
+#        wi, he=w.canvasTPC.savePixmapLegend()
 #        self.image("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir), 15, 10)
 #        self.image("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")
@@ -8849,5 +8865,5 @@ def function_name(clas):
 #    print (clas.__module__)
     return "{0}.{1}".format(clas.__class__.__name__,inspect.stack()[1][3])
 
-from wdgTotal import TotalYear,  wdgTotal
+from wdgTotal import TotalYear
 from wdgInvestmentClasses import wdgInvestmentClasses
