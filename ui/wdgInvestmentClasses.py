@@ -4,6 +4,7 @@ import datetime
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from canvaschart import VCPie
+from PyQt5.QtChart import QChart
 
 class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
     def __init__(self, mem,  parent=None):
@@ -30,8 +31,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy).local()
         self.tab.setCurrentIndex(2)
 
-    def update(self, animations):
+    def update(self, animations=None):
         """Update calcs and charts"""
+        if self.animations==None:
+            self.animations=QChart.AllAnimations
         self.animations=animations
         self.scriptTPC()
         self.scriptPCI()
