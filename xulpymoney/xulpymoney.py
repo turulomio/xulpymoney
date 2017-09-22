@@ -23,7 +23,7 @@ else:
 from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import QApplication,  QDialog
 import libdbupdates
-from libxulpymoney import MemXulpymoney,  qmessagebox
+from libxulpymoney import MemXulpymoney
 from libxulpymoneyversion import version, version_date
 from frmAccess import frmAccess
 from frmMain import frmMain
@@ -76,14 +76,7 @@ access.exec_()
 if access.result()==QDialog.Accepted:
     mem.con=access.con
 
-    ##Update database
-    update=libdbupdates.Update(mem)
-    if update.need_update()==True:
-        if mem.con.is_superuser():
-            update.run()
-        else:
-            qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
-            sys.exit(2)
+    libdbupdates.Update(mem)##Update database
 
     mem.frmMain = frmMain(mem)
     mem.frmMain.show()

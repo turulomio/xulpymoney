@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 10beta2
+-- Dumped from database version 10beta4
+-- Dumped by pg_dump version 10rc1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -595,7 +595,7 @@ ALTER TABLE quotes OWNER TO postgres;
 --
 
 CREATE SEQUENCE quotes_seq
-    START WITH 5
+    START WITH 9110967
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -4586,7 +4586,7 @@ INSERT INTO products VALUES ('Fortune Brands Inc.', NULL, 'USD', 1, NULL, 76809,
 INSERT INTO products VALUES ('Foster Wheeler AG.', 'CH0018666781', 'USD', 1, '|NASDAQ100|', 77588, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'FWLT||us||False', false);
 INSERT INTO products VALUES ('FOUNTAIN', 'BE0003752665', 'EUR', 1, '|EURONEXT|', 76993, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003752665||be||False', false);
 INSERT INTO products VALUES ('FOYER', 'LU0112960504', 'EUR', 1, '|EURONEXT|', 75524, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#LU0112960504||be||False', false);
-INSERT INTO products VALUES ('F.P. FondBarclays Solidez II', '', 'EUR', 8, '', 75290, '', '', '', '', 0, 'c', 0, 1, NULL, NULL, NULL, 'F.P. FondBarclays Solidez II||es||False', false);
+INSERT INTO products VALUES ('F.P. FondBarclays Solidez II', '', 'EUR', 8, '', 75290, '', '', '', '', 0, 'c', 0, 1, NULL, NULL, NULL, 'F.P. FondBarclays Solidez II||es||False', true);
 INSERT INTO products VALUES ('F.RAMA', 'PTFRV0AE0004', 'EUR', 1, '|EURONEXT|', 79176, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, NULL, 'EURONEXT#PTFRV0AE0004||pt||False', false);
 INSERT INTO products VALUES ('France Telecom', NULL, 'USD', 1, NULL, 77943, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#FTE||us||False', false);
 INSERT INTO products VALUES ('Franco-Nevada Corp.', NULL, 'USD', 1, NULL, 75095, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#FNV||us||False', false);
@@ -4611,7 +4611,7 @@ INSERT INTO products VALUES ('Frontline Ltd.', NULL, 'USD', 1, NULL, 79812, NULL
 INSERT INTO products VALUES ('FTI Consulting Inc.', NULL, 'USD', 1, NULL, 78737, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#FCN||us||False', false);
 INSERT INTO products VALUES ('FTSE 100', 'GB0001383545', 'GBP', 3, NULL, 75930, NULL, NULL, NULL, NULL, 100, 'c', 0, 4, '^FTSE', '{1}', '{3}', '^FTSE||en||False', false);
 INSERT INTO products VALUES ('FTSE4GOODIBX', 'ES0139761003', 'EUR', 4, '', 79015, '', '', '', '', 100, 'c', 0, 1, NULL, '{}', '{}', 'MC#ES0139761003||es||False', false);
-INSERT INTO products VALUES ('FTSE Latibex All Share', 'ES0SI0000617', 'EUR', 3, '', 81691, '', '', '', '', 100, 'c', 0, 1, 'INDB.MC', '{1}', '{3}', '', false);
+INSERT INTO products VALUES ('FTSE Latibex All Share', 'ES0SI0000617', 'EUR', 3, '', 81691, '', '', '', '', 100, 'c', 0, 1, 'INDB.MC', '{1}', '{3}', '', true);
 INSERT INTO products VALUES ('FTSE MIB', '', 'EUR', 3, '', 81082, '', '', '', '', 100, 'c', 0, 6, 'FTSEMIB.MI', '{1}', '{3}', 'FTSEMIB.MI||it||False', false);
 INSERT INTO products VALUES ('Fuchs Petrolub AG St', 'DE0005790406', 'EUR', 1, '|DEUTSCHEBOERSE|', 80235, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005790406||de||False', false);
 INSERT INTO products VALUES ('Fuchs Petrolub AG Vz', 'DE0005790430', 'EUR', 1, '|DEUTSCHEBOERSE|', 80236, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005790430||de||False', false);
@@ -6662,7 +6662,7 @@ INSERT INTO products VALUES ('RENTA 4 MONETARIO', 'ES0128520006', 'EUR', 2, '|f_
 INSERT INTO products VALUES ('RENTA 4 OBLIGACIONES CONVERTIBLES 2011', '', 'EUR', 9, '', 75138, '', '', '', '', 80, 'c', 0, 1, NULL, '{}', '{}', 'RENTA 4 OBLIGACIONES CONVERTIBLES 2011||es||True', true);
 INSERT INTO products VALUES ('RENTA 4 PEGASUS', 'ES0173321003', 'EUR', 2, '|f_es_BMF|', 81436, '', '', '', '', 100, 'c', 0, 1, 'F000000F20', '{}', '{8}', 'ES0173321003||es||False', false);
 INSERT INTO products VALUES ('RENTA 4 PREMIER', NULL, 'EUR', 2, NULL, 75147, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'RENTA 4 PREMIER||es||True', true);
-INSERT INTO products VALUES ('Renta 4 Renta Fija Corto PLazo FI', 'ES0176954008 ', 'EUR', 2, '|f_cat_money|', 81718, '', NULL, NULL, NULL, 0, 'c', 1, 1, 'F00000PUJZ', NULL, '{8}', '', false);
+INSERT INTO products VALUES ('Renta 4 Renta Fija Corto PLazo FI', 'ES0176954008 ', 'EUR', 2, '|f_cat_money|', 81718, '', NULL, NULL, NULL, 0, 'c', 0, 1, 'F00000PUJZ', NULL, '{8}', '', false);
 INSERT INTO products VALUES ('RENTA 4 TECNOLOGIA', 'ES0173364037', 'EUR', 2, '|f_es_BMF|', 81437, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'F0GBR04DKO', '{}', '{8}', 'ES0173364037||es||False', false);
 INSERT INTO products VALUES ('RENTABILIWEB (D)', 'BE0946620946', 'EUR', 1, '|EURONEXT|', 80461, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0946620946||be||False', false);
 INSERT INTO products VALUES ('RENTACASER', 'ES0173393036', 'EUR', 2, '|f_es_BMF|', 81450, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173393036||es||False', true);
@@ -7959,11 +7959,11 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710, 81708, 81693, 81117, 79360, 79228, 81718, 81479');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 80840, 78281, 74747, 81710, 79360, 81101, 81105, 78384');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201708040826');
+INSERT INTO globals VALUES (1, 'Version', '201709220607');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
-INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
+INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '7500');

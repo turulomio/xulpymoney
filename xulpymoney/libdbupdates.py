@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QApplication
+from libxulpymoney import qmessagebox
 import logging
+import sys
 class Update:
     """DB update system
     Cuando vaya a crear una nueva modificación pondre otro if con menor que current date para uqe se ejecute solo una vez al final, tendra que 
@@ -19,7 +21,8 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201708120552
+        self.lastcodeupdate=201709220607
+        self.need_update()
 
    
     def get_database_version(self):
@@ -47,14 +50,24 @@ class Update:
         self.mem.con.commit()
         
     def need_update(self):
-        """Returns if update must be done"""
+        """Returns a tuple (boolean, problem) if update must be done
+        None, returns a problem
+        True needs to update
+        False doesn't need to update"""
         if self.dbversion>self.lastcodeupdate:
-            logging.warning ("DBVEERSION > LAST CODE UPDATE, PLEASE UPDATE LASTCODEUPDATE IN CLASS")
+            qmessagebox(QApplication.translate("Core","Xulpymoney app is older than database. Please update it."))
+            sys.exit(3)
             return
-
+            
         if self.dbversion==self.lastcodeupdate:
-            return False
-        return True
+            return 
+        
+        if self.dbversion<self.lastcodeupdate:
+            if self.mem.con.is_superuser():
+                self.run()
+            else:
+                qmessagebox(QApplication.translate("Core","Xulpymoney database needs to be updated. Please login with a superuser role."))
+                sys.exit(2)
 
     def run(self): 
         if self.dbversion==None:
@@ -2070,6 +2083,12 @@ $$;
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201708120552)       
+        if self.dbversion<201709220607:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set leveraged=%s where id=%s;", (0, 81718))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201709220607)       
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
