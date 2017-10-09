@@ -13,7 +13,7 @@ from frmQuotesIBM import frmQuotesIBM
 from frmSplit import frmSplit
 from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
-from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries
+from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries,  VCCandlestick
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
 from libsources import WorkerGoogle,  WorkerGoogleHistorical, wdgSource
@@ -324,11 +324,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasHistorical.show()
             self.ntbHistorical.show() 
             
-#            view=VCCandlestick()
-#            view.appendSeries(self.product.name)
-#            for ohcl in self.product.result.ohclDaily.arr:
-#                view.appendData(ohcl)
-#            view.display()
+            view=VCCandlestick()
+            self.layHistorical.addWidget(view)
+            view.appendSeries(self.product)
+            view.display()
             
         #Canvas Intradia
         if self.product.result.intradia.length()<2:
