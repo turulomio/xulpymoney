@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot,  QObject
-from PyQt5.QtGui import QPainter, QFont
+from PyQt5.QtGui import QPainter, QFont,  QColor
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
 from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 import pytz
 import datetime
 
-from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries
+from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet
 
 
 
@@ -243,6 +243,13 @@ class VCPie(QChartView):
         self.serie.setPieStartAngle(90)
         self.serie.setPieEndAngle(450)
         
+        
+class OHCLDuration:
+    Day=1
+    Week=2
+    Month=3
+    Year=4
+        
 class VCCandlestick(QChartView):
     def __init__(self):
         QChartView.__init__(self)
@@ -259,31 +266,45 @@ class VCCandlestick(QChartView):
         self.axisY.setLabelFormat("%i")
 
         self.setRenderHint(QPainter.Antialiasing);
-        self.setRubberBand(QChartView.VerticalRubberBand)
+        self.setRubberBand(QChartView.HorizontalRubberBand)
         
         self.series=[]
-        self.maxy=0
-        self.miny=0
+        self.products=[]#Can be several products
+        self.__from=datetime.date.today()-datetime.timedelta(days=365*3)
+        self.__ohclduration=OHCLDuration.Day
 
-    def appendSeries(self, name):
-#        ls=QCandlestickSeries()
-#        ls.setName(name)
-#        ls.setIncreasingColor(QColor(Qt.green));
-#        ls.setDecreasingColor(QColor(Qt.red));
-#        self.series.append(ls)
-#        return ls
-        pass    
-        
-    def appendData(self, ls, ohcl):
-#        set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
-#        ls.append(set)
-#        if ohcl.high>self.maxy:
-#            self.maxy=ohcl.high
-#        if ohcl.low<self.miny:
-#            self.miny=ohcl.low
-        pass
+    def appendSeries(self, product):
+        ls=QCandlestickSeries()
+        ls.setName(product.name)
+        ls.setIncreasingColor(QColor(Qt.green));
+        ls.setDecreasingColor(QColor(Qt.red));
+        self.series.append(ls)
+        self.products.append(product)
+
+
+    def setohcl(self, product):
+        if self.__ohclduration==OHCLDuration.Day:
+            return product.result.ohclDaily
 
     def display(self):
+        
+        self.maxy=None
+        self.miny=None
+        for i, serie in enumerate(self.series):
+            for set in serie.sets():        #Removes ohcl
+                serie.remove(set)
+            for ohcl in self.setohcl(self.products[i]).arr:
+                if self.__from<=ohcl.datetime().date():
+                    set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
+                    serie.append(set)
+                    if self.maxy==None:
+                        self.maxy=ohcl.high
+                        self.miny=ohcl.low
+                    if ohcl.high>self.maxy:
+                        self.maxy=ohcl.high
+                    if ohcl.low<self.miny:
+                        self.miny=ohcl.low     
+        
         self.setChart(self.chart)
         self.chart.addAxis(self.axisY, Qt.AlignLeft);
         self.chart.addAxis(self.axisX, Qt.AlignBottom);
@@ -293,6 +314,20 @@ class VCCandlestick(QChartView):
             s.attachAxis(self.axisY)
         self.axisY.setRange(self.miny, self.maxy)
         self.repaint()
+        
+    def setFrom(self, date, ohclduration):
+        self.__from=date
+        self.__ohclduration=ohclduration
+        
+    @pyqtSlot()
+    def wheelEvent(self, event):
+        print (event.angleDelta().y())
+        if event.angleDelta().y()>0:
+            self.__from=self.__from+datetime.timedelta(days=365)
+        else:
+            self.from_dt=self.__from-datetime.timedelta(days=365)
+        self.clear()
+        self.display()
         
 class ChartType:
     lines=0
