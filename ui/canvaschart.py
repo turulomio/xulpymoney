@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
-from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms
+from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms,  OHCLDuration
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
@@ -246,21 +246,7 @@ class VCPie(QChartView):
         self.serie.setPieStartAngle(90)
         self.serie.setPieEndAngle(450)
         
-        
-class OHCLDuration:
-    Day=1
-    Week=2
-    Month=3
-    Year=4
 
-    @classmethod
-    def qcombobox(self, combo, selected_ohclduration):
-        combo.addItem(QApplication.translate("Core", "Day"), 1)
-        combo.addItem(QApplication.translate("Core", "Week"), 2)
-        combo.addItem(QApplication.translate("Core", "Month"), 3)
-        combo.addItem(QApplication.translate("Core", "Year"), 4)
-        
-        combo.setCurrentIndex(combo.findData(selected_ohclduration))
         
 class VCCandlestick(QChartView):
     def __init__(self):
@@ -282,7 +268,7 @@ class VCCandlestick(QChartView):
         
         self.series=[]
         self.products=[]#Can be several products
-        self.__from=datetime.date.today()-datetime.timedelta(days=365*3)
+        self.__from=datetime.datetime.now()-datetime.timedelta(days=365*3)
         self.__ohclduration=OHCLDuration.Day
 
     def appendSeries(self, product):
@@ -294,9 +280,15 @@ class VCCandlestick(QChartView):
         self.products.append(product)
 
 
-    def setohcl(self, product):
-        if self.__ohclduration==OHCLDuration.Day:
-            return product.result.ohclDaily
+#    def setohcl(self, product):
+#        if self.__ohclduration==OHCLDuration.Day:
+#            return product.result.ohclDaily
+#        if self.__ohclduration==OHCLDuration.Week:
+#            return product.result.ohclWeekly
+#        if self.__ohclduration==OHCLDuration.Day:
+#            return product.result.ohclDaily
+#        if self.__ohclduration==OHCLDuration.Day:
+#            return product.result.ohclDaily
 
     def display(self):
         
@@ -306,8 +298,8 @@ class VCCandlestick(QChartView):
             if serie.__class__==QCandlestickSeries:#Due can be QLineSeries i n this VC
                 for set in serie.sets():        #Removes ohcl
                     serie.remove(set)
-                for ohcl in self.setohcl(self.products[i]).arr:
-                    if self.__from<=ohcl.datetime().date():
+                for ohcl in self.products[i].result.ohcl(self.__ohclduration).arr:
+                    if self.__from<=ohcl.datetime():
                         set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
                         serie.append(set)
                         if self.maxy==None:
@@ -328,8 +320,8 @@ class VCCandlestick(QChartView):
         self.axisY.setRange(self.miny, self.maxy)
         self.repaint()
         
-    def setFrom(self, date, ohclduration):
-        self.__from=date
+    def setFrom(self, dt, ohclduration):
+        self.__from=dt
         self.__ohclduration=ohclduration
         
     @pyqtSlot()
