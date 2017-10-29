@@ -145,6 +145,7 @@ if __name__ == '__main__':
             futures.append(executor.submit(shell, "pyuic5 ui/wdgCuriosity.ui -o ui/Ui_wdgCuriosity.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgCuriosities.ui -o ui/Ui_wdgCuriosities.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgDatetime.ui -o ui/Ui_wdgDatetime.py"))
+            futures.append(executor.submit(shell, "pyuic5 ui/wdgProductHistoricalChart.ui -o ui/Ui_wdgProductHistoricalChart.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgProducts.ui -o ui/Ui_wdgProducts.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgQuotesUpdate.ui -o ui/Ui_wdgQuotesUpdate.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgSimulations.ui -o ui/Ui_wdgSimulations.py"))

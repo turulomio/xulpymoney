@@ -13,7 +13,8 @@ from frmQuotesIBM import frmQuotesIBM
 from frmSplit import frmSplit
 from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
-from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries,  VCCandlestick
+from wdgProductHistoricalChart import wdgProductHistoricalChart
+from canvaschart import canvasChartCompare, VCTemporalSeries
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
 from libsources import WorkerGoogle,  WorkerGoogleHistorical, wdgSource
@@ -119,10 +120,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.viewIntraday=VCTemporalSeries()
         self.layIntraday.addWidget(self.viewIntraday)
         
-        self.canvasHistorical=canvasChartHistorical( self.mem, self)
-        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
-        self.layHistorical.addWidget(self.canvasHistorical)
-        self.layHistorical.addWidget(self.ntbHistorical)
+#        self.canvasHistorical=canvasChartHistorical( self.mem, self)
+#        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
+#        self.layHistorical.addWidget(self.canvasHistorical)
+#        self.layHistorical.addWidget(self.ntbHistorical)
+        
+        self.wdgproducthistoricalchart=wdgProductHistoricalChart(self)
+        self.layHistorical.addWidget(self.wdgproducthistoricalchart)
         
         self.pseCompare.setupUi(self.mem, self.investment)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
@@ -317,18 +321,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         #Canvas Historical
         if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
-            self.canvasHistorical.hide()
-            self.ntbHistorical.hide()
+            pass
+#            self.canvasHistorical.hide()
+#            self.ntbHistorical.hide()
         else:
-            self.canvasHistorical.load_data(self.product, self.investment)
-            self.canvasHistorical.show()
-            self.ntbHistorical.show() 
-            
-            view=VCCandlestick()
-            self.layHistorical.addWidget(view)
-            view.appendSeries(self.product)
-            view.display()
-            
+#            self.canvasHistorical.load_data(self.product, self.investment)
+#            self.canvasHistorical.show()
+#            self.ntbHistorical.show() 
+
+            self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
+                
         #Canvas Intradia
         if self.product.result.intradia.length()<2:
             self.viewIntraday.hide()

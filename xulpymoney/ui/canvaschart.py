@@ -12,12 +12,14 @@ import datetime
 
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet
 
-
-
 class VCTemporalSeries(QChartView):
     def __init__(self):
         QChartView.__init__(self)
         self.clear()
+        self.maxx=None
+        self.maxy=None
+        self.minx=None
+        self.miny=None
         self._allowHideSeries=True
 
     def setAxisFormat(self, axis,  min, max, type, zone=None):
@@ -148,7 +150,7 @@ class VCTemporalSeries(QChartView):
         x=aware2epochms(x)
         ls.append(x, y)
         
-        if ls.count()==1:#Gives first maxy and miny
+        if self.maxy==None:#Gives first maxy and miny
             self.maxy=y
             self.miny=y
             self.maxx=x
@@ -169,6 +171,7 @@ class VCTemporalSeries(QChartView):
         self.setAxisFormat(self.axisY, self.miny, self.maxy, 0)
         self.chart.addAxis(self.axisY, Qt.AlignLeft);
         self.chart.addAxis(self.axisX, Qt.AlignBottom);
+
         for s in self.series:
             self.chart.addSeries(s)
             s.attachAxis(self.axisX)
@@ -249,6 +252,15 @@ class OHCLDuration:
     Week=2
     Month=3
     Year=4
+
+    @classmethod
+    def qcombobox(self, combo, selected_ohclduration):
+        combo.addItem(QApplication.translate("Core", "Day"), 1)
+        combo.addItem(QApplication.translate("Core", "Week"), 2)
+        combo.addItem(QApplication.translate("Core", "Month"), 3)
+        combo.addItem(QApplication.translate("Core", "Year"), 4)
+        
+        combo.setCurrentIndex(combo.findData(selected_ohclduration))
         
 class VCCandlestick(QChartView):
     def __init__(self):
@@ -291,19 +303,20 @@ class VCCandlestick(QChartView):
         self.maxy=None
         self.miny=None
         for i, serie in enumerate(self.series):
-            for set in serie.sets():        #Removes ohcl
-                serie.remove(set)
-            for ohcl in self.setohcl(self.products[i]).arr:
-                if self.__from<=ohcl.datetime().date():
-                    set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
-                    serie.append(set)
-                    if self.maxy==None:
-                        self.maxy=ohcl.high
-                        self.miny=ohcl.low
-                    if ohcl.high>self.maxy:
-                        self.maxy=ohcl.high
-                    if ohcl.low<self.miny:
-                        self.miny=ohcl.low     
+            if serie.__class__==QCandlestickSeries:#Due can be QLineSeries i n this VC
+                for set in serie.sets():        #Removes ohcl
+                    serie.remove(set)
+                for ohcl in self.setohcl(self.products[i]).arr:
+                    if self.__from<=ohcl.datetime().date():
+                        set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
+                        serie.append(set)
+                        if self.maxy==None:
+                            self.maxy=ohcl.high
+                            self.miny=ohcl.low
+                        if ohcl.high>self.maxy:
+                            self.maxy=ohcl.high
+                        if ohcl.low<self.miny:
+                            self.miny=ohcl.low     
         
         self.setChart(self.chart)
         self.chart.addAxis(self.axisY, Qt.AlignLeft);
@@ -322,13 +335,44 @@ class VCCandlestick(QChartView):
     @pyqtSlot()
     def wheelEvent(self, event):
         print (event.angleDelta().y())
-        if event.angleDelta().y()>0:
-            self.__from=self.__from+datetime.timedelta(days=365)
-        else:
-            self.from_dt=self.__from-datetime.timedelta(days=365)
-        self.clear()
-        self.display()
+#        if event.angleDelta().y()>0:
+#            self.__from=self.__from+datetime.timedelta(days=365)
+#        else:
+#            self.from_dt=self.__from-datetime.timedelta(days=365)
+##        self.clear()
+#        self.display()
         
+    def appendTemporalSeries(self, name,  currency=None):
+        """
+            currency is a Currency object
+        """
+        self.currency=currency
+        ls=QLineSeries()
+        ls.setName(name)
+        self.series.append(ls)
+        return ls
+
+    def appendTemporalSeriesData(self, ls, x, y):
+        """
+            x is a datetime zone aware
+        """
+        x=aware2epochms(x)
+        ls.append(x, y)
+        
+        if ls.count()==1:#Gives first maxy and miny
+            self.maxy=y
+            self.miny=y
+            self.maxx=x
+            self.minx=x
+            
+        if y>self.maxy:
+            self.maxy=y
+        if y<self.miny:
+            self.miny=y
+        if x>self.maxx:
+            self.maxx=x
+        if x<self.minx:
+            self.minx=x
 class ChartType:
     lines=0
     ohcl=1

@@ -93,6 +93,8 @@ SOURCES         = \
                   ui/Ui_wdgLastCurrent.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
+                  ui/wdgProductHistoricalChart.py \
+                  ui/Ui_wdgProductHistoricalChart.py
                   ui/wdgProducts.py \
                   ui/Ui_wdgProducts.py \
                   ui/wdgSimulations.py \
@@ -159,6 +161,7 @@ FORMS           = \
                   ui/wdgMergeCodes.ui \
                   ui/wdgOrders.ui \
                   ui/wdgOrdersAdd.ui \
+                  ui/wdgProductHistoricalChart.ui \
                   ui/wdgProducts.ui \
                   ui/wdgSimulations.ui \
                   ui/wdgSimulationsAdd.ui \
