@@ -11,15 +11,21 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.view=None
-        self.dtFrom.setDate(datetime.datetime.today()-datetime.timedelta(days=365*3))
-        self.cmbOHCLDuration.currentIndexChanged.disconnect()
-        OHCLDuration.qcombobox(self.cmbOHCLDuration, OHCLDuration.Day)
-        self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
         
     def setProduct(self, product, investment=None):
         self.product=product
         self.investment=investment
         self.mem=self.product.mem
+        from_=datetime.datetime.today()-datetime.timedelta(days=365*3)
+        if self.investment!=None:
+            if self.investment.op_actual.length()>0:
+                from_=self.investment.op_actual.first().datetime
+            elif self.investment.op.length()>0:
+                from_=self.investment.op.first().datetime
+        self.dtFrom.setDate(from_)
+        self.cmbOHCLDuration.currentIndexChanged.disconnect()
+        OHCLDuration.qcombobox(self.cmbOHCLDuration, OHCLDuration.Day)
+        self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
         self.display()
         
     def on_dtFrom_dateChanged(self, date):
@@ -70,12 +76,14 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             if self.chkSMA50.isChecked() and self.setohcl.length()>50:#SMA50 line series
                 sma50=self.view.appendTemporalSeries(self.tr("SMA50"),  self.product.currency)
                 for dt, value in self.setohcl.sma(50):
-                    self.view.appendTemporalSeriesData(sma50, dt, value)
+                    if dt>selected_datetime:
+                        self.view.appendTemporalSeriesData(sma50, dt, value)
                     
             if self.chkSMA200.isChecked() and self.setohcl.length()>200:#SMA200 line series
                 sma200=self.view.appendTemporalSeries(self.tr("SMA200"),  self.product.currency)
                 for dt, value in self.setohcl.sma(200):
-                    self.view.appendTemporalSeriesData(sma200, dt, value)
+                    if dt>selected_datetime:
+                        self.view.appendTemporalSeriesData(sma200, dt, value)
                     
         #INVESTMENT
         if self.investment!=None:
@@ -86,6 +94,13 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     self.view.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
                 if op.tipooperacion.id in (5, ) and op.datetime>selected_datetime:
                     self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
+            if self.investment.op_actual.length()>0:
+                average_price=self.view.appendTemporalSeries(self.tr("Average price"),  self.product.currency)
+                self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, self.investment.op_actual.average_price(type=1).amount)
+                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), self.investment.op_actual.average_price(type=1).amount)
+                selling_price=self.view.appendTemporalSeries(self.tr("Selling price"),  self.product.currency)
+                self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
+                self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
         self.view.display()
             
     @pyqtSlot(int)      
