@@ -7078,7 +7078,22 @@ class OHCL:
             return Percentage(ohcl.close-self.close, self.close)            
         else:
             return Percentage()
+        
+class OHCLDuration:
+    Day=1
+    Week=2
+    Month=3
+    Year=4
 
+    @classmethod
+    def qcombobox(self, combo, selected_ohclduration):
+        combo.addItem(QApplication.translate("Core", "Day"), 1)
+        combo.addItem(QApplication.translate("Core", "Week"), 2)
+        combo.addItem(QApplication.translate("Core", "Month"), 3)
+        combo.addItem(QApplication.translate("Core", "Year"), 4)
+        
+        combo.setCurrentIndex(combo.findData(selected_ohclduration))
+        
 class OHCLDaily(OHCL):
     def __init__(self, mem):
         OHCL.__init__(self, mem)
@@ -7589,6 +7604,20 @@ class QuotesResult:
     def get_all(self):
         """Gets all in a set intradays form"""
         self.all.load_from_db(self.product)
+
+        
+    def ohcl(self,  ohclduration):
+        """
+            Returns the SetOHCL corresponding to it's duration
+        """
+        if ohclduration==OHCLDuration.Day:
+            return self.ohclDaily
+        if ohclduration==OHCLDuration.Week:
+            return self.ohclWeekly
+        if ohclduration==OHCLDuration.Month:
+            return self.ohclMonthly
+        if ohclduration==OHCLDuration.Year:
+            return self.ohclYearly
 
 class Leverage:
     def __init__(self, mem):
