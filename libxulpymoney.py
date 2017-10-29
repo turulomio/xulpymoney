@@ -7290,6 +7290,32 @@ class SetOHCL:
                     closes.append(ohcl.close)
         return closes
 
+
+    def sma(self, number):
+        """
+        simple movil average
+            Return a sma array of tuples (datetime,sma_n)
+            Normal numbers are 50 and 200
+            
+        Calculamos segun
+        a=[1,2,3,4]
+        sum([0:2])=3
+        """
+        def average(inicio, final):
+            suma=Decimal(0)
+            for ohcl in self.arr[inicio:final]:
+                suma=suma+ohcl.close
+            return suma/(final-inicio)
+        ######################
+        if self.length()<=number:
+            return None
+            
+        sma=[]
+        for i, ohcl in enumerate(self.arr):
+            if i>=number:
+                sma.append((ohcl.datetime(), average(i-number, i)))
+        return sma
+
     def opens(self, from_dt=None):
         """Returns a list with all the open of the array"""
         opens=[]
