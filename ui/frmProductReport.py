@@ -330,6 +330,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            self.ntbHistorical.show() 
 
             self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
+            self.wdgproducthistoricalchart.generate()
             self.wdgproducthistoricalchart.display()
                 
         #Canvas Intradia

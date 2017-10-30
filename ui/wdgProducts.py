@@ -7,6 +7,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgMergeCodes import wdgMergeCodes
 from canvaschart import canvasChartHistoricalBuy
 from frmEstimationsAdd import frmEstimationsAdd
+from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging
 
 class wdgProducts(QWidget, Ui_wdgProducts):
@@ -94,6 +95,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
+        
+        wc=wdgProductHistoricalBuyChart()
+        wc.setProduct(self.products.selected[0], None)
+        wc.generate()
+        wc.display()
+        lay.addWidget(wc)
         d.exec_()
         
     @pyqtSlot() 
