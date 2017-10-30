@@ -15,13 +15,28 @@ from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTim
 class VCTemporalSeries(QChartView):
     def __init__(self):
         QChartView.__init__(self)
-        self.clear()
+        self.chart=QChart()
+        self._allowHideSeries=True
+        self.chart.setAnimationOptions(QChart.AllAnimations);
+        self.chart.layout().setContentsMargins(0,0,0,0);
+
+#        #Axis cration
+        self.axisX=QDateTimeAxis()
+        self.axisX.setTickCount(15);
+        self.axisX.setFormat("yyyy-MM");
         self.maxx=None
         self.maxy=None
         self.minx=None
         self.miny=None
-        self._allowHideSeries=True
+        
+        self.axisY = QValueAxis()
+        self.axisY.setLabelFormat("%i")
 
+        self.setRenderHint(QPainter.Antialiasing);
+        self.setRubberBand(QChartView.HorizontalRubberBand)
+        
+        self.series=[]
+        self.__ohclduration=OHCLDuration.Day
     def setAxisFormat(self, axis,  min, max, type, zone=None):
         """
             type=0 #Value
@@ -45,38 +60,50 @@ class VCTemporalSeries(QChartView):
             else:
                 axis.setFormat("yyyy-MMM")
                 
-
-
-    def clear(self):
-        self.chart=QChart()        
-        self.chart.setAnimationOptions(QChart.AllAnimations);
-        self.chart.layout().setContentsMargins(0,0,0,0);
-
-#        #Axis cration
-        self.axisX=QDateTimeAxis()
-        self.axisX.setTickCount(15);
+    def setOHCLDuration(self, ohclduration):
+        self.__ohclduration=ohclduration
+    @pyqtSlot()
+    def wheelEvent(self, event):
+        print (event.angleDelta().y())
+#        if event.angleDelta().y()>0:
+#            self.__from=self.__from+datetime.timedelta(days=365)
+#        else:
+#            self.from_dt=self.__from-datetime.timedelta(days=365)
+##        self.clear()
+#        self.display()
         
-        self.axisY = QValueAxis()
 
-        self.setRenderHint(QPainter.Antialiasing);
-        self.setRubberBand(QChartView.VerticalRubberBand)
-        
-        self.series=[]
-        self.maxx=None
-        self.maxy=None
-        self.minx=None
-        self.miny=None
-        font=QFont()
-        font.setBold(True)
-        font.setPointSize(12)
-        self.chart.setTitleFont(font)
+#    def clear(self):
+#        self.chart=QChart()        
+#        self.chart.setAnimationOptions(QChart.AllAnimations);
+#        self.chart.layout().setContentsMargins(0,0,0,0);
+#
+##        #Axis cration
+#        self.axisX=QDateTimeAxis()
+#        self.axisX.setTickCount(15);
+#        
+#        self.axisY = QValueAxis()
+#
+#        self.setRenderHint(QPainter.Antialiasing);
+#        self.setRubberBand(QChartView.VerticalRubberBand)
+#        
+#        self.series=[]
+#        self.maxx=None
+#        self.maxy=None
+#        self.minx=None
+#        self.miny=None
+#        font=QFont()
+#        font.setBold(True)
+#        font.setPointSize(12)
+#        self.chart.setTitleFont(font)
 
 
     def setAllowHideSeries(self, boolean):
         self._allowHideSeries=boolean
         
 
-    def appendSeries(self, name,  currency=None):
+        
+    def appendTemporalSeries(self, name,  currency=None):
         """
             currency is a Currency object
         """
@@ -84,9 +111,56 @@ class VCTemporalSeries(QChartView):
         ls=QLineSeries()
         ls.setName(name)
         self.series.append(ls)
-        return ls
+        return ls        
 
+    def appendTemporalSeriesData(self, ls, x, y):
+        """
+            x is a datetime zone aware
+        """
+        x=aware2epochms(x)
+        ls.append(x, y)
         
+        if self.maxy==None:#Gives first maxy and miny
+            self.maxy=y
+            self.miny=y
+            self.maxx=x
+            self.minx=x
+            
+        if y>self.maxy:
+            self.maxy=y
+        if y<self.miny:
+            self.miny=y
+        if x>self.maxx:
+            self.maxx=x
+        if x<self.minx:
+            self.minx=x
+        
+    def appendCandlestickSeries(self, name, currency):
+        self.currency=currency
+        ls=QCandlestickSeries()
+        ls.setName(name)
+        ls.setIncreasingColor(QColor(Qt.green));
+        ls.setDecreasingColor(QColor(Qt.red));
+        self.series.append(ls)
+        return ls
+        
+    def appendCandlestickSeriesData(self, ls, ohcl):
+        x=aware2epochms(ohcl.datetime())
+        ls.append(QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close, x ))
+        if self.maxy==None:
+            self.maxy=ohcl.high
+            self.miny=ohcl.low
+            self.maxx=x
+            self.minx=x
+        if ohcl.high>self.maxy:
+            self.maxy=ohcl.high
+        if ohcl.low<self.miny:
+            self.miny=ohcl.low     
+        if x>self.maxx:
+            self.maxx=x
+        if x<self.minx:
+            self.minx=x
+            
     def appendScatterSeries(self, name,  currency=None):
         """
             currency is a Currency object
@@ -98,7 +172,7 @@ class VCTemporalSeries(QChartView):
         return ls
 
     def appendScatterSeriesData(self, ls, x, y):
-        self.appendData(ls, x, y)
+        self.appendTemporalSeriesData(ls, x, y)
         
     def mouseMoveEvent(self, event):
         """
@@ -156,27 +230,27 @@ class VCTemporalSeries(QChartView):
         pixmap=self.grab()
         pixmap.save(savefile, quality=100)
 
-    def appendData(self, ls, x, y):
-        """
-            x is a datetime zone aware
-        """
-        x=aware2epochms(x)
-        ls.append(x, y)
-        
-        if self.maxy==None:#Gives first maxy and miny
-            self.maxy=y
-            self.miny=y
-            self.maxx=x
-            self.minx=x
-            
-        if y>self.maxy:
-            self.maxy=y
-        if y<self.miny:
-            self.miny=y
-        if x>self.maxx:
-            self.maxx=x
-        if x<self.minx:
-            self.minx=x
+#    def appendData(self, ls, x, y):
+#        """
+#            x is a datetime zone aware
+#        """
+#        x=aware2epochms(x)
+#        ls.append(x, y)
+#        
+#        if self.maxy==None:#Gives first maxy and miny
+#            self.maxy=y
+#            self.miny=y
+#            self.maxx=x
+#            self.minx=x
+#            
+#        if y>self.maxy:
+#            self.maxy=y
+#        if y<self.miny:
+#            self.miny=y
+#        if x>self.maxx:
+#            self.maxx=x
+#        if x<self.minx:
+#            self.minx=x
 
     def display(self):
         self.setChart(self.chart)
@@ -260,126 +334,117 @@ class VCPie(QChartView):
         self.serie.setPieEndAngle(450)
         
 
-        
-class VCCandlestick(QChartView):
-    def __init__(self):
-        QChartView.__init__(self)
-        self.chart=QChart()
-        self.chart.setAnimationOptions(QChart.AllAnimations);
-        self.chart.layout().setContentsMargins(0,0,0,0);
-
-#        #Axis cration
-        self.axisX=QDateTimeAxis()
-        self.axisX.setTickCount(15);
-        self.axisX.setFormat("yyyy-MM");
-        self.maxx=None
-        self.maxy=None
-        self.minx=None
-        self.miny=None
-        
-        self.axisY = QValueAxis()
-        self.axisY.setLabelFormat("%i")
-
-        self.setRenderHint(QPainter.Antialiasing);
-        self.setRubberBand(QChartView.HorizontalRubberBand)
-        
-        self.series=[]
-        self.__ohclduration=OHCLDuration.Day
-
-    def appendCandlestickSeries(self, name, currency):
-        self.currency=currency
-        ls=QCandlestickSeries()
-        ls.setName(name)
-        ls.setIncreasingColor(QColor(Qt.green));
-        ls.setDecreasingColor(QColor(Qt.red));
-        self.series.append(ls)
-        return ls
-
-
-    def display(self):        
-        self.setChart(self.chart)
-        self.chart.addAxis(self.axisY, Qt.AlignLeft);
-        self.chart.addAxis(self.axisX, Qt.AlignBottom);
-        for s in self.series:
-            self.chart.addSeries(s)
-            s.attachAxis(self.axisX)
-            s.attachAxis(self.axisY)
-        self.axisY.setRange(self.miny, self.maxy)
-
-    def setOHCLDuration(self, ohclduration):
-        self.__ohclduration=ohclduration
-        
-    @pyqtSlot()
-    def wheelEvent(self, event):
-        print (event.angleDelta().y())
-#        if event.angleDelta().y()>0:
-#            self.__from=self.__from+datetime.timedelta(days=365)
-#        else:
-#            self.from_dt=self.__from-datetime.timedelta(days=365)
-##        self.clear()
-#        self.display()
-        
-    def appendTemporalSeries(self, name,  currency=None):
-        """
-            currency is a Currency object
-        """
-        self.currency=currency
-        ls=QLineSeries()
-        ls.setName(name)
-        self.series.append(ls)
-        return ls        
-        
-    def appendScatterSeries(self, name,  currency=None):
-        """
-            currency is a Currency object
-        """
-        self.currency=currency
-        ls=QScatterSeries()
-        ls.setName(name)
-        self.series.append(ls)
-        return ls
-
-    def appendScatterSeriesData(self, ls, x, y):
-        self.appendTemporalSeriesData(ls, x, y)
-        
-    def appendCandlestickSeriesData(self, ls, ohcl):
-        x=aware2epochms(ohcl.datetime())
-        ls.append(QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close, x ))
-        if self.maxy==None:
-            self.maxy=ohcl.high
-            self.miny=ohcl.low
-            self.maxx=x
-            self.minx=x
-        if ohcl.high>self.maxy:
-            self.maxy=ohcl.high
-        if ohcl.low<self.miny:
-            self.miny=ohcl.low     
-        if x>self.maxx:
-            self.maxx=x
-        if x<self.minx:
-            self.minx=x
-
-    def appendTemporalSeriesData(self, ls, x, y):
-        """
-            x is a datetime zone aware
-        """
-        x=aware2epochms(x)
-        ls.append(x, y)
-        
-        if self.maxy==None:#Gives first maxy and miny
-            self.maxy=y
-            self.miny=y
-            self.maxx=x
-            self.minx=x
-            
-        if y>self.maxy:
-            self.maxy=y
-        if y<self.miny:
-            self.miny=y
-        if x>self.maxx:
-            self.maxx=x
-        if x<self.minx:
-            self.minx=x
+#        
+#class VCCandlestick(QChartView):
+#    def __init__(self):
+#        QChartView.__init__(self)
+#        self.chart=QChart()
+#        self.chart.setAnimationOptions(QChart.AllAnimations);
+#        self.chart.layout().setContentsMargins(0,0,0,0);
+#
+##        #Axis cration
+#        self.axisX=QDateTimeAxis()
+#        self.axisX.setTickCount(15);
+#        self.axisX.setFormat("yyyy-MM");
+#        self.maxx=None
+#        self.maxy=None
+#        self.minx=None
+#        self.miny=None
+#        
+#        self.axisY = QValueAxis()
+#        self.axisY.setLabelFormat("%i")
+#
+#        self.setRenderHint(QPainter.Antialiasing);
+#        self.setRubberBand(QChartView.HorizontalRubberBand)
+#        
+#        self.series=[]
+#        self.__ohclduration=OHCLDuration.Day
+#
+#    def appendCandlestickSeries(self, name, currency):
+#        self.currency=currency
+#        ls=QCandlestickSeries()
+#        ls.setName(name)
+#        ls.setIncreasingColor(QColor(Qt.green));
+#        ls.setDecreasingColor(QColor(Qt.red));
+#        self.series.append(ls)
+#        return ls
+#
+#
+#    def display(self):        
+#        self.setChart(self.chart)
+#        self.chart.addAxis(self.axisY, Qt.AlignLeft);
+#        self.chart.addAxis(self.axisX, Qt.AlignBottom);
+#        for s in self.series:
+#            self.chart.addSeries(s)
+#            s.attachAxis(self.axisX)
+#            s.attachAxis(self.axisY)
+#        self.axisY.setRange(self.miny, self.maxy)
+#
+#    def setOHCLDuration(self, ohclduration):
+#        self.__ohclduration=ohclduration
+#        
+#
+#    def appendTemporalSeries(self, name,  currency=None):
+#        """
+#            currency is a Currency object
+#        """
+#        self.currency=currency
+#        ls=QLineSeries()
+#        ls.setName(name)
+#        self.series.append(ls)
+#        return ls        
+#        
+#    def appendScatterSeries(self, name,  currency=None):
+#        """
+#            currency is a Currency object
+#        """
+#        self.currency=currency
+#        ls=QScatterSeries()
+#        ls.setName(name)
+#        self.series.append(ls)
+#        return ls
+#
+#    def appendScatterSeriesData(self, ls, x, y):
+#        self.appendTemporalSeriesData(ls, x, y)
+#        
+#    def appendCandlestickSeriesData(self, ls, ohcl):
+#        x=aware2epochms(ohcl.datetime())
+#        ls.append(QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close, x ))
+#        if self.maxy==None:
+#            self.maxy=ohcl.high
+#            self.miny=ohcl.low
+#            self.maxx=x
+#            self.minx=x
+#        if ohcl.high>self.maxy:
+#            self.maxy=ohcl.high
+#        if ohcl.low<self.miny:
+#            self.miny=ohcl.low     
+#        if x>self.maxx:
+#            self.maxx=x
+#        if x<self.minx:
+#            self.minx=x
+#
+#    def appendTemporalSeriesData(self, ls, x, y):
+#        """
+#            x is a datetime zone aware
+#        """
+#        x=aware2epochms(x)
+#        ls.append(x, y)
+#        
+#        if self.maxy==None:#Gives first maxy and miny
+#            self.maxy=y
+#            self.miny=y
+#            self.maxx=x
+#            self.minx=x
+#            
+#        if y>self.maxy:
+#            self.maxy=y
+#        if y<self.miny:
+#            self.miny=y
+#        if x>self.maxx:
+#            self.maxx=x
+#        if x<self.minx:
+#            self.minx=x
 
 class ChartType:
     lines=0
