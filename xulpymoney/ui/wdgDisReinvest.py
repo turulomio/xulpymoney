@@ -7,8 +7,7 @@ from Ui_wdgDisReinvest import Ui_wdgDisReinvest
 from libxulpymoney import InvestmentOperation, Money, Percentage,  Quote, qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from decimal import Decimal
-from canvaschart import canvasChartHistoricalReinvest
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
+from wdgProductHistoricalChart import wdgProductHistoricalReinvestChart
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def __init__(self, mem, inversion,  allProduct=False,  parent=None):
@@ -155,12 +154,15 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Reinvest graph"))
         d.showMaximized()
-        w=canvasChartHistoricalReinvest(self.mem, d)
-        ntb= NavigationToolbar2QT(w, d)
-        w.load_data_reinvest(self.investment, self.sim_op,  self.sim_opactual)
         lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        lay.addWidget(ntb)
+        
+        wc=wdgProductHistoricalReinvestChart()
+        wc.setProduct(self.investment.product, self.investment)
+        wc.setReinvest( self.sim_op, self.sim_opactual)
+        
+        lay.addWidget(wc)
+        wc.display()
+        
         d.exec_()
 
     @pyqtSlot()

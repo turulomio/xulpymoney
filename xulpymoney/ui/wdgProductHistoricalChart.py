@@ -1,9 +1,10 @@
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QColor,  QPen
+from PyQt5.QtWidgets import QWidget,  QLabel
 from Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
+from decimal import Decimal
 from canvaschart import   VCTemporalSeries
 from libxulpymoney import day_end_from_date,  OHCLDuration
 
@@ -27,7 +28,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.cmbOHCLDuration.currentIndexChanged.disconnect()
         OHCLDuration.qcombobox(self.cmbOHCLDuration, OHCLDuration.Day)
         self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
-        self.display()
         
     def on_dtFrom_dateChanged(self, date):
         selected=date.toPyDate()
@@ -88,10 +88,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 average_price.setColor(QColor(85, 170, 127))
                 self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, self.investment.op_actual.average_price(type=1).amount)
                 self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), self.investment.op_actual.average_price(type=1).amount)
-                selling_price=self.view.appendTemporalSeries(self.tr("Selling price"),  self.product.currency)
-                selling_price.setColor(QColor(170, 85, 85))
-                self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
-                self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
+                if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
+                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price"),  self.product.currency)
+                    selling_price.setColor(QColor(170, 85, 85))
+                    self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
+                    self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
         self.view.display()
             
     @pyqtSlot(int)      
@@ -117,3 +118,105 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.display()
     def on_chkSMA200_stateChanged(self, state):
         self.display()
+
+
+class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
+    def __init__(self,  parent=None):
+        wdgProductHistoricalChart.__init__(self, parent)
+        self.sim_op=None
+        self.sim_opactual=None
+        
+    def setReinvest(self,  sim_op,  sim_opactual):
+        self.sim_op=sim_op
+        self.sim_opactual=sim_opactual
+        self.mem=self.sim_op.mem
+
+    def display(self):
+        """Just draw the chart with selected options. It creates and destroys objects"""
+        def pen(style, color):
+            pen=QPen()
+            pen.setStyle(style)
+            pen.setColor(color)
+            return pen
+            
+        ##################################################3
+        if self.view!=None:
+            self.view.close()
+        if self.sim_op==None or self.sim_opactual==None:
+            print("Need to setReinvest before")
+            return
+        
+        selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
+        self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
+        
+        self.view=VCTemporalSeries()
+        self.verticalLayout.addWidget(self.view)
+        if self.cmbChartType.currentIndex()==0:#Lines
+            ls=self.view.appendTemporalSeries(self.product.name.upper(), self.product.currency)#Line seies
+            for ohcl in self.setohcl.arr:
+                if ohcl.datetime()>=selected_datetime:
+                    self.view.appendTemporalSeriesData(ls, ohcl.datetime(), ohcl.close)
+        elif self.cmbChartType.currentIndex()==1:#Candles            
+            candle=self.view.appendCandlestickSeries(self.product.name, self.product.currency)#Candle series
+            for ohcl in self.setohcl.arr:
+                if ohcl.datetime()>=selected_datetime:
+                    self.view.appendCandlestickSeriesData(candle, ohcl)
+            self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
+            
+        if self.chkSMA50.isChecked() and self.setohcl.length()>50:#SMA50 line series
+            sma50=self.view.appendTemporalSeries(self.tr("SMA50"),  self.product.currency)
+            sma50.setColor(QColor(255, 170, 255))
+            for dt, value in self.setohcl.sma(50):
+                if dt>selected_datetime:
+                    self.view.appendTemporalSeriesData(sma50, dt, value)
+                
+        if self.chkSMA200.isChecked() and self.setohcl.length()>200:#SMA200 line series
+            sma200=self.view.appendTemporalSeries(self.tr("SMA200"),  self.product.currency)
+            sma200.setColor(QColor(165, 165, 165))
+            for dt, value in self.setohcl.sma(200):
+                if dt>selected_datetime:
+                    self.view.appendTemporalSeriesData(sma200, dt, value)
+                    
+        #INVESTMENT
+        if self.investment!=None:
+            buy=self.view.appendScatterSeries(self.tr("Buy operations"), self.product.currency)
+            buy.setColor(QColor(85, 170, 127))
+            sell=self.view.appendScatterSeries(self.tr("Sell operations"), self.product.currency)
+            sell.setColor(QColor(170, 85, 85))
+            for op in self.investment.op.arr:
+                if op.tipooperacion.id in (4, ) and op.datetime>selected_datetime:
+                    self.view.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
+                if op.tipooperacion.id in (5, ) and op.datetime>selected_datetime:
+                    self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
+            if self.investment.op_actual.length()>0:
+                average_price=self.view.appendTemporalSeries(self.tr("Average price"),  self.product.currency)
+                average_price.setColor(QColor(85, 170, 127))
+                self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, self.investment.op_actual.average_price(type=1).amount)
+                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), self.investment.op_actual.average_price(type=1).amount)
+                
+                percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
+                new_avg=self.sim_opactual.average_price().amount
+                new_sell_price=new_avg*(1+percentage/Decimal(100))
+                
+                new_average_price=self.view.appendTemporalSeries(self.tr("New average price: {}").format(str(new_avg)),  self.product.currency)
+                new_average_price.setColor(QColor(85, 170, 127))
+                new_average_price.setPen(pen(Qt.DashLine, QColor(85, 170, 127)))
+                self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg)
+                self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg)
+                
+                if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
+                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price"),  self.product.currency)
+                    selling_price.setColor(QColor(170, 85, 85))
+                    self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
+                    self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
+                    
+                    new_selling_price=self.view.appendTemporalSeries(self.tr("New selling price"),  self.product.currency)
+                    new_selling_price.setColor(QColor(170, 85, 85))
+                    new_selling_price.setPen(pen(Qt.DashLine, QColor(170, 85, 85)))
+                    self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price)
+                    self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price)
+                    
+                gains=(new_sell_price-new_avg)*self.sim_opactual.acciones()
+                label=QLabel(self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
+                self.verticalLayout.addWidget(label)
+        self.view.display()
