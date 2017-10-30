@@ -330,17 +330,22 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            self.ntbHistorical.show() 
 
             self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
+            self.wdgproducthistoricalchart.display()
                 
         #Canvas Intradia
         if self.product.result.intradia.length()<2:
             self.viewIntraday.hide()
         else:
             self.viewIntraday.show()
-            self.viewIntraday.clear()
+            self.layIntraday.removeWidget(self.viewIntraday)
+            self.viewIntraday.close()
+            
+            self.viewIntraday=VCTemporalSeries()
+            self.layIntraday.addWidget(self.viewIntraday)
             self.viewIntraday.chart.setTitle(self.tr("Intraday graph"))
-            ls=self.viewIntraday.appendSeries(self.product.name.upper(), self.product.currency)
+            ls=self.viewIntraday.appendTemporalSeries(self.product.name.upper(), self.product.currency)
             for quote in self.product.result.intradia.arr:
-                self.viewIntraday.appendData(ls, quote.datetime, quote.quote)
+                self.viewIntraday.appendTemporalSeriesData(ls, quote.datetime, quote.quote)
             self.viewIntraday.display()
 
         #tblIntradia
