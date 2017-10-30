@@ -161,6 +161,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         wc.setReinvest( self.sim_op, self.sim_opactual)
         
         lay.addWidget(wc)
+        wc.generate()
         wc.display()
         
         d.exec_()
