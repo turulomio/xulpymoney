@@ -105,26 +105,34 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             
     @pyqtSlot(int)      
     def on_cmbChartType_currentIndexChanged(self, index):
+        self.generate()
         self.display()
     @pyqtSlot(int)      
     def on_cmbOHCLDuration_currentIndexChanged(self, index):
+        self.generate()
         self.display()
         
     def on_cmdFromRight_released(self):
         self.dtFrom.setDate(day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)+datetime.timedelta(days=365))
+        self.generate()
         self.display()        
     def on_cmdFromLeft_released(self):
         self.dtFrom.setDate(day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=365))
+        self.generate()
         self.display()        
     def on_cmdFromRightMax_released(self):
         self.dtFrom.setDate(self.setohcl.last().datetime()-datetime.timedelta(days=365))
+        self.generate()
         self.display()        
     def on_cmdFromLeftMax_released(self):
         self.dtFrom.setDate(self.setohcl.first().datetime())
+        self.generate()
         self.display()
     def on_chkSMA50_stateChanged(self, state):
+        self.generate()
         self.display()
     def on_chkSMA200_stateChanged(self, state):
+        self.generate()
         self.display()
 
 
@@ -133,7 +141,7 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
         wdgProductHistoricalChart.__init__(self, parent)
         self.sim_op=None
         self.sim_opactual=None
-        self.label=QLabel()
+        self.lblComment=QLabel()
         
     def setReinvest(self,  sim_op,  sim_opactual):
         self.sim_op=sim_op
@@ -166,12 +174,13 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
                     self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), self.new_sell_price_1)
                     
                 gains=(self.new_sell_price_1-self.new_avg_1)*self.sim_opactual.acciones()
-                label=QLabel(self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
-                self.verticalLayout.addWidget(label)
+                self.lblComment.setText(self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
+                self.verticalLayout.addWidget(self.lblComment)
 
 class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
     def __init__(self,  parent=None):
         wdgProductHistoricalChart.__init__(self, parent)
+        self.lblComment=QLabel()
         
     def generate(self):
         """Just draw the chart with selected options. It creates and destroys objects"""
@@ -235,7 +244,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.view.appendTemporalSeriesData(new_selling_price, inv.op_actual.first().datetime-datetime.timedelta(days=365), inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
         
-        self.label.setText(self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €." + " " + self.tr("Selling percentage: {} %.".format(percentage))))
+        self.lblComment.setText(self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €." + " " + self.tr("Selling percentage: {} %.".format(percentage))))
         
 #        
 #        if self.investment!=None:
