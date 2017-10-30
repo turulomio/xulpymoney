@@ -148,7 +148,7 @@ class Ui_wdgProductHistoricalChart(object):
         self.actionProductPriceLastRemove.setObjectName("actionProductPriceLastRemove")
 
         self.retranslateUi(wdgProductHistoricalChart)
-        self.cmbChartType.setCurrentIndex(1)
+        self.cmbChartType.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(wdgProductHistoricalChart)
 
     def retranslateUi(self, wdgProductHistoricalChart):
