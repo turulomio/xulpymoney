@@ -1,12 +1,11 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy
-from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms,  OHCLDuration
+from libxulpymoney import  str2bool,  Percentage, epochms2aware, aware2epochms,  OHCLDuration
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.dates import MonthLocator, YearLocator,   DateFormatter, date2num, num2date
 from matplotlib.figure import Figure
-import pytz
 import datetime
 
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
@@ -1274,178 +1273,178 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.price_s2=None
         self.price_s3=None
         self.mydraw()
-
-class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
-    def __init__(self, mem,   parent):
-        self.mem=mem
-        # setup Matplotlib Figure and Axis
-        self.fig = Figure()
-        FigureCanvasQTAgg.__init__(self, self.fig)
-        # we define the widget as expandable
-        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # notify the system of updated policy
-        FigureCanvasQTAgg.updateGeometry(self)      
-        self.ax= self.fig.add_subplot(111)
-        self.plot_average=None
-        self.plot_selling=None
-        self.plot_purchases=None
-        self.plot_sales=None
-        self.plot_new_average=None
-        self.plot_new_selling=None
-        self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
-        
-        self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
-
-        self.labels=[]#Array de tuplas (plot,label)
-
-        QMetaObject.connectSlotsByName(self)
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
-
-    def footer(self, date, y): 
-        dt=num2date(date)
-        dat=dt.date()
-        try:
-            return self.tr("{}: {}.".format(dat, self.investment.product.currency.string(self.setdata.find(dat).close)))
-        except:
-            return "Not found"
-
-
-    def makeLegend(self):
-        if len(self.labels)==0:
-            self.labels.append((self.plot_selling, self.tr("Selling price: {}".format(self.investment.product.currency.string(self.sellprice)))))
-            self.labels.append((self.plot_average, self.tr("Average purchase price: {}".format(self.investment.op_actual.average_price(type=1)))))
-            self.labels.append((self.plot_purchases, self.tr("Purchase point")))
-            self.labels.append((self.plot_sales, self.tr("Sales point")))
-            self.labels.append((self.plot_new_selling, self.tr("New selling reference: {}".format(self.investment.product.currency.string(self.newsellprice)))))
-            self.labels.append((self.plot_new_average, self.tr("New purchase average: {}".format(self.setcurrent.average_price(type=1)))))
-
-    def draw_newPurchaseReferences(self):
-        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
-        (dat, average, sell)=([], [], [])                
-        dat.append(self.setcurrent.arr[0].datetime)
-        dat.append(datetime.datetime.now())
-        avg=self.setcurrent.average_price().amount
-        self.newsellprice=avg*(1+percentage/Decimal(100))
-        
-        average.append(avg)
-        average.append(avg)
-        sell.append(self.newsellprice)
-        sell.append(self.newsellprice)
-        self.plot_new_average, =self.ax.plot_date(dat, average, '-',  color='orange')     
-        self.plot_new_selling, =self.ax.plot_date(dat, sell, '-',  color='darkblue')          
-        
-        #Prepare bottom label
-        gains=(self.newsellprice-avg)*self.setcurrent.acciones()
-        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
-
-        
-    @pyqtSlot()
-    def on_wheelEvent(self, event):
-        now=self.mem.localzone.now()
-        if event.button=='up':
-            self.from_dt=self.from_dt+datetime.timedelta(days=365)
-        else:
-            self.from_dt=self.from_dt-datetime.timedelta(days=365)
-        if self.from_dt>now-datetime.timedelta(days=365):
-            self.from_dt=now-datetime.timedelta(days=365)
-            QApplication.beep()
-        self.mydraw()
-        
-
-
-    def draw_investment_operations(self):
-        """Draws an horizontal line with the selling point price"""
-        if self.setop.length()>0:
-            dates_p=[]#purchase
-            quotes_p=[]
-            dates_s=[]#sales
-            quotes_s=[]
-            for o in self.setop.arr:
-                if o.datetime>=self.from_dt:
-                    if o.acciones>=0:
-                        dates_p.append(o.datetime.date())
-                        quotes_p.append(o.valor_accion)
-                    else:
-                        dates_s.append(o.datetime.date())
-                        quotes_s.append(o.valor_accion)
-            self.plot_purchases, =self.ax.plot_date(dates_p, quotes_p, 'bo', color="green",  tz=pytz.timezone(self.mem.localzone.name))
-            self.plot_sales, =self.ax.plot_date(dates_s, quotes_s, 'bo', color="red",  tz=pytz.timezone(self.mem.localzone.name)) 
-
-    def draw_purchaseReferences(self):
-        """Draws an horizontal line with the average purchase price"""
-        (dates, buy, sell)=([], [], [])                
-        dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
-        dates.append(datetime.date.today()+datetime.timedelta(days=7))
-        average=self.investment.op_actual.average_price().amount
-        buy.append(average)
-        buy.append(average)
-        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
-        self.sellprice=average*(1+percentage/Decimal(100))
-        sell.append(self.sellprice)
-        sell.append(self.sellprice)
-        self.plot_average, =self.ax.plot_date(dates, buy, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
-        self.plot_selling, =self.ax.plot_date(dates, sell, 'r--', color="darkblue",  tz=pytz.timezone(self.mem.localzone.name))
-
-    def draw_lines_from_ohcl(self):
-        """self.setdata es un SetOHCLDaily"""
-        self.ax.clear()
-        if self.setdata.length()<2:
-            return
-            
-        self.get_locators()
-        self.ax.plot_date(self.setdata.datetimes(self.from_dt), self.setdata.closes(self.from_dt), '-')
-        self.draw()
-
-
-    def showLegend(self):
-        """Alterna mostrando y desmostrando legend, empieza con sí"""
-        self.makeLegend()
-                
-        if self.ax.legend_==None:
-            (plots, labels)=zip(*self.labels)
-            self.ax.legend( plots, labels, loc="best")
-        else:
-            self.ax.legend_=None
-        self.draw()
-
-    def mouseReleaseEvent(self,  event):
-        self.showLegend()
-
-    def get_locators(self):
-        interval=(self.mem.localzone.now()-self.from_dt).days+1
-        
-        if interval<365:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(MonthLocator())
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))
-        elif interval>=365:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(YearLocator())   
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-                        
-        self.ax.format_coord = self.footer  
-        self.ax.grid(True)
-
-    def load_data_reinvest(self,  inversion, setop, setcurrent):
-        """
-            setop es el SetInvestmentOperation simulado
-            segcurrent es SetInvestmentOperationCurrent simulado
-        """
-        self.setcurrent=setcurrent
-        self.setop=setop
-        self.investment=inversion
-        if self.investment.op_actual.length()>0:
-            self.from_dt=day_start(self.investment.op_actual.first().datetime, self.mem.localzone)
-        self.mydraw()
-                
-    def mydraw(self):
-        self.setdata=self.investment.product.result.ohclDaily
-        self.draw_lines_from_ohcl()
-        self.draw_investment_operations()
-        self.draw_purchaseReferences()
-        self.draw_newPurchaseReferences()
-        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.investment.product.name, self.investment.product.currency.symbol)))
-        self.ax.set_title(self.tr("Reinvest graph"), fontsize=30, fontweight="bold", y=1.02)
-        self.showLegend() 
-        self.draw()
+#
+#class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
+#    def __init__(self, mem,   parent):
+#        self.mem=mem
+#        # setup Matplotlib Figure and Axis
+#        self.fig = Figure()
+#        FigureCanvasQTAgg.__init__(self, self.fig)
+#        # we define the widget as expandable
+#        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+#        # notify the system of updated policy
+#        FigureCanvasQTAgg.updateGeometry(self)      
+#        self.ax= self.fig.add_subplot(111)
+#        self.plot_average=None
+#        self.plot_selling=None
+#        self.plot_purchases=None
+#        self.plot_sales=None
+#        self.plot_new_average=None
+#        self.plot_new_selling=None
+#        self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
+#        
+#        self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
+#
+#        self.labels=[]#Array de tuplas (plot,label)
+#
+#        QMetaObject.connectSlotsByName(self)
+#        self.setContextMenuPolicy(Qt.CustomContextMenu)
+#        self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
+#
+#    def footer(self, date, y): 
+#        dt=num2date(date)
+#        dat=dt.date()
+#        try:
+#            return self.tr("{}: {}.".format(dat, self.investment.product.currency.string(self.setdata.find(dat).close)))
+#        except:
+#            return "Not found"
+#
+#
+#    def makeLegend(self):
+#        if len(self.labels)==0:
+#            self.labels.append((self.plot_selling, self.tr("Selling price: {}".format(self.investment.product.currency.string(self.sellprice)))))
+#            self.labels.append((self.plot_average, self.tr("Average purchase price: {}".format(self.investment.op_actual.average_price(type=1)))))
+#            self.labels.append((self.plot_purchases, self.tr("Purchase point")))
+#            self.labels.append((self.plot_sales, self.tr("Sales point")))
+#            self.labels.append((self.plot_new_selling, self.tr("New selling reference: {}".format(self.investment.product.currency.string(self.newsellprice)))))
+#            self.labels.append((self.plot_new_average, self.tr("New purchase average: {}".format(self.setcurrent.average_price(type=1)))))
+#
+#    def draw_newPurchaseReferences(self):
+#        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
+#        (dat, average, sell)=([], [], [])                
+#        dat.append(self.setcurrent.arr[0].datetime)
+#        dat.append(datetime.datetime.now())
+#        avg=self.setcurrent.average_price().amount
+#        self.newsellprice=avg*(1+percentage/Decimal(100))
+#        
+#        average.append(avg)
+#        average.append(avg)
+#        sell.append(self.newsellprice)
+#        sell.append(self.newsellprice)
+#        self.plot_new_average, =self.ax.plot_date(dat, average, '-',  color='orange')     
+#        self.plot_new_selling, =self.ax.plot_date(dat, sell, '-',  color='darkblue')          
+#        
+#        #Prepare bottom label
+#        gains=(self.newsellprice-avg)*self.setcurrent.acciones()
+#        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
+#
+#        
+#    @pyqtSlot()
+#    def on_wheelEvent(self, event):
+#        now=self.mem.localzone.now()
+#        if event.button=='up':
+#            self.from_dt=self.from_dt+datetime.timedelta(days=365)
+#        else:
+#            self.from_dt=self.from_dt-datetime.timedelta(days=365)
+#        if self.from_dt>now-datetime.timedelta(days=365):
+#            self.from_dt=now-datetime.timedelta(days=365)
+#            QApplication.beep()
+#        self.mydraw()
+#        
+#
+#
+#    def draw_investment_operations(self):
+#        """Draws an horizontal line with the selling point price"""
+#        if self.setop.length()>0:
+#            dates_p=[]#purchase
+#            quotes_p=[]
+#            dates_s=[]#sales
+#            quotes_s=[]
+#            for o in self.setop.arr:
+#                if o.datetime>=self.from_dt:
+#                    if o.acciones>=0:
+#                        dates_p.append(o.datetime.date())
+#                        quotes_p.append(o.valor_accion)
+#                    else:
+#                        dates_s.append(o.datetime.date())
+#                        quotes_s.append(o.valor_accion)
+#            self.plot_purchases, =self.ax.plot_date(dates_p, quotes_p, 'bo', color="green",  tz=pytz.timezone(self.mem.localzone.name))
+#            self.plot_sales, =self.ax.plot_date(dates_s, quotes_s, 'bo', color="red",  tz=pytz.timezone(self.mem.localzone.name)) 
+#
+#    def draw_purchaseReferences(self):
+#        """Draws an horizontal line with the average purchase price"""
+#        (dates, buy, sell)=([], [], [])                
+#        dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
+#        dates.append(datetime.date.today()+datetime.timedelta(days=7))
+#        average=self.investment.op_actual.average_price().amount
+#        buy.append(average)
+#        buy.append(average)
+#        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
+#        self.sellprice=average*(1+percentage/Decimal(100))
+#        sell.append(self.sellprice)
+#        sell.append(self.sellprice)
+#        self.plot_average, =self.ax.plot_date(dates, buy, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
+#        self.plot_selling, =self.ax.plot_date(dates, sell, 'r--', color="darkblue",  tz=pytz.timezone(self.mem.localzone.name))
+#
+#    def draw_lines_from_ohcl(self):
+#        """self.setdata es un SetOHCLDaily"""
+#        self.ax.clear()
+#        if self.setdata.length()<2:
+#            return
+#            
+#        self.get_locators()
+#        self.ax.plot_date(self.setdata.datetimes(self.from_dt), self.setdata.closes(self.from_dt), '-')
+#        self.draw()
+#
+#
+#    def showLegend(self):
+#        """Alterna mostrando y desmostrando legend, empieza con sí"""
+#        self.makeLegend()
+#                
+#        if self.ax.legend_==None:
+#            (plots, labels)=zip(*self.labels)
+#            self.ax.legend( plots, labels, loc="best")
+#        else:
+#            self.ax.legend_=None
+#        self.draw()
+#
+#    def mouseReleaseEvent(self,  event):
+#        self.showLegend()
+#
+#    def get_locators(self):
+#        interval=(self.mem.localzone.now()-self.from_dt).days+1
+#        
+#        if interval<365:
+#            self.ax.xaxis.set_minor_locator(MonthLocator())
+#            self.ax.xaxis.set_major_locator(MonthLocator())
+#            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))
+#        elif interval>=365:
+#            self.ax.xaxis.set_minor_locator(MonthLocator())
+#            self.ax.xaxis.set_major_locator(YearLocator())   
+#            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
+#                        
+#        self.ax.format_coord = self.footer  
+#        self.ax.grid(True)
+#
+#    def load_data_reinvest(self,  inversion, setop, setcurrent):
+#        """
+#            setop es el SetInvestmentOperation simulado
+#            segcurrent es SetInvestmentOperationCurrent simulado
+#        """
+#        self.setcurrent=setcurrent
+#        self.setop=setop
+#        self.investment=inversion
+#        if self.investment.op_actual.length()>0:
+#            self.from_dt=day_start(self.investment.op_actual.first().datetime, self.mem.localzone)
+#        self.mydraw()
+#                
+#    def mydraw(self):
+#        self.setdata=self.investment.product.result.ohclDaily
+#        self.draw_lines_from_ohcl()
+#        self.draw_investment_operations()
+#        self.draw_purchaseReferences()
+#        self.draw_newPurchaseReferences()
+#        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.investment.product.name, self.investment.product.currency.symbol)))
+#        self.ax.set_title(self.tr("Reinvest graph"), fontsize=30, fontweight="bold", y=1.02)
+#        self.showLegend() 
+#        self.draw()
