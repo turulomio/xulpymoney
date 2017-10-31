@@ -125,21 +125,11 @@ class Ui_wdgAPR(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/xulpymoney/coins.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tab.addTab(self.tab_2, icon2, "")
-        self.tabChart = QtWidgets.QWidget()
-        self.tabChart.setObjectName("tabChart")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tabChart)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.tabGraph = QtWidgets.QVBoxLayout()
-        self.tabGraph.setObjectName("tabGraph")
-        self.horizontalLayout_3.addLayout(self.tabGraph)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/xulpymoney/pie.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.tab.addTab(self.tabChart, icon3, "")
         self.verticalLayout.addWidget(self.tab)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(wdgAPR)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(wdgAPR)
 
     def retranslateUi(self, wdgAPR):
@@ -183,7 +173,6 @@ class Ui_wdgAPR(object):
         item = self.tblReport.horizontalHeaderItem(9)
         item.setText(_translate("wdgAPR", "Comissions"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("wdgAPR", "Invested report"))
-        self.tab.setTabText(self.tab.indexOf(self.tabChart), _translate("wdgAPR", "Assets report chart"))
 
 from myqtablewidget import myQTableWidget
 from wdgYear import wdgYear

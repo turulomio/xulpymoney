@@ -76,7 +76,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_5">
         <attribute name="icon">
@@ -237,20 +237,6 @@
             </widget>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabChart">
-        <attribute name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
-        </attribute>
-        <attribute name="title">
-         <string>Assets report chart</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <layout class="QVBoxLayout" name="tabGraph"/>
          </item>
         </layout>
        </widget>
