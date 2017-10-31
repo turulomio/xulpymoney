@@ -458,11 +458,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.view.chart.setAnimationOptions(QChart.NoAnimation)
                 #Series creation
         last=self.setGraphic.find(datetime.date.today().year, datetime.date.today().month)
-        lsNoLoses=self.view.appendSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
-        lsMain=self.view.appendSeries(self.tr("Total assets")+": {}".format(last.total()))
-        lsZero=self.view.appendSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
-        lsBonds=self.view.appendSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
-        lsRisk=self.view.appendSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
+        lsNoLoses=self.view.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
+        lsMain=self.view.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
+        lsZero=self.view.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
+        lsBonds=self.view.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
+        lsRisk=self.view.appendTemporalSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
                 
         
         progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
@@ -477,11 +477,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             total=m.total().amount
             zero=m.total_zerorisk().amount
             bonds=m.total_bonds().amount
-            self.view.appendData(lsMain, epoch, m.total().amount)
-            self.view.appendData(lsZero, epoch, m.total_zerorisk().amount)
-            self.view.appendData(lsBonds, epoch, m.total_bonds().amount)
-            self.view.appendData(lsRisk, epoch, total-zero-bonds)
-            self.view.appendData(lsNoLoses, epoch, m.total_no_losses().amount)
+            self.view.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
+            self.view.appendTemporalSeriesData(lsZero, epoch, m.total_zerorisk().amount)
+            self.view.appendTemporalSeriesData(lsBonds, epoch, m.total_bonds().amount)
+            self.view.appendTemporalSeriesData(lsRisk, epoch, total-zero-bonds)
+            self.view.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
         self.view.display()
         
         self.tabGraphTotal.addWidget(self.view)
