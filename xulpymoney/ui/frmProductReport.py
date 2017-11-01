@@ -4,9 +4,10 @@ import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QFileDialog
+from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetProducts, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetProducts, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -14,8 +15,8 @@ from frmSplit import frmSplit
 from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
 from wdgProductHistoricalChart import wdgProductHistoricalChart
-from canvaschart import canvasChartCompare, VCTemporalSeries
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
+from canvaschart import  VCTemporalSeries
+#from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
 from libsources import WorkerGoogle,  WorkerGoogleHistorical, wdgSource
 
@@ -135,8 +136,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.showProductButton(False)
         self.cmbCompareTypes.setCurrentIndex(0)
         self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
-        self.ntbCompare=None
-        self.canvasCompare=None
+#        self.ntbCompare=None
+#        self.canvasCompare=None
+        self.viewCompare=None
         self.load_comparation()
 
         self.deCompare.dateChanged.connect(self.load_comparation)
@@ -156,11 +158,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             qmessagebox(self.tr("You must select a product to compare with."))
             return
         self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
-        if self.ntbCompare!=None:
-            self.canvasCompare.hide()
-            self.ntbCompare.hide()
-            self.layCompareProduct.removeWidget(self.canvasCompare)
-            self.layCompareProduct.removeWidget(self.ntbCompare)
+        if self.viewCompare!=None:
+#            self.canvasCompare.hide()
+#            self.ntbCompare.hide()
+            self.viewCompare.hide()
+#            self.layCompareProduct.removeWidget(self.canvasCompare)
+#            self.layCompareProduct.removeWidget(self.ntbCompare)
+            self.layCompareProduct.removeWidget(self.viewCompare)
         if self.comparation.canBeMade()==False:
             qmessagebox(self.tr("Comparation can't be made."))
             return
@@ -169,15 +173,150 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.deCompare.setMaximumDate(self.comparation.dates()[len(self.comparation.dates())-1-1])#Es menos 2, ya que hay alguna funcion de comparation que lo necesita
         self.comparation.setFromDate(self.deCompare.date())
             
-        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
-        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
-        self.layCompareProduct.addWidget(self.canvasCompare)
-        self.layCompareProduct.addWidget(self.ntbCompare)
+#        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
+#        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
+#        self.layCompareProduct.addWidget(self.canvasCompare)
+#        self.layCompareProduct.addWidget(self.ntbCompare)
+        self.viewCompare=VCTemporalSeries()
+        if self.cmbCompareTypes.currentIndex()==0:#Not changed data
+#            self.ax.set_title(self.tr("Comparing product quotes"), fontsize=30, fontweight="bold", y=1.02)
+#            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
+#            self.ax2=self.ax.twinx()
+#            self.ax2.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
+
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            dates=self.comparation.dates()
+            closes1=self.comparation.product1Closes()
+            closes2=self.comparation.product2Closes()
+            for i,  date in enumerate(dates):
+                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                    #        BEGIN DISPLAY)
+            self.viewCompare.setChart(self.viewCompare.chart)
+            self.viewCompare.setAxisFormat(self.viewCompare.axisX, self.viewCompare.minx, self.viewCompare.maxx, 1)
+            self.viewCompare.setAxisFormat(self.viewCompare.axisY, min(self.comparation.product1Closes()), max(self.comparation.product1Closes()),  0)
+            axis3=QValueAxis()
+    #        self.viewCompare.setAxisFormat(axis3, min(self.comparation.product2Closes()), max(self.comparation.product2Closes()), 1)
+            
+            self.viewCompare.chart.addAxis(self.viewCompare.axisY, Qt.AlignLeft);
+            self.viewCompare.chart.addAxis(self.viewCompare.axisX, Qt.AlignBottom);
+            self.viewCompare.chart.addAxis(axis3, Qt.AlignRight)
+
+            self.viewCompare.chart.addSeries(ls1)
+            ls1.attachAxis(self.viewCompare.axisX)
+            ls1.attachAxis(self.viewCompare.axisY)
+            self.viewCompare.axisY.setRange(min(self.comparation.product1Closes()), max(self.comparation.product1Closes()))
+            
+            
+            self.viewCompare.chart.addSeries(ls2)
+            ls2.attachAxis(self.viewCompare.axisX)
+            ls2.attachAxis(axis3)
+            axis3.setRange (min(self.comparation.product2Closes()), max(self.comparation.product2Closes()))
+            
+            
+            if self.viewCompare._allowHideSeries==True:
+                for marker in self.viewCompare.chart.legend().markers():
+                    try:
+                        marker.clicked.disconnect()
+                    except:
+                        print("No estaba conectada")
+                    marker.clicked.connect(self.viewCompare.on_marker_clicked)
+            
+            
+            self.viewCompare.repaint()
+            ###END DISPLAY
+#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1Closes(), '-',  color="blue", label=self.comparation.product1.name)
+#            self.plot2=self.ax2.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+#            self.ax2.legend(loc="upper right")
+#            self.ax2.format_coord = self.footer
+#            self.get_locators()
+#            self.ax.legend(loc="upper left")
+        elif self.cmbCompareTypes.currentIndex()==1:#Scatter
+            pass
+##            self.ax.set_title(self.tr("Comparing products with a scattering"), fontsize=30, fontweight="bold", y=1.02)
+##            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
+##            self.ax.set_xlabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
+#            ls1=self.viewCompare.appendScatterSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
+#            ls2=self.viewCompare.appendScatterSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+#            dates=self.comparation.dates()
+#            closes1=self.comparation.product1Closes()
+#            closes2=self.comparation.product2Closes()
+#            for i,  date in enumerate(dates):
+#                self.viewCompare.appendScatterSeriesData(ls1, closes1[i] , closes2[i])
+##            self.plot1=self.ax.scatter(self.comparation.product1Closes(), self.comparation.product2Closes(), c=[date2num(date) for date in self.comparation.dates()])
+##            self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Blue circles are older quotes and red ones are newer."))
+#                    #        BEGIN DISPLAY)
+#            self.viewCompare.setChart(self.viewCompare.chart)
+#            self.viewCompare.setAxisFormat(self.viewCompare.axisX, self.viewCompare.minx, self.viewCompare.maxx, 1)
+#            self.viewCompare.setAxisFormat(self.viewCompare.axisX, min(self.comparation.product1Closes()), max(self.comparation.product1Closes()),  0)
+#            self.viewCompare.setAxisFormat(self.viewCompare.axisY, min(self.comparation.product2Closes()), max(self.comparation.product2Closes()),  0)            
+#            self.viewCompare.chart.addAxis(self.viewCompare.axisY, Qt.AlignLeft);
+#            self.viewCompare.chart.addAxis(self.viewCompare.axisX, Qt.AlignBottom);
+#
+#            self.viewCompare.chart.addSeries(ls1)
+#            ls1.attachAxis(self.viewCompare.axisX)
+#            ls1.attachAxis(self.viewCompare.axisY)
+#            self.viewCompare.axisY.setRange(min(self.comparation.product1Closes()), max(self.comparation.product1Closes()))
+#            
+#            
+#            self.viewCompare.chart.addSeries(ls2)
+#            ls2.attachAxis(self.viewCompare.axisX)
+#            ls2.attachAxis(self.viewCompare.axisY)
+#            self.viewCompare.axisY.setRange(min(self.comparation.product2Closes()), max(self.comparation.product2Closes()))
+#            
+#            
+#            if self.viewCompare._allowHideSeries==True:
+#                for marker in self.viewCompare.chart.legend().markers():
+#                    try:
+#                        marker.clicked.disconnect()
+#                    except:
+#                        print("No estaba conectada")
+#                    marker.clicked.connect(self.viewCompare.on_marker_clicked)
+#            
+#            
+#            self.viewCompare.repaint()
+#            ###END DISPLAY
+        elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
+#            self.ax.set_title(self.tr("Comparing products with percentage evolution"), fontsize=30, fontweight="bold", y=1.02)
+#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
+#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+#            self.ax.format_coord = self.footer  
+#            self.get_locators()
+#            self.ax.legend(loc="upper left")
+
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            dates=self.comparation.dates()
+            closes1=self.comparation.product1PercentageFromFirstProduct2Price()
+            closes2=self.comparation.product2Closes()
+            for i,  date in enumerate(dates):
+                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+            self.viewCompare.display()
+        elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution.
+#            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"), fontsize=30, fontweight="bold", y=1.02)
+#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
+#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+#            self.ax.format_coord = self.footer  
+#            self.get_locators()
+#            self.ax.legend(loc="upper left")
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            dates=self.comparation.dates()
+            closes1=self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced()
+            closes2=self.comparation.product2Closes()
+            for i,  date in enumerate(dates):
+                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+            self.viewCompare.display()
+
+        
+        self.layCompareProduct.addWidget(self.viewCompare)
         print ("Comparation took {}".format(datetime.datetime.now()-inicio))
 
     def on_my_cmbCompareTypes_currentIndexChanged(self, int):
         self.load_comparation()
-        
 
     def on_tabHistorical_currentChanged(self, index):
         def setTable(table, data):
