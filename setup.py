@@ -28,7 +28,7 @@ if sys.platform=='win32':
             }
  
     build_exe_options = dict(
-        includes = ['PyQt5.QtNetwork',  'PyQt5.QtPrintSupport', 'matplotlib.backends.backend_tkagg', 'setuptools','numpy.core._methods','numpy.lib.format' ],
+        includes = ['PyQt5.QtNetwork',  'PyQt5.QtPrintSupport', 'setuptools','numpy.core._methods','numpy.lib.format' ],
         excludes=[], 
         include_files=include_files)
 

@@ -5,7 +5,7 @@ from frmProductReport import frmProductReport
 from libxulpymoney import SetProducts, SetQuotesAllIntradays, list2string, qmessagebox
 from frmQuotesIBM import frmQuotesIBM
 from wdgMergeCodes import wdgMergeCodes
-from canvaschart import canvasChartHistoricalBuy
+#from canvaschart import canvasChartHistoricalBuy
 from frmEstimationsAdd import frmEstimationsAdd
 from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging
@@ -91,10 +91,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
-        w=canvasChartHistoricalBuy(self.mem, d)
-        w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
+#        w=canvasChartHistoricalBuy(self.mem, d)
+#        w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
         lay = QVBoxLayout(d)
-        lay.addWidget(w)
+#        lay.addWidget(w)
         
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.products.selected[0], None)
