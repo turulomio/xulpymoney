@@ -886,8 +886,8 @@ class Ui_frmProductReport(object):
         self.actionQuoteImport.setObjectName("actionQuoteImport")
 
         self.retranslateUi(frmProductReport)
-        self.tab.setCurrentIndex(0)
-        self.tabGraphics.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
+        self.tabGraphics.setCurrentIndex(2)
         self.tabHistorical.setCurrentIndex(0)
         self.tabEstimaciones.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(frmProductReport)

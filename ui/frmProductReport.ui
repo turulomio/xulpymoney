@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -706,7 +706,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
