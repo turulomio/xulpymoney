@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgCalculator import Ui_wdgCalculator
 from libxulpymoney import Percentage, qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
-from canvaschart import canvasChartHistoricalBuy
+from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 from decimal import Decimal
 
 class wdgCalculator(QWidget, Ui_wdgCalculator):
@@ -102,14 +102,16 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def on_cmdGraph_released(self):
         self.product.result.get_basic_and_ohcls()
         d=QDialog(self)     
-        d.setWindowTitle(self.tr("Purchase graph"))
         d.showMaximized()
-        w=canvasChartHistoricalBuy(self.mem, d)
-        w.load_data(self.product, self.txtFinalPrice.decimal())
+        d.setWindowTitle(self.tr("Purchase graph"))
         lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        
+        wc=wdgProductHistoricalBuyChart()
+        wc.setProduct(self.product, None)
+        wc.generate()
+        wc.display()
+        lay.addWidget(wc)
         d.exec_()
-
     @pyqtSlot(float)
     def on_spnProductPriceVariation_valueChanged(self, value):
         self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())
