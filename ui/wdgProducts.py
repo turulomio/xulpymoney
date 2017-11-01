@@ -91,10 +91,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
-#        w=canvasChartHistoricalBuy(self.mem, d)
-#        w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
         lay = QVBoxLayout(d)
-#        lay.addWidget(w)
         
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.products.selected[0], None)
