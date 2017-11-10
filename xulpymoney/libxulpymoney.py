@@ -2143,6 +2143,7 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         print ("\n Imprimiendo SIO de",  self.investment.name)
         for oia in self.arr:
             print ("  - ", oia)
+            
         
     def myqtablewidget(self, tabla, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
@@ -2470,6 +2471,12 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
 #        except:
 #            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.investment.name))
 #            return Money(self.mem,  0,  self.investment.product.currency)
+
+    def gains_in_selling_point(self, type=1):
+        """Gains in investment defined selling point"""
+        if self.investment.venta!=None:
+            return self.investment.selling_price(type)*self.investment.acciones()-self.investment.invertido(None, type)
+        return Money(self.mem,  0, self.investment.resultsCurrency(type) )
 
     def pendiente(self, lastquote, type=1):
         currency=self.investment.resultsCurrency(type)
@@ -4449,7 +4456,14 @@ class Investment:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
 
-
+    def selling_price(self, type=1):
+        if type==1:
+            return Money(self.mem, self.venta, self.product.currency)
+#        elif type==2:
+#            return Money(self.mem, self.venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+#        elif type==3:
+#            return Money(self.mem, self.venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            
     def setDividends_from_current_operations(self):
         """
             Returns a setDividens from the datetime of the first currnt operation

@@ -21,6 +21,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         pen.setStyle(style)
         pen.setColor(color)
         return pen
+
     def setProduct(self, product, investment=None):
         self.product=product
         self.investment=investment
@@ -54,6 +55,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.view.hide()
             self.view.close()
             self.verticalLayout.removeWidget(self.view)
+
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
         
@@ -87,15 +89,19 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     
         #INVESTMENT
         if self.investment!=None:
+            #Buy sell operations
             buy=self.view.appendScatterSeries(self.tr("Buy operations"), self.product.currency)
             buy.setColor(QColor(85, 170, 127))
             sell=self.view.appendScatterSeries(self.tr("Sell operations"), self.product.currency)
             sell.setColor(QColor(170, 85, 85))
             for op in self.investment.op.arr:
-                if op.tipooperacion.id in (4, ) and op.datetime>selected_datetime:
+                print (op.datetime, selected_datetime-datetime.timedelta(days=10))
+                if op.tipooperacion.id in (4, ) and op.datetime.date()>=selected_datetime.date():
                     self.view.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
-                if op.tipooperacion.id in (5, ) and op.datetime>selected_datetime:
+                if op.tipooperacion.id in (5, ) and op.datetime.date()>=selected_datetime.date():
                     self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
+            
+            #Average price
             if self.investment.op_actual.length()>0:
                 m_average_price=self.investment.op_actual.average_price(type=1)
                 average_price=self.view.appendTemporalSeries(self.tr("Average price: {}".format(m_average_price.string())),  self.product.currency)
@@ -103,7 +109,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
                 self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), m_average_price.amount)
                 if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
-                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price: {}".format(self.investment.product.currency.string(self.investment.venta))),  self.product.currency)
+                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price {} to gain {}".format(self.investment.product.currency.string(self.investment.venta),  self.investment.op_actual.gains_in_selling_point())),  self.product.currency)
                     selling_price.setColor(QColor(170, 85, 85))
                     self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
                     self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
@@ -115,6 +121,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def on_cmbChartType_currentIndexChanged(self, index):
         self.generate()
         self.display()
+
     @pyqtSlot(int)      
     def on_cmbOHCLDuration_currentIndexChanged(self, index):
         self.generate()
@@ -124,21 +131,26 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.dtFrom.setDate(day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)+datetime.timedelta(days=365))
         self.generate()
         self.display()        
+        
     def on_cmdFromLeft_released(self):
         self.dtFrom.setDate(day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=365))
         self.generate()
         self.display()        
+        
     def on_cmdFromRightMax_released(self):
         self.dtFrom.setDate(self.setohcl.last().datetime()-datetime.timedelta(days=365))
         self.generate()
         self.display()        
+        
     def on_cmdFromLeftMax_released(self):
         self.dtFrom.setDate(self.setohcl.first().datetime())
         self.generate()
         self.display()
+        
     def on_chkSMA50_stateChanged(self, state):
         self.generate()
         self.display()
+    
     def on_chkSMA200_stateChanged(self, state):
         self.generate()
         self.display()
