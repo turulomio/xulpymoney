@@ -97,12 +97,13 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 if op.tipooperacion.id in (5, ) and op.datetime>selected_datetime:
                     self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
             if self.investment.op_actual.length()>0:
-                average_price=self.view.appendTemporalSeries(self.tr("Average price"),  self.product.currency)
+                m_average_price=self.investment.op_actual.average_price(type=1)
+                average_price=self.view.appendTemporalSeries(self.tr("Average price: {}".format(m_average_price.string())),  self.product.currency)
                 average_price.setColor(QColor(85, 170, 127))
-                self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, self.investment.op_actual.average_price(type=1).amount)
-                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), self.investment.op_actual.average_price(type=1).amount)
+                self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
+                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), m_average_price.amount)
                 if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
-                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price"),  self.product.currency)
+                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price: {}".format(self.investment.product.currency.string(self.investment.venta))),  self.product.currency)
                     selling_price.setColor(QColor(170, 85, 85))
                     self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, self.investment.venta)
                     self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), self.investment.venta)
