@@ -244,6 +244,13 @@ class VCTemporalSeries(QChartView):
         self.axisY.setRange(self.miny, self.maxy)
         
         
+        #Legend positions
+        if len(self.chart.legend().markers())>6:
+            self.chart.legend().setAlignment(Qt.AlignLeft)
+        else:
+            self.chart.legend().setAlignment(Qt.AlignTop)
+        
+        
         if self._allowHideSeries==True:
             for marker in self.chart.legend().markers():
                 try:

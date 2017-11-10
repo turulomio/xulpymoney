@@ -1,13 +1,13 @@
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate
 from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget,  QLabel,  QToolButton,  QSpacerItem,  QSizePolicy
+from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy
 from Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  SetInvestmentOperationsHomogeneus
+from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  Money, SetInvestmentOperationsHomogeneus
 
 class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
@@ -200,8 +200,6 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
 class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
     def __init__(self,  parent=None):
         wdgProductHistoricalChart.__init__(self, parent)
-        self.lblComment=QLabel(self)
-        self.verticalLayout.addWidget(self.lblComment)
         self.labelBuyPrice=QLabel(self.tr("Add wanted price"))
         self.txtBuyPrice=myQLineEdit(self)                                                                                                    
         self.cmdBuyPrice= QToolButton(self)               
@@ -213,7 +211,58 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.horizontalLayout_3.addWidget(self.txtBuyPrice)
         self.horizontalLayout_3.addWidget(self.cmdBuyPrice)
         self.horizontalLayout_3.addItem(self.spacerBuyPrice)
+        
         self.cmdBuyPrice.released.connect(self.on_cmdBuyPrice_released)
+        
+        self.layAmounts = QHBoxLayout()
+        self.label1=QLabel(self)
+        self.label1.setText(self.tr("First purchase"))
+        self.txt1=myQLineEdit(self)
+        self.txt1.setText(2500)
+        self.label2=QLabel(self)
+        self.label2.setText(self.tr("First reinvestment"))
+        self.txt2=myQLineEdit(self)
+        self.txt2.setText(3500)
+        self.label3=QLabel(self)
+        self.label3.setText(self.tr("Second reinvestment"))
+        self.txt3=myQLineEdit(self)
+        self.txt3.setText(12000)
+        
+        self.labelGains=QLabel(self)
+        self.labelGains.setText(self.tr("Gains percentage"))
+        self.txtGains=myQLineEdit(self)
+        self.txtGains.setText(10)
+        
+        
+        self.labelLastOperationPercentage=QLabel(self)
+        self.labelLastOperationPercentage.setText(self.tr("Last Operation next buy percentage"))
+        self.txtLastOperationPercentage=myQLineEdit(self)
+        self.txtLastOperationPercentage.setText(33)
+        
+        self.spacer1 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.spacer2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.spacer3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.spacer4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.spacer5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.spacer6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.layAmounts.addItem(self.spacer1)
+        self.layAmounts.addWidget(self.label1)
+        self.layAmounts.addWidget(self.txt1)
+        self.layAmounts.addItem(self.spacer2)
+        self.layAmounts.addWidget(self.label2)
+        self.layAmounts.addWidget(self.txt2)
+        self.layAmounts.addItem(self.spacer3)
+        self.layAmounts.addWidget(self.label3)
+        self.layAmounts.addWidget(self.txt3)
+        self.layAmounts.addItem(self.spacer4)
+        self.layAmounts.addWidget(self.labelGains)
+        self.layAmounts.addWidget(self.txtGains)
+        self.layAmounts.addItem(self.spacer5)
+        self.layAmounts.addWidget(self.labelLastOperationPercentage)
+        self.layAmounts.addWidget(self.txtLastOperationPercentage)
+        self.layAmounts.addItem(self.spacer6)
+        self.verticalLayout.addLayout(self.layAmounts)
+        
 
     def setPrice(self, price):
         """
@@ -222,7 +271,6 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.txtBuyPrice.setText(price)
         
     def on_cmdBuyPrice_released(self):
-        print("Released")
         if self.txtBuyPrice.isValid():
             self.generate()
             self.display()
@@ -233,15 +281,16 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         """Just draw the chart with selected options. It creates and destroys objects"""
         wdgProductHistoricalChart.generate(self)
         
-        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
+        percentage=self.txtGains.decimal()
+        selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
 
         inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, -1)
         inv.op=SetInvestmentOperationsHomogeneus(self.mem, inv)
-        #FIRST REINVESTMETN
+        #PURCHASE
         d1=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
                                                                                         self.mem.localzone.now(), 
                                                                                         inv, 
-                                                                                        int(2500/self.txtBuyPrice.decimal()), 
+                                                                                        int(self.txt1.decimal()/self.txtBuyPrice.decimal()), 
                                                                                         0, 
                                                                                         0, 
                                                                                         self.txtBuyPrice.decimal(), 
@@ -252,26 +301,29 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
                                                                                     )
         inv.op.append(d1)
         (inv.op_actual, inv.op_historica)=inv.op.calcular()
-        new_average_price=self.view.appendTemporalSeries(self.tr("New average price: {}").format(str(0)),  self.product.currency)
+        m_new_average_price=inv.op_actual.average_price()
+        new_average_price=self.view.appendTemporalSeries(self.tr("Buy: {}".format(m_new_average_price.string())).format(str(0)),  self.product.currency)
         new_average_price.setColor(QColor(85, 170, 127))
         new_average_price.setPen(self.pen(Qt.SolidLine, QColor(85, 170, 127)))
-        self.view.appendTemporalSeriesData(new_average_price, inv.op_actual.first().datetime-datetime.timedelta(days=365), inv.op_actual.average_price().amount)
-        self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), inv.op_actual.average_price().amount)
+        self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_new_average_price.amount)
+        self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_new_average_price.amount)
 
-        new_selling_price=self.view.appendTemporalSeries(self.tr("New selling price"),  self.product.currency)
+        m_new_selling_price=  inv.op_actual.average_price()*(1+percentage/Decimal(100))
+        new_selling_price=self.view.appendTemporalSeries(self.tr("Sell at {} to gain {}".format(m_new_selling_price.string(), inv.op_actual.gains_from_percentage(self.txtGains.decimal()))),  self.product.currency)
         new_selling_price.setColor(QColor(170, 85, 85))
         new_selling_price.setPen(self.pen(Qt.SolidLine, QColor(170, 85, 85)))
-        self.view.appendTemporalSeriesData(new_selling_price, inv.op_actual.first().datetime-datetime.timedelta(days=365), inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
-        self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
-        #SECOND REINVESTMENT
-        purchase2=d1.valor_accion*Decimal(0.67)
+        self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
+        self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
+
+        #FIRST REINVESTMENT
+        purchase2=Money(self.mem, d1.valor_accion*(1-self.txtLastOperationPercentage.decimal()/100),  self.product.currency)
         d2=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
                                                                                         self.mem.localzone.now(), 
                                                                                         inv, 
-                                                                                        int(3500/purchase2), 
+                                                                                        int(self.txt2.decimal()/purchase2.amount), 
                                                                                         0, 
                                                                                         0, 
-                                                                                        purchase2, 
+                                                                                        purchase2.amount, 
                                                                                         "",  
                                                                                         True, 
                                                                                         1,  
@@ -279,66 +331,58 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
                                                                                     )
         inv.op.append(d2)
         (inv.op_actual, inv.op_historica)=inv.op.calcular()
-        new_average_price=self.view.appendTemporalSeries(self.tr("New average price: {}").format(str(0)),  self.product.currency)
+        new_purchase_price=self.view.appendTemporalSeries(self.tr("First reinvestment (FR) purchase: {}").format(purchase2.string()),  self.product.currency)
+        new_purchase_price.setColor(QColor(85, 170, 127))
+        new_purchase_price.setPen(self.pen(Qt.DashLine, QColor(85, 170, 127)))
+        self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, purchase2.amount)
+        self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), purchase2.amount)
+        
+        new_average_price=self.view.appendTemporalSeries(self.tr("FR average price: {}").format(inv.op_actual.average_price().string()),  self.product.currency)
         new_average_price.setColor(QColor(85, 170, 127))
-        new_average_price.setPen(self.pen(Qt.DashLine, QColor(85, 170, 127)))
-        self.view.appendTemporalSeriesData(new_average_price, inv.op_actual.first().datetime-datetime.timedelta(days=365), inv.op_actual.average_price().amount)
+        new_average_price.setPen(self.pen(Qt.DashLine, QColor(85, 85, 170)))
+        self.view.appendTemporalSeriesData(new_average_price, selected_datetime, inv.op_actual.average_price().amount)
         self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), inv.op_actual.average_price().amount)
 
-        new_selling_price=self.view.appendTemporalSeries(self.tr("New selling price"),  self.product.currency)
+        new_selling_price=self.view.appendTemporalSeries(self.tr("FR sale price at {} to gain {}".format(self.product.currency.string(inv.op_actual.average_price().amount*(1+percentage/Decimal(100))), inv.op_actual.gains_from_percentage(self.txtGains.decimal()))),   self.product.currency)
         new_selling_price.setColor(QColor(170, 85, 85))
         new_selling_price.setPen(self.pen(Qt.DashLine, QColor(170, 85, 85)))
-        self.view.appendTemporalSeriesData(new_selling_price, inv.op_actual.first().datetime-datetime.timedelta(days=365), inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
+        self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
         
-        self.lblComment.setText(self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €." + " " + self.tr("Selling percentage: {} %.".format(percentage))))
         
-#        
-#        if self.investment!=None:
-#            if self.investment.op_actual.length()>0:
-#                percentagespersonal=[0.777, 0.5225, 0.4035, 0.269]
-#                percentagesmy=percentagespersonal
-        #
-        #
-        #        if self.purchase_type==2:
-        #            
-        #            dat=[]
-        #            dat.append(self.from_dt)
-        #            dat.append(datetime.datetime.now())
-        #            self.price_sell=self.price_buy*(1+percentage/Decimal(100))
-        #            
-#                self.price_a1=self.price_buy*Decimal(percentagesmy[0])
-#                self.price_s1=self.price_a1*(1+percentage/Decimal(100))
-#                self.price_b1=self.price_buy*Decimal(1-0.33)
-#                
-#                self.price_a2=self.price_buy*Decimal(percentagesmy[1])
-#                self.price_s2=self.price_a2*(1+percentage/Decimal(100))
-#                self.price_b2=self.price_b1*Decimal(1-0.33)
-#                
-#                self.price_a3=self.price_buy*Decimal(percentagesmy[2])
-#                self.price_s3=self.price_a3*(1+percentage/Decimal(100))
-#                self.price_b3=self.price_b2*Decimal(1-0.33)
 
+        #SECOND REINVESTMENT
+        purchase3=Money(self.mem, d2.valor_accion*(1-self.txtLastOperationPercentage.decimal()/100),  self.product.currency)
+        d3=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
+                                                                                        self.mem.localzone.now(), 
+                                                                                        inv, 
+                                                                                        int(self.txt3.decimal()/purchase3.amount), 
+                                                                                        0, 
+                                                                                        0, 
+                                                                                        purchase3.amount, 
+                                                                                        "",  
+                                                                                        True, 
+                                                                                        1,  
+                                                                                        -9999
+                                                                                    )
+        inv.op.append(d3)
+        (inv.op_actual, inv.op_historica)=inv.op.calcular()
+        new_purchase_price=self.view.appendTemporalSeries(self.tr("Second reinvestment (SR) purchase: {}").format(purchase3.string()),  self.product.currency)
+        new_purchase_price.setColor(QColor(85, 170, 127))
+        new_purchase_price.setPen(self.pen(Qt.DotLine, QColor(85, 170, 127)))
+        self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, purchase3.amount)
+        self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), purchase3.amount)
+        
+        new_average_price=self.view.appendTemporalSeries(self.tr("SR average price: {}").format(inv.op_actual.average_price().string()),  self.product.currency)
+        new_average_price.setColor(QColor(85, 170, 127))
+        new_average_price.setPen(self.pen(Qt.DotLine, QColor(85, 85, 170)))
+        self.view.appendTemporalSeriesData(new_average_price, selected_datetime, inv.op_actual.average_price().amount)
+        self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), inv.op_actual.average_price().amount)
 
-
-#        
-##                self.new_avg_1=self.sim_opactual.average_price().amount
-##                self.new_sell_price_1=self.new_avg_1*(1+percentage/Decimal(100))
-#                
-#                new_average_price=self.view.appendTemporalSeries(self.tr("New average price: {}").format(str(self.new_avg_1)),  self.product.currency)
-#                new_average_price.setColor(QColor(85, 170, 127))
-#                new_average_price.setPen(self.pen(Qt.DashLine, QColor(85, 170, 127)))
-#                self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, self.new_avg_1)
-#                self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), self.new_avg_1)
-#                
-#                if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
-#                    
-#                    new_selling_price=self.view.appendTemporalSeries(self.tr("New selling price"),  self.product.currency)
-#                    new_selling_price.setColor(QColor(170, 85, 85))
-#                    new_selling_price.setPen(self.pen(Qt.DashLine, QColor(170, 85, 85)))
-#                    self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, self.new_sell_price_1)
-#                    self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), self.new_sell_price_1)
-#                    
-#                gains=(self.new_sell_price_1-self.new_avg_1)*self.sim_opactual.acciones()
-#                label=QLabel(self.tr("Gains percentage: {} %. Gains in the new selling reference: {}".format(percentage, self.investment.product.currency.string(gains))))
-#                self.verticalLayout.addWidget(label)
+        new_selling_price=self.view.appendTemporalSeries(self.tr("SR sale price at {} to gain {}".format(self.product.currency.string(inv.op_actual.average_price().amount*(1+percentage/Decimal(100))), inv.op_actual.gains_from_percentage(self.txtGains.decimal()))),   self.product.currency)
+        new_selling_price.setColor(QColor(170, 85, 85))
+        new_selling_price.setPen(self.pen(Qt.DotLine, QColor(170, 85, 85)))
+        self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
+        self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  inv.op_actual.average_price().amount*(1+percentage/Decimal(100)))
+        
+        
