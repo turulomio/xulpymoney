@@ -8616,7 +8616,7 @@ def aware2epochms(d):
 #            return (dt_changes_tz(d, Zone(10, "UTC", "es")).replace(tzinfo=None)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
             utc=dt_changes_tz_with_pytz(d, 'UTC')
             return utc.timestamp()*1000
-    logging.critical("{} can't ve converted to epochms".format(d.__class__))
+    logging.critical("{} can't be converted to epochms".format(d.__class__))
     
 def epochms2aware(n):
     """Return a UTC date"""

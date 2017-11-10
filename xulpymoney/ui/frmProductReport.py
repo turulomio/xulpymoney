@@ -220,7 +220,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     try:
                         marker.clicked.disconnect()
                     except:
-                        print("No estaba conectada")
+                        pass
                     marker.clicked.connect(self.viewCompare.on_marker_clicked)
             
             
