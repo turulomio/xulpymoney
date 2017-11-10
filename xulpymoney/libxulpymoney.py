@@ -2477,6 +2477,11 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         if self.investment.venta!=None:
             return self.investment.selling_price(type)*self.investment.acciones()-self.investment.invertido(None, type)
         return Money(self.mem,  0, self.investment.resultsCurrency(type) )
+        
+
+    def gains_from_percentage(self, percentage,  type=1):
+        """Gain a percentage (int)"""
+        return self.average_price(type)*(1+Decimal(percentage)/100)*self.investment.acciones()-self.investment.invertido(None, type)
 
     def pendiente(self, lastquote, type=1):
         currency=self.investment.resultsCurrency(type)
