@@ -45,18 +45,20 @@ class VCTemporalSeries(QChartView):
         if type==0:
             if max-min<=0.01:
                 axis.setLabelFormat("%.4f")
-            elif max-min<=1:
+            elif max-min<=100:
                 axis.setLabelFormat("%.2f")
             else:
                 axis.setLabelFormat("%i")
         elif type==1:
             max=epochms2aware(max)#UTC aware
             min=epochms2aware(min)
-            print(max, min, max-min)
             if max-min<datetime.timedelta(days=1):
                 axis.setFormat("hh:mm")
+#            elif max-min<datetime.timedelta(days=90):
+#                axis.setFormat("yyyy-MM-dd")
             else:
-                axis.setFormat("yyyy-MMM")
+#                axis.setFormat("yyyy-MMM")
+                axis.setFormat("yyyy-MM-dd")
                 
     def setOHCLDuration(self, ohclduration):
         self.__ohclduration=ohclduration
