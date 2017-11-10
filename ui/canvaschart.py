@@ -228,28 +228,6 @@ class VCTemporalSeries(QChartView):
         pixmap=self.grab()
         pixmap.save(savefile, quality=100)
 
-#    def appendData(self, ls, x, y):
-#        """
-#            x is a datetime zone aware
-#        """
-#        x=aware2epochms(x)
-#        ls.append(x, y)
-#        
-#        if self.maxy==None:#Gives first maxy and miny
-#            self.maxy=y
-#            self.miny=y
-#            self.maxx=x
-#            self.minx=x
-#            
-#        if y>self.maxy:
-#            self.maxy=y
-#        if y<self.miny:
-#            self.miny=y
-#        if x>self.maxx:
-#            self.maxx=x
-#        if x<self.minx:
-#            self.minx=x
-
     def display(self):
         self.setChart(self.chart)
         self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
@@ -269,7 +247,7 @@ class VCTemporalSeries(QChartView):
                 try:
                     marker.clicked.disconnect()
                 except:
-                    print("No estaba conectada")
+                    pass
                 marker.clicked.connect(self.on_marker_clicked)
         
         

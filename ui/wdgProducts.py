@@ -95,6 +95,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.products.selected[0], None)
+        wc.setPrice(self.products.selected[0].result.basic.last.quote)
         wc.generate()
         wc.display()
         lay.addWidget(wc)

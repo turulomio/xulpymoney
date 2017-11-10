@@ -1,10 +1,11 @@
-from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtGui import QColor,  QPen
-from PyQt5.QtWidgets import QWidget,  QLabel
+from PyQt5.QtCore import pyqtSlot, Qt,  QDate
+from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap
+from PyQt5.QtWidgets import QWidget,  QLabel,  QToolButton,  QSpacerItem,  QSizePolicy
 from Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
 from decimal import Decimal
+from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
 from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  SetInvestmentOperationsHomogeneus
 
@@ -13,6 +14,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.view=None
+        self.dtFrom.blockSignals(True)
         
     def pen(self, style, color):
         pen=QPen()
@@ -30,27 +32,32 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             elif self.investment.op.length()>0:
                 from_=self.investment.op.first().datetime
         self.dtFrom.setDate(from_)
+        self.dtFrom.blockSignals(False)
         self.cmbOHCLDuration.currentIndexChanged.disconnect()
         OHCLDuration.qcombobox(self.cmbOHCLDuration, OHCLDuration.Day)
         self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
         
+    @pyqtSlot(QDate) 
     def on_dtFrom_dateChanged(self, date):
         selected=date.toPyDate()
+        print(selected)
         if datetime.date.today()-selected<=datetime.timedelta(days=366):
             self.cmdFromRight.setEnabled(False)
         else:
             self.cmdFromRight.setEnabled(True)
+        self.generate()
+        self.display()
 
     def generate(self):
         """Just draw the chart with selected options. It creates and destroys objects"""
         if self.view!=None:
+            self.view.hide()
             self.view.close()
+            self.verticalLayout.removeWidget(self.view)
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
         
         self.view=VCTemporalSeries()
-        
-        print("GENERATIUNG", self.view)
         self.verticalLayout.addWidget(self.view)
         if self.cmbChartType.currentIndex()==0:#Lines
             ls=self.view.appendTemporalSeries(self.product.name.upper(), self.product.currency)#Line seies
@@ -180,7 +187,34 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
 class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
     def __init__(self,  parent=None):
         wdgProductHistoricalChart.__init__(self, parent)
-        self.lblComment=QLabel()
+        self.lblComment=QLabel(self)
+        self.verticalLayout.addWidget(self.lblComment)
+        self.labelBuyPrice=QLabel(self.tr("Add wanted price"))
+        self.txtBuyPrice=myQLineEdit(self)                                                                                                    
+        self.cmdBuyPrice= QToolButton(self)               
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/xulpymoney/tools-wizard.png"), QIcon.Normal, QIcon.Off)
+        self.cmdBuyPrice.setIcon(icon)                                      
+        self.horizontalLayout_3.addWidget(self.labelBuyPrice)
+        self.spacerBuyPrice = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_3.addWidget(self.txtBuyPrice)
+        self.horizontalLayout_3.addWidget(self.cmdBuyPrice)
+        self.horizontalLayout_3.addItem(self.spacerBuyPrice)
+        self.cmdBuyPrice.released.connect(self.on_cmdBuyPrice_released)
+
+    def setPrice(self, price):
+        """
+            Must be added after setProduct
+        """
+        self.txtBuyPrice.setText(price)
+        
+    def on_cmdBuyPrice_released(self):
+        print("Released")
+        if self.txtBuyPrice.isValid():
+            self.generate()
+            self.display()
+        
+    
         
     def generate(self):
         """Just draw the chart with selected options. It creates and destroys objects"""
@@ -194,10 +228,10 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         d1=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
                                                                                         self.mem.localzone.now(), 
                                                                                         inv, 
-                                                                                        int(2500/self.product.result.basic.last.quote), 
+                                                                                        int(2500/self.txtBuyPrice.decimal()), 
                                                                                         0, 
                                                                                         0, 
-                                                                                        self.product.result.basic.last.quote, 
+                                                                                        self.txtBuyPrice.decimal(), 
                                                                                         "",  
                                                                                         True, 
                                                                                         1,  
