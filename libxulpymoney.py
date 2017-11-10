@@ -2020,6 +2020,12 @@ class SetIO:
             return self.arr[0]
         return None
         
+    def last(self):
+        """REturn last ohcl"""
+        if self.length()>0:
+            return self.arr[self.length()-1]
+        return None
+        
     def length(self):
         return len(self.arr)
 
@@ -2480,8 +2486,10 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         
 
     def gains_from_percentage(self, percentage,  type=1):
-        """Gain a percentage (int)"""
-        return self.average_price(type)*(1+Decimal(percentage)/100)*self.investment.acciones()-self.investment.invertido(None, type)
+        """Gain a percentage (int
+        Precio medio *(
+        )"""        
+        return self.average_price(type)*Decimal(percentage/100)*self.acciones()
 
     def pendiente(self, lastquote, type=1):
         currency=self.investment.resultsCurrency(type)
