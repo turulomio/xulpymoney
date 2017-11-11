@@ -31,7 +31,7 @@ class VCTemporalSeries(QChartView):
         self.axisY.setLabelFormat("%i")
 
         self.setRenderHint(QPainter.Antialiasing);
-        self.setRubberBand(QChartView.HorizontalRubberBand)
+#        self.setRubberBand(QChartView.HorizontalRubberBand)
         
         self.series=[]
         self.__ohclduration=OHCLDuration.Day
@@ -62,9 +62,9 @@ class VCTemporalSeries(QChartView):
                 
     def setOHCLDuration(self, ohclduration):
         self.__ohclduration=ohclduration
-    @pyqtSlot()
-    def wheelEvent(self, event):
-        print (event.angleDelta().y())
+#    @pyqtSlot()
+#    def wheelEvent(self, event):
+#        print (event.angleDelta().y())
 #        if event.angleDelta().y()>0:
 #            self.__from=self.__from+datetime.timedelta(days=365)
 #        else:
