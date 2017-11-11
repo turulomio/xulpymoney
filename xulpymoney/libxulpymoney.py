@@ -2444,6 +2444,14 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
             sharesxprice=sharesxprice+o.acciones*o.price(type).amount
         return Money(self.mem, 0, currency) if shares==Decimal(0) else Money(self.mem, sharesxprice/shares,  currency)
         
+        
+    def average_price_after_a_gains_percentage(self, percentage,  type=1):
+        """
+            percentage is a Percentage object
+            Returns a Money object after add a percentage to the average_price
+        """
+        return self.average_price(type)*(1+percentage.value)
+        
     def invertido(self, type=1):
         """Al ser homegeneo da el resultado en Money del producto"""
         currency=self.investment.resultsCurrency(type)
@@ -2486,10 +2494,11 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         
 
     def gains_from_percentage(self, percentage,  type=1):
-        """Gain a percentage (int
-        Precio medio *(
-        )"""        
-        return self.average_price(type)*Decimal(percentage/100)*self.acciones()
+        """
+            Gains a percentage from average_price
+            percentage is a Percentage object
+        """        
+        return self.average_price(type)*percentage.value*self.acciones()
 
     def pendiente(self, lastquote, type=1):
         currency=self.investment.resultsCurrency(type)
