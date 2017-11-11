@@ -41,7 +41,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     @pyqtSlot(QDate) 
     def on_dtFrom_dateChanged(self, date):
         selected=date.toPyDate()
-        print(selected)
         if datetime.date.today()-selected<=datetime.timedelta(days=366):
             self.cmdFromRight.setEnabled(False)
         else:
