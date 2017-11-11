@@ -5,8 +5,6 @@ SOURCES         = \
                   libodfgenerator.py \
                   sources/source_mercadocontinuo.py \
                   sources/source_sg_warrants.py \
-                  sources/source_yahoohistorical.py \
-                  sources/source_yahoo.py \
                   sources/source_morningstar.py \
                   ui/canvaschart.py \
                   ui/frmAbout.py \
@@ -94,7 +92,7 @@ SOURCES         = \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProductHistoricalChart.py \
-                  ui/Ui_wdgProductHistoricalChart.py
+                  ui/Ui_wdgProductHistoricalChart.py \
                   ui/wdgProducts.py \
                   ui/Ui_wdgProducts.py \
                   ui/wdgSimulations.py \
