@@ -452,7 +452,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tabGraphTotal.removeWidget(self.view)
             self.view.close()
         self.view=VCTemporalSeries()
-        self.view.chart.setTitle(self.tr("Total report"))
         
         if animations==False:
             self.view.chart.setAnimationOptions(QChart.NoAnimation)
