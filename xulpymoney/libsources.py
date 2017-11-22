@@ -44,6 +44,8 @@ class SetSources(QObject):
             s=WorkerGoogle(self.mem)
         elif Worker==WorkerMorningstar:
             s=WorkerMorningstar(self.mem, 0)
+        elif Worker==WorkerBolsaMadrid:
+            s=WorkerBolsaMadrid(self.mem, 0)
         self.arr.append(s)
         s.setWdgSource(wdgSource) #Links source with wdg
 
@@ -1210,6 +1212,112 @@ class WorkerGoogleHistorical(Source):
         
         self.quotes_save()
         self.mem.con.rollback()
+        self.next_step()
+        
+        self.setStatus(SourceStatus.Finished)
+        
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 2+self.products.length() #CORRECT
+
+class WorkerBolsaMadrid(Source):
+    """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
+    def __init__(self, mem, sleep=0):
+        Source.__init__(self, mem)
+        self.setName(self.tr("Bosa de Madrid Historical source"))
+        self.sleep=sleep
+        
+    def on_execute_product(self,  product):
+        """inico y fin son dos dates entre los que conseguir los datos."""
+        quotes=[]
+        ultima=product.fecha_ultima_actualizacion_historica()
+        if ultima==datetime.date.today()-datetime.timedelta(days=1):
+            print(product.name, ultima, "Omited")
+            return quotes
+            
+            
+        from bolsamadrid_client import SetOHCL
+        s=SetOHCL(product.isin, product.type.id)
+        s.get_prices(ultima)
+        ##TRansform htpresopone to list to iterate several times
+        for ohcl in s.arr:
+            if ultima>ohcl.date:
+                continue
+            datestart=dt(ohcl.date,product.stockmarket.starts,product.stockmarket.zone)
+            dateends=dt(ohcl.date,product.stockmarket.closes,product.stockmarket.zone)
+            datetimefirst=datestart-datetime.timedelta(seconds=1)
+            datetimelow=(datestart+(dateends-datestart)*1/3)
+            datetimehigh=(datestart+(dateends-datestart)*2/3)
+            datetimelast=dateends+datetime.timedelta(microseconds=4)
+
+            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(ohcl.close)))#closes
+            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(ohcl.low)))#low
+            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(ohcl.high)))#high
+            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(ohcl.open)))#open
+        return quotes
+
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="""
+                select * 
+                from 
+                    products 
+                where 
+                    type in (1,4) and 
+                    obsolete=false and 
+                    stockmarkets_id=1 and
+                    isin is not null and 
+                    id in 
+                        (
+                            select distinct(products_id) from inversiones
+                        )
+                order by name
+            """.format(self.mem.data.benchmark.id)#type=76 divisas
+        else:
+            self.sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null order by name"
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+        self.products.load_from_db(self.sql)    
+        self.setStatus(SourceStatus.Prepared)
+
+
+    def setSetProducts(self, set):
+        """
+            Allow to add a set of products instead of loading by a sql query
+        """
+        self.products=set
+        self.setStatus(SourceStatus.Prepared)
+        
+    def run(self):
+        self.setStatus(SourceStatus.Running)
+        self.next_step()
+#        futures=[]
+#        with ThreadPoolExecutor(max_workers=10) as executor:
+#            for i,  product in enumerate(self.products.arr): 
+#
+#                futures.append(executor.submit(self.on_execute_product,  product))
+#            
+#            for i,  future in enumerate(as_completed(futures)):
+#                for quote in future.result():
+#                    self.quotes.append(quote)
+#                    if self.stopping==True:
+#                        logging.debug ("Stopping")
+#                        self.quotes.clear()
+#                        break
+#                self.next_step()
+        for i,  product in enumerate(self.products.arr): 
+            for quote in self.on_execute_product(product):
+                self.quotes.append(quote)
+            if self.stopping==True:
+                logging.debug ("Stopping")
+                self.quotes.clear()
+                break
+            self.next_step()
+        print("")
+
+        
+        self.quotes_save()
+        self.mem.con.commit()
         self.next_step()
         
         self.setStatus(SourceStatus.Finished)

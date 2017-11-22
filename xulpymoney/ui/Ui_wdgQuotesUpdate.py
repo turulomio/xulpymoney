@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgQuotesUpdate.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -46,7 +46,6 @@ class Ui_wdgQuotesUpdate(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 338, 261))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.layIntraday = QtWidgets.QGridLayout()
         self.layIntraday.setObjectName("layIntraday")
@@ -76,13 +75,15 @@ class Ui_wdgQuotesUpdate(object):
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 338, 261))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.layDaily = QtWidgets.QVBoxLayout()
         self.layDaily.setObjectName("layDaily")
         self.wgooglehistorical = wdgSource(self.scrollAreaWidgetContents_2)
         self.wgooglehistorical.setObjectName("wgooglehistorical")
         self.layDaily.addWidget(self.wgooglehistorical)
+        self.wbolsamadrid = wdgSource(self.scrollAreaWidgetContents_2)
+        self.wbolsamadrid.setObjectName("wbolsamadrid")
+        self.layDaily.addWidget(self.wbolsamadrid)
         self.wmorningstar = wdgSource(self.scrollAreaWidgetContents_2)
         self.wmorningstar.setObjectName("wmorningstar")
         self.layDaily.addWidget(self.wmorningstar)

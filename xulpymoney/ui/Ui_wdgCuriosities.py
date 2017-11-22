@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/wdgCuriosities.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -34,7 +34,6 @@ class Ui_wdgCuriosities(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 382, 241))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setObjectName("layout")
