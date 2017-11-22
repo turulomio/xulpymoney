@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libsources import WorkerMorningstar, WorkerGoogle, WorkerGoogleHistorical, SetSources
+from libsources import WorkerMorningstar, WorkerBolsaMadrid, WorkerGoogle, WorkerGoogleHistorical, SetSources
 #from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor,   as_completed
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
@@ -15,6 +15,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.sources.append(WorkerGoogleHistorical, self.wgooglehistorical)
         self.sources.append(WorkerGoogle, self.wgoogle)
         self.sources.append(WorkerMorningstar, self.wmorningstar)
+        self.sources.append(WorkerBolsaMadrid,  self.wbolsamadrid)
         for s in self.sources.arr:
             s.statusChanged.connect(self.on_source_statusChanged)
         

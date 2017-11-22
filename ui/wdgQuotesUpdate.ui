@@ -132,6 +132,9 @@
                    <widget class="wdgSource" name="wgooglehistorical" native="true"/>
                   </item>
                   <item>
+                   <widget class="wdgSource" name="wbolsamadrid" native="true"/>
+                  </item>
+                  <item>
                    <widget class="wdgSource" name="wmorningstar" native="true"/>
                   </item>
                  </layout>
