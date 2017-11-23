@@ -8,33 +8,6 @@ from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
 
-
-def concurrent_log(s):
-    """EL sistema tiene un log que se guarda en /var/lib/pysgae/pysgae.log
-        Tiene entradas (Formato de s)
-        Fecha;INIT
-        Fecha;comando;ouputcode;took
-        Fecha;END
-        
-        
-        Outputcode puede ser OK,ERROR;TIMEOUT;OTROS
-    """
-    print(s)
-        
-def mysubprocess_check_output(arr):        
-#            try:
-        inicio=datetime.datetime.now()
-        comand=" ".join(arr)
-        s=subprocess.check_output(arr, timeout=30)
-        concurrent_log("{};{};{};{}\n".format(datetime.datetime.now(), comand, "OK", datetime.datetime.now()-inicio ))
-#            except subprocess.CalledProcessError:
-#                concurrent_log("{};{};{};{}\n".format(datetime.datetime.now(), comand, "ERROR", datetime.datetime.now()-inicio ))
-#            except subprocess.TimeoutExpired:
-#                concurrent_log("{};{};{};{}\n".format(datetime.datetime.now(), comand, "TIMEOUT", datetime.datetime.now()-inicio ))
-#            except:
-#                print("Error Comorl")
-        return s
-
 #######################################3
                 
 class Color:
@@ -118,49 +91,6 @@ class Counter:
     def message_final(self):
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
 #############################################
-#
-#def call_proc(cmd):
-#    """ This runs in a separate thread. """
-#    #subprocess.call(shlex.split(cmd))  # This will block until cmd finishes
-#    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#    out, err = p.communicate()
-#    return out
-
-#        for l in arr:
-#            s=mysubprocess_check_output(l)
-#            print(s)
-#            log=log+s
-#            counter.next_step()
-
-
-
-
-#counter=Counter(len(arr))
-#results=[]
-#pool=multiprocessing.Pool(10)
-#for p in arr:
-#    results.append(pool.apply_async(mysubprocess_check_output, [p, ],  callback=call_back))
-#pool.close()
-#pool.join()
-##        print(log)
-#print(results[0].get())
-#        
-#        
-#        print(call_proc(arr[0]))
-#
-#        pool = ThreadPool(multiprocessing.cpu_count())
-#        results = []
-#        for l in arr:
-#            results.append(pool.apply_async(call_proc, l))
-#
-#        # Close the pool and wait for each running task to complete
-#        pool.close()
-#        pool.join()
-#        for result in results:
-#            print(result.get())
-##            out, err = result.get()
-##            print("out: {} err: {}".format(out, err))
-
 def appendSource(arr):
     counter=Counter(len(arr))
     sourceoutput=b""
@@ -176,7 +106,6 @@ def appendSource(arr):
 
 def appendSourceWithConcurrence(arr,  num_workers):
     def call_back(para):
-    #            log2=log2+para
         counter.next_step()
         
     counter=Counter(len(arr))

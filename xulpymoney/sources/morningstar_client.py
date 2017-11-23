@@ -2,22 +2,23 @@
 import argparse
 import datetime
 from urllib.request import urlopen
-import time
 from decimal import Decimal
 import sys
 import pytz
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QUrl,  QEventLoop
-from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 class CurrentPriceTicker:
-    def __init__(self,ticker):
+    def __init__(self,ticker, xulpymoney):
         self.ticker=ticker
+        self.xulpymoney=xulpymoney
         self.datetime_aware=None
         self.price=None
 
     def __repr__(self):
-        return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
+        if self.xulpymoney!=None:
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+        else:
+            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
 
     def get_price(self):
         try:
@@ -56,15 +57,16 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument('--ISIN', help='ISIN code')
     parser.add_argument('--TICKER', help='TICKER code')
+    parser.add_argument('--XULPYMONEY', help='XULPYMONEY code')
     args=parser.parse_args()
 
     if args.ISIN:
-        s=SetCurrentPrice(args.ISIN)
+        s=CurrentPriceISIN(args.ISIN)
         s.get_prices()
         s.print()
 
     if args.TICKER:
-        s=CurrentPriceTicker(args.TICKER)
+        s=CurrentPriceTicker(args.TICKER, args.XULPYMONEY)
         s.get_price()
         print(s)
 
