@@ -2,13 +2,6 @@ from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
-import datetime
-import math
-import platform
-import sys
-import multiprocessing
-from multiprocessing.pool import ThreadPool
-import subprocess
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
 from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  SetProducts
@@ -731,7 +724,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:
-            arr.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker])       
+            arr.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker, "--XULPYMONEY",  str(p.id)])       
                 
         f=open("/tmp/clients.txt", "w")
         for a in arr:
