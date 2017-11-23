@@ -7,7 +7,7 @@ import sys
 import pytz
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
 
 class ProductType:
     Share=1
@@ -16,13 +16,14 @@ class ProductType:
     PrivateBond=9
 
 class OHCL:
-    def __init__(self,isin):
+    def __init__(self,isin, xulpymoney):
         self.date=None
         self.open=None
         self.close=None
         self.high=None
         self.low=None
         self.isin=isin
+        self.xulpymoney=xulpymoney
 
     def init__from_html_line(self,line,  productype):
         """
@@ -50,19 +51,23 @@ class OHCL:
             return None
 
     def __repr__(self):
-        return "OHCL | STOCKMARKET | ES | ISIN | {} | {} | {} | {} | {} | {}".format(self.isin, self.date, self.open,self.high,self.close,self.low)
+        if self.xulpymoney!=None:
+            return "OHCL | XULPYMONEY | {} | {} | {} | {} | {} | {}".format(self.xulpymoney, self.date, self.open,self.high,self.close,self.low)
+        else:
+            return "OHCL | STOCKMARKET | ES | ISIN | {} | {} | {} | {} | {} | {}".format(self.isin, self.date, self.open,self.high,self.close,self.low)
 
 class SetOHCL:
-    def __init__(self, isin, productype):
+    def __init__(self, isin, xulpymoney, productype):
         self.arr=[]
         self.isin=isin
+        self.xulpymoney=xulpymoney
         self.productype=productype
 
     def searchQuotesInHtml(self,html):
         """Looks for quotes line in html and creates ohcl"""
         for line in html.split("\n"):
             if line.find('<td align="center">')!=-1:
-                ohcl=OHCL(self.isin).init__from_html_line(line, self.productype)
+                ohcl=OHCL(self.isin,  self.xulpymoney).init__from_html_line(line, self.productype)
                 if ohcl!=None:
                     self.arr.append(ohcl)
 
@@ -92,7 +97,7 @@ class SetOHCL:
                    Se llama cada vez que una página es cargada con el html en data
                 """
                 self.pages.append(data)
-                time.sleep(0.25)
+                time.sleep(0.125)
 
                 if self.numPages()==1:
                     self.page().runJavaScript('''
@@ -126,6 +131,7 @@ class SetOHCL:
 class CurrentPrice:
     def __init__(self):
         self.isin=None
+        self.xulpymoney=None
         self.datetime_aware=None
         self.price=None
 
@@ -146,14 +152,18 @@ class CurrentPrice:
             return None
 
     def __repr__(self):
-        return "PRICE | STOCKMARKET | ES | ISIN | {} | {} | {}".format(self.isin, self.datetime_aware , self.price)
+        if self.xulpymoney!=None:
+            return "OHCL | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+        else:
+            return "PRICE | STOCKMARKET | ES | ISIN | {} | {} | {}".format(self.isin, self.datetime_aware , self.price)
 
 class SetCurrentPrice:
-    def __init__(self, arrIsin, productype):
+    def __init__(self, arrIsin, arrXulpymoney,  productype):
         """
            arrIsin is a list of isin of the same productype
         """
         self.arrIsin=arrIsin
+        self.arrXulpymoney=arrXulpymoney
         self.arr=[]
         self.productype=productype
 
@@ -184,6 +194,9 @@ class SetCurrentPrice:
                 self.loop=QEventLoop()#Queda en un loop hasta que acaba la carga de todas las páginas
                 self.loadFinished.connect(self._loadFinished)
                 self.pages=[]
+                self.page().profile().cookieStore().deleteAllCookies()
+                self.page().profile().setPersistentCookiesPolicy(QWebEngineProfile.NoPersistentCookies)
+                
                 self.load(QUrl(url))
                 self.loop.exec()
 
@@ -207,7 +220,7 @@ class SetCurrentPrice:
         if self.productype==ProductType.PublicBond:
             r=RenderCurrentPrice("http://www.bmerf.es")
         else:
-            r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin), from_date)
+            r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin))
             
         for i,page in enumerate(r.pages):
             #print ("Page", i+1, len(r.pages[i]))
@@ -220,9 +233,12 @@ class SetCurrentPrice:
            Returns desired Quotes
         """
         desired=[]
-        for cp in self.arr:
-             if cp.isin in self.arrIsin:
-                 desired.append(cp)
+        for i, isin in enumerate(self.arrIsin):
+            for cp in self.arr:
+                 if cp.isin==isin:
+                     if self.arrXulpymoney!=None:
+                        cp.xulpymoney=self.arrXulpymoney[i]
+                     desired.append(cp)
         return desired
 
     def print(self):
@@ -233,6 +249,7 @@ if __name__=="__main__":
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
     parser.add_argument('--ISIN', help='ISIN code',action="append")
+    parser.add_argument('--XULPYMONEY', help='XULPYMONEY code',action="append")
     parser.add_argument('--fromdate', help='Get data from date in YYYY-MM-DD format', default=str(datetime.date.today()-datetime.timedelta(days=30)))
     group=parser.add_mutually_exclusive_group()
     group.add_argument('--share', help="Share search", action='store_true', default=False)
@@ -252,17 +269,25 @@ if __name__=="__main__":
         sys.exit(255)
 
     if args.share==True:
-        s=SetOHCL(args.ISIN[0], ProductType.Share)
+        if args.XULPYMONEY==None:
+            xulpymoney=None
+        else:
+            xulpymoney=args.XULPYMONEY[0]
+        s=SetOHCL(args.ISIN[0], xulpymoney, ProductType.Share)
         s.get_prices(fromdate)
         s.print()
 
     if args.etf==True:
-        s=SetOHCL(args.ISIN[0], ProductType.ETF)
+        if args.XULPYMONEY==None:
+            xulpymoney=None
+        else:
+            xulpymoney=args.XULPYMONEY[0]
+        s=SetOHCL(args.ISIN[0], xulpymoney, ProductType.ETF)
         s.get_prices(fromdate)
         s.print()
 
     if args.publicbond==True:
-        s=SetCurrentPrice(args.ISIN, ProductType.PublicBond)
+        s=SetCurrentPrice(args.ISIN, args.XULPYMONEY, ProductType.PublicBond)
         s.get_prices()
         for pc in s.returnDesired():
             print (pc)
