@@ -2,9 +2,16 @@ from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
+import datetime
+import math
+import platform
+import sys
+import multiprocessing
+from multiprocessing.pool import ThreadPool
+import subprocess
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport, list2string, qmessagebox, Product
+from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  SetProducts
 from libxulpymoneyversion import version_date
 from libsources import sync_data
 from frmAccess import frmAccess
@@ -705,3 +712,20 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
+
+        
+    @pyqtSlot()  
+    def on_actionPriceUpdatesNew_triggered(self):          
+        arr=[]
+        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null order by name"
+        products=SetProducts(self.mem)#Total of products of an Agrupation
+        products.load_from_db(sql)    
+        for p in products.arr:
+            if p.type.id==4:
+                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica())])
+            elif p.type.id==1:
+                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()) ])
+        f=open("clients.txt", "w")
+        for a in arr:
+            f.write(" ".join(a) + "\n")
+        f.close()
