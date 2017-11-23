@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from Ui_wdgIndexRange import Ui_wdgIndexRange
-from libxulpymoney import Assets, Percentage, qcenter
+from libxulpymoney import Assets, Percentage, qcenter,  eProductType
 from frmProductReport import frmProductReport
 from frmQuotesIBM import frmQuotesIBM
 from wdgCalculator import wdgCalculator
@@ -95,15 +95,15 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                         if maxoper<o.referenciaindice.quote:
                             maxoper=o.referenciaindice.quote
                         arr.append((o.referenciaindice.quote, o))                    
-                    elif self.cmbShowOptions.currentIndex()==1 and i.product.type.id in (1, 4, 5):            #Shares, Warrants, ETF
+                    elif self.cmbShowOptions.currentIndex()==1 and i.product.type.id in (eProductType.Share, eProductType.Warrant, eProductType.ETF):            #Shares, Warrants, ETF
                         if maxoper<o.referenciaindice.quote:
                             maxoper=o.referenciaindice.quote
                         arr.append((o.referenciaindice.quote, o))             
-                    elif self.cmbShowOptions.currentIndex()==2 and i.product.type.id in (7, 8):            #Bonds
+                    elif self.cmbShowOptions.currentIndex()==2 and i.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):            #Bonds
                         if maxoper<o.referenciaindice.quote:
                             maxoper=o.referenciaindice.quote
                         arr.append((o.referenciaindice.quote, o))             
-                    elif self.cmbShowOptions.currentIndex()==3 and i.product.type.id in (2, ):            #Funds
+                    elif self.cmbShowOptions.currentIndex()==3 and i.product.type.id in (eProductType.Fund, ):            #Funds
                         if maxoper<o.referenciaindice.quote:
                             maxoper=o.referenciaindice.quote
                         arr.append((o.referenciaindice.quote, o))       

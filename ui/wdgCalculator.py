@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgCalculator import Ui_wdgCalculator
-from libxulpymoney import Percentage, qmessagebox
+from libxulpymoney import Percentage, qmessagebox,  eProductType
 from wdgOrdersAdd import wdgOrdersAdd
 from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 from decimal import Decimal
@@ -129,7 +129,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         """Checks if compulsory fields are ok, if not changes style to red, else calculate table and shares"""
             
         if self.txtAmount.isValid() and self.txtFinalPrice.isValid():
-            if self.product.type.id in (1, 4):#Shares
+            if self.product.type.id in (eProductType.Share, eProductType.ETF):#Shares
                 self.txtShares.setText(round(self.txtAmount.decimal()/self.txtFinalPrice.decimal(), 0))
             else:
                 self.txtShares.setText(round(self.txtAmount.decimal()/self.txtFinalPrice.decimal(), 6))

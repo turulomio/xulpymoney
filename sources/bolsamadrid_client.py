@@ -3,6 +3,7 @@ import argparse
 import datetime
 import time
 from decimal import Decimal
+from enum import Enum
 import sys
 import pytz
 from PyQt5.QtWidgets import QApplication
@@ -37,15 +38,21 @@ def string2datetime(s, type):
     if type==2:#20/11/2017 23:00 ==> Naive
         dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
         return dat
-
+# FROM XULPYMONEY..LIBXULPYMONEY
+class eProductType(Enum):
+    Share=1
+    Fund=2
+    Index=3
+    ETF=4
+    Warrant=5
+    Currency=6
+    PublicBond=7
+    PensionPlan=8
+    PrivateBond=9
+    Deposit=10
+    Account=11
 ################################################################
 
-
-class ProductType:
-    Share=1
-    ETF=4
-    PublicBond=7
-    PrivateBond=9
 
 class OHCL:
     def __init__(self,isin, xulpymoney):
@@ -67,7 +74,7 @@ class OHCL:
             line=line[:-5]#Removes end
             l=line.split("</td><td>")#Arr
             self.date=string2date(l[0], type=2)
-            if productype==ProductType.Share:
+            if productype==eProductType.Share:
                 self.close=Decimal(l[1].replace(",","."))
                 self.open=Decimal(l[2].replace(",","."))
                 self.high=Decimal(l[6].replace(",","."))
@@ -144,7 +151,7 @@ class SetOHCL:
                     else:
                         self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
         ###########################
-        if self.productype==ProductType.Share:
+        if self.productype==eProductType.Share:
             r=Render("http://www.bolsamadrid.es/esp/aspx/Empresas/InfHistorica.aspx?ISIN={}".format(self.isin), from_date)
         else:
             r=Render("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin), from_date)
@@ -174,7 +181,7 @@ class CurrentPrice:
         self.datetime_aware=datetime_aware
         try:
             l=line.split("</td>")#Arr
-            if productype==ProductType.PublicBond:
+            if productype==eProductType.PublicBond:
                 self.isin=l[1][-12:]
                 self.price=Decimal(l[4].split(">")[1].replace(",","."))
             return self
@@ -243,7 +250,7 @@ class SetCurrentPrice:
                 elif self.numPages()==3:
                     self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
         ###########################
-        if self.productype==ProductType.PublicBond:
+        if self.productype==eProductType.PublicBond:
             r=RenderCurrentPrice("http://www.bmerf.es")
         else:
             r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin))
@@ -298,7 +305,7 @@ if __name__=="__main__":
             xulpymoney=None
         else:
             xulpymoney=args.XULPYMONEY[0]
-        s=SetOHCL(args.ISIN[0], xulpymoney, ProductType.Share)
+        s=SetOHCL(args.ISIN[0], xulpymoney, eProductType.Share)
         s.get_prices(fromdate)
         s.print()
 
@@ -307,12 +314,12 @@ if __name__=="__main__":
             xulpymoney=None
         else:
             xulpymoney=args.XULPYMONEY[0]
-        s=SetOHCL(args.ISIN[0], xulpymoney, ProductType.ETF)
+        s=SetOHCL(args.ISIN[0], xulpymoney, eProductType.ETF)
         s.get_prices(fromdate)
         s.print()
 
     if args.publicbond==True:
-        s=SetCurrentPrice(args.ISIN, args.XULPYMONEY, ProductType.PublicBond)
+        s=SetCurrentPrice(args.ISIN, args.XULPYMONEY, eProductType.PublicBond)
         s.get_prices()
         for pc in s.returnDesired():
             print (pc)

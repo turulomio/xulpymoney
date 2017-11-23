@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
-from libxulpymoney import Dividend,  Money, qmessagebox
+from libxulpymoney import Dividend,  Money, qmessagebox, eProductType
 from Ui_frmDividendsAdd import Ui_frmDividendsAdd
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
@@ -21,7 +21,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.lblGross.setText(self.tr("Gross in {}".format(self.investment.product.currency.symbol)))
         self.lblGrossAccount.setText(self.tr("Gross converted to {}".format(self.investment.account.currency.symbol)))
         if dividend==None:#insertar
-            if self.investment.product.type.id in (7, 9):#Bonds
+            if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb)
@@ -31,7 +31,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.wdgDT.set(self.mem, None, self.mem.localzone)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), None)
         else:#modificar 
-            if self.investment.product.type.id in (7, 9):#Bonds
+            if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 

@@ -19,6 +19,7 @@ import threading
 import argparse
 import getpass
 from decimal import Decimal, getcontext
+from enum import IntEnum
 from libxulpymoneyversion import version
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -5095,7 +5096,8 @@ class Assets:
         resultado=Money(self.mem, 0, self.mem.localcurrency)
 #        inicio=datetime.datetime.now()
         for inv in self.mem.data.investments.arr:
-            if inv.product.type.id in (7, 9):#public and private bonds        
+            print (inv,  inv.product)
+            if inv.product.type.id in (eProductType.PublicBond, eProductType.PrivateBond):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.balance().local()
                 else:
@@ -6448,7 +6450,7 @@ class Product:
             Uses ticker property. It's needed to search for a googleticker
             Returns "" if doesn't exist in order to visualizate it better
         """
-        if self.type.id in (1,4):#Acciones, etf
+        if self.type.id in (eProductType.Share, eProductType.ETF):#Acciones, etf
             if  self.ticker[-3:]==".MC":
                 return "BME:{}".format(self.ticker[:-3])
             if  self.ticker[-3:]==".DE":
@@ -6464,7 +6466,7 @@ class Product:
                     return "NASDAQ:{}".format(self.ticker)
                 if self.agrupations.dbstring()=="|SP500|":
                     return "NYSE:{}".format(self.ticker)
-        elif self.type.id==3:#Indices   
+        elif self.type.id==eProductType.Index:#Indices   
             if self.ticker=="^IBEX":
                 return "INDEXBME:IB"
             if self.ticker=="^GSPC":
@@ -6493,7 +6495,7 @@ class Product:
                 return "INDEXEURO:PX1"
             if self.ticker=="^GDAXI":
                 return "INDEXDB:DAX"
-        elif self.type.id==6:#Currencies
+        elif self.type.id==eProductType.Currency:#Currencies
             if self.ticker=="EURUSD=X":
                 return "EURUSD"
         logging.debug("googleticker {} not found".format(self.ticker))
@@ -6601,8 +6603,15 @@ class Product:
         cur.execute("update products set priorityhistorical=%s", (str(self.priorityhistorical)))
 
     def fecha_ultima_actualizacion_historica(self):
+        """
+            Si es acciones, etf, indexes, warrants, currencies, publicbond, private bond buscará el microsegundo 4
+            Si es fondo, plan de pensiones buscará la última cotización
+        """
         cur=self.mem.con.cursor()
-        cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
+        if self.type.id in [eProductType.Share, eProductType.ETF, eProductType.Index, eProductType.Warrant, eProductType.Currency, eProductType.PublicBond, eProductType.PrivateBond]:
+            cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s", (self.id, ))
+        else:
+            cur.execute("select max(datetime)::date as date from quotes where id=%s", (self.id, ))
         dat=cur.fetchone()[0]
         if dat==None:
             resultado=datetime.date(self.mem.fillfromyear, 1, 1)
@@ -7926,7 +7935,7 @@ class TUpdateData(threading.Thread):
                     return
                 time.sleep(1)
 
-class Type:
+class ProductType:
     def __init__(self):
         self.id=None
         self.name=None
@@ -7953,45 +7962,56 @@ class Agrupation:
         self.stockmarket=bolsa
         return self
         
+        
+class eProductType(IntEnum):
+    """
+        IntEnum permite comparar 1 to eProductType.Share
+    """
+    Share=1
+    Fund=2
+    Index=3
+    ETF=4
+    Warrant=5
+    Currency=6
+    PublicBond=7
+    PensionPlan=8
+    PrivateBond=9
+    Deposit=10
+    Account=11
+    
 class SetTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
         self.mem=mem
-        
-            
-    def load_all(self):
-        self.append(Type().init__create(1,QApplication.translate("Core","Shares")))
-        self.append(Type().init__create(2,QApplication.translate("Core","Funds")))
-        self.append(Type().init__create(3,QApplication.translate("Core","Indexes")))
-        self.append(Type().init__create(4,QApplication.translate("Core","ETF")))
-        self.append(Type().init__create(5,QApplication.translate("Core","Warrants")))
-        self.append(Type().init__create(6,QApplication.translate("Core","Currencies")))
-        self.append(Type().init__create(7,QApplication.translate("Core","Public Bond")))
-        self.append(Type().init__create(8,QApplication.translate("Core","Pension plans")))
-        self.append(Type().init__create(9,QApplication.translate("Core","Private Bond")))
-        self.append(Type().init__create(10,QApplication.translate("Core","Deposit")))
-        self.append(Type().init__create(11,QApplication.translate("Core","Accounts")))
 
+    def load_all(self):
+        self.append(ProductType().init__create(eProductType.Share.value,QApplication.translate("Core","Shares")))
+        self.append(ProductType().init__create(eProductType.Fund.value,QApplication.translate("Core","Funds")))
+        self.append(ProductType().init__create(eProductType.Index.value,QApplication.translate("Core","Indexes")))
+        self.append(ProductType().init__create(eProductType.ETF.value,QApplication.translate("Core","ETF")))
+        self.append(ProductType().init__create(eProductType.Warrant.value,QApplication.translate("Core","Warrants")))
+        self.append(ProductType().init__create(eProductType.Currency.value,QApplication.translate("Core","Currencies")))
+        self.append(ProductType().init__create(eProductType.PublicBond.value,QApplication.translate("Core","Public Bond")))
+        self.append(ProductType().init__create(eProductType.PensionPlan.value,QApplication.translate("Core","Pension plans")))
+        self.append(ProductType().init__create(eProductType.PrivateBond.value,QApplication.translate("Core","Private Bond")))
+        self.append(ProductType().init__create(eProductType.Deposit.value,QApplication.translate("Core","Deposit")))
+        self.append(ProductType().init__create(eProductType.Account.value,QApplication.translate("Core","Accounts")))
 
     def investment_types(self):
         """Returns a SetTypes without Indexes and Accounts"""
         r=SetTypes(self.mem)
         for t in self.arr:
-            if t.id not in (3, 11):
+            if t.id not in (eProductType.Index, eProductType.Account):
                 r.append(t)
         return r
-        
-        
+
     def with_operation_comissions_types(self):
         """Returns a SetTypes with types which product operations  has comissions"""
         r=SetTypes(self.mem)
         for t in self.arr:
-            if t.id not in (2, 3, 8, 10, 11):
+            if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):
                 r.append(t)
         return r
-#
-#    def products(self):
-#        return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
 
 class Language:
     def __init__(self, mem, id, name):
