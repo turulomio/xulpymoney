@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from Ui_frmQuotesIBM import Ui_frmQuotesIBM
-from libxulpymoney import Quote, dt, dt_changes_tz, qmessagebox
+from libxulpymoney import Quote, dt, dt_changes_tz, qmessagebox,  eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def __init__(self, mem, product,  quote=None,   parent = None):
@@ -13,7 +13,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         self.quote=quote
         
         if quote==None:#Insert
-            if self.product.type.id in (2, 8):
+            if self.product.type.id in (eProductType.Fund, eProductType.PensionPlan):
                 self.chkNone.setCheckState(Qt.Checked)       
             else:
                 if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
