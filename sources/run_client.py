@@ -1,9 +1,12 @@
+#!/usr/bin/python3
 import datetime
-import multiprocessing
 import math
 import platform
 import sys
-import subprocess
+import multiprocessing
+from subprocess import  check_output,    DEVNULL
+from concurrent.futures import ProcessPoolExecutor,  as_completed
+from multiprocessing import cpu_count
 
 
 def concurrent_log(s):
@@ -18,9 +21,6 @@ def concurrent_log(s):
     """
     print(s)
         
-def call_back(para):
-#            log2=log2+para
-    counter.next_step()
 def mysubprocess_check_output(arr):        
 #            try:
         inicio=datetime.datetime.now()
@@ -118,16 +118,14 @@ class Counter:
     def message_final(self):
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
 #############################################
+#
+#def call_proc(cmd):
+#    """ This runs in a separate thread. """
+#    #subprocess.call(shlex.split(cmd))  # This will block until cmd finishes
+#    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#    out, err = p.communicate()
+#    return out
 
-def call_proc(cmd):
-    """ This runs in a separate thread. """
-    #subprocess.call(shlex.split(cmd))  # This will block until cmd finishes
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = p.communicate()
-    return out
-
-
-counter=Counter(len(arr))
 #        for l in arr:
 #            s=mysubprocess_check_output(l)
 #            print(s)
@@ -137,17 +135,15 @@ counter=Counter(len(arr))
 
 
 
-#        lock=multiprocessing.Lock()
-counter=Counter(len(arr))
-results=[]
-pool=multiprocessing.Pool(10)
-for p in arr:
-    results.append(pool.apply_async(mysubprocess_check_output, [p, ],  callback=call_back))
-pool.close()
-pool.join()
-#        print(log)
-print(results[0].get())
-counter.message_final()
+#counter=Counter(len(arr))
+#results=[]
+#pool=multiprocessing.Pool(10)
+#for p in arr:
+#    results.append(pool.apply_async(mysubprocess_check_output, [p, ],  callback=call_back))
+#pool.close()
+#pool.join()
+##        print(log)
+#print(results[0].get())
 #        
 #        
 #        print(call_proc(arr[0]))
@@ -164,4 +160,71 @@ counter.message_final()
 #            print(result.get())
 ##            out, err = result.get()
 ##            print("out: {} err: {}".format(out, err))
+
+def appendSource(arr):
+    counter=Counter(len(arr))
+    sourceoutput=b""
+    for c in arr:
+        try:
+            output=check_output(c,  shell=True,  timeout=30, stderr=DEVNULL)
+            sourceoutput=sourceoutput+output
+            counter.next_step()
+        except:
+            sourceoutput=sourceoutput+b"ERROR | appendSource\n"
+    counter.message_final()
+    return sourceoutput
+
+def appendSourceWithConcurrence(arr,  num_workers):
+    def call_back(para):
+    #            log2=log2+para
+        counter.next_step()
+        
+    counter=Counter(len(arr))
+    sourceoutput=b""
+    futures=[]
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        for   a in arr: 
+            try:
+                future=executor.submit(check_output,  a,  shell=True, stderr=DEVNULL)
+                future.add_done_callback(call_back)
+                futures.append(future)
+            except:
+                pass
+        
+        for  future in as_completed(futures):
+            try:
+                sourceoutput=sourceoutput+future.result()
+            except:
+                sourceoutput=sourceoutput+b"ERROR | appendSourceWithConcurrence\n"
+    counter.message_final()
+    return sourceoutput
+
+
+arrBolsaMadrid=[]
+arrMorningStar=[]
+lock=multiprocessing.Lock()
+f=open("/tmp/clients.txt", "r")
+for line in f.readlines():
+    line=line[:-1]
+    if line.find("bolsamadrid")!=-1:
+        arrBolsaMadrid.append(line)
+    if line.find("morningstar")!=-1:
+        arrMorningStar.append(line)
+f.close()
+#arrBolsaMadrid=arrBolsaMadrid[:5]
+#arrMorningStar=arrMorningStar[:20]
+counter=Counter(len(arrBolsaMadrid)+len(arrMorningStar))
+futures=[]
+with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
+        futures.append(executor.submit(appendSource, arrBolsaMadrid))
+        futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, 10))
+
+finaloutput=b""
+
+for f in as_completed(futures):
+    finaloutput=finaloutput+f.result()
+    
+f=open("/tmp/clients_result.txt", "w")
+f.write(finaloutput.decode("UTF-8"))
+f.close()
 

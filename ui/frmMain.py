@@ -717,15 +717,23 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionPriceUpdatesNew_triggered(self):          
         arr=[]
-        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null order by name"
+        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' order by name"
         products=SetProducts(self.mem)#Total of products of an Agrupation
         products.load_from_db(sql)    
         for p in products.arr:
             if p.type.id==4:
-                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica())])
+                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()), "--XULPYMONEY", str(p.id)])
             elif p.type.id==1:
-                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()) ])
-        f=open("clients.txt", "w")
+                arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()), "--XULPYMONEY", str(p.id)])
+                
+
+        sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"
+        products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
+        products_morningstar.load_from_db(sql)    
+        for p in products_morningstar.arr:
+            arr.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker])       
+                
+        f=open("/tmp/clients.txt", "w")
         for a in arr:
             f.write(" ".join(a) + "\n")
         f.close()
