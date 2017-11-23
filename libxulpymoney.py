@@ -7092,7 +7092,16 @@ class Quote:
         row=cur.fetchone()
         cur.close()
         return self.init__db_row(row, product)        
-
+    def init__from_client_string(self, s):
+        """
+            Creates a Quote object from client scrapper line
+            PRICE | XULPYMONEY | 78139 | 2017-11-20 23:00:00+00:00 | 12.66
+        """
+        a=s.split(" | ")
+        self.product=Product(self.mem).init__db(int(a[2]))
+        self.datetime=string2datetime(a[3], 1)
+        self.quote=Decimal(a[4])
+        return self
         
 class OHCL:
     def __init__(self,  mem):
@@ -7134,6 +7143,35 @@ class OHCLDaily(OHCL):
     def __init__(self, mem):
         OHCL.__init__(self, mem)
         self.date=None
+        
+    def init__from_client_string(self, s):
+        """
+            Generates a OHCL object from string from scrapper clients
+            OHCL | XULPYMONEY | 81093 | 2017-11-21 | 0.0330 | 0.0330 | 0.0320 | 0.0310
+        """
+        a=s.split(" | ")
+        self.product=Product(self.mem).init__db(int(a[2]))
+        self.date=string2date(a[3])
+        self.open=Decimal(a[4])
+        self.high=Decimal(a[5])
+        self.close=Decimal(a[6])
+        self.low=Decimal(a[7])
+        return self
+
+    def generate_4_quotes(self):
+        quotes=[]
+        datestart=dt(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone)
+        dateends=dt(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone)
+        datetimefirst=datestart-datetime.timedelta(seconds=1)
+        datetimelow=(datestart+(dateends-datestart)*1/3)
+        datetimehigh=(datestart+(dateends-datestart)*2/3)
+        datetimelast=dateends+datetime.timedelta(microseconds=4)
+
+        quotes.append(Quote(self.mem).init__create(self.product,datetimelast, Decimal(self.close)))#closes
+        quotes.append(Quote(self.mem).init__create(self.product,datetimelow, Decimal(self.low)))#low
+        quotes.append(Quote(self.mem).init__create(self.product,datetimehigh, Decimal(self.high)))#high
+        quotes.append(Quote(self.mem).init__create(self.product, datetimefirst, Decimal(self.open)))#open        
+        return quotes
         
     def init__from_dbrow(self, row, product):
         self.product=product
@@ -8726,6 +8764,32 @@ def string2list(s):
         for a in arrs:
             arr.append(int(a))
     return arr
+    
+def string2date(iso, type=1):
+    """
+        date string to date, with type formats
+    """
+    if type==1: #YYYY-MM-DD
+        d=iso.split("-")
+        return datetime.date(int(d[0]), int(d[1]),  int(d[2]))
+    if type==2: #DD/MM/YYYY
+        d=iso.split("/")
+        return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
+
+def string2datetime(s, type):
+    """
+        s is a string for datetime
+        type is the diferent formats id
+    """
+    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
+        s=s[:-3]+s[-2:]
+        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
+        return dat
+    if type==2:#20/11/2017 23:00 ==> Naive
+        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
+        return dat
+
+        
 
 def log(tipo, funcion,  mensaje):
     """Tipo es una letra mayuscula S sistema H historico D diario"""
