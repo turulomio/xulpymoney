@@ -9,6 +9,38 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
 
+########################## COPIED FUNCTIONS #######################################
+
+#FROM LIBXULPYMONEY
+def string2date(iso, type=1):
+    """
+        date string to date, with type formats
+    """
+    if type==1: #YYYY-MM-DD
+        d=iso.split("-")
+        return datetime.date(int(d[0]), int(d[1]),  int(d[2]))
+    if type==2: #DD/MM/YYYY
+        d=iso.split("/")
+        return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
+
+
+#FROM LIBXULPYMONEY
+def string2datetime(s, type):
+    """
+        s is a string for datetime
+        type is the diferent formats id
+    """
+    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
+        s=s[:-3]+s[-2:]
+        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
+        return dat
+    if type==2:#20/11/2017 23:00 ==> Naive
+        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
+        return dat
+
+################################################################
+
+
 class ProductType:
     Share=1
     ETF=4
@@ -34,7 +66,7 @@ class OHCL:
             line=line.split('"center">')[1]#Removes beginning
             line=line[:-5]#Removes end
             l=line.split("</td><td>")#Arr
-            self.date=datetime.date(int(l[0].split("/")[2]), int(l[0].split("/")[1]), int(l[0].split("/")[0]))
+            self.date=string2date(l[0], type=2)
             if productype==ProductType.Share:
                 self.close=Decimal(l[1].replace(",","."))
                 self.open=Decimal(l[2].replace(",","."))
@@ -142,7 +174,6 @@ class CurrentPrice:
         self.datetime_aware=datetime_aware
         try:
             l=line.split("</td>")#Arr
-#            self.date=datetime.date(int(l[0].split("/")[2]), int(l[0].split("/")[1]), int(l[0].split("/")[0]))
             if productype==ProductType.PublicBond:
                 self.isin=l[1][-12:]
                 self.price=Decimal(l[4].split(">")[1].replace(",","."))
@@ -171,13 +202,8 @@ class SetCurrentPrice:
         """Looks for quotes line in html and creates all current prices in the pages"""
         for line in html.split("\n"):#Extracts datetime
             if line.find("sh_titulo")!=-1:
-                line=line.split(">")[1].split("<")[0]
-                arr=line.split(" ")
-                f=arr[0].split("/")
-                h=arr[1].split(":")
-                #print (line, f, h)
                 z=pytz.timezone("Europe/Madrid")
-                a=datetime.datetime(int(f[2]),int(f[1]), int(f[0]), int(h[0]), int(h[1]))
+                a=string2datetime(line.split(">")[1].split("<")[0], type=2)
                 dt_aware=z.localize(a)
                 break
 
@@ -259,14 +285,13 @@ if __name__=="__main__":
 
     if len(args.ISIN)!=1 and (args.share==True or args.etf==True):
         print("ERROR | TOO MANY ISIN CODES")
-        sys.exit(255)
+        sys.exit(0)
 
     try:
-        d=args.fromdate.split("-")
-        fromdate=datetime.date(int(d[0]), int(d[1]), int(d[2]))
+        fromdate=string2date(args.fromdate)
     except:
         print("ERROR | FROM DATE CONVERSION ERROR")
-        sys.exit(255)
+        sys.exit(0)
 
     if args.share==True:
         if args.XULPYMONEY==None:

@@ -167,8 +167,6 @@ if __name__ == '__main__':
         shell("install -m 755 -o root xulpymoney_init.py "+ prefixbin+"/xulpymoney_init")
         shell("install -m 755 -o root xulpymoney_sync_quotes.py "+ prefixbin+"/xulpymoney_sync_quotes")
         shell("install -m 755 -o root xulpymoney_simulation_indexrange.py "+ prefixbin+"/xulpymoney_simulation_indexrange")
-        shell("install -m 755 -o root sources/source_morningstar.py "+ prefixbin+"/xulpymoney_source_morningstar")
-        shell("install -m 755 -o root sources/source_mercadocontinuo.py "+ prefixbin+"/xulpymoney_source_mercadocontinuo")
         shell("install -m 755 -o root sources/morningstar_client.py "+ prefixbin+"/xulpymoney_morningstar_client")
         shell("install -m 755 -o root sources/bolsamadrid_client.py "+ prefixbin+"/xulpymoney_bolsamadrid_client")
         shell("install -m 755 -o root sources/run_client.py "+ prefixbin+"/xulpymoney_run_client")

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  SetProducts
+from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  SetProducts,  SetQuotes,  OHCLDaily,  Quote
 from libxulpymoneyversion import version_date
 from libsources import sync_data
 from frmAccess import frmAccess
@@ -730,3 +730,18 @@ class frmMain(QMainWindow, Ui_frmMain):
         for a in arr:
             f.write(" ".join(a) + "\n")
         f.close()
+        
+        self.quotes=SetQuotes(self.mem)
+        os.system("xulpymoney_run_client")
+        f=open("/tmp/clients_result.txt", "r")
+        for line in f.readlines():
+            if line.find("OHCL")!=-1:
+                ohcl=OHCLDaily(self.mem).init__from_client_string(line[:-1])
+                for quote in ohcl.generate_4_quotes():
+                    self.quotes.append(quote)
+            if line.find("PRICE")!=-1:
+                self.quotes.append(Quote(self.mem).init__from_client_string(line[:-1]))
+        f.close()
+        self.quotes.print()
+        self.quotes.save()
+        self.mem.con.commit()

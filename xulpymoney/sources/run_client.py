@@ -8,8 +8,8 @@ from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
 
-#######################################3
-                
+##################### COPIED CODE ##################3
+#FROM PYSGAE
 class Color:
     def green(s):
        return "\033[92m{}\033[0m".format(s)
@@ -25,6 +25,9 @@ class Color:
         
     def yellow(s):
         return "\033[93m{}\033[0m".format(s)
+        
+
+#FROM PYSGAE
 class Counter:
     def __init__(self, maxsteps):
         self.current=0
@@ -90,7 +93,7 @@ class Counter:
 
     def message_final(self):
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
-#############################################
+##################END COPIED CODE###########################
 def appendSource(arr):
     counter=Counter(len(arr))
     sourceoutput=b""
