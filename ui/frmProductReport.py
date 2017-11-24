@@ -134,8 +134,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.setSelected(self.mem.data.benchmark)
         self.pseCompare.selectionChanged.connect(self.load_comparation)
         self.pseCompare.showProductButton(False)
-        self.cmbCompareProductTypes.setCurrentIndex(0)
-        self.cmbCompareProductTypes.currentIndexChanged.connect(self.on_my_cmbCompareProductTypes_currentIndexChanged)
+        self.cmbCompareTypes.setCurrentIndex(0)
+        self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
 #        self.ntbCompare=None
 #        self.canvasCompare=None
         self.viewCompare=None
@@ -173,12 +173,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.deCompare.setMaximumDate(self.comparation.dates()[len(self.comparation.dates())-1-1])#Es menos 2, ya que hay alguna funcion de comparation que lo necesita
         self.comparation.setFromDate(self.deCompare.date())
             
-#        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareProductTypes.currentIndex(),  self)
+#        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
 #        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
 #        self.layCompareProduct.addWidget(self.canvasCompare)
 #        self.layCompareProduct.addWidget(self.ntbCompare)
         self.viewCompare=VCTemporalSeries()
-        if self.cmbCompareProductTypes.currentIndex()==0:#Not changed data
+        if self.cmbCompareTypes.currentIndex()==0:#Not changed data
 #            self.ax.set_title(self.tr("Comparing product quotes"), fontsize=30, fontweight="bold", y=1.02)
 #            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
 #            self.ax2=self.ax.twinx()
@@ -232,7 +232,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            self.ax2.format_coord = self.footer
 #            self.get_locators()
 #            self.ax.legend(loc="upper left")
-        elif self.cmbCompareProductTypes.currentIndex()==1:#Scatter
+        elif self.cmbCompareTypes.currentIndex()==1:#Scatter
             pass
 ##            self.ax.set_title(self.tr("Comparing products with a scattering"), fontsize=30, fontweight="bold", y=1.02)
 ##            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
@@ -277,7 +277,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            
 #            self.viewCompare.repaint()
 #            ###END DISPLAY
-        elif self.cmbCompareProductTypes.currentIndex()==2:#Controlling percentage evolution.
+        elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
 #            self.ax.set_title(self.tr("Comparing products with percentage evolution"), fontsize=30, fontweight="bold", y=1.02)
 #            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
 #            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
@@ -294,7 +294,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
                 self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
             self.viewCompare.display()
-        elif self.cmbCompareProductTypes.currentIndex()==3:#Controlling percentage evolution.
+        elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution.
 #            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"), fontsize=30, fontweight="bold", y=1.02)
 #            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
 #            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
@@ -315,7 +315,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layCompareProduct.addWidget(self.viewCompare)
         print ("Comparation took {}".format(datetime.datetime.now()-inicio))
 
-    def on_my_cmbCompareProductTypes_currentIndexChanged(self, int):
+    def on_my_cmbCompareTypes_currentIndexChanged(self, int):
         self.load_comparation()
 
     def on_tabHistorical_currentChanged(self, index):

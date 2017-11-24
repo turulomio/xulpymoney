@@ -1,11 +1,10 @@
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
-import datetime
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  SetProducts,  SetQuotes,  OHCLDaily,  Quote,  eProductType
+from libxulpymoney import AssetsReport, list2string, qmessagebox, Product
 from libxulpymoneyversion import version_date
 from libsources import sync_data
 from frmAccess import frmAccess
@@ -706,51 +705,3 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
-
-    @pyqtSlot()  
-    def on_actionPriceUpdatesNew_triggered(self):          
-        arr=[]
-        oneday=datetime.timedelta(days=1)
-        ##### BOLSAMADRID #####
-        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' order by name"
-        products=SetProducts(self.mem)#Total of products of an Agrupation
-        products.load_from_db(sql)    
-        for p in products.arr:
-            ultima=p.fecha_ultima_actualizacion_historica()
-            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                if p.type.id==eProductType.ETF:
-                    arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
-                elif p.type.id==eProductType.Share:
-                    arr.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
-                
-        ##### MORNINGSTAR #####
-        sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"
-        products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
-        products_morningstar.load_from_db(sql)    
-        for p in products_morningstar.arr:
-            ultima=p.fecha_ultima_actualizacion_historica()
-            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                arr.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker, "--XULPYMONEY",  str(p.id)])       
-        
-        
-        ##### PROCESS #####
-        f=open("/tmp/clients.txt", "w")
-        for a in arr:
-            f.write(" ".join(a) + "\n")
-        f.close()
-        
-        #Pare clients result
-        self.quotes=SetQuotes(self.mem)
-        os.system("xulpymoney_run_client")
-        f=open("/tmp/clients_result.txt", "r")
-        for line in f.readlines():
-            if line.find("OHCL")!=-1:
-                ohcl=OHCLDaily(self.mem).init__from_client_string(line[:-1])
-                for quote in ohcl.generate_4_quotes():
-                    self.quotes.append(quote)
-            if line.find("PRICE")!=-1:
-                self.quotes.append(Quote(self.mem).init__from_client_string(line[:-1]))
-        f.close()
-        self.quotes.print()
-        self.quotes.save()
-        self.mem.con.commit()

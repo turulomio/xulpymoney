@@ -357,9 +357,6 @@ class Ui_frmMain(object):
         icon40.addPixmap(QtGui.QPixmap(":/xulpymoney/expired.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionProductsWithOldPrice.setIcon(icon40)
         self.actionProductsWithOldPrice.setObjectName("actionProductsWithOldPrice")
-        self.actionPriceUpdatesNew = QtWidgets.QAction(frmMain)
-        self.actionPriceUpdatesNew.setIcon(icon10)
-        self.actionPriceUpdatesNew.setObjectName("actionPriceUpdatesNew")
         self.menuAyuda.addAction(self.actionAbout)
         self.menuAyuda.addSeparator()
         self.menuAyuda.addAction(self.actionCuriosities)
@@ -485,7 +482,6 @@ class Ui_frmMain(object):
         self.toolBar.addAction(self.actionEvolutionReport)
         self.toolBar.addAction(self.actionTotalReport)
         self.toolBar.addSeparator()
-        self.toolBar.addAction(self.actionPriceUpdatesNew)
         self.toolBar.addAction(self.actionPriceUpdates)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionLastOperation)
@@ -642,8 +638,5 @@ class Ui_frmMain(object):
         self.actionProductsWithoutQuotes.setToolTip(_translate("frmMain", "Products without price"))
         self.actionProductsWithOldPrice.setText(_translate("frmMain", "Products wit&h old price"))
         self.actionProductsWithOldPrice.setToolTip(_translate("frmMain", "Products with old price"))
-        self.actionPriceUpdatesNew.setText(_translate("frmMain", "&New Price updates"))
-        self.actionPriceUpdatesNew.setToolTip(_translate("frmMain", "New Price updates"))
-        self.actionPriceUpdatesNew.setShortcut(_translate("frmMain", "F8"))
 
 import xulpymoney_rc

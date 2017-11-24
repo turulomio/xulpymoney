@@ -274,7 +274,6 @@
    <addaction name="actionEvolutionReport"/>
    <addaction name="actionTotalReport"/>
    <addaction name="separator"/>
-   <addaction name="actionPriceUpdatesNew"/>
    <addaction name="actionPriceUpdates"/>
    <addaction name="separator"/>
    <addaction name="actionLastOperation"/>
@@ -1052,21 +1051,6 @@
    </property>
    <property name="toolTip">
     <string>Products with old price</string>
-   </property>
-  </action>
-  <action name="actionPriceUpdatesNew">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;New Price updates</string>
-   </property>
-   <property name="toolTip">
-    <string>New Price updates</string>
-   </property>
-   <property name="shortcut">
-    <string>F8</string>
    </property>
   </action>
  </widget>
