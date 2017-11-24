@@ -1,7 +1,8 @@
-from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libsources import WorkerMorningstar, WorkerBolsaMadrid, WorkerGoogle, WorkerGoogleHistorical, SetSources
+from libxulpymoney import SetProducts, SetQuotes,  Quote,   OHCLDaily, eProductType
+import datetime
+import os
 #from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor,   as_completed
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
@@ -10,76 +11,77 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        
-        self.sources=SetSources(self.mem)#All sources
-        self.sources.append(WorkerGoogleHistorical, self.wgooglehistorical)
-        self.sources.append(WorkerGoogle, self.wgoogle)
-        self.sources.append(WorkerMorningstar, self.wmorningstar)
-        self.sources.append(WorkerBolsaMadrid,  self.wbolsamadrid)
-        for s in self.sources.arr:
-            s.statusChanged.connect(self.on_source_statusChanged)
-        
-        self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
-        self.wgooglehistorical.chkUserOnly.setCheckState(Qt.Unchecked)#Google historical must check all products
-        
-    
+        self.arrHistorical=[]
+        self.arrIntraday=[]
 
 
-    def running_sources_run(self):
-        self.mem.frmMain.actionsEnabled(False)
-        for s in self.sources.runners:
-            s.setSQL(s.ui.chkUserOnly.isChecked())
         
-        #MAIL O DESACTIVAR TODO O CONTROLAR EL ESTADO
-        if self.wgoogle.cmdRun.isEnabled()==False:
-            self.cmdIntraday.setEnabled(False)
-        if self.wgooglehistorical.cmdRun.isEnabled()==False and self.wmorningstar.isEnabled()==False:
-            self.cmdDaily.setEnabled(False)
-        if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
-            self.cmdAll.setEnabled(False)
+        oneday=datetime.timedelta(days=1)
+        ##### BOLSAMADRID #####
+        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' order by name"
+        products=SetProducts(self.mem)
+        products.load_from_db(sql)    
+        for p in products.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
+                if p.type.id==eProductType.ETF:
+                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
+                elif p.type.id==eProductType.Share:
+                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
+        sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null order by name".format(eProductType.PublicBond)        
+        print(sql)
+        bm_publicbonds=SetProducts(self.mem)
+        bm_publicbonds.load_from_db(sql)    
+        suf=[]
+        for p in bm_publicbonds.arr:
+            if len(p.isin)>5:
+                suf.append("--ISIN")
+                suf.append(p.isin)
+                suf.append("--XULPYMONEY")
+                suf.append(str(p.id))
+        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--publicbond"]+suf)#MUST BE INTRADAY
+                
+        ##### MORNINGSTAR #####
+        sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"
+        products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
+        products_morningstar.load_from_db(sql)    
+        for p in products_morningstar.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
+                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker, "--XULPYMONEY",  str(p.id)])       
+        
+    def run(self, arr):
+        ##### PROCESS #####
+        f=open("/tmp/clients.txt", "w")
+        for a in arr:
+            f.write(" ".join(a) + "\n")
+        f.close()
+        
+        #Pare clients result
+        self.quotes=SetQuotes(self.mem)
+        os.system("xulpymoney_run_client")
+        f=open("/tmp/clients_result.txt", "r")
+        for line in f.readlines():
+            if line.find("OHCL")!=-1:
+                ohcl=OHCLDaily(self.mem).init__from_client_string(line[:-1])
+                for quote in ohcl.generate_4_quotes():
+                    self.quotes.append(quote)
+            if line.find("PRICE")!=-1:
+                self.quotes.append(Quote(self.mem).init__from_client_string(line[:-1]))
+        f.close()
+        self.quotes.print()
+        self.quotes.save()
+        self.mem.con.commit()
+        self.mem.data.load()
 
-        QCoreApplication.processEvents()   
-        
-        for s in self.sources.runners:
-            s.ui.on_cmdRun_released()
-            
-#        futures=[]
-#        with ProcessPoolExecutor(max_workers=4) as executor:
-#            for s in self.sources.runners:
-#                futures.append(executor.submit(s.ui.on_cmdRun_released))
-#            for i,  future in enumerate(as_completed(futures)):
-#                QCoreApplication.processEvents()    
-#                self.mem.frmMain.update()
-        
-    def on_source_statusChanged(self, status):
-        if status==3:#Finished
-            if self.sources.allFinished():
-                print ("wdgQuotesUpdate runners finished")
-                self.mem.frmMain.actionsEnabled(True)
-                print ("wdgQuotesUpdate reloading prices")
-                self.mem.data.load()
-                QCoreApplication.processEvents()       
-                self.sources.runners=[]
-                    
-        
-    def on_chkUserOnly_stateChanged(self, state):
-        for s in self.sources.arr:
-            s.ui.chkUserOnly.setCheckState(state)
-        
+       
     def on_cmdIntraday_released(self):
-        self.sources.append_runners(self.wgoogle.source)
-        
-        self.running_sources_run()
+        self.cmdIntraday.setEnabled(False)
+        self.cmdAll.setEnabled(False)
+        self.run(self.arrIntraday)
             
-        
-    def on_cmdDaily_released(self):
-        self.sources.append_runners(self.wgooglehistorical.source)
-        self.sources.append_runners(self.wmorningstar.source)
-        
-        self.running_sources_run()
 
     def on_cmdAll_released(self):        
-        for s in self.sources.arr:
-            self.sources.append_runners(s)
-            
-        self.running_sources_run()
+        self.cmdIntraday.setEnabled(False)
+        self.cmdAll.setEnabled(False)
+        self.run(self.arrIntraday+self.arrHistorical)

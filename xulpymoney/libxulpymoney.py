@@ -7159,6 +7159,7 @@ class OHCLDaily(OHCL):
             OHCL | XULPYMONEY | 81093 | 2017-11-21 | 0.0330 | 0.0330 | 0.0320 | 0.0310
         """
         a=s.split(" | ")
+        print(s, a)
         self.product=Product(self.mem).init__db(int(a[2]))
         self.date=string2date(a[3])
         self.open=Decimal(a[4])

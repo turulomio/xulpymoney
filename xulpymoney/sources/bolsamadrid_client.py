@@ -191,7 +191,7 @@ class CurrentPrice:
 
     def __repr__(self):
         if self.xulpymoney!=None:
-            return "OHCL | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
         else:
             return "PRICE | STOCKMARKET | ES | ISIN | {} | {} | {}".format(self.isin, self.datetime_aware , self.price)
 
