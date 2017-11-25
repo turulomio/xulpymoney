@@ -93,43 +93,54 @@ class Counter:
 
     def message_final(self):
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
+        
+        
+#FROM XULPYMONEY.LIBXULPYMONEY
+def b2s(b, code='UTF-8'):
+    """Bytes 2 string"""
+    return b.decode(code)
 ##################END COPIED CODE###########################
 def appendSource(arr):
     counter=Counter(len(arr))
-    sourceoutput=b""
+    sourceoutput=[]
+    commands=[]
     for c in arr:
         try:
             output=check_output(c,  shell=True,  timeout=30, stderr=DEVNULL)
-            sourceoutput=sourceoutput+output
+            commands.append(c)
+            sourceoutput.append(output)
             counter.next_step()
         except:
-            sourceoutput=sourceoutput+b"ERROR | appendSource\n"
+            sourceoutput.append(b"ERROR | appendSource\n")
     counter.message_final()
-    return sourceoutput
+    return commands, sourceoutput
 
 def appendSourceWithConcurrence(arr,  num_workers):
     def call_back(para):
         counter.next_step()
         
     counter=Counter(len(arr))
-    sourceoutput=b""
+    sourceoutput=[]
+    commands=[]
     futures=[]
     with ProcessPoolExecutor(max_workers=num_workers) as executor:
         for   a in arr: 
             try:
                 future=executor.submit(check_output,  a,  shell=True, stderr=DEVNULL)
                 future.add_done_callback(call_back)
-                futures.append(future)
+                futures.append([a, future])
             except:
                 pass
         
-        for  future in as_completed(futures):
+        as_completed([f[1] for f in futures])#Extrae lista de futures
+        for command,  future in futures:
+            commands.append(command)
             try:
-                sourceoutput=sourceoutput+future.result()
+                sourceoutput.append(future.result())
             except:
-                sourceoutput=sourceoutput+b"ERROR | appendSourceWithConcurrence\n"
+                sourceoutput.append(b"ERROR | appendSourceWithConcurrence\n")
     counter.message_final()
-    return sourceoutput
+    return commands, sourceoutput
 
 
 arrBolsaMadrid=[]
@@ -143,20 +154,21 @@ for line in f.readlines():
     if line.find("morningstar")!=-1:
         arrMorningStar.append(line)
 f.close()
-#arrBolsaMadrid=arrBolsaMadrid[:5]
-#arrMorningStar=arrMorningStar[:20]
 counter=Counter(len(arrBolsaMadrid)+len(arrMorningStar))
 futures=[]
 with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
         futures.append(executor.submit(appendSource, arrBolsaMadrid))
         futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, 10))
-
-finaloutput=b""
-
-for f in as_completed(futures):
-    finaloutput=finaloutput+f.result()
     
 f=open("/tmp/clients_result.txt", "w")
-f.write(finaloutput.decode("UTF-8"))
+for fut in as_completed(futures):
+    commands, output=fut.result()
+    for i, c in enumerate(commands):
+        f.write("{}\n".format(commands[i]))
+        for o in b2s(output[i]).split("\n"):
+            if o=="":
+                f.write("\n")
+            else:
+                f.write("  + {}\n".format(o))
 f.close()
 
