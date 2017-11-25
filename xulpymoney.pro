@@ -97,7 +97,6 @@ SOURCES         = \
                   ui/Ui_wdgSimulationsAdd.py \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
-                  ui/Ui_wdgSource.py \
                   ui/wdgTwoCurrencyLineEdit.py \
                   ui/wdgOrders.py \
                   ui/Ui_wdgOrders.py \
@@ -158,7 +157,6 @@ FORMS           = \
                   ui/wdgProducts.ui \
                   ui/wdgSimulations.ui \
                   ui/wdgSimulationsAdd.ui \
-                  ui/wdgSource.ui \
                   ui/wdgTotal.ui \
                   ui/wdgYear.ui \
                   ui/wdgYearMonth.ui
