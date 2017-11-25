@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetProducts, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -18,7 +18,6 @@ from wdgProductHistoricalChart import wdgProductHistoricalChart
 from canvaschart import  VCTemporalSeries
 #from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
-from libsources import WorkerGoogle,  WorkerGoogleHistorical, wdgSource
 
 from odf.opendocument import load
 from odf.table import Table, TableRow, TableCell
@@ -660,39 +659,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
             
-    def on_cmdUpdateDaily_pressed(self):
-        products=SetProducts(self.mem)
-        products.append(self.product)
-        
-        source=WorkerGoogle(self.mem)
-        source.setSetProducts(products)
-        
-        d=QDialog(self)     
-        d.resize(400, 200)
-        d.setWindowTitle(self.tr("Daily prices update").format())
-        wdg=wdgSource(d)
-        wdg.setSource(self.mem, source)
-        lay = QVBoxLayout(d)
-        lay.addWidget(wdg)
-        d.show()
-        self.update_due_to_quotes_change()
-
-    def on_cmdUpdateHistorical_pressed(self):
-        products=SetProducts(self.mem)
-        products.append(self.product)
-        
-        source=WorkerGoogleHistorical(self.mem)
-        source.setSetProducts(products)
-        
-        d=QDialog(self)     
-        d.resize(400, 200)
-        d.setWindowTitle(self.tr("Historical prices update").format())
-        wdg=wdgSource(d)
-        wdg.setSource(self.mem, source)
-        lay = QVBoxLayout(d)
-        lay.addWidget(wdg)
-        d.show()
-        self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
         all=SetQuotesAllIntradays(self.mem)

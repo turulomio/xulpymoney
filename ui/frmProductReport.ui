@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -536,17 +536,6 @@
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QToolButton" name="cmdUpdateDaily">
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../images/xulpymoney.qrc">
-                      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
                  </layout>
                 </item>
                 <item>
@@ -578,17 +567,6 @@
                     <property name="icon">
                      <iconset resource="../images/xulpymoney.qrc">
                       <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QToolButton" name="cmdUpdateHistorical">
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../images/xulpymoney.qrc">
-                      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
                     </property>
                    </widget>
                   </item>

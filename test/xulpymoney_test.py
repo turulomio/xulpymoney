@@ -3,7 +3,6 @@ sys.path.append("/usr/lib/xulpymoney")
 from libxulpymoney import *
 from frmMain import *
 from frmInit import *
-from libsources import *
 from wdgProductSelector import *
 
 class TestXulpymoneyData(unittest.TestCase):
