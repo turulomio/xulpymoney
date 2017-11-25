@@ -86,7 +86,7 @@ class OHCL:
                 self.low=Decimal(l[6].replace(",","."))
             return self
         except:
-            print (l)
+            print ("ERROR | OHCL COULDN'T HAVE BEING  GENERATED | {}".format(line))
             return None
 
     def __repr__(self):
@@ -186,7 +186,7 @@ class CurrentPrice:
                 self.price=Decimal(l[4].split(">")[1].replace(",","."))
             return self
         except:
-            print (l)
+            print ("ERROR | CURRENT PRICE COULDN'T HAVE BEING  GENERATED | {}".format(line))
             return None
 
     def __repr__(self):
@@ -291,13 +291,13 @@ if __name__=="__main__":
     args=parser.parse_args()
 
     if len(args.ISIN)!=1 and (args.share==True or args.etf==True):
-        print("ERROR | TOO MANY ISIN CODES")
+        print("ERROR | TOO MANY ISIN CODES | {}".format(sys.argv))
         sys.exit(0)
 
     try:
         fromdate=string2date(args.fromdate)
     except:
-        print("ERROR | FROM DATE CONVERSION ERROR")
+        print("ERROR | FROM DATE CONVERSION ERROR | {}".format(args.fromdate))
         sys.exit(0)
 
     if args.share==True:

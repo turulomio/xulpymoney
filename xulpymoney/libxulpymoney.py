@@ -7014,7 +7014,7 @@ class Quote:
         self.datetime=None
         
     def __repr__(self):
-        return "Quote de {0} de fecha {1} vale {2}".format(self.product.name, self.datetime, self.quote)
+        return "Quote de {} ({}) de fecha {} vale {}".format(self.product.name, self.product.id,  self.datetime, self.quote)
         
     def init__create(self,  product,  datetime,  quote):
         """Función que crea un Quote nuevo, con la finalidad de insertarlo
@@ -7106,17 +7106,19 @@ class Quote:
             Creates a Quote object from client scrapper line
             PRICE | XULPYMONEY | 78139 | 2017-11-20 23:00:00+00:00 | 12.66
         """
-        a=s.split(" | ")
-        self.product=Product(self.mem).init__db(int(a[2]))
-        self.datetime=string2datetime(a[3], 1)
-        self.quote=Decimal(a[4])
+        try:
+            a=s.split(" | ")
+            self.product=Product(self.mem).init__db(int(a[2]))
+            self.datetime=string2datetime(a[3], 1)
+            self.quote=Decimal(a[4])
+        except:
+            return None
         return self
         
 class OHCL:
     def __init__(self,  mem):
         self.mem=mem
         self.product=None
-#        self.datetime=datetime
         self.open=None
         self.close=None
         self.high=None
@@ -7159,13 +7161,15 @@ class OHCLDaily(OHCL):
             OHCL | XULPYMONEY | 81093 | 2017-11-21 | 0.0330 | 0.0330 | 0.0320 | 0.0310
         """
         a=s.split(" | ")
-        print(s, a)
-        self.product=Product(self.mem).init__db(int(a[2]))
-        self.date=string2date(a[3])
-        self.open=Decimal(a[4])
-        self.high=Decimal(a[5])
-        self.close=Decimal(a[6])
-        self.low=Decimal(a[7])
+        try:
+            self.product=Product(self.mem).init__db(int(a[2]))
+            self.date=string2date(a[3])
+            self.open=Decimal(a[4])
+            self.high=Decimal(a[5])
+            self.close=Decimal(a[6])
+            self.low=Decimal(a[7])
+        except:
+            return None
         return self
 
     def generate_4_quotes(self):
