@@ -1184,6 +1184,15 @@ class SetProducts(SetCommons):
                 result.append(a)
         return result
         
+    def list_ISIN_XULPYMONEY(self):
+        """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
+        suf=[]
+        for p in self.arr:
+            if len(p.isin)>5:
+                suf.append("--ISIN_XULPYMONEY")
+                suf.append(p.isin)
+                suf.append(str(p.id))
+        return suf
     def myqtablewidget(self, table):
         tachado = QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
@@ -8929,7 +8938,7 @@ def string2date(iso, type=1):
         d=iso.split("/")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
 
-def string2datetime(s, type):
+def string2datetime(s, type, zone="Europe/Madrid"):
     """
         s is a string for datetime
         type is the diferent formats id
@@ -8941,7 +8950,10 @@ def string2datetime(s, type):
     if type==2:#20/11/2017 23:00 ==> Naive
         dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
         return dat
-
+    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
+        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
+        z=pytz.timezone(zone)
+        return z.localize(dat)
         
 
 def log(tipo, funcion,  mensaje):

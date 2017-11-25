@@ -26,7 +26,7 @@ def string2date(iso, type=1):
 
 
 #FROM LIBXULPYMONEY
-def string2datetime(s, type):
+def string2datetime(s, type, zone="Europe/Madrid"):
     """
         s is a string for datetime
         type is the diferent formats id
@@ -38,6 +38,10 @@ def string2datetime(s, type):
     if type==2:#20/11/2017 23:00 ==> Naive
         dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
         return dat
+    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
+        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
+        z=pytz.timezone(zone)
+        return z.localize(dat)
 # FROM XULPYMONEY..LIBXULPYMONEY
 class eProductType(Enum):
     Share=1
@@ -72,6 +76,7 @@ class OHCL:
             line=line.replace(' class="Ult"', "")#Quita anomalía en td
             line=line.split('"center">')[1]#Removes beginning
             line=line[:-5]#Removes end
+            line=line.replace(".", "")#Elimina ceros de miles
             l=line.split("</td><td>")#Arr
             self.date=string2date(l[0], type=2)
             if productype==eProductType.Share:
@@ -79,11 +84,16 @@ class OHCL:
                 self.open=Decimal(l[2].replace(",","."))
                 self.high=Decimal(l[6].replace(",","."))
                 self.low=Decimal(l[7].replace(",","."))
-            else:
+            elif productype==eProductType.ETF:
                 self.close=Decimal(l[8].replace(",","."))
                 self.open=Decimal(l[4].replace(",","."))
                 self.high=Decimal(l[5].replace(",","."))
                 self.low=Decimal(l[6].replace(",","."))
+            elif productype==eProductType.Index:
+                self.close=Decimal(l[1].replace(",","."))
+                self.open=Decimal(l[2].replace(",","."))
+                self.high=Decimal(l[3].replace(",","."))
+                self.low=Decimal(l[4].replace(",","."))
             return self
         except:
             print ("ERROR | OHCL COULDN'T HAVE BEING  GENERATED | {}".format(line))
@@ -98,8 +108,8 @@ class OHCL:
 class SetOHCL:
     def __init__(self, isin, xulpymoney, productype):
         self.arr=[]
-        self.isin=isin
-        self.xulpymoney=xulpymoney
+        self.isin=isin# Is a value, not a list
+        self.xulpymoney=xulpymoney#Is a value, not a list
         self.productype=productype
 
     def searchQuotesInHtml(self,html):
@@ -153,13 +163,14 @@ class SetOHCL:
         ###########################
         if self.productype==eProductType.Share:
             r=Render("http://www.bolsamadrid.es/esp/aspx/Empresas/InfHistorica.aspx?ISIN={}".format(self.isin), from_date)
-        else:
+        elif self.productype==eProductType.ETF:
             r=Render("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin), from_date)
-
+        elif self.productype==eProductType.Index:
+            r=Render("http://www.bolsamadrid.es/esp/aspx/Indices/InfHistorica.aspx?grupo=IBEX", from_date)
         for i,page in enumerate(r.pages):
+#            print ("Page", i+1, len(r.pages[i]))
             if i==0:#Era la de la búsqueda
                 continue
-            #print ("Page", i+1, len(r.pages[i]))
             self.searchQuotesInHtml(page)
 
     def print(self):
@@ -170,11 +181,11 @@ class SetOHCL:
 class CurrentPrice:
     def __init__(self):
         self.isin=None
-        self.xulpymoney=None
+        self.xulpymoney=None 
         self.datetime_aware=None
         self.price=None
 
-    def init__from_html_line(self,line,  productype, datetime_aware):
+    def init__from_html_line_without_date(self,line,  productype, datetime_aware):
         """
         Returns None if fails    
         """
@@ -188,6 +199,22 @@ class CurrentPrice:
         except:
             print ("ERROR | CURRENT PRICE COULDN'T HAVE BEING  GENERATED | {}".format(line))
             return None
+            
+    def init__from_html_line_with_date(self, line):
+        line=line.split("FichaValor.aspx?ISIN=")[1]#Removes begin
+        line=line[:-5]#Removes end
+        line=line.replace(' class="DifClIg"', "").replace(' class="DifClSb"', "").replace(' class="DifClBj"', "").replace(' align="center" colspan="2"', "").replace(' class="Ult" align="center"',"").replace(' align="center"',"")#Removes anomalies to live td /td
+        a=line.split("</td><td>")
+        self.isin=a[0][:12]
+        self.price=a[1].replace(",", ".")
+        if len(a)==9:#Ignoring suspendido
+            if a[8]=="Cierre":
+                hour="17:38"
+            else:
+                hour=a[8]
+            self.datetime_aware=string2datetime("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
+            return self
+        return None
 
     def __repr__(self):
         if self.xulpymoney!=None:
@@ -207,26 +234,32 @@ class SetCurrentPrice:
 
     def searchQuotesInHtml(self,html):
         """Looks for quotes line in html and creates all current prices in the pages"""
-        for line in html.split("\n"):#Extracts datetime
-            if line.find("sh_titulo")!=-1:
-                z=pytz.timezone("Europe/Madrid")
-                a=string2datetime(line.split(">")[1].split("<")[0], type=2)
-                dt_aware=z.localize(a)
-                break
-
-        for line in html.split("\n"):
-            if line.find('000.000')!=-1:
-                cp=CurrentPrice().init__from_html_line(line, self.productype,dt_aware)
-                if cp!=None:
-                    self.arr.append(cp)
+        if self.productype==eProductType.PublicBond:
+            for line in html.split("\n"):#Extracts datetime
+                if line.find("sh_titulo")!=-1:
+                    dt_aware=string2datetime(line.split(">")[1].split("<")[0], type=3,  zone="Europe/Madrid")
+                    break
+            for line in html.split("\n"):
+                if line.find('000.000')!=-1:
+                    cp=CurrentPrice().init__from_html_line_without_date(line, self.productype,dt_aware)
+                    if cp!=None:
+                        self.arr.append(cp)
+                        
+        elif self.productype==eProductType.Share:
+            for line in html.split("\n"):
+                if line.find("FichaValor")!=-1:
+                    cp=CurrentPrice().init__from_html_line_with_date(line)
+                    if cp!=None:
+                        self.arr.append(cp)
 
     def get_prices( self):
         class RenderCurrentPrice(QWebEngineView):
-            def __init__(self, url):
+            def __init__(self, url, productype):
                 QWebEngineView.__init__(self)
                 self.loop=QEventLoop()#Queda en un loop hasta que acaba la carga de todas las páginas
                 self.loadFinished.connect(self._loadFinished)
                 self.pages=[]
+                self.productype=productype
                 self.page().profile().cookieStore().deleteAllCookies()
                 self.page().profile().setPersistentCookiesPolicy(QWebEngineProfile.NoPersistentCookies)
                 
@@ -242,21 +275,30 @@ class SetCurrentPrice:
             def _callable(self, data):
                 self.pages.append(data)
                 time.sleep(0.25)
-
-                if self.numPages()==1:
-                    self.page().runJavaScript('''window.location.href="/esp/aspx/aiaf/Precios.aspx?menu=47"''')
-                elif self.numPages()==2:
-                    self.page().runJavaScript('''window.location.href="/esp/aspx/send/posicionesDPublica_v2.aspx"''')
-                elif self.numPages()==3:
-                    self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
+                if self.productype==eProductType.PublicBond:
+                    if self.numPages()==1:
+                        self.page().runJavaScript('''window.location.href="/esp/aspx/aiaf/Precios.aspx?menu=47"''')
+                    elif self.numPages()==2:
+                        self.page().runJavaScript('''window.location.href="/esp/aspx/send/posicionesDPublica_v2.aspx"''')
+                    elif self.numPages()==3:
+                        self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
+                elif self.productype==eProductType.Share:
+                    if self.numPages()==1:
+                        self.page().runJavaScript('''
+                                                var select= document.getElementsByName("ctl00$Contenido$SelMercado")[0]; select.value="MC";
+                                                var Button = document.getElementsByName("ctl00$Contenido$Consultar")[0]; Button.click();''')
+                    elif self.numPages()==2:
+                        self.page().runJavaScript('''__doPostBack("ctl00$Contenido$Todos","");''')
+                    elif self.numPages()==3:
+                        self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
         ###########################
         if self.productype==eProductType.PublicBond:
-            r=RenderCurrentPrice("http://www.bmerf.es")
-        else:
-            r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/ETFs/Mercados/InfHistorica.aspx?ISIN={}".format(self.isin))
+            r=RenderCurrentPrice("http://www.bmerf.es", self.productype)
+        elif self.productype==eProductType.Share:
+            r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?indice=ESI100000000", self.productype)
             
         for i,page in enumerate(r.pages):
-            #print ("Page", i+1, len(r.pages[i]))
+#            print ("Page", i+1, len(r.pages[i]))
             if i<2:#Era la de la búsqueda
                 continue
             self.searchQuotesInHtml(page)
@@ -281,46 +323,64 @@ class SetCurrentPrice:
 if __name__=="__main__":
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
-    parser.add_argument('--ISIN', help='ISIN code',action="append")
-    parser.add_argument('--XULPYMONEY', help='XULPYMONEY code',action="append")
-    parser.add_argument('--fromdate', help='Get data from date in YYYY-MM-DD format', default=str(datetime.date.today()-datetime.timedelta(days=30)))
-    group=parser.add_mutually_exclusive_group()
-    group.add_argument('--share', help="Share search", action='store_true', default=False)
-    group.add_argument('--etf', help="ETF search", action='store_true', default=False) 
-    group.add_argument('--publicbond', help="Public bond search", action='store_true', default=False) 
+    group1=parser.add_mutually_exclusive_group(required=True)
+    group1.add_argument('--ISIN', help='ISIN code',action="append", metavar="X")
+    group1.add_argument('--ISIN_XULPYMONEY', help='Pass ISIN and XULPYMONEY code',action="append", nargs=2, metavar="X")
+    parser.add_argument('--fromdate', help='Get historcal prices from date in YYYY-MM-DD format. Without this parameter it gets current price')
+    group2=parser.add_mutually_exclusive_group(required=True)
+    group2.add_argument('--share', help="Share search", action='store_true', default=False)
+    group2.add_argument('--index', help="Index search", action='store_true', default=False) 
+    group2.add_argument('--etf', help="ETF search", action='store_true', default=False) 
+    group2.add_argument('--publicbond', help="Public bond search", action='store_true', default=False) 
     args=parser.parse_args()
 
-    if len(args.ISIN)!=1 and (args.share==True or args.etf==True):
+    #Array ISIN and XULPYMONEY. If no xulpymoney it creates a list of None values
+    ISIN=[]
+    XULPYMONEY=[]
+    if args.ISIN:
+        for isin in args.ISIN:
+            ISIN.append(isin)
+            XULPYMONEY.append(None)
+    else:#ISIN_XULPYMONEY
+        for isin, xulpymoney in args.ISIN_XULPYMONEY:
+            ISIN.append(isin)
+            XULPYMONEY.append(xulpymoney)
+
+    if len(ISIN)>1 and args.fromdate:
         print("ERROR | TOO MANY ISIN CODES | {}".format(sys.argv))
         sys.exit(0)
 
-    try:
-        fromdate=string2date(args.fromdate)
-    except:
-        print("ERROR | FROM DATE CONVERSION ERROR | {}".format(args.fromdate))
-        sys.exit(0)
+    if args.fromdate:
+        try:
+            fromdate=string2date(args.fromdate)
+        except:
+            print("ERROR | FROM DATE CONVERSION ERROR | {}".format(args.fromdate))
+            sys.exit(0)
 
-    if args.share==True:
-        if args.XULPYMONEY==None:
-            xulpymoney=None
-        else:
-            xulpymoney=args.XULPYMONEY[0]
-        s=SetOHCL(args.ISIN[0], xulpymoney, eProductType.Share)
-        s.get_prices(fromdate)
-        s.print()
+        if args.share==True:
+            s=SetOHCL(ISIN[0], XULPYMONEY[0], eProductType.Share)
+            s.get_prices(fromdate)
+            s.print()
 
-    if args.etf==True:
-        if args.XULPYMONEY==None:
-            xulpymoney=None
-        else:
-            xulpymoney=args.XULPYMONEY[0]
-        s=SetOHCL(args.ISIN[0], xulpymoney, eProductType.ETF)
-        s.get_prices(fromdate)
-        s.print()
+        if args.etf==True:
+            s=SetOHCL(ISIN[0], XULPYMONEY[0], eProductType.ETF)
+            s.get_prices(fromdate)
+            s.print()
 
-    if args.publicbond==True:
-        s=SetCurrentPrice(args.ISIN, args.XULPYMONEY, eProductType.PublicBond)
-        s.get_prices()
-        for pc in s.returnDesired():
-            print (pc)
+        if args.index==True:
+            s=SetOHCL(ISIN[0], XULPYMONEY[0], eProductType.Index)
+            s.get_prices(fromdate)
+            s.print()
+    else:
+        if args.publicbond==True:
+            s=SetCurrentPrice(ISIN, XULPYMONEY, eProductType.PublicBond)
+            s.get_prices()
+            for pc in s.returnDesired():
+                print (pc)
+
+        if args.share==True:
+            s=SetCurrentPrice(ISIN, XULPYMONEY, eProductType.Share)
+            s.get_prices()
+            for pc in s.returnDesired():
+                print (pc)
 
