@@ -2,7 +2,6 @@
 import datetime
 import math
 import platform
-import sys
 import multiprocessing
 from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
@@ -34,6 +33,10 @@ class Counter:
         self.max=maxsteps
         self.dt_start=datetime.datetime.now()
         self.dt_end=None
+        self.name="Counter"
+
+    def setName(self, name):
+        self.name=name
         
     def segundos2fechastring(self, segundos):
         dias=int(segundos/(24*60*60))
@@ -89,7 +92,7 @@ class Counter:
             tpc_completado=Color.green(self.tpc_completado())
             segundos_current=Color.green(self.segundos2fechastring(self.seconds_current()))
             segundos_estimados=Color.red(self.segundos2fechastring(self.seconds_estimated()))
-        print ("{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(sys.argv[0], tpc_completado, segundos_current, segundos_estimados))
+        print ("{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(self.name, tpc_completado, segundos_current, segundos_estimados))
 
     def message_final(self):
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
@@ -100,8 +103,9 @@ def b2s(b, code='UTF-8'):
     """Bytes 2 string"""
     return b.decode(code)
 ##################END COPIED CODE###########################
-def appendSource(arr):
+def appendSource(arr, name):
     counter=Counter(len(arr))
+    counter.setName(name)
     sourceoutput=[]
     commands=[]
     for c in arr:
@@ -115,11 +119,12 @@ def appendSource(arr):
     counter.message_final()
     return commands, sourceoutput
 
-def appendSourceWithConcurrence(arr,  num_workers):
+def appendSourceWithConcurrence(arr, name,  num_workers):
     def call_back(para):
         counter.next_step()
         
     counter=Counter(len(arr))
+    counter.setName(name)
     sourceoutput=[]
     commands=[]
     futures=[]
@@ -157,8 +162,8 @@ f.close()
 counter=Counter(len(arrBolsaMadrid)+len(arrMorningStar))
 futures=[]
 with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
-        futures.append(executor.submit(appendSource, arrBolsaMadrid))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, 10))
+        futures.append(executor.submit(appendSource, arrBolsaMadrid, "xulpymoney_bolsamadrid_client"))
+        futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, "xulpymoney_morningstar_client", 10))
     
 f=open("/tmp/clients_result.txt", "w")
 for fut in as_completed(futures):

@@ -66,10 +66,11 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             self.txtCR2Q.append(line[:-1])
             if line.find("OHCL")!=-1:
                 ohcl=OHCLDaily(self.mem).init__from_client_string(line[:-1])
-                for quote in ohcl.generate_4_quotes():
-                    if quote!=None:
-                        self.quotes.append(quote)
-                    self.txtCR2Q.append("    - {}".format (quote))
+                if ohcl!=None:
+                    for quote in ohcl.generate_4_quotes():
+                        if quote!=None:
+                            self.quotes.append(quote)
+                        self.txtCR2Q.append("    - {}".format (quote))
             if line.find("PRICE")!=-1:
                 quote=Quote(self.mem).init__from_client_string(line[:-1])
                 if quote!=None:
