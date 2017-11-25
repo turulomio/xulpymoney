@@ -1,11 +1,7 @@
 SOURCES         = \
                   libdbupdates.py \
-                  libsources.py \
                   libxulpymoney.py \
                   libodfgenerator.py \
-                  sources/source_mercadocontinuo.py \
-                  sources/source_sg_warrants.py \
-                  sources/source_morningstar.py \
                   ui/canvaschart.py \
                   ui/frmAbout.py \
                   ui/Ui_frmAbout.py \
@@ -114,7 +110,6 @@ SOURCES         = \
                   ui/wdgYearMonth.py \
                   ui/Ui_wdgYearMonth.py \
                   xulpymoney.py \
-                  xulpymoney_sync_quotes.py \
                   xulpymoney_init.py
 
 FORMS           = \
