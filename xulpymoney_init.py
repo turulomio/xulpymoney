@@ -13,7 +13,7 @@ from PyQt5.QtGui import *
 from frmInit import *
 
 try:
-    os.makedirs( os.environ['HOME']+"/.xulpymoney/")
+    os.makedirs( os.environ['HOME']+"/.xulpymoney/tmp/")
 except:
     pass
 

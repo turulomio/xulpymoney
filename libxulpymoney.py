@@ -8,7 +8,7 @@ import time
 import logging
 import platform
 import io
-import os
+from os import path,  makedirs
 import pytz
 import psycopg2
 import psycopg2.extras
@@ -24,6 +24,17 @@ from libxulpymoneyversion import version
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
+
+def dirs_create():
+    """
+        Returns xulpymoney_tmp_dir, ...
+    """
+    dir_tmp=path.expanduser("~/.xulpymoney/tmp/")
+    try:
+        makedirs(dir_tmp)
+    except:
+        pass
+    return dir_tmp
 
 class Connection(QObject):
     
@@ -8129,6 +8140,8 @@ class SettingsDB:
 
 class MemXulpymoney:
     def __init__(self):                
+        self.dir_tmp=dirs_create()
+        
         self.qtranslator=None#Residirá el qtranslator
         self.settings=QSettings()
         self.settingsdb=SettingsDB(self)
@@ -8148,6 +8161,9 @@ class MemXulpymoney:
         
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
+        
+
+        
         
     def init__script(self, title, tickers=False, sql=False):
         """
@@ -8412,7 +8428,7 @@ class AssetsReport(ODT):
         
     def generate(self):
         self.dir='/tmp/AssetsReport-{}'.format(datetime.datetime.now())
-        os.makedirs(self.dir)
+        makedirs(self.dir)
         self.setMetadata( self.tr("Assets report"),  self.tr("This is an automatic generated report from Xulpymoney"), "Xulpymoney-{}".format(version))
         self.variables()
         self.cover()
@@ -9033,6 +9049,7 @@ def days_to_year_month(days):
     else:
         strdays=QApplication.translate("Core", "days")
     return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
+
 
 def dt(date, hour, zone):
     """Función que devuleve un datetime con zone info.
