@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget,  QApplication
 from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libxulpymoney import SetProducts, SetQuotes,  Quote,   OHCLDaily, eProductType
+from libxulpymoney import SetProducts, SetQuotes,  Product, Quote,   OHCLDaily, eProductType
 import datetime
 import os
 
@@ -27,21 +27,20 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
                 if p.type.id==eProductType.ETF:
-                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
+                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),  "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
                 elif p.type.id==eProductType.Share:
-                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN",  p.isin, "--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday), "--XULPYMONEY", str(p.id)])
+                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),"--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
+                    
+        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
         sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null order by name".format(eProductType.PublicBond)        
         bm_publicbonds=SetProducts(self.mem)
         bm_publicbonds.load_from_db(sql)    
-        suf=[]
-        for p in bm_publicbonds.arr:
-            if len(p.isin)>5:
-                suf.append("--ISIN")
-                suf.append(p.isin)
-                suf.append("--XULPYMONEY")
-                suf.append(str(p.id))
-        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--publicbond"]+suf)#MUST BE INTRADAY
+        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--publicbond"]+bm_publicbonds.list_ISIN_XULPYMONEY())#MUST BE INTRADAY
+        
+        ibex=Product(self.mem).init__db(79329)
+        self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
+
                 
         ##### MORNINGSTAR #####
         sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"
@@ -50,12 +49,10 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         for p in products_morningstar.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker, "--XULPYMONEY",  str(p.id)])       
+                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.ticker, str(p.id)])       
         QApplication.restoreOverrideCursor()
 
     def run(self, arr):
-#        self.cmdIntraday.setEnabled(False)
-#        self.cmdAll.setEnabled(False)
         self.mem.frmMain.setEnabled(False)
         self.mem.frmMain.repaint()
         QApplication.setOverrideCursor(Qt.WaitCursor)
