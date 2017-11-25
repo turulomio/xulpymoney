@@ -6,6 +6,7 @@ import multiprocessing
 from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
+from os import path,  makedirs
 
 ##################### COPIED CODE ##################3
 #FROM PYSGAE
@@ -102,6 +103,19 @@ class Counter:
 def b2s(b, code='UTF-8'):
     """Bytes 2 string"""
     return b.decode(code)
+    
+
+#FROM XULPYMONEY.LIBXULPYMONEY
+def dirs_create():
+    """
+        Returns xulpymoney_tmp_dir, ...
+    """
+    dir_tmp=path.expanduser("~/.xulpymoney/tmp/")
+    try:
+        makedirs(dir_tmp)
+    except:
+        pass
+    return dir_tmp
 ##################END COPIED CODE###########################
 def appendSource(arr, name):
     counter=Counter(len(arr))
@@ -147,11 +161,11 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
     counter.message_final()
     return commands, sourceoutput
 
-
+dir_tmp=dirs_create()
 arrBolsaMadrid=[]
 arrMorningStar=[]
 lock=multiprocessing.Lock()
-f=open("/tmp/clients.txt", "r")
+f=open("{}/clients.txt".format(dir_tmp), "r")
 for line in f.readlines():
     line=line[:-1]
     if line.find("bolsamadrid")!=-1:
@@ -165,7 +179,7 @@ with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
         futures.append(executor.submit(appendSource, arrBolsaMadrid, "xulpymoney_bolsamadrid_client"))
         futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, "xulpymoney_morningstar_client", 10))
     
-f=open("/tmp/clients_result.txt", "w")
+f=open("{}/clients_result.txt".format(dir_tmp), "w")
 for fut in as_completed(futures):
     commands, output=fut.result()
     for i, c in enumerate(commands):

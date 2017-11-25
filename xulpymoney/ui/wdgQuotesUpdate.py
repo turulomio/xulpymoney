@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QRegExp
+from PyQt5.QtWidgets import QWidget,  QApplication
+from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
 from libxulpymoney import SetProducts, SetQuotes,  Quote,   OHCLDaily, eProductType
@@ -9,6 +9,7 @@ import os
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):
         QWidget.__init__(self,  parent)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
@@ -50,10 +51,17 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
                 self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER",  p.ticker, "--XULPYMONEY",  str(p.id)])       
-        
+        QApplication.restoreOverrideCursor()
+
     def run(self, arr):
+#        self.cmdIntraday.setEnabled(False)
+#        self.cmdAll.setEnabled(False)
+        self.mem.frmMain.setEnabled(False)
+        self.mem.frmMain.repaint()
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.processEvents()
         ##### PROCESS #####
-        f=open("/tmp/clients.txt", "w")
+        f=open("{}/clients.txt".format(self.mem.dir_tmp), "w")
         for a in arr:
             f.write(" ".join(a) + "\n")
         f.close()
@@ -61,7 +69,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         #Pare clients result
         self.quotes=SetQuotes(self.mem)
         os.system("xulpymoney_run_client")
-        cr=open("/tmp/clients_result.txt", "r")
+        cr=open("{}/clients_result.txt".format(self.mem.dir_tmp), "r")
         for line in cr.readlines():
             self.txtCR2Q.append(line[:-1])
             if line.find("OHCL")!=-1:
@@ -80,11 +88,12 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.quotes.save()
         self.mem.con.commit()
         self.mem.data.load()
+        
+        self.mem.frmMain.setEnabled(True)
+        QApplication.restoreOverrideCursor()
 
        
     def on_cmdIntraday_released(self):
-        self.cmdIntraday.setEnabled(False)
-        self.cmdAll.setEnabled(False)
         self.run(self.arrIntraday)
             
     def on_cmdError_released(self):
@@ -113,6 +122,4 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
 
 
     def on_cmdAll_released(self):        
-        self.cmdIntraday.setEnabled(False)
-        self.cmdAll.setEnabled(False)
         self.run(self.arrIntraday+self.arrHistorical)
