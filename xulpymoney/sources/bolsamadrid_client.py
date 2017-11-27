@@ -307,7 +307,7 @@ class SetCurrentPrice:
             r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?indice=ESI100000000", self.productype)
             
         for i,page in enumerate(r.pages):
-            print ("Page", i+1, len(r.pages[i]))
+#            print ("Page", i+1, len(r.pages[i]))
             if self.productype in [eProductType.Share, eProductType.PublicBond]:
                 if i<2:#Era la de la búsqueda
                     continue
