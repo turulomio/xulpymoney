@@ -42,7 +42,15 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         ibex=Product(self.mem).init__db(79329)
         self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
-
+        ##### QUE FONDOS ####
+        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and ticker is not null order by name".format(eProductType.PensionPlan.value)
+        print(sql)
+        products_quefondos=SetProducts(self.mem)#Total of products_quefondos of an Agrupation
+        products_quefondos.load_from_db(sql)    
+        for p in products_quefondos.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
+                self.arrIntraday.append(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.ticker, str(p.id)])       
                 
         ##### MORNINGSTAR #####
         sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"

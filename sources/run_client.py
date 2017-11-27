@@ -164,6 +164,7 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
 dir_tmp=dirs_create()
 arrBolsaMadrid=[]
 arrMorningStar=[]
+arrQueFondos=[]
 lock=multiprocessing.Lock()
 f=open("{}/clients.txt".format(dir_tmp), "r")
 for line in f.readlines():
@@ -172,12 +173,15 @@ for line in f.readlines():
         arrBolsaMadrid.append(line)
     if line.find("morningstar")!=-1:
         arrMorningStar.append(line)
+    if line.find("quefondos")!=-1:
+        arrQueFondos.append(line)
 f.close()
 counter=Counter(len(arrBolsaMadrid)+len(arrMorningStar))
 futures=[]
 with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
         futures.append(executor.submit(appendSource, arrBolsaMadrid, "xulpymoney_bolsamadrid_client"))
         futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, "xulpymoney_morningstar_client", 10))
+        futures.append(executor.submit(appendSourceWithConcurrence, arrQueFondos, "xulpymoney_quefondos_client", 10))
     
 f=open("{}/clients_result.txt".format(dir_tmp), "w")
 for fut in as_completed(futures):
