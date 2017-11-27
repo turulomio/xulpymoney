@@ -33,6 +33,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
                     
         self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
+        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--etf"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+
         sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null order by name".format(eProductType.PublicBond)        
         bm_publicbonds=SetProducts(self.mem)
         bm_publicbonds.load_from_db(sql)    

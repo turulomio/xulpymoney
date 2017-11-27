@@ -201,10 +201,12 @@ class CurrentPrice:
             return None
             
     def init__from_html_line_with_date(self, line):
+#        print (line)
         line=line.split("FichaValor.aspx?ISIN=")[1]#Removes begin
         line=line[:-5]#Removes end
         line=line.replace(' class="DifClIg"', "").replace(' class="DifClSb"', "").replace(' class="DifClBj"', "").replace(' align="center" colspan="2"', "").replace(' class="Ult" align="center"',"").replace(' align="center"',"")#Removes anomalies to live td /td
         a=line.split("</td><td>")
+#        print (a)
         self.isin=a[0][:12]
         self.price=a[1].replace(",", ".")
         if len(a)==9:#Ignoring suspendido
@@ -245,7 +247,7 @@ class SetCurrentPrice:
                     if cp!=None:
                         self.arr.append(cp)
                         
-        elif self.productype==eProductType.Share:
+        elif self.productype in [eProductType.Share, eProductType.ETF]:
             for line in html.split("\n"):
                 if line.find("FichaValor")!=-1:
                     cp=CurrentPrice().init__from_html_line_with_date(line)
@@ -291,16 +293,27 @@ class SetCurrentPrice:
                         self.page().runJavaScript('''__doPostBack("ctl00$Contenido$Todos","");''')
                     elif self.numPages()==3:
                         self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
+                elif self.productype==eProductType.ETF:
+                    if self.numPages()==1:
+                        self.page().runJavaScript('''
+                                                var select= document.getElementsByName("ctl00$Contenido$SelMercado")[0]; select.value="ETF";
+                                                var Button = document.getElementsByName("ctl00$Contenido$Consultar")[0]; Button.click();''')
+                    elif self.numPages()==2:
+                        self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
         ###########################
         if self.productype==eProductType.PublicBond:
             r=RenderCurrentPrice("http://www.bmerf.es", self.productype)
-        elif self.productype==eProductType.Share:
+        elif self.productype in [eProductType.Share,  eProductType.ETF]:
             r=RenderCurrentPrice("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?indice=ESI100000000", self.productype)
             
         for i,page in enumerate(r.pages):
-#            print ("Page", i+1, len(r.pages[i]))
-            if i<2:#Era la de la búsqueda
-                continue
+            print ("Page", i+1, len(r.pages[i]))
+            if self.productype in [eProductType.Share, eProductType.PublicBond]:
+                if i<2:#Era la de la búsqueda
+                    continue
+            elif self.productype==eProductType.ETF:
+                if i<1:
+                    continue
             self.searchQuotesInHtml(page)
 
     def returnDesired(self):
@@ -380,6 +393,11 @@ if __name__=="__main__":
 
         if args.share==True:
             s=SetCurrentPrice(ISIN, XULPYMONEY, eProductType.Share)
+            s.get_prices()
+            for pc in s.returnDesired():
+                print (pc)
+        if args.etf==True:
+            s=SetCurrentPrice(ISIN, XULPYMONEY, eProductType.ETF)
             s.get_prices()
             for pc in s.returnDesired():
                 print (pc)
