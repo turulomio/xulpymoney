@@ -8018,6 +8018,9 @@ class eTickerPosition(IntEnum):
     Google=2
     QueFondos=3
     
+    def postgresql(etickerposition):
+        return etickerposition.value+1
+    
 class SetTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)

@@ -44,30 +44,30 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
         ##### GOOGLE #####
-        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[3] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency)
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
         products=SetProducts(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
             self.arrIntraday.append(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
 
         ##### QUE FONDOS ####
-        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and ticker is not null order by name".format(eProductType.PensionPlan.value)
+        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos))
         print(sql)
         products_quefondos=SetProducts(self.mem)#Total of products_quefondos of an Agrupation
         products_quefondos.load_from_db(sql)    
         for p in products_quefondos.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.arrIntraday.append(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.ticker, str(p.id)])       
+                self.arrIntraday.append(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id)])       
                 
         ##### MORNINGSTAR #####
-        sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name"
+        sql="select * from products where tickers[{}] is not null and obsolete=false order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar))
         products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.ticker, str(p.id)])       
+                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
         QApplication.restoreOverrideCursor()
 
     def run(self, arr):
