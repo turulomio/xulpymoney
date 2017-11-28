@@ -89,7 +89,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.txtMail.setReadOnly(True)
             self.txtTPC.setReadOnly(True)
             self.txtPhone.setReadOnly(True)
-            self.txtYahoo.setReadOnly(True)
+            self.tblTickers.setEnabled(False)
             self.txtComentario.setReadOnly(True)
             self.cmdAgrupations.setEnabled(False)
             self.cmdPriority.setEnabled(False)
@@ -119,12 +119,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         self.viewIntraday=VCTemporalSeries()
         self.layIntraday.addWidget(self.viewIntraday)
-        
-#        self.canvasHistorical=canvasChartHistorical( self.mem, self)
-#        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
-#        self.layHistorical.addWidget(self.canvasHistorical)
-#        self.layHistorical.addWidget(self.ntbHistorical)
-        
+       
         self.wdgproducthistoricalchart=wdgProductHistoricalChart(self)
         self.layHistorical.addWidget(self.wdgproducthistoricalchart)
         
@@ -135,8 +130,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.showProductButton(False)
         self.cmbCompareTypes.setCurrentIndex(0)
         self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
-#        self.ntbCompare=None
-#        self.canvasCompare=None
         self.viewCompare=None
         self.load_comparation()
 
@@ -383,8 +376,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtTPC.setText(str(self.product.percentage))
         self.txtName.setText(self.product.name)
         self.txtISIN.setText(self.product.isin)
-        self.txtYahoo.setText(self.product.ticker)
-        self.txtGoogle.setText(self.product.googleticker())
+        for i, ticker in enumerate(self.product.tickers):
+            if ticker==None:
+                self.tblTickers.setItem(i, 0, qleft(""))
+            else:
+                self.tblTickers.setItem(i, 0, qleft(self.product.tickers[i]))
         self.txtComentario.setText(self.product.comment)
         self.txtAddress.setText(self.product.address)
         self.txtWeb.setText(self.product.web)
@@ -677,7 +673,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def on_cmdSave_pressed(self):
         if self.product.id==None or self.product.id<0:
             self.product.name=self.txtName.text()
-            self.product.isin=self.txtISIN.text()
+            if self.txtISIN.text()=="":
+                self.product.isin=None
+            else:
+                self.product.isin=self.txtISIN.text()
             self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
             self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
             self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
@@ -690,7 +689,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.mode=self.mem.investmentsmodes.find_by_id(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
             self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
             self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
-            self.product.ticker=self.txtYahoo.text()
+            for i in range(self.tblTickers.rowCount()):
+                value=self.tblTickers.item(i, 0).text()
+                if value =="":
+                    value=None
+                self.product.tickers[i]=value
             self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
             self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
             self.product.comment=self.txtComentario.text()                

@@ -15,7 +15,6 @@ import psycopg2.extras
 import sys
 import codecs
 import inspect
-import threading
 import argparse
 import getpass
 from decimal import Decimal, getcontext
@@ -37,7 +36,6 @@ def dirs_create():
     return dir_tmp
 
 class Connection(QObject):
-    
     inactivity_timeout=pyqtSignal()
     def __init__(self):
         QObject.__init__(self)
@@ -1041,28 +1039,28 @@ class SetProducts(SetCommons):
         self.mem=mem
         
 
-    def find_by_googleticker(self, ticker):
-        if ticker==None:
-            logging.info("I coudn't find a None google ticker")
-            return ""
-        for p in self.arr:
-            googleticker=p.googleticker()
-            if googleticker=="":
-                continue
-            if googleticker.upper()==ticker.upper():
-                return p
-        logging.info("I coudn't find this google ticker: {}".format(ticker))
-        return None        
+#    def find_by_googleticker(self, ticker):
+#        if ticker==None:
+#            logging.info("I coudn't find a None google ticker")
+#            return ""
+#        for p in self.arr:
+#            googleticker=p.googleticker()
+#            if googleticker=="":
+#                continue
+#            if googleticker.upper()==ticker.upper():
+#                return p
+#        logging.info("I coudn't find this google ticker: {}".format(ticker))
+#        return None        
 
-    def find_by_ticker(self, ticker):
-        if ticker==None:
-            return None
-        for p in self.arr:
-            if p.ticker==None:
-                continue
-            if p.ticker.upper()==ticker.upper():
-                return p
-        return None        
+#    def find_by_ticker(self, ticker):
+#        if ticker==None:
+#            return None
+#        for p in self.arr:
+#            if p.ticker==None:
+#                continue
+#            if p.ticker.upper()==ticker.upper():
+#                return p
+#        return None        
         
 
     def find_by_isin(self, isin):
@@ -1091,19 +1089,19 @@ class SetProducts(SetCommons):
             self.load_from_db("select * from products where id in ("+lista+")", progress )
 
 
-    def googletickers_string(self):
-        s=""
-        for p in self.arr:
-            if p.ticker==None:
-                continue
-            if p.ticker=="":
-                continue
-            ticker=p.googleticker()
-            if ticker==None:
-                logging.debug("googleticker {} failed".format(p.ticker))
-                continue
-            s=s+ticker+","
-        return s[:-1]
+#    def googletickers_string(self):
+#        s=""
+#        for p in self.arr:
+#            if p.ticker==None:
+#                continue
+#            if p.ticker=="":
+#                continue
+#            ticker=p.googleticker()
+#            if ticker==None:
+#                logging.debug("googleticker {} failed".format(p.ticker))
+#                continue
+#            s=s+ticker+","
+#        return s[:-1]
         
 
     def load_from_db(self, sql,  progress=False):
@@ -6339,7 +6337,7 @@ class Product:
         self.mode=None#Anterior mode investmentmode
         self.leveraged=None
         self.stockmarket=None
-        self.ticker=None
+        self.tickers=None#Its a list of strings, eTickerPosition is the 
         self.priority=None
         self.priorityhistorical=None
         self.comment=None
@@ -6369,7 +6367,7 @@ class Product:
         self.mode=self.mem.investmentsmodes.find_by_id(row['pci'])
         self.leveraged=self.mem.leverages.find_by_id(row['leveraged'])
         self.stockmarket=self.mem.stockmarkets.find_by_id(row['stockmarkets_id'])
-        self.ticker=row['ticker']
+        self.tickers=row['tickers']
         self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
         self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comment=row['comment']
@@ -6378,7 +6376,7 @@ class Product:
         self.result=QuotesResult(self.mem,self)
         return self
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, ticker, priority, priorityhistorical, comment, obsolete, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers,  priority, priorityhistorical, comment, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
@@ -6395,7 +6393,7 @@ class Product:
         self.mode=mode
         self.leveraged=leveraged        
         self.stockmarket=stockmarket
-        self.ticker=ticker
+        self.tickers=tickers
         self.priority=priority
         self.priorityhistorical=priorityhistorical
         self.comment=comment
@@ -6424,10 +6422,10 @@ class Product:
             id=cur.fetchone()[0]
             if id>=0:
                 id=-1
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, ticker=%s, priority=%s, priorityhistorical=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, priority=%s, priorityhistorical=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete,  self.id))
         cur.close()
     
 
@@ -6436,16 +6434,18 @@ class Product:
         REMEMBER TO CHANGE on_actionProductsAutoUpdate_triggered en frmMain"""
         if self.obsolete==True:
             return False
-        #With isin
-        if self.priority.find_by_id(9)!=None or self.priorityhistorical.find_by_id(8)!=None:
-            if self.isin==None or self.isin=="":
-                return False
-            return True
-            
-        #With ticker
-        if self.priority.find_by_id(1)!=None or self.priorityhistorical.find_by_id(3)!=None:
-            if self.ticker==None or self.ticker=="":
-                return False
+#        #With isin
+#        if self.priority.find_by_id(9)!=None or self.priorityhistorical.find_by_id(8)!=None:
+#            if self.isin==None or self.isin=="":
+#                return False
+#            return True
+#            
+#        #With ticker
+#        if self.priority.find_by_id(1)!=None or self.priorityhistorical.find_by_id(3)!=None:
+#            if self.ticker==None or self.ticker=="":
+#                return False
+#            return True
+        if self.isin!=None or self.tickers!=[None, None, None, None]:
             return True
             
         return False
@@ -6465,68 +6465,68 @@ class Product:
         set.load_from_db(sql,  progress=False)
         return set
         
-    def googleticker(self):
-        """
-            Uses ticker property. It's needed to search for a googleticker
-            Returns "" if doesn't exist in order to visualizate it better
-        """
-        if self.ticker==None:
-            logging.debug("googleticker {} not found".format(self.ticker))
-            return None
-            
-        if len(self.ticker)<3:
-            logging.debug("googleticker {} not found".format(self.ticker))
-            return None
-        if self.type.id in (eProductType.Share, eProductType.ETF):#Acciones, etf
-            if  self.ticker[-3:]==".MC":
-                return "BME:{}".format(self.ticker[:-3])
-            if  self.ticker[-3:]==".DE":
-                return "FRA:{}".format(self.ticker[:-3])
-            if  self.ticker[-3:]==".PA":
-                return "EPA:{}".format(self.ticker[:-3])
-            if  self.ticker[-3:]==".MI":
-                return "BIT:{}".format(self.ticker[:-3])
-            if self.ticker in("AH.AS"):
-                return None
-            if len(self.ticker.split("."))==1:##Americanas
-                if self.agrupations.dbstring()=="|NASDAQ100|":
-                    return "NASDAQ:{}".format(self.ticker)
-                if self.agrupations.dbstring()=="|SP500|":
-                    return "NYSE:{}".format(self.ticker)
-        elif self.type.id==eProductType.Index:#Indices   
-            if self.ticker=="^IBEX":
-                return "INDEXBME:IB"
-            if self.ticker=="^GSPC":
-                return "INDEXSP:.INX"
-            if self.ticker=="^VIX":
-                return "INDEXCBOE:VIX"
-            if self.ticker=="PSI20.LS":
-                return "INDEXEURO:PSI20"
-            if self.ticker=="^STOXX50E":
-                return "INDEXSTOXX:SX5E"
-            if self.ticker=="^N225":
-                return "INDEXNIKKEI:NI225"
-            if self.ticker=="^NDX":
-                return "INDEXNASDAQ:NDX"
-            if self.ticker=="^IXIC":
-                return "INDEXNASDAQ:.IXIC"
-            if self.ticker=="^HSI":
-                return "INDEXHANGSENG:HSI"
-            if self.ticker=="FTSEMIB.MI":
-                return "INDEXFTSE:FTSEMIB"
-            if self.ticker=="^FTSE":
-                return "INDEXFTSE:UKX"
-            if self.ticker=="^DJI":
-                return "INDEXDJX:.DJI"
-            if self.ticker=="^FCHI":
-                return "INDEXEURO:PX1"
-            if self.ticker=="^GDAXI":
-                return "INDEXDB:DAX"
-        elif self.type.id==eProductType.Currency:#Currencies
-            if self.ticker=="EURUSD=X":
-                return "EURUSD"
-        logging.debug("googleticker {} not found".format(self.ticker))
-        return None
+#    def googleticker(self):
+#        """
+#            Uses ticker property. It's needed to search for a googleticker
+#            Returns "" if doesn't exist in order to visualizate it better
+#        """
+#        if self.ticker[0]==None:
+#            logging.debug("googleticker {} not found".format(self.ticker))
+#            return None
+#            
+#        if len(self.ticker)<3:
+#            logging.debug("googleticker {} not found".format(self.ticker))
+#            return None
+#        if self.type.id in (eProductType.Share, eProductType.ETF):#Acciones, etf
+#            if  self.ticker[-3:]==".MC":
+#                return "BME:{}".format(self.ticker[:-3])
+#            if  self.ticker[-3:]==".DE":
+#                return "FRA:{}".format(self.ticker[:-3])
+#            if  self.ticker[-3:]==".PA":
+#                return "EPA:{}".format(self.ticker[:-3])
+#            if  self.ticker[-3:]==".MI":
+#                return "BIT:{}".format(self.ticker[:-3])
+#            if self.ticker in("AH.AS"):
+#                return None
+#            if len(self.ticker.split("."))==1:##Americanas
+#                if self.agrupations.dbstring()=="|NASDAQ100|":
+#                    return "NASDAQ:{}".format(self.ticker)
+#                if self.agrupations.dbstring()=="|SP500|":
+#                    return "NYSE:{}".format(self.ticker)
+#        elif self.type.id==eProductType.Index:#Indices   
+#            if self.ticker=="^IBEX":
+#                return "INDEXBME:IB"
+#            if self.ticker=="^GSPC":
+#                return "INDEXSP:.INX"
+#            if self.ticker=="^VIX":
+#                return "INDEXCBOE:VIX"
+#            if self.ticker=="PSI20.LS":
+#                return "INDEXEURO:PSI20"
+#            if self.ticker=="^STOXX50E":
+#                return "INDEXSTOXX:SX5E"
+#            if self.ticker=="^N225":
+#                return "INDEXNIKKEI:NI225"
+#            if self.ticker=="^NDX":
+#                return "INDEXNASDAQ:NDX"
+#            if self.ticker=="^IXIC":
+#                return "INDEXNASDAQ:.IXIC"
+#            if self.ticker=="^HSI":
+#                return "INDEXHANGSENG:HSI"
+#            if self.ticker=="FTSEMIB.MI":
+#                return "INDEXFTSE:FTSEMIB"
+#            if self.ticker=="^FTSE":
+#                return "INDEXFTSE:UKX"
+#            if self.ticker=="^DJI":
+#                return "INDEXDJX:.DJI"
+#            if self.ticker=="^FCHI":
+#                return "INDEXEURO:PX1"
+#            if self.ticker=="^GDAXI":
+#                return "INDEXDB:DAX"
+#        elif self.type.id==eProductType.Currency:#Currencies
+#            if self.ticker=="EURUSD=X":
+#                return "EURUSD"
+#        logging.debug("googleticker {} not found".format(self.ticker))
+#        return None
         
 
 #    def googleticker2ticker(self, ticker):
@@ -6549,19 +6549,19 @@ class Product:
 #            return "{}".format(a[1])
 #        logging.debug("googleticker2ticker {} not found".format(ticker))
     
-    def googleticker2pytz(self, ticker):
-        a=ticker.split(":")
-        if a[0] in ("BME",  "INDEXBME"):
-            return "Europe/Madrid"
-        if a[0] in ("FRA", ):
-            return "Europe/Berlin"
-        if a[0] in ("EPA", ):
-            return "Europe/Paris"
-        if a[0] in ("BIT", ):
-            return "Europe/Rome"
-        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
-            return "America/New_York"
-        return None
+#    def googleticker2pytz(self, ticker):
+#        a=ticker.split(":")
+#        if a[0] in ("BME",  "INDEXBME"):
+#            return "Europe/Madrid"
+#        if a[0] in ("FRA", ):
+#            return "Europe/Berlin"
+#        if a[0] in ("EPA", ):
+#            return "Europe/Paris"
+#        if a[0] in ("BIT", ):
+#            return "Europe/Rome"
+#        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
+#            return "America/New_York"
+#        return None
         
     def hasSameLocalCurrency(self):
         """
@@ -7941,31 +7941,31 @@ class Split:
         self.updateQuotes()
         self.mem.con.commit()
         
-class TUpdateData(threading.Thread):
-    """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
-    def __init__(self, mem):
-        threading.Thread.__init__(self)
-        self.mem=mem
-        
-    def run(self):
-        print ("TUpdateData started")
-        while True:
-            inicio=datetime.datetime.now()
-                            
-            self.mem.data.benchmark.result.basic.load_from_db()
-            
-            ##Update loop
-            for inv in self.mem.data.products.arr:
-                if self.mem.closing==True:
-                    return
-                inv.result.basic.load_from_db()
-            print("TUpdateData loop took", datetime.datetime.now()-inicio)
-            
-            ##Wait loop
-            for i in range(60):
-                if self.mem.closing==True:
-                    return
-                time.sleep(1)
+#class TUpdateData(threading.Thread):
+#    """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
+#    def __init__(self, mem):
+#        threading.Thread.__init__(self)
+#        self.mem=mem
+#        
+#    def run(self):
+#        print ("TUpdateData started")
+#        while True:
+#            inicio=datetime.datetime.now()
+#                            
+#            self.mem.data.benchmark.result.basic.load_from_db()
+#            
+#            ##Update loop
+#            for inv in self.mem.data.products.arr:
+#                if self.mem.closing==True:
+#                    return
+#                inv.result.basic.load_from_db()
+#            print("TUpdateData loop took", datetime.datetime.now()-inicio)
+#            
+#            ##Wait loop
+#            for i in range(60):
+#                if self.mem.closing==True:
+#                    return
+#                time.sleep(1)
 
 class ProductType:
     def __init__(self):
@@ -8010,6 +8010,13 @@ class eProductType(IntEnum):
     PrivateBond=9
     Deposit=10
     Account=11
+    
+class eTickerPosition(IntEnum):
+    """It's the number to access to a python list,  not to postgresql. In postgres it will be +1"""
+    Yahoo=0
+    Morningstar=1
+    Google=2
+    QueFondos=3
     
 class SetTypes(SetCommons):
     def __init__(self, mem):

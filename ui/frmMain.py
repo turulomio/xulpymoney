@@ -620,16 +620,9 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     @pyqtSlot()  
     def on_actionProductsAutoUpdate_triggered(self):
-        """Tuve muchos problemas alf inal si isin!='' o isin<>'', no muestra los null ni los '" """
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products 
-                where obsolete=false and 
-                (
-                    (9 = any(priority) and isin<>'')
-                    or (8 = any(priorityhistorical) and isin<>'')
-                    or (1 = any(priority) and ticker<>'')
-                    or (3 = any(priorityhistorical) and ticker<>'')
-                )
+                where obsolete=false and (tickers<>array[NULL,NULL,NULL,NULL] or isin is not null)
                 order by name
                 """)
 
@@ -639,15 +632,8 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionProductsNotAutoUpdate_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  """select * from products where obsolete=false except 
-                select * from products 
-                where obsolete=false and 
-                (
-                    (9 = any(priority) and isin<>'')
-                    or (8 = any(priorityhistorical) and isin<>'')
-                    or (1 = any(priority) and ticker<>'')
-                    or (3 = any(priorityhistorical) and ticker<>'')
-                )
+        self.w=wdgProducts(self.mem,  """select * from products 
+                where obsolete=false and (tickers=array[NULL,NULL,NULL,NULL] or isin is null)
                 order by name
                 """)
         self.layout.addWidget(self.w)

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget,  QApplication
 from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libxulpymoney import SetProducts, SetQuotes,  Product, Quote,   OHCLDaily, eProductType
+from libxulpymoney import SetProducts, SetQuotes,  Product, Quote,   OHCLDaily, eProductType, eTickerPosition
 import datetime
 import os
 
@@ -44,13 +44,11 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
         ##### GOOGLE #####
-        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and isin is not null and isin<>'' order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency)
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[3] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency)
         products=SetProducts(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
-            googleticker=p.googleticker()
-            if googleticker!=None:
-                self.arrIntraday.append(["xulpymoney_google_client","--TICKER_XULPYMONEY",  googleticker, str(p.id)])
+            self.arrIntraday.append(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
 
         ##### QUE FONDOS ####
         sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and ticker is not null order by name".format(eProductType.PensionPlan.value)
