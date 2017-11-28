@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201709220607
+        self.lastcodeupdate=201711281932
         self.need_update()
 
    
@@ -2089,6 +2089,33 @@ $$;
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201709220607)       
+        if self.dbversion<201711281815:
+            cur=self.mem.con.cursor()
+            cur2=self.mem.con.cursor()
+            cur.execute("alter table products add column tickers text[]")
+            cur.execute("select id, ticker, type from products where ticker is not null")
+            for row in cur.fetchall():
+                if row['ticker']==None or row['ticker']=="":
+                    cur2.execute('update products set tickers=array[Null, Null,Null,Null] where id=%s', (row['id'], ))
+                elif row['type']==2:
+                    cur2.execute('update products set tickers=array[Null, %s,Null,Null] where id=%s', (row['ticker'], row['id']))
+                elif row['type']==8:
+                    cur2.execute('update products set tickers=array[Null, Null,Null,%s] where id=%s', (row['ticker'], row['id']))
+                else:
+                    cur2.execute('update products set tickers=array[%s, Null,Null,Null] where id=%s', (row['ticker'], row['id']))
+            cur2.execute("update products set tickers=array[Null, Null, Null, Null] where ticker is null")
+            cur2.execute("alter table products drop column ticker")
+            self.mem.con.commit()
+            cur2.close()
+            cur.close()
+            self.set_database_version(201711281815)       
+            
+        if self.dbversion<201711281932:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set isin=Null where  length(isin)<3")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201711281932)       
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

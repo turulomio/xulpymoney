@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1045</width>
-    <height>930</height>
+    <width>1139</width>
+    <height>994</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -445,61 +445,62 @@
                  <layout class="QHBoxLayout" name="horizontalLayout_42">
                   <item>
                    <widget class="QLabel" name="label_11">
+                    <property name="minimumSize">
+                     <size>
+                      <width>280</width>
+                      <height>0</height>
+                     </size>
+                    </property>
                     <property name="text">
-                     <string>Yahoo Ticker</string>
+                     <string>Tickers</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="txtYahoo">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
+                   <widget class="QTableWidget" name="tblTickers">
                     <property name="minimumSize">
                      <size>
                       <width>230</width>
                       <height>0</height>
                      </size>
                     </property>
-                    <property name="alignment">
-                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_31">
-                  <item>
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>Google Ticker</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="txtGoogle">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>230</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                    </property>
-                    <property name="readOnly">
+                    <property name="alternatingRowColors">
                      <bool>true</bool>
                     </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::SingleSelection</enum>
+                    </property>
+                    <attribute name="horizontalHeaderStretchLastSection">
+                     <bool>true</bool>
+                    </attribute>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>true</bool>
+                    </attribute>
+                    <row>
+                     <property name="text">
+                      <string>Yahoo</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>Morningstar</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>Google</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>QueFondos</string>
+                     </property>
+                    </row>
+                    <column>
+                     <property name="text">
+                      <string>Value</string>
+                     </property>
+                    </column>
                    </widget>
                   </item>
                  </layout>
