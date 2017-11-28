@@ -6470,6 +6470,13 @@ class Product:
             Uses ticker property. It's needed to search for a googleticker
             Returns "" if doesn't exist in order to visualizate it better
         """
+        if self.ticker==None:
+            logging.debug("googleticker {} not found".format(self.ticker))
+            return None
+            
+        if len(self.ticker)<3:
+            logging.debug("googleticker {} not found".format(self.ticker))
+            return None
         if self.type.id in (eProductType.Share, eProductType.ETF):#Acciones, etf
             if  self.ticker[-3:]==".MC":
                 return "BME:{}".format(self.ticker[:-3])
@@ -6480,7 +6487,7 @@ class Product:
             if  self.ticker[-3:]==".MI":
                 return "BIT:{}".format(self.ticker[:-3])
             if self.ticker in("AH.AS"):
-                return ""
+                return None
             if len(self.ticker.split("."))==1:##Americanas
                 if self.agrupations.dbstring()=="|NASDAQ100|":
                     return "NASDAQ:{}".format(self.ticker)
@@ -6519,7 +6526,7 @@ class Product:
             if self.ticker=="EURUSD=X":
                 return "EURUSD"
         logging.debug("googleticker {} not found".format(self.ticker))
-        return ""
+        return None
         
 
 #    def googleticker2ticker(self, ticker):
