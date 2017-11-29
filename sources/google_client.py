@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import datetime
-from urllib.request import urlopen
+from requests import get
 from decimal import Decimal
 import sys
 import pytz
@@ -46,9 +46,8 @@ class CurrentPriceTicker:
 
     def get_price(self):
         #try:
-        import requests
         url = 'http://www.google.com/search?q={}'.format(self.ticker)    # fails
-        web=requests.get(url).text
+        web=get(url).text
 #        web=urlopen('https://www.google.com/search?q=NYSE%3AMMM')#.format(self.ticker))
         #except:
         #    print ("ERROR | ERROR LOADING GOOGLE PAGE")

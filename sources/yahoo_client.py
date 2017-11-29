@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 import argparse
 import datetime
-from urllib.request import urlopen
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QUrl,  QEventLoop
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from decimal import Decimal
+import locale
 import sys
 import pytz
 
@@ -45,36 +48,64 @@ class CurrentPriceTicker:
             return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
 
     def get_price(self):
-        #try:
-        import requests
-        url = 'https://finance.yahoo.com/quote/{0}?p={0}'.format(self.ticker)    # fails
-        web=requests.get(url).text
+        class Render(QWebEngineView):
+            def __init__(self, url):
+                QWebEngineView.__init__(self)
+                self.loop=QEventLoop()#Queda en un loop hasta que acaba la carga de todas las páginas
+                self.loadFinished.connect(self._loadFinished)
+                self.pages=[]
+                self.page().profile().cookieStore().deleteAllCookies()
+                self.page().profile().setPersistentCookiesPolicy(QWebEngineProfile.NoPersistentCookies)
+                self.load(QUrl(url))
+                self.loop.exec()
+
+            def numPages(self):
+                return len(self.pages)
+
+            def _loadFinished(self, result):
+                """
+                   This is an async call, you need to wait for this to be called before closing the app
+                """
+                self.page().toHtml(self._callable)
+
+            def _callable(self, data):
+                """
+                   Se llama cada vez que una página es cargada con el html en data
+                """
+                self.pages.append(data)
+                self.loop.quit()#CUIDADO DEBE ESTAR EN EL ULTIMO
+        ###########################
+        r=Render('https://es.finance.yahoo.com/quote/{0}?p={0}'.format(self.ticker) )
+        web=r.pages[0]
         if web==None:
             print ("ERROR | FETCHED EMPTY PAGE")
             sys.exit(255)
-        print(self.ticker.upper())
-        index=web.find("Summary")
-        print(web[index-300:index+300])
         precio=web.split('<!-- react-text: 36 -->')[1]#Antes
-        print (precio[:30])
-        precio=precio.split('<!-- /react-text -->')[0]#Después
+        precio=precio.split('<!-- /react-text -->')[0].replace(".","")#Después
         print(precio)
-        self.price=Decimal(precio)
+        self.price=Decimal(precio.replace(",", "."))
         hora=web.split('<span data-reactid="41">')[1]#Antes
         hora=hora.split('</span>')[0]#Después
+        #Method 1
+        hora=hora.replace("Al cierre: ", "").replace("de ", "")
+        a=hora.split(" ")
+        zone=a[3]
+        a[2]=a[2].replace("AM", "")
+        points=a[2].split(":")
+        if a[2].find("PM"):
+            a[2]=str(int(points[0])+12).zfill(2)+":"+points[1].replace("PM", "")
+        hora=" ".join(a[0:3])+ " "+ str(datetime.date.today().year)
+#        hora=hora[:4].upper()+hora[4:]#First month letter to upper
+        print(zone)
         print(hora)
-        datestr=web.split('<span class="f">')[1].replace(".","")
-        zone=web.split('<span class="f">')[1].split(" ")[3]
-        if zone.find("GMT")!=-1:
-            zone="Etc/{}".format(zone)
-        #print (zone)
-        datestr=datestr[:4].upper()+datestr[4:13]+str(datetime.date.today().year)
-        #print(datestr)
-        self.datetime_aware=string2datetime(datestr, type=4, zone=zone)
-        return
-        print ("ERROR | ERROR PARSING")
+        print (datetime.datetime.now().strftime("%d %B %H:%M %Y"))
+        dat=datetime.datetime.strptime( hora, "%d %B %H:%M %Y")
+        z=pytz.timezone(zone)
+        self.datetime_aware=z.localize(dat)
 
 if __name__=="__main__":
+    app = QApplication(sys.argv)
+    locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
     parser=argparse.ArgumentParser()
     group1=parser.add_mutually_exclusive_group(required=True)
     group1.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE")

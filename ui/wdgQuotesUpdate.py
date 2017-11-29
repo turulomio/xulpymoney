@@ -43,6 +43,12 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         ibex=Product(self.mem).init__db(79329)
         self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
+        ##### YAHOO #####
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
+        yahoo=SetProducts(self.mem)
+        yahoo.load_from_db(sql)    
+        for p in yahoo.arr:
+            self.arrIntraday.append(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
         ##### GOOGLE #####
         sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
         products=SetProducts(self.mem)
