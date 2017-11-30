@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication
-from libxulpymoney import qmessagebox
+from libxulpymoney import qmessagebox,  eTickerPosition
 import logging
 import sys
 class Update:
@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201711281932
+        self.lastcodeupdate=201711300735
         self.need_update()
 
    
@@ -2116,6 +2116,29 @@ $$;
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201711281932)       
+            
+        if self.dbversion<201711300735:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81716))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75814))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78538))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76094))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77282))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76302))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76543))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77523))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79200))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77072))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81359))
+            cur.execute("update products set isin=%s where id=%s", ('LU1598757687', 81101))
+            cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXCBOE:SPX", 81083))
+            cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXCBOE:VIX", 81090))
+            cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXNASDAQ:NDX", 79788))
+            cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXNIKKEI:NI225", 79834))
+            cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXSTOXX:SX5E", 75540))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201711300735)                   
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

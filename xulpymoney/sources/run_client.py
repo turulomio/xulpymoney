@@ -145,7 +145,7 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
     with ProcessPoolExecutor(max_workers=num_workers) as executor:
         for   a in arr: 
             try:
-                future=executor.submit(check_output,  a,  shell=True, stderr=DEVNULL)
+                future=executor.submit(check_output,  a,  timeout=30,  shell=True, stderr=DEVNULL)
                 future.add_done_callback(call_back)
                 futures.append([a, future])
             except:
