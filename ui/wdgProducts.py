@@ -164,8 +164,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
                 "%' or upper(name) like '%"+(self.txt.text().upper())+
                 "%' or upper(isin) like '%"+(self.txt.text().upper())+
-                "%' or upper(ticker) like '%"+(self.txt.text().upper())+
-                "%' or upper(comment) like '%"+(self.txt.text().upper())+
+                "%' or '{}'=any(tickers) ".format(self.txt.text().upper())+
+                " or upper(comment) like '%"+(self.txt.text().upper())+
                 "%') "+ stockmarketfilter +obsoletefilter)
         self.products.myqtablewidget(self.tblInvestments)          
 
