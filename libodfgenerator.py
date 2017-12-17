@@ -1,5 +1,6 @@
 import datetime
 import logging
+import os
 import sys
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load,  __version__
 from odf.style import Footer, FooterStyle, GraphicProperties, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
@@ -11,8 +12,8 @@ from odf.dc import Creator, Description, Title, Date
 from odf.meta import InitialCreator
 from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
 from odf.office import Annotation
-from decimal import Decimal
 
+from decimal import Decimal
 """
     This file is from the Xulpymoney project. if you want to change it. Ask to project administrator
 """
@@ -232,6 +233,7 @@ class ODT(ODF):
             self.simpleParagraph("",style)
                 
     def save(self):
+        makedirs(os.path.dirname(self.filename))
         self.doc.save(self.filename)
 
     def simpleParagraph(self, text, style="Standard"):
@@ -411,9 +413,12 @@ class OdfCell:
             odfcell= TableCell(valuetype="float", value=self.object,  stylename="Decimal")
         elif self.object.__class__==int:
             odfcell= TableCell(valuetype="float", value=self.object, stylename="Entero")
-        else:
-            odfcell = TableCell(valuetype="string", value=self.object,  stylename=self.style)
-            odfcell.addElement(P(text = self.object))
+        else:#strings
+            if self.object[:1]=="=":#Formula
+                odfcell = TableCell(formula=self.object,  stylename=self.style)
+            else:#Cadena
+                odfcell = TableCell(valuetype="string", value="of:"+self.object,  stylename=self.style)
+                odfcell.addElement(P(text = self.object))
         if self.spannedRows!=1 or self.spannedColumns!=1:
             odfcell.setAttribute("numberrowsspanned", str(self.spannedRows))
             odfcell.setAttribute("numbercolumnsspanned", str(self.spannedColumns))
@@ -1024,6 +1029,7 @@ class ODS(ODF):
         
         for sheet in self.sheets:
             sheet.generate(self)
+        makedirs(os.path.dirname(self.filename))
         self.doc.save(self.filename)
 
 ##########################################################################################
@@ -1045,6 +1051,13 @@ def letter_add(letter, number):
 def number_add(letter,number):
     return str(int(letter)+number)
 
+
+def makedirs(dir):
+    try:
+        os.makedirs(dir)
+    except:
+        pass
+
 def ODFPYversion():
     return __version__.split("/")[1]
 
@@ -1056,7 +1069,10 @@ if __name__ == "__main__":
     s1=doc.createSheet("Example")
     s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
     s1.add("A", "2", "Percentage", "TextLeft")
+    s1.add("A", "4",  "Suma")
     s1.add("B", "2",  OdfPercentage(12, 56))
+    s1.add("B", "3",  OdfPercentage(12, 56))
+    s1.add("B", "4",  "=sum(B2:B3)")
     s1.setCursorPosition("A", "3")
     s1.setSplitPosition("A", "2")
     s1=doc.createSheet("Example 2")
