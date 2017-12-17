@@ -163,6 +163,7 @@ if __name__ == '__main__':
         shell("install -o root -d "+ prefixapplications)
 
         shell("install -m 755 -o root xulpymoney.py "+ prefixbin+"/xulpymoney")
+        shell("install -m 755 -o root myodf2xml "+ prefixbin+"/xulpymoney_odf2xml")
         shell("install -m 755 -o root xulpymoney_init.py "+ prefixbin+"/xulpymoney_init")
         shell("install -m 755 -o root xulpymoney_simulation_indexrange.py "+ prefixbin+"/xulpymoney_simulation_indexrange")
         shell("install -m 755 -o root sources/morningstar_client.py "+ prefixbin+"/xulpymoney_morningstar_client")
