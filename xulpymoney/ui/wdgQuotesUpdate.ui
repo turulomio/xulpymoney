@@ -29,9 +29,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="cmdIntraday">
+        <widget class="QPushButton" name="cmdUsed">
          <property name="text">
-          <string>Intraday only update</string>
+          <string>Update used products</string>
          </property>
          <property name="icon">
           <iconset resource="../images/xulpymoney.qrc">
@@ -55,7 +55,7 @@
        <item>
         <widget class="QPushButton" name="cmdAll">
          <property name="text">
-          <string>Daily and intraday updates</string>
+          <string>Update all products</string>
          </property>
          <property name="icon">
           <iconset resource="../images/xulpymoney.qrc">
