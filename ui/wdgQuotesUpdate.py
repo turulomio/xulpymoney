@@ -9,72 +9,79 @@ import os
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):
         QWidget.__init__(self,  parent)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        self.arrHistorical=[]
-        self.arrIntraday=[]
+        self.arr=[]
 #        self.pos=0
         self.index=0
 
+    def generateList(self, all):
+        """
+            all is boolean selecting all products
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         oneday=datetime.timedelta(days=1)
+        if all==True:
+            used=""
+        else:
+            used=" and id in (select products_id from inversiones) "
         ##### BOLSAMADRID #####
-        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' order by name"
+        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used)
         products=SetProducts(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
                 if p.type.id==eProductType.ETF:
-                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),  "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
+                    self.arr.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),  "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
                 elif p.type.id==eProductType.Share:
-                    self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),"--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
+                    self.arr.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),"--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
                     
-        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+        self.arr.append(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
-        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--etf"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+        self.arr.append(["xulpymoney_bolsamadrid_client","--etf"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
-        sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null order by name".format(eProductType.PublicBond)        
+        sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used)        
         bm_publicbonds=SetProducts(self.mem)
         bm_publicbonds.load_from_db(sql)    
-        self.arrIntraday.append(["xulpymoney_bolsamadrid_client","--publicbond"]+bm_publicbonds.list_ISIN_XULPYMONEY())#MUST BE INTRADAY
+        self.arr.append(["xulpymoney_bolsamadrid_client","--publicbond"]+bm_publicbonds.list_ISIN_XULPYMONEY())#MUST BE INTRADAY
         
         ibex=Product(self.mem).init__db(79329)
-        self.arrHistorical.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
+        self.arr.append(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
         ##### YAHOO #####
-        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo), used)
         yahoo=SetProducts(self.mem)
         yahoo.load_from_db(sql)    
         for p in yahoo.arr:
-            self.arrIntraday.append(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
+            self.arr.append(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
         ##### GOOGLE #####
-        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and stockmarkets_id<>1 and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google), used)
         products=SetProducts(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
-            self.arrIntraday.append(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
+            self.arr.append(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
 
         ##### QUE FONDOS ####
-        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos))
-        print(sql)
+        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
         products_quefondos=SetProducts(self.mem)#Total of products_quefondos of an Agrupation
         products_quefondos.load_from_db(sql)    
         for p in products_quefondos.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
-            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.arrIntraday.append(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id)])       
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work agan
+                self.arr.append(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id)])       
                 
         ##### MORNINGSTAR #####
-        sql="select * from products where tickers[{}] is not null and obsolete=false order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar))
+        sql="select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         products_morningstar=SetProducts(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.arrHistorical.append(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
+                self.arr.append(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
         QApplication.restoreOverrideCursor()
+        return self.arr
 
     def run(self, arr):
         self.mem.frmMain.setEnabled(False)
@@ -114,8 +121,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QApplication.restoreOverrideCursor()
 
        
-    def on_cmdIntraday_released(self):
-        self.run(self.arrIntraday)
+    def on_cmdUsed_released(self):
+        self.run(self.generateList(all=False))
             
     def on_cmdError_released(self):
         self.txtCR2Q.setFocus()
@@ -143,4 +150,4 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
 
 
     def on_cmdAll_released(self):        
-        self.run(self.arrIntraday+self.arrHistorical)
+        self.run(self.generateList(all=True))

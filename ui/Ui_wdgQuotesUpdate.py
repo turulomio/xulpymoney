@@ -20,12 +20,12 @@ class Ui_wdgQuotesUpdate(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
-        self.cmdIntraday = QtWidgets.QPushButton(wdgQuotesUpdate)
+        self.cmdUsed = QtWidgets.QPushButton(wdgQuotesUpdate)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/transfer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.cmdIntraday.setIcon(icon)
-        self.cmdIntraday.setObjectName("cmdIntraday")
-        self.horizontalLayout_3.addWidget(self.cmdIntraday)
+        self.cmdUsed.setIcon(icon)
+        self.cmdUsed.setObjectName("cmdUsed")
+        self.horizontalLayout_3.addWidget(self.cmdUsed)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
         self.cmdAll = QtWidgets.QPushButton(wdgQuotesUpdate)
@@ -78,8 +78,8 @@ class Ui_wdgQuotesUpdate(object):
 
     def retranslateUi(self, wdgQuotesUpdate):
         _translate = QtCore.QCoreApplication.translate
-        self.cmdIntraday.setText(_translate("wdgQuotesUpdate", "Intraday only update"))
-        self.cmdAll.setText(_translate("wdgQuotesUpdate", "Daily and intraday updates"))
+        self.cmdUsed.setText(_translate("wdgQuotesUpdate", "Update used products"))
+        self.cmdAll.setText(_translate("wdgQuotesUpdate", "Update all products"))
         self.cmdError.setText(_translate("wdgQuotesUpdate", "Next error"))
         self.tab.setTabText(self.tab.indexOf(self.tab_4), _translate("wdgQuotesUpdate", "Update results"))
 
