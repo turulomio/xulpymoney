@@ -172,7 +172,6 @@ if __name__ == '__main__':
         shell("install -m 755 -o root sources/yahoo_client.py " + prefixbin+"/xulpymoney_yahoo_client")
         shell("install -m 755 -o root sources/google_client.py " + prefixbin+"/xulpymoney_google_client")
         shell("install -m 755 -o root sources/run_client.py "+ prefixbin+"/xulpymoney_run_client")
-        shell("install -m 755 -o root sources/test_client.sh "+ prefixbin+"/xulpymoney_test_client")
         shell("install -m 755 -o root test/xulpymoney_test.py "+ prefixbin+"/xulpymoney_test")
         shell("install -m 644 -o root ui/*.py libxulpymoney.py libdbupdates.py libodfgenerator.py libxulpymoneyversion.py images/*.py "+ prefixlib)
         shell("install -m 644 -o root i18n/*.qm " + prefixlib)
