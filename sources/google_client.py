@@ -101,7 +101,7 @@ class CurrentPriceTicker:
                 datestr=datestr[:4].upper()+datestr[4:13]+str(datetime.date.today().year)
                 month=datestr.split(" ")[1]
                 datestr=datestr.replace(month, str(month2int(month)))
-                print(datestr)
+#                print(datestr)
                 self.datetime_aware=string2datetime(datestr, type=4, zone=zone)
                 self.price=price
             except:

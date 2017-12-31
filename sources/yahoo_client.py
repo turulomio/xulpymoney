@@ -147,15 +147,14 @@ class CurrentPriceTicker:
             
             a=hora.split(" ")
             zone=a[3]
-#            print(hora, zone)
             hora="{} {} {} {}".format(a[0],month2int(a[1]), ampm2stringtime(a[2],type=1), datetime.date.today().year)
-#            print(hora, zone)
+#            print(hora, zone, precio)
             dat=datetime.datetime.strptime( hora, "%d %m %H:%M %Y")
             z=pytz.timezone(zone)
             self.datetime_aware=z.localize(dat)
-            self.precio=Decimal(precio)
+            self.price=Decimal(precio)
         except:
-            print ("ERROR | GET PRICE FAILED PRECIO {}   HORA {} ZONE {}".format(precio, hora, zone))
+            print ("ERROR | GET PRICE FAILED: PRECIO {}. HORA {}. ZONE {}".format(precio, hora, zone))
             sys.exit(0)
             
 
