@@ -8658,25 +8658,23 @@ class AssetsReport(ODT):
 
 
 ## FUNCTIONS #############################################
-
-def ampm_to_24(hora, pmam):
-    #    Conversión de AM/PM a 24 horas
-    #        
-    #   Para la primera hora del día (de medianoche a 12:59 AM), resta 12 horas
-    #       Ejemplos: 12 de medianoche = 0:00, 12:35 AM = 0:35
-    #        
-    #   De 1:00 AM a 12:59 PM, no hay cambios
-    #       Ejemplos: 11:20 AM = 11:20, 12:30 PM = 12:30
-    #        
-    #   De 1:00 PM a 11:59 PM, suma 12 horas
-    #       Ejemplos: 4:45 PM = 16:45, 11:50 PM = 23:50
-    if pmam=="am" and hora==12:
-        return 12-12
-    elif pmam=="pm" and hora >=1 and hora<= 11:
-        return hora+12
-    else:
-        return hora
-
+        
+def ampm2stringtime(s, type):
+    """
+        s is a string for time with AMPM and returns a 24 hours time string with zfill
+        type is the diferent formats id
+    """
+    s=s.upper()
+    if type==1:#5:35PM > 17:35   ó 5:35AM > 05:35
+        s=s.replace("AM", "")
+        if s.find("PM"):
+            s=s.replace("PM", "")
+            points=s.split(":")
+            s=str(int(points[0])+12).zfill(2)+":"+points[1]
+        else:#AM
+            points=s.split(":")
+            s=str(int(points[0])).zfill(2)+":"+points[1]
+        return s
         
 def dt_changes_tz(dt,  tztarjet):
     """Cambia el zoneinfo del dt a tztarjet. El dt del parametre tiene un zoneinfo"""
@@ -8955,6 +8953,7 @@ def string2date(iso, type=1):
         d=iso.split("/")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
 
+        
 def string2datetime(s, type, zone="Europe/Madrid"):
     """
         s is a string for datetime
@@ -8971,8 +8970,10 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
         z=pytz.timezone(zone)
         return z.localize(dat)
-        
-
+    if type==4:#27 1 16:54 2017==> Aware, using zone parameter . 1 es el mes convertido con month2int
+        dat=datetime.datetime.strptime( s, "%d %m %H:%M %Y")
+        z=pytz.timezone(zone)
+        return z.localize(dat)
 def log(tipo, funcion,  mensaje):
     """Tipo es una letra mayuscula S sistema H historico D diario"""
     if funcion!="":
@@ -9030,7 +9031,35 @@ def month_start(year, month, zone):
     """
     return day_start_from_date(datetime.date(year, month, 1), zone)
     
-        
+def month2int(s):
+    """
+        Converts a month string to a int
+    """
+    if s in ["Jan", "Ene", "Enero", "January", "enero", "january"]:
+        return 1
+    if s in ["Feb", "Febrero", "February", "febrero", "february"]:
+        return 2
+    if s in ["Mar", "Marzo", "March", "marzo", "march"]:
+        return 3
+    if s in ["Apr", "Abr", "April", "Abril", "abril", "april"]:
+        return 4
+    if s in ["May", "Mayo", "mayo", "may"]:
+        return 5
+    if s in ["Jun", "June", "Junio", "junio", "june"]:
+        return 6
+    if s in ["Jul", "July", "Julio", "julio", "july"]:
+        return 7
+    if s in ["Aug", "Ago", "August", "Agosto", "agosto", "august"]:
+        return 8
+    if s in ["Sep", "Septiembre", "September", "septiembre", "september"]:
+        return 9
+    if s in ["Oct", "October", "Octubre", "octubre", "october"]:
+        return 10
+    if s in ["Nov", "Noviembre", "November", "noviembre", "november"]:
+        return 11
+    if s in ["Dic", "Dec", "Diciembre", "December", "diciembre", "december"]:
+        return 12
+
 def month_end(year, month, zone):
     """datetime último de un mes
     """
