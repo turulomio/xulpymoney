@@ -700,14 +700,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.save()
             self.mem.con.commit()  
 
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product"))
-            m.exec_()   
+
 
             (last, penultimate, lastyear, estimations_dps)=self.product.has_basic_data()
             while (last, penultimate, lastyear, estimations_dps)!=(True, True, True, True):
+                m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+                m.setIcon(QMessageBox.Information)
+                m.setText(self.tr("You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product"))
+                m.exec_()   
                 now=datetime.datetime.now()
                 if last==False:
                     w=frmQuotesIBM(self.mem,  self.product)
