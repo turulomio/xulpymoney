@@ -134,12 +134,16 @@ class frmProductSelector(QDialog):
             qmessagebox(self.tr("Search too wide. You need more than 3 characters"))
             return
 
-        self.products.load_from_db("select * from products where id::text like '%"+(self.txt.text().upper())+
-                    "%' or upper(name) like '%"+(self.txt.text().upper())+
-                    "%' or upper(isin) like '%"+(self.txt.text().upper())+
-                    "%' or upper(ticker) like '%"+(self.txt.text().upper())+
-                    "%' or upper(comment) like '%"+(self.txt.text().upper())+
-                    "%' order by name")
+        self.products.load_from_db("""
+                select * 
+                from products 
+                where 
+                    id::text like '%{0}%' or 
+                    upper(name) like '%{0}%' or 
+                    upper(isin) like '%{0}%' or 
+                    '%{0}%' like any (tickers) or 
+                    upper(comment) like '%{0}%' 
+                order by name""".format(self.txt.text().upper()))
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
         self.products.myqtablewidget(self.tblInvestments)  
         
