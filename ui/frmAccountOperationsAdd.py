@@ -5,7 +5,8 @@ from libxulpymoney import  AccountOperation,  Comment, CreditCardOperation,  qme
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
-    OperationChanged=pyqtSignal(int, int, int, int)#(tipoproducto original (0 Account, 1 CreditCard), id_original, tipoproducto final, id_final)
+    AccountOperationChanged=pyqtSignal(AccountOperation)
+    CreditCardOperationChanged=pyqtSignal(CreditCardOperation)
     def __init__(self, mem, account=None, opercuenta=None, tarjeta=None ,  opertarjeta=None,  refund=False,  parent=None, ):
         """TIPOS DE ENTRADAS:        
          1   selAccount=x: Inserción de Opercuentas y edición de cuentas
@@ -95,8 +96,6 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             return (1, product.tarjeta.id)
         print (product.__class__, "ERROR",  product)
             
-    def emit_OperationChanged(self, type_and_id_initial,  type_and_id_final):
-        self.OperationChanged.emit(type_and_id_initial[0], type_and_id_initial[1], type_and_id_final[0], type_and_id_final[1])
 
 
     def on_cmd_released(self):
@@ -131,7 +130,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.account=cuenta
                 final.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
+                self.AccountOperationChanged.emit(final)
                 self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
                 return
             elif self.original.__class__==CreditCardOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
@@ -145,11 +144,11 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.original.borrar()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
+                self.AccountOperationChanged.emit(final)
                 self.done(0)
                 return
             elif self.original.__class__==AccountOperation:
-                origi=self.type_and_id(self.original)#Ya que se cambia en el save
+#                origi=self.type_and_id(self.original)#Ya que se cambia en el save
                 self.original.datetime=self.wdgDT.datetime()
                 self.original.concepto=concepto
                 self.original.tipooperacion=concepto.tipooperacion
@@ -158,7 +157,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 self.original.account=cuenta
                 self.original.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(origi, self.type_and_id(self.original))
+                self.AccountOperationChanged.emit(self.original)
                 self.done(0)
                 return
 
@@ -175,14 +174,14 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 if self.original!=None:
                     self.original.borrar()
                 self.mem.con.commit()
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
+                self.AccountOperationChanged.emit(final)
                 self.done(0)
                 return
             elif self.original==None:#CreditCardOperation nueva
                 final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, tarjeta, False, None, None )
                 final.save()
                 self.mem.con.commit()
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
+                self.CreditCardOperationChanged.emit(final)
                 self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
                 return
             elif self.refund==True:#Refun d         
@@ -196,7 +195,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 refund.comentario=Comment(self.mem).setEncoded10006(self.original)
                 refund.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(refund))
+                self.CreditCardOperationChanged.emit(refund)
                 self.done(0) 
                 return
             elif self.original.__class__==AccountOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
@@ -204,11 +203,11 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.original.borrar()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
+                self.CreditCardOperationChanged.emit(final)
                 self.done(0)
                 return
             elif self.original.__class__==CreditCardOperation:
-                origi=self.type_and_id(self.original)#Ya que se cambia en el save
+#                origi=self.type_and_id(self.original)#Ya que se cambia en el save
                 self.original.datetime=self.wdgDT.datetime()
                 self.original.concepto=concepto
                 self.original.tipooperacion=concepto.tipooperacion
@@ -217,7 +216,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 self.original.tarjeta=tarjeta
                 self.original.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-                self.emit_OperationChanged(origi, self.type_and_id(self.original))
+                self.CreditCardOperationChanged.emit(self.original)
                 self.done(0)
                 return
 

@@ -426,6 +426,29 @@ class SetCommons(SetCommonsGeneric):
             result.append(a)
         return result
         
+    def setSelected(self, sel):
+        """
+            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+        """
+        for i, o in enumerate(self.arr):
+            if o.id==sel.id:
+                self.selected=o
+                return True
+        self.selected=None
+        return False        
+    def setSelectedList(self, lista):
+        """
+            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+        """
+        assert type(lista) is list, "id is not a list {}".format(lista)
+        self.arr=[]
+        for i, o in enumerate(self.arr):
+            for l in lista:
+                if o.id==l.id:
+                    self.append(o)
+        self.selected=None
+        return False
+        
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
         initparams son los parametros de iniciación de la clse"""        
@@ -1568,6 +1591,16 @@ class SetAccountOperations:
             self.append(co)
         cur.close()
 
+    def setSelected(self, sel):
+        """
+            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+        """
+        for i, o in enumerate(self.arr):
+            if o.id==sel.id:
+                self.selected=o
+                return True
+        self.selected=None
+        return False
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
@@ -1602,6 +1635,9 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).setFancy(a.comentario)))
+            if self.selected!=None:
+                if a.id==self.selected.id:
+                    tabla.selectRow(rownumber+1)
             
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.applySettings()
@@ -1616,7 +1652,10 @@ class SetAccountOperations:
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))                   
+            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))               
+            if self.selected!=None:
+                if o.id==self.selected.id:
+                    table.selectRow(i+1)
 
 class SetCurrencies(SetCommons):
     def __init__(self, mem):
@@ -3585,8 +3624,10 @@ class AccountOperation:
         self.comentario=None #Documented in comment
         self.account=None
         
+#    def __repr__(self):
+#        return "AccountOperation {0}. datetime: {1}. Importe:{2}. Concept:{3}".format(self.id, self.datetime, self.importe, self.concepto)
     def __repr__(self):
-        return "AccountOperation {0}. datetime: {1}. Importe:{2}. Concept:{3}".format(self.id, self.datetime, self.importe, self.concepto)
+        return "AccountOperation: {}".format(self.id)
         
     def init__create(self, dt, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
         self.id=id
@@ -4733,6 +4774,8 @@ class CreditCard:
         self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['active'], row['numero'], row['id_tarjetas'])
         return self
                     
+    def __repr__(self):
+        return "CreditCard: {}".format(self.id)
     def delete(self):
         cur=self.mem.con.cursor()
         cur.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
@@ -4796,6 +4839,9 @@ class CreditCardOperation:
         self.pagado=None
         self.fechapago=None
         self.opercuenta=None
+        
+    def __repr__(self):
+        return "CreditCardOperation: {}".format(self.id)
 
     def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
         """pagado, fechapago y opercuenta solo se rellena cuando se paga"""
@@ -5253,6 +5299,9 @@ class SetCreditCards(SetCommons):
             table.setItem(i, 3, qbool(t.pagodiferido))
             table.setItem(i, 4, t.account.currency.qtablewidgetitem(t.saldomaximo ))
             table.setItem(i, 5, t.account.currency.qtablewidgetitem(t.saldo_pendiente()))
+            if self.selected!=None:
+                if t.id==self.selected.id:
+                    table.selectRow(i)
             
     def clone_of_account(self, cuenta):
         """Devuelve un SetCreditCards con las tarjetas de una determinada cuenta"""
@@ -5277,7 +5326,7 @@ class SetCreditCardOperations:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
-        self.selected=None#Used to work with selected items in arr
+        self.selected=None#Used to work with selected items is a SetCreditCardOperations created when necesarie
         
     def clear(self):
         del self.arr
@@ -5302,6 +5351,7 @@ class SetCreditCardOperations:
     def length(self):
         return len(self.arr)
         
+        
     def load_from_db(self, sql):
         del self.arr
         self.arr=[]
@@ -5312,6 +5362,16 @@ class SetCreditCardOperations:
             self.append(co)
         cur.close()
     
+#    def setSelected(self, sel):
+#        """
+#            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+#        """
+#        for i, o in enumerate(self.arr):
+#            if o.id==sel.id:
+#                self.selected=o
+#                return True
+#        self.selected=None
+#        return False
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
@@ -5338,6 +5398,12 @@ class SetCreditCardOperations:
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4, qleft(Comment(self.mem).setFancy(a.comentario)))
+            if self.selected: #If selected is not necesary is None by default
+                if self.selected.length()>0:
+                    for sel in self.selected.arr:
+                        if a.id==sel.id:
+                            tabla.selectRow(rownumber)
+
 class SetOperationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
