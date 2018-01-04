@@ -1,6 +1,6 @@
 import datetime
 
-version="20170216"
+version="20180104"
 
 def version_windows():
 #    lastpoint="0"
