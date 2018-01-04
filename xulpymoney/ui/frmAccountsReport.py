@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  b2c,  c2b,  CreditCard,  CreditCardOperation
+from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  b2c,  c2b,  CreditCardOperation
 from Ui_frmAccountsReport import Ui_frmAccountsReport
 from frmAccountOperationsAdd import frmAccountOperationsAdd
 from frmCreditCardsAdd import frmCreditCardsAdd
@@ -169,9 +169,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.accountoperations.setSelected(o)
         self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones,  self.account,  lastMonthBalance)   
 
-
-            
-            
     def on_CreditCardChanged(self, o):
         """
             o=None, significa que hay que actualizar las tarjetas sin seleccionar
@@ -241,6 +238,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardOperAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account, None, self.creditcards.selected)
         w.CreditCardOperationChanged.connect(self.on_CreditCardOperationChanged)
+        w.AccountOperationChanged.connect(self.on_AccountOperationChanged)#Tarjetas en debito
         w.exec_()
             
     @pyqtSlot() 
