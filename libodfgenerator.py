@@ -415,9 +415,9 @@ class OdfCell:
             odfcell= TableCell(valuetype="float", value=self.object, stylename="Entero")
         else:#strings
             if self.object[:1]=="=":#Formula
-                odfcell = TableCell(formula=self.object,  stylename=self.style)
+                odfcell = TableCell(formula="of:"+self.object,  stylename=self.style)
             else:#Cadena
-                odfcell = TableCell(valuetype="string", value="of:"+self.object,  stylename=self.style)
+                odfcell = TableCell(valuetype="string", value=self.object,  stylename=self.style)
                 odfcell.addElement(P(text = self.object))
         if self.spannedRows!=1 or self.spannedColumns!=1:
             odfcell.setAttribute("numberrowsspanned", str(self.spannedRows))
@@ -785,7 +785,11 @@ class OdfPercentage:
     
 
 class ODS(ODF):
-    def __init__(self, filename):
+    def __init__(self, filename, mode="w"):
+        """
+            Mode can be read "r" or write "w"
+            if its "w", ODS creates default styles
+        """
         def styleHeaders():
             hs=Style(name="HeaderOrange", family="table-cell")
             hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
@@ -938,17 +942,19 @@ class ODS(ODF):
 
         ##################################################
         ODF.__init__(self, filename)
+        self.mode=mode
         self.doc=OpenDocumentSpreadsheet()
         self.sheets=[]
         self.activeSheet=None
-        styleHeaders()
-        styleParagraphs()
-        styleCurrrencies()
-        styleDatetimes()
-        stylePercentages()
-        styleNumbers()
-
-
+        if self.mode=="w":
+            styleHeaders()
+            styleParagraphs()
+            styleCurrrencies()
+            styleDatetimes()
+            stylePercentages()
+            styleNumbers()
+        elif self.mode=="r":
+            self.__load()
 
     def createSheet(self, title):
         s=OdfSheet(self.doc, title)
@@ -964,9 +970,37 @@ class ODS(ODF):
         """value is OdfSheet"""
         self.activeSheet=value.title
 
+    def __load(self):
+        """ 
+            Replaces a ODS object doing
+        """
+        if len(self.sheets)>0:
+            print ("You can't load a ODS file, that already has sheets")
+            return
+        doc=load(self.filename)#doc it nly used in this function. All is generated in self.doc
+        for sheet in doc.spreadsheet.getElementsByType(Table):
+            s=self.createSheet(sheet.getAttribute("name"))
+            self.setActiveSheet(s)
+            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
+                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
+                    text=""
+                    for p in cell.getElementsByType(P):
+                        for n in p.childNodes:
+                            text=text+n.data
+                    
+                    s.add(letter_add("A", numcell), number_add("1", numrow), text)
+            s.setCursorPosition("A", "1")
+            s.setSplitPosition("A", "1")
+            print("loading s")
+        
+                
+        
 
         
-    def save(self):
+    def save(self, filename=None):
+        """
+            If filename is given, file is saved with a different name.
+        """
         #config settings information
         a=ConfigItemSet(name="ooo:view-settings")
         aa=ConfigItem(type="int", name="VisibleAreaTop")
@@ -1029,8 +1063,15 @@ class ODS(ODF):
         
         for sheet in self.sheets:
             sheet.generate(self)
-        makedirs(os.path.dirname(self.filename))
-        self.doc.save(self.filename)
+        
+        if  filename==None:
+            filename=self.filename
+            
+        if self.mode=="r" and filename==self.filename:
+            print("You can't overwrite a readed ods")
+            return
+        makedirs(os.path.dirname(filename))
+        self.doc.save(filename)
 
 ##########################################################################################
 def letter_add(letter, number):
@@ -1064,7 +1105,7 @@ def ODFPYversion():
 
 if __name__ == "__main__":
     #ODS
-    doc=ODS("libodfgenerator.ods")
+    doc=ODS("libodfgenerator.ods", "w")
     doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
     s1=doc.createSheet("Example")
     s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
@@ -1090,6 +1131,11 @@ if __name__ == "__main__":
     s1.addCell(cell)
     doc.setActiveSheet(s1)
     doc.save()
+    
+    
+    #ODS Readed
+    doc=ODS("libodfgenerator.ods", "r")
+    doc.save("libodfgenerator_readed.ods")
     
     
     #ODT#
