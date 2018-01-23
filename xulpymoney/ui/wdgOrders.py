@@ -204,4 +204,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         for i in self.tblOrders.selectedItems():
             if i.column()==0:#only once per row
                 self.orders.selected=self.orders.arr[i.row()]
+                
+    def on_wdgYear_changed(self):
+        self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
