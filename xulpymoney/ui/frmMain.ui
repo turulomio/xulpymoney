@@ -153,6 +153,8 @@
      <addaction name="actionProductsWithoutQuotes"/>
      <addaction name="actionProductsWithOldPrice"/>
      <addaction name="separator"/>
+     <addaction name="actionProductsWithPriceVariation"/>
+     <addaction name="separator"/>
      <addaction name="actionProductsAutoUpdate"/>
      <addaction name="actionProductsNotAutoUpdate"/>
      <addaction name="separator"/>
@@ -1051,6 +1053,18 @@
    </property>
    <property name="toolTip">
     <string>Products with old price</string>
+   </property>
+  </action>
+  <action name="actionProductsWithPriceVariation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Product&amp;s with a price variation</string>
+   </property>
+   <property name="toolTip">
+    <string>Product&amp;s with a price variation</string>
    </property>
   </action>
  </widget>

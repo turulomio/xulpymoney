@@ -357,6 +357,9 @@ class Ui_frmMain(object):
         icon40.addPixmap(QtGui.QPixmap(":/xulpymoney/expired.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionProductsWithOldPrice.setIcon(icon40)
         self.actionProductsWithOldPrice.setObjectName("actionProductsWithOldPrice")
+        self.actionProductsWithPriceVariation = QtWidgets.QAction(frmMain)
+        self.actionProductsWithPriceVariation.setIcon(icon39)
+        self.actionProductsWithPriceVariation.setObjectName("actionProductsWithPriceVariation")
         self.menuAyuda.addAction(self.actionAbout)
         self.menuAyuda.addSeparator()
         self.menuAyuda.addAction(self.actionCuriosities)
@@ -412,6 +415,8 @@ class Ui_frmMain(object):
         self.menuReports.addSeparator()
         self.menuReports.addAction(self.actionProductsWithoutQuotes)
         self.menuReports.addAction(self.actionProductsWithOldPrice)
+        self.menuReports.addSeparator()
+        self.menuReports.addAction(self.actionProductsWithPriceVariation)
         self.menuReports.addSeparator()
         self.menuReports.addAction(self.actionProductsAutoUpdate)
         self.menuReports.addAction(self.actionProductsNotAutoUpdate)
@@ -638,5 +643,7 @@ class Ui_frmMain(object):
         self.actionProductsWithoutQuotes.setToolTip(_translate("frmMain", "Products without price"))
         self.actionProductsWithOldPrice.setText(_translate("frmMain", "Products wit&h old price"))
         self.actionProductsWithOldPrice.setToolTip(_translate("frmMain", "Products with old price"))
+        self.actionProductsWithPriceVariation.setText(_translate("frmMain", "Product&s with a price variation"))
+        self.actionProductsWithPriceVariation.setToolTip(_translate("frmMain", "Product&s with a price variation"))
 
 import xulpymoney_rc
