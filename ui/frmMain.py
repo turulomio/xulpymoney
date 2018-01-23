@@ -7,6 +7,7 @@ from frmAbout import frmAbout
 from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  sync_data
 from libxulpymoneyversion import version_date
 from frmAccess import frmAccess
+from myqlineedit import myQLineEdit
 from wdgTotal import wdgTotal
 from wdgDividendsReport import wdgDividendsReport
 from wdgInvestmentClasses import wdgInvestmentClasses
@@ -596,6 +597,28 @@ class frmMain(QMainWindow, Ui_frmMain):
 
         self.layout.addWidget(self.w)
         self.w.show()        
+    @pyqtSlot()  
+    def on_actionProductsWithPriceVariation_triggered(self):
+        self.w.close()        
+        d=QDialog()       
+        d.setWindowTitle(self.tr("Price variation"))
+        lblDays=QLabel("Days")
+        txtDays=myQLineEdit(d)
+        txtDays.setText(90)
+        lblVariation=QLabel("Variation")
+        txtVariation=myQLineEdit(d)
+        txtVariation.setText(-10)
+        lay = QVBoxLayout(d)
+        lay.addWidget(lblDays)
+        lay.addWidget(txtDays)
+        lay.addWidget(lblVariation)
+        lay.addWidget(txtVariation)
+        d.exec_()
+        sql= "select * from products where is_price_variation_in_time(id, {}, now()::timestamptz-interval '{} day')=true and obsolete=False order by name".format(txtVariation.text(), txtDays.text())
+        print(sql)
+        self.w=wdgProducts(self.mem, sql)
+        self.layout.addWidget(self.w)
+        self.w.show()       
     @pyqtSlot()  
     def on_actionProductsWithOldPrice_triggered(self):
         self.w.close()
