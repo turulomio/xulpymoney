@@ -31,7 +31,15 @@ class wdgYear(QWidget, Ui_wdgYear):
     def set(self,  year):
         self.year=year
         self.cmbYear.setCurrentIndex(self.year-self.firstyear)
+        if self.year==self.lastyear:
+            self.cmdNext.setEnabled(False)
+        else:
+            self.cmdNext.setEnabled(True)
 
+        if self.year==self.firstyear:
+            self.cmdPrevious.setEnabled(False)
+        else:
+            self.cmdPrevious.setEnabled(True)
     @pyqtSlot(str)      
     def on_cmbYear_currentIndexChanged(self, text):
         self.year=int(text)
