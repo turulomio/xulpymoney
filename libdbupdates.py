@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201711300735
+        self.lastcodeupdate=201801230313
         self.need_update()
 
    
@@ -2138,7 +2138,45 @@ $$;
             cur.execute("update products set tickers[%s]=%s where id=%s", (eTickerPosition.Google.postgresql(),"INDEXSTOXX:SX5E", 75540))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201711300735)                   
+            self.set_database_version(201711300735)          
+               
+        if self.dbversion<201801230313:
+            cur=self.mem.con.cursor()
+            cur.execute("""
+CREATE  OR REPLACE FUNCTION is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$DECLARE
+    result boolean;
+    initial numeric(18,6);
+    final numeric(18,6);
+        variation numeric(18,6);
+BEGIN
+    result := False;
+    SELECT quotes.quote  INTO final FROM quotes where quotes.id= p_id_products and quotes.datetime <= now() order by quotes.datetime desc limit 1;
+    SELECT quotes.quote  INTO initial FROM quotes where quotes.id= p_id_products and quotes.datetime <= p_datetime order by quotes.datetime desc limit 1;
+    IF initial=0 THEN
+            return False;
+        END IF;
+        
+        variation:=100*(final-initial)/initial;
+        --Raise Notice 'hello world % %: % (%)', initial, final, variation, p_percentage;
+    -- PERCENTAGE POSITIVE
+    IF p_percentage>0 AND variation > p_percentage THEN
+        return True;
+    END IF;
+    -- PERCENTAGE NEGATIVE
+    IF p_percentage<0 AND variation < p_percentage THEN
+        return True;
+    END IF;
+    RETURN result;
+END;
+$$;""")
+            cur.execute("""COMMENT ON FUNCTION is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone) IS 'Returns True, if percentage is negative and variation between timestamp price and current product price is less than percentage
+Returns True, if percentage is positive and variation between timestamp price and current product price is bigger than percentage
+Return False, in other cases';""")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201801230313)                
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

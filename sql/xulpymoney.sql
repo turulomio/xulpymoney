@@ -95,6 +95,51 @@ $$;
 ALTER FUNCTION public.cuentas_saldo(fechaparametro date) OWNER TO postgres;
 
 --
+-- Name: is_price_variation_in_time(integer, double precision, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$DECLARE
+    result boolean;
+    initial numeric(18,6);
+    final numeric(18,6);
+        variation numeric(18,6);
+BEGIN
+    result := False;
+    SELECT quotes.quote  INTO final FROM quotes where quotes.id= p_id_products and quotes.datetime <= now() order by quotes.datetime desc limit 1;
+    SELECT quotes.quote  INTO initial FROM quotes where quotes.id= p_id_products and quotes.datetime <= p_datetime order by quotes.datetime desc limit 1;
+    IF initial=0 THEN
+            return False;
+        END IF;
+        
+        variation:=100*(final-initial)/initial;
+        --Raise Notice 'hello world % %: % (%)', initial, final, variation, p_percentage;
+    -- PERCENTAGE POSITIVE
+    IF p_percentage>0 AND variation > p_percentage THEN
+        return True;
+    END IF;
+    -- PERCENTAGE NEGATIVE
+    IF p_percentage<0 AND variation < p_percentage THEN
+        return True;
+    END IF;
+    RETURN result;
+END;
+$$;
+
+
+ALTER FUNCTION public.is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone) OWNER TO postgres;
+
+--
+-- Name: FUNCTION is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone); Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON FUNCTION is_price_variation_in_time(p_id_products integer, p_percentage double precision, p_datetime timestamp with time zone) IS 'Returns True, if percentage is negative and variation between timestamp price and current product price is less than percentage
+Returns True, if percentage is positive and variation between timestamp price and current product price is bigger than percentage
+Return False, in other cases';
+
+
+--
 -- Name: last_penultimate_lastyear(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -7959,9 +8004,9 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '81680, 80840, 78281, 74747, 81710, 79360, 81101, 81105, 81083, 81090, 78325, 79223, 78384');
+INSERT INTO globals VALUES (18, 'mem/favorites', '81680, 80840, 78281, 74747, 81710, 79360, 81101, 81105, 81083, 81090, 78325, 79223, 78384, 81117, 81715, 74788');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201711300735');
+INSERT INTO globals VALUES (1, 'Version', '201801230313');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');
