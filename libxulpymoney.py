@@ -412,6 +412,7 @@ class SetCommons(SetCommonsGeneric):
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
+            
                 
     def clean(self):
         """Deletes all items"""
@@ -6413,6 +6414,8 @@ class Product:
         self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
         self.estimations_eps=SetEstimationsEPS(self.mem, self)
         self.dps=SetDPS(self.mem, self)
+        self.splits=SetSplitNews(self.mem, self)
+        self.result=QuotesResult(self.mem,self)
 
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
@@ -6439,8 +6442,13 @@ class Product:
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         
-        self.result=QuotesResult(self.mem,self)
+        self.__load_db_data()
         return self
+    
+    def __load_db_data(self):
+        if self.id!=None:
+            self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
+        print(self.splits.length())
 
     def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers,  priority, priorityhistorical, comment, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
@@ -6464,8 +6472,7 @@ class Product:
         self.priorityhistorical=priorityhistorical
         self.comment=comment
         self.obsolete=obsolete
-        
-        self.result=QuotesResult(self.mem,self)
+        self.__load_db_data()
         return self        
 
     def init__db(self, id):
@@ -7711,6 +7718,9 @@ class QuotesResult:
         self.mem=mem
         self.product=product
         
+        
+        
+        
         self.intradia=SetQuotesIntraday(self.mem)
         self.all=SetQuotesAllIntradays(self.mem)
         self.basic=SetQuotesBasic(self.mem, self.product)
@@ -7718,6 +7728,26 @@ class QuotesResult:
         self.ohclMonthly=SetOHCLMonthly(self.mem, self.product)
         self.ohclYearly=SetOHCLYearly(self.mem, self.product)
         self.ohclWeekly=SetOHCLWeekly(self.mem, self.product)
+        
+        self.intradiaAfterSplits=SetQuotesIntraday(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar afterSplits
+        self.allAfterSplits=SetQuotesAllIntradays(self.mem)
+        self.basicAfterSplits=SetQuotesBasic(self.mem, self.product)
+        self.ohclDailyAfterSplits=SetOHCLDaily(self.mem, self.product)
+        self.ohclMonthlyAfterSplits=SetOHCLMonthly(self.mem, self.product)
+        self.ohclYearlyAfterSplits=SetOHCLYearly(self.mem, self.product)
+        self.ohclWeeklyAfterSplit=SetOHCLWeekly(self.mem, self.product)
+        
+        self.intradiaAfterDividends=SetQuotesIntraday(self.mem) 
+        self.allAfterDividends=SetQuotesAllIntradays(self.mem)
+        self.basicAfterDividends=SetQuotesBasic(self.mem, self.product)
+        self.ohclDailyAfterDividends=SetOHCLDaily(self.mem, self.product)
+        self.ohclMonthlyAfterDividends=SetOHCLMonthly(self.mem, self.product)
+        self.ohclYearlyAfterDividends=SetOHCLYearly(self.mem, self.product)
+        self.ohclWeeklyAfterDividends=SetOHCLWeekly(self.mem, self.product)
+        
+        
+        
+        
         
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
@@ -7781,12 +7811,12 @@ class QuotesResult:
         
         self.basic=self.ohclDaily.setquotesbasic()
         print ("Datos db cargados:",  datetime.datetime.now()-inicioall)
+        
 
     def get_all(self):
         """Gets all in a set intradays form"""
         self.all.load_from_db(self.product)
 
-        
     def ohcl(self,  ohclduration):
         """
             Returns the SetOHCL corresponding to it's duration
@@ -7912,6 +7942,75 @@ class SimulationType:
             return QIcon(":/xulpymoney/database.png")
         else:
             return QIcon(":/xulpymoney/replication.png")    
+
+class SplitNew:
+    def __init__(self, mem):
+        self.mem=mem
+        self.id=None
+        self.product=None
+        self.datetime=None
+        self.after=None
+        self.before=None
+        self.comment=None
+                
+    def __repr__(self):
+        return ("Instancia de SplitNew: {0} ({1})".format( self.id, self.id))
+        
+    def init__create(self, product, datetime, after, before, comment, id=None):
+        self.id=id
+        self.product=product
+        self.datetime=datetime
+        self.after=after
+        self.before=before
+        self.comment=comment
+        return self
+        
+    def init__db_row(self, row, product):
+        return self.init__create(product,  row['datetime'],  row['after'], row['before'],  row['comment'],  row['id'])
+
+    def save(self):
+        cur=self.mem.con.cursor()
+        if self.id==None:#Insertar
+            cur.execute("insert into splits(products_id,datetime,after,before,comment) values (%s,%s,%s,%s,%s) returning id", (self.product.id, self.datetime, self.after, self.before, self.comment))
+            self.id=cur.fetchone()[0]
+        else:
+            cur.execute("update splits set products_id=%s, datetime=%s, after=%s, before=%s, comment=%s where id=%s", (self.product.id, self.datetime, self.after, self.before, self.comment, self.id))
+        cur.close()
+
+class SetSplitNews(SetCommons):
+    def __init__(self, mem, product):
+        SetCommons.__init__(self)
+        self.product=product
+        self.mem=mem
+        
+    def init__from_db(self, sql):
+        cur=self.mem.con.cursor()
+        cur.execute(sql)
+        for row in cur:
+            self.append(Split(self.mem).init__db_row(row, self.product))
+        cur.close()
+        return self
+
+    def myqtablewidget(self, table):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
+        Devuelve sumatorios"""
+
+        table.setColumnCount(7)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Before" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "After" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Comment" )))
+        #DATA  
+        table.applySettings()
+        table.clearContents()
+
+        table.setRowCount(len(self.arr))
+        for i, o in enumerate(self.arr):
+            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone))
+            table.setItem(i, 1, qright(o.before))
+            table.setItem(i, 2, qright(o.after))
+            table.setItem(i, 3, qleft(o.comment))
+
 class Split:
     """Class to make calculations with splits or contrasplits, between two datetimes"""
     def __init__(self, mem, product, sharesinitial,  sharesfinal,  dtinitial, dtfinal):
