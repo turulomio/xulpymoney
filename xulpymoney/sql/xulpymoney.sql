@@ -820,6 +820,44 @@ CREATE TABLE simulations (
 ALTER TABLE simulations OWNER TO postgres;
 
 --
+-- Name: splits_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE splits_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE splits_id_seq OWNER TO postgres;
+
+--
+-- Name: splits; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE splits (
+    id integer DEFAULT nextval('splits_id_seq'::regclass) NOT NULL,
+    datetime timestamp with time zone NOT NULL,
+    products_id integer NOT NULL,
+    before integer NOT NULL,
+    after integer NOT NULL,
+    comment text
+);
+
+
+ALTER TABLE splits OWNER TO postgres;
+
+--
+-- Name: TABLE splits; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE splits IS 'Split and contrasplit product operations';
+
+
+--
 -- Name: stockmarkets; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1019,6 +1057,14 @@ ALTER TABLE ONLY simulations
 
 
 --
+-- Name: splits splits_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY splits
+    ADD CONSTRAINT splits_pk PRIMARY KEY (id);
+
+
+--
 -- Name: tarjetas tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1073,6 +1119,13 @@ CREATE INDEX quotes_id ON quotes USING btree (id);
 --
 
 CREATE INDEX quotes_id_datetime ON quotes USING btree (id, datetime);
+
+
+--
+-- Name: splits_index_products_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX splits_index_products_id ON splits USING btree (products_id);
 
 
 --
@@ -1208,6 +1261,14 @@ ALTER TABLE ONLY products
 
 ALTER TABLE ONLY quotes
     ADD CONSTRAINT quotes_fk_id FOREIGN KEY (id) REFERENCES products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: splits splits_fk_products_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY splits
+    ADD CONSTRAINT splits_fk_products_id FOREIGN KEY (products_id) REFERENCES products(id);
 
 
 --
@@ -8004,9 +8065,9 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '81680, 80840, 78281, 74747, 81710, 79360, 81101, 81105, 81083, 81090, 78325, 79223, 78384, 81117, 81715, 74788');
+INSERT INTO globals VALUES (18, 'mem/favorites', '81680, 80840, 78281, 74747, 81710, 79360, 81101, 81105, 81083, 81090, 78325, 79223, 78384, 81117, 81715, 74788, 78687');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201801230313');
+INSERT INTO globals VALUES (1, 'Version', '201801250516');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO globals VALUES (22, 'wdgLastCurrent/viewode', '0');

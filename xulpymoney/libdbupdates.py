@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201801230313
+        self.lastcodeupdate=201801250516
         self.need_update()
 
    
@@ -2177,6 +2177,24 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201801230313)                
+            
+            
+        if self.dbversion<201801250516:
+            cur=self.mem.con.cursor()
+            cur.execute("CREATE TABLE splits (id integer NOT NULL, datetime timestamp with time zone NOT NULL, products_id integer NOT NULL, before integer NOT NULL, after integer NOT NULL, comment text)")
+            cur.execute("COMMENT ON TABLE splits IS 'Split and contrasplit product operations'")
+            cur.execute("CREATE SEQUENCE splits_id_seq AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1")
+            cur.execute("ALTER TABLE ONLY splits ALTER COLUMN id SET DEFAULT nextval('splits_id_seq'::regclass)")
+            cur.execute("ALTER TABLE ONLY splits ADD CONSTRAINT splits_pk PRIMARY KEY (id)")
+            cur.execute("CREATE INDEX splits_index_products_id ON splits USING btree (products_id)")
+            cur.execute("ALTER TABLE ONLY splits ADD CONSTRAINT splits_fk_products_id FOREIGN KEY (products_id) REFERENCES products(id)")
+            cur.execute("GRANT ALL ON SEQUENCE splits_id_seq TO xulpymoney_user;")
+            cur.execute("GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE splits TO xulpymoney_user")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201801250516)       
+
+
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
