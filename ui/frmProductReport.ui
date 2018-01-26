@@ -1502,7 +1502,26 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_45">
                   <item>
-                   <widget class="myQTableWidget" name="tblSplits"/>
+                   <widget class="myQTableWidget" name="tblSplits">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::NoEditTriggers</set>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>true</bool>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::SingleSelection</enum>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectRows</enum>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                   </widget>
                   </item>
                  </layout>
                 </widget>

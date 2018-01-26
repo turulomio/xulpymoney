@@ -657,6 +657,29 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
             
+    @pyqtSlot()
+    def on_actionSplitNew_triggered(self):
+        w=frmSplit(self.mem, self.product)
+        w.exec_()   
+        if w.result()==QDialog.Accepted:
+            self.mem.con.commit()
+            self.product.splits.append(w.split)
+            self.product.splits.order_by_datetime()
+            self.update_due_to_quotes_change()
+    
+    
+    @pyqtSlot()
+    def on_actionSplitEdit_triggered(self):
+        w=frmSplit(self.mem, self.product, self.product.splits.selected)
+        w.exec_()   
+        if w.result()==QDialog.Accepted:
+            self.update_due_to_quotes_change()
+
+    @pyqtSlot()
+    def on_actionSplitRemove_triggered(self):
+        self.product.splits.delete(self.product.splits.selected)
+        self.mem.con.commit()
+        self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
         all=SetQuotesAllIntradays(self.mem)
