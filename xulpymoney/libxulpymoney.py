@@ -6414,7 +6414,7 @@ class Product:
         self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
         self.estimations_eps=SetEstimationsEPS(self.mem, self)
         self.dps=SetDPS(self.mem, self)
-        self.splits=SetSplitNews(self.mem, self)
+        self.splits=SetSplits(self.mem, self)
         self.result=QuotesResult(self.mem,self)
 
     def __repr__(self):
@@ -6442,10 +6442,10 @@ class Product:
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         
-        self.__load_db_data()
+        self.reload_db_data()
         return self
     
-    def __load_db_data(self):
+    def reload_db_data(self):
         if self.id!=None:
             self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
         print(self.splits.length())
@@ -6472,7 +6472,7 @@ class Product:
         self.priorityhistorical=priorityhistorical
         self.comment=comment
         self.obsolete=obsolete
-        self.__load_db_data()
+        self.reload_db_data()
         return self        
 
     def init__db(self, id):
@@ -7943,7 +7943,7 @@ class SimulationType:
         else:
             return QIcon(":/xulpymoney/replication.png")    
 
-class SplitNew:
+class Split:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -7956,7 +7956,7 @@ class SplitNew:
     def __repr__(self):
         return ("Instancia de SplitNew: {0} ({1})".format( self.id, self.id))
         
-    def init__create(self, product, datetime, after, before, comment, id=None):
+    def init__create(self, product, datetime, before, after, comment, id=None):
         self.id=id
         self.product=product
         self.datetime=datetime
@@ -7966,7 +7966,7 @@ class SplitNew:
         return self
         
     def init__db_row(self, row, product):
-        return self.init__create(product,  row['datetime'],  row['after'], row['before'],  row['comment'],  row['id'])
+        return self.init__create(product,  row['datetime'],  row['before'], row['after'],   row['comment'],  row['id'])
 
     def save(self):
         cur=self.mem.con.cursor()
@@ -7977,7 +7977,28 @@ class SplitNew:
             cur.execute("update splits set products_id=%s, datetime=%s, after=%s, before=%s, comment=%s where id=%s", (self.product.id, self.datetime, self.after, self.before, self.comment, self.id))
         cur.close()
 
-class SetSplitNews(SetCommons):
+
+    def convertShares(self, shares):
+        """Function to calculate new shares just pass the number you need to convert"""
+        return shares*self.after/self.before
+        
+    def convertPrices(self, price):
+        return price*self.before/self.after
+                
+    def delete(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from splits where id=%s", (self.id,))
+        cur.close()
+            
+        
+    def type(self):
+        """Función que devuelve si es un Split o contrasplit"""
+        if self.before>self.after:
+            return "Contrasplit"
+        else:
+            return "Split"
+
+class SetSplits(SetCommons):
     def __init__(self, mem, product):
         SetCommons.__init__(self)
         self.product=product
@@ -7990,12 +8011,19 @@ class SetSplitNews(SetCommons):
             self.append(Split(self.mem).init__db_row(row, self.product))
         cur.close()
         return self
-
+            
+    def order_by_datetime(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.product.result.basic.last.datetime,  reverse=False)  
+            return True
+        except:
+            return False
     def myqtablewidget(self, table):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
 
-        table.setColumnCount(7)
+        table.setColumnCount(4)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Before" )))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "After" )))
@@ -8010,8 +8038,12 @@ class SetSplitNews(SetCommons):
             table.setItem(i, 1, qright(o.before))
             table.setItem(i, 2, qright(o.after))
             table.setItem(i, 3, qleft(o.comment))
+                
+    def delete(self, o):
+        o.delete()    #Delete from database
+        self.remove(o)    #Removes from array
 
-class Split:
+class SplitManual:
     """Class to make calculations with splits or contrasplits, between two datetimes"""
     def __init__(self, mem, product, sharesinitial,  sharesfinal,  dtinitial, dtfinal):
         self.mem=mem
