@@ -12,11 +12,11 @@ from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
 from frmSplit import frmSplit
+from frmSplitManual import frmSplitManual
 from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
 from wdgProductHistoricalChart import wdgProductHistoricalChart
 from canvaschart import  VCTemporalSeries
-#from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from decimal import Decimal
 
 from odf.opendocument import load
@@ -57,6 +57,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.tblYearly.settings(self.mem, "frmProductReport")    
         self.tblIntradia.settings(self.mem, "frmProductReport")    
         self.tblMensuales.settings(self.mem, "frmProductReport")    
+        self.tblSplits.settings(self.mem, "frmProductReport")
         self.tblDividendsEstimations.settings(self.mem, "frmProductReport")    
         self.tblDPSPaid.settings(self.mem, "frmProductReport")
         self.tblEPS.settings(self.mem, "frmProductReport")
@@ -437,7 +438,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
             self.product.estimations_eps.myqtablewidget(self.tblEPS)            
-            self.product.dps.myqtablewidget(self.tblDPSPaid)            
+            self.product.dps.myqtablewidget(self.tblDPSPaid)         
+            self.product.splits.myqtablewidget(self.tblSplits)
             inicio=datetime.datetime.now()
             self.load_information()
             logging.info("Datos informacion cargados: {}".format(datetime.datetime.now()-inicio))
@@ -649,8 +651,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def on_calendar_selectionChanged(self):
         self.load_graphics()
 
-    def on_cmdSplit_pressed(self):
-        w=frmSplit(self.mem, self.product)
+    def on_cmdSplitManual_pressed(self):
+        w=frmSplitManual(self.mem, self.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
@@ -911,6 +913,27 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     self.selEstimationEPS=self.product.estimations_eps.arr[i.row()]
         except:
             self.selEstimationEPS=None
+            
+    def on_tblSplits_customContextMenuRequested(self,  pos):
+        if self.product.splits.selected==None:
+            self.actionSplitEdit.setEnabled(False)
+            self.actionSplitRemove.setEnabled(False)
+        else:
+            self.actionSplitEdit.setEnabled(True)
+            self.actionSplitRemove.setEnabled(True)
+        menu=QMenu()
+        menu.addAction(self.actionSplitNew)
+        menu.addAction(self.actionSplitEdit)
+        menu.addAction(self.actionSplitRemove)
+        menu.exec_(self.tblSplits.mapToGlobal(pos))
+            
+    def on_tblSplits_itemSelectionChanged(self):
+        try:
+            for i in self.tblSplits.selectedItems():#itera por cada item no row.        
+                if i.column()==0:
+                    self.product.splits.selected=self.product.splits.arr[i.row()]
+        except:
+            self.product.splits.selected=None
             
     def on_tblEPS_customContextMenuRequested(self,  pos):
         if self.selEstimationEPS==None:

@@ -111,6 +111,7 @@ if __name__ == '__main__':
             futures.append(executor.submit(shell, "pyuic5 ui/frmInit.ui -o ui/Ui_frmInit.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmMain.ui -o ui/Ui_frmMain.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmSplit.ui -o ui/Ui_frmSplit.py"))
+            futures.append(executor.submit(shell, "pyuic5 ui/frmSplitManual.ui -o ui/Ui_frmSplitManual.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmAccountOperationsAdd.ui -o ui/Ui_frmAccountOperationsAdd.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmAuxiliarTables.ui -o ui/Ui_frmAuxiliarTables.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgBanks.ui -o ui/Ui_wdgBanks.py"))

@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -80,7 +80,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>598</width>
-                <height>812</height>
+                <height>876</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -655,7 +655,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>2</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -788,21 +788,67 @@
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_35">
              <item>
-              <widget class="QGroupBox" name="groupBox_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+              <widget class="QTabWidget" name="tabWidget">
+               <property name="tabPosition">
+                <enum>QTabWidget::East</enum>
                </property>
-               <property name="title">
-                <string>Historical prices graph</string>
+               <property name="currentIndex">
+                <number>1</number>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_10">
-                <item>
-                 <layout class="QVBoxLayout" name="layHistorical"/>
-                </item>
-               </layout>
+               <widget class="QWidget" name="tabHistoricalNormal">
+                <attribute name="title">
+                 <string>Normal</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_44">
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_2">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="title">
+                    <string>Historical prices graph</string>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_10">
+                    <item>
+                     <layout class="QVBoxLayout" name="layHistorical"/>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="tabHistoricalAdjustingDividens">
+                <attribute name="title">
+                 <string>Adjusting Dividends</string>
+                </attribute>
+                <widget class="QGroupBox" name="groupBox_4">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>1038</width>
+                   <height>836</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="title">
+                  <string>Historical prices graph</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <item>
+                   <layout class="QVBoxLayout" name="layHistorical_2"/>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
               </widget>
              </item>
             </layout>
@@ -831,8 +877,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1052</width>
-                    <height>873</height>
+                    <width>815</width>
+                    <height>46</height>
                    </rect>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_41">
@@ -1121,9 +1167,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="cmdSplit">
+              <widget class="QPushButton" name="cmdSplitManual">
                <property name="text">
-                <string>Make Split / Contrasplit</string>
+                <string>Adjust Split / Contrasplit manually in prices</string>
                </property>
                <property name="icon">
                 <iconset resource="../images/xulpymoney.qrc">
@@ -1142,7 +1188,7 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>5</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
@@ -1447,6 +1493,16 @@
                      </property>
                     </column>
                    </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="tabSplits">
+                 <attribute name="title">
+                  <string>Splits / Contrasplits</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_45">
+                  <item>
+                   <widget class="myQTableWidget" name="tblSplits"/>
                   </item>
                  </layout>
                 </widget>
@@ -1797,6 +1853,42 @@
    </property>
    <property name="toolTip">
     <string>Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value</string>
+   </property>
+  </action>
+  <action name="actionSplitNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Split / Contrasplit</string>
+   </property>
+   <property name="toolTip">
+    <string>New Split / Contrasplit</string>
+   </property>
+  </action>
+  <action name="actionSplitRemove">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove Split / Contrasplit</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove Split / Contrasplit</string>
+   </property>
+  </action>
+  <action name="actionSplitEdit">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Split / Contrasplit</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit Split / Contrasplit</string>
    </property>
   </action>
  </widget>

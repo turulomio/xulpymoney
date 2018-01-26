@@ -45,6 +45,8 @@ SOURCES         = \
                   ui/Ui_frmSharesTransfer.py \
                   ui/frmSplit.py \
                   ui/Ui_frmSplit.py \
+                  ui/frmSplitManual.py \
+                  ui/Ui_frmSplit.py \
                   ui/frmTransfer.py \
                   ui/Ui_frmTransfer.py \
                   ui/wdgProductSelector.py \
@@ -133,6 +135,7 @@ FORMS           = \
                   ui/frmSettings.ui \
                   ui/frmSharesTransfer.ui \
                   ui/frmSplit.ui \
+                  ui/frmSplitManual.ui \
                   ui/frmTransfer.ui \
                   ui/wdgAPR.ui \
                   ui/wdgAccounts.ui \
