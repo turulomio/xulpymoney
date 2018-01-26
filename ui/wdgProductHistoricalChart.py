@@ -264,7 +264,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.label3=QLabel(self)
         self.label3.setText(self.tr("Second reinvestment"))
         self.txt3=myQLineEdit(self)
-        self.txt3.setText(12000)
+        self.txt3.setText(8400)
         
         self.labelGains=QLabel(self)
         self.labelGains.setText(self.tr("Gains percentage"))

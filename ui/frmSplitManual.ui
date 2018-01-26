@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmSplit</class>
- <widget class="QDialog" name="frmSplit">
+ <class>frmSplitManual</class>
+ <widget class="QDialog" name="frmSplitManual">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -33,7 +33,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Split / Contrasplit</string>
+        <string>Manual Split / Contrasplit to adjust split directly on prices (Not recomended)</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -58,6 +58,9 @@
           <enum>Qt::Vertical</enum>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="wdgDatetime" name="wdgDtEnd" native="true"/>
        </item>
       </layout>
      </item>
