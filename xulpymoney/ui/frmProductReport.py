@@ -125,6 +125,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layHistorical.addWidget(self.wdgproducthistoricalchart)
         self.wdgproducthistoricalchartSplits=wdgProductHistoricalChart(self)
         self.layHistoricalSplits.addWidget(self.wdgproducthistoricalchartSplits)
+        self.wdgproducthistoricalchartDividends=wdgProductHistoricalChart(self)
+        self.layHistoricalDividends.addWidget(self.wdgproducthistoricalchartDividends)
         
         self.pseCompare.setupUi(self.mem, self.investment)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
@@ -436,7 +438,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.result.ohclYearly.selected=[]
             self.product.estimations_dps.load_from_db()#No cargada por defecto en product
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
-            self.product.dps.load_from_db()
 
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
             self.product.estimations_eps.myqtablewidget(self.tblEPS)            
@@ -460,13 +461,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         #Canvas Historical
         if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
             pass
-#            self.canvasHistorical.hide()
-#            self.ntbHistorical.hide()
         else:
-#            self.canvasHistorical.load_data(self.product, self.investment)
-#            self.canvasHistorical.show()
-#            self.ntbHistorical.show() 
-
             self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
             self.wdgproducthistoricalchart.setHistoricalChartAdjusts(HistoricalChartAdjusts.NoAdjusts)
             self.wdgproducthistoricalchart.generate()
@@ -476,6 +471,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.wdgproducthistoricalchartSplits.setHistoricalChartAdjusts(HistoricalChartAdjusts.Splits)
             self.wdgproducthistoricalchartSplits.generate()
             self.wdgproducthistoricalchartSplits.display()
+            
+            self.wdgproducthistoricalchartDividends.setProduct(self.product, self.investment)
+            self.wdgproducthistoricalchartDividends.setHistoricalChartAdjusts(HistoricalChartAdjusts.Dividends)
+            self.wdgproducthistoricalchartDividends.generate()
+            self.wdgproducthistoricalchartDividends.display()
                 
         #Canvas Intradia
         if self.product.result.intradia.length()<2:
@@ -533,12 +533,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.commit()
             self.product.dps.arr.remove(self.selDPS)
             self.product.dps.myqtablewidget(self.tblDPSPaid)
+            self.update_due_to_quotes_change()
         
     @pyqtSlot()
     def on_actionDPSNew_triggered(self):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
         self.product.dps.myqtablewidget(self.tblDPSPaid)
+        self.update_due_to_quotes_change()
 
     @pyqtSlot()
     def on_actionEstimationDPSDelete_triggered(self):
