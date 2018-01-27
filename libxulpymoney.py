@@ -6175,6 +6175,8 @@ class SetDPS:
         self.mem=mem   
         self.product=product
     
+    def length(self):
+        return len (self.arr)
     
     def load_from_db(self):
         del self.arr
@@ -6208,19 +6210,33 @@ class SetDPS:
             table.setItem(i, 0, qcenter(str(e.date)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.gross, 6))       
         table.setCurrentCell(len(self.arr)-1, 0)
+    
+    def adjustPrice(self, datetime, price):
+        """
+            Returns a new price adjusting
+        """
+        r=price
+        for dps in self.arr:
+            if datetime>day_end_from_date(dps.date, self.mem.localzone):
+                r=r+dps.gross
+        return r
         
-    def sum(self, date):
-        """Devuelve la suma de los dividends desde hoy hasta la fecha.
-        Se deben restar a la cotización  del dia date, para tener la cotización sin descontar dividends"""
-        self.sort()
-        sum=0
-        for dps in reversed(self.arr):
-            if dps.date>=date:
-                sum=sum+dps.gross
-            else:
-                break
-        return sum
-        
+    def adjustOHCLDaily(self, ohcl ):
+        r=OHCLDaily(self.mem)
+        r.product=ohcl.product
+        r.date=ohcl.date
+        r.close=self.adjustPrice(ohcl.datetime(), ohcl.close)
+        r.open=self.adjustPrice(ohcl.datetime(), ohcl.open)
+        r.high=self.adjustPrice(ohcl.datetime(), ohcl.high)
+        r.low=self.adjustPrice(ohcl.datetime(), ohcl.low)
+        return r
+
+    def adjustSetOHCLDaily(self, set):
+        r=SetOHCLDaily(self.mem, self.product)
+        for ohcl in set.arr:
+            r.append(self.adjustOHCLDaily(ohcl))
+        return r
+
 
 class DPS:
     """Dividend por acción pagados. Se usa para pintar gráficos sin dividends"""
@@ -6243,9 +6259,7 @@ class DPS:
     def init__from_db_row(self,  row):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
         return self.init__create(row['date'], row['gross'], row['id_dps'])
-
-                        
-            
+        
     def borrar(self):
         cur=self.mem.con.cursor()
         cur.execute("delete from dps where id_dps=%s", (self.id,))
@@ -6413,10 +6427,10 @@ class Product:
         self.result=None#Variable en la que se almacena QuotesResult
         self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
         self.estimations_eps=SetEstimationsEPS(self.mem, self)
-        self.dps=SetDPS(self.mem, self)
-        self.splits=SetSplits(self.mem, self)
         self.result=QuotesResult(self.mem,self)
 
+        self.dps=None #It's created when loading quotes in quotes result
+        self.splits=None #It's created when loading quotes in quotes result
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
                 
@@ -6442,13 +6456,8 @@ class Product:
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         
-        self.reload_db_data()
         return self
-    
-    def reload_db_data(self):
-        if self.id!=None:
-            self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
-        print(self.splits.length())
+
 
     def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers,  priority, priorityhistorical, comment, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
@@ -6472,7 +6481,6 @@ class Product:
         self.priorityhistorical=priorityhistorical
         self.comment=comment
         self.obsolete=obsolete
-        self.reload_db_data()
         return self        
 
     def init__db(self, id):
@@ -7715,15 +7723,14 @@ class SetLanguages(SetCommons):
 class HistoricalChartAdjusts:
     NoAdjusts=0
     Splits=1
-    DividendsYSplits=2
+    Dividends=2#Dividends with splits.
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
     def __init__(self,mem,  product):
         self.mem=mem
         self.product=product
-        
-                
+               
         self.intradiaBeforeSplits=SetQuotesIntraday(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar BeforeSplits
         self.allBeforeSplits=SetQuotesAllIntradays(self.mem)
         self.basicBeforeSplits=SetQuotesBasic(self.mem, self.product)
@@ -7752,11 +7759,21 @@ class QuotesResult:
         
         
         
-        
+    def load_dps_and_splits(self):
+        """
+            Only once. If it's already in memory. It ignore it
+        """
+        if self.product.dps==None:
+            self.product.dps=SetDPS(self.mem, self.product)
+            self.product.dps.load_from_db()     
+        if self.product.splits==None:
+            self.product.splits=SetSplits(self.mem, self.product)
+            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
         
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
-        inicioall=datetime.datetime.now()
+        inicioall=datetime.datetime.now()  
+        self.load_dps_and_splits()
         self.ohclDailyBeforeSplits.load_from_db("""
             select 
                 id, 
@@ -7771,8 +7788,14 @@ class QuotesResult:
             order by datetime::date 
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
-            
-        self.ohclDaily=self.product.splits.adjustSetOHCLDaily(self.ohclDailyBeforeSplits)
+        if self.product.splits.length()>0:
+            self.ohclDaily=self.product.splits.adjustSetOHCLDaily(self.ohclDailyBeforeSplits)
+        else:
+            self.ohclDaily=self.ohclDailyBeforeSplits
+        if self.product.dps.length()>0:
+            self.ohclDailyAfterDividends=self.product.dps.adjustSetOHCLDaily(self.ohclDaily)
+        else:
+            self.ohclDailyAfterDividends=self.ohclDailyBeforeSplits
             
         self.ohclMonthly.load_from_db("""
             select 
@@ -7818,11 +7841,12 @@ class QuotesResult:
         """.format(self.product.id))
         
         self.basic=self.ohclDaily.setquotesbasic()
-        print ("Datos db cargados:",  datetime.datetime.now()-inicioall)
+        print ("OHCL data of '{}' loaded: {}".format(self.product.name, datetime.datetime.now()-inicioall))
         
 
     def get_all(self):
         """Gets all in a set intradays form"""
+        self.load_dps_and_splits()
         self.all.load_from_db(self.product)
 
     def ohcl(self,  ohclduration, historicalchartadjust=HistoricalChartAdjusts.NoAdjusts):
@@ -7834,6 +7858,8 @@ class QuotesResult:
                 return self.ohclDaily
             elif historicalchartadjust==HistoricalChartAdjusts.NoAdjusts:
                 return self.ohclDailyBeforeSplits
+            elif historicalchartadjust==HistoricalChartAdjusts.Dividends:
+                return self.ohclDailyAfterDividends
         if ohclduration==OHCLDuration.Week:
             return self.ohclWeekly
         if ohclduration==OHCLDuration.Month:
