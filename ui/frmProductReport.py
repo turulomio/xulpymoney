@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -123,6 +123,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
        
         self.wdgproducthistoricalchart=wdgProductHistoricalChart(self)
         self.layHistorical.addWidget(self.wdgproducthistoricalchart)
+        self.wdgproducthistoricalchartSplits=wdgProductHistoricalChart(self)
+        self.layHistoricalSplits.addWidget(self.wdgproducthistoricalchartSplits)
         
         self.pseCompare.setupUi(self.mem, self.investment)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
@@ -466,8 +468,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 #            self.ntbHistorical.show() 
 
             self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
+            self.wdgproducthistoricalchart.setHistoricalChartAdjusts(HistoricalChartAdjusts.NoAdjusts)
             self.wdgproducthistoricalchart.generate()
             self.wdgproducthistoricalchart.display()
+            
+            self.wdgproducthistoricalchartSplits.setProduct(self.product, self.investment)
+            self.wdgproducthistoricalchartSplits.setHistoricalChartAdjusts(HistoricalChartAdjusts.Splits)
+            self.wdgproducthistoricalchartSplits.generate()
+            self.wdgproducthistoricalchartSplits.display()
                 
         #Canvas Intradia
         if self.product.result.intradia.length()<2:

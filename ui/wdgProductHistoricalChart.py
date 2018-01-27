@@ -7,7 +7,9 @@ import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus
+from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus,  HistoricalChartAdjusts
+
+
 
 class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
@@ -15,12 +17,16 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.setupUi(self)
         self.view=None
         self.dtFrom.blockSignals(True)
+        self.HistoricalChartAdjusts=HistoricalChartAdjusts.Splits
         
     def pen(self, style, color):
         pen=QPen()
         pen.setStyle(style)
         pen.setColor(color)
         return pen
+        
+    def setHistoricalChartAdjusts(self, historicalchartadjusts):
+        self.HistoricalChartAdjusts=historicalchartadjusts
 
     def setProduct(self, product, investment=None):
         self.product=product
@@ -56,7 +62,8 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.verticalLayout.removeWidget(self.view)
 
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
-        self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
+        self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), self.HistoricalChartAdjusts)
+        print (self.setohcl, self.setohcl.length())
         
         self.view=VCTemporalSeries()
         self.verticalLayout.addWidget(self.view)
