@@ -7597,6 +7597,8 @@ class SetOHCLDaily(SetOHCL):
                 return ohcl
         return None
 
+
+
     def setquotesbasic(self):
         """Returns a SetQuotesBasic con los datos del setohcldairy"""
         last=None
@@ -7710,7 +7712,10 @@ class SetLanguages(SetCommons):
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
-
+class HistoricalChartAdjusts:
+    NoAdjusts=0
+    Splits=1
+    DividendsYSplits=2
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
@@ -7718,7 +7723,14 @@ class QuotesResult:
         self.mem=mem
         self.product=product
         
-        
+                
+        self.intradiaBeforeSplits=SetQuotesIntraday(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar BeforeSplits
+        self.allBeforeSplits=SetQuotesAllIntradays(self.mem)
+        self.basicBeforeSplits=SetQuotesBasic(self.mem, self.product)
+        self.ohclDailyBeforeSplits=SetOHCLDaily(self.mem, self.product)
+        self.ohclMonthlyBeforeSplits=SetOHCLMonthly(self.mem, self.product)
+        self.ohclYearlyBeforeSplits=SetOHCLYearly(self.mem, self.product)
+        self.ohclWeeklyBeforeSplit=SetOHCLWeekly(self.mem, self.product)
         
         
         self.intradia=SetQuotesIntraday(self.mem)
@@ -7728,14 +7740,7 @@ class QuotesResult:
         self.ohclMonthly=SetOHCLMonthly(self.mem, self.product)
         self.ohclYearly=SetOHCLYearly(self.mem, self.product)
         self.ohclWeekly=SetOHCLWeekly(self.mem, self.product)
-        
-        self.intradiaAfterSplits=SetQuotesIntraday(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar afterSplits
-        self.allAfterSplits=SetQuotesAllIntradays(self.mem)
-        self.basicAfterSplits=SetQuotesBasic(self.mem, self.product)
-        self.ohclDailyAfterSplits=SetOHCLDaily(self.mem, self.product)
-        self.ohclMonthlyAfterSplits=SetOHCLMonthly(self.mem, self.product)
-        self.ohclYearlyAfterSplits=SetOHCLYearly(self.mem, self.product)
-        self.ohclWeeklyAfterSplit=SetOHCLWeekly(self.mem, self.product)
+
         
         self.intradiaAfterDividends=SetQuotesIntraday(self.mem) 
         self.allAfterDividends=SetQuotesAllIntradays(self.mem)
@@ -7752,7 +7757,7 @@ class QuotesResult:
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
         inicioall=datetime.datetime.now()
-        self.ohclDaily.load_from_db("""
+        self.ohclDailyBeforeSplits.load_from_db("""
             select 
                 id, 
                 datetime::date as date, 
@@ -7765,6 +7770,9 @@ class QuotesResult:
             group by id, datetime::date 
             order by datetime::date 
             """.format(self.product.id))#necesario para usar luego ohcl_otros
+            
+            
+        self.ohclDaily=self.product.splits.adjustSetOHCLDaily(self.ohclDailyBeforeSplits)
             
         self.ohclMonthly.load_from_db("""
             select 
@@ -7817,12 +7825,15 @@ class QuotesResult:
         """Gets all in a set intradays form"""
         self.all.load_from_db(self.product)
 
-    def ohcl(self,  ohclduration):
+    def ohcl(self,  ohclduration, historicalchartadjust=HistoricalChartAdjusts.NoAdjusts):
         """
             Returns the SetOHCL corresponding to it's duration
         """
         if ohclduration==OHCLDuration.Day:
-            return self.ohclDaily
+            if historicalchartadjust==HistoricalChartAdjusts.Splits:
+                return self.ohclDaily
+            elif historicalchartadjust==HistoricalChartAdjusts.NoAdjusts:
+                return self.ohclDailyBeforeSplits
         if ohclduration==OHCLDuration.Week:
             return self.ohclWeekly
         if ohclduration==OHCLDuration.Month:
@@ -8042,6 +8053,32 @@ class SetSplits(SetCommons):
     def delete(self, o):
         o.delete()    #Delete from database
         self.remove(o)    #Removes from array
+        
+    def adjustPrice(self, datetime, price):
+        """
+            Returns a new price adjusting
+        """
+        r=price
+        for split in reversed(self.arr):
+            if datetime<split.datetime:
+                r=split.convertPrices(r)
+        return r
+        
+    def adjustOHCLDaily(self, ohcl ):
+        r=OHCLDaily(self.mem)
+        r.product=ohcl.product
+        r.date=ohcl.date
+        r.close=self.adjustPrice(ohcl.datetime(), ohcl.close)
+        r.open=self.adjustPrice(ohcl.datetime(), ohcl.open)
+        r.high=self.adjustPrice(ohcl.datetime(), ohcl.high)
+        r.low=self.adjustPrice(ohcl.datetime(), ohcl.low)
+        return r
+
+    def adjustSetOHCLDaily(self, set):
+        r=SetOHCLDaily(self.mem, self.product)
+        for ohcl in set.arr:
+            r.append(self.adjustOHCLDaily(ohcl))
+        return r
 
 class SplitManual:
     """Class to make calculations with splits or contrasplits, between two datetimes"""
