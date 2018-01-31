@@ -492,6 +492,14 @@ to bottom)"""
         if len(letters)==1:
             return caracter2value(letters[0])
 
+
+    def mergeCells(self, letter, number,  columns, rows):
+        """
+            Given a cell position (letter,number), merges columns a rows given
+        """
+        c=self.getCell(letter, number)
+        c.setSpanning(columns, rows)
+
     def number2row(self, number):
         return int(number)-1
         
@@ -663,7 +671,8 @@ class OdfMoney:
         if self.amount>=Decimal(0):
             return True
         else:
-            return False            
+            return False           
+
     def isGTZero(self):
         if self.amount>Decimal(0):
             return True
@@ -785,11 +794,131 @@ class OdfPercentage:
     
 
 class ODS(ODF):
-    def __init__(self, filename, mode="w"):
+    def __init__(self, filename):
+        ODF.__init__(self, filename)
+        self.doc=OpenDocumentSpreadsheet()
+        self.sheets=[]
+        self.activeSheet=None
+
+
+    def createSheet(self, title):
+        s=OdfSheet(self.doc, title)
+        self.sheets.append(s)
+        return s
+        
+    def getActiveSheet(self):
+        if self.activeSheet==None:
+            return self.sheets[0].title
+        return self.activeSheet
+            
+    def save(self, filename=None):
         """
-            Mode can be read "r" or write "w"
-            if its "w", ODS creates default styles
+            If filename is given, file is saved with a different name.
         """
+        #config settings information
+        a=ConfigItemSet(name="ooo:view-settings")
+        aa=ConfigItem(type="int", name="VisibleAreaTop")
+        aa.addText("0")
+        a.addElement(aa)
+        aa=ConfigItem(type="int", name="VisibleAreaLeft")
+        aa.addText("0")
+        a.addElement(aa)
+        b=ConfigItemMapIndexed(name="Views")
+        c=ConfigItemMapEntry()
+        d=ConfigItem(name="ViewId", type="string")
+        d.addText("view1")#value="view1"
+        e=ConfigItemMapNamed(name="Tables")
+        for sheet in self.sheets:
+            f=ConfigItemMapEntry(name=sheet.title)
+            g=ConfigItem(type="int", name="CursorPositionX")
+            g.addText(sheet.cursorPositionX)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="CursorPositionY")
+            g.addText(sheet.cursorPositionY)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="HorizontalSplitPosition")
+            g.addText(sheet.horizontalSplitPosition)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="VerticalSplitPosition")
+            g.addText(sheet.verticalSplitPosition)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="HorizontalSplitMode")
+            g.addText(sheet.horizontalSplitMode)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="VerticalSplitMode")
+            g.addText(sheet.verticalSplitMode)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="ActiveSplitRange")
+            g.addText(sheet.activeSplitRange)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionLeft")
+            g.addText(sheet.positionLeft)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionRight")
+            g.addText(sheet.positionRight)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionTop")
+            g.addText(sheet.positionTop)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionBottom")
+            g.addText(sheet.positionBottom)
+            f.addElement(g)
+            e.addElement(f)
+            
+        a.addElement(b)
+        b.addElement(c)
+        c.addElement(d)
+        c.addElement(e)
+
+        h=ConfigItem(type="string", name="ActiveTable")
+        h.addText(self.getActiveSheet())
+        c.addElement(h)
+        self.doc.settings.addElement(a)
+        
+        for sheet in self.sheets:
+            sheet.generate(self)
+        
+        if  filename==None:
+            filename=self.filename
+
+        makedirs(os.path.dirname(filename))
+        self.doc.save(filename)
+
+    def setActiveSheet(self, value):
+        """value is OdfSheet"""
+        self.activeSheet=value.title
+
+
+class ODS_Read(ODS):
+    def __init__(self, filename):
+        ODS.__init__(self, filename)
+        if len(self.sheets)>0:
+            print ("You can't load a ODS file, that already has sheets")
+            return
+        doc=load(self.filename)#doc it nly used in this function. All is generated in self.doc
+        for sheet in doc.spreadsheet.getElementsByType(Table):
+            s=self.createSheet(sheet.getAttribute("name"))
+            self.setActiveSheet(s)
+            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
+                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
+                    text=""
+                    for p in cell.getElementsByType(P):
+                        for n in p.childNodes:
+                            text=text+n.data
+                    
+                    s.add(letter_add("A", numcell), number_add("1", numrow), text)
+            s.setCursorPosition("A", "1")
+            s.setSplitPosition("A", "1")
+            print("loading s")
+        
+    def save(self, filename):
+        if  filename==self.filename:
+            print("You can't overwrite a readed ods")
+            return
+        ODS.save(self, filename)
+                
+class ODS_Write(ODS):
+    def __init__(self, filename):
         def styleHeaders():
             hs=Style(name="HeaderOrange", family="table-cell")
             hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
@@ -942,136 +1071,24 @@ class ODS(ODF):
 
         ##################################################
         ODF.__init__(self, filename)
-        self.mode=mode
         self.doc=OpenDocumentSpreadsheet()
         self.sheets=[]
         self.activeSheet=None
-        if self.mode=="w":
-            styleHeaders()
-            styleParagraphs()
-            styleCurrrencies()
-            styleDatetimes()
-            stylePercentages()
-            styleNumbers()
-        elif self.mode=="r":
-            self.__load()
-
-    def createSheet(self, title):
-        s=OdfSheet(self.doc, title)
-        self.sheets.append(s)
-        return s
-        
-    def getActiveSheet(self):
-        if self.activeSheet==None:
-            return self.sheets[0].title
-        return self.activeSheet
-        
-    def setActiveSheet(self, value):
-        """value is OdfSheet"""
-        self.activeSheet=value.title
-
-    def __load(self):
-        """ 
-            Replaces a ODS object doing
-        """
-        if len(self.sheets)>0:
-            print ("You can't load a ODS file, that already has sheets")
-            return
-        doc=load(self.filename)#doc it nly used in this function. All is generated in self.doc
-        for sheet in doc.spreadsheet.getElementsByType(Table):
-            s=self.createSheet(sheet.getAttribute("name"))
-            self.setActiveSheet(s)
-            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
-                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
-                    text=""
-                    for p in cell.getElementsByType(P):
-                        for n in p.childNodes:
-                            text=text+n.data
-                    
-                    s.add(letter_add("A", numcell), number_add("1", numrow), text)
-            s.setCursorPosition("A", "1")
-            s.setSplitPosition("A", "1")
-            print("loading s")
-        
-                
-        
+        styleHeaders()
+        styleParagraphs()
+        styleCurrrencies()
+        styleDatetimes()
+        stylePercentages()
+        styleNumbers()
 
         
+    
     def save(self, filename=None):
-        """
-            If filename is given, file is saved with a different name.
-        """
-        #config settings information
-        a=ConfigItemSet(name="ooo:view-settings")
-        aa=ConfigItem(type="int", name="VisibleAreaTop")
-        aa.addText("0")
-        a.addElement(aa)
-        aa=ConfigItem(type="int", name="VisibleAreaLeft")
-        aa.addText("0")
-        a.addElement(aa)
-        b=ConfigItemMapIndexed(name="Views")
-        c=ConfigItemMapEntry()
-        d=ConfigItem(name="ViewId", type="string")
-        d.addText("view1")#value="view1"
-        e=ConfigItemMapNamed(name="Tables")
-        for sheet in self.sheets:
-            f=ConfigItemMapEntry(name=sheet.title)
-            g=ConfigItem(type="int", name="CursorPositionX")
-            g.addText(sheet.cursorPositionX)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="CursorPositionY")
-            g.addText(sheet.cursorPositionY)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="HorizontalSplitPosition")
-            g.addText(sheet.horizontalSplitPosition)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="VerticalSplitPosition")
-            g.addText(sheet.verticalSplitPosition)
-            f.addElement(g)
-            g=ConfigItem(type="short", name="HorizontalSplitMode")
-            g.addText(sheet.horizontalSplitMode)
-            f.addElement(g)
-            g=ConfigItem(type="short", name="VerticalSplitMode")
-            g.addText(sheet.verticalSplitMode)
-            f.addElement(g)
-            g=ConfigItem(type="short", name="ActiveSplitRange")
-            g.addText(sheet.activeSplitRange)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="PositionLeft")
-            g.addText(sheet.positionLeft)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="PositionRight")
-            g.addText(sheet.positionRight)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="PositionTop")
-            g.addText(sheet.positionTop)
-            f.addElement(g)
-            g=ConfigItem(type="int", name="PositionBottom")
-            g.addText(sheet.positionBottom)
-            f.addElement(g)
-            e.addElement(f)
-            
-        a.addElement(b)
-        b.addElement(c)
-        c.addElement(d)
-        c.addElement(e)
-
-        h=ConfigItem(type="string", name="ActiveTable")
-        h.addText(self.getActiveSheet())
-        c.addElement(h)
-        self.doc.settings.addElement(a)
-        
-        for sheet in self.sheets:
-            sheet.generate(self)
-        
         if  filename==None:
             filename=self.filename
-            
-        if self.mode=="r" and filename==self.filename:
-            print("You can't overwrite a readed ods")
-            return
-        makedirs(os.path.dirname(filename))
-        self.doc.save(filename)
+        ODS.save(self, filename)
+        
+
 
 ##########################################################################################
 def letter_add(letter, number):
@@ -1105,7 +1122,7 @@ def ODFPYversion():
 
 if __name__ == "__main__":
     #ODS
-    doc=ODS("libodfgenerator.ods", "w")
+    doc=ODS_Write("libodfgenerator.ods")
     doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
     s1=doc.createSheet("Example")
     s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
@@ -1132,9 +1149,10 @@ if __name__ == "__main__":
     doc.setActiveSheet(s1)
     doc.save()
     
-    
-    #ODS Readed
-    doc=ODS("libodfgenerator.ods", "r")
+    doc=ODS_Read("libodfgenerator.ods")
+    print(doc.sheets[0].getCell("A", "1").object)
+    print(doc.sheets[0].getCell("B", "2").object)
+    print(doc.sheets[0].getCell("B", "3").object)
     doc.save("libodfgenerator_readed.ods")
     
     
