@@ -607,6 +607,7 @@ class Ui_frmMain(object):
         self.actionFundsAll.setText(_translate("frmMain", "&All funds"))
         self.actionPriceUpdates.setText(_translate("frmMain", "&Price updates"))
         self.actionPriceUpdates.setToolTip(_translate("frmMain", "Price updates"))
+        self.actionPriceUpdates.setShortcut(_translate("frmMain", "F8"))
         self.actionProductsInvestmentActive.setText(_translate("frmMain", "P&roducts of active investment"))
         self.actionProductsInvestmentActive.setToolTip(_translate("frmMain", "Products of active investment"))
         self.actionProductsInvestmentInactive.setText(_translate("frmMain", "Products of &inactive investment"))
@@ -643,7 +644,7 @@ class Ui_frmMain(object):
         self.actionProductsWithoutQuotes.setToolTip(_translate("frmMain", "Products without price"))
         self.actionProductsWithOldPrice.setText(_translate("frmMain", "Products wit&h old price"))
         self.actionProductsWithOldPrice.setToolTip(_translate("frmMain", "Products with old price"))
-        self.actionProductsWithPriceVariation.setText(_translate("frmMain", "Product&s with a price variation"))
+        self.actionProductsWithPriceVariation.setText(_translate("frmMain", "Products with a price &variation"))
         self.actionProductsWithPriceVariation.setToolTip(_translate("frmMain", "Product&s with a price variation"))
 
 import xulpymoney_rc
