@@ -844,6 +844,9 @@
    <property name="toolTip">
     <string>Price updates</string>
    </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
   </action>
   <action name="actionProductsInvestmentActive">
    <property name="icon">
@@ -1061,7 +1064,7 @@
      <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
    </property>
    <property name="text">
-    <string>Product&amp;s with a price variation</string>
+    <string>Products with a price &amp;variation</string>
    </property>
    <property name="toolTip">
     <string>Product&amp;s with a price variation</string>
