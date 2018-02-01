@@ -466,15 +466,26 @@ class OdfSheet:
     horizontal position = in cell if fixed, in screen unit if frozen
     active zone in the splitted|frozen sheet (0..3 from let to right, top
 to bottom)"""
+        def setActiveSplitRange():
+            """
+                Creo que es la posición tras los ejes.
+            """
+            if (self.horizontalSplitPosition!="0" and self.verticalSplitPosition=="0") or (self.horizontalSplitPosition=="0" and self.verticalSplitPosition!="0"):
+                return "1"
+            if self.horizontalSplitPosition!="0" and self.verticalSplitPosition!="0":
+                return "3"
+            return "0"
+
+
         self.horizontalSplitPosition=str(self.letter2column(letter))
         self.verticalSplitPosition=str(self.number2row(number))
         self.horizontalSplitMode="0" if self.horizontalSplitPosition=="0" else "2"
         self.verticalSplitMode="0" if self.verticalSplitPosition=="0" else "2"
-        self.activeSplitRange="2"
+        self.activeSplitRange=setActiveSplitRange()
         self.positionTop="0"
-        self.positionBottom="0" if self.verticalSplitPosition=="0" else "1"
+        self.positionBottom="0" if self.verticalSplitPosition=="0" else str(self.verticalSplitPosition)
         self.positionLeft="0"
-        self.positionRight="0" if self.horizontalSplitPosition=="0" else "1"
+        self.positionRight="0" if self.horizontalSplitPosition=="0" else str(self.horizontalSplitPosition)
 
     def setCursorPosition(self, letter, number):
         """
@@ -482,6 +493,13 @@ to bottom)"""
         """
         self.cursorPositionX=self.letter2column(letter)
         self.cursorPositionY=self.number2row(number)
+
+    def setComment(self, letter, number, comment):
+        """
+            Sets a comment in the givven cell
+        """
+        c=self.getCell(letter, number)
+        c.setComment(comment)
 
     def setColumnsWidth(self, widths, unit="pt"):
         """
@@ -501,6 +519,25 @@ to bottom)"""
         if len(letters)==1:
             return caracter2value(letters[0])
 
+    def lastLetter(self):
+        """
+            Returns the last letter used. Returns a string.
+        """
+        max_letter=""
+        for c in self.arr:
+            if c.letter>max_letter:
+                max_letter=c.letter
+        return max_letter
+
+    def lastNumber(self):
+        """
+            Returns the last number used. Returns a string
+        """
+        max_number=""
+        for c in self.arr:
+            if c.number>max_number:
+                max_number=c.letter
+        return max_number
 
     def mergeCells(self, letter, number,  columns, rows):
         """
@@ -800,6 +837,9 @@ class OdfPercentage:
             return True
         return False
         
+class ODSColumnWidth:
+    Date=40
+    Detetime=60
     
 
 class ODS(ODF):
@@ -1203,6 +1243,15 @@ if __name__ == "__main__":
     s3.add("C",number_add("2", number+1) ,OdfMoney(-1234.23, "EUR"))
     s3.add("B",number_add("2", number+2) ,OdfPercentage(1234.23, 10000))
     s3.add("C",number_add("2", number+2) ,OdfPercentage(-1234.23, 25000))
+    s3.setSplitPosition("B", "1")
+    s3.setCursorPosition("B", "1")
+    
+    s4=doc.createSheet("Splitting")
+    for letter in "ABCDEFGHIJ":
+        for number in range(1, 11):
+            s4.add(letter, str(number), letter+str(number), "HeaderYellowLeft")
+    s4.setCursorPosition("C", "3")
+    s4.setSplitPosition("C", "3")
     doc.save()
     
     doc=ODS_Read("libodfgenerator.ods")
