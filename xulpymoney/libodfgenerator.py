@@ -123,6 +123,10 @@ class ODT(ODF):
     #      <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-right="0cm" fo:text-align="justify" fo:text-indent="0cm" ns42:contextual-spacing="false" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.212cm" style:auto-text-indent="false" style:justify-single-word="false"/>
     #      <style:text-properties style:font-weight-complex="bold" fo:font-size="15pt" style:font-size-asian="130%" style:font-size-complex="130%" fo:font-weight="bold" style:font-weight-asian="bold"/>
     #    </style:style>
+            titlestyle = Style(name="Title", family="paragraph",  autoupdate="true", defaultoutlinelevel="0")
+            titlestyle.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"center", "marginbottom":"0.9cm"}))
+            titlestyle.addElement(TextProperties(attributes={"fontsize": "16pt", "fontweight": "bold", "country": self.country, "language": self.language}))
+            self.doc.styles.addElement(titlestyle)
             h1style = Style(name="Heading1", family="paragraph",  autoupdate="true", defaultoutlinelevel="1")
             h1style.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"justify", "marginbottom":"0.3cm"}))
             h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold", "country": self.country, "language": self.language}))
@@ -257,6 +261,10 @@ class ODT(ODF):
             it.addElement(p)
             l.addElement(it)
         self.doc.text.addElement(l)
+
+    def title(self, text):
+        p=P(stylename="Title", text=text)
+        self.doc.text.addElement(p)
 
     def header(self, text, level):
         h=H(outlinelevel=level, stylename="Heading{}".format(level), text=text)
@@ -429,7 +437,6 @@ class OdfCell:
             a.addElement(d)
             a.addElement(P(stylename="TextRight", text=self.comment))
             odfcell.addElement(a)
-            
         return odfcell
         
     def setSpanning(self, columns, rows):
@@ -447,6 +454,8 @@ class OdfSheet:
         self.title=title
         self.widths=None
         self.arr=[]
+        self.setCursorPosition("A", "1")#Default values
+        self.setSplitPosition("A", "1")
 
 
     def setSplitPosition(self, letter, number):
@@ -800,7 +809,6 @@ class ODS(ODF):
         self.sheets=[]
         self.activeSheet=None
 
-
     def createSheet(self, title):
         s=OdfSheet(self.doc, title)
         self.sheets.append(s)
@@ -929,9 +937,45 @@ class ODS_Write(ODS):
             hs=Style(name="HeaderYellow", family="table-cell")
             hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
             hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs) 
+            
+            hs=Style(name="HeaderGreen", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#9bff9e", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs) 
+            
+            hs=Style(name="HeaderGray", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#999999", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs) 
+            
+            hs=Style(name="HeaderOrangeLeft", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties( fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="left"))
+            self.doc.styles.addElement(hs)
+            
+            hs=Style(name="HeaderYellowLeft", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="left"))
+            self.doc.styles.addElement(hs)     
+            
+            hs=Style(name="HeaderGreenLeft", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#9bff9e", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
             hs.addElement(ParagraphProperties(textalign="left"))
             self.doc.styles.addElement(hs)        
         
+            hs=Style(name="HeaderGrayLeft", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#999999", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="left"))
+            self.doc.styles.addElement(hs) 
+
         def styleParagraphs():
             tr=Style(name="TextRight", family="table-cell")
             tr.addElement(TableCellProperties(border="0.06pt solid #000000"))
@@ -942,13 +986,11 @@ class ODS_Write(ODS):
             hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
             hs.addElement(ParagraphProperties(textalign="left"))
             self.doc.styles.addElement(hs)
-            
-            
-                #    <style:style style:family="table-cell" style:parent-style-name="Default" style:name="HHeaderOrange">
-    #      <style:table-cell-properties style:repeat-content="false" ns42:vertical-justify="auto" fo:background-color="#ffcc99" style:text-align-source="fix" fo:border="0.06pt solid #000000"/>
-    #      <style:paragraph-properties fo:text-align="center" css3t:text-justify="auto"/>
-    #      <style:text-properties fo:font-weight="bold"/>
-    #    </style:style>
+
+            hs=Style(name="TextCenter", family="table-cell")
+            hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs)
 
         def styleCurrrencies():
             
@@ -1127,26 +1169,40 @@ if __name__ == "__main__":
     s1=doc.createSheet("Example")
     s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
     s1.add("A", "2", "Percentage", "TextLeft")
-    s1.add("A", "4",  "Suma")
+    s1.add("A", "4",  "Suma", "TextRight")
     s1.add("B", "2",  OdfPercentage(12, 56))
     s1.add("B", "3",  OdfPercentage(12, 56))
-    s1.add("B", "4",  "=sum(B2:B3)")
+    s1.add("B", "4",  "=sum(B2:B3)","Percentage" )
     s1.setCursorPosition("A", "3")
     s1.setSplitPosition("A", "2")
-    s1=doc.createSheet("Example 2")
-    s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
-    s1.add("A", "2", "Currency", "TextLeft")
-    s1.add("B", "2",  OdfMoney(12, "EUR"))
-    s1.add("A", "3", "Datetime", "TextLeft")
-    s1.add("B", "3",  datetime.datetime.now())
-    s1.setColumnsWidth([330, 150])
-    s1.setCursorPosition("D", "6")
-    s1.setSplitPosition("B", "2")
+    
+    s2=doc.createSheet("Example 2")
+    s2.add("A", "1", [["Title", "Value"]], "HeaderOrange")
+    s2.add("A", "2", "Currency", "TextLeft")
+    s2.add("B", "2",  OdfMoney(12, "EUR"))
+    s2.add("A", "3", "Datetime", "TextLeft")
+    s2.add("B", "3",  datetime.datetime.now())
+    s2.setColumnsWidth([330, 150])
+    s2.setCursorPosition("D", "6")
+    s2.setSplitPosition("B", "2")
     cell=OdfCell("B", "10", "Celda con OdfCell", "HeaderYellow")
     cell.setComment("Comentario")
     cell.setSpanning(2, 2)
     s1.addCell(cell)
-    doc.setActiveSheet(s1)
+    
+    s3=doc.createSheet("Styles")
+    s3.setColumnsWidth([400, 150, 150])
+    s3.add("A","1","LibODFGenerator has the folowing default Styles:")
+    for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
+        s3.add("B", number_add("1", number) , style, style=style)
+    doc.setActiveSheet(s3)
+    
+    
+    s3.add("A",number_add("2", number+1) ,"LibODFGenerator has the folowing default cell classes:")
+    s3.add("B",number_add("2", number+1) ,OdfMoney(1234.23, "EUR"))
+    s3.add("C",number_add("2", number+1) ,OdfMoney(-1234.23, "EUR"))
+    s3.add("B",number_add("2", number+2) ,OdfPercentage(1234.23, 10000))
+    s3.add("C",number_add("2", number+2) ,OdfPercentage(-1234.23, 25000))
     doc.save()
     
     doc=ODS_Read("libodfgenerator.ods")
@@ -1158,13 +1214,16 @@ if __name__ == "__main__":
     
     #ODT#
     doc=ODT("libodfgenerator.odt", language="fr", country="FR")
-    doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
-    doc.header("Hola", 1)
+    doc.setMetadata("LibODFGenerator manual",  "LibODFGenerator documentation", "Mariano Muñoz")
+    doc.title("Manual of LibODFGenerator")
+    doc.header("ODT Writing", 1)
     doc.simpleParagraph("Hola a todos")
     doc.list(["Pryueba hola no", "Adios", "Bienvenido"], style="BulletList")
     doc.simpleParagraph("Hola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todos")
     doc.numberedList(["Pryueba hola no", "Adios", "Bienvenido"])
-    doc.header("Adios", 2)
+    doc.simpleParagraph("Con libodfgenerator podemos")
+    doc.simpleParagraph("This library create several default styles for writing ODT files:")
+    doc.list(["Title: Generates a title with 18pt and bold font", "Header1: Generates a Level 1 header"], style="BulletList")
     doc.addImage("images/crown.png")
     p = P(stylename="Standard")
     p.addText("Este es un ejemplo de imagen as char: ")
@@ -1173,8 +1232,16 @@ if __name__ == "__main__":
     doc.doc.text.addElement(p)
     doc.simpleParagraph("Como ves puedo repetirla mil veces sin que me aumente el tamaño del fichero, porque uso referencias")
     p=P(stylename="Standard")
-    for i in range(1000):
+    for i in range(100):
         p.addElement(doc.image("images/crown.png", "4cm", "4cm"))
-    p.addText(". Se acab´o.")
+    p.addText(". Se acabó.")
     doc.doc.text.addElement(p)
+    doc.pageBreak()
+    
+    
+    doc.header("ODS Writing", 1)
+    doc.simpleParagraph("This library create several default styles for writing ODS files. You can see examples in libodfgenerator.ods.")
+    doc.pageBreak(horizontal=True)
+    
+    doc.header("ODS Reading", 1)
     doc.save()
