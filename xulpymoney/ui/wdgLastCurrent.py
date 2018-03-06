@@ -1,5 +1,5 @@
 import logging
-from libxulpymoney import Quote, qmessagebox
+from libxulpymoney import qmessagebox
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from Ui_wdgLastCurrent import Ui_wdgLastCurrent
@@ -142,17 +142,6 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.investments.selected=None
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
             self.investments.selected=self.investments.arr[i.row()]
-
-    @pyqtSlot(int, int) 
-    def on_tblInvestments_cellDoubleClicked(self, row, column):
-        if column==8:#TPC Venta
-            qmessagebox(self.tr("Shares number: {0}").format(self.investments.selected.acciones())+"\n"+
-                    self.tr("Purchase price average: {0}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.average_price()))+"\n"+
-                    self.tr("Selling point: {}").format(self.investments.selected.product.currency.string(self.investments.selected.venta))+"\n"+
-                    self.tr("Selling all shares you get {}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.investments.selected.product, self.mem.localzone.now(),  self.investments.selected.venta))))
-            )
-        else:
-            self.on_actionCalculate_triggered()
 
     @pyqtSlot(int)
     def on_cmbSameProduct_currentIndexChanged(self, index):
