@@ -465,16 +465,33 @@ class OdfSheet:
     vertical position = in cell if fixed, in screen unit if frozen
     horizontal position = in cell if fixed, in screen unit if frozen
     active zone in the splitted|frozen sheet (0..3 from let to right, top
-to bottom)"""
+to bottom)
+
+
+#   COMPROBADO CON ODF2XML
+B1: 
+              <config:config-item config:name="HorizontalSplitMode" config:type="short">2</config:config-item>
+              <config:config-item config:name="VerticalSplitMode" config:type="short">0</config:config-item>
+              <config:config-item config:name="HorizontalSplitPosition" config:type="int">1</config:config-item>
+              <config:config-item config:name="VerticalSplitPosition" config:type="int">0</config:config-item>
+              <config:config-item config:name="ActiveSplitRange" config:type="short">3</config:config-item>
+              <config:config-item config:name="PositionLeft" config:type="int">0</config:config-item>
+              <config:config-item config:name="PositionRight" config:type="int">1</config:config-item>
+              <config:config-item config:name="PositionTop" config:type="int">0</config:config-item>
+              <config:config-item config:name="PositionBottom" config:type="int">0</config:config-item>
+
+"""
         def setActiveSplitRange():
             """
                 Creo que es la posición tras los ejes.
             """
-            if (self.horizontalSplitPosition!="0" and self.verticalSplitPosition=="0") or (self.horizontalSplitPosition=="0" and self.verticalSplitPosition!="0"):
-                return "1"
+            if (self.horizontalSplitPosition!="0" and self.verticalSplitPosition=="0"):
+                return "3"
+            if (self.horizontalSplitPosition=="0" and self.verticalSplitPosition!="0"):
+                return "2"
             if self.horizontalSplitPosition!="0" and self.verticalSplitPosition!="0":
                 return "3"
-            return "0"
+            return "2"
 
 
         self.horizontalSplitPosition=str(self.letter2column(letter))
@@ -486,6 +503,7 @@ to bottom)"""
         self.positionBottom="0" if self.verticalSplitPosition=="0" else str(self.verticalSplitPosition)
         self.positionLeft="0"
         self.positionRight="0" if self.horizontalSplitPosition=="0" else str(self.horizontalSplitPosition)
+        ##print (letter,  number, ":", self.horizontalSplitPosition,  self.verticalSplitPosition,  self.activeSplitRange, self.positionTop, self.positionBottom,  self.positionLeft, self.positionRight)
 
     def setCursorPosition(self, letter, number):
         """
@@ -1245,7 +1263,8 @@ if __name__ == "__main__":
     s3.add("C",number_add("2", number+2) ,OdfPercentage(-1234.23, 25000))
     s3.setSplitPosition("B", "1")
     s3.setCursorPosition("B", "1")
-    
+
+
     s4=doc.createSheet("Splitting")
     for letter in "ABCDEFGHIJ":
         for number in range(1, 11):
@@ -1253,7 +1272,7 @@ if __name__ == "__main__":
     s4.setCursorPosition("C", "3")
     s4.setSplitPosition("C", "3")
     doc.save()
-    
+    print("FIN")
     doc=ODS_Read("libodfgenerator.ods")
     print(doc.sheets[0].getCell("A", "1").object)
     print(doc.sheets[0].getCell("B", "2").object)
