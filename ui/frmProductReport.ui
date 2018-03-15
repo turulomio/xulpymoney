@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -1563,7 +1563,7 @@
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1929,6 +1929,18 @@
    </property>
    <property name="toolTip">
     <string>Edit Split / Contrasplit</string>
+   </property>
+  </action>
+  <action name="actionDPSImport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/libreoffice_calc.png</normaloff>:/xulpymoney/libreoffice_calc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import dividend per share from Libreoffice ODS</string>
+   </property>
+   <property name="toolTip">
+    <string>Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value</string>
    </property>
   </action>
  </widget>

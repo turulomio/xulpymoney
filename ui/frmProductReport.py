@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetDPS,  SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -541,7 +541,44 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         d.exec_()
         self.product.dps.myqtablewidget(self.tblDPSPaid)
         self.update_due_to_quotes_change()
-
+        
+    @pyqtSlot()
+    def on_actionDPSImport_triggered(self):
+        filename=QFileDialog.getOpenFileName(self, "", "", "LibreOffice Calc (*.ods)")[0]
+        got=0
+        if filename!="":
+            set=SetDPS(self.mem, self.product)
+            doc = load(filename)
+            table=doc.spreadsheet.getElementsByType(Table)[0]
+            rows = table.getElementsByType(TableRow)
+            for row in rows:
+                try:
+                    cells = row.getElementsByType(TableCell)
+                    
+                    #Date YYYY-MM-DD o YYYY-MM-DD HH:MM:SS
+                    p_list = cells[0].getElementsByType(P)
+                    for p in p_list:
+                        for node in p.childNodes:
+                            print(node.data)
+                            if node.nodeProductType == 3:
+                                s=node.data
+                                date=datetime.date(int(s[0:4]), int(s[5:7]), int(s[8:10])) 
+                    #value
+                    p_list = cells[1].getElementsByType(P)
+                    for p in p_list:
+                        for node in p.childNodes:
+                            print(node.data)
+                            if node.nodeProductType == 3:
+                                value=Decimal(node.data.replace(",", "."))
+                    print(date, value)
+                    set.append(DPS(self.mem, self.product).init__create(date,  value))
+                    got=got+1
+                except:
+                    pass
+            print("Added {} DPS from {} ODS rows".format(got, len(rows)))
+            set.save()
+            self.mem.con.commit()
+            self.update_due_to_quotes_change()
     @pyqtSlot()
     def on_actionEstimationDPSDelete_triggered(self):
         if self.selEstimationDPS!=None:
@@ -618,9 +655,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             set.save()
             self.mem.con.commit()
             self.update_due_to_quotes_change()
-            
-                            
-        
+
     @pyqtSlot()
     def on_actionQuoteNew_triggered(self):
         w=frmQuotesIBM(self.mem,  self.product)
@@ -999,6 +1034,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionDPSNew)
         menu.addAction(self.actionDPSDelete)    
+        menu.addSeparator()
+        menu.addAction(self.actionDPSImport)
         if self.investment!=None:
             menu.addSeparator()
             menu.addAction(self.actionDividendXuNew)

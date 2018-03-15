@@ -6193,8 +6193,16 @@ class SetDPS:
             if e.id==id:
                 return e
         return None
-            
-        
+    
+    
+    
+    def save(self):
+        """
+            Saves DPS Without commit
+        """            
+        for o in self.arr:
+            o.save()
+
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         

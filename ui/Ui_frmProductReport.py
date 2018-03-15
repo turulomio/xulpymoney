@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/frmProductReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.10
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -956,13 +956,16 @@ class Ui_frmProductReport(object):
         self.actionSplitEdit = QtWidgets.QAction(frmProductReport)
         self.actionSplitEdit.setIcon(icon14)
         self.actionSplitEdit.setObjectName("actionSplitEdit")
+        self.actionDPSImport = QtWidgets.QAction(frmProductReport)
+        self.actionDPSImport.setIcon(icon15)
+        self.actionDPSImport.setObjectName("actionDPSImport")
 
         self.retranslateUi(frmProductReport)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(3)
         self.tabGraphics.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(1)
         self.tabHistorical.setCurrentIndex(5)
-        self.tabEstimaciones.setCurrentIndex(2)
+        self.tabEstimaciones.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(frmProductReport)
 
     def retranslateUi(self, frmProductReport):
@@ -1202,6 +1205,8 @@ class Ui_frmProductReport(object):
         self.actionSplitRemove.setToolTip(_translate("frmProductReport", "Remove Split / Contrasplit"))
         self.actionSplitEdit.setText(_translate("frmProductReport", "Edit Split / Contrasplit"))
         self.actionSplitEdit.setToolTip(_translate("frmProductReport", "Edit Split / Contrasplit"))
+        self.actionDPSImport.setText(_translate("frmProductReport", "Import dividend per share from Libreoffice ODS"))
+        self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
 
 from myqtablewidget import myQTableWidget
 from wdgProductSelector import wdgProductSelector
