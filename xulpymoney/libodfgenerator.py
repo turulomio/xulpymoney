@@ -957,25 +957,60 @@ class ODS(ODF):
 
 
 class ODS_Read(ODS):
+    """
+       Los elementos P tienen los estilos:
+       
+        if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
+    """
     def __init__(self, filename):
         ODS.__init__(self, filename)
         if len(self.sheets)>0:
             print ("You can't load a ODS file, that already has sheets")
             return
-        doc=load(self.filename)#doc it nly used in this function. All is generated in self.doc
-        for sheet in doc.spreadsheet.getElementsByType(Table):
+        self.readed_doc=load(self.filename)#doc is only used in this function. All is generated in self.doc
+        pass
+        #Copy all styles
+        
+        
+        
+        for sheet in self.readed_doc.spreadsheet.getElementsByType(Table):
             s=self.createSheet(sheet.getAttribute("name"))
             self.setActiveSheet(s)
             for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
                 for numcell, cell in enumerate(row.getElementsByType(TableCell)):
-                    text=""
-                    for p in cell.getElementsByType(P):
-                        print(dir(p), p.allowed_attributes())
-                        for n in p.childNodes:
-                            if n.nodeType==Node.TEXT_NODE:
-                                text=text+n.data
+                    ##print("Cell:", cell.allowed_attributes())
+                    #Get spanning 
+                    spanning_columns=cell.getAttribute('numbercolumnsspanned')
+                    if spanning_columns==None:
+                        spanning_columns==1
+                    else:
+                        spanning_columns=int(spanning_columns)
+                    spanning_rows=cell.getAttribute('numberrowsspanned')
+                    if spanning_rows==None:
+                        spanning_rows==1
+                    else:
+                        spanning_rows=int(spanning_rows)
+
+                    #Get value
+                    value=cell.getAttribute('value')
+                    if value==None:
+                        continue
+                    object=str(value)
                     
-                    s.add(letter_add("A", numcell), number_add("1", numrow), text)
+                    #Get Stylename
+                    stylename=cell.getAttribute('stylename')
+                    
+                    #Get Cursor position
+                    
+                    #Get split position
+                    
+                    #Get comment
+                    
+                    #Generate cell
+                    cell=OdfCell(letter_add("A", numcell), number_add("1", numrow), object, style=stylename)
+                    cell.setSpanning(spanning_columns, spanning_rows)
+                    
+                    s.addCell(cell)
             s.setCursorPosition("A", "1")
             s.setSplitPosition("A", "1")
             print("loading s")
@@ -984,6 +1019,13 @@ class ODS_Read(ODS):
         if  filename==self.filename:
             print("You can't overwrite a readed ods")
             return
+            
+        print(dir(self.readed_doc.styles))
+        for style in self.readed_doc.styles.childNodes:
+            self.doc.styles.addElement(style)
+        for style in self.readed_doc.automaticstyles.childNodes:
+            self.doc.automaticstyles.addElement(style)
+        
         ODS.save(self, filename)
                 
 class ODS_Write(ODS):
@@ -1276,13 +1318,14 @@ if __name__ == "__main__":
     s4.setSplitPosition("C", "3")
     doc.save()
     print("FIN")
+
     doc=ODS_Read("libodfgenerator.ods")
     print(doc.sheets[0].getCell("A", "1").object)
     print(doc.sheets[0].getCell("B", "2").object)
     print(doc.sheets[0].getCell("B", "3").object)
     doc.save("libodfgenerator_readed.ods")
-    
-    
+
+
     #ODT#
     doc=ODT("libodfgenerator.odt", language="fr", country="FR")
     doc.setMetadata("LibODFGenerator manual",  "LibODFGenerator documentation", "Mariano Muñoz")
