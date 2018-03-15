@@ -12,7 +12,6 @@ from odf.dc import Creator, Description, Title, Date
 from odf.meta import InitialCreator
 from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
 from odf.office import Annotation
-from odf.element import Node
 
 from decimal import Decimal
 """
@@ -495,8 +494,8 @@ B1:
             return "2"
 
 
-        self.horizontalSplitPosition=str(self.letter2column(letter))
-        self.verticalSplitPosition=str(self.number2row(number))
+        self.horizontalSplitPosition=str(letter2index(letter))
+        self.verticalSplitPosition=str(number2index(number))
         self.horizontalSplitMode="0" if self.horizontalSplitPosition=="0" else "2"
         self.verticalSplitMode="0" if self.verticalSplitPosition=="0" else "2"
         self.activeSplitRange=setActiveSplitRange()
@@ -510,8 +509,8 @@ B1:
         """
             Sets the cursor in a Sheet
         """
-        self.cursorPositionX=self.letter2column(letter)
-        self.cursorPositionY=self.number2row(number)
+        self.cursorPositionX=letter2index(letter)
+        self.cursorPositionY=number2index(number)
 
     def setComment(self, letter, number, comment):
         """
@@ -531,12 +530,12 @@ B1:
             self.doc.automaticstyles.addElement(s)   
         self.widths=widths
 
-    def letter2column(self, letters):
-        def caracter2value(caracter):
-            return ord(caracter)-65
-        ############################
-        if len(letters)==1:
-            return caracter2value(letters[0])
+#    def letter2index(self, letters):
+#        def caracter2value(caracter):
+#            return ord(caracter)-65
+#        ############################
+#        if len(letters)==1:
+#            return caracter2value(letters[0])
 
     def lastLetter(self):
         """
@@ -565,8 +564,8 @@ B1:
         c=self.getCell(letter, number)
         c.setSpanning(columns, rows)
 
-    def number2row(self, number):
-        return int(number)-1
+#    def number2index(self, number):
+#        return int(number)-1
         
     def addCell(self, cell): 
         self.arr.append(cell)
@@ -597,7 +596,7 @@ B1:
         rows=self.rows()
         grid=[[None for x in range(columns)] for y in range(rows)]
         for cell in self.arr:
-            grid[self.number2row(cell.number)][self.letter2column(cell.letter)]=cell
+            grid[number2index(cell.number)][letter2index(cell.letter)]=cell
         
         table = Table(name=self.title)
         for c in range(columns):#Create columns
@@ -623,7 +622,7 @@ B1:
         """
         r=0
         for cell in self.arr:
-            column=self.letter2column(cell.letter)
+            column=letter2index(cell.letter)
             if column>r:
                 r=column
         return r+1
@@ -634,7 +633,7 @@ B1:
         """
         r=0
         for cell in self.arr:
-            column=self.number2row(cell.number)
+            column=number2index(cell.number)
             if column>r:
                 r=column
         return r+1
@@ -956,77 +955,139 @@ class ODS(ODF):
         self.activeSheet=value.title
 
 
-class ODS_Read(ODS):
+class ODS_Read:
     """
        Los elementos P tienen los estilos:
        
         if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
     """
     def __init__(self, filename):
-        ODS.__init__(self, filename)
-        if len(self.sheets)>0:
-            print ("You can't load a ODS file, that already has sheets")
-            return
-        self.readed_doc=load(self.filename)#doc is only used in this function. All is generated in self.doc
-        pass
-        #Copy all styles
-        
-        
-        
-        for sheet in self.readed_doc.spreadsheet.getElementsByType(Table):
-            s=self.createSheet(sheet.getAttribute("name"))
-            self.setActiveSheet(s)
-            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
-                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
-                    ##print("Cell:", cell.allowed_attributes())
-                    #Get spanning 
-                    spanning_columns=cell.getAttribute('numbercolumnsspanned')
-                    if spanning_columns==None:
-                        spanning_columns==1
-                    else:
-                        spanning_columns=int(spanning_columns)
-                    spanning_rows=cell.getAttribute('numberrowsspanned')
-                    if spanning_rows==None:
-                        spanning_rows==1
-                    else:
-                        spanning_rows=int(spanning_rows)
+        self.doc=load(filename)#doc is only used in this function. All is generated in self.doc
+        self.filename=filename
 
-                    #Get value
-                    value=cell.getAttribute('value')
-                    if value==None:
-                        continue
-                    object=str(value)
-                    
-                    #Get Stylename
-                    stylename=cell.getAttribute('stylename')
-                    
-                    #Get Cursor position
-                    
-                    #Get split position
-                    
-                    #Get comment
-                    
-                    #Generate cell
-                    cell=OdfCell(letter_add("A", numcell), number_add("1", numrow), object, style=stylename)
-                    cell.setSpanning(spanning_columns, spanning_rows)
-                    
-                    s.addCell(cell)
-            s.setCursorPosition("A", "1")
-            s.setSplitPosition("A", "1")
-            print("loading s")
+        
+    def getSheetElementByName(self, name):
+        """
+            Devuelve el elemento de sheet buscando por su nombre
+        """
+        for numrow, sheet in  enumerate(self.doc.spreadsheet.getElementsByType(Table)):
+            if sheet.getAttribute("name")==name:
+                return sheet
+        return None        
+
+    def getSheetElementByIndex(self, index):
+        """
+            Devuelve el elemento de sheet buscando por su posición en el documento
+        """
+        try:
+            return self.doc.spreadsheet.getElementsByType(Table)[index]
+        except:
+            return None
+        
+        
+    def rowNumber(self, sheet_element):
+        """
+            Devuelve el numero de filas de un determinado sheet_element
+        """
+        return len(sheet_element.getElementsByType(TableRow))
+        
+    def columnNumber(self, sheet_element):
+        """
+            Devuelve el numero de filas de un determinado sheet_element
+        """
+        return len(sheet_element.getElementsByType(TableColumn))
+        
+        
+    def getCellValue(self, sheet_element, letter, number):
+        """
+            Returns the celll value
+        """
+        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
+        cell=row.getElementsByType(TableCell)[letter2index(letter)]
+        r=None
+        
+        if cell.getAttribute('valuetype')=='string':
+            r=cell.getAttribute('value')
+        if cell.getAttribute('valuetype')=='float':
+            r=Decimal(cell.getAttribute('value'))
+        if cell.getAttribute('valuetype')=='percentage':
+            r=OdfPercentage(Decimal(cell.getAttribute('value')), Decimal(1))
+        if cell.getAttribute('formula')!=None:
+            r=str(cell.getAttribute('formula'))[3:]
+        if cell.getAttribute('valuetype')=='currency':
+            r=OdfMoney(Decimal(cell.getAttribute('value')), cell.getAttribute('currency'))
+        if cell.getAttribute('valuetype')=='date':
+            r=datetime.datetime.strptime(cell.getAttribute('datevalue'), "%Y-%m-%dT%H:%M:%S")
+##        print(cell.allowed_attributes(), cell.getAttribute('datevalue'))
+##        print(cell.getAttribute('value'), cell.getAttribute('valuetype'),   r)
+        return r
+
+    def getCell(self, sheet_element,  letter, number):
+        """
+            Returns an odfcell object
+        """
+        #        pass
+#        #Copy all styles
+#        
+#        
+#        
+#        for sheet in self.readed_doc.spreadsheet.getElementsByType(Table):
+#            s=self.createSheet(sheet.getAttribute("name"))
+#            self.setActiveSheet(s)
+#            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
+#                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
+#                    ##print("Cell:", cell.allowed_attributes())
+#                    #Get spanning 
+#                    spanning_columns=cell.getAttribute('numbercolumnsspanned')
+#                    if spanning_columns==None:
+#                        spanning_columns==1
+#                    else:
+#                        spanning_columns=int(spanning_columns)
+#                    spanning_rows=cell.getAttribute('numberrowsspanned')
+#                    if spanning_rows==None:
+#                        spanning_rows==1
+#                    else:
+#                        spanning_rows=int(spanning_rows)
+#
+#                    #Get value
+#                    value=cell.getAttribute('value')
+#                    if value==None:
+#                        continue
+#                    object=str(value)
+#                    
+#                    #Get Stylename
+#                    stylename=cell.getAttribute('stylename')
+#                    
+#                    #Get Cursor position
+#                    
+#                    #Get split position
+#                    
+#                    #Get comment
+#                    
+#                    #Generate cell
+#                    cell=OdfCell(letter_add("A", numcell), number_add("1", numrow), object, style=stylename)
+#                    cell.setSpanning(spanning_columns, spanning_rows)
+#                    
+#                    s.addCell(cell)
+#            s.setCursorPosition("A", "1")
+#            s.setSplitPosition("A", "1")
+#            print("loading s")
+        pass
+        
+    def setCell(self, sheet_element,  letter, number, cell):
+        """
+            Updates a cell
+            insertBefore(newchild, refchild) – Inserts the node newchild before the existing child node refchild.
+appendChild(newchild) – Adds the node newchild to the end of the list of children.
+removeChild(oldchild) – Re
+        """
+        pass
         
     def save(self, filename):
         if  filename==self.filename:
             print("You can't overwrite a readed ods")
-            return
-            
-        print(dir(self.readed_doc.styles))
-        for style in self.readed_doc.styles.childNodes:
-            self.doc.styles.addElement(style)
-        for style in self.readed_doc.automaticstyles.childNodes:
-            self.doc.automaticstyles.addElement(style)
-        
-        ODS.save(self, filename)
+            return        
+        self.doc.save( filename)
                 
 class ODS_Write(ODS):
     def __init__(self, filename):
@@ -1255,6 +1316,22 @@ def number_add(letter,number):
     return str(int(letter)+number)
 
 
+def letter2index(letters):
+    """
+        Converts sheet leter to an index begining with 0
+    """
+    def caracter2value(caracter):
+        return ord(caracter)-65
+    ############################
+    if len(letters)==1:
+        return caracter2value(letters[0])
+        
+def number2index( number):
+    """
+        Converts sheet number to an index begining with 0
+    """
+    return int(number)-1
+
 def makedirs(dir):
     try:
         os.makedirs(dir)
@@ -1276,6 +1353,8 @@ if __name__ == "__main__":
     s1.add("B", "2",  OdfPercentage(12, 56))
     s1.add("B", "3",  OdfPercentage(12, 56))
     s1.add("B", "4",  "=sum(B2:B3)","Percentage" )
+    s1.add("B", "6",  100.26)
+    s1.add("B", "7",  101)
     s1.setCursorPosition("A", "3")
     s1.setSplitPosition("A", "2")
     
@@ -1317,12 +1396,19 @@ if __name__ == "__main__":
     s4.setCursorPosition("C", "3")
     s4.setSplitPosition("C", "3")
     doc.save()
-    print("FIN")
+    print("ODS Generated")
 
     doc=ODS_Read("libodfgenerator.ods")
-    print(doc.sheets[0].getCell("A", "1").object)
-    print(doc.sheets[0].getCell("B", "2").object)
-    print(doc.sheets[0].getCell("B", "3").object)
+    s1=doc.getSheetElementByIndex(0)
+    print("Getting values from ODS:")
+    print("  + String", doc.getCellValue(s1, "A", "1"))
+    print("  + Percentage", doc.getCellValue(s1, "B", "2"))
+    print("  + Formula", doc.getCellValue(s1, "B", "4"))
+    print("  + Decimal", doc.getCellValue(s1, "B", "6"))
+    print("  + Decimal", doc.getCellValue(s1, "B", "7"))
+    s2=doc.getSheetElementByIndex(1)
+    print("  + Currency", doc.getCellValue(s2, "B", "2"))
+    print("  + Datetime", doc.getCellValue(s2, "B", "3"))
     doc.save("libodfgenerator_readed.ods")
 
 
@@ -1359,3 +1445,4 @@ if __name__ == "__main__":
     
     doc.header("ODS Reading", 1)
     doc.save()
+    print("ODT Generated")
