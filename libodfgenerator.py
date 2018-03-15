@@ -12,6 +12,7 @@ from odf.dc import Creator, Description, Title, Date
 from odf.meta import InitialCreator
 from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
 from odf.office import Annotation
+from odf.element import Node
 
 from decimal import Decimal
 """
@@ -969,8 +970,10 @@ class ODS_Read(ODS):
                 for numcell, cell in enumerate(row.getElementsByType(TableCell)):
                     text=""
                     for p in cell.getElementsByType(P):
+                        print(dir(p), p.allowed_attributes())
                         for n in p.childNodes:
-                            text=text+n.data
+                            if n.nodeType==Node.TEXT_NODE:
+                                text=text+n.data
                     
                     s.add(letter_add("A", numcell), number_add("1", numrow), text)
             s.setCursorPosition("A", "1")
