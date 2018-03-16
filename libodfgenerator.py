@@ -1092,7 +1092,13 @@ class ODS_Write(ODS):
             hs.addElement(TextProperties( fontweight="bold"))
             hs.addElement(ParagraphProperties(textalign="center"))
             self.doc.styles.addElement(hs)
-            
+
+            hs=Style(name="HeaderRed", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#ff0000", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties( fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs)
+
             hs=Style(name="HeaderYellow", family="table-cell")
             hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
             hs.addElement(TextProperties(fontweight="bold"))
@@ -1370,7 +1376,7 @@ if __name__ == "__main__":
     s3=doc.createSheet("Styles")
     s3.setColumnsWidth([400, 150, 150])
     s3.add("A","1","LibODFGenerator has the folowing default Styles:")
-    for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
+    for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderRed", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
         s3.add("B", number_add("1", number) , style, style=style)
     doc.setActiveSheet(s3)
     
@@ -1441,12 +1447,11 @@ if __name__ == "__main__":
     p.addText(". Se acabó.")
     doc.doc.text.addElement(p)
     doc.pageBreak()
-    
-    
+
     doc.header("ODS Writing", 1)
     doc.simpleParagraph("This library create several default styles for writing ODS files. You can see examples in libodfgenerator.ods.")
     doc.pageBreak(horizontal=True)
-    
+
     doc.header("ODS Reading", 1)
     doc.save()
     print("ODT Generated")
