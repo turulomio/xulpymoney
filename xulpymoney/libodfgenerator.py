@@ -1026,53 +1026,39 @@ class ODS_Read:
         """
             Returns an odfcell object
         """
-        #        pass
-#        #Copy all styles
-#        
-#        
-#        
-#        for sheet in self.readed_doc.spreadsheet.getElementsByType(Table):
-#            s=self.createSheet(sheet.getAttribute("name"))
-#            self.setActiveSheet(s)
-#            for numrow, row in  enumerate(sheet.getElementsByType(TableRow)):
-#                for numcell, cell in enumerate(row.getElementsByType(TableCell)):
-#                    ##print("Cell:", cell.allowed_attributes())
-#                    #Get spanning 
-#                    spanning_columns=cell.getAttribute('numbercolumnsspanned')
-#                    if spanning_columns==None:
-#                        spanning_columns==1
-#                    else:
-#                        spanning_columns=int(spanning_columns)
-#                    spanning_rows=cell.getAttribute('numberrowsspanned')
-#                    if spanning_rows==None:
-#                        spanning_rows==1
-#                    else:
-#                        spanning_rows=int(spanning_rows)
-#
-#                    #Get value
-#                    value=cell.getAttribute('value')
-#                    if value==None:
-#                        continue
-#                    object=str(value)
-#                    
-#                    #Get Stylename
-#                    stylename=cell.getAttribute('stylename')
-#                    
-#                    #Get Cursor position
-#                    
-#                    #Get split position
-#                    
-#                    #Get comment
-#                    
-#                    #Generate cell
-#                    cell=OdfCell(letter_add("A", numcell), number_add("1", numrow), object, style=stylename)
-#                    cell.setSpanning(spanning_columns, spanning_rows)
-#                    
-#                    s.addCell(cell)
-#            s.setCursorPosition("A", "1")
-#            s.setSplitPosition("A", "1")
-#            print("loading s")
-        pass
+        
+        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
+        cell=row.getElementsByType(TableCell)[letter2index(letter)]
+        object=self.getCellValue(sheet_element, letter, number)
+        #Get spanning
+        spanning_columns=cell.getAttribute('numbercolumnsspanned')
+        if spanning_columns==None:
+            spanning_columns=1
+        else:
+            spanning_columns=int(spanning_columns)
+        spanning_rows=cell.getAttribute('numberrowsspanned')
+        if spanning_rows==None:
+            spanning_rows=1
+        else:
+            spanning_rows=int(spanning_rows)
+        
+        #Get Stylename
+        stylename=cell.getAttribute('stylename')
+
+
+        #Odfcell
+        r=OdfCell(letter, number, object, stylename)
+        r.setSpanning(spanning_columns, spanning_rows)
+        
+        #Get comment
+#        comment=cell.getElementsByType(Annotation)
+#        if len(comment)>0:
+##            print((comment[0].allowed_attributes()))
+#            comment_text=comment[0].getAttribute('name')
+#            r.setComment(comment_text)
+#            print(comment)
+
+        return r
         
     def setCell(self, sheet_element,  letter, number, cell):
         """
@@ -1080,8 +1066,17 @@ class ODS_Read:
             insertBefore(newchild, refchild) – Inserts the node newchild before the existing child node refchild.
 appendChild(newchild) – Adds the node newchild to the end of the list of children.
 removeChild(oldchild) – Re
+
+        ESTA FUNCION SE USA PARA SUSTITUIR EN UNA PLANTILLA
+        NO SE PUEDEN AÑADIR MAS CELDAS O FILAS
+        PARA ESO USAR ODS_Write DE MOMENTO
         """
-        pass
+#        if cell.__class__ not in [ODFCell, ODFFORMULA]: FALTA PROGRAMAR
+        
+        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
+        oldcell=row.getElementsByType(TableCell)[letter2index(letter)]
+        row.insertBefore(cell.generate(), oldcell)
+        row.removeChild(oldcell)
         
     def save(self, filename):
         if  filename==self.filename:
@@ -1409,8 +1404,17 @@ if __name__ == "__main__":
     s2=doc.getSheetElementByIndex(1)
     print("  + Currency", doc.getCellValue(s2, "B", "2"))
     print("  + Datetime", doc.getCellValue(s2, "B", "3"))
+    
+    ##Sustituye celda
+    odfcell=doc.getCell(s1, "B", "6")
+    odfcell.object=1789.12
+    doc.setCell(s1, "B", "6", odfcell)
     doc.save("libodfgenerator_readed.ods")
 
+    odfcell=doc.getCell(s1, "B", "10")
+    odfcell.object="TURULETE"
+#    odfcell.setComment("Turulete")
+    doc.setCell(s1, "B", "10", odfcell )
 
     #ODT#
     doc=ODT("libodfgenerator.odt", language="fr", country="FR")
