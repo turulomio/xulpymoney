@@ -578,11 +578,11 @@ B1:
         return None
         
     def add(self, letter,number, result, style=None):
-        if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
+        if result.__class__ in (str, int, float, datetime.datetime, datetime.date,  OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
             self.addCell(OdfCell(letter, number, result, style))
         elif result.__class__ in (list,):#Una lista
             for i,row in enumerate(result):
-                if row.__class__ in (int, str, float, datetime.datetime):#Una lista de una columna
+                if row.__class__ in (int, str, float, datetime.datetime,  datetime.date):#Una lista de una columna
                     self.addCell(OdfCell(letter, number_add(number, i), result[i], style))
                 elif row.__class__ in (list, ):#Una lista de varias columnas
                     for j,column in enumerate(row):
@@ -1017,9 +1017,13 @@ class ODS_Read:
         if cell.getAttribute('valuetype')=='currency':
             r=OdfMoney(Decimal(cell.getAttribute('value')), cell.getAttribute('currency'))
         if cell.getAttribute('valuetype')=='date':
-            r=datetime.datetime.strptime(cell.getAttribute('datevalue'), "%Y-%m-%dT%H:%M:%S")
-##        print(cell.allowed_attributes(), cell.getAttribute('datevalue'))
-##        print(cell.getAttribute('value'), cell.getAttribute('valuetype'),   r)
+            datevalue=cell.getAttribute('datevalue')
+            if len(datevalue)<=10:
+                r=datetime.datetime.strptime(datevalue, "%Y-%m-%d").date()
+            else:
+                r=datetime.datetime.strptime(datevalue, "%Y-%m-%dT%H:%M:%S")
+#        print(cell.allowed_attributes(), cell.getAttribute('datevalue'), cell.getAttribute('datatype'))
+#        print(cell.getAttribute('value'), cell.getAttribute('valuetype'),   r)
         return r
 
     def getCell(self, sheet_element,  letter, number):
@@ -1365,6 +1369,8 @@ if __name__ == "__main__":
     s2.add("B", "2",  OdfMoney(12, "EUR"))
     s2.add("A", "3", "Datetime", "TextLeft")
     s2.add("B", "3",  datetime.datetime.now())
+    s2.add("A", "4", "Date", "TextLeft")
+    s2.add("B", "4",  datetime.date.today())
     s2.setColumnsWidth([330, 150])
     s2.setCursorPosition("D", "6")
     s2.setSplitPosition("B", "2")
@@ -1410,6 +1416,7 @@ if __name__ == "__main__":
     s2=doc.getSheetElementByIndex(1)
     print("  + Currency", doc.getCellValue(s2, "B", "2"))
     print("  + Datetime", doc.getCellValue(s2, "B", "3"))
+    print("  + Date", doc.getCellValue(s2, "B", "4"))
     
     ##Sustituye celda
     odfcell=doc.getCell(s1, "B", "6")
