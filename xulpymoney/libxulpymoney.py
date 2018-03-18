@@ -6174,9 +6174,12 @@ class SetDPS:
         self.arr=[]
         self.mem=mem   
         self.product=product
+        
+    def append(self, o):
+        self.arr.append(o)
     
     def length(self):
-        return len (self.arr)
+        return len(self.arr)
     
     def load_from_db(self):
         del self.arr
