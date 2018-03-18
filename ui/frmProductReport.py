@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetDPS,  SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -17,11 +17,8 @@ from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
 from wdgProductHistoricalChart import wdgProductHistoricalChart
 from canvaschart import  VCTemporalSeries
-from decimal import Decimal
+from libodfgenerator import ODS_Read
 
-from odf.opendocument import load
-from odf.table import Table, TableRow, TableCell
-from odf.text import P
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
         """
@@ -547,38 +544,20 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         filename=QFileDialog.getOpenFileName(self, "", "", "LibreOffice Calc (*.ods)")[0]
         got=0
         if filename!="":
-            set=SetDPS(self.mem, self.product)
-            doc = load(filename)
-            table=doc.spreadsheet.getElementsByType(Table)[0]
-            rows = table.getElementsByType(TableRow)
-            for row in rows:
-                try:
-                    cells = row.getElementsByType(TableCell)
-                    
-                    #Date YYYY-MM-DD o YYYY-MM-DD HH:MM:SS
-                    p_list = cells[0].getElementsByType(P)
-                    for p in p_list:
-                        for node in p.childNodes:
-                            print(node.data)
-                            if node.nodeProductType == 3:
-                                s=node.data
-                                date=datetime.date(int(s[0:4]), int(s[5:7]), int(s[8:10])) 
-                    #value
-                    p_list = cells[1].getElementsByType(P)
-                    for p in p_list:
-                        for node in p.childNodes:
-                            print(node.data)
-                            if node.nodeProductType == 3:
-                                value=Decimal(node.data.replace(",", "."))
-                    print(date, value)
-                    set.append(DPS(self.mem, self.product).init__create(date,  value))
-                    got=got+1
-                except:
-                    pass
-            print("Added {} DPS from {} ODS rows".format(got, len(rows)))
-            set.save()
+            ods=ODS_Read(filename)
+            sheet=ods.getSheetElementByIndex(0)
+            for number in range(2, ods.rowNumber(sheet)):
+                date=ods.getCellValue(sheet, "A", str(number))
+                value=ods.getCellValue(sheet, "B", str(number))
+                print (date, value)
+                dps=DPS(self.mem, self.product).init__create(date,  value)
+                dps.save()
+                self.product.dps.append(dps)
+                got=got+1
+            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
             self.mem.con.commit()
             self.update_due_to_quotes_change()
+
     @pyqtSlot()
     def on_actionEstimationDPSDelete_triggered(self):
         if self.selEstimationDPS!=None:
@@ -625,33 +604,21 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot()
     def on_actionQuoteImport_triggered(self):
         filename=QFileDialog.getOpenFileName(self, "", "", "LibreOffice Calc (*.ods)")[0]
+        
+        
+        
+        got=0
         if filename!="":
             set=SetQuotes(self.mem)
-            doc = load(filename)
-            table=doc.spreadsheet.getElementsByType(Table)[0]
-            rows = table.getElementsByType(TableRow)
-            for row in rows:
-                try:
-                    cells = row.getElementsByType(TableCell)
-                    
-                    #Date YYYY-MM-DD o YYYY-MM-DD HH:MM:SS
-                    p_list = cells[0].getElementsByType(P)
-                    for p in p_list:
-                        for node in p.childNodes:
-                            if node.nodeProductType == 3:
-                                s=node.data
-                                date=datetime.date(int(s[0:4]), int(s[5:7]), int(s[8:10])) 
-                                datet=dt(date, self.product.stockmarket.closes, self.product.stockmarket.zone)
-                    #value
-                    p_list = cells[1].getElementsByType(P)
-                    for p in p_list:
-                        for node in p.childNodes:
-                            if node.nodeProductType == 3:
-                                value=Decimal(node.data.replace(",", "."))
-                    print(date, value)
-                    set.append(Quote(self.mem).init__create(self.product, datet,  value))
-                except:
-                    pass
+            ods=ODS_Read(filename)
+            sheet=ods.getSheetElementByIndex(0)
+            for number in range(2, ods.rowNumber(sheet)):
+                date=ods.getCellValue(sheet, "A", str(number))
+                value=ods.getCellValue(sheet, "B", str(number))
+                print (date, value)
+                set.append(Quote(self.mem).init__create(self.product, dt(date, self.product.stockmarket.closes, self.product.stockmarket.zone),  value))
+                got=got+1
+            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
             set.save()
             self.mem.con.commit()
             self.update_due_to_quotes_change()

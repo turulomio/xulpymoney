@@ -989,7 +989,7 @@ class ODS_Read:
         """
             Devuelve el numero de filas de un determinado sheet_element
         """
-        return len(sheet_element.getElementsByType(TableRow))
+        return len(sheet_element.getElementsByType(TableRow))-1
         
     def columnNumber(self, sheet_element):
         """
