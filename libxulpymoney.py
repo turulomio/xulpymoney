@@ -7770,14 +7770,15 @@ class QuotesResult:
         
         
         
-    def load_dps_and_splits(self):
+    def load_dps_and_splits(self, force=False):
         """
             Only once. If it's already in memory. It ignore it
+            force=True load from database again even if dps is not null
         """
-        if self.product.dps==None:
+        if self.product.dps==None or force==True:
             self.product.dps=SetDPS(self.mem, self.product)
             self.product.dps.load_from_db()     
-        if self.product.splits==None:
+        if self.product.splits==None or force==True:
             self.product.splits=SetSplits(self.mem, self.product)
             self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
         

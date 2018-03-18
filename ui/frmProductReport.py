@@ -526,11 +526,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot()
     def on_actionDPSDelete_triggered(self):
         if self.selDPS!=None:
-            self.selDPS.borrar()
+            for i in self.tblDPSPaid.selectedItems():#itera por cada item no row.        
+                if i.column()==0:
+                    dps=self.product.dps.arr[i.row()]
+                    dps.borrar()
             self.mem.con.commit()
-            self.product.dps.arr.remove(self.selDPS)
-            self.product.dps.myqtablewidget(self.tblDPSPaid)
+            self.product.result.load_dps_and_splits(force=True)#Reload becouse, deleting one in one loose index reference
             self.update_due_to_quotes_change()
+
         
     @pyqtSlot()
     def on_actionDPSNew_triggered(self):
