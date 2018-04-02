@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201801250516
+        self.lastcodeupdate=201803270802
         self.need_update()
 
    
@@ -2194,6 +2194,18 @@ Return False, in other cases';""")
             self.mem.con.commit()
             self.set_database_version(201801250516)       
 
+            
+        if self.dbversion<201803270802:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, array[Null, %s,Null,Null], %s, %s, %s, %s)",
+                    (81719, 'Renta 4 Valor Relativo FI', 'ES0128522002 ', 'EUR', 2, '', '', None, None, None, 50, 'c', 1, 1, 'F00000H5PN', None, [8, ], "", False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, array[Null, %s,Null,Null], %s, %s, %s, %s)",
+                    (81720, 'Renta 4 Nexus FI', 'ES0173268006 ', 'EUR', 2, '', '', None, None, None, 10, 'c', 1, 1, 'F00000LXSB', None, [8, ], "", False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, array[Null, %s,Null,Null], %s, %s, %s, %s)",
+                    (81721, 'Renta 4 Foncuenta Ahorro FI', 'ES0173222003 ', 'EUR', 2, '', '', None, None, None, 10, 'c', 1, 1, 'F00000YGE9', None, [8, ], "", False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201803270802)         
 
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
