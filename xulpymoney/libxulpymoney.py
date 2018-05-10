@@ -5553,6 +5553,8 @@ class SetLeverages(SetCommons):
         self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2))
         self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3))
         self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
+        self.append(Leverage(self.mem).init__create( 5,QApplication.translate("Core","Leverage x5"), 5))
+        self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), 10))
 
 
 class SetOrders:
