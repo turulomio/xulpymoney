@@ -249,29 +249,37 @@ class Percentage:
             return True
         return False
 
-
+## Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones
 class AccountOperationOfInvestmentOperation(MyObject_With_IdDatetime):
-    """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
-    def __init__(self, mem):
-        self.mem=mem
-        self.concepto=None
-        self.tipooperacion=None
-        self.importe=None
-        self.comentario=None #Documented in comment
-        self.account=None
-        self.operinversion=None
-        self.investment=None
-        
-    def init__create(self, datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id=None):
-        self.datetime=datetime
-        self.concepto=concepto
-        self.tipooperacion=tipooperacion
-        self.importe=importe
-        self.comentario=comentario
-        self.account=cuenta
-        self.operinversion=operinversion
-        self.investment=inversion
-        return self
+    ## Constructor with the following attributes combination
+    ## 1. AccountOperationOfInvestmentOperation(mem). Create an account operation of an investment operation with all attributes to None
+    ## 2. AccountOperationOfInvestmentOperation(mem,  datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id). Create an account operation of an investment operation settings all attributes.1
+    ## @param mem MemXulpymoney object
+    ## @param datetime Datetime of the account operation
+    ## @param concepto Concept object
+    ## @param tipooperacion OperationType object
+    ## @param importe Decimal with the amount of the operation
+    ## @param comentario Account operation comment
+    ## @param account Account object
+    ## @param operinversion InvestmentOperation object that generates this account operation
+    ## @param id Integer that sets the id of an accoun operation. If id=None it's not in the database. id is set in the save method
+    def __init__(self, *args):
+        def init__create(datetime,  concepto, tipooperacion, importe, comentario, account, operinversion, inversion, id):
+            self.datetime=datetime
+            self.concepto=concepto
+            self.tipooperacion=tipooperacion
+            self.importe=importe
+            self.comentario=comentario
+            self.account=account
+            self.operinversion=operinversion
+            self.investment=inversion
+            self.id=id
+            
+        self.mem=args[0]
+        if len(args)==1:
+            init__create(None, None, None, None, None, None, None, None, None)
+        if len(args)==10:
+            init__create(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
 
     def save(self):
         cur=self.mem.con.cursor()
@@ -3828,18 +3836,18 @@ class InvestmentOperation:
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
             importe=-self.gross(type=2)-self.comission(type=2)
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment)
+            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
             importe=self.gross(type=2)-self.comission(type=2)-self.taxes(type=2)
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment)
+            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
                 importe=-self.comission(type=2)-self.taxes(type=2)
-                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.investment.account, self,self.investment)
+                c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.investment.account, self,self.investment, None)
                 c.save()
     
     def copy(self, investment=None):
