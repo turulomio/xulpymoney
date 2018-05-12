@@ -17,7 +17,7 @@ import getpass
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
-from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration
+from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
 from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime,  MyList
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -4941,18 +4941,18 @@ class SetOperationTypes(MyDictList_With_IdName):
     def __init__(self, mem):
         MyDictList_With_IdName.__init__(self)
         self.mem=mem     
-        
+
     def load(self):
-        self.append(OperationType().init__create( QApplication.translate("Core","Expense"), 1))
-        self.append(OperationType().init__create( QApplication.translate("Core","Income"), 2))
-        self.append(OperationType().init__create( QApplication.translate("Core","Transfer"), 3))
-        self.append(OperationType().init__create( QApplication.translate("Core","Purchase of shares"), 4))
-        self.append(OperationType().init__create( QApplication.translate("Core","Sale of shares"), 5))
-        self.append(OperationType().init__create( QApplication.translate("Core","Added of shares"), 6))
-        self.append(OperationType().init__create( QApplication.translate("Core","Credit card billing"), 7))
-        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), 8)) #Se contabilizan como ganancia
-        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), 9)) #No se contabiliza
-        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), 10)) #No se contabiliza     
+        self.append(OperationType().init__create( QApplication.translate("Core","Expense"),  eOperationType.Expense))
+        self.append(OperationType().init__create( QApplication.translate("Core","Income"), eOperationType.Income))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer"), eOperationType.Transfer))
+        self.append(OperationType().init__create( QApplication.translate("Core","Purchase of shares"), eOperationType.SharesPurchase))
+        self.append(OperationType().init__create( QApplication.translate("Core","Sale of shares"), eOperationType.SharesSale))
+        self.append(OperationType().init__create( QApplication.translate("Core","Added of shares"), eOperationType.SharesAdd))
+        self.append(OperationType().init__create( QApplication.translate("Core","Credit card billing"), eOperationType.CreditCardBilling))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), eOperationType.TransferFunds)) #Se contabilizan como ganancia
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), eOperationType.TransferSharesOrigin)) #No se contabiliza
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), eOperationType.TransferSharesDestiny)) #No se contabiliza     
 
 
     def qcombobox_basic(self, combo,  selected=None):
@@ -4961,7 +4961,7 @@ class SetOperationTypes(MyDictList_With_IdName):
         It sorts by name the arr""" 
         self.order_by_name()
         combo.clear()
-        for n in (1, 2):
+        for n in (eOperationType.Expense, eOperationType.Income):
             a=self.dic[str(n)]
             combo.addItem(a.name, a.id)
 
@@ -4975,7 +4975,7 @@ class SetOperationTypes(MyDictList_With_IdName):
         It sorts by name the arr""" 
         self.order_by_name()
         combo.clear()
-        for n in (4, 5, 6, 8):
+        for n in (eOperationType.SharesPurchase, eOperationType.SharesSale, eOperationType.SharesAdd, eOperationType.TransferFunds):
             a=self.dic[str(n)]
             combo.addItem(a.name, a.id)
 
