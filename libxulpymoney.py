@@ -5010,26 +5010,26 @@ class SetAgrupations(MyDictList_With_IdName):
         self.mem=mem
 
     def load_all(self):
-        self.append(Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(3) ))
-        self.append(Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(10)  ))
-        self.append(Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
-        self.append(Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
-        self.append(Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
-        self.append(Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(10)  ))
-        self.append(Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
-        self.append(Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1)  ))
+        self.append(Agrupation(self.mem,  "IBEX","Ibex 35", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem,  "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem, "CAC",  "CAC 40 de París", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem,  "EUROSTOXX","Eurostoxx 50", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(10)  ))
+        self.append(Agrupation(self.mem,  "DAX","DAX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
+        self.append(Agrupation(self.mem, "SP500",  "Standard & Poors 500", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
+        self.append(Agrupation(self.mem,  "NASDAQ100","Nasdaq 100", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
+        self.append(Agrupation(self.mem,  "EURONEXT",  "EURONEXT", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(10)  ))
+        self.append(Agrupation(self.mem,  "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
+        self.append(Agrupation(self.mem,  "LATIBEX",  "LATIBEX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1)  ))
 
-        self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(3)  ))
-        self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(5)  ))
+        self.append(Agrupation(self.mem,  "e_fr_LYXOR","LYXOR", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(3)  ))
+        self.append(Agrupation(self.mem,  "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(5)  ))
         
-        self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "f_fr_CARMIGNAC","Gestora CARMIGNAC", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(3) ))
-        self.append(Agrupation(self.mem).init__create("f_cat_money","Funds category: Money", self.mem.types.find_by_id(2),self.mem.stockmarkets.find_by_id(10)))
+        self.append(Agrupation(self.mem,  "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem,  "f_fr_CARMIGNAC","Gestora CARMIGNAC", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem, "f_cat_money","Funds category: Money", self.mem.types.find_by_id(2),self.mem.stockmarkets.find_by_id(10)))
 
-        self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(3) ))
-        self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(1)))
+        self.append(Agrupation(self.mem,  "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem, "w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(1)))
         
         
   
@@ -7551,25 +7551,30 @@ class ProductType:
         self.name=name
         return self
 
-class Agrupation:
-    """Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
-    fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""
-    def __init__(self,  mem):
-        self.mem=mem
-        self.id=None
-        self.name=None
-        self.type=None
-        self.stockmarket=None
+## Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
+## fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""  
+class Agrupation(MyObject_With_IdName):
+    ## Constructor with the following attributes combination
+    ## 1. Agrupation(mem). Create an aggrupation with all attributes to None
+    ## 2. Agrupation(mem, id,  name, type, bolsa). Create an agrupation settings all attributes.
+    ## @param mem MemXulpymoney object
+    ## @param name String with the name of the agrupation
+    ## @param type
+    ## @param stockmarket StockMarket object
+    ## @param id Integer that sets the id of the agrupation
+    def __init__(self,  *args):        
+        def init__create( id,  name, type, bolsa):
+            self.id=id
+            self.name=name
+            self.type=type
+            self.stockmarket=bolsa
 
-        
-    def init__create(self, id,  name, type, bolsa):
-        self.id=id
-        self.name=name
-        self.type=type
-        self.stockmarket=bolsa
-        return self
+        self.mem=args[0]
+        if len(args)==1:
+            init__create(None, None, None, None)
+        if len(args)==5:
+            init__create(args[1], args[2], args[3], args[4])
 
-    
 class SetTypes(MyDictList_With_IdName):
     def __init__(self, mem):
         MyDictList_With_IdName.__init__(self)
