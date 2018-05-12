@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QWidget
 import datetime
 from Ui_wdgYear import Ui_wdgYear
-from libxulpymoney import function_name, qmessagebox
+from libxulpymoneyfunctions import function_name, qmessagebox
 
 class wdgYear(QWidget, Ui_wdgYear):
     changed=pyqtSignal()

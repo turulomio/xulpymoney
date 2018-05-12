@@ -2,7 +2,8 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
-from libxulpymoney import Assets, qmessagebox,  Percentage
+from libxulpymoney import Assets,  Percentage
+from libxulpymoneyfunctions import qmessagebox
 from Ui_wdgConcepts import Ui_wdgConcepts
 from wdgConceptsHistorical import wdgConceptsHistorical
 from canvaschart import VCPie

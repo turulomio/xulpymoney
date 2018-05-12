@@ -7,78 +7,16 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from decimal import Decimal
 import locale
 import sys
+import platform
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
 import pytz
 import time
-########################## COPIED FUNCTIONS #######################################
-#FROM LIBXULPYMONEY
-def string2datetime(s, type, zone="Europe/Madrid"):
-    """
-        s is a string for datetime
-        type is the diferent formats id
-    """
-    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
-        s=s[:-3]+s[-2:]
-        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
-        return dat
-    if type==2:#20/11/2017 23:00 ==> Naive
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        return dat
-    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-    if type==4:#27 1 16:54 2017==> Aware, using zone parameter . 1 es el mes convertido con month2int
-        dat=datetime.datetime.strptime( s, "%d %m %H:%M %Y")
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-#FROM XULPYMONEY
-def month2int(s):
-    """
-        Converts a month string to a int
-    """
-    if s in ["Jan", "Ene", "Enero", "January", "enero", "january"]:
-        return 1
-    if s in ["Feb", "Febrero", "February", "febrero", "february"]:
-        return 2
-    if s in ["Mar", "Marzo", "March", "marzo", "march"]:
-        return 3
-    if s in ["Apr", "Abr", "April", "Abril", "abril", "april"]:
-        return 4
-    if s in ["May", "Mayo", "mayo", "may"]:
-        return 5
-    if s in ["Jun", "June", "Junio", "junio", "june"]:
-        return 6
-    if s in ["Jul", "July", "Julio", "julio", "july"]:
-        return 7
-    if s in ["Aug", "Ago", "August", "Agosto", "agosto", "august"]:
-        return 8
-    if s in ["Sep", "Septiembre", "September", "septiembre", "september"]:
-        return 9
-    if s in ["Oct", "October", "Octubre", "octubre", "october"]:
-        return 10
-    if s in ["Nov", "Noviembre", "November", "noviembre", "november"]:
-        return 11
-    if s in ["Dic", "Dec", "Diciembre", "December", "diciembre", "december"]:
-        return 12
-#FROM XULPYMONEY
-        
-def ampm2stringtime(s, type):
-    """
-        s is a string for time with AMPM and returns a 24 hours time string with zfill
-        type is the diferent formats id
-    """
-    s=s.upper()
-    if type==1:#5:35PM > 17:35   ó 5:35AM > 05:35
-        s=s.replace("AM", "")
-        if s.find("PM"):
-            s=s.replace("PM", "")
-            points=s.split(":")
-            s=str(int(points[0])+12).zfill(2)+":"+points[1]
-        else:#AM
-            points=s.split(":")
-            s=str(int(points[0])).zfill(2)+":"+points[1]
-        return s
-################################################################
+from libxulpymoneyfunctions import  month2int, ampm2stringtime
+
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney):
         self.ticker=ticker

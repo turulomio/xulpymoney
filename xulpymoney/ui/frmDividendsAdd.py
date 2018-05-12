@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
-from libxulpymoney import Dividend,  Money, qmessagebox, eProductType
+from libxulpymoney import Dividend,  Money
+from libxulpymoneyfunctions import qmessagebox
+from libxulpymoneytypes import eProductType
 from Ui_frmDividendsAdd import Ui_frmDividendsAdd
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):

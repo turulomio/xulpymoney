@@ -1,8 +1,8 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
-from libxulpymoney import    Percentage, epochms2aware, aware2epochms,  OHCLDuration
+from libxulpymoney import    Percentage,  OHCLDuration
+from libxulpymoneyfunctions import epochms2aware, aware2epochms
 import datetime
-
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
 class VCTemporalSeries(QChartView):

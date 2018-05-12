@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog
 from Ui_frmAccountOperationsAdd import Ui_frmAccountOperationsAdd
-from libxulpymoney import  AccountOperation,  Comment, CreditCardOperation,  qmessagebox
+from libxulpymoney import  AccountOperation,  Comment, CreditCardOperation
+from libxulpymoneyfunctions import qmessagebox
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):

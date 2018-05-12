@@ -2,7 +2,8 @@ from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qmessagebox,  Percentage, day_end_from_date
+from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, Percentage
+from libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
 from myqtablewidget import myQTableWidget
 from decimal import Decimal
 from canvaschart import VCTemporalSeries

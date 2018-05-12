@@ -1,4 +1,5 @@
-from libxulpymoney import Percentage, Quote, days_to_year_month, qmessagebox
+from libxulpymoney import Percentage, Quote
+from libxulpymoneyfunctions import days_to_year_month, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from Ui_wdgInvestments import Ui_wdgInvestments

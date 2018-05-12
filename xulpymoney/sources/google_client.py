@@ -4,64 +4,13 @@ import datetime
 from requests import get
 from decimal import Decimal
 import sys
-import pytz
-########################## COPIED FUNCTIONS #######################################
-
-############## COPIED FROM XULPYMONEY
-def string2datetime(s, type, zone="Europe/Madrid"):
-    """
-        s is a string for datetime
-        type is the diferent formats id
-    """
-    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
-        s=s[:-3]+s[-2:]
-        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
-        return dat
-    if type==2:#20/11/2017 23:00 ==> Naive
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        return dat
-    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-    if type==4:#27 1 16:54 2017==> Aware, using zone parameter . 1 es el mes convertido con month2int
-        dat=datetime.datetime.strptime( s, "%d %m %H:%M %Y")
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-        
-        
-    
-def month2int(s):
-    """
-        Converts a month string to a int
-    """
-    if s in ["Jan", "Ene"]:
-        return 1
-    if s in ["Feb", ]:
-        return 2
-    if s in ["Mar", ]:
-        return 3
-    if s in ["Apr", "Abr"]:
-        return 4
-    if s in ["May", ]:
-        return 5
-    if s in ["Jun", ]:
-        return 6
-    if s in ["Jul", ]:
-        return 7
-    if s in ["Aug", "Ago"]:
-        return 8
-    if s in ["Sep", ]:
-        return 9
-    if s in ["Oct", ]:
-        return 10
-    if s in ["Nov", ]:
-        return 11
-    if s in ["Dic", "Dec"]:
-        return 12
-########################## END COPIED FUNCTIONS #############################
-        
-        
+import platform
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
+from libxulpymoneyfunctions import string2datetime, month2int        
         
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney):

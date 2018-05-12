@@ -2,7 +2,8 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
 from myqtablewidget import myQTableWidget
-from libxulpymoney import SetProducts, qmessagebox
+from libxulpymoney import SetProducts
+from libxulpymoneyfunctions import qmessagebox
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite

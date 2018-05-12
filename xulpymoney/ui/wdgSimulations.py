@@ -4,7 +4,8 @@ from wdgSimulationsAdd import wdgSimulationsAdd
 import libdbupdates
 import frmMain
 from Ui_wdgSimulations import Ui_wdgSimulations
-from libxulpymoney import Connection, DBAdmin, SetSimulations, MemXulpymoney, qmessagebox
+from libxulpymoney import Connection, DBAdmin, SetSimulations, MemXulpymoney
+from libxulpymoneyfunctions import qmessagebox
 from libxulpymoneyversion import version_date
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):

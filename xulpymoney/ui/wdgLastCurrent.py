@@ -1,5 +1,5 @@
 import logging
-from libxulpymoney import qmessagebox
+from libxulpymoneyfunctions import qmessagebox
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from Ui_wdgLastCurrent import Ui_wdgLastCurrent

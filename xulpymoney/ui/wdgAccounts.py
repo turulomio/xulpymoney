@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
 from Ui_wdgAccounts import Ui_wdgAccounts
 from frmTransfer import frmTransfer
 from frmAccountsReport import frmAccountsReport
-from libxulpymoney import Money, qmessagebox
+from libxulpymoney import Money
+from libxulpymoneyfunctions import qmessagebox
 
 class wdgAccounts(QWidget, Ui_wdgAccounts):
     def __init__(self, mem,  parent=None):

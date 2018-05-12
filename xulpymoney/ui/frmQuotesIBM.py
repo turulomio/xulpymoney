@@ -1,7 +1,9 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from Ui_frmQuotesIBM import Ui_frmQuotesIBM
-from libxulpymoney import Quote, dt, dt_changes_tz, qmessagebox,  eProductType
+from libxulpymoney import Quote
+from libxulpymoneyfunctions import dt, dt_changes_tz, qmessagebox
+from libxulpymoneytypes import eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def __init__(self, mem, product,  quote=None,   parent = None):

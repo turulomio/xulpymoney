@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal,  pyqtSlot
 from PyQt5.QtWidgets import QWidget
 import datetime
 from Ui_wdgDatetime import Ui_wdgDatetime
-from libxulpymoney import dt
+from libxulpymoneyfunctions import dt
 
 class wdgDatetime(QWidget, Ui_wdgDatetime):
     """Usage:

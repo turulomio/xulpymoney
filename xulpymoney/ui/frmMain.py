@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport, list2string, qmessagebox, Product,  sync_data
+from libxulpymoney import AssetsReport, Product
+from libxulpymoneyfunctions import list2string, qmessagebox, sync_data
 from libxulpymoneyversion import version_date
 from frmAccess import frmAccess
 from myqlineedit import myQLineEdit

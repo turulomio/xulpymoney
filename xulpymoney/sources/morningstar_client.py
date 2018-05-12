@@ -1,33 +1,17 @@
 #!/usr/bin/python3
 import argparse
-import datetime
 from urllib.request import urlopen
 from decimal import Decimal
 import sys
-import pytz
+import platform
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
 from PyQt5.QtWidgets import QApplication
+from libxulpymoneyfunctions import string2datetime
 
-
-
-########################## COPIED FUNCTIONS #######################################
-#FROM LIBXULPYMONEY
-def string2datetime(s, type, zone="Europe/Madrid"):
-    """
-        s is a string for datetime
-        type is the diferent formats id
-    """
-    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
-        s=s[:-3]+s[-2:]
-        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
-        return dat
-    if type==2:#20/11/2017 23:00 ==> Naive
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        return dat
-    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-################################################################
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney):
         self.ticker=ticker
