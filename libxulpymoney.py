@@ -538,7 +538,7 @@ class SetInvestments(MyDictList_With_IdName):
         """
         name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         r.merge=2
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
@@ -559,7 +559,7 @@ class SetInvestments(MyDictList_With_IdName):
     def setDividends_merging_operation_dividends(self, product):
         name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         set=SetDividendsHomogeneus(self.mem, r)
         for inv in self.arr:
@@ -578,7 +578,7 @@ class SetInvestments(MyDictList_With_IdName):
         """
         name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
         r.merge=1
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
@@ -594,7 +594,7 @@ class SetInvestments(MyDictList_With_IdName):
     def setDividends_merging_current_operation_dividends(self, product):
         name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
         set=SetDividendsHomogeneus(self.mem, r)
         for inv in self.arr:
@@ -737,7 +737,7 @@ class SetInvestments(MyDictList_With_IdName):
         now=self.mem.localzone.now()
         currency_conversion=1
         if comision!=0:
-            op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, "Traspaso de valores", origen.account)
+            op_cuenta=AccountOperation(self.mem, now.date(), self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, "Traspaso de valores", origen.account, None)
             op_cuenta.save()           
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
@@ -1227,7 +1227,7 @@ class SetAccounts(MyDictList_With_IdName):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
-            c=Account(self.mem).init__db_row(row, self.ebs.find_by_id(row['id_entidadesbancarias']))
+            c=Account(self.mem, row, self.ebs.find_by_id(row['id_entidadesbancarias']))
             c.balance()
             self.append(c)
         cur.close()
@@ -1281,7 +1281,7 @@ class ReinvestModel:
         self.investments=[]
         for i in range(self.length()):
             bank=Bank(self.mem).init__create("Reinvest model bank", True, -1)
-            account=Account(self.mem).init__create("Reinvest model account",  bank, True, "", self.mem.localcurrency, -1)
+            account=Account(self.mem, "Reinvest model account",  bank, True, "", self.mem.localcurrency, -1)
             r=Investment(self.mem).init__create(QApplication.translate("Core", "Reinvest model of {}".format(self.product.name)), None, account, self.product, None, True, -1)    
             r.merge=1
             r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
@@ -1333,7 +1333,7 @@ class SetAccountOperations:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts.find_by_id(row['id_cuentas']), row['id_opercuentas'])
+            co=AccountOperation(self.mem,  row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts.find_by_id(row['id_cuentas']), row['id_opercuentas'])
             self.append(co)
         cur.close()
     
@@ -1347,7 +1347,7 @@ class SetAccountOperations:
             else:
                 comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards.find_by_id(row['id_tarjetas']).name, row['comentario'] )
             
-            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']))
+            co=AccountOperation(self.mem,  row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), None)
             self.append(co)
         cur.close()
 
@@ -1468,7 +1468,7 @@ class SetDividendsHeterogeneus:
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.investment.id, )
         for row in cur:
             inversion=self.mem.data.investments.find_by_id(row['id_inversiones'])
-            oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
+            oc=AccountOperation(self.mem, row['id_opercuentas'])
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
         cur.close()      
         
@@ -3063,7 +3063,7 @@ class Comment:
         return operinversion
         
     def getAccountOperation(self, id, code):
-        accountoperation=AccountOperation(self.mem).init__db_query(id)
+        accountoperation=AccountOperation(self.mem,  id)
         if accountoperation==None:
             logging.error("I couldn't find accountoperation {} for comment {}".format(id, code))
         return accountoperation
@@ -3268,44 +3268,56 @@ class Concept:
         cur.close()
         return suma
 
+## Class to manage everything relationed with bank accounts operations
 class AccountOperation(MyObject_With_IdDatetime):
-    def __init__(self, mem):
-        self.mem=mem
-        self.concepto=None
-        self.tipooperacion=None
-        self.importe=None
-        self.comentario=None #Documented in comment
-        self.account=None
-        
+    ## Constructor with the following attributes combination
+    ## 1. AccountOperation(mem). Create an account operation with all attributes to None
+    ## 2. AccountOperation(mem, id). Create an account operation searching data in the database for an id.
+    ## 3. AccountOperation(mem, row, concepto, tipooperacion, account). Create an account operation from a db row, generated in a database query
+    ## 4. AccountOperation(mem, datetime, concepto, tipooperacion, importe,  comentario, account, id):. Create account operation passing all attributes
+    ## @param mem MemXulpymoney object
+    ## @param row Dictionary of a database query cursor
+    ## @param concepto Concept object
+    ## @param tipooperacion OperationType object
+    ## @param account Account object
+    ## @param datetime Datetime of the account operation
+    ## @param importe Decimal with the amount of the operation
+    ## @param comentario Account operation comment
+    ## @param id Integer that sets the id of an accoun operation. If id=None it's not in the database. id is set in the save method
+    def __init__(self, *args):
+        def init__create(dt, concepto, tipooperacion, importe,  comentario, cuenta, id):
+            self.id=id
+            self.datetime=dt
+            self.concepto=concepto
+            self.tipooperacion=tipooperacion
+            self.importe=importe
+            self.comentario=comentario
+            self.account=cuenta
+            
+        def init__db_row(row, concepto,  tipooperacion, cuenta):
+            init__create(row['datetime'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
+
+        def init__db_query(id_opercuentas):
+            """Creates a AccountOperation querying database for an id_opercuentas"""
+            cur=self.mem.con.cursor()
+            cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
+            for row in cur:
+                concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
+                init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_by_id(row['id_cuentas']))
+            cur.close()
+
+        self.mem=args[0]
+        if  len(args)==1:
+            init__create(None, None, None, None, None, None, None)
+        if len(args)==2:
+            init__db_query(args[1])
+        if len(args)==5:
+            init__db_row(args[1], args[2], args[3], args[4])
+        if len(args)==8:
+            init__create(args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+
     def __repr__(self):
         return "AccountOperation: {}".format(self.id)
-        
-    def init__create(self, dt, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
-        self.id=id
-        self.datetime=dt
-        self.concepto=concepto
-        self.tipooperacion=tipooperacion
-        self.importe=importe
-        self.comentario=comentario
-        self.account=cuenta
-        return self
-        
-    def init__db_row(self, row, concepto,  tipooperacion, cuenta):
-        return self.init__create(row['datetime'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
-
-
-    def init__db_query(self, id_opercuentas):
-        """Creates a AccountOperation querying database for an id_opercuentas"""
-        if id_opercuentas==None:
-            return None
-        resultado=None
-        cur=self.mem.con.cursor()
-        cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
-        for row in cur:
-            concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
-            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_by_id(row['id_cuentas']))
-        cur.close()
-        return resultado
 
     def borrar(self):
         cur=self.mem.con.cursor()
@@ -3640,7 +3652,7 @@ class Dividend:
             Searches in db dividend, investment from memory, operaccount from db
         """
         row=self.mem.con.cursor_one_row("select * from dividends where id_dividends=%s", (id, ))
-        accountoperation=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
+        accountoperation=AccountOperation(self.mem,  row['id_opercuentas'])
         return self.init__db_row(row, self.mem.data.investments.find_by_id(row['id_inversiones']), accountoperation, self.mem.conceptos.find_by_id(row['id_conceptos']))
         
     def borrar(self):
@@ -3703,7 +3715,7 @@ class Dividend:
         """
         cur=self.mem.con.cursor()
         if self.id==None:#Insertar
-            self.opercuenta=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account)
+            self.opercuenta=AccountOperation(self.mem,  self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account, None)
             self.opercuenta.save()
             cur.execute("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
             self.id=cur.fetchone()[0]
@@ -3950,28 +3962,42 @@ class Bank:
         cur=self.mem.con.cursor()
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
-            
-class Account(MyObject_With_IdName):
-    def __init__(self, mem):
-        self.mem=mem
-        self.eb=None
-        self.active=None
-        self.numero=None
-        self.currency=None
-        self.eb=None #Enlace a objeto
 
+
+## Class to manage everything relationed with bank accounts
+class Account(MyObject_With_IdName):
+    ## Constructor with the following attributes combination
+    ## 1. Account(mem, row, bank). Create an Account from a db row, generated in a database query
+    ## 2. Account(mem, name, bank, active, numero, currency, id). Create account passing all attributes
+    ## @param mem MemXulpymoney object
+    ## @param row Dictionary of a database query cursor
+    ## @param bank Bank object
+    ## @param name Account name
+    ## @param active Boolean that sets if the Account is active
+    ## @param numero String with the account number
+    ## @param currency Currency object that sets the currency of the Account
+    ## @param id Integer that sets the id of an account. If id=None it's not in the database. id is set in the save method
+    def __init__(self, *args):
+        self.mem=args[0]
+        if len(args)==3:
+            self.id=args[1]['id_cuentas']
+            self.name=args[1]['cuenta']
+            self.eb=args[2]
+            self.active=args[1]['active']
+            self.numero=args[1]['numerocuenta']
+            self.currency=self.mem.currencies.find_by_id(args[1]['currency'])            
+        if len(args)==7:
+            self.name=args[1]
+            self.eb=args[2]
+            self.activa=args[3]
+            self.numero=args[4]
+            self.currency=args[5]
+            self.id=args[6]
+
+        
     def __repr__(self):
         return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
-        
-    def init__db_row(self, row, eb):
-        self.id=row['id_cuentas']
-        self.name=row['cuenta']
-        self.eb=eb
-        self.active=row['active']
-        self.numero=row['numerocuenta']
-        self.currency=self.mem.currencies.find_by_id(row['currency'])
-        return self
-    
+
     def balance(self,fecha=None, type=3):
         """Función que calcula el balance de una cuenta
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
@@ -3999,16 +4025,7 @@ class Account(MyObject_With_IdName):
             else:
                 dt=day_end_from_date(fecha, self.mem.localzone)
             return Money(self.mem, res, self.currency).convert(self.mem.localcurrency, dt)
-            
-    def init__create(self, name,  eb, activa, numero, currency, id=None):
-        self.id=id
-        self.name=name
-        self.eb=eb
-        self.active=activa
-        self.numero=numero
-        self.currency=currency
-        return self
-        
+
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
@@ -4046,11 +4063,11 @@ class Account(MyObject_With_IdName):
         oc_comision=None
         notfinished="Tranfer not fully finished"
         if comision>0:
-            oc_comision=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, notfinished, cuentaorigen )
+            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, notfinished, cuentaorigen, None)
             oc_comision.save()
-        oc_origen=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, notfinished, cuentaorigen )
+        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, notfinished, cuentaorigen, None)
         oc_origen.save()
-        oc_destino=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, notfinished, cuentadestino )
+        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, notfinished, cuentadestino, None)
         oc_destino.save()
         
         oc_origen.comentario=Comment(self.mem).setEncoded10001(oc_origen, oc_destino, oc_comision)
@@ -4916,7 +4933,7 @@ class SetCreditCardOperations:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem,  row['id_opercuentas']))
             self.append(co)
         cur.close()
 
@@ -7725,7 +7742,6 @@ class MemXulpymoney:
         self.countries.load_all()
         self.languages=SetLanguages(self)
         self.languages.load_all()
-        print (self.languages.dic, self.languages.arr)
         
         #Mem variables not in database
         self.language=self.languages.find_by_id(self.settings.value("mem/language", "en"))
