@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetProductTypes
 from libxulpymoneyfunctions import c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from libxulpymoneytypes import HistoricalChartAdjusts
 from frmSelector import frmSelector
@@ -113,7 +113,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             leverages.append(self.product.leveraged)
             leverages.qcombobox(self.cmbApalancado)
             
-            types=SetTypes(mem)
+            types=SetProductTypes(mem)
             types.append(self.product.type)
             types.qcombobox(self.cmbTipo)
         

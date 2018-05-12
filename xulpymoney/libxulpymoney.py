@@ -7542,14 +7542,6 @@ class SplitManual:
         self.mem.con.commit()
 
 
-class ProductType:
-    def __init__(self):
-        self.id=None
-        self.name=None
-    def init__create(self, id, name):
-        self.id=id
-        self.name=name
-        return self
 
 ## Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
 ## fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""  
@@ -7575,35 +7567,43 @@ class Agrupation(MyObject_With_IdName):
         if len(args)==5:
             init__create(args[1], args[2], args[3], args[4])
 
-class SetTypes(MyDictList_With_IdName):
+
+
+
+
+class ProductType(MyObject_With_IdName):
+    def __init__(self, *args):
+        MyObject_With_IdName.__init__(self, *args)
+
+class SetProductTypes(MyDictList_With_IdName):
     def __init__(self, mem):
         MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
-        self.append(ProductType().init__create(eProductType.Share.value,QApplication.translate("Core","Shares")))
-        self.append(ProductType().init__create(eProductType.Fund.value,QApplication.translate("Core","Funds")))
-        self.append(ProductType().init__create(eProductType.Index.value,QApplication.translate("Core","Indexes")))
-        self.append(ProductType().init__create(eProductType.ETF.value,QApplication.translate("Core","ETF")))
-        self.append(ProductType().init__create(eProductType.Warrant.value,QApplication.translate("Core","Warrants")))
-        self.append(ProductType().init__create(eProductType.Currency.value,QApplication.translate("Core","Currencies")))
-        self.append(ProductType().init__create(eProductType.PublicBond.value,QApplication.translate("Core","Public Bond")))
-        self.append(ProductType().init__create(eProductType.PensionPlan.value,QApplication.translate("Core","Pension plans")))
-        self.append(ProductType().init__create(eProductType.PrivateBond.value,QApplication.translate("Core","Private Bond")))
-        self.append(ProductType().init__create(eProductType.Deposit.value,QApplication.translate("Core","Deposit")))
-        self.append(ProductType().init__create(eProductType.Account.value,QApplication.translate("Core","Accounts")))
+        self.append(ProductType(eProductType.Share.value,QApplication.translate("Core","Shares")))
+        self.append(ProductType(eProductType.Fund.value,QApplication.translate("Core","Funds")))
+        self.append(ProductType(eProductType.Index.value,QApplication.translate("Core","Indexes")))
+        self.append(ProductType(eProductType.ETF.value,QApplication.translate("Core","ETF")))
+        self.append(ProductType(eProductType.Warrant.value,QApplication.translate("Core","Warrants")))
+        self.append(ProductType(eProductType.Currency.value,QApplication.translate("Core","Currencies")))
+        self.append(ProductType(eProductType.PublicBond.value,QApplication.translate("Core","Public Bond")))
+        self.append(ProductType(eProductType.PensionPlan.value,QApplication.translate("Core","Pension plans")))
+        self.append(ProductType(eProductType.PrivateBond.value,QApplication.translate("Core","Private Bond")))
+        self.append(ProductType(eProductType.Deposit.value,QApplication.translate("Core","Deposit")))
+        self.append(ProductType(eProductType.Account.value,QApplication.translate("Core","Accounts")))
 
     def investment_types(self):
-        """Returns a SetTypes without Indexes and Accounts"""
-        r=SetTypes(self.mem)
+        """Returns a SetProductTypes without Indexes and Accounts"""
+        r=SetProductTypes(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Index, eProductType.Account):
                 r.append(t)
         return r
 
     def with_operation_comissions_types(self):
-        """Returns a SetTypes with types which product operations  has comissions"""
-        r=SetTypes(self.mem)
+        """Returns a SetProductTypes with types which product operations  has comissions"""
+        r=SetProductTypes(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):
                 r.append(t)
@@ -7741,10 +7741,7 @@ class MemXulpymoney:
         
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
-        
 
-        
-        
     def init__script(self, title, tickers=False, sql=False):
         """
             Script arguments and autoconnect in mem.con, load_db_data
@@ -7840,7 +7837,7 @@ class MemXulpymoney:
         self.prioritieshistorical=SetPrioritiesHistorical(self)
         self.prioritieshistorical.load_all()
 
-        self.types=SetTypes(self)
+        self.types=SetProductTypes(self)
         self.types.load_all()
         
         self.stockmarkets=SetStockMarkets(self)

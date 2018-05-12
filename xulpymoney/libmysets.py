@@ -3,9 +3,19 @@ class MyObject_With_Id:
         self.id=None
 
 class MyObject_With_IdName:
-    def __init__(self):
-        self.id=None
-        self.name=None
+    ## Constructor with the following attributes combination
+    ## 1. MyObject_With_IdName(). Create an MyObject_With_IdName with all attributes to None
+    ## 2. MyObject_With_IdName( id,  name). Create an MyObject_With_IdName settings all attributes.
+    ## @param name String with the name of the MyObject_With_IdName
+    ## @param id Integer that sets the id of the MyObject_With_IdName
+    def __init__(self, *args):
+        def init__create( id,  name):
+            self.id=id
+            self.name=name
+        if len(args)==0:
+            init__create(None, None)
+        if len(args)==2:
+            init__create(args[0], args[1])
         
 class MyObject_With_IdDatetime:
     def __init__(self):
