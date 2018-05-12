@@ -7,10 +7,9 @@ import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import OHCLDuration,  InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus,  HistoricalChartAdjusts
+from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus
 from libxulpymoneyfunctions import day_end_from_date
-
-
+from libxulpymoneytypes import HistoricalChartAdjusts, OHCLDuration
 
 class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
