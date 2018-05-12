@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration
-from libmysets import MyDictList_With_IdName, MyObject_With_IdName
+from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -250,12 +250,10 @@ class Percentage:
         return False
 
 
-class AccountOperationOfInvestmentOperation:
+class AccountOperationOfInvestmentOperation(MyObject_With_IdDatetime):
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
     def __init__(self, mem):
-        self.mem=mem    
-        self.id=None #Coincide con id_opercuentas de la tabla opercuentas.
-        self.datetime=None
+        self.mem=mem
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
@@ -3270,11 +3268,9 @@ class Concept:
         cur.close()
         return suma
 
-class AccountOperation:
+class AccountOperation(MyObject_With_IdDatetime):
     def __init__(self, mem):
         self.mem=mem
-        self.id=None
-        self.datetime=None
         self.concepto=None
         self.tipooperacion=None
         self.importe=None

@@ -6,6 +6,11 @@ class MyObject_With_IdName(MyObject_With_Id):
     def __init__(self):
         MyObject_With_Id.__init__(self)
         self.name=None
+        
+class MyObject_With_IdDatetime(MyObject_With_Id):
+    def __init__(self):
+        MyObject_With_Id.__init__(self)
+        self.datetime=None
 
 class MyMem:
     def __init__(self):
