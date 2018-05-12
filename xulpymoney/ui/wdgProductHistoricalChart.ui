@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1014</width>
-    <height>615</height>
+    <width>1525</width>
+    <height>216</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -179,6 +179,16 @@
       <widget class="QCheckBox" name="chkSMA200">
        <property name="text">
         <string>SMA200</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkMedian">
+       <property name="text">
+        <string>Median</string>
        </property>
        <property name="checked">
         <bool>true</bool>

@@ -55,8 +55,9 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.generate()
         self.display()
 
+    
+    ## Just draw the chart with selected options. It creates and destroys objects
     def generate(self):
-        """Just draw the chart with selected options. It creates and destroys objects"""
         if self.view!=None:
             self.view.hide()
             self.view.close()
@@ -92,7 +93,14 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             for dt, value in self.setohcl.sma(200):
                 if dt>selected_datetime:
                     self.view.appendTemporalSeriesData(sma200, dt, value)
-                    
+
+        if self.chkMedian.isChecked():#Median value
+            median=self.setohcl.closes_median_value()
+            med=self.view.appendTemporalSeries(self.tr("Median at {}".format(self.product.currency.string(median))),  self.product.currency)
+            med.setColor(QColor(165, 165, 0))
+            self.view.appendTemporalSeriesData(med, selected_datetime, median)
+            self.view.appendTemporalSeriesData(med, self.mem.localzone.now(), median)
+
         #INVESTMENT
         if self.investment!=None:
             #Buy sell operations
@@ -119,7 +127,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 average_price.setColor(QColor(85, 170, 127))
                 self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
                 self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), m_average_price.amount)
-                    
+
     def display(self):
         self.view.display()
             
@@ -158,6 +166,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.display()
     
     def on_chkSMA200_stateChanged(self, state):
+        self.generate()
+        self.display()
+    
+    ## Function executed when changing state in QCheckbox chkmedian
+    def on_chkMedian_stateChanged(self, state):
         self.generate()
         self.display()
         

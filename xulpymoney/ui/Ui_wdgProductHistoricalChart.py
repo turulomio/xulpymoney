@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgProductHistoricalChart(object):
     def setupUi(self, wdgProductHistoricalChart):
         wdgProductHistoricalChart.setObjectName("wdgProductHistoricalChart")
-        wdgProductHistoricalChart.resize(1014, 615)
+        wdgProductHistoricalChart.resize(1525, 216)
         self.verticalLayout = QtWidgets.QVBoxLayout(wdgProductHistoricalChart)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
@@ -77,6 +77,10 @@ class Ui_wdgProductHistoricalChart(object):
         self.chkSMA200.setChecked(True)
         self.chkSMA200.setObjectName("chkSMA200")
         self.horizontalLayout_3.addWidget(self.chkSMA200)
+        self.chkMedian = QtWidgets.QCheckBox(wdgProductHistoricalChart)
+        self.chkMedian.setChecked(True)
+        self.chkMedian.setObjectName("chkMedian")
+        self.horizontalLayout_3.addWidget(self.chkMedian)
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem4)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
@@ -165,6 +169,7 @@ class Ui_wdgProductHistoricalChart(object):
         self.cmdFromRightMax.setText(_translate("wdgProductHistoricalChart", ">>"))
         self.chkSMA50.setText(_translate("wdgProductHistoricalChart", "SMA50"))
         self.chkSMA200.setText(_translate("wdgProductHistoricalChart", "SMA200"))
+        self.chkMedian.setText(_translate("wdgProductHistoricalChart", "Median"))
         self.actionProductReport.setText(_translate("wdgProductHistoricalChart", "Product report"))
         self.actionProductReport.setToolTip(_translate("wdgProductHistoricalChart", "Product report"))
         self.actionSortTPCDiario.setText(_translate("wdgProductHistoricalChart", "% Daily"))
