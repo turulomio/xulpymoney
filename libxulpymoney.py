@@ -7371,6 +7371,18 @@ class SetOHCL:
             if i>=number:
                 sma.append((ohcl.datetime(), average(i-number, i)))
         return sma
+        
+    ## Calculates the median value of all OHCL.close values
+    ## This function is in SetOHCL and can be used in all derivated classes
+    ## @param from_dt Date from data is calculated. If it's None (default) if calculated the median value from all OHCL data in the array.
+    def closes_median_value(self, from_dt=None):
+        r=self.closes()
+        r.sort()
+        if self.length() % 2==0:#Par
+            return r[self.length() // 2 -1]#n/2. But like I begin with 0 is -1
+        else:
+            return r[self.length() // 2]#If it's 5, median will be 3, but like I begin with 0 is integer division
+        
 
     def opens(self, from_dt=None):
         """Returns a list with all the open of the array"""
