@@ -1028,31 +1028,6 @@ class SetProducts(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
         self.mem=mem
-        
-
-#    def find_by_googleticker(self, ticker):
-#        if ticker==None:
-#            logging.info("I coudn't find a None google ticker")
-#            return ""
-#        for p in self.arr:
-#            googleticker=p.googleticker()
-#            if googleticker=="":
-#                continue
-#            if googleticker.upper()==ticker.upper():
-#                return p
-#        logging.info("I coudn't find this google ticker: {}".format(ticker))
-#        return None        
-
-#    def find_by_ticker(self, ticker):
-#        if ticker==None:
-#            return None
-#        for p in self.arr:
-#            if p.ticker==None:
-#                continue
-#            if p.ticker.upper()==ticker.upper():
-#                return p
-#        return None        
-        
 
     def find_by_isin(self, isin):
         if isin==None:
@@ -1078,22 +1053,6 @@ class SetProducts(SetCommons):
         ##Carga los products
         if len(lista)>0:
             self.load_from_db("select * from products where id in ("+lista+")", progress )
-
-
-#    def googletickers_string(self):
-#        s=""
-#        for p in self.arr:
-#            if p.ticker==None:
-#                continue
-#            if p.ticker=="":
-#                continue
-#            ticker=p.googleticker()
-#            if ticker==None:
-#                logging.debug("googleticker {} failed".format(p.ticker))
-#                continue
-#            s=s+ticker+","
-#        return s[:-1]
-        
 
     def load_from_db(self, sql,  progress=False):
         """sql es una query sobre la tabla inversiones
@@ -1494,7 +1453,6 @@ class ReinvestModel:
             r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
             lastprice=self.product.result.basic.last.quote
             for amount in self.amounts[0:i+1]: #Recorre las amounts del array        
-#    def init__create(self, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
                 r.op.append(InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), self.mem.localzone.now(), r,  int(amount/lastprice), Decimal(0), Decimal(0),  lastprice,  None, False, 1, -1))
                 lastprice=lastprice*(1-pricepercentage.value)
             r.op.order_by_datetime()
@@ -1645,12 +1603,6 @@ class SetCurrencies(SetCommons):
                 return c
         logging.error("SetCurrencies fails finding {}".format(symbol))
         return None
-#        try:
-#            return self.dic_arr[str(id)]    
-#        except:
-#            if log:
-#                print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
-#            return None
 
     def qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
@@ -1966,42 +1918,6 @@ class SetIO:
         """Remove from array"""
         self.arr.remove(objeto)
         
-                
-#    def clone(self):
-#        """Links all items in self. arr to a new set. Linked points the same object"""
-#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-#            result=self.__class__(self.mem)
-#        else:
-#            result=self.__class__(self.mem, self.investment)
-#        for a in self.arr:
-#            result.append(a)
-#        return result
-#                
-#    def clone_from_datetime(self, dt):
-#        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-#            result=self.__class__(self.mem)
-#        else:
-#            result=self.__class__(self.mem, self.investment)
-#        if dt==None:
-#            return self.clone()
-#        for a in self.arr:
-#            if a.datetime>=dt:
-#                result.append(a)
-#        return result
-                
-                
-#    def copy(self):
-#        """Copy all items in self. arr. Copy is generate a copy in a diferent memoriy direction"""
-#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-#            result=self.__class__(self.mem)
-#        else:
-#            result=self.__class__(self.mem, self.investment)
-#        for a in self.arr:
-#            result.append(a.copy())
-#        return result
-
-
     def subSet_from_datetime(self, dt=None):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro. Las operaciones del array son vinculos a objetos no copiadas como se hace con copy_from"""
         if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
@@ -2266,12 +2182,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         for o in self.arr:
             resultado=resultado+o.balance(o.investment.product.result.basic.last, type=3)
         return resultado        
-        
-#    def datetime_first_operation(self):
-#        if len(self.arr)==0:
-#            return None
-#        return self.arr[0].datetime
-#        
+
     def acciones(self):
         """Devuelve el número de acciones de la inversión actual"""
         resultado=Decimal(0)
@@ -2371,16 +2282,10 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         dias=self.average_age()
         if dias==0:
             dias=1
-#        return Decimal(365*self.tpc_total()/dias)
-#        return self.tpc_total()*365/dias
         return Percentage(self.tpc_total()*365, dias)
 
     def tpc_total(self):
         """Como es heterogenous el resultado sera en local"""
-#        suminvertido=self.invertido()
-#        if suminvertido.isZero():
-#            return None
-#        return self.pendiente().amount*100/suminvertido.amount
         return Percentage(self.pendiente(), self.invertido())
         
     
@@ -2506,11 +2411,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
     def gains_last_day(self, type=1):
         """Función que calcula la diferencia de balance entre last y penultimate
         Necesita haber cargado mq getbasic y operinversionesactual"""
-#        try:
         return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
-#        except:
-#            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.investment.name))
-#            return Money(self.mem,  0,  self.investment.product.currency)
 
     def gains_in_selling_point(self, type=1):
         """Gains in investment defined selling point"""
@@ -2555,8 +2456,6 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         dias=self.average_age()
         if dias==0:
             dias=1
-#        return self.tpc_total(last,  type)/dias*365
-#        print (Percentage(self.tpc_total(last, type)))
         return Percentage(self.tpc_total(last, type)*365, dias)
 
     def tpc_total(self, last, type=1):
@@ -2568,10 +2467,6 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
         return Percentage(self.pendiente(last, type), self.invertido(type))
-#        invertido=self.invertido(type)
-#        if invertido.isZero():
-#            return 0
-#        return self.pendiente(last, type).amount*100/invertido.amount
     
     def myqtablewidget(self,  tabla,  quote=None, type=1):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
@@ -3053,16 +2948,11 @@ class InvestmentOperationHistorical:
         
     def tpc_total_bruto(self):
         return Percentage(self.consolidado_bruto(), self.bruto_compra())
-#        bruto=self.bruto_compra()
-#        if bruto.isZero():
-#            return 0
-#        return 100*(self.consolidado_bruto()/bruto).amount
         
     def tpc_tae_neto(self):
         dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
         if dias==0:
             dias=1
-#        return self.tpc_total_neto()*365/dias
         return Percentage(self.tpc_total_neto()*365, dias)
 
 class InvestmentOperationCurrent:
@@ -3074,7 +2964,6 @@ class InvestmentOperationCurrent:
         self.datetime=None# con tz
         self.investment=None
         self.acciones=None
-#        self.importe=None
         self.impuestos=None
         self.comision=None
         self.valor_accion=None
@@ -3093,28 +2982,12 @@ class InvestmentOperationCurrent:
         self.datetime=datetime
         self.investment=inversion
         self.acciones=acciones
-#        self.importe=importe
         self.impuestos=impuestos
         self.comision=comision
         self.valor_accion=valor_accion
         self.show_in_ranges=show_in_ranges
         self.currency_conversion=currency_conversion
         return self
-#                                
-#    def init__db_row(self,  row,  inversion,  operinversion, tipooperacion):
-#        self.id=row['id_operinversionesactual']
-#        self.operinversion=operinversion
-#        self.tipooperacion=tipooperacion
-#        self.datetime=row['datetime']
-#        self.investment=inversion
-#        self.acciones=row['acciones']
-#        self.importe=row['importe']
-#        self.impuestos=row['impuestos']
-#        self.comision=row['comision']
-#        self.valor_accion=row['valor_accion']
-#        self.show_in_ranges=row['show_in_ranges']
-#        logging.error("NO SE SI DEBERIA HABER ROW PARA INVESTMENTOPERATIONCURRENT")
-#        return self
         
     def copy(self):
         return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.investment, self.acciones, self.impuestos, self.comision, self.valor_accion, self.show_in_ranges, self.currency_conversion,   self.id)
@@ -3273,9 +3146,6 @@ class InvestmentOperationCurrent:
                 2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
-#        if last==None:#initiating xulpymoney
-#            return 0
-            
         mlast=self.investment.quote2money(last, type)
         
         if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
@@ -3283,10 +3153,6 @@ class InvestmentOperationCurrent:
         else:
             mlastyear=self.investment.quote2money(lastyear, type)
             
-#        if mlastyear.isZero():
-#            return 0
-#            
-#        return 100*(mlast-mlastyear).amount/mlastyear.amount
         return Percentage(mlast-mlastyear, mlastyear)
     
     def tpc_total(self,  last,  type=1):
@@ -3299,10 +3165,6 @@ class InvestmentOperationCurrent:
         """
         if last==None:#initiating xulpymoney
             return Percentage()
-#        invertido=self.invertido(type)
-#        if invertido.isZero():
-#            return 0
-#        return 100*(self.pendiente(last, type).amount/invertido.amount)
         return Percentage(self.pendiente(last, type), self.invertido(type))
             
         
@@ -3310,7 +3172,6 @@ class InvestmentOperationCurrent:
         dias=self.age()
         if self.age()==0:
             dias=1
-#        return Decimal(365*self.tpc_total(last, type)/dias)
         return Percentage(self.tpc_total(last, type)*365,  dias)
         
         
@@ -3484,14 +3345,6 @@ class Comment:
             cco=self.getCreditCardOperation(args[0], code)
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(datetime_string(cco.datetime,  self.mem.localzone), money)
-        
-        
-        #OPERINVESTMENTS
-                        
-#    def comment(self):
-#        """Función que genera un comentario parseado según el tipo de operación o concepto"""
-#        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.investment.name, self.bruto, self.retencion, self.comision)
-#            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
 
 
 
@@ -3592,8 +3445,6 @@ class AccountOperation:
         self.comentario=None #Documented in comment
         self.account=None
         
-#    def __repr__(self):
-#        return "AccountOperation {0}. datetime: {1}. Importe:{2}. Concept:{3}".format(self.id, self.datetime, self.importe, self.concepto)
     def __repr__(self):
         return "AccountOperation: {}".format(self.id)
         
@@ -3682,16 +3533,8 @@ class DBAdmin:
         cont=self.connection_template1()
         cont._con.set_isolation_level(0)#Si no no me dejaba
         if cont.is_superuser():
-#            try:
             cur=cont.cursor()
             cur.execute("create database {0};".format(database))
-#            except:
-#                print ("Error in create_db()")
-#                return False
-#            finally:
-#                cur.close()
-#                cont.disconnect()
-#            return True
         else:
             print ("You need to be superuser to create database")
             return False
@@ -3702,7 +3545,6 @@ class DBAdmin:
         new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
         new.connect()
         new._con.set_isolation_level(0)#Si no no me dejaba            
-#            try:
         cur=new.cursor()
         cur.execute("SELECT 1 AS result FROM pg_database WHERE datname=%s", (database, ))
         
@@ -3713,8 +3555,7 @@ class DBAdmin:
         cur.close()
         new.disconnect()
         return False
-#            except:
-        
+
     def drop_db(self, database):
         """It has database parameter, due to I connect to template to drop database"""
         
@@ -3895,17 +3736,6 @@ class DBData:
             if b.active==False:
                 r.append(b)
         return r        
-#    def banks_all(self):
-#        return self.banks_active().union(self.banks_inactive(), self.mem)
-#        
-#    def accounts_all(self):
-#        return self.accounts_active().union(self.accounts_inactive(), self.mem, self.banks)
-        
-#    def creditcards_all(self):
-#        return self.creditcards_active().union(self.creditcards_inactive(), self.mem,  self.accounts)
-#        
-#    def investments_all(self):
-#        return self.investments_active().union(self.investments_inactive(), self.mem, self.accounts, self.products, self.benchmark)
     
     
     def banks_set(self, active):
@@ -4064,7 +3894,6 @@ class InvestmentOperation:
         self.tipooperacion=None
         self.investment=None
         self.acciones=None
-#        self.importe=None
         self.impuestos=None
         self.comision=None
         self.valor_accion=None
@@ -4083,7 +3912,6 @@ class InvestmentOperation:
         self.tipooperacion=tipooperacion
         self.investment=inversion
         self.acciones=row['acciones']
-#        self.importe=row['importe']
         self.impuestos=row['impuestos']
         self.comision=row['comision']
         self.valor_accion=row['valor_accion']
@@ -4099,7 +3927,6 @@ class InvestmentOperation:
         self.datetime=datetime
         self.investment=inversion
         self.acciones=acciones
-#        self.importe=importe
         self.impuestos=impuestos
         self.comision=comision
         self.valor_accion=valor_accion
@@ -4436,7 +4263,6 @@ class Investment:
         self.id=None
         self.name=None
         self.venta=None
-#        self.id_cuentas=None
         self.product=None#Puntero a objeto MQInvestment
         self.account=None#Vincula a un objeto  Account
         self.active=None
@@ -4473,11 +4299,7 @@ class Investment:
     def selling_price(self, type=1):
         if type==1:
             return Money(self.mem, self.venta, self.product.currency)
-#        elif type==2:
-#            return Money(self.mem, self.venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-#        elif type==3:
-#            return Money(self.mem, self.venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-            
+
     def setDividends_from_current_operations(self):
         """
             Returns a setDividens from the datetime of the first currnt operation
@@ -4611,11 +4433,6 @@ class Investment:
         if self.product.currency.id==self.account.currency.id:
             return True
         return False
-#        
-#    def pendiente(self):
-#        """Función que calcula el balance  pendiente de la inversión
-#                Necesita haber cargado mq getbasic y operinversionesactual"""
-#        return self.balance()-self.invertido()
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -5841,10 +5658,7 @@ class Money:
         else:
             print (self.currency, money.currency )
             logging.error("Before adding, please convert to the same currency")
-#            raise MoneyOperationException("MoneyOperationException")
             raise "MoneyOperationException"
-#            b=money.convert(self.currency)
-#            return Money(self.mem, self.amount+b.amount, self.currency)
             
         
     def __sub__(self, money):
@@ -5854,8 +5668,6 @@ class Money:
         else:
             logging.error("Before substracting, please convert to the same currency")
             raise "MoneyOperationException"
-#            b=money.convert(self.currency)
-#            return Money(self.mem, self.amount-b.amount, self.currency)
         
     def __lt__(self, money):
         if self.currency==money.currency:
@@ -5878,8 +5690,6 @@ class Money:
         else:
             logging.error("Before multiplying, please convert to the same currency")
             sys.exit(1)
-#            b=money.convert(self.currency)
-#            return Money(self.mem, self.amount*b.amount, self.currency)
     
     def __truediv__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
@@ -5888,8 +5698,6 @@ class Money:
         else:
             logging.error("Before true dividing, please convert to the same currency")
             sys.exit(1)
-#            b=money.convert(self.currency)
-#            return Money(self.mem, self.amount/b.amount, self.currency)
         
     def __repr__(self):
         return self.string(2)
@@ -6169,8 +5977,6 @@ class EstimationEPS:
         cur.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
         if cur.fetchone()[0]==0:
             cur.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
-
-#            print (cur.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
             cur.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
         cur.close()
@@ -6230,7 +6036,6 @@ class EstimationDPS:
         cur.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
         if cur.fetchone()[0]==0:
             cur.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
-#            print (cur.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
             cur.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
         cur.close()
@@ -6238,11 +6043,6 @@ class EstimationDPS:
     def percentage(self):
         """Hay que tener presente que lastyear (Objeto Quote) es el lastyear del año actual
         Necesita tener cargado en id el lastyear """
-        
-#        try:
-#            return self.estimation*100/self.product.result.basic.last.quote
-#        except:
-#            return None
         return Percentage(self.estimation, self.product.result.basic.last.quote)
 
 
@@ -6360,17 +6160,6 @@ class Product:
         REMEMBER TO CHANGE on_actionProductsAutoUpdate_triggered en frmMain"""
         if self.obsolete==True:
             return False
-#        #With isin
-#        if self.priority.find_by_id(9)!=None or self.priorityhistorical.find_by_id(8)!=None:
-#            if self.isin==None or self.isin=="":
-#                return False
-#            return True
-#            
-#        #With ticker
-#        if self.priority.find_by_id(1)!=None or self.priorityhistorical.find_by_id(3)!=None:
-#            if self.ticker==None or self.ticker=="":
-#                return False
-#            return True
         if self.isin!=None or self.tickers!=[None, None, None, None]:
             return True
             
@@ -6390,105 +6179,7 @@ class Product:
         """.format(self.id)
         set.load_from_db(sql,  progress=False)
         return set
-        
-#    def googleticker(self):
-#        """
-#            Uses ticker property. It's needed to search for a googleticker
-#            Returns "" if doesn't exist in order to visualizate it better
-#        """
-#        if self.ticker[0]==None:
-#            logging.debug("googleticker {} not found".format(self.ticker))
-#            return None
-#            
-#        if len(self.ticker)<3:
-#            logging.debug("googleticker {} not found".format(self.ticker))
-#            return None
-#        if self.type.id in (eProductType.Share, eProductType.ETF):#Acciones, etf
-#            if  self.ticker[-3:]==".MC":
-#                return "BME:{}".format(self.ticker[:-3])
-#            if  self.ticker[-3:]==".DE":
-#                return "FRA:{}".format(self.ticker[:-3])
-#            if  self.ticker[-3:]==".PA":
-#                return "EPA:{}".format(self.ticker[:-3])
-#            if  self.ticker[-3:]==".MI":
-#                return "BIT:{}".format(self.ticker[:-3])
-#            if self.ticker in("AH.AS"):
-#                return None
-#            if len(self.ticker.split("."))==1:##Americanas
-#                if self.agrupations.dbstring()=="|NASDAQ100|":
-#                    return "NASDAQ:{}".format(self.ticker)
-#                if self.agrupations.dbstring()=="|SP500|":
-#                    return "NYSE:{}".format(self.ticker)
-#        elif self.type.id==eProductType.Index:#Indices   
-#            if self.ticker=="^IBEX":
-#                return "INDEXBME:IB"
-#            if self.ticker=="^GSPC":
-#                return "INDEXSP:.INX"
-#            if self.ticker=="^VIX":
-#                return "INDEXCBOE:VIX"
-#            if self.ticker=="PSI20.LS":
-#                return "INDEXEURO:PSI20"
-#            if self.ticker=="^STOXX50E":
-#                return "INDEXSTOXX:SX5E"
-#            if self.ticker=="^N225":
-#                return "INDEXNIKKEI:NI225"
-#            if self.ticker=="^NDX":
-#                return "INDEXNASDAQ:NDX"
-#            if self.ticker=="^IXIC":
-#                return "INDEXNASDAQ:.IXIC"
-#            if self.ticker=="^HSI":
-#                return "INDEXHANGSENG:HSI"
-#            if self.ticker=="FTSEMIB.MI":
-#                return "INDEXFTSE:FTSEMIB"
-#            if self.ticker=="^FTSE":
-#                return "INDEXFTSE:UKX"
-#            if self.ticker=="^DJI":
-#                return "INDEXDJX:.DJI"
-#            if self.ticker=="^FCHI":
-#                return "INDEXEURO:PX1"
-#            if self.ticker=="^GDAXI":
-#                return "INDEXDB:DAX"
-#        elif self.type.id==eProductType.Currency:#Currencies
-#            if self.ticker=="EURUSD=X":
-#                return "EURUSD"
-#        logging.debug("googleticker {} not found".format(self.ticker))
-#        return None
-        
 
-#    def googleticker2ticker(self, ticker):
-#        """
-#            Should not be used. I should use the product.find_by_ticker
-#        """
-#        logging.info("Should not be used. I should use the product.find_by_ticker")
-#        a=ticker.split(":")
-#        if  a[0]=="BME":
-#            return "{}.MC".format(a[1])
-#        if  a[0]=="FRA":
-#            return "{}.DE".format(a[1])
-#        if  a[0]=="EPA":
-#            return "{}.PA".format(a[1])
-#        if  a[0]=="BIT":
-#            return "{}.MI".format(a[1])
-#        if ticker=="INDEXBME:IB":
-#            return "^IBEX"
-#        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
-#            return "{}".format(a[1])
-#        logging.debug("googleticker2ticker {} not found".format(ticker))
-    
-#    def googleticker2pytz(self, ticker):
-#        a=ticker.split(":")
-#        if a[0] in ("BME",  "INDEXBME"):
-#            return "Europe/Madrid"
-#        if a[0] in ("FRA", ):
-#            return "Europe/Berlin"
-#        if a[0] in ("EPA", ):
-#            return "Europe/Paris"
-#        if a[0] in ("BIT", ):
-#            return "Europe/Rome"
-#        if a[0] in ("NASDAQ",  "NYSEARCA", "NYSE"):
-#            return "America/New_York"
-#        return None
-        
     def hasSameLocalCurrency(self):
         """
             Returns a boolean
@@ -6714,7 +6405,6 @@ class SetQuotesAllIntradays:
         if len(intradayarr)!=0:
             self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
             
-#        print ("SetQuotesIntraday created: {0}".format(len(self.arr)))
         cur.close()
 
         
@@ -6895,7 +6585,6 @@ class SetQuotesIntraday(SetQuotes):
             for q in todelete:
                 self.arr.remove(q)
                 q.delete()
-#                print ("Purged", q)
                 
             ##Reescribe microseconds si ya el close tenía un 4
             if self.close().datetime.microsecond==4 : #SOLO SI TODELETE >0
@@ -7244,7 +6933,6 @@ class OHCLWeekly(OHCL):
         d = datetime.date(self.year,1,1)
         d = d - datetime.timedelta(d.weekday())
         dlt = datetime.timedelta(days = (self.week-1)*7)
-#        return d + dlt,  d + dlt + datetime.timedelta(days=6) ## first day, end day
         lastday= d + dlt + datetime.timedelta(days=6)
         return day_end_from_date(lastday, self.product.stockmarket.zone)
         
@@ -7288,7 +6976,7 @@ class OHCLYearly(OHCL):
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
         cur.close()     
-                
+
 class SetOHCL:
     def __init__(self, mem, product):
         self.mem=mem
@@ -7306,15 +6994,7 @@ class SetOHCL:
         for row in cur:
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
-        
-#        
-#    def percentage(self, index):
-#        """CAlcula el incremento en % del index del array partiendo de index -1"""
-#        try:
-#            return Decimal(100)*(self.arr[index].close-self.arr[index-1].close)/self.arr[index-1].close
-#        except:
-#            return None
-        
+   
     def first(self):
         """Return first ohcl"""
         if self.length()>0:
@@ -7808,20 +7488,6 @@ class Simulation:
         cur.execute("delete from simulations where id=%s", (self.id, ))
         cur.close()
 
-#class SimulationTools:
-#    def __init__(self, mem, con_sim):
-#        self.mem=mem
-#        self.con_mem=self.mem.con
-#        self.con_sim=con_sim
-#        
-#    def accounts_insert(self, sql):
-#        cur_mem=self.con_mem.cursor()
-#        cur_mem.execute(sql)
-#        for row in cur_mem:
-#            
-        
-    
-
 class SimulationType:
     def __init__(self):
         self.id=None
@@ -8051,39 +7717,13 @@ class SplitManual:
     def makeSplit(self):
         """All calculates to make the split"""        
         self.updateDPS()
-#        self.updateEPS() #NOT YET
         self.updateEstimationsDPS()
         self.updateEstimationsEPS()
         self.updateOperInvestments()
         self.updateDividends()
         self.updateQuotes()
         self.mem.con.commit()
-        
-#class TUpdateData(threading.Thread):
-#    """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
-#    def __init__(self, mem):
-#        threading.Thread.__init__(self)
-#        self.mem=mem
-#        
-#    def run(self):
-#        print ("TUpdateData started")
-#        while True:
-#            inicio=datetime.datetime.now()
-#                            
-#            self.mem.data.benchmark.result.basic.load_from_db()
-#            
-#            ##Update loop
-#            for inv in self.mem.data.products.arr:
-#                if self.mem.closing==True:
-#                    return
-#                inv.result.basic.load_from_db()
-#            print("TUpdateData loop took", datetime.datetime.now()-inicio)
-#            
-#            ##Wait loop
-#            for i in range(60):
-#                if self.mem.closing==True:
-#                    return
-#                time.sleep(1)
+
 
 class ProductType:
     def __init__(self):
@@ -8683,7 +8323,6 @@ class AssetsReport(ODT):
         self.mem.frmMain.w.viewTPC.chart.setAnimationOptions(QChart.NoAnimation)
         self.mem.frmMain.w.update(animations=False)
         
-#        wit=15
         self.header(self.tr("Investments group by variable percentage"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir)
         self.mem.frmMain.w.viewTPC.save(savefile)
@@ -8745,8 +8384,6 @@ class AssetsReport(ODT):
         
         self.mem.frmMain.w.close()
         self.mem.frmMain.showMaximized()
-        
-        
 
 from wdgTotal import TotalYear
 from wdgInvestmentClasses import wdgInvestmentClasses
