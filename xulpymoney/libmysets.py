@@ -64,6 +64,11 @@ class MyList:
         
     def last(self):
         return self.arr[self.length()-1]
+        
+        
+    def print(self):
+        for q in self.arr:
+            print(" * {}".format(q))
 
 ## Objects in MyDictList has and id. The Id can be a integer or a string or ...
 class MyList_With_Id(MyList):
