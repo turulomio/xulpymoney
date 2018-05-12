@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
-from libmanagers import DictListObjectManager_With_IdName, Object_With_IdName, Object_With_IdDatetime, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id
+from libmanagers import DictListObjectManager_With_IdName, Object_With_IdName, Object_With_IdDatetime, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -5526,17 +5526,11 @@ class Money:
     def round(self, digits=2):
         return round(self.amount, digits)
 
-class SetDPS:
+class SetDPS(ObjectManager_With_IdDate):
     def __init__(self, mem,  product):
-        self.arr=[]
+        ObjectManager_With_IdDate.__init__(self)
         self.mem=mem   
         self.product=product
-        
-    def append(self, o):
-        self.arr.append(o)
-    
-    def length(self):
-        return len(self.arr)
     
     def load_from_db(self):
         del self.arr
@@ -5546,15 +5540,6 @@ class SetDPS:
         for row in cur:
             self.arr.append(DPS(self.mem, self.product).init__from_db_row(row))
         cur.close()            
-        
-    def find(self, id):
-        """Como puede no haber todos los años se usa find que devuelve una estimacion nula sino existe"""
-        for e in self.arr:
-            if e.id==id:
-                return e
-        return None
-    
-    
     
     def save(self):
         """
@@ -5562,15 +5547,12 @@ class SetDPS:
         """            
         for o in self.arr:
             o.save()
-
-    def sort(self):
-        self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         
     def myqtablewidget(self, table):
         table.setColumnCount(2)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
-        self.sort()   
+        self.order_by_date()   
         table.applySettings()
         table.clearContents()
         table.setRowCount(len(self.arr))

@@ -131,6 +131,14 @@ class ObjectManager_With_Id(ObjectManager):
         self.selected=None
         return False
 
+## Objects in DictListObjectManager has and id and a date attribute
+class ObjectManager_With_IdDate(ObjectManager_With_Id):
+    def __init__(self):
+        ObjectManager_With_Id.__init__(self)
+
+    def order_by_date(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.date,  reverse=False) 
+        
 ## Objects in DictListObjectManager has and id and a datetime
 class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     def __init__(self):
@@ -160,12 +168,9 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
                 result.append(a.copy())
         return result
         
-    def copy_until_datetime(self, dt=None):
+    def copy_until_datetime(self, dt, *initparams):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime menor que la pasada como parametro."""
-        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-            result=self.__class__(self.mem)
-        else:
-            result=self.__class__(self.mem, self.investment)
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         if dt==None:
             dt=self.mem.localzone.now()
         for a in self.arr:
