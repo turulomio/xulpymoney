@@ -3628,43 +3628,7 @@ class AccountOperation:
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
         cur.close()
-        
-#    def comment(self):
-#        """Función que genera un comentario parseado según el tipo de operación o concepto
-#        
-#        Transferencias 4 origen :
-#            El comentario en transferencias: other_account|other_operaccount|comission_operaccount|commision
-#                - other_account: id_accounts of the other account
-#                - other_operaccount: id_opercuentas in order to remove them.
-#                - comission_operaccount: comission. Si es 0 es que no hay comision porque también es 0
-#        Transferencias 5 destino:
-#            El comentario en transferencias destino no tiene comission: other_account|other_operaccount
-#                - other_account: id_accounts of the other account
-#                - other_operaccount: id_opercuentas in order to remove them.     
-#                
-#        Comision de Transferencias
-#            - Transfer
-#            - Amount
-#            - Origin account
-#        """
-##        c=self.comentario.split("|")
-##        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.investment.name, self.bruto, self.retencion, self.comision)
-##            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
-##        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-##            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
-##        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-##            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
-##        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-##            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-##        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-##            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-##        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-##            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
-##        else:
-#        logging.info("Obsolete comment")
-#        return self.comentario 
-        
-        
+
     def es_editable(self):
         """opercuenta es un diccionario con el contenido de una opercuetna
         7 facturación de tarjeta
