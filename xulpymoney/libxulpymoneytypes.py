@@ -1,4 +1,4 @@
-
+from PyQt5.QtWidgets import QApplication
 from enum import IntEnum
         
 class eProductType(IntEnum):
@@ -30,3 +30,24 @@ class eTickerPosition(IntEnum):
     ## Returns the number of atributes
     def length():
         return len(eTickerPosition.__dict__)
+
+## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
+class HistoricalChartAdjusts:
+    NoAdjusts=0
+    Splits=1
+    Dividends=2#Dividends with splits.        
+    
+class OHCLDuration:
+    Day=1
+    Week=2
+    Month=3
+    Year=4
+
+    @classmethod
+    def qcombobox(self, combo, selected_ohclduration):
+        combo.addItem(QApplication.translate("Core", "Day"), 1)
+        combo.addItem(QApplication.translate("Core", "Week"), 2)
+        combo.addItem(QApplication.translate("Core", "Month"), 3)
+        combo.addItem(QApplication.translate("Core", "Year"), 4)
+        
+        combo.setCurrentIndex(combo.findData(selected_ohclduration))

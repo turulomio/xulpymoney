@@ -1,7 +1,8 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
-from libxulpymoney import    Percentage,  OHCLDuration
+from libxulpymoney import    Percentage
 from libxulpymoneyfunctions import epochms2aware, aware2epochms
+from libxulpymoneytypes import  OHCLDuration
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
@@ -261,7 +262,3 @@ class VCPie(QChartView):
         self.serie.setPieStartAngle(90)
         self.serie.setPieEndAngle(450)
 
-class ChartType:
-    lines=0
-    ohcl=1
-    candles=2

@@ -17,7 +17,8 @@ import getpass
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
-from libxulpymoneytypes import eProductType, eTickerPosition
+from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration
+from libmysets import MyDictList_With_IdName, MyObject_With_IdName
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -273,8 +274,6 @@ class AccountOperationOfInvestmentOperation:
         self.operinversion=operinversion
         self.investment=inversion
         return self
-        
-
 
     def save(self):
         cur=self.mem.con.cursor()
@@ -285,172 +284,9 @@ class AccountOperationOfInvestmentOperation:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
-
-class SetCommonsGeneric:
-    """Base class to group items without a name neither an id, only objects, only arr, not dic_arr"""
-    def __init__(self):
-        self.arr=[]
-        self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
-
-    def append(self,  obj):
-        self.arr.append(obj)
-
-    def remove(self, obj):
-        self.arr.remove(obj)
-
-    def length(self):
-        return len(self.arr)
-
-    def clean(self):
-        """Deletes all items"""
-        self.arr=[]
-        
-class SetCommons(SetCommonsGeneric):
-    """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dic_arr to access objects of the set"""
-    def __init__(self):
-        SetCommonsGeneric.__init__(self)
-        self.dic_arr={}
-        self.id=None
-        self.name=None
-    
-    def arr_position(self, id):
-        """Returns arr position of the id, useful to select items with unittests"""
-        for i, a in enumerate(self.arr):
-            if a.id==id:
-                return i
-        return None
-            
-    def append(self,  obj):
-        self.arr.append(obj)
-        self.dic_arr[str(obj.id)]=obj
-        
-    def remove(self, obj):
-        self.arr.remove(obj)
-        del self.dic_arr[str(obj.id)]
-        
-        
-    def find(self, o,  log=False):
-        """o is and object with id parameter"""
-        try:
-            return self.dic_arr[str(o.id)]    
-        except:
-            if log:
-                print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, o.id))
-            return None        
-    def find_by_id(self, id,  log=False):
-        """Finds by id"""
-        try:
-            return self.dic_arr[str(id)]    
-        except:
-            if log:
-                print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
-            return None
-            
-    def find_by_arr(self, id,  log=False):
-        """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION
-                inicio=datetime.datetime.now()
-        self.mem.data.products.find_by_id(80230)
-        print (datetime.datetime.now()-inicio)
-        self.mem.agrupations.find_by_arr(80230)
-        print (datetime.datetime.now()-inicio)
-        Always fister find_by_dict
-        0:00:00.000473
-        0:00:00.000530
-
-        """
-        for a in self.arr:
-            if a.id==id:
-                return a
-        if log:
-            print ("SetCommons ({}) fails finding  by arr {}".format(self.__class__.__name__, id))
-        return None
-                
-    def order_by_id(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
-            return True
-        except:
-            return False
-        
-    def order_by_name(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)       
-            return True
-        except:
-            return False        
-    def order_by_upper_name(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.name.upper(),  reverse=False)       
-            return True
-        except:
-            return False
-
-    def qcombobox(self, combo,  selected=None):
-        """Load set items in a comobo using id and name
-        Selected is and object
-        It sorts by name the arr""" 
-        self.order_by_name()
-        combo.clear()
-        for a in self.arr:
-            combo.addItem(a.name, a.id)
-
-        if selected!=None:
-            combo.setCurrentIndex(combo.findData(selected.id))
-            
-                
-    def clean(self):
-        """Deletes all items"""
-        self.arr=[]
-        self.dic_arr={}
-                
-    def clone(self,  *initparams):
-        """Returns other Set object, with items referenced, ojo con las formas de las instancias
-        initparams son los parametros de iniciación de la clase"""
-        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
-        for a in self.arr:
-            result.append(a)
-        return result
-        
-    def setSelected(self, sel):
-        """
-            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-        """
-        for i, o in enumerate(self.arr):
-            if o.id==sel.id:
-                self.selected=o
-                return True
-        self.selected=None
-        return False        
-    def setSelectedList(self, lista):
-        """
-            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-        """
-        assert type(lista) is list, "id is not a list {}".format(lista)
-        self.arr=[]
-        for i, o in enumerate(self.arr):
-            for l in lista:
-                if o.id==l.id:
-                    self.append(o)
-        self.selected=None
-        return False
-        
-    def union(self,  set,  *initparams):
-        """Returns a new set, with the union comparing id
-        initparams son los parametros de iniciación de la clse"""        
-        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca SetProduct(self.mem), luego será self.mem
-        for p in self.arr:
-            resultado.append(p)
-        for p in set.arr:
-            if resultado.find_by_id(p.id, False)==None:
-                resultado.append(p)
-        return resultado
-
-class SetSimulationTypes(SetCommons):
+class SetSimulationTypes(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -468,9 +304,9 @@ class SetSimulationTypes(SetCommons):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetInvestments(SetCommons):
+class SetInvestments(MyDictList_With_IdName):
     def __init__(self, mem, cuentas, products, benchmark):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
         self.accounts=cuentas
         self.products=products
@@ -1024,9 +860,9 @@ class SetInvestments(SetCommons):
             return False
         
         
-class SetProducts(SetCommons):
+class SetProducts(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def find_by_isin(self, isin):
@@ -1185,10 +1021,10 @@ class SetProducts(SetCommons):
 
 
 
-class SetProductsModes(SetCommons):
+class SetProductsModes(MyDictList_With_IdName):
     """Agrupa los mode"""
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem     
     
     def load_all(self):
@@ -1196,9 +1032,9 @@ class SetProductsModes(SetCommons):
         self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
         self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
 
-class SetSimulations(SetCommons):
+class SetSimulations(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
             
     def delete(self, simulation):
@@ -1234,9 +1070,9 @@ class SetSimulations(SetCommons):
             table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
-class SetStockMarkets(SetCommons):
+class SetStockMarkets(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem     
     
     def load_all_from_db(self):
@@ -1246,9 +1082,9 @@ class SetStockMarkets(SetCommons):
             self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
         cur.close()
 
-class SetConcepts(SetCommons):
+class SetConcepts(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem 
                  
         
@@ -1341,9 +1177,9 @@ class SetConcepts(SetCommons):
 
 
 
-class SetCountries(SetCommons):
+class SetCountries(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem   
         
     def load_all(self):
@@ -1383,9 +1219,9 @@ class SetCountries(SetCommons):
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 
-class SetAccounts(SetCommons):   
+class SetAccounts(MyDictList_With_IdName):   
     def __init__(self, mem,  setebs):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem   
         self.ebs=setebs
 
@@ -1583,9 +1419,9 @@ class SetAccountOperations:
                 if o.id==self.selected.id:
                     table.selectRow(i+1)
 
-class SetCurrencies(SetCommons):
+class SetCurrencies(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem   
     
     def load_all(self):
@@ -1852,7 +1688,7 @@ class SetEstimationsEPS:
 
     def dias_sin_actualizar(self):
         ultima=datetime.date(1990, 1, 1)
-        for k, v in self.dic_arr.items():
+        for k, v in self.dic.items():
             if v.date_estimation>ultima:
                 ultima=v.date_estimation
         return (datetime.date.today()-ultima).days
@@ -1877,9 +1713,9 @@ class SetEstimationsEPS:
         table.setFocus()
 
         
-class SetBanks(SetCommons):
+class SetBanks(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem   
 
     def load_from_db(self, sql):
@@ -4119,11 +3955,9 @@ class Bank:
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
             
-class Account:
+class Account(MyObject_With_IdName):
     def __init__(self, mem):
         self.mem=mem
-        self.id=None
-        self.name=None
         self.eb=None
         self.active=None
         self.numero=None
@@ -4995,9 +4829,9 @@ class Assets:
         return resultado        
 
 
-class SetCreditCards(SetCommons):
+class SetCreditCards(MyDictList_With_IdName):
     def __init__(self, mem, cuentas):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem   
         self.accounts=cuentas
 
@@ -5122,9 +4956,9 @@ class SetCreditCardOperations:
                         if a.id==sel.id:
                             tabla.selectRow(rownumber)
 
-class SetOperationTypes(SetCommons):
+class SetOperationTypes(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem     
         
     def load(self):
@@ -5147,7 +4981,7 @@ class SetOperationTypes(SetCommons):
         self.order_by_name()
         combo.clear()
         for n in (1, 2):
-            a=self.dic_arr[str(n)]
+            a=self.dic[str(n)]
             combo.addItem(a.name, a.id)
 
         if selected!=None:
@@ -5161,17 +4995,17 @@ class SetOperationTypes(SetCommons):
         self.order_by_name()
         combo.clear()
         for n in (4, 5, 6, 8):
-            a=self.dic_arr[str(n)]
+            a=self.dic[str(n)]
             combo.addItem(a.name, a.id)
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetAgrupations(SetCommons):
+class SetAgrupations(MyDictList_With_IdName):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5249,10 +5083,10 @@ class SetAgrupations(SetCommons):
             resultado.append(self.mem.agrupations.find_by_id(cmb.itemData(i)))
         return resultado
 
-class SetLeverages(SetCommons):
+class SetLeverages(MyDictList_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5355,10 +5189,10 @@ class SetOrders:
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
 
-class SetPriorities(SetCommons):
+class SetPriorities(MyDictList_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
                 
     def load_all(self):
@@ -5392,10 +5226,10 @@ class SetPriorities(SetCommons):
             self.append(self.mem.priorities.find_by_id(cmb.itemData(i)))
         return self
                 
-class SetPrioritiesHistorical(SetCommons):
+class SetPrioritiesHistorical(MyDictList_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -6776,21 +6610,7 @@ class OHCL:
             return Percentage(ohcl.close-self.close, self.close)            
         else:
             return Percentage()
-        
-class OHCLDuration:
-    Day=1
-    Week=2
-    Month=3
-    Year=4
 
-    @classmethod
-    def qcombobox(self, combo, selected_ohclduration):
-        combo.addItem(QApplication.translate("Core", "Day"), 1)
-        combo.addItem(QApplication.translate("Core", "Week"), 2)
-        combo.addItem(QApplication.translate("Core", "Month"), 3)
-        combo.addItem(QApplication.translate("Core", "Year"), 4)
-        
-        combo.setCurrentIndex(combo.findData(selected_ohclduration))
         
 class OHCLDaily(OHCL):
     def __init__(self, mem):
@@ -7228,9 +7048,9 @@ class SetOHCLMonthly(SetOHCL):
         
     
 
-class SetLanguages(SetCommons):
+class SetLanguages(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
         
     def load_all(self):
@@ -7257,10 +7077,6 @@ class SetLanguages(SetCommons):
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
-class HistoricalChartAdjusts:
-    NoAdjusts=0
-    Splits=1
-    Dividends=2#Dividends with splits.
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
@@ -7445,7 +7261,7 @@ class Simulation:
         self.mem=mem
         self.database=original_db
         self.id=None
-        self.name=None#self.simulated_db, used to reuse SetCommons
+        self.name=None#self.simulated_db, used to reuse MyDictList_With_IdName
         self.creation=None
         self.type=None
         self.starting=None
@@ -7559,9 +7375,9 @@ class Split:
         else:
             return "Split"
 
-class SetSplits(SetCommons):
+class SetSplits(MyDictList_With_IdName):
     def __init__(self, mem, product):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.product=product
         self.mem=mem
         
@@ -7753,9 +7569,9 @@ class Agrupation:
         return self
 
     
-class SetTypes(SetCommons):
+class SetTypes(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -7913,6 +7729,7 @@ class MemXulpymoney:
         self.countries.load_all()
         self.languages=SetLanguages(self)
         self.languages.load_all()
+        print (self.languages.dic, self.languages.arr)
         
         #Mem variables not in database
         self.language=self.languages.find_by_id(self.settings.value("mem/language", "en"))
@@ -8138,9 +7955,9 @@ class Zone:
     def __repr__(self):
         return "Zone ({}): {}".format(str(self.id), str(self.name))
         
-class SetZones(SetCommons):
+class SetZones(MyDictList_With_IdName):
     def __init__(self, mem):
-        SetCommons.__init__(self)
+        MyDictList_With_IdName.__init__(self)
         self.mem=mem
         
     def load_all(self):
@@ -8172,7 +7989,7 @@ class SetZones(SetCommons):
             if a.name==name:
                 return a
         if log:
-            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, name))
+            print ("MyDictList_With_IdName ({}) fails finding {}".format(self.__class__.__name__, name))
         return None
 
 class AssetsReport(ODT):
