@@ -2,7 +2,8 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  b2c,  c2b,  CreditCardOperation
+from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  CreditCardOperation
+from libxulpymoneyfunctions import b2c,  c2b
 from Ui_frmAccountsReport import Ui_frmAccountsReport
 from frmAccountOperationsAdd import frmAccountOperationsAdd
 from frmCreditCardsAdd import frmCreditCardsAdd

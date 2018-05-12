@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit
-from libxulpymoney import Bank, Money, SetAccounts, SetInvestments, wdgBool, qmessagebox
+from libxulpymoney import Bank, Money, SetAccounts, SetInvestments
+from libxulpymoneyfunctions import wdgBool, qmessagebox
 from frmAccountsReport import frmAccountsReport
 from frmInvestmentReport import frmInvestmentReport
 from Ui_wdgBanks import Ui_wdgBanks

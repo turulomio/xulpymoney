@@ -4,7 +4,8 @@ import pytz
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgDisReinvest import Ui_wdgDisReinvest
-from libxulpymoney import InvestmentOperation, Money, Percentage,  Quote, qmessagebox
+from libxulpymoney import InvestmentOperation, Money, Percentage,  Quote
+from libxulpymoneyfunctions import qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from decimal import Decimal
 from wdgProductHistoricalChart import wdgProductHistoricalReinvestChart

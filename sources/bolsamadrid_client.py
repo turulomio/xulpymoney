@@ -1,62 +1,19 @@
 #!/usr/bin/python3
 import argparse
-import datetime
 import time
 from decimal import Decimal
-from enum import Enum
 import sys
-import pytz
+import platform
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
-
-########################## COPIED FUNCTIONS #######################################
-
-#FROM LIBXULPYMONEY
-def string2date(iso, type=1):
-    """
-        date string to date, with type formats
-    """
-    if type==1: #YYYY-MM-DD
-        d=iso.split("-")
-        return datetime.date(int(d[0]), int(d[1]),  int(d[2]))
-    if type==2: #DD/MM/YYYY
-        d=iso.split("/")
-        return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
-
-
-#FROM LIBXULPYMONEY
-def string2datetime(s, type, zone="Europe/Madrid"):
-    """
-        s is a string for datetime
-        type is the diferent formats id
-    """
-    if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
-        s=s[:-3]+s[-2:]
-        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
-        return dat
-    if type==2:#20/11/2017 23:00 ==> Naive
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        return dat
-    if type==3:#20/11/2017 23:00 ==> Aware, using zone parameter
-        dat=datetime.datetime.strptime( s, "%d/%m/%Y %H:%M" )
-        z=pytz.timezone(zone)
-        return z.localize(dat)
-# FROM XULPYMONEY..LIBXULPYMONEY
-class eProductType(Enum):
-    Share=1
-    Fund=2
-    Index=3
-    ETF=4
-    Warrant=5
-    Currency=6
-    PublicBond=7
-    PensionPlan=8
-    PrivateBond=9
-    Deposit=10
-    Account=11
-################################################################
-
+from libxulpymoneyfunctions import string2date, string2datetime
+from libxulpymoneytypes import eProductType
 
 class OHCL:
     def __init__(self,isin, xulpymoney):

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication
-from libxulpymoney import qmessagebox,  eTickerPosition
+from libxulpymoneyfunctions import qmessagebox
+from libxulpymoneytypes import eTickerPosition
 import logging
 import sys
 class Update:

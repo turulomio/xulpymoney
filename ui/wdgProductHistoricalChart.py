@@ -7,7 +7,8 @@ import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import day_end_from_date,  OHCLDuration,  InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus,  HistoricalChartAdjusts
+from libxulpymoney import OHCLDuration,  InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus,  HistoricalChartAdjusts
+from libxulpymoneyfunctions import day_end_from_date
 
 
 

@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QTableWidgetItem,  QInputDialog
-from libxulpymoney import Concept, qmessagebox
+from libxulpymoney import Concept
+from libxulpymoneyfunctions import qmessagebox
 from Ui_frmAuxiliarTables import Ui_frmAuxiliarTables
 
 class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):

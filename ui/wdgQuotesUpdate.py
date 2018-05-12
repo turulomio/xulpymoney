@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import QWidget,  QApplication
 from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
 from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libxulpymoney import SetProducts, SetQuotes,  Product, Quote,   OHCLDaily, eProductType, eTickerPosition
+from libxulpymoney import SetProducts, SetQuotes,  Product, Quote,   OHCLDaily
+from libxulpymoneytypes import eProductType, eTickerPosition
 import datetime
 import os
 

@@ -1,7 +1,8 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import  QWidget, QProgressDialog
 from Ui_wdgAPR import Ui_wdgAPR
-from libxulpymoney import Assets, Money, qcenter, Percentage, none2decimal0,  qright
+from libxulpymoney import Assets, Money, Percentage
+from libxulpymoneyfunctions import qcenter, none2decimal0,  qright
 
 from decimal import Decimal
 import datetime

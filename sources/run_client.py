@@ -1,127 +1,18 @@
 #!/usr/bin/python3
 import argparse
-import datetime
-import math
-import platform
 import multiprocessing
 from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
-from os import path,  makedirs
-
-# #################### COPIED CODE ##################3
-# FROM PYSGAE
-class Color:
-    def green(s):
-       return "\033[92m{}\033[0m".format(s)
-    
-    def red(s):
-       return "\033[91m{}\033[0m".format(s)
-    
-    def bold(s):
-       return "\033[1m{}\033[0m".format(s)
-
-    def pink(s):
-        return "\033[95m{}\033[0m".format(s)
-        
-    def yellow(s):
-        return "\033[93m{}\033[0m".format(s)
-        
-
-# FROM PYSGAE
-class Counter:
-    def __init__(self, maxsteps):
-        self.current=0
-        self.max=maxsteps
-        self.dt_start=datetime.datetime.now()
-        self.dt_end=None
-        self.name="Counter"
-
-    def setName(self, name):
-        self.name=name
-        
-    def segundos2fechastring(self, segundos):
-        dias=int(segundos/(24*60*60))
-        segundosquedan=math.fmod(segundos,24*60*60)
-        horas=int(segundosquedan/(60*60))
-        segundosquedan=math.fmod(segundosquedan,60*60)
-        minutos=int(segundosquedan/60)
-        segundosquedan=math.fmod(segundosquedan,60)
-        segundos=int(segundosquedan)
-        return "{0}d {1}h {2}m {3}s".format(dias,  horas,  minutos, segundos)
-        
-        
-    def seconds_estimated_resting(self):
-        """
-            Función que devuelve segundos estimados que quedan
-        """
-        if self.current==0:
-            return 0
-        resultado=(self.max-self.current)*(datetime.datetime.now()-self.dt_start).total_seconds()/self.current
-        return resultado    
-        
-    def seconds_estimated(self):
-        """
-            Función que devuelve segundos totales estimados que durará el proceso
-        """
-        if self.current==0:
-            return 0
-        resultado=self.max*(datetime.datetime.now()-self.dt_start).total_seconds()/self.current
-        return resultado
-        
-    def seconds_current(self):
-        """Tiempo actual"""
-        return (datetime.datetime.now()-self.dt_start).total_seconds()
-        
-    def next_step(self):
-        self.current=self.current+1
-        if self.current>self.max:
-            print ("You need to change counter maximum steps in the constructor to {}".format(self.current))
-        self.message_step()
-        
-    def tpc_completado(self):
-        if self.max==0:
-            return int(0)
-        return int(100*self.current/self.max)
-
-    def message_step(self):
-        global parser
-        if platform.system()=="Windows":
-            tpc_completado=self.tpc_completado()
-            segundos_current=self.segundos2fechastring(self.seconds_current())
-            segundos_estimados=self.segundos2fechastring(self.seconds_estimated())
-        else:
-            tpc_completado=Color.green(self.tpc_completado())
-            segundos_current=Color.green(self.segundos2fechastring(self.seconds_current()))
-            segundos_estimados=Color.red(self.segundos2fechastring(self.seconds_estimated()))
-        print ("{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(self.name, tpc_completado, segundos_current, segundos_estimados))
-
-    def message_final(self):
-        print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
-        
-        
-# FROM XULPYMONEY.LIBXULPYMONEY
-def b2s(b, code='UTF-8'):
-    """Bytes 2 string"""
-    return b.decode(code)
-    
-
-# FROM XULPYMONEY.LIBXULPYMONEY
-def dirs_create():
-    """
-        Returns xulpymoney_tmp_dir, ...
-    """
-    dir_tmp=path.expanduser("~/.xulpymoney/tmp/")
-    try:
-        makedirs(dir_tmp)
-    except:
-        pass
-    return dir_tmp
-    
-##################END COPIED CODE###########################
-
-
-
+import sys
+import platform
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
+from libxulpymoneyfunctions import  dirs_create, b2s
+from libcounter import Counter
 
 def appendSource(arr, name):
     counter=Counter(len(arr))
@@ -167,6 +58,13 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
     counter.message_final()
     return commands, sourceoutput
     ###################################################################
+
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
+    
 parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
 parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
 args=parser.parse_args()

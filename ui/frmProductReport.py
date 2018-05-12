@@ -7,7 +7,8 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date,  HistoricalChartAdjusts
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, HistoricalChartAdjusts
+from libxulpymoneyfunctions import c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM

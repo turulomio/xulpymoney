@@ -2,7 +2,8 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
 from myqtablewidget import myQTableWidget
-from libxulpymoney import SetAccountOperations, qcenter, qmessagebox
+from libxulpymoney import SetAccountOperations
+from libxulpymoneyfunctions import qcenter, qmessagebox
 from Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
 class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):

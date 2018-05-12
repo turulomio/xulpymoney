@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem
-from libxulpymoney import qcenter
+from libxulpymoneyfunctions import qcenter
 from Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):

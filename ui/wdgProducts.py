@@ -2,10 +2,10 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from Ui_wdgProducts import Ui_wdgProducts
 from frmProductReport import frmProductReport
-from libxulpymoney import SetProducts, SetQuotesAllIntradays, list2string, qmessagebox
+from libxulpymoney import SetProducts, SetQuotesAllIntradays
+from libxulpymoneyfunctions import list2string, qmessagebox
 from frmQuotesIBM import frmQuotesIBM
 from wdgMergeCodes import wdgMergeCodes
-#from canvaschart import canvasChartHistoricalBuy
 from frmEstimationsAdd import frmEstimationsAdd
 from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging

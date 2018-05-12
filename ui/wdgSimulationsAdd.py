@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
-from libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin, qmessagebox
+from libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin
+from libxulpymoneyfunctions import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     def __init__(self, mem,   parent = None, name = None):
