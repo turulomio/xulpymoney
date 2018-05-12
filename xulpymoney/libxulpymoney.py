@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration
-from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime
+from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -1217,9 +1217,9 @@ class SetCountries(MyDictList_With_IdName):
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 
-class SetAccounts(MyDictList_With_IdName):   
+class SetAccounts(MyList_With_IdName):   
     def __init__(self, mem,  setebs):
-        MyDictList_With_IdName.__init__(self)
+        MyList_With_IdName.__init__(self)
         self.mem=mem   
         self.ebs=setebs
 
@@ -1316,18 +1316,11 @@ class ReinvestModel:
 
 
 
-class SetAccountOperations:
+class SetAccountOperations(MyList_With_IdDatetime):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
+        MyList_With_IdDatetime.__init__(self)
         self.mem=mem
-        self.arr=[]
-        self.selected=None
-        
-    def append(self, objeto):
-        self.arr.append(objeto)
-
-    def length(self):
-        return len (self.arr)
         
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
@@ -1351,19 +1344,6 @@ class SetAccountOperations:
             self.append(co)
         cur.close()
 
-    def setSelected(self, sel):
-        """
-            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-        """
-        for i, o in enumerate(self.arr):
-            if o.id==sel.id:
-                self.selected=o
-                return True
-        self.selected=None
-        return False
-    def sort(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
-        
     def myqtablewidget(self, tabla,   show_accounts=False,  parentname=None):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
