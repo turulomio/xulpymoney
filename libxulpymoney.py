@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration
-from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime
+from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime,  MyList
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -6798,12 +6798,11 @@ class OHCLYearly(OHCL):
         cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
         cur.close()     
 
-class SetOHCL:
+class SetOHCL(MyList):
     def __init__(self, mem, product):
+        MyList.__init__(self)
         self.mem=mem
         self.product=product
-        self.arr=[]
-        self.selected=None
     
     def load_from_db(self, sql):
         """El sql debe estar ordenado por date"""
@@ -6815,25 +6814,6 @@ class SetOHCL:
         for row in cur:
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
-   
-    def first(self):
-        """Return first ohcl"""
-        if self.length()>0:
-            return self.arr[0]
-        else:
-            print ("There is no first item in SetOHCL")
-            return None
-        
-    def last(self):
-        """REturn last ohcl"""
-        return self.arr[self.length()-1]
-        
-    def length(self):
-        return len (self.arr)
-
-
-    def append(self, o):
-        self.arr.append(o)
 
     def closes(self, from_dt=None):
         """Returns a list with all the close of the array"""
@@ -7570,11 +7550,13 @@ class Agrupation(MyObject_With_IdName):
 
 
 
-
+## Product type class
 class ProductType(MyObject_With_IdName):
     def __init__(self, *args):
         MyObject_With_IdName.__init__(self, *args)
 
+
+## Set of product types
 class SetProductTypes(MyDictList_With_IdName):
     def __init__(self, mem):
         MyDictList_With_IdName.__init__(self)

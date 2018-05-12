@@ -54,6 +54,16 @@ class MyList:
         for a in self.arr:
             result.append(a)
         return result
+   
+    def first(self):
+        if self.length()>0:
+            return self.arr[0]
+        else:
+            print ("There is no first item")
+            return None
+        
+    def last(self):
+        return self.arr[self.length()-1]
 
 ## Objects in MyDictList has and id. The Id can be a integer or a string or ...
 class MyList_With_Id(MyList):
