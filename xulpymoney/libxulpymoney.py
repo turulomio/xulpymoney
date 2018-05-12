@@ -481,26 +481,6 @@ class SetSimulationTypes(SetCommons):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-
-#class SetInvestmentsGeneric(SetCommonsGeneric):
-#    """
-#        Generic class. Investments doesn't hava an id, neither an account
-#        
-#        Used in DisReinvest , merging investments ....
-#    """
-#    def __init__(self, mem):
-#        SetCommonsGeneric.__init__(self)
-#        self.mem=mem
-#
-#    def order_by_balance(self, fecha=None,  type=3):
-#        """Orders the Set using self.arr"""
-##        try:
-#        self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha,  type),  reverse=True) 
-##            return True
-##        except:
-##            logging.error("SetInvestmentsGeneric can't order by balance")
-##            return False
-            
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
         SetCommons.__init__(self)
@@ -4892,19 +4872,6 @@ class CreditCardOperation:
             else:
                 cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
-        
-#    def comment(self):
-#        """Función que genera un comentario parseado según el tipo de operación o concepto
-#        Opertarjetas refund:
-#            El comentario es : "Refund|id_opertarjetas|lastcomment"
-#        """
-##        c=self.comentario.split("|")
-##        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
-##            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
-##            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
-##        else:
-#        logging.info("obsolete comment")
-#        return self.comentario 
 
 class Order:
     def __init__(self, mem):
@@ -5094,26 +5061,18 @@ class Assets:
         for i in setinversiones.arr:
             resultado=resultado+i.balance(fecha, type=3)
         return resultado
-#        
-#    def saldo_todas_inversiones_no_losses(self, setinversiones,   fecha):
-#        """
-#            Calcula el valor de las inversiones sin perdidas es decir solo lo invertido
-#        """
-#        resultado=Money(self.mem, 0, self.mem.localcurrency)
-#        for i in setinversiones.arr:
-#            resultado=resultado+i.invertido(fecha, type=3)
-#        return resultado
+
         
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-#        inicio=datetime.datetime.now()
+        #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.percentage==0:        
                 resultado=resultado+inv.balance( fecha, type=3)
-#        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
+        #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
             
     def dividends_neto(self, ano,  mes=None):
@@ -5159,7 +5118,7 @@ class Assets:
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-#        inicio=datetime.datetime.now()
+        #        inicio=datetime.datetime.now()
         for inv in self.mem.data.investments.arr:
             print (inv,  inv.product)
             if inv.product.type.id in (eProductType.PublicBond, eProductType.PrivateBond):#public and private bonds        
@@ -5167,7 +5126,7 @@ class Assets:
                     resultado=resultado+inv.balance().local()
                 else:
                     resultado=resultado+inv.balance( fecha).local()
-#        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
+        #        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
@@ -5362,17 +5321,7 @@ class SetCreditCardOperations:
             co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
             self.append(co)
         cur.close()
-    
-#    def setSelected(self, sel):
-#        """
-#            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-#        """
-#        for i, o in enumerate(self.arr):
-#            if o.id==sel.id:
-#                self.selected=o
-#                return True
-#        self.selected=None
-#        return False
+
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
@@ -6431,7 +6380,7 @@ class Product:
         self.mode=None#Anterior mode investmentmode
         self.leveraged=None
         self.stockmarket=None
-        self.tickers=None#Its a list of strings, eTickerPosition is the 
+        self.tickers=[None]*eTickerPosition.length()#Its a list of strings, eTickerPosition is the 
         self.priority=None
         self.priorityhistorical=None
         self.comment=None
@@ -8294,6 +8243,10 @@ class eTickerPosition(IntEnum):
     
     def postgresql(etickerposition):
         return etickerposition.value+1
+        
+    ## Returns the number of atributes
+    def length():
+        return len(eTickerPosition.__dict__)
     
 class SetTypes(SetCommons):
     def __init__(self, mem):

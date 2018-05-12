@@ -9,8 +9,8 @@ from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
 from os import path,  makedirs
 
-##################### COPIED CODE ##################3
-#FROM PYSGAE
+# #################### COPIED CODE ##################3
+# FROM PYSGAE
 class Color:
     def green(s):
        return "\033[92m{}\033[0m".format(s)
@@ -28,7 +28,7 @@ class Color:
         return "\033[93m{}\033[0m".format(s)
         
 
-#FROM PYSGAE
+# FROM PYSGAE
 class Counter:
     def __init__(self, maxsteps):
         self.current=0
@@ -100,13 +100,13 @@ class Counter:
         print("El proceso duró {}".format(Color.red(self.segundos2fechastring(self.seconds_current()))))
         
         
-#FROM XULPYMONEY.LIBXULPYMONEY
+# FROM XULPYMONEY.LIBXULPYMONEY
 def b2s(b, code='UTF-8'):
     """Bytes 2 string"""
     return b.decode(code)
     
 
-#FROM XULPYMONEY.LIBXULPYMONEY
+# FROM XULPYMONEY.LIBXULPYMONEY
 def dirs_create():
     """
         Returns xulpymoney_tmp_dir, ...
@@ -117,7 +117,12 @@ def dirs_create():
     except:
         pass
     return dir_tmp
+    
 ##################END COPIED CODE###########################
+
+
+
+
 def appendSource(arr, name):
     counter=Counter(len(arr))
     counter.setName(name)
