@@ -37,7 +37,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
-            self.wdgDT.set(self.mem, self.dividend.fecha, self.mem.localzone)
+            self.wdgDT.set(self.mem, self.dividend.datetime, self.mem.localzone)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
             self.txtBruto.setText(self.dividend.bruto)
             self.txtNeto.setText(self.dividend.neto)
@@ -105,7 +105,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.retencion=self.txtRetencion.decimal()
             self.dividend.neto=self.neto
             self.dividend.dpa=self.txtDPA.decimal()
-            self.dividend.fecha=self.wdgDT.datetime()
+            self.dividend.datetime=self.wdgDT.datetime()
             self.dividend.comision=self.txtComision.decimal()
             self.dividend.currency_conversion=self.wdgCurrencyConversion.factor
         except:
