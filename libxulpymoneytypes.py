@@ -17,6 +17,19 @@ class eProductType(IntEnum):
     Deposit=10
     Account=11
     
+## Operation tipes
+class eOperationType:
+    Expense=1
+    Income=2
+    Transfer=3
+    SharesPurchase=4
+    SharesSale=5
+    SharesAdd=6
+    CreditCardBilling=7
+    TransferFunds=8
+    TransferSharesOrigin=9
+    TransferSharesDestiny=10
+    
 class eTickerPosition(IntEnum):
     """It's the number to access to a python list,  not to postgresql. In postgres it will be +1"""
     Yahoo=0
