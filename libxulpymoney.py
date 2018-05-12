@@ -1433,11 +1433,11 @@ class SetCurrencies(MyDictList_With_IdName):
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
-class SetDividendsHeterogeneus:
+class SetDividendsHeterogeneus(MyList_With_IdDatetime):
     """Class that  groups dividends from a Xulpymoney Product"""
     def __init__(self, mem):
+        MyList_With_IdDatetime.__init__(self)
         self.mem=mem
-        self.arr=[]
             
     def gross(self):
         """gross amount in self.mem.localcurrency"""
@@ -1445,9 +1445,6 @@ class SetDividendsHeterogeneus:
         for d in self.arr:
             r=r+d.gross().local()
         return r
-
-    def length(self):
-        return len(self.arr)
 
     def load_from_db(self, sql):    
         del self.arr
@@ -1459,10 +1456,7 @@ class SetDividendsHeterogeneus:
             oc=AccountOperation(self.mem, row['id_opercuentas'])
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
         cur.close()      
-        
-    def sort(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
-        
+                
     def myqtablewidget(self, table,   show_investment=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
@@ -1493,7 +1487,7 @@ class SetDividendsHeterogeneus:
             sumbruto=sumbruto+d.bruto
             sumretencion=sumretencion+d.retencion
             sumcomision=sumcomision+d.comision
-            table.setItem(i, 0, qdatetime(d.fecha, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone))
             if show_investment==True:
                 table.setItem(i, diff, qleft(d.investment.name))
             table.setItem(i, diff+1, qleft(d.opercuenta.concepto.name))
@@ -1508,16 +1502,7 @@ class SetDividendsHeterogeneus:
         table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
         table.setItem(len(self.arr), diff+5, self.mem.localcurrency.qtablewidgetitem(sumneto))
         return (sumneto, sumbruto, sumretencion, sumcomision)
-            
-    def clean(self):
-        """Deletes all items"""
-        del self.arr 
-        self.arr=[]
 
-    def append(self, o):
-        self.arr.append(o)
-
-        
 class SetDividendsHomogeneus(SetDividendsHeterogeneus):
     def __init__(self, mem, investment):
         SetDividendsHeterogeneus.__init__(self, mem)
@@ -1573,7 +1558,7 @@ class SetDividendsHomogeneus(SetDividendsHeterogeneus):
             sumbruto=sumbruto+d.gross(type)
             sumretencion=sumretencion+d.retention(type)
             sumcomision=sumcomision+d.comission(type)
-            table.setItem(i, 0, qdatetime(d.fecha, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone))
             table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
             table.setItem(i, 2, d.gross(type).qtablewidgetitem())
             table.setItem(i, 3, d.retention(type).qtablewidgetitem())
@@ -3608,7 +3593,7 @@ class Dividend:
         self.retencion=None
         self.neto=None
         self.dpa=None
-        self.fecha=None
+        self.datetime=None
         self.opercuenta=None
         self.comision=None
         self.concepto=None#Puedeser 39 o 62 para derechos venta
@@ -3625,7 +3610,7 @@ class Dividend:
         self.retencion=retencion
         self.neto=neto
         self.dpa=dpa
-        self.fecha=fecha
+        self.datetime=fecha
         self.opercuenta=opercuenta
         self.comision=comision
         self.concepto=concepto
@@ -3659,21 +3644,21 @@ class Dividend:
         elif type==2:
             return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.fecha)
+            return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def net(self, type=1):
         if type==1:
             return Money(self.mem, self.neto, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.fecha)
+            return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def retention(self, type=1):
         if type==1:
             return Money(self.mem, self.retencion, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.fecha)
+            return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def dps(self, type=1):
         "Dividend per share"
         if type==1:
@@ -3681,14 +3666,14 @@ class Dividend:
         elif type==2:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.fecha)
+            return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def comission(self, type=1):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.fecha)
+            return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
             
         
     def neto_antes_impuestos(self):
@@ -3703,20 +3688,20 @@ class Dividend:
         """
         cur=self.mem.con.cursor()
         if self.id==None:#Insertar
-            self.opercuenta=AccountOperation(self.mem,  self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account, None)
+            self.opercuenta=AccountOperation(self.mem,  self.datetime,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account, None)
             self.opercuenta.save()
-            cur.execute("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
+            cur.execute("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
             self.id=cur.fetchone()[0]
             self.opercuenta.comentario=Comment(self.mem).setEncoded10004(self)
             self.opercuenta.save()
         else:
-            self.opercuenta.datetime=self.fecha
+            self.opercuenta.datetime=self.datetime
             self.opercuenta.importe=self.neto
             self.opercuenta.comentario=Comment(self.mem).setEncoded10004(self)
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
-            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
+            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
         cur.close()
 
 class InvestmentOperation:
@@ -7480,7 +7465,7 @@ class SplitManual:
                 dividends=SetDividendsHomogeneus(self.mem, inv)
                 dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
                 for d in dividends.arr:
-                    if self.dtinitial<=d.fecha and self.dtfinal>=d.fecha:
+                    if self.dtinitial<=d.datetime and self.dtfinal>=d.datetime:
                         d.dpa=self.convertPrices(d.dpa)
                     d.save()
         
