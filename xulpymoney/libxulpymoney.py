@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
-from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime,  MyList
+from libmysets import MyDictList_With_IdName, MyObject_With_IdName, MyObject_With_IdDatetime, MyList_With_IdName, MyList_With_IdDatetime,  MyList, MyList_With_Id
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -5065,11 +5065,10 @@ class SetLeverages(MyDictList_With_IdName):
         self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), 10))
 
 
-class SetOrders:
+class SetOrders(MyList_With_Id):
     def __init__(self, mem):
+        MyList_With_Id.__init__(self)
         self.mem=mem
-        self.arr=[]
-        self.selected=None
         
     def init__from_db(self, sql):
         cur=self.mem.con.cursor()
@@ -5078,17 +5077,11 @@ class SetOrders:
             self.append(Order(self.mem).init__db_row(row))
         cur.close()
         return self
-        
-    def append(self, objeto):
-        self.arr.append(objeto)
-        
+                
     def remove(self, order):
         """Remove from array"""
         self.arr.remove(order)#Remove from array
         order.remove()#Database
-
-    def length(self):
-        return len(self.arr)
 
     def order_by_date(self):
         self.arr=sorted(self.arr, key=lambda o:o.date)
