@@ -1,13 +1,13 @@
-class MyObject_With_Id:
+class Object_With_Id:
     def __init__(self):
         self.id=None
 
-class MyObject_With_IdName:
+class Object_With_IdName:
     ## Constructor with the following attributes combination
-    ## 1. MyObject_With_IdName(). Create an MyObject_With_IdName with all attributes to None
-    ## 2. MyObject_With_IdName( id,  name). Create an MyObject_With_IdName settings all attributes.
-    ## @param name String with the name of the MyObject_With_IdName
-    ## @param id Integer that sets the id of the MyObject_With_IdName
+    ## 1. Object_With_IdName(). Create an Object_With_IdName with all attributes to None
+    ## 2. Object_With_IdName( id,  name). Create an Object_With_IdName settings all attributes.
+    ## @param name String with the name of the Object_With_IdName
+    ## @param id Integer that sets the id of the Object_With_IdName
     def __init__(self, *args):
         def init__create( id,  name):
             self.id=id
@@ -17,7 +17,7 @@ class MyObject_With_IdName:
         if len(args)==2:
             init__create(args[0], args[1])
         
-class MyObject_With_IdDatetime:
+class Object_With_IdDatetime:
     def __init__(self):
         self.id=None
         self.datetime=None
@@ -29,7 +29,7 @@ class MyMem:
     def setMem(self, mem):
         self.mem=mem
 
-class MyList:
+class ObjectManager:
     def __init__(self):
         self.arr=[]       
         self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
@@ -70,10 +70,10 @@ class MyList:
         for q in self.arr:
             print(" * {}".format(q))
 
-## Objects in MyDictList has and id. The Id can be a integer or a string or ...
-class MyList_With_Id(MyList):
+## Objects in DictListObjectManager has and id. The Id can be a integer or a string or ...
+class ObjectManager_With_Id(ObjectManager):
     def __init__(self):
-        MyList.__init__(self)
+        ObjectManager.__init__(self)
         
     def arr_position(self, id):
         """Returns arr position of the id, useful to select items with unittests"""
@@ -131,18 +131,52 @@ class MyList_With_Id(MyList):
         self.selected=None
         return False
 
-## Objects in MyDictList has and id and a datetime
-class MyList_With_IdDatetime(MyList_With_Id):
+## Objects in DictListObjectManager has and id and a datetime
+class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     def __init__(self):
-        MyList_With_Id.__init__(self)
+        ObjectManager_With_Id.__init__(self)
 
     def order_by_datetime(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
+                
+        
+    def subSet_from_datetime(self, dt, *initparams):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro. Las operaciones del array son vinculos a objetos no copiadas como se hace con copy_from"""
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        if dt==None:
+            dt=self.mem.localzone.now()
+        for a in self.arr:
+            if a.datetime>=dt:
+                result.append(a)
+        return result
+        
+    def copy_from_datetime(self, dt, *initparams):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro tambien copiadas."""
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        if dt==None:
+            dt=self.mem.localzone.now()
+        for a in self.arr:
+            if a.datetime>=dt:
+                result.append(a.copy())
+        return result
+        
+    def copy_until_datetime(self, dt=None):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime menor que la pasada como parametro."""
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
+        if dt==None:
+            dt=self.mem.localzone.now()
+        for a in self.arr:
+            if a.datetime<=dt:
+                result.append(a.copy())
+        return result
 
-## Objects in MyDictList has and id and a name
-class MyList_With_IdName(MyList_With_Id):
+## Objects in DictListObjectManager has and id and a name
+class ObjectManager_With_IdName(ObjectManager_With_Id):
     def __init__(self):
-        MyList_With_Id.__init__(self)
+        ObjectManager_With_Id.__init__(self)
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
@@ -173,9 +207,9 @@ class MyList_With_IdName(MyList_With_Id):
             combo.setCurrentIndex(combo.findData(selected.id))
 
 ##Objects has a field called id, whose string is the key of the item of dict
-## It Can be a MyDict without id
-## It doesn't need to cfreate MyDictList_With_IdName, because all funcions are used with MyList_With_IdName
-class MyDict_With_Id:
+## It Can be a DictObjectManager without id
+## It doesn't need to cfreate DictListObjectManager_With_IdName, because all funcions are used with ObjectManager_With_IdName
+class DictObjectManager_With_Id:
     def __init__(self):
         self.dic={}
                     
@@ -196,7 +230,7 @@ class MyDict_With_Id:
             return self.dic[str(o.id)]    
         except:
             if log:
-                print ("MyDictList_With_IdName ({}) fails finding {}".format(self.__class__.__name__, o.id))
+                print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, o.id))
             return None        
 
     def find_by_id(self, id,  log=False):
@@ -205,43 +239,43 @@ class MyDict_With_Id:
             return self.dic[str(id)]    
         except:
             if log:
-                print ("MyDictList_With_IdName ({}) fails finding {}".format(self.__class__.__name__, id))
+                print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, id))
             return None
 
-## Objects in MyDictList has and id
-class MyDictList_With_Id(MyDict_With_Id, MyList_With_Id):
+## Objects in DictListObjectManager has and id
+class DictListObjectManager_With_Id(DictObjectManager_With_Id, ObjectManager_With_Id):
     def __init__(self):
-        MyDict_With_Id.__init__(self)
-        MyList_With_Id.__init__(self)
+        DictObjectManager_With_Id.__init__(self)
+        ObjectManager_With_Id.__init__(self)
         
     def append(self,  obj):
-        MyDict_With_Id.append(self, obj)
-        MyList_With_Id.append(self, obj)
+        DictObjectManager_With_Id.append(self, obj)
+        ObjectManager_With_Id.append(self, obj)
         
     def remove(self,  obj):
-        MyDict_With_Id.remove(self, obj)
-        MyList_With_Id.remove(self, obj)
+        DictObjectManager_With_Id.remove(self, obj)
+        ObjectManager_With_Id.remove(self, obj)
 
     def clean(self):
         """Deletes all items"""
-        MyDict_With_Id.clean(self)
-        MyList_With_Id.clean(self)
+        DictObjectManager_With_Id.clean(self)
+        ObjectManager_With_Id.clean(self)
         
     ## Find by object passing o that is an object        
     def find(self, o,  log=False):
-        return MyDict_With_Id.find(self, o, log)
+        return DictObjectManager_With_Id.find(self, o, log)
         
     ## Uses dict because is faster
     def find_by_id(self, id,  log=False):
-        return MyDict_With_Id.find_by_id(self, id, log)
+        return DictObjectManager_With_Id.find_by_id(self, id, log)
 
-class MyDictList_With_IdName(MyDictList_With_Id, MyList_With_IdName):
+class DictListObjectManager_With_IdName(DictListObjectManager_With_Id, ObjectManager_With_IdName):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
     def __init__(self):
-        MyDictList_With_Id.__init__(self)
-        MyList_With_IdName.__init__(self)
+        DictListObjectManager_With_Id.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
 
     ## Uses dict because is faster
     def find_by_id(self, id,  log=False):
-        return MyDictList_With_Id.find_by_id(self, id, log)
+        return DictListObjectManager_With_Id.find_by_id(self, id, log)
 

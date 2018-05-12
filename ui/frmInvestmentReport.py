@@ -108,7 +108,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 dt=self.mem.localzone.now()
             else:
                 dt=first.datetime
-            self.op=self.investment.op.subSet_from_datetime(dt)
+            self.op=self.investment.op.subSet_from_datetime(dt, self.mem, self.investment)
         else:
             self.op=self.investment.op
             
