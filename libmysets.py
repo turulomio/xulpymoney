@@ -84,20 +84,19 @@ class MyList_With_Id(MyList):
                 resultado.append(p)
         return resultado
 
+    ## Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+    ## It's used when I want to mark an item in a table and I only have an id
     def setSelected(self, sel):
-        """
-            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-        """
         for i, o in enumerate(self.arr):
             if o.id==sel.id:
                 self.selected=o
                 return True
         self.selected=None
         return False        
+        
+    ## Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
+    ## It's used when I want to mark an item in a table and I only have the list of ids
     def setSelectedList(self, lista):
-        """
-            Searches the objects id in the array and mak selected. ReturnsTrue if the o.id exists in the arr and False if don't
-        """
         assert type(lista) is list, "id is not a list {}".format(lista)
         self.arr=[]
         for i, o in enumerate(self.arr):
@@ -107,7 +106,13 @@ class MyList_With_Id(MyList):
         self.selected=None
         return False
 
+## Objects in MyDictList has and id and a datetime
+class MyList_With_IdDatetime(MyList_With_Id):
+    def __init__(self):
+        MyList_With_Id.__init__(self)
 
+    def order_by_datetime(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
 
 ## Objects in MyDictList has and id and a name
 class MyList_With_IdName(MyList_With_Id):
