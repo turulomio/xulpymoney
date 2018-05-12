@@ -137,7 +137,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.account==None:
-            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency))
+            cu=Account(self.mem, cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency), None)
             cu.save()
             self.mem.data.accounts.append(cu) #Always to active
         else:
@@ -239,14 +239,14 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             Ya está validado si es Comment coded 10001,10002,10003
         """
         args=Comment(self.mem).getArgs(self.accountoperations.selected.comentario)#origin,destiny,comission
-        aoo=AccountOperation(self.mem).init__db_query(args[0])
-        aod=AccountOperation(self.mem).init__db_query(args[1])
+        aoo=AccountOperation(self.mem, args[0])
+        aod=AccountOperation(self.mem, args[1])
 
         message=self.tr("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(aoo.account.name, aod.account.name, aoo.importe)
         reply = QMessageBox.question(self, 'Message', message, QMessageBox.Yes, QMessageBox.No)
         if reply == QMessageBox.Yes:
             if args[2]!=-1:
-                aoc=AccountOperation(self.mem).init__db_query(args[2])
+                aoc=AccountOperation(self.mem, args[2])
                 aoc.borrar()
             aoo.borrar()
             aod.borrar()
@@ -463,7 +463,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
  
     def on_cmdPago_released(self):
 #        comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())v
-        c=AccountOperation(self.mem).init__create(self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), "Transaction in progress", self.account)
+        c=AccountOperation(self.mem, self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), "Transaction in progress", self.account, None)
         c.save()
         
         c.comentario=Comment(self.mem).setEncoded10005(self.creditcards.selected, c)
@@ -508,7 +508,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             cur = self.mem.con.cursor()       
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.creditcards.selected.id, ))
             for row in cur:   
-                ao=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
+                ao=AccountOperation(self.mem, row['id_opercuentas'])
                 self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(str(row['fechapago'])[0:19],  self.mem.localcurrency.string(-ao.importe))    , ao.id)
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     

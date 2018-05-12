@@ -2,14 +2,14 @@ class MyObject_With_Id:
     def __init__(self):
         self.id=None
 
-class MyObject_With_IdName(MyObject_With_Id):
+class MyObject_With_IdName:
     def __init__(self):
-        MyObject_With_Id.__init__(self)
+        self.id=None
         self.name=None
         
-class MyObject_With_IdDatetime(MyObject_With_Id):
+class MyObject_With_IdDatetime:
     def __init__(self):
-        MyObject_With_Id.__init__(self)
+        self.id=None
         self.datetime=None
 
 class MyMem:
