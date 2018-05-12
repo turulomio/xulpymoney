@@ -4885,21 +4885,11 @@ class SetCreditCards(MyDictList_With_IdName):
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
-class SetCreditCardOperations:
-    def __init__(self, mem):
-        self.mem=mem
-        self.arr=[]
-        self.selected=None#Used to work with selected items is a SetCreditCardOperations created when necesarie
-        
-    def clear(self):
-        del self.arr
-        self.arr=[]
 
-    def first(self):
-        if self.length()>0:
-            return self.arr[0]
-        else:
-            return None
+class SetCreditCardOperations(MyList_With_IdDatetime):
+    def __init__(self, mem):
+        MyList_With_IdDatetime.__init__(self)
+        self.mem=mem
 
     def balance(self):
         """Returns the balance of all credit card operations"""
@@ -4907,13 +4897,6 @@ class SetCreditCardOperations:
         for o in self.arr:
             result=result+o.importe
         return result
-        
-    def append(self, objeto):
-        self.arr.append(objeto)
-
-    def length(self):
-        return len(self.arr)
-        
         
     def load_from_db(self, sql):
         del self.arr
@@ -4924,9 +4907,6 @@ class SetCreditCardOperations:
             co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem,  row['id_opercuentas']))
             self.append(co)
         cur.close()
-
-    def sort(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
     def myqtablewidget(self, tabla):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
@@ -4943,7 +4923,7 @@ class SetCreditCardOperations:
         tabla.clearContents()   
         tabla.setRowCount(self.length())
         balance=Decimal(0)
-        self.sort()
+        self.order_by_datetime()
         for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
