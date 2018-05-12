@@ -6090,18 +6090,11 @@ class Product:
         self.id=newid
         return self
 
-class SetQuotes:
+class SetQuotes(MyList):
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar, puede haber varios productos"""
     def __init__(self, mem):
+        MyList.__init__(self)
         self.mem=mem
-        self.arr=[]
-    
-    def print(self):
-        for q in self.arr:
-            print(" * {}".format(q))
-    
-    
-    
     
     def save(self):
         """Recibe con code,  date,  time, value, zone
@@ -6132,16 +6125,6 @@ class SetQuotes:
         """Añade los quotes en array a un nuevo set paasado por parametro"""
         for q in self.arr:
             settoadd.append(q)
-
-    def append(self, quote):
-        self.arr.append(quote)        
-        
-    def length(self):
-        return len(self.arr)
-        
-    def clear(self):
-        del self.arr
-        self.arr=[]
         
     def myqtablewidget(self, tabla):
         tabla.setColumnCount(3)
