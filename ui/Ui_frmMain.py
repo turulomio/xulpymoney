@@ -384,6 +384,7 @@ class Ui_frmMain(object):
         self.menuInversiones.addAction(self.actionInvestments)
         self.menuInversiones.addSeparator()
         self.menuInversiones.addAction(self.actionOrders)
+        self.menuInversiones.addAction(self.actionPurchaseOpportunities)
         self.menuInversiones.addSeparator()
         self.menuInversiones.addAction(self.actionInvestmentsClasses)
         self.menuInversiones.addSeparator()
@@ -651,7 +652,7 @@ class Ui_frmMain(object):
         self.actionProductsWithOldPrice.setToolTip(_translate("frmMain", "Products with old price"))
         self.actionProductsWithPriceVariation.setText(_translate("frmMain", "Products with a price &variation"))
         self.actionProductsWithPriceVariation.setToolTip(_translate("frmMain", "Product&s with a price variation"))
-        self.actionPurchaseOpportunities.setText(_translate("frmMain", "Purchase opportunities"))
+        self.actionPurchaseOpportunities.setText(_translate("frmMain", "&Purchase opportunities"))
         self.actionPurchaseOpportunities.setToolTip(_translate("frmMain", "Purchase opportunities"))
 
 import xulpymoney_rc

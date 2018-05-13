@@ -94,6 +94,7 @@
     <addaction name="actionInvestments"/>
     <addaction name="separator"/>
     <addaction name="actionOrders"/>
+    <addaction name="actionPurchaseOpportunities"/>
     <addaction name="separator"/>
     <addaction name="actionInvestmentsClasses"/>
     <addaction name="separator"/>
@@ -1078,7 +1079,7 @@
      <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
    </property>
    <property name="text">
-    <string>Purchase opportunities</string>
+    <string>&amp;Purchase opportunities</string>
    </property>
    <property name="toolTip">
     <string>Purchase opportunities</string>
