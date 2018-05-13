@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
 from myqtablewidget import myQTableWidget
-from libxulpymoney import SetAccountOperations
+from libxulpymoney import AccountOperationManager
 from libxulpymoneyfunctions import qcenter, qmessagebox
 from Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
@@ -66,7 +66,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
-        set=SetAccountOperations(self.mem)
+        set=AccountOperationManager(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
         set.order_by_datetime()
         set.myqtablewidget(table, True)
@@ -81,7 +81,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowYear")
-        set=SetAccountOperations(self.mem)
+        set=AccountOperationManager(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.sort()
         set.myqtablewidget(table, True)

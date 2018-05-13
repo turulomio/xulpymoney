@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  CreditCardOperation
+from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  SetCreditCardOperations,  CreditCardOperation
 from libxulpymoneyfunctions import b2c,  c2b
 from Ui_frmAccountsReport import Ui_frmAccountsReport
 from frmAccountOperationsAdd import frmAccountOperationsAdd
@@ -28,7 +28,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 
         self.account=account#Registro de account
         
-        self.accountoperations=None#SetAccountOperations. Selected will be an AccountOperation
+        self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
         self.creditcards=None#SetCreditCard. Selected will be a CreditCard
         self.creditcardoperations=SetCreditCardOperations(self.mem)#SetCreditCardOperations. Selected will be another SetCreditCardOperations
           
@@ -164,10 +164,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o=AccountOperation, significa que hay que actualizar opercuentas y seleccionarla
         """
         lastMonthBalance=self.account.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1), type=2)     
-        self.accountoperations=SetAccountOperations(self.mem)           
+        self.accountoperations=AccountOperationManager(self.mem)           
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
         if o!=None:
-            self.accountoperations.setSelected(o)
+            self.accountoperations.setSelected([o, ])
         self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones,  self.account,  lastMonthBalance)   
 
     def on_CreditCardChanged(self, o):
@@ -238,7 +238,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         """
             Ya está validado si es Comment coded 10001,10002,10003
         """
-        args=Comment(self.mem).getArgs(self.accountoperations.selected.comentario)#origin,destiny,comission
+        args=Comment(self.mem).getArgs(self.accountoperations.selected.only().comentario)#origin,destiny,comission
         aoo=AccountOperation(self.mem, args[0])
         aod=AccountOperation(self.mem, args[1])
 
@@ -255,13 +255,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, self.account, self.accountoperations.selected)
+        w=frmAccountOperationsAdd(self.mem, self.account, self.accountoperations.selected.only())
         w.AccountOperationChanged.connect(self.on_AccountOperationChanged)
         w.exec_()
 
     @pyqtSlot() 
     def on_actionOperationDelete_triggered(self):
-        self.accountoperations.selected.borrar() 
+        self.accountoperations.selected.only().borrar() 
         self.mem.con.commit()         
         self.on_AccountOperationChanged(None)
 
@@ -314,7 +314,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot()
     def on_actionConceptReport_triggered(self):
         if self.tab.currentIndex()==0:
-            concepto=self.accountoperations.selected.concepto
+            concepto=self.accountoperations.selected.only().concepto
         else:
             concepto=self.creditcardoperations.selected.first().concepto
 
@@ -327,21 +327,23 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         d.exec_()
         self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
+
+    ## Selection can be only one row, due to table definitions
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
             return
 
-        if self.accountoperations.selected==None:
+        if self.accountoperations.selected.length()==0:
             self.actionOperationDelete.setEnabled(False)
             self.actionOperationEdit.setEnabled(False)   
             self.actionTransferDelete.setEnabled(False)
             self.actionConceptReport.setEnabled(False)
         else:
-            if self.accountoperations.selected.es_editable()==False:
+            if self.accountoperations.selected.only().es_editable()==False:
                 self.actionOperationDelete.setEnabled(False)
                 self.actionOperationEdit.setEnabled(False)   
                 #Una transferencia bien formada no es editable solo con transfer delete.
-                if Comment(self.mem).getCode(self.accountoperations.selected.comentario) in (10001, 10002, 10003):#Account transfers
+                if Comment(self.mem).getCode(self.accountoperations.selected.only().comentario) in (10001, 10002, 10003):#Account transfers
                     self.actionTransferDelete.setEnabled(True)
                 else:
                     self.actionTransferDelete.setEnabled(False)
@@ -360,25 +362,20 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         menu.addSeparator()
         menu.addAction(self.actionTransferDelete)
 
-        if self.accountoperations.selected!=None:
-            if self.accountoperations.selected.concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
+        if self.accountoperations.selected.length()!=0:
+            if self.accountoperations.selected.only().concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
                 menu.addSeparator()
                 menu.addAction(self.actionInvestmentOperationEdit)
                 menu.addAction(self.actionInvestmentOperationDelete)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblOperaciones_itemSelectionChanged(self):
-        try:
-            for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
-                if i.column()==1:#Better than 0, because initial balance is in 1
-                    if i.row()==0:#Pressed balance
-                        self.accountoperations.selected.clear()
-                    else:
-                        self.accountoperations.selected=self.accountoperations.arr[i.row()-1]
-        except:
-            self.accountoperations.selected=None
-            
-        print ("Seleccionado: " +  str(self.accountoperations.selected))
+        self.accountoperations.selected.clear()
+        for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
+            if i.column()==1 and i.row()!=0:#Initial month
+                id=int(self.tblOperaciones.item(i.row(), 5).text())#Id it's hidden in the fifth column
+                self.accountoperations.selected.append(self.accountoperations.find_by_id(id)) #AccountOperationManager is a DictManager
+        print ("Seleccionado: " +  str(self.accountoperations.selected.dic))
         
 
     def on_tblCreditCards_customContextMenuRequested(self,  pos):

@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, Percentage
+from libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, Percentage
 from libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
 from myqtablewidget import myQTableWidget
 from decimal import Decimal
@@ -525,7 +525,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.verticalHeader().setVisible(False)
         
         id_tiposoperaciones=2
-        set=SetAccountOperations(self.mem)
+        set=AccountOperationManager(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
@@ -570,7 +570,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.verticalHeader().setVisible(False)
         
         id_tiposoperaciones=1
-        set=SetAccountOperations(self.mem)
+        set=AccountOperationManager(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Expenses of {0}").format(self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 

@@ -1325,7 +1325,7 @@ class ReinvestModel:
 
 
 
-class SetAccountOperations(DictObjectManager_With_IdDatetime):
+class AccountOperationManager(DictObjectManager_With_IdDatetime):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         DictObjectManager_With_IdDatetime.__init__(self)
@@ -1359,10 +1359,10 @@ class SetAccountOperations(DictObjectManager_With_IdDatetime):
         ##HEADERS
         diff=0
         if show_accounts==True:
-            tabla.setColumnCount(6)
+            tabla.setColumnCount(7)
             diff=1
         else:
-            tabla.setColumnCount(5)
+            tabla.setColumnCount(6)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
         if show_accounts==True:
             tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core","Account" )))
@@ -1370,6 +1370,8 @@ class SetAccountOperations(DictObjectManager_With_IdDatetime):
         tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Core","Amount" )))
         tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core","Balance" )))
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core","Comment" )))
+        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
+        tabla.setColumnHidden(5+diff, True)
         ##DATA 
         tabla.clearContents()
         tabla.applySettings()  
@@ -1384,6 +1386,7 @@ class SetAccountOperations(DictObjectManager_With_IdDatetime):
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).setFancy(a.comentario)))
+            tabla.setItem(rownumber, 5+diff, qleft(a.id))
             if self.selected!=None:
                 if a.id==self.selected.id:
                     tabla.selectRow(rownumber+1)
@@ -1394,6 +1397,7 @@ class SetAccountOperations(DictObjectManager_With_IdDatetime):
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
+#        table.setColumnHidden(5, True)
         for i, o in enumerate(self.values_order_by_datetime()):
             importe=Money(self.mem, o.importe, account.currency)
             lastmonthbalance=lastmonthbalance+importe
@@ -1401,7 +1405,8 @@ class SetAccountOperations(DictObjectManager_With_IdDatetime):
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))               
+            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))       
+            table.setItem(i+1, 5, qleft(o.id))
             if self.selected.length()>0:
                 if o.id==self.selected.id:
                     table.selectRow(i+1)
