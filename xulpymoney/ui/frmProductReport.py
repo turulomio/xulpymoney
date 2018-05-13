@@ -9,7 +9,7 @@ from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
 from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetProductTypes
 from libxulpymoneyfunctions import c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
-from libxulpymoneytypes import HistoricalChartAdjusts
+from libxulpymoneytypes import eHistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -462,17 +462,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             pass
         else:
             self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchart.setHistoricalChartAdjusts(HistoricalChartAdjusts.NoAdjusts)
+            self.wdgproducthistoricalchart.setHistoricalChartAdjusts(eHistoricalChartAdjusts.NoAdjusts)
             self.wdgproducthistoricalchart.generate()
             self.wdgproducthistoricalchart.display()
             
             self.wdgproducthistoricalchartSplits.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchartSplits.setHistoricalChartAdjusts(HistoricalChartAdjusts.Splits)
+            self.wdgproducthistoricalchartSplits.setHistoricalChartAdjusts(eHistoricalChartAdjusts.Splits)
             self.wdgproducthistoricalchartSplits.generate()
             self.wdgproducthistoricalchartSplits.display()
             
             self.wdgproducthistoricalchartDividends.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchartDividends.setHistoricalChartAdjusts(HistoricalChartAdjusts.Dividends)
+            self.wdgproducthistoricalchartDividends.setHistoricalChartAdjusts(eHistoricalChartAdjusts.Dividends)
             self.wdgproducthistoricalchartDividends.generate()
             self.wdgproducthistoricalchartDividends.display()
                 

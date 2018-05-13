@@ -9,7 +9,7 @@ from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
 from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus
 from libxulpymoneyfunctions import day_end_from_date
-from libxulpymoneytypes import HistoricalChartAdjusts, OHCLDuration
+from libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration
 
 class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
@@ -17,7 +17,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.setupUi(self)
         self.view=None
         self.dtFrom.blockSignals(True)
-        self.HistoricalChartAdjusts=HistoricalChartAdjusts.Splits
+        self.HistoricalChartAdjusts=eHistoricalChartAdjusts.Splits
         
     def pen(self, style, color):
         pen=QPen()
@@ -41,7 +41,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.dtFrom.setDate(from_)
         self.dtFrom.blockSignals(False)
         self.cmbOHCLDuration.currentIndexChanged.disconnect()
-        OHCLDuration.qcombobox(self.cmbOHCLDuration, OHCLDuration.Day)
+        eOHCLDuration.qcombobox(self.cmbOHCLDuration, eOHCLDuration.Day)
         self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
         
     @pyqtSlot(QDate) 

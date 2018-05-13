@@ -17,7 +17,7 @@ import getpass
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
-from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
+from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType
 from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -7185,22 +7185,22 @@ class QuotesResult:
         self.load_dps_and_splits()
         self.all.load_from_db(self.product)
 
-    def ohcl(self,  ohclduration, historicalchartadjust=HistoricalChartAdjusts.NoAdjusts):
+    def ohcl(self,  ohclduration, historicalchartadjust=eHistoricalChartAdjusts.NoAdjusts):
         """
             Returns the SetOHCL corresponding to it's duration
         """
-        if ohclduration==OHCLDuration.Day:
-            if historicalchartadjust==HistoricalChartAdjusts.Splits:
+        if ohclduration==eOHCLDuration.Day:
+            if historicalchartadjust==eHistoricalChartAdjusts.Splits:
                 return self.ohclDaily
-            elif historicalchartadjust==HistoricalChartAdjusts.NoAdjusts:
+            elif historicalchartadjust==eHistoricalChartAdjusts.NoAdjusts:
                 return self.ohclDailyBeforeSplits
-            elif historicalchartadjust==HistoricalChartAdjusts.Dividends:
+            elif historicalchartadjust==eHistoricalChartAdjusts.Dividends:
                 return self.ohclDailyAfterDividends
-        if ohclduration==OHCLDuration.Week:
+        if ohclduration==eOHCLDuration.Week:
             return self.ohclWeekly
-        if ohclduration==OHCLDuration.Month:
+        if ohclduration==eOHCLDuration.Month:
             return self.ohclMonthly
-        if ohclduration==OHCLDuration.Year:
+        if ohclduration==eOHCLDuration.Year:
             return self.ohclYearly
 
 class Leverage:
@@ -7516,7 +7516,7 @@ class SplitManual:
 
 ## Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
 ## fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar
-class Agrupation():
+class Agrupation:
     ## Constructor with the following attributes combination
     ## 1. Agrupation(mem). Create an aggrupation with all attributes to None
     ## 2. Agrupation(mem, id,  name, type, bolsa). Create an agrupation settings all attributes.
@@ -7850,15 +7850,9 @@ class MemXulpymoney:
         icon.addPixmap(QPixmap(":/xulpymoney/admin.png"), QIcon.Normal, QIcon.Off)
         return icon
 
-class Country:
-    def __init__(self):
-        self.id=None
-        self.name=None
-        
-    def init__create(self, id, name):
-        self.id=id
-        self.name=name
-        return self
+class Country(Object_With_IdName):
+    def __init__(self, *args):
+        Object_With_IdName.__init__(self, *args)
             
     def qicon(self):
         icon=QIcon()
