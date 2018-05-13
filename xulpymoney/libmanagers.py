@@ -1,18 +1,11 @@
-## Usefull when creating a class with two attributes self.id and self.name only
-class Object_With_IdName:
-    ## Constructor with the following attributes combination
-    ## 1. Object_With_IdName(). Create an Object_With_IdName with all attributes to None
-    ## 2. Object_With_IdName( id,  name). Create an Object_With_IdName settings all attributes.
-    ## @param name String with the name of the Object_With_IdName
-    ## @param id Integer that sets the id of the Object_With_IdName
-    def __init__(self, *args):
-        def init__create( id,  name):
-            self.id=id
-            self.name=name
-        if len(args)==0:
-            init__create(None, None)
-        if len(args)==2:
-            init__create(args[0], args[1])
+## @package libmanagers
+## @brief Module with objects managers as list or as dictionary.
+##
+## This file is from pysgae project. Do not edit, It will be overriden.
+##
+## You have to use list objects if you are going to make selections and secuential access.
+##
+## You have to use dictionary objects i f you are going to make unordered access to the dictionary. It consumes more memory. To access a selected item in a table you have to hide a column with the id and getit when selecting a row
 
 class MyMem:
     def __init__(self):
@@ -34,6 +27,10 @@ class ObjectManager:
 
     def length(self):
         return len(self.arr)
+        
+    #To use the same name as DictObjectManager
+    def values(self):
+        return self.arr
 
     def clean(self):
         """Deletes all items"""
@@ -203,15 +200,29 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-##Objects has a field called id, whose string is the key of the item of dict
+## Objects has a field called id, whose string is the key of the item of dict
 ## It Can be a DictObjectManager without id
 ## It doesn't need to cfreate DictListObjectManager_With_IdName, because all funcions are used with ObjectManager_With_IdName
 class DictObjectManager_With_Id:
-    def __init__(self):
+    ## @param selectable Create an attribute to self.selected if it's true than it's a DictObjectManager_With_Id but with selectable=False to avoid recursivity
+    def __init__(self, selectable=True):
         self.dic={}
-                    
+        ## It's a DictObjectManager_With_Id so we can work with one or several at the same time
+        ## We can access using keys, values or items
+        if selectable==True:
+            self.selected=DictObjectManager_With_Id(selectable=False)
+
     def append(self,  obj):
         self.dic[str(obj.id)]=obj
+        
+    def values(self):
+        return self.dic.values()
+        
+    def keys(self):
+        return self.dic.keys()
+        
+    def items(self):
+        return self.dic.items()
         
     def remove(self, obj):
         del self.dic[str(obj.id)]
@@ -219,10 +230,13 @@ class DictObjectManager_With_Id:
     def clean(self):
         self.dic={}
 
+    def length(self):
+        return len(self.dic)
         
     ## Find by object passing o that is an object        
     def find(self, o,  log=False):
         """o is and object with id parameter"""
+        print("find is deprecated")
         try:
             return self.dic[str(o.id)]    
         except:
@@ -238,41 +252,49 @@ class DictObjectManager_With_Id:
             if log:
                 print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, id))
             return None
+            
+    def values_order_by_id(self):
+        return sorted(self.dic.values(), key=lambda o: o.id)
 
-## Objects in DictListObjectManager has and id
-class DictListObjectManager_With_Id(DictObjectManager_With_Id, ObjectManager_With_Id):
-    def __init__(self):
-        DictObjectManager_With_Id.__init__(self)
-        ObjectManager_With_Id.__init__(self)
-        
-    def append(self,  obj):
-        DictObjectManager_With_Id.append(self, obj)
-        ObjectManager_With_Id.append(self, obj)
-        
-    def remove(self,  obj):
-        DictObjectManager_With_Id.remove(self, obj)
-        ObjectManager_With_Id.remove(self, obj)
-
-    def clean(self):
-        """Deletes all items"""
-        DictObjectManager_With_Id.clean(self)
-        ObjectManager_With_Id.clean(self)
-        
-    ## Find by object passing o that is an object        
-    def find(self, o,  log=False):
-        return DictObjectManager_With_Id.find(self, o, log)
-        
-    ## Uses dict because is faster
-    def find_by_id(self, id,  log=False):
-        return DictObjectManager_With_Id.find_by_id(self, id, log)
-
-class DictListObjectManager_With_IdName(DictListObjectManager_With_Id, ObjectManager_With_IdName):
+class DictObjectManager_With_IdName(DictObjectManager_With_Id):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
     def __init__(self):
-        DictListObjectManager_With_Id.__init__(self)
-        ObjectManager_With_IdName.__init__(self)
+        DictObjectManager_With_Id.__init__(self)
 
     ## Uses dict because is faster
-    def find_by_id(self, id,  log=False):
-        return DictListObjectManager_With_Id.find_by_id(self, id, log)
+    def values_order_by_name(self):
+        return sorted(self.dic.values(), key=lambda o: o.name)
+        
+class DictObjectManager_With_IdDate(DictObjectManager_With_Id):
+    """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
+    def __init__(self):
+        DictObjectManager_With_Id.__init__(self)
 
+    ## Uses dict because is faster
+    def values_order_by_date(self):
+        return sorted(self.dic.values(), key=lambda o: o.date)
+
+class DictObjectManager_With_IdDatetime(DictObjectManager_With_Id):
+    """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
+    def __init__(self):
+        DictObjectManager_With_Id.__init__(self)
+
+    ## Uses dict because is faster
+    def values_order_by_datetime(self):
+        return sorted(self.dic.values(), key=lambda o: o.datetime)
+        
+## Usefull when creating a class with two attributes self.id and self.name only
+class Object_With_IdName:
+    ## Constructor with the following attributes combination
+    ## 1. Object_With_IdName(). Create an Object_With_IdName with all attributes to None
+    ## 2. Object_With_IdName( id,  name). Create an Object_With_IdName settings all attributes.
+    ## @param name String with the name of the Object_With_IdName
+    ## @param id Integer that sets the id of the Object_With_IdName
+    def __init__(self, *args):
+        def init__create( id,  name):
+            self.id=id
+            self.name=name
+        if len(args)==0:
+            init__create(None, None)
+        if len(args)==2:
+            init__create(*args)
