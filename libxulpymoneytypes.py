@@ -45,22 +45,22 @@ class eTickerPosition(IntEnum):
         return len(eTickerPosition.__dict__)
 
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
-class HistoricalChartAdjusts:
+class eHistoricalChartAdjusts:
     NoAdjusts=0
     Splits=1
     Dividends=2#Dividends with splits.        
     
-class OHCLDuration:
+class eOHCLDuration:
     Day=1
     Week=2
     Month=3
     Year=4
 
     @classmethod
-    def qcombobox(self, combo, selected_ohclduration):
+    def qcombobox(self, combo, selected_eOHCLDuration):
         combo.addItem(QApplication.translate("Core", "Day"), 1)
         combo.addItem(QApplication.translate("Core", "Week"), 2)
         combo.addItem(QApplication.translate("Core", "Month"), 3)
         combo.addItem(QApplication.translate("Core", "Year"), 4)
         
-        combo.setCurrentIndex(combo.findData(selected_ohclduration))
+        combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))

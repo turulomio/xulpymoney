@@ -2,7 +2,7 @@ from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
 from libxulpymoney import    Percentage
 from libxulpymoneyfunctions import epochms2aware, aware2epochms
-from libxulpymoneytypes import  OHCLDuration
+from libxulpymoneytypes import  eOHCLDuration
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
@@ -29,7 +29,7 @@ class VCTemporalSeries(QChartView):
         self.setRenderHint(QPainter.Antialiasing);
         
         self.series=[]
-        self.__ohclduration=OHCLDuration.Day
+        self.__ohclduration=eOHCLDuration.Day
     def setAxisFormat(self, axis,  min, max, type, zone=None):
         """
             type=0 #Value
