@@ -953,18 +953,19 @@ class SetProducts(DictListObjectManager_With_IdName):
         except:
             return False
             
+    ## Fills a qcombobox with product nume in upper case
+    ## @param combo QComboBox to fill
+    ## @param selected Product object to select in the QComboBox
     def qcombobox_not_obsolete(self, combo,  selected=None):
-        """Load set items in a comobo using id and name
-        Selected is and object
-        It sorts by name the arr""" 
         self.order_by_name()
         combo.clear()
         for a in self.arr:
             if a.obsolete==False:
-                combo.addItem(a.name, a.id)
+                combo.addItem(a.name.upper(), a.id)
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
+
     def subset_with_same_type(self, type):
         """Returns a SetProduct with all products with the type passed as parameter.
         Type is an object"""
@@ -4532,6 +4533,11 @@ class OpportunityManager(ObjectManager_With_IdDate):
             elif p.is_removed():
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
+                    
+            if p.is_executed()==False and p.is_removed()==False:#Color if current oportunity
+                if p.percentage_from_current_price().value_100()<=Decimal(5):
+                    table.item(i, 4).setBackground(QColor(148, 255, 148))
+
 
 class Order:
     def __init__(self, mem):
@@ -5928,7 +5934,7 @@ class Product:
                 
     def init__db_row(self, row):
         """row es una fila de un pgcursro de investmentes"""
-        self.name=row['name']
+        self.name=row['name'].upper()
         self.isin=row['isin']
         self.currency=self.mem.currencies.find_by_id(row['currency'])
         self.type=self.mem.types.find_by_id(row['type'])
