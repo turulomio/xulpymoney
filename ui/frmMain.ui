@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1186</width>
+    <width>1458</width>
     <height>625</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1186</width>
+     <width>1458</width>
      <height>30</height>
     </rect>
    </property>
@@ -69,6 +69,8 @@
     <property name="title">
      <string>&amp;Reports</string>
     </property>
+    <addaction name="actionPurchaseOpportunities"/>
+    <addaction name="separator"/>
     <addaction name="actionConcepts"/>
     <addaction name="actionDividendsReport"/>
     <addaction name="actionEvolutionReport"/>
@@ -270,10 +272,10 @@
    <addaction name="actionInvestments"/>
    <addaction name="separator"/>
    <addaction name="actionOrders"/>
+   <addaction name="actionPurchaseOpportunities"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionConcepts"/>
-   <addaction name="actionEvolutionReport"/>
    <addaction name="actionTotalReport"/>
    <addaction name="separator"/>
    <addaction name="actionPriceUpdates"/>
@@ -1068,6 +1070,18 @@
    </property>
    <property name="toolTip">
     <string>Product&amp;s with a price variation</string>
+   </property>
+  </action>
+  <action name="actionPurchaseOpportunities">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Purchase opportunities</string>
+   </property>
+   <property name="toolTip">
+    <string>Purchase opportunities</string>
    </property>
   </action>
  </widget>

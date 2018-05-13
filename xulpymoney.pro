@@ -100,6 +100,10 @@ SOURCES         = \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
                   ui/wdgTwoCurrencyLineEdit.py \
+                  ui/wdgOpportunities.py \
+                  ui/Ui_wdgOpportunities.py \
+                  ui/wdgOpportunitiesAdd.py \
+                  ui/Ui_wdgOpportunitiesAdd.py \
                   ui/wdgOrders.py \
                   ui/Ui_wdgOrders.py \
                   ui/wdgOrdersAdd.py \
@@ -154,6 +158,8 @@ FORMS           = \
                   ui/wdgInvestmentsRanking.ui \
                   ui/wdgLastCurrent.ui \
                   ui/wdgMergeCodes.ui \
+                  ui/wdgOpportunities.ui \
+                  ui/wdgOpportunitiesAdd.ui \
                   ui/wdgOrders.ui \
                   ui/wdgOrdersAdd.ui \
                   ui/wdgProductHistoricalChart.ui \

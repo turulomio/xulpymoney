@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201803270802
+        self.lastcodeupdate=201805130938
         self.need_update()
 
    
@@ -2208,6 +2208,32 @@ Return False, in other cases';""")
             self.mem.con.commit()
             self.set_database_version(201803270802)         
 
+        if self.dbversion<201805130811:
+            cur=self.mem.con.cursor()
+            cur.execute("CREATE SEQUENCE opportunities_seq  INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;")
+            cur.execute("""
+                CREATE TABLE opportunities (
+                    id integer NOT NULL DEFAULT nextval('opportunities_seq'::regclass),  
+                    date date NOT NULL,  
+                    removed date,
+                    execute date,
+                    price numeric(100,2) NOT NULL,  
+                    products_id integer NOT NULL,
+                    CONSTRAINT opportunities_pk PRIMARY KEY (id),
+                    CONSTRAINT opportunities_products_id_fk_products_id FOREIGN KEY (products_id) REFERENCES public.products (id) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE RESTRICT
+                ) WITH (  OIDS=FALSE);
+            """)
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805130811)            
+            
+
+        if self.dbversion<201805130938:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table opportunities rename execute to executed;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805130938)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

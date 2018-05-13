@@ -107,13 +107,14 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
         lay = QVBoxLayout(d)
-        
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.product, None)
+        wc.setPrice(self.txtFinalPrice.decimal())
         wc.generate()
         wc.display()
         lay.addWidget(wc)
         d.exec_()
+
     @pyqtSlot(float)
     def on_spnProductPriceVariation_valueChanged(self, value):
         self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())

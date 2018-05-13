@@ -27,6 +27,7 @@ from frmTransfer import frmTransfer
 from frmSettings import frmSettings
 from frmHelp import frmHelp
 from wdgOrders import wdgOrders
+from wdgOpportunities import wdgOpportunities
 from wdgProducts import wdgProducts
 from wdgSimulations import wdgSimulations
 from wdgQuotesUpdate import wdgQuotesUpdate
@@ -488,6 +489,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
+    @pyqtSlot()  
+    def on_actionPurchaseOpportunities_triggered(self):
+        self.w.close()
+        self.w=wdgOpportunities(self.mem, self)
+        self.layout.addWidget(self.w)
+        
     @pyqtSlot()  
     def on_actionPurgeAll_triggered(self):
         """Purga todas las quotes de todas inversión. """

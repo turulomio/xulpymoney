@@ -69,6 +69,8 @@ def status_update(cur, source,  process, status=None,  statuschange=None,  inter
 
 def qdate(date):
     """Return a QTableWidgetItem with the date"""
+    if date==None:
+        return qempty()
     return qcenter(str(date))
 
 
@@ -209,14 +211,10 @@ def aware2epochms(d):
         Si viene con zona datetime zone aware, se convierte a UTC y se da el valor en UTC
         return datetime.datetime.now(pytz.timezone(self.name))
     """
-#    if d.__class__==datetime.date:
-#        return (datetime.datetime(d.year, d.month, d.day, 23, 59, 59, 999999)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
     if d.__class__==datetime.datetime:
         if d.tzname()==None:#unaware datetine
-#            return (d-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
             logging.critical("Must be aware")
         else:#aware dateime changed to unawar
-#            return (dt_changes_tz(d, Zone(10, "UTC", "es")).replace(tzinfo=None)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
             utc=dt_changes_tz_with_pytz(d, 'UTC')
             return utc.timestamp()*1000
     logging.critical("{} can't be converted to epochms".format(d.__class__))
@@ -252,7 +250,7 @@ def qdatetime(dt, zone):
     """
     a=QTableWidgetItem(datetime_string(dt, zone))
     if dt==None:
-        a.setForeground(QColor(0, 0, 255))
+        return qempty()
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 
@@ -260,6 +258,8 @@ def qtime(dt):
     """
         Shows the time of a datetime
     """
+    if dt==None:
+        return qempty()
     if dt.microsecond==5:
         item=qleft(str(dt)[11:-13])
         item.setBackground(QColor(255, 255, 148))
@@ -494,7 +494,6 @@ def dt_with_pytz(date, hour, zonename):
     z=pytz.timezone(zonename)
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
-#    logging.debug("{} {} {} => {}".format(date, hour, zonename, a))
     return a
     
 def str2bool(s):
@@ -512,6 +511,8 @@ def none2decimal0(s):
 
 def qbool(bool):
     """Prints bool and check. Is read only and enabled"""
+    if bool==None:
+        return qempty()
     a=QTableWidgetItem()
     a.setFlags( Qt.ItemIsSelectable |  Qt.ItemIsEnabled )#Set no editable
     if bool:
@@ -541,13 +542,22 @@ def wdgBool(bool):
     pCheckBox.setEnabled(False)
     return pWidget
     
+## Returns a QTableWidgetItem representing an empty value
+def qempty():
+    a=QTableWidgetItem("---")
+    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+    return a
 
 def qcenter(string, digits=None):
+    if string==None:
+        return qempty()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
     
 def qleft(string):
+    if string==None:
+        return qempty()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
@@ -555,6 +565,8 @@ def qleft(string):
     
 def qright(string, digits=None):
     """When digits, limits the number to """
+    if string==None:
+        return qempty()
     if string!=None and digits!=None:
         string=round(string, digits)
     a=QTableWidgetItem(str(string))
@@ -567,29 +579,6 @@ def qright(string, digits=None):
     except:
         pass
     return a
-
-#def qtpc(n, rnd=2):
-#    print("qtpc deprecated")
-#    text= tpc(n, rnd)
-#    a=QTableWidgetItem(text)
-#    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-#    if n==None:
-#        a.setForeground(QColor(0, 0, 255))
-#    elif n<0:
-#        a.setForeground(QColor(255, 0, 0))
-#    return a
-#      
-#def QApplication.translate("Core",s):
-#    return QApplication.translate("Core",  s)
-#    
-
-#
-#def tpc(n, rnd=2):
-#    print("tpc deprecated")
-#    if n==None:
-#        return "None %"
-#    return str(round(n, rnd))+ " %"
-
         
 def web2utf8(cadena):
     cadena=cadena.replace('&#209;','Ñ')
@@ -606,9 +595,9 @@ def web2utf8(cadena):
     return cadena
     
 def function_name(clas):
-#    print (inspect.stack()[0][0].f_code.co_name)
-#    print (inspect.stack()[0][3],  inspect.stack())
-#    print (inspect.stack()[1][3],  inspect.stack())
-#    print (clas.__class__.__name__)
-#    print (clas.__module__)
+    #    print (inspect.stack()[0][0].f_code.co_name)
+    #    print (inspect.stack()[0][3],  inspect.stack())
+    #    print (inspect.stack()[1][3],  inspect.stack())
+    #    print (clas.__class__.__name__)
+    #    print (clas.__module__)
     return "{0}.{1}".format(clas.__class__.__name__,inspect.stack()[1][3])
