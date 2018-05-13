@@ -227,11 +227,16 @@ class DictObjectManager_With_Id:
     def remove(self, obj):
         del self.dic[str(obj.id)]
         
-    def clean(self):
+    def clear(self):
         self.dic={}
 
     def length(self):
         return len(self.dic)
+        
+    ## Sometimes there is a dictionary with a unique valor. This function returns the value, not the key.
+    ## I dón't use first because dict has no orders.
+    def only(self):
+        return self.dic[next(iter(self.dic))]
         
     ## Find by object passing o that is an object        
     def find(self, o,  log=False):
@@ -255,6 +260,13 @@ class DictObjectManager_With_Id:
             
     def values_order_by_id(self):
         return sorted(self.dic.values(), key=lambda o: o.id)
+        
+    ## Useful to setselection without interactivvite ui
+    ## @param list List of objects. These objects have o.id so I can append them
+    def setSelected(self, list):
+        self.selected.clear()
+        for o in list:
+            self.selected.append(o)
 
 class DictObjectManager_With_IdName(DictObjectManager_With_Id):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy
 from Ui_wdgCuriosities import Ui_wdgCuriosities
 from wdgCuriosity import wdgCuriosity
-from libxulpymoney import Assets,  Money, SetAccountOperations
+from libxulpymoney import Assets,  Money, AccountOperationManager
 
 class wdgCuriosities(QWidget, Ui_wdgCuriosities):
     def __init__(self, mem,  parent = None):
@@ -57,7 +57,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         self.layout.addWidget(c)
         
         c=wdgCuriosity(self.mem)
-        operations=SetAccountOperations(self.mem)
+        operations=AccountOperationManager(self.mem)
         operations.load_from_db("select * from opercuentas where importe = (select max(importe) from opercuentas) order by datetime desc limit 1")
         c.setTitle(self.tr("Which is the amount of the largest account operation?"))
         if operations.length()==1:
