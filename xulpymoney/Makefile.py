@@ -130,6 +130,8 @@ if __name__ == '__main__':
             futures.append(executor.submit(shell, "pyuic5 ui/wdgInvestments.ui -o ui/Ui_wdgInvestments.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgInvestmentsRanking.ui -o ui/Ui_wdgInvestmentsRanking.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgLastCurrent.ui -o ui/Ui_wdgLastCurrent.py"))
+            futures.append(executor.submit(shell, "pyuic5 ui/wdgOpportunities.ui -o ui/Ui_wdgOpportunities.py"))
+            futures.append(executor.submit(shell, "pyuic5 ui/wdgOpportunitiesAdd.ui -o ui/Ui_wdgOpportunitiesAdd.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgOrders.ui -o ui/Ui_wdgOrders.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/wdgOrdersAdd.ui -o ui/Ui_wdgOrdersAdd.py"))
             futures.append(executor.submit(shell, "pyuic5 ui/frmDividendsAdd.ui -o ui/Ui_frmDividendsAdd.py"))

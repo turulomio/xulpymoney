@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem
-from libxulpymoneyfunctions import qcenter
+from PyQt5.QtWidgets import QDialog
+from libxulpymoneyfunctions import qcenter, qempty
 from Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):
@@ -54,11 +54,11 @@ class frmAbout(QDialog, Ui_frmAbout):
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, columna , qcenter(tmp))
-            self.tblStatistics.setItem(7, columna , QTableWidgetItem(""))
+            self.tblStatistics.setItem(7, columna , qempty())
             cur.execute("select count(*) from products where obsolete=true and stockmarkets_id=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             self.tblStatistics.setItem(8, columna , qcenter(tmp))
-            self.tblStatistics.setItem(9, columna , QTableWidgetItem(""))
+            self.tblStatistics.setItem(9, columna , qempty())
             self.tblStatistics.setItem(10, columna , qcenter(total))
             self.tblStatistics.horizontalHeaderItem (columna).setIcon(bolsa.country.qicon())
             self.tblStatistics.horizontalHeaderItem (columna).setToolTip((bolsa.country.name))
@@ -94,11 +94,11 @@ class frmAbout(QDialog, Ui_frmAbout):
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, 0 , qcenter(tmp))
-            self.tblStatistics.setItem(7, 0 , QTableWidgetItem(""))
+            self.tblStatistics.setItem(7, 0 , qempty())
             cur.execute("select count(*) from products where obsolete=true ")
             tmp=cur.fetchone()[0]
             self.tblStatistics.setItem(8, 0 , qcenter(tmp))
-            self.tblStatistics.setItem(9, 0 , QTableWidgetItem(""))
+            self.tblStatistics.setItem(9, 0 , qempty())
             self.tblStatistics.setItem(10, 0 , qcenter(total))
 
     

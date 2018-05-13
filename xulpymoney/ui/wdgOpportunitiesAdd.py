@@ -1,0 +1,47 @@
+import datetime
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget
+from libxulpymoney import Opportunity
+from libxulpymoneyfunctions import qmessagebox
+from Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
+
+class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
+    def __init__(self, mem, opportunity=None,  parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+        self.mem=mem
+        self.opportunity=opportunity
+        self.parent=parent
+
+        if opportunity==None:
+            self.lbl.setText("Add new opportunity")
+            self.deDate.setDate(datetime.date.today())
+            self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, selected=None)
+            self.opportunity=Opportunity(self.mem)
+        else:
+            self.lbl.setText("Edit opportunity")
+            self.deDate.setDate(self.opportunity.date)
+            self.txtPrice.setText(self.opportunity.price)
+            self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, selected=self.opportunity.product)
+
+    @pyqtSlot()
+    def on_buttonbox_accepted(self):
+        if not (self.txtPrice.isValid()):
+            qmessagebox(self.tr("Incorrect data. Try again."))
+            return
+        product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(self.cmbProducts.currentIndex()))
+        if product==None:
+            qmessagebox(self.tr("You must select a product"))
+            return
+            
+        self.opportunity.date=self.deDate.date().toPyDate()
+        self.opportunity.price=self.txtPrice.decimal()
+        self.opportunity.product=product
+        
+        self.opportunity.save()
+        self.mem.con.commit()
+        self.parent.accept()
+
+    @pyqtSlot()
+    def on_buttonbox_rejected(self):
+        self.parent.reject()

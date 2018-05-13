@@ -16,9 +16,9 @@ import argparse
 import getpass
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
-from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs
+from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
-from libmanagers import DictListObjectManager_With_IdName, Object_With_IdName, Object_With_IdDatetime, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate
+from libmanagers import DictListObjectManager_With_IdName, Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -250,7 +250,7 @@ class Percentage:
         return False
 
 ## Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones
-class AccountOperationOfInvestmentOperation(Object_With_IdDatetime):
+class AccountOperationOfInvestmentOperation:
     ## Constructor with the following attributes combination
     ## 1. AccountOperationOfInvestmentOperation(mem). Create an account operation of an investment operation with all attributes to None
     ## 2. AccountOperationOfInvestmentOperation(mem,  datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id). Create an account operation of an investment operation settings all attributes.1
@@ -3075,7 +3075,7 @@ class Comment:
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(datetime_string(cco.datetime,  self.mem.localzone), money)
 ## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket
-class Concept(Object_With_IdName):
+class Concept:
     ## Constructor with the following attributes combination
     ## 1. Concept(mem). Create a Concept with all attributes to None
     ## 2. Concept(mem, row, tipooperacion). Create a Concept from a db row, generated in a database query
@@ -3171,7 +3171,7 @@ class Concept(Object_With_IdName):
         return suma
 
 ## Class to manage everything relationed with bank accounts operations
-class AccountOperation(Object_With_IdDatetime):
+class AccountOperation:
     ## Constructor with the following attributes combination
     ## 1. AccountOperation(mem). Create an account operation with all attributes to None
     ## 2. AccountOperation(mem, id). Create an account operation searching data in the database for an id.
@@ -3865,7 +3865,7 @@ class Bank:
 
 
 ## Class to manage everything relationed with bank accounts
-class Account(Object_With_IdName):
+class Account:
     ## Constructor with the following attributes combination
     ## 1. Account(mem, row, bank). Create an Account from a db row, generated in a database query
     ## 2. Account(mem, name, bank, active, numero, currency, id). Create account passing all attributes
@@ -4387,6 +4387,151 @@ class CreditCardOperation:
             else:
                 cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
+
+## Class that register a purchase opportunity
+class Opportunity:
+    ## Constructor with the following attributes combination
+    ## 1. Opportunity(mem). Crete a Opportunity object with all attributes set to None
+    ## 1. Opportunity(mem, row). Create an Opportunity from a db row, generated in a database query
+    ## 2. Opportunity(mem, date, removed, executed, price, products_id, id). Create a Opportunity passing all attributes
+    ## @param mem MemXulpymoney object
+    ## @param row Dictionary of a database query cursor
+    ## @param date datetime.date object with the date of the Opportunity
+    ## @param removed datetime.date object when the Opportunity was removed
+    ## @param executed datetime.date object when the Opportunity was executed
+    ## @param price decimal.Decimal object with the Opportunity price
+    ## @param products_id Integer with the product id, after the constructur this integer is converted to self.product using mem
+    ## @param id Integer that sets the id of an Opportunity. If id=None it's not in the database. id is set in the save method
+    def __init__(self, *args):
+        def init__db_row( row):
+            init__create(row['date'], row['removed'], row['executed'], row['price'], row['products_id'], row['id'])
+        def init__create(date, removed, executed, price, products_id, id):
+            self.date=date
+            self.removed=removed
+            self.executed=executed
+            self.price=price
+            self.product=self.mem.data.products.find_by_id(products_id)
+            self.id=id
+        self.mem=args[0]
+        if len(args)==1:
+            init__create(None, None, None, None, None, None)
+        if len(args)==2:
+            init__db_row(args[1])
+        if len(args)==7:
+            init__create(*args[1:])
+
+    ## In Spanish is said "Está vigente"
+    def is_in_force(self):
+        if self.is_removed()==False and self.is_executed()==False:
+            return True
+        return False
+
+    def is_removed(self):
+        if self.removed!=None:
+            return True
+        return False
+        
+    def is_executed(self):
+        if self.executed!=None:
+            return True
+        return False
+
+    def save(self, autocommit=False):
+        cur=self.mem.con.cursor()
+        if self.id==None:#insertar
+            cur.execute("insert into opportunities(date, removed, executed, price, products_id) values (%s, %s, %s, %s, %s) returning id", 
+            (self.date,  self.removed, self.executed, self.price, self.product.id))
+            self.id=cur.fetchone()[0]
+        else:
+            cur.execute("update opportunities set date=%s, removed=%s, executed=%s, price=%s, products_id=%s where id=%s", (self.date,  self.removed, self.executed, self.price, self.product.id, self.id))
+        if autocommit==True:
+            self.mem.con.commit()
+        cur.close()
+        
+    def remove(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from opportunities where id=%s", (self.id, ))
+        cur.close()
+        
+    ##Calculates percentage from current price to order price
+    def percentage_from_current_price(self):
+        return Percentage(self.price-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
+        
+
+class OpportunityManager(ObjectManager_With_IdDate):
+    def __init__(self, mem):
+        ObjectManager_With_IdDate.__init__(self)
+        self.mem=mem
+        
+    def init__from_db(self, sql):
+        cur=self.mem.con.cursor()
+        cur.execute(sql)
+        for row in cur:
+            self.append(Opportunity(self.mem, row))
+        cur.close()
+        return self
+    
+    ## Removes from array and from database. It doesn't make a database commit
+    def remove(self, order):
+        """Remove from array"""
+        ObjectManager_With_IdDate.remove(self, order)#Remove from array
+        order.remove()#Database
+
+    def order_by_removed(self):
+        self.arr=sorted(self.arr, key=lambda o:o.removed)
+        
+    def order_by_executed(self):
+        self.arr=sorted(self.arr, key=lambda o:o.executed)
+        
+    def order_by_percentage_from_current_price(self):
+        try:
+            self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
+        except:            
+            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
+        
+    ## Returns a datetime.date object with the date of the first opportunity in the database
+    def date_of_the_first_database_oppportunity(self):
+        cur=self.mem.con.cursor()
+        cur.execute("select date from orders order by date limit 1")
+        r=cur.fetchone()
+        cur.close()
+        if r==None:#To avoid crashed returns today if null
+            return datetime.date.today()
+        else:
+            return r[0]
+        
+    def myqtablewidget(self, table):
+        table.setColumnCount(6)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Removed")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Product")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","% from current")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Executed")))
+        table.applySettings()
+        table.clearContents()
+        table.setRowCount(self.length())
+        for i, p in enumerate(self.arr):
+            table.setItem(i, 0, qdate(p.date))
+            table.setItem(i, 1, qdate(p.removed))      
+            table.setItem(i, 2, qleft(p.product.name))
+            table.setItem(i, 3, p.product.currency.qtablewidgetitem(p.price))
+            if p.is_in_force():
+                table.setItem(i, 4, p.percentage_from_current_price().qtablewidgetitem())
+            else:
+                table.setItem(i, 4, qempty())
+            if p.is_executed():
+                table.setItem(i, 5, qdate(p.executed))
+            else:
+                table.setItem(i, 5, qempty())
+                
+            #Color
+            if p.is_executed():
+                for column in range (table.columnCount()):
+                    table.item(i, column).setBackground( QColor(182, 255, 182))                     
+            elif p.is_removed():
+                for column in range (table.columnCount()):
+                    table.item(i, column).setBackground( QColor(255, 182, 182))     
 
 class Order:
     def __init__(self, mem):
@@ -5061,11 +5206,11 @@ class SetOrders(ObjectManager_With_Id):
             if p.is_in_force():
                 table.setItem(i, 7, p.percentage_from_current_price().qtablewidgetitem())
             else:
-                table.setItem(i, 7, QTableWidgetItem(""))
+                table.setItem(i, 7, qempty())
             if p.is_executed():
                 table.setItem(i, 8, qdatetime(p.executed, self.mem.localzone))
             else:
-                table.setItem(i, 8, QTableWidgetItem(""))
+                table.setItem(i, 8, qempty())
                 
             #Color
             if p.is_executed():
@@ -7397,6 +7542,9 @@ class Agrupation(Object_With_IdName):
         if len(args)==5:
             init__create(args[1], args[2], args[3], args[4])
 
+    ## Function added due to an eric error
+    def due_to_eric_error(self):
+        pass
 
 
 
@@ -7404,6 +7552,10 @@ class Agrupation(Object_With_IdName):
 class ProductType(Object_With_IdName):
     def __init__(self, *args):
         Object_With_IdName.__init__(self, *args)
+        
+    ## Function added due to an eric error
+    def due_to_eric_error(self):
+        pass
 
 
 ## Set of product types

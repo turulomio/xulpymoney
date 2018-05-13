@@ -1,7 +1,4 @@
-class Object_With_Id:
-    def __init__(self):
-        self.id=None
-
+## Usefull when creating a class with two attributes self.id and self.name only
 class Object_With_IdName:
     ## Constructor with the following attributes combination
     ## 1. Object_With_IdName(). Create an Object_With_IdName with all attributes to None
@@ -16,11 +13,6 @@ class Object_With_IdName:
             init__create(None, None)
         if len(args)==2:
             init__create(args[0], args[1])
-        
-class Object_With_IdDatetime:
-    def __init__(self):
-        self.id=None
-        self.datetime=None
 
 class MyMem:
     def __init__(self):
