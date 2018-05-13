@@ -3094,15 +3094,15 @@ class Concept(Object_With_IdName):
             self.editable=editable
 
         def init__db_row(row, tipooperacion):
-            return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
+            return init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
 
         self.mem=args[0]
         if len(args)==1:
             init__create(None, None, None, None)
         elif len(args)==3:
-            init__db_row(*args)
+            init__db_row(*args[1:])
         elif len(args)==5:
-            init__create(*args)
+            init__create(*args[1:])
 
     def __repr__(self):
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
