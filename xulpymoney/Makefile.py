@@ -50,7 +50,8 @@ def filename_output():
 if __name__ == '__main__':
     start=datetime.datetime.now()
     parser=argparse.ArgumentParser(prog='Makefile.py', description='Makefile in python', epilog="Developed by Mariano Muñoz", formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--doc', help="Generate docs and i18n",action="store_true",default=False)
+    parser.add_argument('--doc', help="Generate user documentation and internationalization files",action="store_true",default=False)
+    parser.add_argument('--doxygen', help="Generate api documentation with doxygen",action="store_true",default=False)
     parser.add_argument('--compile', help="App compilation",action="store_true",default=False)
     parser.add_argument('--compile_images', help="App compilation",action="store_true",default=False)
     parser.add_argument('--destdir', help="Directory to install",action="store",default="/")
@@ -68,9 +69,6 @@ if __name__ == '__main__':
     prefixapplications=args.destdir+"/usr/share/applications"   
 
     if args.doc==True:
-        os.chdir("doc")
-        shell("doxygen .doxygen")
-        os.chdir("..")
         shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         shell("lrelease xulpymoney.pro")
     elif args.uninstall==True:
@@ -79,6 +77,10 @@ if __name__ == '__main__':
         shell("rm -Rf " + prefixshare)
         shell("rm -fr " + prefixpixmaps + "/xulpymoney.png")
         shell("rm -fr " + prefixapplications +"/xulpymoney.desktop")
+    elif args.doxygen==True:
+        os.chdir("doc")
+        shell("doxygen Doxyfile")
+        os.chdir("..")
     elif args.dist_sources==True:
         shell("{} setup.py sdist".format(args.python))
     elif args.dist_linux==True:
