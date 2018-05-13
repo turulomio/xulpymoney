@@ -6,6 +6,8 @@ from os import path, makedirs
 from colorama import Style, Fore
 import codecs
 import datetime
+import functools
+import warnings
 import inspect
 import logging
 import pytz
@@ -242,7 +244,21 @@ def datetime_string(dt, zone):
         else:
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
     return resultado
-    
+
+def deprecated(func):
+     """This is a decorator which can be used to mark functions
+     as deprecated. It will result in a warning being emitted
+     when the function is used."""
+     @functools.wraps(func)
+     def new_func(*args, **kwargs):
+         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
+         warnings.warn("Call to deprecated function {}.".format(func.__name__),
+                       category=DeprecationWarning,
+                       stacklevel=2)
+         warnings.simplefilter('default', DeprecationWarning)  # reset filter
+         return func(*args, **kwargs)
+     return new_func
+ 
 def qdatetime(dt, zone):
     """
         dt es un datetime con timezone, que se mostrara con la zone pasado como parametro

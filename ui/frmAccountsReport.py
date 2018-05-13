@@ -372,7 +372,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
                 if i.column()==1:#Better than 0, because initial balance is in 1
                     if i.row()==0:#Pressed balance
-                        self.accountoperations.selected=None
+                        self.accountoperations.selected.clear()
                     else:
                         self.accountoperations.selected=self.accountoperations.arr[i.row()-1]
         except:

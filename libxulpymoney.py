@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
 from libxulpymoneytypes import eProductType, eTickerPosition,  HistoricalChartAdjusts,  OHCLDuration, eOperationType
-from libmanagers import DictListObjectManager_With_IdName, Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate
+from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -290,9 +290,9 @@ class AccountOperationOfInvestmentOperation:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
-class SetSimulationTypes(DictListObjectManager_With_IdName):
+class SetSimulationTypes(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -310,9 +310,9 @@ class SetSimulationTypes(DictListObjectManager_With_IdName):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetInvestments(DictListObjectManager_With_IdName):
+class SetInvestments(ObjectManager_With_IdName):
     def __init__(self, mem, cuentas, products, benchmark):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
         self.accounts=cuentas
         self.products=products
@@ -866,9 +866,9 @@ class SetInvestments(DictListObjectManager_With_IdName):
             return False
         
         
-class SetProducts(DictListObjectManager_With_IdName):
+class SetProducts(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def find_by_isin(self, isin):
@@ -1028,10 +1028,10 @@ class SetProducts(DictListObjectManager_With_IdName):
 
 
 
-class SetProductsModes(DictListObjectManager_With_IdName):
+class SetProductsModes(ObjectManager_With_IdName):
     """Agrupa los mode"""
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
     
     def load_all(self):
@@ -1039,9 +1039,9 @@ class SetProductsModes(DictListObjectManager_With_IdName):
         self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
         self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
 
-class SetSimulations(DictListObjectManager_With_IdName):
+class SetSimulations(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
             
     def delete(self, simulation):
@@ -1077,9 +1077,9 @@ class SetSimulations(DictListObjectManager_With_IdName):
             table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
-class SetStockMarkets(DictListObjectManager_With_IdName):
+class SetStockMarkets(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
     
     def load_all_from_db(self):
@@ -1089,9 +1089,9 @@ class SetStockMarkets(DictListObjectManager_With_IdName):
             self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
         cur.close()
 
-class SetConcepts(DictListObjectManager_With_IdName):
+class SetConcepts(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem 
                  
         
@@ -1184,9 +1184,9 @@ class SetConcepts(DictListObjectManager_With_IdName):
 
 
 
-class SetCountries(DictListObjectManager_With_IdName):
+class SetCountries(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
         
     def load_all(self):
@@ -1325,10 +1325,10 @@ class ReinvestModel:
 
 
 
-class SetAccountOperations(ObjectManager_With_IdDatetime):
+class SetAccountOperations(DictObjectManager_With_IdDatetime):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        ObjectManager_With_IdDatetime.__init__(self)
+        DictObjectManager_With_IdDatetime.__init__(self)
         self.mem=mem
         
     def load_from_db(self, sql):
@@ -1373,9 +1373,9 @@ class SetAccountOperations(ObjectManager_With_IdDatetime):
         ##DATA 
         tabla.clearContents()
         tabla.applySettings()  
-        tabla.setRowCount(len(self.arr))
+        tabla.setRowCount(self.length())
         balance=0
-        for rownumber, a in enumerate(self.arr):
+        for rownumber, a in enumerate(self.values_order_by_datetime()):
             balance=balance+a.importe
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if show_accounts==True:
@@ -1394,7 +1394,7 @@ class SetAccountOperations(ObjectManager_With_IdDatetime):
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-        for i, o in enumerate(self.arr):
+        for i, o in enumerate(self.values_order_by_datetime()):
             importe=Money(self.mem, o.importe, account.currency)
             lastmonthbalance=lastmonthbalance+importe
             table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
@@ -1402,13 +1402,13 @@ class SetAccountOperations(ObjectManager_With_IdDatetime):
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
             table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))               
-            if self.selected!=None:
+            if self.selected.length()>0:
                 if o.id==self.selected.id:
                     table.selectRow(i+1)
 
-class SetCurrencies(DictListObjectManager_With_IdName):
+class SetCurrencies(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
     
     def load_all(self):
@@ -1685,9 +1685,9 @@ class SetEstimationsEPS:
         table.setFocus()
 
         
-class SetBanks(DictListObjectManager_With_IdName):
+class SetBanks(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
 
     def load_from_db(self, sql):
@@ -4893,9 +4893,9 @@ class Assets:
         return resultado        
 
 
-class SetCreditCards(DictListObjectManager_With_IdName):
+class SetCreditCards(ObjectManager_With_IdName):
     def __init__(self, mem, cuentas):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
         self.accounts=cuentas
 
@@ -5000,9 +5000,9 @@ class SetCreditCardOperations(ObjectManager_With_IdDatetime):
                         if a.id==sel.id:
                             tabla.selectRow(rownumber)
 
-class SetOperationTypes(DictListObjectManager_With_IdName):
+class SetOperationTypes(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
 
     def load(self):
@@ -5045,11 +5045,11 @@ class SetOperationTypes(DictListObjectManager_With_IdName):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetAgrupations(DictListObjectManager_With_IdName):
+class SetAgrupations(ObjectManager_With_IdName):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5127,10 +5127,10 @@ class SetAgrupations(DictListObjectManager_With_IdName):
             resultado.append(self.mem.agrupations.find_by_id(cmb.itemData(i)))
         return resultado
 
-class SetLeverages(DictListObjectManager_With_IdName):
+class SetLeverages(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5226,18 +5226,18 @@ class SetOrders(ObjectManager_With_Id):
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
 
-class SetPriorities(DictListObjectManager_With_IdName):
+class SetPriorities(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
                 
     def load_all(self):
-        self.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
-        self.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
-        self.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
-        self.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
-        self.append(Priority().init__create(9,"Mercado continuo from Bolsa de Madrid"))
+        self.append(Priority(1,"Yahoo Financials. 200 pc."))
+        self.append(Priority(5,"Productos cotizados bonus. 20 pc."))
+        self.append(Priority(6,"Societe Generale Warrants. Todos pc."))
+        self.append(Priority(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
+        self.append(Priority(9,"Mercado continuo from Bolsa de Madrid"))
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -5263,15 +5263,15 @@ class SetPriorities(DictListObjectManager_With_IdName):
             self.append(self.mem.priorities.find_by_id(cmb.itemData(i)))
         return self
                 
-class SetPrioritiesHistorical(DictListObjectManager_With_IdName):
+class SetPrioritiesHistorical(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
-        self.append(PriorityHistorical().init__create(3,QApplication.translate("Core","Individual. Yahoo historicals")))
-        self.append(PriorityHistorical().init__create(8,QApplication.translate("Core","Individual. Morningstar funds")))
+        self.append(PriorityHistorical(3,QApplication.translate("Core","Individual. Yahoo historicals")))
+        self.append(PriorityHistorical(8,QApplication.translate("Core","Individual. Morningstar funds")))
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -7030,9 +7030,9 @@ class SetOHCLMonthly(SetOHCL):
         
     
 
-class SetLanguages(DictListObjectManager_With_IdName):
+class SetLanguages(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
         
     def load_all(self):
@@ -7216,24 +7216,14 @@ class Leverage:
         
         
 
-class Priority:
-    def __init__(self):
-        self.id=None
-        self.name=None
-    def init__create(self, id, name):
-        self.id=id
-        self.name=name
-        return self
+class Priority(Object_With_IdName):
+    def __init__(self, *args):
+        Object_With_IdName.__init__(self, *args)
         
 
-class PriorityHistorical:
-    def __init__(self):
-        self.id=None
-        self.name=None
-    def init__create(self, id, name):
-        self.id=id
-        self.name=name
-        return self
+class PriorityHistorical(Object_With_IdName):
+    def __init__(self, *args):
+        Object_With_IdName.__init__(self, *args)
 
     
 class Simulation:
@@ -7243,7 +7233,7 @@ class Simulation:
         self.mem=mem
         self.database=original_db
         self.id=None
-        self.name=None#self.simulated_db, used to reuse DictListObjectManager_With_IdName
+        self.name=None#self.simulated_db, used to reuse ObjectManager_With_IdName
         self.creation=None
         self.type=None
         self.starting=None
@@ -7357,9 +7347,9 @@ class Split:
         else:
             return "Split"
 
-class SetSplits(DictListObjectManager_With_IdName):
+class SetSplits(ObjectManager_With_IdName):
     def __init__(self, mem, product):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.product=product
         self.mem=mem
         
@@ -7525,8 +7515,8 @@ class SplitManual:
 
 
 ## Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
-## fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""  
-class Agrupation(Object_With_IdName):
+## fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar
+class Agrupation():
     ## Constructor with the following attributes combination
     ## 1. Agrupation(mem). Create an aggrupation with all attributes to None
     ## 2. Agrupation(mem, id,  name, type, bolsa). Create an agrupation settings all attributes.
@@ -7548,26 +7538,15 @@ class Agrupation(Object_With_IdName):
         if len(args)==5:
             init__create(args[1], args[2], args[3], args[4])
 
-    ## Function added due to an eric error
-    def due_to_eric_error(self):
-        pass
-
-
-
 ## Product type class
 class ProductType(Object_With_IdName):
     def __init__(self, *args):
         Object_With_IdName.__init__(self, *args)
-        
-    ## Function added due to an eric error
-    def due_to_eric_error(self):
-        pass
-
 
 ## Set of product types
-class SetProductTypes(DictListObjectManager_With_IdName):
+class SetProductTypes(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -7947,9 +7926,9 @@ class Zone:
     def __repr__(self):
         return "Zone ({}): {}".format(str(self.id), str(self.name))
         
-class SetZones(DictListObjectManager_With_IdName):
+class SetZones(ObjectManager_With_IdName):
     def __init__(self, mem):
-        DictListObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName.__init__(self)
         self.mem=mem
         
     def load_all(self):
@@ -7981,7 +7960,7 @@ class SetZones(DictListObjectManager_With_IdName):
             if a.name==name:
                 return a
         if log:
-            print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, name))
+            print ("ObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, name))
         return None
 
 class AssetsReport(ODT):
