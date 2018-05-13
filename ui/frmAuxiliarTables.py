@@ -43,7 +43,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def on_actionExpensesAdd_triggered(self):
         t=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new expense concept"))
         if t[1]==True:
-            concepto=Concept(self.mem).init__create(t[0], self.mem.tiposoperaciones.find_by_id(1), True)
+            concepto=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(1), True, None)
             concepto.save()
             self.mem.con.commit()
             self.mem.conceptos.append(concepto)
@@ -55,7 +55,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def on_actionIncomesAdd_triggered(self):
         t=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new income concept"))
         if t[1]==True:
-            concepto=Concept(self.mem).init__create(t[0], self.mem.tiposoperaciones.find_by_id(2), True)
+            concepto=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(2), True, None)
             concepto.save()
             self.mem.con.commit()
             self.mem.conceptos.append(concepto)

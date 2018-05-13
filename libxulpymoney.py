@@ -1098,7 +1098,7 @@ class SetConcepts(DictListObjectManager_With_IdName):
         cur=self.mem.con.cursor()
         cur.execute("Select * from conceptos")
         for row in cur:
-            self.append(Concept(self.mem).init__db_row(row, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
+            self.append(Concept(self.mem, row, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
         cur.close()
         self.order_by_name()
                         
@@ -3074,31 +3074,38 @@ class Comment:
             cco=self.getCreditCardOperation(args[0], code)
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(datetime_string(cco.datetime,  self.mem.localzone), money)
+## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket
+class Concept(Object_With_IdName):
+    ## Constructor with the following attributes combination
+    ## 1. Concept(mem). Create a Concept with all attributes to None
+    ## 2. Concept(mem, row, tipooperacion). Create a Concept from a db row, generated in a database query
+    ## 3. Concept(mem, name, tipooperacion,editable, id). Create a Concept passing all attributes
+    ## @param mem MemXulpymoney object
+    ## @param row Dictionary of a database query cursor
+    ## @param tipooperacion OperationType Bank object
+    ## @param name Concept name
+    ## @param editable Boolean that sets if a Concept is editable by the user
+    ## @param id Integer that sets the id of an Concept. You must set id=None if the Concept is not in the database. id is set in the save method
+    def __init__(self, *args):
+        def init__create(name, tipooperacion, editable,  id):
+            self.id=id
+            self.name=name
+            self.tipooperacion=tipooperacion
+            self.editable=editable
 
+        def init__db_row(row, tipooperacion):
+            return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
 
-
-class Concept:
-    def __init__(self, mem):
-        self.mem=mem
-        self.id=None
-        self.name=None
-        self.tipooperacion=None
-        self.editable=None
+        self.mem=args[0]
+        if len(args)==1:
+            init__create(None, None, None, None)
+        elif len(args)==3:
+            init__db_row(*args)
+        elif len(args)==5:
+            init__create(*args)
 
     def __repr__(self):
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
-
-
-    def init__create(self, name, tipooperacion, editable,  id=None):
-        self.id=id
-        self.name=name
-        self.tipooperacion=tipooperacion
-        self.editable=editable
-        return self
-                
-    def init__db_row(self, row, tipooperacion):
-        """El parámetro tipooperacion es un objeto tipooperacion, si no se tuviera en tiempo de creación se asigna None"""
-        return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
 
         
     def save(self):
@@ -3802,8 +3809,6 @@ class Bank:
         
     def __repr__(self):
         return ("Instancia de Bank: {0} ({1})".format( self.name, self.id))
-
-    
 
     def init__db_row(self, row):
         self.id=row['id_entidadesbancarias']
