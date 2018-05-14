@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotes, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetProductTypes
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, PriorityManager, PriorityHistoricalManager, ProductModesManager, ProductTypesManager
 from libxulpymoneyfunctions import c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from libxulpymoneytypes import eHistoricalChartAdjusts
 from frmSelector import frmSelector
@@ -97,23 +97,23 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.chkObsolete.setEnabled(False)
             self.cmdSave.setEnabled(False)
             
-            bolsa=SetStockMarkets(mem)
+            bolsa=StockMarketManager(mem)
             bolsa.append(self.product.stockmarket)
             bolsa.qcombobox(self.cmbBolsa)
             
-            productmodes=SetProductsModes(mem)
+            productmodes=ProductModesManager(mem)
             productmodes.append(self.product.mode)
             productmodes.qcombobox(self.cmbPCI)
             
-            currencies=SetCurrencies(mem)
+            currencies=CurrencyManager(mem)
             currencies.append(self.product.currency)
             currencies.qcombobox(self.cmbCurrency)
             
-            leverages=SetLeverages(mem)
+            leverages=LeverageManager(mem)
             leverages.append(self.product.leveraged)
             leverages.qcombobox(self.cmbApalancado)
             
-            types=SetProductTypes(mem)
+            types=ProductTypesManager(mem)
             types.append(self.product.type)
             types.qcombobox(self.cmbTipo)
         
@@ -614,7 +614,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         got=0
         if filename!="":
-            set=SetQuotes(self.mem)
+            set=QuoteManager(self.mem)
             ods=ODS_Read(filename)
             sheet=ods.getSheetElementByIndex(0)
             for number in range(2, ods.rowNumber(sheet)):
@@ -699,7 +699,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
-        all=SetQuotesAllIntradays(self.mem)
+        all=QuoteAllIntradayManager(self.mem)
         all.load_from_db(self.product)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
@@ -721,7 +721,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.product.isin=self.txtISIN.text()
             self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
             self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-            self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
+            self.product.agrupations=AgrupationManager(self.mem).clone_from_combo(self.cmbAgrupations)
             self.product.obsolete=c2b(self.chkObsolete.checkState())
             self.product.web=self.txtWeb.text()
             self.product.address=self.txtAddress.text()
@@ -736,8 +736,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 if value =="":
                     value=None
                 self.product.tickers[i]=value
-            self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
-            self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
+            self.product.priority=PriorityManager(self.mem).init__create_from_combo(self.cmbPriority)
+            self.product.priorityhistorical=PriorityHistoricalManager(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
             self.product.comment=self.txtComentario.text()                
             self.product.save()
             self.mem.con.commit()  
@@ -804,7 +804,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             agr=self.mem.agrupations.clone(self.mem)
         if self.product.agrupations==None:
-            selected=SetAgrupations(self.mem)#Vacio
+            selected=AgrupationManager(self.mem)#Vacio
         else:
             selected=self.product.agrupations
         f=frmSelector(self.mem, agr, selected)
@@ -814,7 +814,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     def on_cmdPriority_released(self):
         if self.product.id==None:#Insertar nueva inversión
-            selected=SetPriorities(self.mem)#Esta vacio
+            selected=PriorityManager(self.mem)#Esta vacio
         else:
             selected=self.product.priority
         
@@ -827,7 +827,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     def on_cmdPriorityHistorical_released(self):
         if self.product.id==None:#Insertar nueva inversión
-            selected=SetPrioritiesHistorical(self.mem)#“acio
+            selected=PriorityHistoricalManager(self.mem)#“acio
         else:
             selected=self.product.priorityhistorical
         

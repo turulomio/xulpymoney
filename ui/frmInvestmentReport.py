@@ -10,7 +10,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgDisReinvest import wdgDisReinvest
 from frmSharesTransfer import frmSharesTransfer
 from frmSplit import frmSplit
-from libxulpymoney import Investment, Money, Percentage, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month
+from libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days_to_year_month
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -33,7 +33,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
          
         self.ise.setupUi(self.mem,  self.investment)
         
-        self.dividends=SetDividendsHomogeneus(self.mem, self.investment)
+        self.dividends=DividendHomogeneusManager(self.mem, self.investment)
         
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
         self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
@@ -372,7 +372,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.investment.save()
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
-            self.investment.op=SetInvestmentOperationsHomogeneus(self.mem, self.investment)
+            self.investment.op=InvestmentOperationHomogeneusManager(self.mem, self.investment)
             (self.investment.op_actual, self.investment.op_historica)=self.investment.op.calcular()
             self.mem.data.investments.append(self.investment)
             self.done(0)

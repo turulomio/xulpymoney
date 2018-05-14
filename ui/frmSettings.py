@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
-from libxulpymoney import Product, SetProducts
+from libxulpymoney import Product, ProductManager
 from libxulpymoneyfunctions import b2c, c2b
 from decimal import Decimal
 from Ui_frmSettings import Ui_frmSettings
@@ -24,7 +24,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
-        self.indexes=SetProducts(self.mem)
+        self.indexes=ProductManager(self.mem)
         self.indexes.load_from_db("select * from products where type=3 order by name")
         self.indexes.order_by_name()
         self.indexes.qcombobox(self.cmbIndex, self.mem.data.benchmark)

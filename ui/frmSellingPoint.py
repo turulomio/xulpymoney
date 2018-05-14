@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from Ui_frmSellingPoint import Ui_frmSellingPoint
-from libxulpymoney import Money,  Quote, SetInvestmentOperationsCurrentHomogeneus
+from libxulpymoney import Money,  Quote, InvestmentOperationCurrentHomogeneusManager
 from libxulpymoneyfunctions import qmessagebox
 from decimal import Decimal
 
@@ -41,7 +41,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.operinversiones.myqtablewidget(self.table)
             suminvertido=self.operinversiones.invertido()
         else:#Results in account currency
-            self.operinversiones=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.investment)
+            self.operinversiones=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
             if self.chkGainsTime.checkState()==Qt.Checked:
                 self.operinversiones=self.investment.op_actual.copy_until_datetime(self.mem.localzone.now()-datetime.timedelta(days=365))
             else:

@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  SetCreditCardOperations,  CreditCardOperation
+from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager,  CreditCardOperation
 from libxulpymoneyfunctions import b2c,  c2b
 from Ui_frmAccountsReport import Ui_frmAccountsReport
 from frmAccountOperationsAdd import frmAccountOperationsAdd
@@ -30,7 +30,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
         self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
         self.creditcards=None#SetCreditCard. Selected will be a CreditCard
-        self.creditcardoperations=SetCreditCardOperations(self.mem)#SetCreditCardOperations. Selected will be another SetCreditCardOperations
+        self.creditcardoperations=CreditCardOperationManager(self.mem)#CreditCardOperationManager. Selected will be another CreditCardOperationManager
           
         self.tblOperaciones.settings(self.mem, "frmAccountsReport")
         self.tblCreditCards.settings(self.mem, "frmAccountsReport")
@@ -80,7 +80,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 #    def creditcardoperations_reload(self):     
 #        self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
 #        self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
-#        self.creditcardoperations.selected=SetCreditCardOperations(self.mem)
+#        self.creditcardoperations.selected=CreditCardOperationManager(self.mem)
 #        ##UPdates creditcard balance
 #        row=None
 #        try:
@@ -219,7 +219,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.grpPago.setEnabled(True)
                 self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
                 if o.__class__==CreditCardOperation:#It's an array
-                    sel=SetCreditCardOperations(self.mem)
+                    sel=CreditCardOperationManager(self.mem)
                     sel.append(o)
                     self.creditcardoperations.selected=sel
                 self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
@@ -444,7 +444,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
 
     def on_tblCreditCardOpers_itemSelectionChanged(self):
-        self.creditcardoperations.selected=SetCreditCardOperations(self.mem)
+        self.creditcardoperations.selected=CreditCardOperationManager(self.mem)
         for i in self.tblCreditCardOpers.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.creditcardoperations.selected.append(self.creditcardoperations.arr[i.row()])  
@@ -494,7 +494,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tblOpertarjetasHistoricas.setRowCount(0)
             return
         id_opercuentas=self.cmbFechasPago.itemData(index)
-        setPaidCreditCardOperations=SetCreditCardOperations(self.mem)
+        setPaidCreditCardOperations=CreditCardOperationManager(self.mem)
         setPaidCreditCardOperations.load_from_db("select * from opertarjetas where id_opercuentas={};".format(id_opercuentas, ))
         setPaidCreditCardOperations.myqtablewidget(self.tblOpertarjetasHistoricas)
 

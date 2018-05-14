@@ -6,7 +6,7 @@ from libxulpymoneyfunctions import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     def __init__(self, mem,   parent = None, name = None):
-        """Simulations is the SetSimulations where the new simulation is going to be appended"""
+        """Simulations is the SimulationManager where the new simulation is going to be appended"""
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=mem

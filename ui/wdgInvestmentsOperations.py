@@ -1,5 +1,5 @@
 import datetime
-from libxulpymoney import Assets, InvestmentOperation, SetInvestmentOperationsCurrentHeterogeneus, SetInvestmentOperationsHeterogeneus
+from libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
@@ -24,8 +24,8 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
-        self.setOperations=SetInvestmentOperationsHeterogeneus(self.mem)
-        self.setCurrent=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
+        self.setOperations=InvestmentOperationHeterogeneusManager(self.mem)
+        self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
         self.table.settings(self.mem,  "wdgInvestmentsOperations")

@@ -4,7 +4,7 @@ from wdgSimulationsAdd import wdgSimulationsAdd
 import libdbupdates
 import frmMain
 from Ui_wdgSimulations import Ui_wdgSimulations
-from libxulpymoney import Connection, DBAdmin, SetSimulations, MemXulpymoney
+from libxulpymoney import Connection, DBAdmin, SimulationManager, MemXulpymoney
 from libxulpymoneyfunctions import qmessagebox
 from libxulpymoneyversion import version_date
 
@@ -16,7 +16,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.mem=mem
         self.parent=parent
         self.tblSimulations.settings(self.mem, "wdgSimulations")
-        self.simulations=SetSimulations(self.mem)
+        self.simulations=SimulationManager(self.mem)
         cur=self.mem.con.cursor()
         self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(self.mem.con.db, ) ), self.mem.con.db)
         cur.close()

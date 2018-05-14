@@ -1,7 +1,7 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot, QSize
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
-from libxulpymoney import SetOrders
+from libxulpymoney import OrderManager
 from libxulpymoneyfunctions import qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from wdgDisReinvest import wdgDisReinvest
@@ -120,7 +120,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
     def on_cmbMode_currentIndexChanged(self, index):
         if index==0:#Current
             self.wdgYear.hide()            
-            self.orders=SetOrders(self.mem).init__from_db("""
+            self.orders=OrderManager(self.mem).init__from_db("""
                 SELECT * 
                 FROM 
                     ORDERS
@@ -132,7 +132,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.orders.order_by_percentage_from_current_price()
         elif index==1: #show expired
             self.wdgYear.show()
-            self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
+            self.orders=OrderManager(self.mem).init__from_db(self.mem.con.mogrify("""
                 SELECT * 
                 FROM 
                     ORDERS
@@ -145,7 +145,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.orders.order_by_expiration()
         elif index==2: #show executed
             self.wdgYear.show()
-            self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
+            self.orders=OrderManager(self.mem).init__from_db(self.mem.con.mogrify("""
                 SELECT * 
                 FROM 
                     ORDERS
@@ -157,7 +157,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.orders.order_by_execution()
         else:
             self.wdgYear.show()
-            self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
+            self.orders=OrderManager(self.mem).init__from_db(self.mem.con.mogrify("""
                 SELECT * 
                 FROM 
                     ORDERS
