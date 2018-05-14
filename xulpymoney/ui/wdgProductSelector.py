@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
 from myqtablewidget import myQTableWidget
-from libxulpymoney import SetProducts
+from libxulpymoney import ProductManager
 from libxulpymoneyfunctions import qmessagebox
 
 class wdgProductSelector(QWidget):
@@ -78,7 +78,7 @@ class frmProductSelector(QDialog):
     def __init__(self, parent, mem):
         QDialog.__init__(self, parent)
         self.mem=mem
-        self.products=SetProducts(self.mem)
+        self.products=ProductManager(self.mem)
         self.resize(1024, 500)
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.verticalLayout = QVBoxLayout()

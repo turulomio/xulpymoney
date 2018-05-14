@@ -7,7 +7,7 @@ import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, SetInvestmentOperationsHomogeneus
+from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
 from libxulpymoneyfunctions import day_end_from_date
 from libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration
 
@@ -342,7 +342,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
 
         inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, -1)
-        inv.op=SetInvestmentOperationsHomogeneus(self.mem, inv)
+        inv.op=InvestmentOperationHomogeneusManager(self.mem, inv)
         #PURCHASE
         d1=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
                                                                                         self.mem.localzone.now(), 

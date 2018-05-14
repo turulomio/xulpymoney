@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit
-from libxulpymoney import Bank, Money, SetAccounts, SetInvestments
+from libxulpymoney import Bank, Money, AccountManager, InvestmentManager
 from libxulpymoneyfunctions import wdgBool, qmessagebox
 from frmAccountsReport import frmAccountsReport
 from frmInvestmentReport import frmInvestmentReport
@@ -14,8 +14,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
          
         self.banks=None#Set in on_chkActives_stateChanged
-        self.investments=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
-        self.accounts=SetAccounts(self.mem, self.mem.data.banks)#Set
+        self.investments=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
+        self.accounts=AccountManager(self.mem, self.mem.data.banks)#Set
 
 
         
@@ -223,7 +223,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.banks.selected.save()
         self.mem.con.commit()   
         
-        #Recoloca en los SetInvestments
+        #Recoloca en los InvestmentManager
         print (self.banks.selected)
 #        if self.banks.selected.active==True:#Está todavía en inactivas
 #            self.mem.data.banks_active().append(self.banks.selected)

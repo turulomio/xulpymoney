@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
-from libxulpymoney import SetQuotesAllIntradays, Split
+from libxulpymoney import QuoteAllIntradayManager, Split
 import datetime
 
 from Ui_frmSplitManual import Ui_frmSplitManual
@@ -23,7 +23,7 @@ class frmSplitManual(QDialog, Ui_frmSplitManual):
         self.setModal(True)
         self.setupUi(self)
         
-        self.all=SetQuotesAllIntradays(self.mem)
+        self.all=QuoteAllIntradayManager(self.mem)
         self.all.load_from_db(self.product)
         
         self.wdgDtStart.show_microseconds(False)

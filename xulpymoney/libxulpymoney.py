@@ -290,7 +290,7 @@ class AccountOperationOfInvestmentOperation:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
-class SetSimulationTypes(ObjectManager_With_IdName):
+class SimulationTypeManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -310,7 +310,7 @@ class SetSimulationTypes(ObjectManager_With_IdName):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetInvestments(ObjectManager_With_IdName):
+class InvestmentManager(ObjectManager_With_IdName):
     def __init__(self, mem, cuentas, products, benchmark):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -396,7 +396,7 @@ class SetInvestments(ObjectManager_With_IdName):
     def myqtablewidget_sellingpoints(self, table):
         """Crea un set y luego construye la tabla"""
         
-        set=SetInvestments(self.mem,  self.accounts, self.products, self.benchmark)
+        set=InvestmentManager(self.mem,  self.accounts, self.products, self.benchmark)
         for inv in self.arr:
             if inv.selling_expiration!=None and inv.acciones()>0:
                 set.append(inv)
@@ -430,7 +430,7 @@ class SetInvestments(ObjectManager_With_IdName):
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
-        set=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
+        set=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         for inv in self.arr:
             for o in inv.op_actual.arr:
                 set.arr.append(o)
@@ -525,7 +525,7 @@ class SetInvestments(ObjectManager_With_IdName):
         for i in self.arr:
             s.add(i.product)
             
-        r=SetProducts(self.mem)
+        r=ProductManager(self.mem)
         for p in s:
             r.append(p)        
         return r
@@ -549,7 +549,7 @@ class SetInvestments(ObjectManager_With_IdName):
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         r.merge=2
-        r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+        r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op.arr:
@@ -569,7 +569,7 @@ class SetInvestments(ObjectManager_With_IdName):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
-        set=SetDividendsHomogeneus(self.mem, r)
+        set=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr:
             if inv.product.id==product.id:
                 for d in inv.setDividends_from_operations().arr:
@@ -589,7 +589,7 @@ class SetInvestments(ObjectManager_With_IdName):
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
         r.merge=1
-        r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+        r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op_actual.arr:
@@ -604,7 +604,7 @@ class SetInvestments(ObjectManager_With_IdName):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
-        set=SetDividendsHomogeneus(self.mem, r)
+        set=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr:
             if inv.product.id==product.id:
                 for d in inv.setDividends_from_current_operations().arr:
@@ -617,7 +617,7 @@ class SetInvestments(ObjectManager_With_IdName):
             Returns a new setinvestments filtering original by type_id
             For example to get all funds in the original setinvesmet
         """
-        r=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark )
+        r=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark )
         for inv in self.arr:
             if inv.product.type.id==type_id:
                 r.append(inv)
@@ -633,7 +633,7 @@ class SetInvestments(ObjectManager_With_IdName):
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
         """
-        invs=SetInvestments(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
+        invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.products_distinct().arr:
             i=self.investment_merging_operations_with_same_product(product)
             invs.append(i) 
@@ -648,7 +648,7 @@ class SetInvestments(ObjectManager_With_IdName):
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
         """
-        invs=SetInvestments(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
+        invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.products_distinct().arr:
             i=self.investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
@@ -862,11 +862,11 @@ class SetInvestments(ObjectManager_With_IdName):
             self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha, type),  reverse=True) 
             return True
         except:
-            logging.error("SetInvestments can't order by balance")
+            logging.error("InvestmentManager can't order by balance")
             return False
         
         
-class SetProducts(ObjectManager_With_IdName):
+class ProductManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -969,7 +969,7 @@ class SetProducts(ObjectManager_With_IdName):
     def subset_with_same_type(self, type):
         """Returns a SetProduct with all products with the type passed as parameter.
         Type is an object"""
-        result=SetProducts(self.mem)
+        result=ProductManager(self.mem)
         for a in self.arr:
             if a.type.id==type.id:
                 result.append(a)
@@ -1028,7 +1028,7 @@ class SetProducts(ObjectManager_With_IdName):
 
 
 
-class SetProductsModes(ObjectManager_With_IdName):
+class ProductModesManager(ObjectManager_With_IdName):
     """Agrupa los mode"""
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
@@ -1039,7 +1039,7 @@ class SetProductsModes(ObjectManager_With_IdName):
         self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
         self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
 
-class SetSimulations(ObjectManager_With_IdName):
+class SimulationManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -1077,7 +1077,7 @@ class SetSimulations(ObjectManager_With_IdName):
             table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
-class SetStockMarkets(ObjectManager_With_IdName):
+class StockMarketManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
@@ -1089,7 +1089,7 @@ class SetStockMarkets(ObjectManager_With_IdName):
             self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
         cur.close()
 
-class SetConcepts(ObjectManager_With_IdName):
+class ConceptManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem 
@@ -1133,7 +1133,7 @@ class SetConcepts(ObjectManager_With_IdName):
 
     def clone_x_tipooperacion(self, id_tiposoperaciones):
         """SSe usa clone y no init ya que ya están cargados en MEM"""
-        resultado=SetConcepts(self.mem)
+        resultado=ConceptManager(self.mem)
         for c in self.arr:
             if c.tipooperacion.id==id_tiposoperaciones:
                 resultado.append(c)
@@ -1141,7 +1141,7 @@ class SetConcepts(ObjectManager_With_IdName):
         
     def clone_editables(self):
         """SSe usa clone y no init ya que ya están cargados en MEM"""
-        resultado=SetConcepts(self.mem)
+        resultado=ConceptManager(self.mem)
         for c in self.arr:
             if c.editable==True:
                 resultado.append(c)
@@ -1184,7 +1184,7 @@ class SetConcepts(ObjectManager_With_IdName):
 
 
 
-class SetCountries(ObjectManager_With_IdName):
+class CountryManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
@@ -1210,7 +1210,7 @@ class SetCountries(ObjectManager_With_IdName):
         self.order_by_name()
 
     def qcombobox(self, combo,  country=None):
-        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
+        """Función que carga en un combo pasado como parámetro y con un AccountManager pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
         for cu in self.arr:
             combo.addItem(cu.qicon(), cu.name, cu.id)
@@ -1226,7 +1226,7 @@ class SetCountries(ObjectManager_With_IdName):
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 
-class SetAccounts(ObjectManager_With_IdName):   
+class AccountManager(ObjectManager_With_IdName):   
     def __init__(self, mem,  setebs):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
@@ -1293,7 +1293,7 @@ class ReinvestModel:
             account=Account(self.mem, "Reinvest model account",  bank, True, "", self.mem.localcurrency, -1)
             r=Investment(self.mem).init__create(QApplication.translate("Core", "Reinvest model of {}".format(self.product.name)), None, account, self.product, None, True, -1)    
             r.merge=1
-            r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+            r.op=InvestmentOperationHomogeneusManager(self.mem, r)
             lastprice=self.product.result.basic.last.quote
             for amount in self.amounts[0:i+1]: #Recorre las amounts del array        
                 r.op.append(InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), self.mem.localzone.now(), r,  int(amount/lastprice), Decimal(0), Decimal(0),  lastprice,  None, False, 1, -1))
@@ -1411,7 +1411,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime):
                 if o.id==self.selected.id:
                     table.selectRow(i+1)
 
-class SetCurrencies(ObjectManager_With_IdName):
+class CurrencyManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
@@ -1429,7 +1429,7 @@ class SetCurrencies(ObjectManager_With_IdName):
         for c in self.arr:
             if c.symbol==symbol:
                 return c
-        logging.error("SetCurrencies fails finding {}".format(symbol))
+        logging.error("CurrencyManager fails finding {}".format(symbol))
         return None
 
     def qcombobox(self, combo, selectedcurrency=None):
@@ -1439,7 +1439,7 @@ class SetCurrencies(ObjectManager_With_IdName):
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
-class SetDividendsHeterogeneus(ObjectManager_With_IdDatetime):
+class DividendHeterogeneusManager(ObjectManager_With_IdDatetime):
     """Class that  groups dividends from a Xulpymoney Product"""
     def __init__(self, mem):
         ObjectManager_With_IdDatetime.__init__(self)
@@ -1509,9 +1509,9 @@ class SetDividendsHeterogeneus(ObjectManager_With_IdDatetime):
         table.setItem(len(self.arr), diff+5, self.mem.localcurrency.qtablewidgetitem(sumneto))
         return (sumneto, sumbruto, sumretencion, sumcomision)
 
-class SetDividendsHomogeneus(SetDividendsHeterogeneus):
+class DividendHomogeneusManager(DividendHeterogeneusManager):
     def __init__(self, mem, investment):
-        SetDividendsHeterogeneus.__init__(self, mem)
+        DividendHeterogeneusManager.__init__(self, mem)
         self.investment=investment
         
     def gross(self, type=1):
@@ -1578,7 +1578,7 @@ class SetDividendsHomogeneus(SetDividendsHeterogeneus):
         table.setItem(self.length(), 5, sumneto.qtablewidgetitem())
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
-class SetEstimationsDPS:
+class EstimationDPSManager:
     def __init__(self, mem,  product):
         self.arr=[]
         self.mem=mem   
@@ -1635,7 +1635,7 @@ class SetEstimationsDPS:
         table.setCurrentCell(len(self.arr)-1, 0)
         table.setFocus()
 
-class SetEstimationsEPS:
+class EstimationEPSManager:
     def __init__(self, mem,  product):
         self.arr=[]
         self.mem=mem   
@@ -1690,7 +1690,7 @@ class SetEstimationsEPS:
         table.setFocus()
 
         
-class SetBanks(ObjectManager_With_IdName):
+class BankManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
@@ -1709,7 +1709,7 @@ class SetBanks(ObjectManager_With_IdName):
         self.remove(bank)
 
 
-class SetInvestmentOperationsHeterogeneus(ObjectManager_With_IdDatetime):       
+class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         ObjectManager_With_IdDatetime.__init__(self)
@@ -1730,7 +1730,7 @@ class SetInvestmentOperationsHeterogeneus(ObjectManager_With_IdDatetime):
         cur.execute("delete from operinversiones where id_operinversiones=%s",(io.id, ))
         cur.close()
         
-        super(SetInvestmentOperationsHeterogeneus, self).remove(io)
+        super(InvestmentOperationHeterogeneusManager, self).remove(io)
         
         (io.investment.op_actual,  io.investment.op_historica)=io.investment.op.calcular()
         io.investment.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversión.
@@ -1741,7 +1741,7 @@ class SetInvestmentOperationsHeterogeneus(ObjectManager_With_IdDatetime):
         s=set([])
         for o in self.arr:
             s.add(o.investment.product)
-        result=SetProducts(self.mem)
+        result=ProductManager(self.mem)
         result.arr=list(s)
         return result
         
@@ -1801,16 +1801,16 @@ class SetInvestmentOperationsHeterogeneus(ObjectManager_With_IdDatetime):
 
 
 
-class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
+class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManager):
     def __init__(self, mem, investment):
-        SetInvestmentOperationsHeterogeneus.__init__(self, mem)
+        InvestmentOperationHeterogeneusManager.__init__(self, mem)
         self.investment=investment
 
 
     def calcular(self):
         """Realiza los cálculos y devuelve dos arrays"""
-        sioh=SetInvestmentOperationsHistoricalHomogeneus(self.mem, self.investment)
-        sioa=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.investment)       
+        sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
+        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)       
         for o in self.arr:                
             if o.acciones>=0:#Compra
                 sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.acciones, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
@@ -1875,7 +1875,7 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
             if self.investment.hasSameAccountCurrency()==False:
                 tabla.setItem(rownumber, 8, qright(a.currency_conversion))
 
-class SetInvestmentOperationsCurrentHeterogeneus(ObjectManager_With_IdDatetime):    
+class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         ObjectManager_With_IdDatetime.__init__(self)
@@ -2082,9 +2082,9 @@ class SetInvestmentOperationsCurrentHeterogeneus(ObjectManager_With_IdDatetime):
             print ("  - ", oia)
         
         
-class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHeterogeneus):
+class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHeterogeneusManager):
     def __init__(self, mem, investment):
-        SetInvestmentOperationsCurrentHeterogeneus.__init__(self, mem)
+        InvestmentOperationCurrentHeterogeneusManager.__init__(self, mem)
         self.investment=investment
     
     def average_age(self, type=1):
@@ -2264,7 +2264,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         tabla.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
         tabla.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
 
-class SetInvestmentOperationsHistoricalHeterogeneus(ObjectManager_With_Id):       
+class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         ObjectManager_With_Id.__init__(self)
@@ -2421,9 +2421,9 @@ class SetInvestmentOperationsHistoricalHeterogeneus(ObjectManager_With_Id):
         
 
         
-class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistoricalHeterogeneus):
+class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoricalHeterogeneusManager):
     def __init__(self, mem, investment):
-        SetInvestmentOperationsHistoricalHeterogeneus.__init__(self, mem)
+        InvestmentOperationHistoricalHeterogeneusManager.__init__(self, mem)
         self.investment=investment
                 
     def consolidado_bruto(self,  year=None,  month=None, type=1):
@@ -3410,80 +3410,80 @@ class DBData:
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
         self.benchmark.result.basic.load_from_db()
         
-        self.currencies=SetProducts(self.mem)
+        self.currencies=ProductManager(self.mem)
         self.currencies.load_from_db("select * from products where type=6")
         for p in self.currencies.arr:
             p.result.get_all()
         
-        self.banks=SetBanks(self.mem)
+        self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
 
-        self.accounts=SetAccounts(self.mem, self.banks)
+        self.accounts=AccountManager(self.mem, self.banks)
         self.accounts.load_from_db("select * from cuentas")
 
-        self.creditcards=SetCreditCards(self.mem, self.accounts)
+        self.creditcards=CreditCardManager(self.mem, self.accounts)
         self.creditcards.load_from_db("select * from tarjetas")
 
-        self.products=SetProducts(self.mem)
+        self.products=ProductManager(self.mem)
         self.products.load_from_inversiones_query("select distinct(products_id) from inversiones", progress)
         
-        self.investments=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
         
         
     def accounts_active(self):        
-        r=SetAccounts(self.mem, self.banks)
+        r=AccountManager(self.mem, self.banks)
         for b in self.accounts.arr:
             if b.active==True:
                 r.append(b)
         return r 
 
     def accounts_inactive(self):        
-        r=SetAccounts(self.mem, self.banks)
+        r=AccountManager(self.mem, self.banks)
         for b in self.accounts.arr:
             if b.active==False:
                 r.append(b)
         return r
         
     def banks_active(self):        
-        r=SetBanks(self.mem)
+        r=BankManager(self.mem)
         for b in self.banks.arr:
             if b.active==True:
                 r.append(b)
         return r        
         
     def banks_inactive(self):        
-        r=SetBanks(self.mem)
+        r=BankManager(self.mem)
         for b in self.banks.arr:
             if b.active==False:
                 r.append(b)
         return r        
         
     def creditcards_active(self):        
-        r=SetCreditCards(self.mem, self.accounts)
+        r=CreditCardManager(self.mem, self.accounts)
         for b in self.creditcards.arr:
             if b.active==True:
                 r.append(b)
         return r        
         
     def creditcards_inactive(self):        
-        r=SetCreditCards(self.mem, self.accounts)
+        r=CreditCardManager(self.mem, self.accounts)
         for b in self.creditcards.arr:
             if b.active==False:
                 r.append(b)
         return r
             
     def investments_active(self):        
-        r=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         for b in self.investments.arr:
             if b.active==True:
                 r.append(b)
         return r        
         
     def investments_inactive(self):        
-        r=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         for b in self.investments.arr:
             if b.active==False:
                 r.append(b)
@@ -4058,7 +4058,7 @@ class Investment:
             Returns a setDividens from the datetime of the first currnt operation
         """
         first=self.op_actual.first()
-        set=SetDividendsHomogeneus(self.mem, self)
+        set=DividendHomogeneusManager(self.mem, self)
         if first!=None:
             set.load_from_db("select * from dividends where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.id, first.datetime))
         return set
@@ -4067,7 +4067,7 @@ class Investment:
         """
             Returns a setDividens with all the dividends
         """
-        set=SetDividendsHomogeneus(self.mem, self)
+        set=DividendHomogeneusManager(self.mem, self)
         set.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
         return set
 
@@ -4138,7 +4138,7 @@ class Investment:
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
         date is used to get invested balance in a particular date"""
         cur=self.mem.con.cursor()
-        self.op=SetInvestmentOperationsHomogeneus(self.mem, self)
+        self.op=InvestmentOperationHomogeneusManager(self.mem, self)
         if date==None:
             cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         else:
@@ -4258,7 +4258,7 @@ class CreditCard:
         self.active=None
         self.numero=None
         
-#        self.op_diferido=SetCreditCardOperations(self.mem)#array que almacena objetos CreditCard operacion que son en diferido, los carga
+#        self.op_diferido=CreditCardOperationManager(self.mem)#array que almacena objetos CreditCard operacion que son en diferido, los carga
         
     def init__create(self, name, cuenta, pagodiferido, saldomaximo, activa, numero, id=None):
         """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
@@ -4751,7 +4751,7 @@ class Assets:
         El 63 es un gasto aunque también este registrado en dividends."""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.mem.data.investments.arr:
-            setdiv=SetDividendsHomogeneus(self.mem, inv)
+            setdiv=DividendHomogeneusManager(self.mem, inv)
             if mes==None:#Calcula en el año
                 setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
             else:
@@ -4763,7 +4763,7 @@ class Assets:
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.mem.data.investments.arr:
-            setdiv=SetDividendsHomogeneus(self.mem, inv)
+            setdiv=DividendHomogeneusManager(self.mem, inv)
             if mes==None:#Calcula en el año
                 setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
             else:
@@ -4898,7 +4898,7 @@ class Assets:
         return resultado        
 
 
-class SetCreditCards(ObjectManager_With_IdName):
+class CreditCardManager(ObjectManager_With_IdName):
     def __init__(self, mem, cuentas):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem   
@@ -4935,8 +4935,8 @@ class SetCreditCards(ObjectManager_With_IdName):
                     table.selectRow(i)
             
     def clone_of_account(self, cuenta):
-        """Devuelve un SetCreditCards con las tarjetas de una determinada cuenta"""
-        s=SetCreditCards(self.mem, self.accounts)
+        """Devuelve un CreditCardManager con las tarjetas de una determinada cuenta"""
+        s=CreditCardManager(self.mem, self.accounts)
         for t in self.arr:
             if t.account==cuenta:
                 s.arr.append(t)
@@ -4954,7 +4954,7 @@ class SetCreditCards(ObjectManager_With_IdName):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetCreditCardOperations(ObjectManager_With_IdDatetime):
+class CreditCardOperationManager(ObjectManager_With_IdDatetime):
     def __init__(self, mem):
         ObjectManager_With_IdDatetime.__init__(self)
         self.mem=mem
@@ -5005,7 +5005,7 @@ class SetCreditCardOperations(ObjectManager_With_IdDatetime):
                         if a.id==sel.id:
                             tabla.selectRow(rownumber)
 
-class SetOperationTypes(ObjectManager_With_IdName):
+class OperationTypeManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
@@ -5050,7 +5050,7 @@ class SetOperationTypes(ObjectManager_With_IdName):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class SetAgrupations(ObjectManager_With_IdName):
+class AgrupationManager(ObjectManager_With_IdName):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
@@ -5083,7 +5083,7 @@ class SetAgrupations(ObjectManager_With_IdName):
   
     def clone_by_type(self,  type):
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
-        resultado=SetAgrupations(self.mem)
+        resultado=AgrupationManager(self.mem)
         for a in self.arr:
             if a.type==type:
                 resultado.append(a)
@@ -5108,7 +5108,7 @@ class SetAgrupations(ObjectManager_With_IdName):
         
     def clone_from_dbstring(self, dbstr):
         """Convierte la cadena de la base datos en un array de objetos agrupation"""
-        resultado=SetAgrupations(self.mem)
+        resultado=AgrupationManager(self.mem)
         if dbstr==None or dbstr=="":
             pass
         else:
@@ -5127,12 +5127,12 @@ class SetAgrupations(ObjectManager_With_IdName):
         
     def clone_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
-        resultado=SetAgrupations(self.mem)
+        resultado=AgrupationManager(self.mem)
         for i in range (cmb.count()):
             resultado.append(self.mem.agrupations.find_by_id(cmb.itemData(i)))
         return resultado
 
-class SetLeverages(ObjectManager_With_IdName):
+class LeverageManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
         ObjectManager_With_IdName.__init__(self)
@@ -5148,7 +5148,7 @@ class SetLeverages(ObjectManager_With_IdName):
         self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), 10))
 
 
-class SetOrders(ObjectManager_With_Id):
+class OrderManager(ObjectManager_With_Id):
     def __init__(self, mem):
         ObjectManager_With_Id.__init__(self)
         self.mem=mem
@@ -5231,7 +5231,7 @@ class SetOrders(ObjectManager_With_Id):
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
 
-class SetPriorities(ObjectManager_With_IdName):
+class PriorityManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
         ObjectManager_With_IdName.__init__(self)
@@ -5246,7 +5246,7 @@ class SetPriorities(ObjectManager_With_IdName):
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=SetPriorities(self.mem)
+        resultado=PriorityManager(self.mem)
         if arr==None or len(arr)==0:
             resultado.arr=[]
         else:
@@ -5268,7 +5268,7 @@ class SetPriorities(ObjectManager_With_IdName):
             self.append(self.mem.priorities.find_by_id(cmb.itemData(i)))
         return self
                 
-class SetPrioritiesHistorical(ObjectManager_With_IdName):
+class PriorityHistoricalManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
         ObjectManager_With_IdName.__init__(self)
@@ -5280,7 +5280,7 @@ class SetPrioritiesHistorical(ObjectManager_With_IdName):
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=SetPrioritiesHistorical(self.mem)
+        resultado=PriorityHistoricalManager(self.mem)
         if arr==None or len(arr)==0:
             resultado.arr=[]
         else:
@@ -5383,8 +5383,8 @@ class ProductComparation:
         self.__fromDate=None#None all array.
         self.product1=product1
         self.product2=product2     
-        self.set1=SetOHCLDaily(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
-        self.set2=SetOHCLDaily(self.mem, self.product2)
+        self.set1=OHCLDailyManager(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
+        self.set2=OHCLDailyManager(self.mem, self.product2)
         self.__commonDates=None
 
         #Load data if necesary
@@ -5687,7 +5687,7 @@ class Money:
     def round(self, digits=2):
         return round(self.amount, digits)
 
-class SetDPS(ObjectManager_With_IdDate):
+class DPSManager(ObjectManager_With_IdDate):
     def __init__(self, mem,  product):
         ObjectManager_With_IdDate.__init__(self)
         self.mem=mem   
@@ -5742,8 +5742,8 @@ class SetDPS(ObjectManager_With_IdDate):
         r.low=self.adjustPrice(ohcl.datetime(), ohcl.low)
         return r
 
-    def adjustSetOHCLDaily(self, set):
-        r=SetOHCLDaily(self.mem, self.product)
+    def adjustOHCLDailyManager(self, set):
+        r=OHCLDailyManager(self.mem, self.product)
         for ohcl in set.arr:
             r.append(self.adjustOHCLDaily(ohcl))
         return r
@@ -5911,7 +5911,7 @@ class Product:
         self.isin=None
         self.currency=None #Apunta a un objeto currency
         self.type=None
-        self.agrupations=None #Es un objeto SetAgrupations
+        self.agrupations=None #Es un objeto AgrupationManager
         self.id=None
         self.web=None
         self.address=None
@@ -5928,8 +5928,8 @@ class Product:
         self.obsolete=None
         
         self.result=None#Variable en la que se almacena QuotesResult
-        self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
-        self.estimations_eps=SetEstimationsEPS(self.mem, self)
+        self.estimations_dps=EstimationDPSManager(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
+        self.estimations_eps=EstimationEPSManager(self.mem, self)
         self.result=QuotesResult(self.mem,self)
 
         self.dps=None #It's created when loading quotes in quotes result
@@ -5954,8 +5954,8 @@ class Product:
         self.leveraged=self.mem.leverages.find_by_id(row['leveraged'])
         self.stockmarket=self.mem.stockmarkets.find_by_id(row['stockmarkets_id'])
         self.tickers=row['tickers']
-        self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
-        self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
+        self.priority=PriorityManager(self.mem).init__create_from_db(row['priority'])
+        self.priorityhistorical=PriorityHistoricalManager(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         
@@ -5963,7 +5963,7 @@ class Product:
 
 
     def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers,  priority, priorityhistorical, comment, obsolete, id=None):
-        """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
+        """agrupations es un setagrupation, priority un PriorityManager y priorityhistorical un PriorityManagerhistorical"""
         self.name=name
         self.isin=isin
         self.currency=currency
@@ -6024,8 +6024,8 @@ class Product:
         return False
         
     def setinvestments(self):
-        """Returns a SetInvestments object with all the investments of the product. Investments can be active or inactive"""
-        set=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark)
+        """Returns a InvestmentManager object with all the investments of the product. Investments can be active or inactive"""
+        set=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark)
         sql="""
             SELECT * 
             FROM 
@@ -6155,7 +6155,7 @@ class Product:
         self.id=newid
         return self
 
-class SetQuotes(ObjectManager):
+class QuoteManager(ObjectManager):
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar, puede haber varios productos"""
     def __init__(self, mem):
         ObjectManager.__init__(self)
@@ -6166,10 +6166,10 @@ class SetQuotes(ObjectManager):
             Para poner el dato en close, el valor de time debe ser None
             Devuelve una tripleta (insertado,buscados,modificados)
         """
-        insertados=SetQuotes(self.mem)
-        ignored=SetQuotes(self.mem)
-        modificados=SetQuotes(self.mem)    
-        malos=SetQuotes(self.mem)
+        insertados=QuoteManager(self.mem)
+        ignored=QuoteManager(self.mem)
+        modificados=QuoteManager(self.mem)    
+        malos=QuoteManager(self.mem)
             
         for q in self.arr:
             if q.can_be_saved():#Debe hacerse en automaticos
@@ -6206,8 +6206,8 @@ class SetQuotes(ObjectManager):
             tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
                 
                 
-class SetQuotesAllIntradays:
-    """Class that groups all quotes of the database. It's an array of SetQuotesIntraday"""
+class QuoteAllIntradayManager:
+    """Class that groups all quotes of the database. It's an array of QuoteIntradayManager"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
@@ -6233,8 +6233,8 @@ class SetQuotesAllIntradays:
         for row in cur:
             if dt_end==None:#Loads the first datetime
                 dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
-            if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
-                self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
+            if row['datetime']>dt_end:#Cambio de QuoteIntradayManager
+                self.arr.append(QuoteIntradayManager(self.mem).init__create(self.product, dt_end.date(), intradayarr))
                 dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
                 #crea otro intradayarr
                 del intradayarr
@@ -6244,7 +6244,7 @@ class SetQuotesAllIntradays:
                 intradayarr.append(Quote(self.mem).init__db_row(row, self.product))
         #No entraba si hay dos días en el primer día
         if len(intradayarr)!=0:
-            self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
+            self.arr.append(QuoteIntradayManager(self.mem).init__create(self.product, dt_end.date(), intradayarr))
             
         cur.close()
 
@@ -6258,7 +6258,7 @@ class SetQuotesAllIntradays:
                     continue
                 else:
                     return found                    
-        logging.critical("Quote not found in SetQuotesAllIntradays of {} at {}".format(self.product, dattime))
+        logging.critical("Quote not found in QuoteAllIntradayManager of {} at {}".format(self.product, dattime))
         return None
             
             
@@ -6287,7 +6287,7 @@ class SetQuotesAllIntradays:
                 counter=counter+sqi.purge()
         return counter
         
-class SetQuotesBasic:
+class QuoteBasicManager:
     """Clase que agrupa quotes basic, last penultimate, lastyear """
     def __init__(self, mem, product):
         self.mem=mem
@@ -6327,10 +6327,10 @@ class SetQuotesBasic:
         else:
             return Percentage(self.last.quote-self.lastyear.quote, self.lastyear.quote)
 
-class SetQuotesIntraday(SetQuotes):
+class QuoteIntradayManager(QuoteManager):
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
     def __init__(self, mem):
-        SetQuotes.__init__(self, mem)
+        QuoteManager.__init__(self, mem)
         self.product=None
         self.date=None
         
@@ -6391,7 +6391,7 @@ class SetQuotesIntraday(SetQuotes):
         for q in reversed(self.arr):
             if q.datetime<=dt:
                 return q
-        logging.info("Quote not found in SetQuotesIntraday ({}) of {} at {}. En el set hay {}".format(self.date,  self.product, dt, self.arr))
+        logging.info("Quote not found in QuoteIntradayManager ({}) of {} at {}. En el set hay {}".format(self.date,  self.product, dt, self.arr))
         return None
 
     def datetimes(self):
@@ -6804,7 +6804,7 @@ class OHCLYearly(OHCL):
         cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
         cur.close()     
 
-class SetOHCL(ObjectManager):
+class OHCLManager(ObjectManager):
     def __init__(self, mem, product):
         ObjectManager.__init__(self)
         self.mem=mem
@@ -6860,7 +6860,7 @@ class SetOHCL(ObjectManager):
         return sma
         
     ## Calculates the median value of all OHCL.close values
-    ## This function is in SetOHCL and can be used in all derivated classes
+    ## This function is in OHCLManager and can be used in all derivated classes
     ## @param from_dt Date from data is calculated. If it's None (default) if calculated the median value from all OHCL data in the array.
     def closes_median_value(self, from_dt=None):
         r=self.closes()
@@ -6937,9 +6937,9 @@ class SetOHCL(ObjectManager):
                 r=ohcl
         return r
 
-class SetOHCLDaily(SetOHCL):
+class OHCLDailyManager(OHCLManager):
     def __init__(self, mem, product):
-        SetOHCL.__init__(self, mem, product)
+        OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLDaily
 
     def find(self, date):
@@ -6952,12 +6952,12 @@ class SetOHCLDaily(SetOHCL):
 
 
     def setquotesbasic(self):
-        """Returns a SetQuotesBasic con los datos del setohcldairy"""
+        """Returns a QuoteBasicManager con los datos del setohcldairy"""
         last=None
         penultimate=None
         lastyear=None
         if self.length()==0:
-            return SetQuotesBasic(self.mem, self.product).init__create(Quote(self.mem).none(self.product), Quote(self.mem).none(self.product),  Quote(self.mem).none(self.product))
+            return QuoteBasicManager(self.mem, self.product).init__create(Quote(self.mem).none(self.product), Quote(self.mem).none(self.product),  Quote(self.mem).none(self.product))
         ohcl=self.arr[self.length()-1]#last
         last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
@@ -6966,7 +6966,7 @@ class SetOHCLDaily(SetOHCL):
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#lastyear
         if ohcl!=None:
             lastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
-        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, lastyear)
+        return QuoteBasicManager(self.mem, self.product).init__create(last, penultimate, lastyear)
 
     def dates(self):
         """Returns a list with all the dates of the array"""
@@ -6976,14 +6976,14 @@ class SetOHCLDaily(SetOHCL):
         return r
         
 
-class SetOHCLWeekly(SetOHCL):
+class OHCLWeeklyManager(OHCLManager):
     def __init__(self, mem, product):
-        SetOHCL.__init__(self, mem, product)
+        OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLWeekly
         
-class SetOHCLYearly(SetOHCL):
+class OHCLYearlyManager(OHCLManager):
     def __init__(self, mem, product):
-        SetOHCL.__init__(self, mem, product)
+        OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLYearly
         
 
@@ -7008,9 +7008,9 @@ class SetOHCLYearly(SetOHCL):
         else:
             return Percentage()
         
-class SetOHCLMonthly(SetOHCL):
+class OHCLMonthlyManager(OHCLManager):
     def __init__(self, mem, product):
-        SetOHCL.__init__(self, mem, product)
+        OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLMonthly
         
     def find(self, year,  month):
@@ -7035,7 +7035,7 @@ class SetOHCLMonthly(SetOHCL):
         
     
 
-class SetLanguages(ObjectManager_With_IdName):
+class LanguageManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -7071,31 +7071,31 @@ class QuotesResult:
         self.mem=mem
         self.product=product
                
-        self.intradiaBeforeSplits=SetQuotesIntraday(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar BeforeSplits
-        self.allBeforeSplits=SetQuotesAllIntradays(self.mem)
-        self.basicBeforeSplits=SetQuotesBasic(self.mem, self.product)
-        self.ohclDailyBeforeSplits=SetOHCLDaily(self.mem, self.product)
-        self.ohclMonthlyBeforeSplits=SetOHCLMonthly(self.mem, self.product)
-        self.ohclYearlyBeforeSplits=SetOHCLYearly(self.mem, self.product)
-        self.ohclWeeklyBeforeSplit=SetOHCLWeekly(self.mem, self.product)
+        self.intradiaBeforeSplits=QuoteIntradayManager(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar BeforeSplits
+        self.allBeforeSplits=QuoteAllIntradayManager(self.mem)
+        self.basicBeforeSplits=QuoteBasicManager(self.mem, self.product)
+        self.ohclDailyBeforeSplits=OHCLDailyManager(self.mem, self.product)
+        self.ohclMonthlyBeforeSplits=OHCLMonthlyManager(self.mem, self.product)
+        self.ohclYearlyBeforeSplits=OHCLYearlyManager(self.mem, self.product)
+        self.ohclWeeklyBeforeSplit=OHCLWeeklyManager(self.mem, self.product)
         
         
-        self.intradia=SetQuotesIntraday(self.mem)
-        self.all=SetQuotesAllIntradays(self.mem)
-        self.basic=SetQuotesBasic(self.mem, self.product)
-        self.ohclDaily=SetOHCLDaily(self.mem, self.product)
-        self.ohclMonthly=SetOHCLMonthly(self.mem, self.product)
-        self.ohclYearly=SetOHCLYearly(self.mem, self.product)
-        self.ohclWeekly=SetOHCLWeekly(self.mem, self.product)
+        self.intradia=QuoteIntradayManager(self.mem)
+        self.all=QuoteAllIntradayManager(self.mem)
+        self.basic=QuoteBasicManager(self.mem, self.product)
+        self.ohclDaily=OHCLDailyManager(self.mem, self.product)
+        self.ohclMonthly=OHCLMonthlyManager(self.mem, self.product)
+        self.ohclYearly=OHCLYearlyManager(self.mem, self.product)
+        self.ohclWeekly=OHCLWeeklyManager(self.mem, self.product)
 
         
-        self.intradiaAfterDividends=SetQuotesIntraday(self.mem) 
-        self.allAfterDividends=SetQuotesAllIntradays(self.mem)
-        self.basicAfterDividends=SetQuotesBasic(self.mem, self.product)
-        self.ohclDailyAfterDividends=SetOHCLDaily(self.mem, self.product)
-        self.ohclMonthlyAfterDividends=SetOHCLMonthly(self.mem, self.product)
-        self.ohclYearlyAfterDividends=SetOHCLYearly(self.mem, self.product)
-        self.ohclWeeklyAfterDividends=SetOHCLWeekly(self.mem, self.product)
+        self.intradiaAfterDividends=QuoteIntradayManager(self.mem) 
+        self.allAfterDividends=QuoteAllIntradayManager(self.mem)
+        self.basicAfterDividends=QuoteBasicManager(self.mem, self.product)
+        self.ohclDailyAfterDividends=OHCLDailyManager(self.mem, self.product)
+        self.ohclMonthlyAfterDividends=OHCLMonthlyManager(self.mem, self.product)
+        self.ohclYearlyAfterDividends=OHCLYearlyManager(self.mem, self.product)
+        self.ohclWeeklyAfterDividends=OHCLWeeklyManager(self.mem, self.product)
         
         
         
@@ -7105,10 +7105,10 @@ class QuotesResult:
             force=True load from database again even if dps is not null
         """
         if self.product.dps==None or force==True:
-            self.product.dps=SetDPS(self.mem, self.product)
+            self.product.dps=DPSManager(self.mem, self.product)
             self.product.dps.load_from_db()     
         if self.product.splits==None or force==True:
-            self.product.splits=SetSplits(self.mem, self.product)
+            self.product.splits=SplitManager(self.mem, self.product)
             self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
         
     def get_basic_and_ohcls(self):
@@ -7130,11 +7130,11 @@ class QuotesResult:
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
         if self.product.splits.length()>0:
-            self.ohclDaily=self.product.splits.adjustSetOHCLDaily(self.ohclDailyBeforeSplits)
+            self.ohclDaily=self.product.splits.adjustOHCLDailyManager(self.ohclDailyBeforeSplits)
         else:
             self.ohclDaily=self.ohclDailyBeforeSplits
         if self.product.dps.length()>0:
-            self.ohclDailyAfterDividends=self.product.dps.adjustSetOHCLDaily(self.ohclDaily)
+            self.ohclDailyAfterDividends=self.product.dps.adjustOHCLDailyManager(self.ohclDaily)
         else:
             self.ohclDailyAfterDividends=self.ohclDailyBeforeSplits
             
@@ -7192,7 +7192,7 @@ class QuotesResult:
 
     def ohcl(self,  ohclduration, historicalchartadjust=eHistoricalChartAdjusts.NoAdjusts):
         """
-            Returns the SetOHCL corresponding to it's duration
+            Returns the OHCLManager corresponding to it's duration
         """
         if ohclduration==eOHCLDuration.Day:
             if historicalchartadjust==eHistoricalChartAdjusts.Splits:
@@ -7352,7 +7352,7 @@ class Split:
         else:
             return "Split"
 
-class SetSplits(ObjectManager_With_IdName):
+class SplitManager(ObjectManager_With_IdName):
     def __init__(self, mem, product):
         ObjectManager_With_IdName.__init__(self)
         self.product=product
@@ -7417,8 +7417,8 @@ class SetSplits(ObjectManager_With_IdName):
         r.low=self.adjustPrice(ohcl.datetime(), ohcl.low)
         return r
 
-    def adjustSetOHCLDaily(self, set):
-        r=SetOHCLDaily(self.mem, self.product)
+    def adjustOHCLDailyManager(self, set):
+        r=OHCLDailyManager(self.mem, self.product)
         for ohcl in set.arr:
             r.append(self.adjustOHCLDaily(ohcl))
         return r
@@ -7442,7 +7442,7 @@ class SplitManual:
     
     def updateQuotes(self):
         """Transforms de price of the quotes of the array"""
-        self.quotes=SetQuotesAllIntradays(self.mem)
+        self.quotes=QuoteAllIntradayManager(self.mem)
         self.quotes.load_from_db(self.product)
         for setquoteintraday in self.quotes.arr:
             for q in setquoteintraday.arr:
@@ -7451,7 +7451,7 @@ class SplitManual:
                     q.save()
                     
     def updateDPS(self):
-        set=SetDPS(self.mem, self.product)
+        set=DPSManager(self.mem, self.product)
         set.load_from_db()
         for d in set.arr:
             if self.dtinitial.date()<=d.date and self.dtfinal.date()>=d.date:
@@ -7462,7 +7462,7 @@ class SplitManual:
         pass
         
     def updateEstimationsDPS(self):
-        set=SetEstimationsDPS(self.mem, self.product)
+        set=EstimationDPSManager(self.mem, self.product)
         set.load_from_db()
         for d in set.arr:
             if self.dtinitial.year<=d.year and self.dtfinal.year>=d.year:
@@ -7470,7 +7470,7 @@ class SplitManual:
                 d.save()
         
     def updateEstimationsEPS(self):
-        set=SetEstimationsEPS(self.mem, self.product)
+        set=EstimationEPSManager(self.mem, self.product)
         set.load_from_db()
         for d in set.arr:
             if self.dtinitial.year<=d.year and self.dtfinal.year>=d.year:
@@ -7493,7 +7493,7 @@ class SplitManual:
         """Transforms de dpa of an array of dividends"""
         for inv in self.mem.data.investments.arr:
             if inv.product.id==self.product.id:
-                dividends=SetDividendsHomogeneus(self.mem, inv)
+                dividends=DividendHomogeneusManager(self.mem, inv)
                 dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
                 for d in dividends.arr:
                     if self.dtinitial<=d.datetime and self.dtfinal>=d.datetime:
@@ -7549,7 +7549,7 @@ class ProductType(Object_With_IdName):
         Object_With_IdName.__init__(self, *args)
 
 ## Set of product types
-class SetProductTypes(ObjectManager_With_IdName):
+class ProductTypesManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
@@ -7568,16 +7568,16 @@ class SetProductTypes(ObjectManager_With_IdName):
         self.append(ProductType(eProductType.Account.value,QApplication.translate("Core","Accounts")))
 
     def investment_types(self):
-        """Returns a SetProductTypes without Indexes and Accounts"""
-        r=SetProductTypes(self.mem)
+        """Returns a ProductTypesManager without Indexes and Accounts"""
+        r=ProductTypesManager(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Index, eProductType.Account):
                 r.append(t)
         return r
 
     def with_operation_comissions_types(self):
-        """Returns a SetProductTypes with types which product operations  has comissions"""
-        r=SetProductTypes(self.mem)
+        """Returns a ProductTypesManager with types which product operations  has comissions"""
+        r=ProductTypesManager(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):
                 r.append(t)
@@ -7705,9 +7705,9 @@ class MemXulpymoney:
         self.con=None#Conexión        
         
         #Loading data in code
-        self.countries=SetCountries(self)
+        self.countries=CountryManager(self)
         self.countries.load_all()
-        self.languages=SetLanguages(self)
+        self.languages=LanguageManager(self)
         self.languages.load_all()
         
         #Mem variables not in database
@@ -7785,42 +7785,42 @@ class MemXulpymoney:
         """Esto debe ejecutarse una vez establecida la conexión"""
         inicio=datetime.datetime.now()
         
-        self.currencies=SetCurrencies(self)
+        self.currencies=CurrencyManager(self)
         self.currencies.load_all()
         self.localcurrency=self.currencies.find_by_id(self.settingsdb.value("mem/localcurrency", "EUR"))
         
-        self.investmentsmodes=SetProductsModes(self)
+        self.investmentsmodes=ProductModesManager(self)
         self.investmentsmodes.load_all()
         
-        self.simulationtypes=SetSimulationTypes(self)
+        self.simulationtypes=SimulationTypeManager(self)
         self.simulationtypes.load_all()
         
-        self.zones=SetZones(self)
+        self.zones=ZoneManager(self)
         self.zones.load_all()
         self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
         
-        self.tiposoperaciones=SetOperationTypes(self)
+        self.tiposoperaciones=OperationTypeManager(self)
         self.tiposoperaciones.load()
         
-        self.conceptos=SetConcepts(self)
+        self.conceptos=ConceptManager(self)
         self.conceptos.load_from_db()
                 
-        self.priorities=SetPriorities(self)
+        self.priorities=PriorityManager(self)
         self.priorities.load_all()
         
-        self.prioritieshistorical=SetPrioritiesHistorical(self)
+        self.prioritieshistorical=PriorityHistoricalManager(self)
         self.prioritieshistorical.load_all()
 
-        self.types=SetProductTypes(self)
+        self.types=ProductTypesManager(self)
         self.types.load_all()
         
-        self.stockmarkets=SetStockMarkets(self)
+        self.stockmarkets=StockMarketManager(self)
         self.stockmarkets.load_all_from_db()
         
-        self.agrupations=SetAgrupations(self)
+        self.agrupations=AgrupationManager(self)
         self.agrupations.load_all()
 
-        self.leverages=SetLeverages(self)
+        self.leverages=LeverageManager(self)
         self.leverages.load_all()
 
         if load_data:
@@ -7925,7 +7925,7 @@ class Zone:
     def __repr__(self):
         return "Zone ({}): {}".format(str(self.id), str(self.name))
         
-class SetZones(ObjectManager_With_IdName):
+class ZoneManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem

@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, Percentage
+from libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
 from myqtablewidget import myQTableWidget
 from decimal import Decimal
@@ -619,7 +619,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             negative=Money(self.mem, 0, self.mem.localcurrency)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
+            set=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
@@ -659,7 +659,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             negative=Decimal(0)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
+            set=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
@@ -698,7 +698,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             negative=Decimal(0)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
+            set=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
@@ -741,7 +741,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         table.verticalHeader().setVisible(False)
         
-        set=SetDividendsHeterogeneus(self.mem)
+        set=DividendHeterogeneusManager(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Dividends of {0}").format(self.wyData.year)
             set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0}".format (self.wyData.year))
@@ -875,7 +875,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                         if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
                             gains=gains+o.consolidado_bruto().local()
                     #dividends
-                    setdiv=SetDividendsHeterogeneus(self.mem)
+                    setdiv=DividendHeterogeneusManager(self.mem)
                     setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
                     dividends=dividends+setdiv.gross().local()
             table.setItem(i, 1, gains.qtablewidgetitem())

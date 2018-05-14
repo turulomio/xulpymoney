@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from Ui_wdgProducts import Ui_wdgProducts
 from frmProductReport import frmProductReport
-from libxulpymoney import SetProducts, SetQuotesAllIntradays
+from libxulpymoney import ProductManager, QuoteAllIntradayManager
 from libxulpymoneyfunctions import list2string, qmessagebox
 from frmQuotesIBM import frmQuotesIBM
 from wdgMergeCodes import wdgMergeCodes
@@ -15,7 +15,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.products=SetProducts(self.mem)
+        self.products=ProductManager(self.mem)
         self.products.selected=[]#Can be selected several products
         self.tblInvestments.settings(self.mem, "wdgProducts")
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
@@ -260,7 +260,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot()  
     def on_actionPurge_triggered(self):
-        all=SetQuotesAllIntradays(self.mem)
+        all=QuoteAllIntradayManager(self.mem)
         all.load_from_db(self.products.selected[0])
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
