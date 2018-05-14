@@ -18,7 +18,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType
-from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime
+from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime,  DictObjectManager_With_IdName
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -5005,9 +5005,9 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime):
                         if a.id==sel.id:
                             tabla.selectRow(rownumber)
 
-class OperationTypeManager(ObjectManager_With_IdName):
+class OperationTypeManager(DictObjectManager_With_IdName):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        DictObjectManager_With_IdName.__init__(self)
         self.mem=mem     
 
     def load(self):
@@ -5030,7 +5030,7 @@ class OperationTypeManager(ObjectManager_With_IdName):
         self.order_by_name()
         combo.clear()
         for n in (eOperationType.Expense, eOperationType.Income):
-            a=self.dic[str(n)]
+            a=self.dic.find_by_id(str(n))
             combo.addItem(a.name, a.id)
 
         if selected!=None:
@@ -5044,7 +5044,7 @@ class OperationTypeManager(ObjectManager_With_IdName):
         self.order_by_name()
         combo.clear()
         for n in (eOperationType.SharesPurchase, eOperationType.SharesSale, eOperationType.SharesAdd, eOperationType.TransferFunds):
-            a=self.dic[str(n)]
+            a=self.dic.find_by_id(str(n))
             combo.addItem(a.name, a.id)
 
         if selected!=None:
