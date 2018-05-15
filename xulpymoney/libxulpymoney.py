@@ -4233,9 +4233,9 @@ class Investment:
         if date==None or date==datetime.date.today():#Current
             return self.op_actual.invertido(type)
         else:
-            ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
+            # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=Investment(self.mem).copy()
-            invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone))
+            invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
             (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
             return invfake.op_actual.invertido(type)
                 
@@ -4257,9 +4257,7 @@ class CreditCard:
         self.saldomaximo=None
         self.active=None
         self.numero=None
-        
-#        self.op_diferido=CreditCardOperationManager(self.mem)#array que almacena objetos CreditCard operacion que son en diferido, los carga
-        
+           
     def init__create(self, name, cuenta, pagodiferido, saldomaximo, activa, numero, id=None):
         """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
         self.id=id
@@ -7951,16 +7949,6 @@ class ZoneManager(ObjectManager_With_IdName):
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
 
-            
-    def find_by_name(self, name,  log=False):
-        """self.find_by_id() search by id (number).
-        This function replaces  it and searches by name (Europe/Madrid)"""
-        for a in self.arr:
-            if a.name==name:
-                return a
-        if log:
-            print ("ObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, name))
-        return None
 
 class AssetsReport(ODT):
     def __init__(self, mem, filename, template):
