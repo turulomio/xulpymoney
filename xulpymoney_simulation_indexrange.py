@@ -5,7 +5,7 @@ from frmMain import *
 from frmInit import *
 from wdgProductSelector import *
 
-#Parameters simulation
+## Parameters simulation
 class MemSimulation(MemXulpymoney):
     def __init__(self):
         MemXulpymoney.__init__(self)
@@ -46,14 +46,6 @@ class MemSimulation(MemXulpymoney):
         d.tblInvestments.setCurrentCell(0, 0)
         w.ise.setSelected(d.selected)
         w.on_cmdInvestment_pressed()
-#        frmMain.w.on_chkInactivas_stateChanged(frmMain.w.chkInactivas.checkState())#Carga la tabla        
-
-
-    def investment_find_by_name(self, name):
-        for i in mem.data.investments.arr:
-            if i.name==name:
-                return i
-        return None
         
     def range_change(self, new):
         if new<current_range*1.02 or new>current_range*0.98:

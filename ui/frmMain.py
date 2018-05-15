@@ -42,27 +42,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem=mem
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         self.sqlvacio="select * from products where id=-999999"
-        #print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
         
         self.w=QWidget()       
-
-        self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
+        self.statusBar.addWidget(QLabel(self.tr("postgres://{}@{}:{}/{}").format(self.mem.con.user, self.mem.con.server,  self.mem.con.port, self.mem.con.db)))
 
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
   
         if self.mem.con.is_superuser():
-            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date().year))
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date().year))#print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
             self.setWindowIcon(self.mem.qicon_admin())
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date().year))
-
-#        model=ReinvestModel(mem, [2500, 3500, 12000, 12000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
-#        model.print()
-#        model=ReinvestModel(mem, [5000, 7000, 24000, 24000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
-#        model.print()
-#        a=2500
-#        model=ReinvestModel(mem, [a, 2*a, 6*a, 18*a, 54*a], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
-#        model.print()
 
 
     def actionsEnabled(self, bool):

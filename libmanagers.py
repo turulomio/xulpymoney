@@ -7,6 +7,9 @@
 ##
 ## You have to use dictionary objects i f you are going to make unordered access to the dictionary. It consumes more memory. To access a selected item in a table you have to hide a column with the id and getit when selecting a row
 
+
+import logging
+
 class MyMem:
     def __init__(self):
         self.mem=None
@@ -14,7 +17,7 @@ class MyMem:
     def setMem(self, mem):
         self.mem=mem
 
-class ObjectManager:
+class ObjectManager(object):
     def __init__(self):
         self.arr=[]       
         self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
@@ -157,8 +160,11 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
                 result.append(a.copy())
         return result
         
+    ## Function that returns the same object manager, but with a copy of the objects that contains until the datetime given in the parameter.
+    ## For exemple the constuctor of InvemestOperationHomogeneous is InvemestOperationHomogeneous(mem,investment). so to use this function you need copy_until_datetime(dt,mem,investment)
+    ## @param datetime. This function copies all object with datetime until this parameter
+    ## @param initparams. Parameters of the constructor of the ManagerObject class
     def copy_until_datetime(self, dt, *initparams):
-        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime menor que la pasada como parametro."""
         result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         if dt==None:
             dt=self.mem.localzone.now()
@@ -171,6 +177,16 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
 class ObjectManager_With_IdName(ObjectManager_With_Id):
     def __init__(self):
         ObjectManager_With_Id.__init__(self)
+        
+    ## Find an object searching in its name to match the parameter
+    def find_by_name(self, name,  log=False):
+        """self.find_by_id() search by id (number).
+        This function replaces  it and searches by name (Europe/Madrid)"""
+        for a in self.arr:
+            if a.name==name:
+                return a
+        logging.debug("{} didn't find the name".format(self.__class__))
+        return None
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
@@ -203,7 +219,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
 ## Objects has a field called id, whose string is the key of the item of dict
 ## It Can be a DictObjectManager without id
 ## It doesn't need to cfreate DictListObjectManager_With_IdName, because all funcions are used with ObjectManager_With_IdName
-class DictObjectManager_With_Id:
+class DictObjectManager_With_Id(object):
     ## @param selectable Create an attribute to self.selected if it's true than it's a DictObjectManager_With_Id but with selectable=False to avoid recursivity
     def __init__(self, selectable=True):
         self.dic={}
