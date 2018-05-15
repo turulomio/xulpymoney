@@ -865,7 +865,7 @@ class InvestmentManager(ObjectManager_With_IdName):
             logging.error("InvestmentManager can't order by balance")
             return False
         
-        
+## Class to manage products
 class ProductManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
@@ -5025,10 +5025,9 @@ class OperationTypeManager(DictObjectManager_With_IdName):
         """Load lust some items
         Selected is and object
         It sorts by name the arr""" 
-        self.order_by_name()
         combo.clear()
         for n in (eOperationType.Expense, eOperationType.Income):
-            a=self.dic.find_by_id(str(n))
+            a=self.find_by_id(str(n))
             combo.addItem(a.name, a.id)
 
         if selected!=None:
@@ -5039,10 +5038,9 @@ class OperationTypeManager(DictObjectManager_With_IdName):
         """Load lust some items
         Selected is and object
         It sorts by name the arr""" 
-        self.order_by_name()
         combo.clear()
         for n in (eOperationType.SharesPurchase, eOperationType.SharesSale, eOperationType.SharesAdd, eOperationType.TransferFunds):
-            a=self.dic.find_by_id(str(n))
+            a=self.find_by_id(str(n))
             combo.addItem(a.name, a.id)
 
         if selected!=None:

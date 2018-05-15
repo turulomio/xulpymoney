@@ -31,6 +31,9 @@ from wdgOpportunities import wdgOpportunities
 from wdgProducts import wdgProducts
 from wdgSimulations import wdgSimulations
 from wdgQuotesUpdate import wdgQuotesUpdate
+## @package frmMain
+## @brief User interface main window.
+
 from wdgLastCurrent import wdgLastCurrent
 
 class frmMain(QMainWindow, Ui_frmMain):
