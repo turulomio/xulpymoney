@@ -1408,7 +1408,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime):
             table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))       
             table.setItem(i+1, 5, qleft(o.id))
             if self.selected.length()>0:
-                if o.id==self.selected.id:
+                if o.id==self.selected.only().id:
                     table.selectRow(i+1)
 
 class CurrencyManager(ObjectManager_With_IdName):
