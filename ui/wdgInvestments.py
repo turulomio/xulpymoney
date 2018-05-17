@@ -1,4 +1,4 @@
-from libxulpymoney import Percentage, Quote
+from libxulpymoney import Percentage, Quote,  ProductUpdate
 from libxulpymoneyfunctions import days_to_year_month, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
@@ -87,7 +87,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @pyqtSlot() 
     def on_actionProductUpdate_triggered(self):
-        self.product.update()
+        update=ProductUpdate(self.mem)
+        update.setCommands(self.selInvestment.product)
+        quotes=update.run()
+        quotes.save()
+        self.mem.con.commit()
+        quotes.print()
         
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
@@ -177,6 +182,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionProduct.setEnabled(False)
             self.actionProductPrice.setEnabled(False)
             self.actionProductPriceLastRemove.setEnabled(False)
+            self.actionProductUpdate.setEnabled(False)
         else:
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       
@@ -194,6 +200,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.actionInvestmentDelete.setEnabled(False)
                 
             self.actionProductPriceLastRemove.setEnabled(True)
+            self.actionProductUpdate.setEnabled(True)
                 
             if self.selInvestment.active==True:
                 self.actionActive.setText(self.tr('Deactivate investment'))
@@ -212,6 +219,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addSeparator()
         menu.addAction(self.actionProductPrice)
         menu.addAction(self.actionProductPriceLastRemove)
+        menu.addAction(self.actionProductUpdate)
         menu.addSeparator()
         menu.addAction(self.actionActive)
         menu.addSeparator()        
