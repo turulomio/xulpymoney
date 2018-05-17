@@ -14,6 +14,7 @@ import psycopg2.extras
 import sys
 import argparse
 import getpass
+import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
@@ -6151,6 +6152,12 @@ class Product:
         self.id=newid
         return self
 
+    ## Search in Internet for last quote information
+    ## @return QuoteManager QuoteManager object with the quotes found in Internet
+    def update(self):
+        r=QuoteManager(self.mem)
+        r.print()
+
 class QuoteManager(ObjectManager):
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar, puede haber varios productos"""
     def __init__(self, mem):
@@ -6483,6 +6490,59 @@ class QuoteIntradayManager(QuoteManager):
                 table.item(i, 1).setBackground( QColor(255, 148, 148))             
         table.setCurrentCell(self.length()-1, 0)
         table.clearSelection()
+
+## Class to manage source xulpymoney_run_client and other scripts
+## Update works creating a file in ____ and theen executing xulpymoney_run_client
+class ProductUpdate:
+    ## @param mem Memory Singleton
+    def __init__(self, mem):
+        self.mem=mem
+        self.commands=[]
+    
+    ## Adds a command that will be inserted in  "{}/clients.txt".format(dir_tmp)
+    ## Example: self.update.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
+    def appendCommand(self, command):
+        self.commands.append(command)
+       
+     ## Generates "{}/clients.txt".format(dir_tmp)
+    def generateCommandsFile(self):
+        filename="{}/clients.txt".format(self.mem.dir_tmp)
+        f=open(filename, "w")
+        for a in self.commands:
+            f.write(" ".join(a) + "\n")
+        f.close()
+        logging.debug("Added {} comandos to {}".format(len(self.commands), filename))
+        
+    ## Reads ("{}/clients_result.txt".format(self.mem.dir_tmp), an return a strubg
+    def readResults(self):
+        f=open("{}/clients_result.txt".format(self.mem.dir_tmp), "r")
+        r=f.read()
+        f.close()
+        return r
+        
+    ## Function that executes xulpymoney_run_client and generate a QuoteManager 
+    ## Source commands must be created before in file "{}/clients.txt".format(dir_tmp)
+    ## Output of the xulpymoney_run_client command is generated in ("{}/clients_result.txt".format(self.mem.dir_tmp),
+    ## After run, clears self.command array
+    ## @return QuoteManager
+    def run(self):        
+        quotes=QuoteManager(self.mem)
+        os.system("xulpymoney_run_client")
+        cr=open("{}/clients_result.txt".format(self.mem.dir_tmp), "r")
+        for line in cr.readlines():
+            if line.find("OHCL")!=-1:
+                ohcl=OHCLDaily(self.mem).init__from_client_string(line[:-1])
+                if ohcl!=None:
+                    for quote in ohcl.generate_4_quotes():
+                        if quote!=None:
+                            quotes.append(quote)
+            if line.find("PRICE")!=-1:
+                quote=Quote(self.mem).init__from_client_string(line[:-1])
+                if quote!=None:
+                    quotes.append(quote)
+        cr.close()
+        self.commands=[]
+        return quotes
 
 class Quote:
     """Un quote no puede estar duplicado en un datetime solo puede haber uno"""

@@ -84,6 +84,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
+
+    @pyqtSlot() 
+    def on_actionProductUpdate_triggered(self):
+        self.product.update()
         
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
