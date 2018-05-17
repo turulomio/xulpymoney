@@ -90,7 +90,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
         ##### PROCESS #####
-        self.update.generateCommandsFile()
         self.quotes=self.update.run()
         self.quotes.save()
         self.mem.con.commit()

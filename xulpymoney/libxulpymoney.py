@@ -6505,7 +6505,7 @@ class ProductUpdate:
         self.commands.append(command)
        
      ## Generates "{}/clients.txt".format(dir_tmp)
-    def generateCommandsFile(self):
+    def __generateCommandsFile(self):
         filename="{}/clients.txt".format(self.mem.dir_tmp)
         f=open(filename, "w")
         for a in self.commands:
@@ -6526,6 +6526,7 @@ class ProductUpdate:
     ## After run, clears self.command array
     ## @return QuoteManager
     def run(self):        
+        self.__generateCommandsFile()
         quotes=QuoteManager(self.mem)
         os.system("xulpymoney_run_client")
         cr=open("{}/clients_result.txt".format(self.mem.dir_tmp), "r")
@@ -6543,6 +6544,11 @@ class ProductUpdate:
         cr.close()
         self.commands=[]
         return quotes
+        
+    ## Sets commands for a product update
+    def setCommands(self,  product):
+        if product.tickers[eTickerPosition.Yahoo]!=None:
+            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  product.tickers[eTickerPosition.Yahoo], str(product.id)])
 
 class Quote:
     """Un quote no puede estar duplicado en un datetime solo puede haber uno"""
