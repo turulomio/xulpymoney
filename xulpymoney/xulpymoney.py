@@ -42,12 +42,12 @@ parser=argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter
     )
 parser.add_argument('--version', action='version', version="{} ({})".format(version, version_date()))
-parser.add_argument('--debug', help=app.translate("devicesinlan", "Debug program information"), default="INFO")
+parser.add_argument('--debug', help=app.translate("devicesinlan", "Debug program information"), choices=["DEBUG","INFO","WARNING","ERROR","CRITICAL"], default="ERROR")
 args=parser.parse_args()        
 
 #Por defecto se pone WARNING y mostrar´ia ERROR y CRITICAL
-logFormat = "%(asctime)s %(levelname)s %(module)s:%(lineno)d at %(funcName)s. %(message)s"
-dateFormat='%Y%m%d %I%M%S'
+logFormat = "%(asctime)s.%(msecs)03d %(levelname)s %(message)s [%(module)s:%(lineno)d]"
+dateFormat='%F %I:%M:%S'
 
 if args.debug=="DEBUG":#Show detailed information that can help with program diagnosis and troubleshooting. CODE MARKS
     logging.basicConfig(level=logging.DEBUG, format=logFormat, datefmt=dateFormat)
@@ -59,10 +59,8 @@ elif args.debug=="ERROR":#The program fails to perform a certain function due to
     logging.basicConfig(level=logging.ERROR, format=logFormat, datefmt=dateFormat)
 elif args.debug=="CRITICAL":#The program encounters a serious error and may stop running. ERRORS
     logging.basicConfig(level=logging.CRITICAL, format=logFormat, datefmt=dateFormat)
-else:
-    logging.basicConfig(level=logging.CRITICAL, format=logFormat, datefmt=dateFormat)
-    logging.critical("--debug parameter must be DEBUG, INFO, WARNING, ERROR or CRITICAL")
-    sys.exit(1)
+
+logging.info("Debug level set to {}".format(args.debug))
 
 mem=MemXulpymoney()
 mem.setQTranslator(QTranslator(app))
