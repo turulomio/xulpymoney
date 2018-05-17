@@ -304,6 +304,7 @@ class DictObjectManager_With_IdDate(DictObjectManager_With_Id):
 
 class DictObjectManager_With_IdDatetime(DictObjectManager_With_Id):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
+    
     def __init__(self):
         DictObjectManager_With_Id.__init__(self)
 
@@ -326,3 +327,27 @@ class Object_With_IdName:
             init__create(None, None)
         if len(args)==2:
             init__create(*args)
+
+if __name__ == "__main__":
+     import datetime
+     sizes=(1,10,100,1000,10000,100000,1000000,3000000)
+     for size in sizes:
+         l=ObjectManager_With_Id()
+         d=DictObjectManager_With_Id()
+         for number in range(size):
+             o=Object_With_IdName(number,"Name {}".format(number))
+             l.append(o)
+             d.append(o)
+         middle=size*2//3
+         start=datetime.datetime.now()
+         l.find_by_id(middle)
+         ltime=datetime.datetime.now()-start
+         start=datetime.datetime.now()
+         d.find_by_id(middle)
+         dtime=datetime.datetime.now()-start
+         print("Benchmarking search_by_id in to element {} with {} objects".format(middle,size))
+         if ltime>=dtime:
+             print("  * ObjectManager took {} more time than DictObjectManager".format(ltime-dtime))
+         else:
+             print("  * DictObjectManager took {} more time than ObjectManager".format(dtime-ltime))
+
