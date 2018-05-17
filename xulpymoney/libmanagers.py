@@ -59,6 +59,7 @@ class ObjectManager(object):
         
         
     def print(self):
+        print ("Objects in {}".format(self.__class__))
         for q in self.arr:
             print(" * {}".format(q))
 

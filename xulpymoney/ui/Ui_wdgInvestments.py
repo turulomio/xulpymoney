@@ -125,6 +125,11 @@ class Ui_wdgInvestments(object):
         self.actionSameProductFIFO = QtWidgets.QAction(wdgInvestments)
         self.actionSameProductFIFO.setIcon(icon1)
         self.actionSameProductFIFO.setObjectName("actionSameProductFIFO")
+        self.actionProductUpdate = QtWidgets.QAction(wdgInvestments)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/xulpymoney/transfer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionProductUpdate.setIcon(icon5)
+        self.actionProductUpdate.setObjectName("actionProductUpdate")
 
         self.retranslateUi(wdgInvestments)
         QtCore.QMetaObject.connectSlotsByName(wdgInvestments)
@@ -179,6 +184,8 @@ class Ui_wdgInvestments(object):
         self.actionSameProduct.setToolTip(_translate("wdgInvestments", "Same product Investments merging current operations"))
         self.actionSameProductFIFO.setText(_translate("wdgInvestments", "Same product Investments merging operations"))
         self.actionSameProductFIFO.setToolTip(_translate("wdgInvestments", "Same product Investments merging operations"))
+        self.actionProductUpdate.setText(_translate("wdgInvestments", "Update product"))
+        self.actionProductUpdate.setToolTip(_translate("wdgInvestments", "Update product"))
 
 from myqtablewidget import myQTableWidget
 import xulpymoney_rc

@@ -295,6 +295,18 @@
     <string>Same product Investments merging operations</string>
    </property>
   </action>
+  <action name="actionProductUpdate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Update product</string>
+   </property>
+   <property name="toolTip">
+    <string>Update product</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
