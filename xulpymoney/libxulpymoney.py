@@ -4418,7 +4418,12 @@ class Opportunity:
             self.removed=removed
             self.executed=executed
             self.price=price
-            self.product=self.mem.data.products.find_by_id(products_id)
+            if products_id!=None:
+                self.product=Product(self.mem).init__db(products_id)         
+                self.product.estimations_dps.load_from_db()
+                self.product.result.basic.load_from_db()
+            else:
+                self.product=None
             self.id=id
         self.mem=args[0]
         if len(args)==1:
