@@ -1,10 +1,10 @@
+## @package libxulpymoneyfunctions
+## @brief Package with all xulpymoney auxiliar functions.
 from PyQt5.QtCore import Qt,  QCoreApplication
 from PyQt5.QtGui import QIcon,  QColor
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
-from decimal import Decimal, getcontext
+from decimal import Decimal
 from os import path, makedirs
-from colorama import Style, Fore
-import codecs
 import datetime
 import functools
 import warnings
@@ -13,7 +13,6 @@ import logging
 import pytz
 import sys
 from libxulpymoneyversion import version, version_date
-
 
 ## Sets debug sustem, needs
 ## @param args It's the result of a argparse     args=parser.parse_args()        
@@ -40,12 +39,11 @@ def addCommonToArgParse(parser):
     parser.add_argument('--version', action='version', version="{} ({})".format(version, version_date()))
     parser.add_argument('--debug', help="Debug program information", choices=["DEBUG","INFO","WARNING","ERROR","CRITICAL"], default="ERROR")
 
-
+## Function to conver hour strings with AM/PM to a iso string time
+## @param s Is a string for time with AMPM and returns a 24 hours time string with zfill. AM/PM can be upper or lower case
+## @param type Integer that can have this options 1: "5:35PM"
+## @return String with hour in iso mode: "17:35"
 def ampm2stringtime(s, type):
-    """
-        s is a string for time with AMPM and returns a 24 hours time string with zfill
-        type is the diferent formats id
-    """
     s=s.upper()
     if type==1:#5:35PM > 17:35   ó 5:35AM > 05:35
         s=s.replace("AM", "")
@@ -57,52 +55,27 @@ def ampm2stringtime(s, type):
             points=s.split(":")
             s=str(int(points[0])).zfill(2)+":"+points[1]
         return s
-        
-def dt_changes_tz(dt,  tztarjet):
-    """Cambia el zoneinfo del dt a tztarjet. El dt del parametre tiene un zoneinfo"""
-    if dt==None:
-        return None
-    tzt=pytz.timezone(tztarjet.name)
-    tarjet=tzt.normalize(dt.astimezone(tzt))
-    return tarjet
 
-        
-def dt_changes_tz_with_pytz(dt,  tzname):
-    """Cambia el zoneinfo del dt a tztarjet. El dt del parametre tiene un zoneinfo"""
+## Changes zoneinfo from a dtaware object
+## For example:
+## - datetime.datetime(2018, 5, 18, 8, 12, tzinfo=<DstTzInfo 'Europe/Madrid' CEST+2:00:00 DST>)
+## - libxulpymoneyfunctions.dtaware_changes_tz(a,"Europe/London")
+## - datetime.datetime(2018, 5, 18, 7, 12, tzinfo=<DstTzInfo 'Europe/London' BST+1:00:00 DST>)
+## @param dt datetime aware object
+## @tzname String with datetime zone. For example: "Europe/Madrid"
+## @return datetime aware object
+def dtaware_changes_tz(dt,  tzname):
     if dt==None:
         return None
     tzt=pytz.timezone(tzname)
     tarjet=tzt.normalize(dt.astimezone(tzt))
     return tarjet
 
-
-
-def status_insert(cur,  source,  process):
-        cur.execute('insert into status (source, process) values (%s,%s);', (source,  process))
-
-def status_update(cur, source,  process, status=None,  statuschange=None,  internets=None ):
-    updates=''
-    d={ 'status'            : status, 
-            'statuschange': statuschange,
-            'internets'      : internets}
-    for arg in d:
-        if arg in ['status', 'statuschange'] and d[arg]!=None:
-            updates=updates+' '+arg+ "='"+str(d[arg])+"', "
-        elif arg in ['internets'] and d[arg]!=None:
-            updates=updates+' '+arg+ "="+str(d[arg])+", "
-    if updates=='':
-        print ('status_update: parámetros vacios')
-        return
-    sql="update status set "+updates[:-2]+" where process='"+process+"' and source='"+source+"'"
-    cur.execute(sql)
-
-
+## Creates a QTableWidgetItem with the date
 def qdate(date):
-    """Return a QTableWidgetItem with the date"""
     if date==None:
         return qempty()
     return qcenter(str(date))
-
 
 def qmessagebox(text):
     m=QMessageBox()
@@ -110,16 +83,6 @@ def qmessagebox(text):
     m.setIcon(QMessageBox.Information)
     m.setText(text)
     m.exec_()   
-    
-def dtaware2utc(dtaware):
-    """
-date -u -R
-Tue, 14 Feb 2017 20:11:04 +0000
- date  -R
-Tue, 14 Feb 2017 21:11:08 +0100
-"""
-    pass
-
 
 def sync_data(con_source, con_target, progress=None):
     """con is con_target, 
@@ -230,12 +193,8 @@ def sync_data(con_source, con_target, progress=None):
     - {} earnings per share estimations""").format(  products,  quotes, dps, estimation_dps,  estimation_eps)
             
         qmessagebox(s)  
-
-
-def utc2dtaware(dt, utfoffset):
-    pass
     
-def aware2epochms(d):
+def dtaware2epochms(d):
     """
         Puede ser dateime o date
         Si viene con zona datetime zone aware, se convierte a UTC y se da el valor en UTC
@@ -245,19 +204,22 @@ def aware2epochms(d):
         if d.tzname()==None:#unaware datetine
             logging.critical("Must be aware")
         else:#aware dateime changed to unawar
-            utc=dt_changes_tz_with_pytz(d, 'UTC')
+            utc=dtaware_changes_tz(d, 'UTC')
             return utc.timestamp()*1000
     logging.critical("{} can't be converted to epochms".format(d.__class__))
     
-def epochms2aware(n):
-    """Return a UTC date"""
+## Return a UTC datetime aware
+def epochms2dtaware(n):
     utc_unaware=datetime.datetime.utcfromtimestamp(n/1000)
     utc_aware=utc_unaware.replace(tzinfo=pytz.timezone('UTC'))
     return utc_aware
 
-    
-    
-def datetime_string(dt, zone):
+
+## Returns a formated string of a dtaware string formatting with a zone name
+## @param dt datetime aware object
+## @param zonename String with a zone name like "Europe/Madrid"
+## @return String
+def dtaware2string(dt, zonename):
     if dt==None:
         resultado="None"
     else:    
@@ -266,7 +228,7 @@ def datetime_string(dt, zone):
         if dt.tzname()==None:
             logging.critical("Datetime should have tzname")
             sys.exit(178)   
-        dt=dt_changes_tz(dt,  zone)
+        dt=dtaware_changes_tz(dt,  zonename)
         if dt.microsecond==4 :
             resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))
         else:
@@ -292,7 +254,7 @@ def qdatetime(dt, zone):
         dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
         Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
     """
-    a=QTableWidgetItem(datetime_string(dt, zone))
+    a=QTableWidgetItem(dtaware2string(dt, zone.name))
     if dt==None:
         return qempty()
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
@@ -349,7 +311,6 @@ def string2date(iso, type=1):
         d=iso.split("/")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
 
-        
 def string2datetime(s, type, zone="Europe/Madrid"):
     """
         s is a string for datetime
@@ -376,17 +337,6 @@ def string2time(s):
     a=s.split(":")
     return datetime.time(int(a[0]), int(a[1]))
 
-def log(tipo, funcion,  mensaje):
-    """Tipo es una letra mayuscula S sistema H historico D diario"""
-    if funcion!="":
-        funcion= funcion + " "
-    f=codecs.open("/tmp/mystocks.log",  "a", "utf-8-sig")
-    message=str(datetime.datetime.now())[:-7]+" "+ tipo +" " + funcion + mensaje + "\n"
-    printmessage=str(datetime.datetime.now())[:-7]+" "+ Style.BRIGHT+Fore.GREEN+ tipo +Style.NORMAL+Fore.WHITE + " "+ funcion +  mensaje + "\n"
-    f.write(message)
-    print (printmessage[:-1])
-    f.close()
-
 def b2s(b, code='UTF-8'):
     """Bytes 2 string"""
     return b.decode(code)
@@ -397,17 +347,6 @@ def s2b(s, code='UTF8'):
         return "".encode(code)
     else:
         return s.encode(code)
-
-
-def mylog(text):
-    f=open("/tmp/xulpymoney.log","a")
-    f.write(str(datetime.datetime.now()) + "|" + text + "\n")
-    f.close()
-    
-def decimal_check(dec):
-    print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)
-
-
 
 def c2b(state):
     """QCheckstate to python bool"""
@@ -425,17 +364,17 @@ def b2c(booleano):
 
 def day_end(dattime, zone):
     """Saca cuando acaba el dia de un dattime en una zona concreta"""
-    return dt_changes_tz(dattime, zone).replace(hour=23, minute=59, second=59)
+    return dtaware_changes_tz(dattime, zone.name).replace(hour=23, minute=59, second=59)
     
 def day_start(dattime, zone):
-    return dt_changes_tz(dattime, zone).replace(hour=0, minute=0, second=0)
+    return dtaware_changes_tz(dattime, zone.name).replace(hour=0, minute=0, second=0)
     
 def day_end_from_date(date, zone):
     """Saca cuando acaba el dia de un dattime en una zona concreta"""
-    return dt(date, datetime.time(23, 59, 59), zone)
+    return dtaware(date, datetime.time(23, 59, 59), zone.name)
     
 def day_start_from_date(date, zone):
-    return dt(date, datetime.time(0, 0, 0), zone)
+    return dtaware(date, datetime.time(0, 0, 0), zone.name)
     
 def month_start(year, month, zone):
     """datetime primero de un mes
@@ -476,32 +415,25 @@ def month_end(year, month, zone):
     """
     return day_end_from_date(month_last_date(year, month), zone)
     
+## Returns a date with the last day of a month
+## @return datetime.date object
 def month_last_date(year, month):
-    """
-        Returns a date with the last day of a month
-    """
     if month == 12:
         return datetime.date(year, month, 31)
     return datetime.date(year, month+1, 1) - datetime.timedelta(days=1)
-    
-    
 
+## Returns an aware datetime with the start of year
 def year_start(year, zone):
-    """
-        returns an aware datetime with the start of year
-    """
     return day_start_from_date(datetime.date(year, 1, 1), zone)
     
-
+## Returns an aware datetime with the last of year
 def year_end(year, zone):
-    """
-        returns an aware datetime with the last of year
-    """
     return day_end_from_date(datetime.date(year, 12, 31), zone)
     
-
-    
-def days_to_year_month(days):
+## Function that converts a number of days to a string showing years, months and days
+## @param days Integer with the number of days
+## @return String like " 0 years, 1 month and 3 days"
+def days2string(days):
     years=days//365
     months=(days-years*365)//30
     days=int(days -years*365 -months*30)
@@ -531,23 +463,21 @@ def dirs_create():
         pass
     return dir_tmp
 
-def dt(date, hour, zone):
-    """Función que devuleve un datetime con zone info.
-    Zone is an object."""
-    z=pytz.timezone(zone.name)
-    a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
-    a=z.localize(a)
-    return a
-def dt_with_pytz(date, hour, zonename):
-    """Función que devuleve un datetime con zone info.
-    Zone is an object."""
+## Function to create a datetime aware object
+## @param date datetime.date object
+## @param hour datetime.hour object
+## @param zonename String with datetime zone name. For example "Europe/Madrid"
+## @return datetime aware
+def dtaware(date, hour, zonename):
     z=pytz.timezone(zonename)
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a
     
+## Converts strings True or False to boolean
+## @param s String
+## @return Boolean
 def str2bool(s):
-    """Converts strings True or False to boolean"""
     if s=="True":
         return True
     return False
@@ -556,8 +486,6 @@ def none2decimal0(s):
     if s==None:
         return Decimal('0')
     return s
-    
-
 
 def qbool(bool):
     """Prints bool and check. Is read only and enabled"""
@@ -612,7 +540,6 @@ def qleft(string):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
 
-    
 def qright(string, digits=None):
     """When digits, limits the number to """
     if string==None:

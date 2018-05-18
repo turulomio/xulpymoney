@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from Ui_frmQuotesIBM import Ui_frmQuotesIBM
 from libxulpymoney import Quote
-from libxulpymoneyfunctions import dt, dt_changes_tz, qmessagebox
+from libxulpymoneyfunctions import dtaware, dtaware_changes_tz, qmessagebox
 from libxulpymoneytypes import eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
@@ -19,7 +19,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
                 self.chkNone.setCheckState(Qt.Checked)       
             else:
                 if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
-                    today_closes=dt_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone)
+                    today_closes=dtaware_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone.name)
                     self.wdgDT.setCombine(self.mem,  today_closes.date(), today_closes.time(),  self.mem.localzone)
                 else:
                     self.wdgDT.set(self.mem)
@@ -32,7 +32,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     def on_chkNone_stateChanged(self, state):
         if state==Qt.Checked:      
-            self.wdgDT.set(self.mem, dt(self.wdgDT.date(), self.product.stockmarket.closes, self.product.stockmarket.zone), self.product.stockmarket.zone)
+            self.wdgDT.set(self.mem, dtaware(self.wdgDT.date(), self.product.stockmarket.closes, self.product.stockmarket.zone), self.product.stockmarket.zone.name)
             self.wdgDT.teTime.setEnabled(False)
             self.wdgDT.cmbZone.setEnabled(False)
             self.wdgDT.cmdNow.setEnabled(False)

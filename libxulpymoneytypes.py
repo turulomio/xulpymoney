@@ -1,3 +1,6 @@
+## @package libxulpymoneytypes
+## @brief Package with all xulpymoney types.
+
 from PyQt5.QtWidgets import QApplication
 from enum import IntEnum
         

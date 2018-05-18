@@ -1,3 +1,6 @@
+## @package frmMain
+## @brief User interface main window.
+
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
@@ -31,8 +34,6 @@ from wdgOpportunities import wdgOpportunities
 from wdgProducts import wdgProducts
 from wdgSimulations import wdgSimulations
 from wdgQuotesUpdate import wdgQuotesUpdate
-## @package frmMain
-## @brief User interface main window.
 
 from wdgLastCurrent import wdgLastCurrent
 

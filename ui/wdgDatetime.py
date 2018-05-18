@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal,  pyqtSlot
 from PyQt5.QtWidgets import QWidget
 import datetime
 from Ui_wdgDatetime import Ui_wdgDatetime
-from libxulpymoneyfunctions import dt
+from libxulpymoneyfunctions import dtaware
 
 class wdgDatetime(QWidget, Ui_wdgDatetime):
     """Usage:
@@ -92,7 +92,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         #qt only miliseconds
         time=self.teTime.time().toPyTime()
         time=time.replace(microsecond=self.teMicroseconds.value())
-        return dt(self.teDate.selectedDate().toPyDate(), time , self.zone)
+        return dtaware(self.teDate.selectedDate().toPyDate(), time , self.zone.name)
 
     def on_teDate_selectionChanged(self):
         self.updateTooltip()
