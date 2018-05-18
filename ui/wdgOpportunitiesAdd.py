@@ -13,30 +13,30 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
         self.opportunity=opportunity
         self.parent=parent
 
+        self.productSelector.setupUi(self.mem, None)
         if opportunity==None:
             self.lbl.setText("Add new opportunity")
             self.deDate.setDate(datetime.date.today())
-            self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, selected=None)
             self.opportunity=Opportunity(self.mem)
+            self.productSelector.setSelected(None)
         else:
             self.lbl.setText("Edit opportunity")
             self.deDate.setDate(self.opportunity.date)
             self.txtPrice.setText(self.opportunity.price)
-            self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, selected=self.opportunity.product)
+            self.productSelector.setSelected(self.opportunity.product)
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if not (self.txtPrice.isValid()):
             qmessagebox(self.tr("Incorrect data. Try again."))
             return
-        product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(self.cmbProducts.currentIndex()))
-        if product==None:
+        if self.productSelector.selected==None:
             qmessagebox(self.tr("You must select a product"))
             return
             
         self.opportunity.date=self.deDate.date().toPyDate()
         self.opportunity.price=self.txtPrice.decimal()
-        self.opportunity.product=product
+        self.opportunity.product=self.productSelector.selected
         
         self.opportunity.save()
         self.mem.con.commit()
