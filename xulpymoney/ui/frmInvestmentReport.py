@@ -10,7 +10,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgDisReinvest import wdgDisReinvest
 from frmSharesTransfer import frmSharesTransfer
 from frmSplit import frmSplit
-from libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days_to_year_month
+from libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -143,7 +143,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.investment.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.investment.product.result.basic.last,  type=2)
             self.investment.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, type=2 )
         
-        self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.investment.op_actual.average_age()))))
+        self.lblAge.setText(self.tr("Current operations average age: {0}".format(days2string(self.investment.op_actual.average_age()))))
         
         if self.investment!=None:#We are adding a new investment
             if self.investment.merge==0:

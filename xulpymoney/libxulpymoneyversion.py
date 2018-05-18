@@ -1,6 +1,8 @@
+## @package libxulpymoneyversion
+## @brief Package with xulpymoney version information
 import datetime
 
-version="20180104"
+version="20180518"
 
 def version_windows():
 #    lastpoint="0"

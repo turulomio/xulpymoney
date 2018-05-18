@@ -8,7 +8,7 @@ from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
 from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, PriorityManager, PriorityHistoricalManager, ProductModesManager, ProductTypesManager
-from libxulpymoneyfunctions import c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
+from libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from libxulpymoneytypes import eHistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
@@ -155,11 +155,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             return
         self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
         if self.viewCompare!=None:
-#            self.canvasCompare.hide()
-#            self.ntbCompare.hide()
             self.viewCompare.hide()
-#            self.layCompareProduct.removeWidget(self.canvasCompare)
-#            self.layCompareProduct.removeWidget(self.ntbCompare)
             self.layCompareProduct.removeWidget(self.viewCompare)
         if self.comparation.canBeMade()==False:
             qmessagebox(self.tr("Comparation can't be made."))
@@ -169,16 +165,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.deCompare.setMaximumDate(self.comparation.dates()[len(self.comparation.dates())-1-1])#Es menos 2, ya que hay alguna funcion de comparation que lo necesita
         self.comparation.setFromDate(self.deCompare.date())
             
-#        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
-#        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
-#        self.layCompareProduct.addWidget(self.canvasCompare)
-#        self.layCompareProduct.addWidget(self.ntbCompare)
         self.viewCompare=VCTemporalSeries()
         if self.cmbCompareTypes.currentIndex()==0:#Not changed data
-#            self.ax.set_title(self.tr("Comparing product quotes"), fontsize=30, fontweight="bold", y=1.02)
-#            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
-#            self.ax2=self.ax.twinx()
-#            self.ax2.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
 
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
             ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
@@ -222,64 +210,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
             self.viewCompare.repaint()
             ###END DISPLAY
-#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1Closes(), '-',  color="blue", label=self.comparation.product1.name)
-#            self.plot2=self.ax2.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-#            self.ax2.legend(loc="upper right")
-#            self.ax2.format_coord = self.footer
-#            self.get_locators()
-#            self.ax.legend(loc="upper left")
+
         elif self.cmbCompareTypes.currentIndex()==1:#Scatter
             pass
-##            self.ax.set_title(self.tr("Comparing products with a scattering"), fontsize=30, fontweight="bold", y=1.02)
-##            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
-##            self.ax.set_xlabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
-#            ls1=self.viewCompare.appendScatterSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-#            ls2=self.viewCompare.appendScatterSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
-#            dates=self.comparation.dates()
-#            closes1=self.comparation.product1Closes()
-#            closes2=self.comparation.product2Closes()
-#            for i,  date in enumerate(dates):
-#                self.viewCompare.appendScatterSeriesData(ls1, closes1[i] , closes2[i])
-##            self.plot1=self.ax.scatter(self.comparation.product1Closes(), self.comparation.product2Closes(), c=[date2num(date) for date in self.comparation.dates()])
-##            self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Blue circles are older quotes and red ones are newer."))
-#                    #        BEGIN DISPLAY)
-#            self.viewCompare.setChart(self.viewCompare.chart)
-#            self.viewCompare.setAxisFormat(self.viewCompare.axisX, self.viewCompare.minx, self.viewCompare.maxx, 1)
-#            self.viewCompare.setAxisFormat(self.viewCompare.axisX, min(self.comparation.product1Closes()), max(self.comparation.product1Closes()),  0)
-#            self.viewCompare.setAxisFormat(self.viewCompare.axisY, min(self.comparation.product2Closes()), max(self.comparation.product2Closes()),  0)            
-#            self.viewCompare.chart.addAxis(self.viewCompare.axisY, Qt.AlignLeft);
-#            self.viewCompare.chart.addAxis(self.viewCompare.axisX, Qt.AlignBottom);
-#
-#            self.viewCompare.chart.addSeries(ls1)
-#            ls1.attachAxis(self.viewCompare.axisX)
-#            ls1.attachAxis(self.viewCompare.axisY)
-#            self.viewCompare.axisY.setRange(min(self.comparation.product1Closes()), max(self.comparation.product1Closes()))
-#            
-#            
-#            self.viewCompare.chart.addSeries(ls2)
-#            ls2.attachAxis(self.viewCompare.axisX)
-#            ls2.attachAxis(self.viewCompare.axisY)
-#            self.viewCompare.axisY.setRange(min(self.comparation.product2Closes()), max(self.comparation.product2Closes()))
-#            
-#            
-#            if self.viewCompare._allowHideSeries==True:
-#                for marker in self.viewCompare.chart.legend().markers():
-#                    try:
-#                        marker.clicked.disconnect()
-#                    except:
-#                        print("No estaba conectada")
-#                    marker.clicked.connect(self.viewCompare.on_marker_clicked)
-#            
-#            
-#            self.viewCompare.repaint()
-#            ###END DISPLAY
+
         elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
-#            self.ax.set_title(self.tr("Comparing products with percentage evolution"), fontsize=30, fontweight="bold", y=1.02)
-#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
-#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-#            self.ax.format_coord = self.footer  
-#            self.get_locators()
-#            self.ax.legend(loc="upper left")
 
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
             ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
@@ -291,12 +226,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution.
-#            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"), fontsize=30, fontweight="bold", y=1.02)
-#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
-#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-#            self.ax.format_coord = self.footer  
-#            self.get_locators()
-#            self.ax.legend(loc="upper left")
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
             ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
             dates=self.comparation.dates()
@@ -409,8 +338,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
             iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.stockmarket.zone))
-            iniciomes=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.stockmarket.zone))
-            inicioano=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.stockmarket.zone))             
+            iniciomes=Quote(self.mem).init__from_query(self.product, dtaware(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.stockmarket.zone.name))
+            inicioano=Quote(self.mem).init__from_query(self.product, dtaware(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.stockmarket.zone.name))             
             docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.stockmarket.zone))          
             unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.stockmarket.zone))          
             unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockmarket.zone))             
@@ -621,7 +550,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 date=ods.getCellValue(sheet, "A", str(number))
                 value=ods.getCellValue(sheet, "B", str(number))
                 print (date, value)
-                set.append(Quote(self.mem).init__create(self.product, dt(date, self.product.stockmarket.closes, self.product.stockmarket.zone),  value))
+                set.append(Quote(self.mem).init__create(self.product, dtaware(date, self.product.stockmarket.closes, self.product.stockmarket.zone.name),  value))
                 got=got+1
             print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
             set.save()

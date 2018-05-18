@@ -1,3 +1,6 @@
+## @package libxulpymoney
+## @brief Package with all xulpymoney core classes .
+
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
@@ -17,7 +20,7 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
-from libxulpymoneyfunctions import qdatetime, dt, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days_to_year_month, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, datetime_string, day_end,  list2string, dirs_create, makedirs, qempty
+from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end,  list2string, dirs_create, makedirs, qempty
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType
 from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime,  DictObjectManager_With_IdName
 from PyQt5.QtChart import QChart
@@ -1996,7 +1999,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             else:
                 tabla.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
 
-        tabla.setItem(self.length(), 0, qleft(days_to_year_month(self.average_age())))
+        tabla.setItem(self.length(), 0, qleft(days2string(self.average_age())))
         tabla.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
         tabla.setItem(self.length(), 5, self.invertido().qtablewidgetitem())
         tabla.setItem(self.length(), 6, self.balance().qtablewidgetitem())
@@ -3080,7 +3083,7 @@ class Comment:
             self.validateLength(1, code, args)
             cco=self.getCreditCardOperation(args[0], code)
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
-            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(datetime_string(cco.datetime,  self.mem.localzone), money)
+            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime,  self.mem.localzone.name), money)
 ## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket
 class Concept:
     ## Constructor with the following attributes combination
@@ -5324,13 +5327,13 @@ class StockMarket:
         """
             Returns a datetime with timezone with the todays stockmarket closes
         """
-        return dt(datetime.date.today(), self.closes, self.zone)
+        return dtaware(datetime.date.today(), self.closes, self.zone.name)
 
     def today_starts(self):
         """
             Returns a datetime with timezone with the todays stockmarket closes
         """
-        return dt(datetime.date.today(), self.starts, self.zone)
+        return dtaware(datetime.date.today(), self.starts, self.zone.name)
 
 
 class Currency:
@@ -6500,7 +6503,7 @@ class ProductUpdate:
         self.commands=[]
     
     ## Adds a command that will be inserted in  "{}/clients.txt".format(dir_tmp)
-    ## Example: self.update.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
+    ## Example: self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
     def appendCommand(self, command):
         self.commands.append(command)
        
@@ -6549,7 +6552,82 @@ class ProductUpdate:
     def setCommands(self,  product):
         if product.tickers[eTickerPosition.Yahoo]!=None:
             self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  product.tickers[eTickerPosition.Yahoo], str(product.id)])
+            
+    ## Sets commands for all products
+    ## @param all if this boolean it's True, tries to get all products updates. If it's False it tries to get used product in investment, indexes and currencies
+    def setGlobalCommands(self, all):
+        oneday=datetime.timedelta(days=1)
+        if all==True:
+            used=""
+        else:
+            used=" and id in (select products_id from inversiones) "
+        ##### BOLSAMADRID #####
+        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used)
+        products=ProductManager(self.mem)
+        products.load_from_db(sql)    
+        for p in products.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
+                if p.type.id==eProductType.ETF:
+                    self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),  "--etf","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
+                elif p.type.id==eProductType.Share:
+                    self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),"--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
+                    
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--etf"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+
+        sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used)        
+        bm_publicbonds=ProductManager(self.mem)
+        bm_publicbonds.load_from_db(sql)    
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--publicbond"]+bm_publicbonds.list_ISIN_XULPYMONEY())#MUST BE INTRADAY
+        
+        ibex=Product(self.mem).init__db(79329)
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
+
+        ##### YAHOO #####
+        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Yahoo), used)
+        yahoo=ProductManager(self.mem)
+        yahoo.load_from_db(sql)    
+        for p in yahoo.arr:
+            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
+
+
+
+        ##### YAHOO INDICES Y CURRENCIES  #####
+        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
+        yahoo=ProductManager(self.mem)
+        yahoo.load_from_db(sql)    
+        for p in yahoo.arr:
+            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
+        ##### GOOGLE #####
+        sql="select * from products where type in ({},{},{},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google), used)
+        products=ProductManager(self.mem)
+        products.load_from_db(sql)    
+        for p in products.arr:
+            self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
+
+        ##### QUE FONDOS ####
+        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
+        products_quefondos=ProductManager(self.mem)#Total of products_quefondos of an Agrupation
+        products_quefondos.load_from_db(sql)    
+        for p in products_quefondos.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work agan
+                self.appendCommand(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id)])       
+                
+        ##### MORNINGSTAR #####
+        sql="select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        products_morningstar=ProductManager(self.mem)#Total of products_morningstar of an Agrupation
+        products_morningstar.load_from_db(sql)    
+        for p in products_morningstar.arr:
+            ultima=p.fecha_ultima_actualizacion_historica()
+            if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
+                self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
+
+
+## Class that represents a Quote
+## A quote can be a datetime duplicated
 class Quote:
     """Un quote no puede estar duplicado en un datetime solo puede haber uno"""
     def __init__(self, mem):
@@ -6626,10 +6704,7 @@ class Quote:
         if row==None:
             return self.init__create(product, None, None)
         return self.init__create(product, row['datetime'], row['quote'])
-        
 
-        
-        
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
         cur=self.mem.con.cursor()
@@ -6660,6 +6735,7 @@ class Quote:
             return None
         return self
         
+## Class to manage Open High Close Low Values in a period of time of a productº
 class OHCL:
     def __init__(self,  mem):
         self.mem=mem
@@ -6669,8 +6745,9 @@ class OHCL:
         self.high=None
         self.low=None
         
+    
+    ## Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro
     def get_interval(self, ohclposterior):
-        """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
         return ohclposterior.datetime-self.datetime
 
     def percentage(self, ohcl):
@@ -6705,8 +6782,8 @@ class OHCLDaily(OHCL):
 
     def generate_4_quotes(self):
         quotes=[]
-        datestart=dt(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone)
-        dateends=dt(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone)
+        datestart=dtaware(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone.name)
+        dateends=dtaware(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone.name)
         datetimefirst=datestart-datetime.timedelta(seconds=1)
         datetimelow=(datestart+(dateends-datestart)*1/3)
         datetimehigh=(datestart+(dateends-datestart)*2/3)
@@ -6744,8 +6821,8 @@ class OHCLDaily(OHCL):
         o.low=self.low
         return o
         
+    ## Removes all quotes of the selected day
     def delete(self):
-        """Removes all quotes of the selected day"""
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and datetime::date=%s", (self.product.id, self.date))
         cur.close()
@@ -6784,8 +6861,8 @@ class OHCLMonthly(OHCL):
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockmarket.zone)
         
         
+    ## Removes all quotes of the selected month and year
     def delete(self):
-        """Removes all quotes of the selected month and year"""
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and date_part('month',datetime)=%s and date_part('year',datetime)=%s", (self.product.id, self.month, self.year))
         cur.close()        
@@ -6860,8 +6937,8 @@ class OHCLYearly(OHCL):
     def print_time(self):
         return "{0}".format(int(self.year))
     
+    ## Removes all quotes of the selected year
     def delete(self):
-        """Removes all quotes of the selected year"""
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
         cur.close()     
@@ -6883,8 +6960,8 @@ class OHCLManager(ObjectManager):
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
 
+    ## Returns a list with all the close of the array
     def closes(self, from_dt=None):
-        """Returns a list with all the close of the array"""
         closes=[]
         if from_dt==None:
             for ohcl in self.arr:
@@ -7013,25 +7090,25 @@ class OHCLDailyManager(OHCLManager):
 
 
 
+    ## Returns a QuoteBasicManager con los datos del setohcldairy
     def setquotesbasic(self):
-        """Returns a QuoteBasicManager con los datos del setohcldairy"""
         last=None
         penultimate=None
         lastyear=None
         if self.length()==0:
             return QuoteBasicManager(self.mem, self.product).init__create(Quote(self.mem).none(self.product), Quote(self.mem).none(self.product),  Quote(self.mem).none(self.product))
         ohcl=self.arr[self.length()-1]#last
-        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
+        last=Quote(self.mem).init__create(self.product, dtaware(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone.name), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
-            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
+            penultimate=Quote(self.mem).init__create(self.product, dtaware(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone.name), ohcl.close)
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#lastyear
         if ohcl!=None:
-            lastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
+            lastyear=Quote(self.mem).init__create(self.product, dtaware(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone.name), ohcl.close)        
         return QuoteBasicManager(self.mem, self.product).init__create(last, penultimate, lastyear)
 
+    ## Returns a list with all the dates of the array
     def dates(self):
-        """Returns a list with all the dates of the array"""
         r=[]
         for ohcl in self.arr:
             r.append(ohcl.date)
@@ -7050,8 +7127,8 @@ class OHCLYearlyManager(OHCLManager):
         
 
         
+    ## Returns a OHCLYearly
     def find(self, year):
-        """Returns a OHCLYearly"""
         for ohcl in self.arr:
             if ohcl.year==year:
                 return ohcl
@@ -7096,7 +7173,7 @@ class OHCLMonthlyManager(OHCLManager):
             return Percentage()
         
     
-
+## Manages languages
 class LanguageManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
@@ -7126,9 +7203,8 @@ class LanguageManager(ObjectManager_With_IdName):
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
-        
+## Class that stores all kind of quotes asociated to a product
 class QuotesResult:
-    """Función que consigue resultados de mystocks de un id pasado en el constructor"""
     def __init__(self,mem,  product):
         self.mem=mem
         self.product=product
@@ -7158,14 +7234,10 @@ class QuotesResult:
         self.ohclMonthlyAfterDividends=OHCLMonthlyManager(self.mem, self.product)
         self.ohclYearlyAfterDividends=OHCLYearlyManager(self.mem, self.product)
         self.ohclWeeklyAfterDividends=OHCLWeeklyManager(self.mem, self.product)
-        
-        
-        
+
+    ## Only once. If it's already in memory. It ignore it
+    ## @param force Boolean that if it'sTrue load from database again even if dps is not null
     def load_dps_and_splits(self, force=False):
-        """
-            Only once. If it's already in memory. It ignore it
-            force=True load from database again even if dps is not null
-        """
         if self.product.dps==None or force==True:
             self.product.dps=DPSManager(self.mem, self.product)
             self.product.dps.load_from_db()     
@@ -7666,7 +7738,7 @@ class Maintenance:
         
     def show_investments_status(self, date):
         """Shows investments status in a date"""
-        datet=dt(date, time(22, 00), self.mem.localzone)
+        datet=dtaware(date, time(22, 00), self.mem.localzone.name)
         sumbalance=0
         print ("{0:<40s} {1:>15s} {2:>15s} {3:>15s}".format("Investments at {0}".format(date), "Shares", "Price", "Balance"))
         for inv in self.mem.data.investments.arr:
@@ -8145,7 +8217,7 @@ class AssetsReport(ODT):
         if suminvertido.isZero()==False:
             self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(suminvertido))
             self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format(self.mem.data.investments_active().pendiente_positivo(), self.mem.data.investments_active().pendiente_negativo(), sumpendiente, Percentage(sumpendiente, suminvertido)))
-            self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active().average_age())))
+            self.simpleParagraph(self.tr(" Assets average age: {}").format(  days2string(self.mem.data.investments_active().average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
         self.pageBreak()

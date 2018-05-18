@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+## @package xulpymoney
+## @brief Main Xulpymoney script.
+
 import sys
 import platform
 import argparse

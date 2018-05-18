@@ -1,7 +1,7 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
 from libxulpymoney import    Percentage
-from libxulpymoneyfunctions import epochms2aware, aware2epochms
+from libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms
 from libxulpymoneytypes import  eOHCLDuration
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
@@ -45,8 +45,8 @@ class VCTemporalSeries(QChartView):
             else:
                 axis.setLabelFormat("%i")
         elif type==1:
-            max=epochms2aware(max)#UTC aware
-            min=epochms2aware(min)
+            max=epochms2dtaware(max)#UTC aware
+            min=epochms2dtaware(min)
             if max-min<datetime.timedelta(days=1):
                 axis.setFormat("hh:mm")
             else:
@@ -75,7 +75,7 @@ class VCTemporalSeries(QChartView):
         """
             x is a datetime zone aware
         """
-        x=aware2epochms(x)
+        x=dtaware2epochms(x)
         ls.append(x, y)
         
         if self.maxy==None:#Gives first maxy and miny
@@ -103,7 +103,7 @@ class VCTemporalSeries(QChartView):
         return ls
         
     def appendCandlestickSeriesData(self, ls, ohcl):
-        x=aware2epochms(ohcl.datetime())
+        x=dtaware2epochms(ohcl.datetime())
         ls.append(QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close, x ))
         if self.maxy==None:
             self.maxy=ohcl.high

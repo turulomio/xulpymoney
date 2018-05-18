@@ -1,5 +1,5 @@
 from libxulpymoney import Percentage, Quote,  ProductUpdate
-from libxulpymoneyfunctions import days_to_year_month, qmessagebox
+from libxulpymoneyfunctions import days2string, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from Ui_wdgInvestments import Ui_wdgInvestments
@@ -40,7 +40,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                             pendiente, 
                             Percentage(pendiente, invested),  
                             self.investments.gains_last_day()
-                            , days_to_year_month(self.investments.average_age())))
+                            , days2string(self.investments.average_age())))
 
 
     @pyqtSlot() 
