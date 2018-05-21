@@ -578,7 +578,7 @@ class InvestmentManager(ObjectManager_With_IdName):
             if inv.product.id==product.id:
                 for d in inv.setDividends_from_operations().arr:
                     set.append(d)
-        set.sort()
+        set.order_by_datetime()
         return set
 
     def investment_merging_current_operations_with_same_product(self, product):
