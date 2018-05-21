@@ -1,4 +1,5 @@
 import datetime
+import logging
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
@@ -67,41 +68,19 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.on_AccountOperationChanged(None)
             self.on_CreditCardChanged(None)
             self.wdgYM.changed.connect(self.on_wdgYM_changed)
-            
-#
-##    def creditcards_reload(self, selected=None):
-#        """update_balance_index is used to update credit card balance and remain credit card selected"""
-#        if self.chkCreditCards.checkState()==Qt.Unchecked:
-#            self.creditcards=self.mem.data.creditcards_active().clone_of_account(self.account)
-#        else:
-#            self.creditcards=self.mem.data.creditcards_inactive().clone_of_account(self.account)  
-#        self.creditcards.myqtablewidget(self.tblCreditCards)
-
-#    def creditcardoperations_reload(self):     
-#        self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
-#        self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
-#        self.creditcardoperations.selected=CreditCardOperationManager(self.mem)
-#        ##UPdates creditcard balance
-#        row=None
-#        try:
-#            for i in self.tblCreditCards.selectedItems():#itera por cada item no row.
-#                row=i.row()
-#            self.tblCreditCards.item(row,  5).setText(self.account.currency.string(self.creditcards.selected.saldo_pendiente()))
-#        except:
-#            pass
 
     @pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
         w=frmCreditCardsAdd(self.mem,  self.account,  None, self)
         w.exec_()
         self.on_CreditCardChanged(w.creditcard)
-        
+
     @pyqtSlot() 
     def on_actionCreditCardEdit_triggered(self):
         w=frmCreditCardsAdd(self.mem, self.account,  self.creditcards.selected, self)
         w.exec_()
         self.on_CreditCardChanged(self.creditcards.selected)
-        
+
     @pyqtSlot() 
     def on_actionCreditCardActivate_triggered(self):
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
@@ -305,12 +284,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
-        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
+        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected.only())
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
-        print("Editando investmentopeation", self.accountoperations.selected)
-        self.on_AccountOperationChanged(self.accountoperations.selected)
-        
+        logging.debug("Edit investmentoperation {}".format(self.accountoperations.selected.only()))
+        self.on_AccountOperationChanged(self.accountoperations.selected.only())
+
     @pyqtSlot()
     def on_actionConceptReport_triggered(self):
         if self.tab.currentIndex()==0:
