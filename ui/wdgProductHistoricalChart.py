@@ -62,7 +62,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.view.hide()
             self.view.close()
             self.verticalLayout.removeWidget(self.view)
-            self.lay
 
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), self.HistoricalChartAdjusts)
