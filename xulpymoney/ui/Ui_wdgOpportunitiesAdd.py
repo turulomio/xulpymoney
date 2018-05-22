@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOpportunitiesAdd(object):
     def setupUi(self, wdgOpportunitiesAdd):
         wdgOpportunitiesAdd.setObjectName("wdgOpportunitiesAdd")
-        wdgOpportunitiesAdd.resize(959, 328)
+        wdgOpportunitiesAdd.resize(959, 206)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOpportunitiesAdd.setWindowIcon(icon)
@@ -20,6 +20,7 @@ class Ui_wdgOpportunitiesAdd(object):
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl = QtWidgets.QLabel(wdgOpportunitiesAdd)
+        self.lbl.setMinimumSize(QtCore.QSize(800, 0))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
