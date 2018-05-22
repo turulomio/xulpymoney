@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate
 from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap,  QWheelEvent
-from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy
+from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy,  QPushButton, QVBoxLayout, QDialog
 from Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
@@ -10,6 +10,7 @@ from canvaschart import   VCTemporalSeries
 from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
 from libxulpymoneyfunctions import day_end_from_date
 from libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration
+from wdgOpportunitiesAdd import wdgOpportunitiesAdd
 
 class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
@@ -61,6 +62,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.view.hide()
             self.view.close()
             self.verticalLayout.removeWidget(self.view)
+            self.lay
 
         selected_datetime= day_end_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), self.HistoricalChartAdjusts)
@@ -320,22 +322,42 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.layAmounts.addItem(self.spacer6)
         self.verticalLayout.addLayout(self.layAmounts)
         
-
+        #Add Calculator widget
+        self.layOpportunity=QHBoxLayout()
+        self.spacerOpportunity=QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.cmdOpportunity=QPushButton(self.tr("Add Opportunity"))
+        self.cmdOpportunity.released.connect(self.on_cmdOpportunity_released)
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap(":/xulpymoney/kcalc.png"), QIcon.Normal, QIcon.Off)
+        self.cmdOpportunity.setIcon(icon1)
+        self.layOpportunity.addItem(self.spacerOpportunity)
+        self.layOpportunity.addWidget(self.cmdOpportunity)
+        
+        
+    ## Must be added after setProduct
     def setPrice(self, price):
-        """
-            Must be added after setProduct
-        """
         self.txtBuyPrice.setText(price)
         
     def on_cmdBuyPrice_released(self):
         if self.txtBuyPrice.isValid():
             self.generate()
             self.display()
+    
+    ## This button allows to open order Opportunity with the first purchase price
+    def on_cmdOpportunity_released(self):
+        d=QDialog(self)     
+        d.setModal(True)
+        d.setWindowTitle(self.tr("Add new opportunity"))
+        w=wdgOpportunitiesAdd(self.mem, None, d)
+        w.productSelector.setSelected(self.product)
+        w.txtPrice.setText(self.txtBuyPrice.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()    
         
     
-        
+    ## Just draw the chart with selected options. It creates and destroys objects
     def generate(self):
-        """Just draw the chart with selected options. It creates and destroys objects"""
         wdgProductHistoricalChart.generate(self)
         
         percentage=Percentage(self.txtGains.decimal(), 100)
@@ -409,6 +431,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_r1_sell.amount)
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  m_r1_sell.amount)
         
+        self.verticalLayout.addLayout(self.layOpportunity)
         
 
         #SECOND REINVESTMENT
