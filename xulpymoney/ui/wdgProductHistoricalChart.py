@@ -1,3 +1,6 @@
+## @package wdgProductHistoricalChart
+## @brief Several product historical chart widgets
+
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate
 from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap,  QWheelEvent
 from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy,  QPushButton, QVBoxLayout, QDialog
