@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import datetime
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
@@ -14,13 +13,31 @@ if platform.system()=="Windows":
 else:
     sys.path.append("/usr/lib/xulpymoney")
 import time
-from libxulpymoneyfunctions import  ampm2stringtime,  addDebugSystem,  addCommonToArgParse, dtaware, string2time
+from libxulpymoney import MemSources
+from libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse
+
+
+
+
+
+
+
+
+## NO FUNCIONA ##
+
+
+
+
+
+
+
 
 class CurrentPriceTicker:
-    def __init__(self,ticker, xulpymoney):
+    def __init__(self,ticker, xulpymoney, stockmarket):
         self.ticker=ticker
         self.xulpymoney=xulpymoney
-        self.datetime_aware=None
+        self.stockmarket=stockmarket
+        self.datetime_aware=self.stockmarket.estimated_datetime_for_intraday_quote()
         self.price=None
 
     def __repr__(self):
@@ -66,72 +83,44 @@ class CurrentPriceTicker:
         if web==None:
             print ("ERROR | FETCHED EMPTY PAGE")
             sys.exit(0)
-
-        for line in web.split("\n"):#Quita mucha porquería
-            if line.find("<!-- react-text: 36 -->")!=-1:
-                break
-
         try:
-            logging.debug(line)
-            hora="INIT"
-            zone="INIT"
-            precio="INIT"
-            if line.find("Mercado abierto")!=-1:
+            ## ESTAN AHORA CON AVISO OAUTH
+            if web.find("Mercado abierto")!=-1:
+                
                 logging.debug("Mercado abierto")
-                precio=line.split('<span class="Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)" data-reactid="35">')[1]#Antes
-                precio=precio.split('</span><span')[0].replace(".","")#Después
-                precio=precio.replace(",", ".")
-                logging.debug(precio)
-
-                hora=line.split('A partir del  ')[1]#Antes
-                print (hora)
-                hora=hora.split('. Mercado abierto.')[0]#Después
-                a=hora.split(" ")
-                hora=ampm2stringtime(a[0], type=1)
-                hora=string2time(hora)
-                logging.debug(hora)
-
-                zone='Europe/Madrid'#Because is a spanish url
-
-                self.datetime_aware=dtaware(datetime.date.today(), hora, zone)
-                self.price=Decimal(precio)
+                self.price=web.split('"regularMarketPrice":{"raw":')[1]#Antes
+                self.price=self.price.split(',"fmt":')[0].replace(".","")#Después
+                logging.debug(self.price)
+                self.price=self.price.replace(",", ".")
+                self.price=Decimal(self.price)
+                logging.debug(self.price)
             else: # Mercado cerrado
                 logging.debug("Mercado cerrado")
-                precio=line.split('data-reactid="35">')[3]#Antes
-                precio=precio.split('</span><span clas')[0].replace(".","")#Después
-                precio=precio.replace(",", ".")
-                logging.debug(precio)
+                self.price=web.split('data-reactid="35">')[3]#Antes
+                self.price=self.price.split('</span><span clas')[0].replace(".","")#Después
+                self.price=self.price.replace(",", ".")
+                logging.debug(self.price)
+                self.price=Decimal(self.price)
 
-                hora=line.split('Al cierre: ')[1]#Antes
-                print(hora)
-                hora=hora.split(' CEST')[0]#Después
-                hora=hora.replace("de ", "")
-                hora=hora.split(" ")[2]
-                hora=ampm2stringtime(hora, type=1)
-                hora=string2time(hora)
-                logging.debug(hora)
-
-                zone='Europe/Madrid'#Because is a spanish url
-
-                self.datetime_aware=dtaware(datetime.date.today(), hora, zone)
-                self.price=Decimal(precio)
         except:
-            print ("ERROR | GET PRICE FAILED: PRECIO {}. HORA {}. ZONE {}".format(precio, hora, zone))
+            print ("ERROR | GET PRICE FAILED: PRECIO {}. DATETIME {}".format(self.price, self.datetime_aware))
             sys.exit(0)
     
 
 if __name__=="__main__":#Por defecto se pone WARNING y mostrar´ia ERROR y CRITICAL
-
-
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser()
-    parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE")
+    parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
+    parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)
     addCommonToArgParse(parser)
     args=parser.parse_args()        
     addDebugSystem(args)
 
+    mem=MemSources()
+    stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
+    logging.info(stockmarket)
     if args.TICKER_XULPYMONEY:
-        s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1])
+        s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1], stockmarket)
         s.get_price()
         print(s)
 
