@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import datetime
 from requests import get
 from decimal import Decimal
 import sys
@@ -11,14 +10,15 @@ if platform.system()=="Windows":
     sys.path.append("images/")
 else:
     sys.path.append("/usr/lib/xulpymoney")
-from libxulpymoneyfunctions import string2datetime, month2int, addCommonToArgParse, addDebugSystem
-from libxulpymoney import Zone
+from libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
+from libxulpymoney import MemSources
         
 class CurrentPriceTicker:
-    def __init__(self,ticker, xulpymoney):
+    def __init__(self,ticker, xulpymoney, stockmarket):
         self.ticker=ticker
+        self.stockmarket=stockmarket
         self.xulpymoney=xulpymoney
-        self.datetime_aware=None
+        self.datetime_aware=self.stockmarket.estimated_datetime_for_intraday_quote()
         self.price=None
 
     def __repr__(self):
@@ -39,32 +39,24 @@ class CurrentPriceTicker:
             try:
                 web=web.split('font-size:157%"><b>')[1]#Antes
                 web=web.split('</span> - <a class="fl"')[0]#Después
-                price=Decimal(web.split("</b>")[0].replace(".","").replace(",","."))
-                datestr=web.split('<span class="f">')[1].replace(".","")
-                logging.debug("Date string in web: {}".format(datestr))
-                zone=web.split('<span class="f">')[1].split(" ")[3]
-                zone=Zone.zone_name_conversion(zone)
-                datestr=datestr[:4].upper()+datestr[4:13]+str(datetime.date.today().year)
-                month=datestr.split(" ")[1]
-                datestr=datestr.replace(month, str(month2int(month)))
-                logging.debug("Date string before conversion: {} {}".format(datestr, zone))
-                self.datetime_aware=string2datetime(datestr, type=4, zone=zone)
-                self.price=price
+                self.price=Decimal(web.split("</b>")[0].replace(".","").replace(",","."))
             except:
-                print("ERROR | COULDN'T CONVERT DATETIME {} AND PRICE {}".format(datestr,price))
+                print("ERROR | COULDN'T CONVERT DATETIME {} AND PRICE {}".format(self.datetime_aware, self.price))
                 sys.exit(0)
             return
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
-    group1=parser.add_mutually_exclusive_group(required=True)
-    group1.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE")
+    parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
+    parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)
     addCommonToArgParse(parser)
     args=parser.parse_args()        
     addDebugSystem(args)
 
-    if args.TICKER_XULPYMONEY:
-        s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1])
-        s.get_price()
-        print(s)
+    mem=MemSources()
+    stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
+    logging.info(stockmarket)
+    s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1], stockmarket)
+    s.get_price()
+    print(s)
 

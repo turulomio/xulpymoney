@@ -1086,6 +1086,41 @@ class StockMarketManager(ObjectManager_With_IdName):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem     
     
+    
+    def load_all(self):
+        #         id | country |  starts  |              name               |  closes  |       zone       
+        #----+---------+----------+---------------------------------+----------+------------------
+        # 11 | be      | 07:00:00 | Bolsa de Bélgica                | 17:38:00 | Europe/Madrid
+        # 12 | nl      | 07:00:00 | Bolsa de Amsterdam              | 17:38:00 | Europe/Madrid
+        # 13 | ie      | 07:00:00 | Bolsa de Dublín                 | 17:38:00 | Europe/Madrid
+        # 14 | fi      | 07:00:00 | Bolsa de Helsinki               | 17:38:00 | Europe/Madrid
+        #  6 | it      | 07:00:00 | Bolsa de Milán                  | 17:38:00 | Europe/Rome
+        #  7 | jp      | 09:00:00 | Bolsa de Tokio                  | 20:00:00 | Asia/Tokyo
+        #  5 | de      | 09:00:00 | Bosa de Frankfurt               | 17:38:00 | Europe/Berlin
+        #  2 | us      | 09:30:00 | Bolsa de New York               | 16:38:00 | America/New_York
+        # 10 | eu      | 07:00:00 | Bolsa Europea                   | 17:38:00 | Europe/Madrid
+        #  9 | pt      | 07:00:00 | Bolsa de Lisboa                 | 17:38:00 | Europe/Lisbon
+        #  4 | en      | 07:00:00 | Bolsa de Londres                | 17:38:00 | Europe/London
+        #  8 | cn      | 00:00:00 | Bolsa de Hong Kong              | 20:00:00 | Asia/Hong_Kong
+        #  1 | es      | 09:00:00 | Bolsa de Madrid                 | 17:38:00 | Europe/Madrid
+        #  3 | fr      | 09:00:00 | Bolsa de París                  | 17:38:00 | Europe/Paris
+        # 15 | earth   | 09:00:00 | No cotiza en mercados oficiales | 17:38:00 | Europe/Madrid
+
+        self.append(StockMarket(self.mem).init__create( 1, "Bolsa de Madrid", "es", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 11, "Bolsa de Bélgica", "be", datetime.time(7, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 12, "Bolsa de Amsterdam", "nl", datetime.time(7, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 13, "Bolsa de Dublín", "ie", datetime.time(7, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 14, "Bolsa de Helsinki", "fi", datetime.time(7, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 6, "Bolsa de Milán", "it", datetime.time(7, 0), datetime.time(17, 38), "Europe/Rome"))
+        self.append(StockMarket(self.mem).init__create( 7, "Bolsa de Tokio", "jp", datetime.time(9, 0), datetime.time(20, 0), "Asia/Tokyo"))
+        self.append(StockMarket(self.mem).init__create( 5, "Bolsa de Frankfurt", "de", datetime.time(9, 0), datetime.time(17, 38), "Europe/Berlin"))
+        self.append(StockMarket(self.mem).init__create( 2, "Bolsa de New York", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
+        self.append(StockMarket(self.mem).init__create( 10, "Bolsa Europea", "eu", datetime.time(7, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 9, "Bolsa de Lisboa", "pt", datetime.time(7, 0), datetime.time(17, 38), "Europe/Lisbon"))
+        self.append(StockMarket(self.mem).init__create( 4, "Bolsa de Londres", "en", datetime.time(7, 0), datetime.time(17, 38), "Europe/London"))
+        self.append(StockMarket(self.mem).init__create( 8, "Bolsa de Hong Kong", "cn", datetime.time(7, 0), datetime.time(20, 00), "Asia/Hong_Kong"))
+        self.append(StockMarket(self.mem).init__create( 3, "Bolsa de Paris", "fr", datetime.time(9, 0), datetime.time(17, 38), "Europe/Paris"))
+        self.append(StockMarket(self.mem).init__create( 15, "No cotiza en mercados oficiales", "earth", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
     def load_all_from_db(self):
         cur=self.mem.con.cursor()
         cur.execute("select * from stockmarkets")
@@ -5328,6 +5363,17 @@ class StockMarket:
         self.closes=row['closes']
         self.zone=self.mem.zones.find_by_name(row['zone'])
         return self
+        
+    def init__create(self, id, name,  country_id, starts, closes, zone_name):
+        self.id=id
+        self.name=name
+        self.country=self.mem.countries.find_by_id(country_id)
+        self.starts=starts
+        self.closes=closes
+        self.zone=self.mem.zones.find_by_name(zone_name)
+        return self
+        
+
     ## Returns the close time of a given date
     def date_closes(self, date):
         return dtaware(date, self.closes, self.zone.name)
@@ -5347,7 +5393,7 @@ class StockMarket:
     ## - If it's not weekend and it's after opent time and before close time it returns aware current datetime
     ## @param delay Boolean that if it's True (default) now  datetime is minus 15 minutes. If False uses now datetime
     ## @return Datetime aware, always. It can't be None
-    def valid_dtaware(self, delay=True):
+    def estimated_datetime_for_intraday_quote(self, delay=True):
         if delay==True:
             now=self.zone.now()-datetime.timedelta(minutes=15)
         else:
@@ -5371,7 +5417,7 @@ class StockMarket:
     ## - If it's saturday or sunday it returns last thursday at close time
     ## - If it's not weekend and returns yesterday close time except if it's monday that returns last friday at close time
     ## @return Datetime aware, always. It can't be None
-    def valid_dtaware_for_one_quote_by_day_products(self):
+    def estimated_datetime_for_daily_quote(self):
         now=self.zone.now()
         if now.weekday()<5:#Weekday
             if now.weekday()>0:#Tuesday to Friday
@@ -6553,7 +6599,7 @@ class ProductUpdate:
     ## Example: self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
     def appendCommand(self, command):
         self.commands.append(command)
-       
+
      ## Generates "{}/clients.txt".format(dir_tmp)
     def __generateCommandsFile(self):
         filename="{}/clients.txt".format(self.mem.dir_tmp)
@@ -6562,14 +6608,14 @@ class ProductUpdate:
             f.write(" ".join(a) + "\n")
         f.close()
         logging.debug("Added {} comandos to {}".format(len(self.commands), filename))
-        
+
     ## Reads ("{}/clients_result.txt".format(self.mem.dir_tmp), an return a strubg
     def readResults(self):
         f=open("{}/clients_result.txt".format(self.mem.dir_tmp), "r")
         r=f.read()
         f.close()
         return r
-        
+
     ## Function that executes xulpymoney_run_client and generate a QuoteManager 
     ## Source commands must be created before in file "{}/clients.txt".format(dir_tmp)
     ## Output of the xulpymoney_run_client command is generated in ("{}/clients_result.txt".format(self.mem.dir_tmp),
@@ -6594,7 +6640,7 @@ class ProductUpdate:
         cr.close()
         self.commands=[]
         return quotes
-        
+
     ## Sets commands for a product update
     def setCommands(self,  product):
         if product.tickers[eTickerPosition.Yahoo]!=None:
@@ -6632,27 +6678,36 @@ class ProductUpdate:
         ibex=Product(self.mem).init__db(79329)
         self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
-        ##### YAHOO #####
-        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Yahoo), used)
-        yahoo=ProductManager(self.mem)
-        yahoo.load_from_db(sql)    
-        for p in yahoo.arr:
-            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
-
-
-
-        ##### YAHOO INDICES Y CURRENCIES  #####
-        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
-        yahoo=ProductManager(self.mem)
-        yahoo.load_from_db(sql)    
-        for p in yahoo.arr:
-            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
+#        ##### YAHOO #####
+#        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Yahoo), used)
+#        yahoo=ProductManager(self.mem)
+#        yahoo.load_from_db(sql)    
+#        for p in yahoo.arr:
+#            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
+#
+#
+#
+#        ##### YAHOO INDICES Y CURRENCIES  #####
+#        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
+#        yahoo=ProductManager(self.mem)
+#        yahoo.load_from_db(sql)    
+#        for p in yahoo.arr:
+#            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
         ##### GOOGLE #####
-        sql="select * from products where type in ({},{},{},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google), used)
+        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used)
+        print(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
-            self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id)])
+            self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
+
+        ##### YAHOO INDICES Y CURRENCIES  #####
+        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
+        print(sql)
+        products=ProductManager(self.mem)
+        products.load_from_db(sql)    
+        for p in products.arr:
+            self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
         ##### QUE FONDOS ####
         sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
@@ -6670,8 +6725,7 @@ class ProductUpdate:
         for p in products_morningstar.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id)])       
-
+                self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
 ## Class that represents a Quote
 ## A quote can be a datetime duplicated
@@ -6776,7 +6830,10 @@ class Quote:
         try:
             a=s.split(" | ")
             self.product=Product(self.mem).init__db(int(a[2]))
-            self.datetime=string2datetime(a[3], 1)
+            if a[3].find(".")!=-1:#With microseconds
+                self.datetime=string2datetime(a[3], type=5)
+            else:#Without microsecond
+                self.datetime=string2datetime(a[3], type=1)
             self.quote=Decimal(a[4])
         except:
             return None
@@ -7873,6 +7930,21 @@ class SettingsDB:
             return 22
         return None
 
+class MemSources:
+    def __init__(self):
+        self.data=DBData(self)
+        
+        self.countries=CountryManager(self)
+        self.countries.load_all()
+        
+        self.zones=ZoneManager(self)
+        self.zones.load_all()
+        #self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
+        
+        self.stockmarkets=StockMarketManager(self)
+        self.stockmarkets.load_all()
+        
+        
 class MemXulpymoney:
     def __init__(self):                
         self.dir_tmp=dirs_create()
@@ -7996,7 +8068,7 @@ class MemXulpymoney:
         self.types.load_all()
         
         self.stockmarkets=StockMarketManager(self)
-        self.stockmarkets.load_all_from_db()
+        self.stockmarkets.load_all()
         
         self.agrupations=AgrupationManager(self)
         self.agrupations.load_all()
@@ -8093,7 +8165,7 @@ class Zone:
     ## @param name Zone Name
     ## @param country Country object asociated to the timezone
     def __init__(self, *args):
-        def init__create(self, id, name, country):
+        def init__create(id, name, country):
             self.id=id
             self.name=name
             self.country=country
@@ -8154,6 +8226,7 @@ class ZoneManager(ObjectManager_With_IdName):
 
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
+
 
             
 

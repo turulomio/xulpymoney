@@ -311,11 +311,12 @@ def string2date(iso, type=1):
         d=iso.split("/")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
 
+## Function to generate a datetime (aware or naive) from a string
+## @param s String
+## @param type Integer
+## @param zone Name of the zone. By default "Europe Madrid" only in type 3and 4
+## @return Datetime
 def string2datetime(s, type, zone="Europe/Madrid"):
-    """
-        s is a string for datetime
-        type is the diferent formats id
-    """
     if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
         s=s[:-3]+s[-2:]
         dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
@@ -331,14 +332,22 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         dat=datetime.datetime.strptime( s, "%d %m %H:%M %Y")
         z=pytz.timezone(zone)
         return z.localize(dat)
-        
+    if type==5:#2017-11-20 23:00:00.000000+00:00  ==> Aware with microsecond
+        s=s[:-3]+s[-2:]#quita el :
+        arrPunto=s.split(".")
+        s=arrPunto[0]+s[-5:]
+        micro=int(arrPunto[1][:-5])
+        dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
+        dat=dat+datetime.timedelta(microseconds=micro)
+        return dat
+
 ## Converts a tring 12:23 to a datetime.time object
 def string2time(s):
     a=s.split(":")
     return datetime.time(int(a[0]), int(a[1]))
 
+## Bytes 2 string
 def b2s(b, code='UTF-8'):
-    """Bytes 2 string"""
     return b.decode(code)
     
 def s2b(s, code='UTF8'):

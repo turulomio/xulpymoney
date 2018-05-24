@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from libxulpymoneyfunctions import qmessagebox
 from libxulpymoneytypes import eTickerPosition
-import logging
 import sys
 class Update:
     """DB update system
@@ -22,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201805130938
+        self.lastcodeupdate=201805241335
         self.need_update()
 
    
@@ -40,7 +39,7 @@ class Update:
         
     def set_database_version(self, valor):
         """Tiene el commit"""
-        logging.info ("**** Updating database from {} to {}".format(self.dbversion, valor))
+        print("**** Updating database from {} to {}".format(self.dbversion, valor))
         cur=self.mem.con.cursor()
         if self.dbversion==None:
             cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
@@ -2234,7 +2233,61 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201805130938)
+            
+        if self.dbversion<201805241024:
+            cur=self.mem.con.cursor()
+            cur1=self.mem.con.cursor()
+            cur.execute("select * from products where tickers[1] like '%.MC'")
+            for row in cur:
+                name=row['tickers'][0].split(".MC")[0]
+                cur1.execute("update products set tickers[3]=%s where tickers[1]=%s", ("BME:"+name, row['tickers'][0]))
+            cur1.close()
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805241024)
+        if self.dbversion<201805241027:
+            cur=self.mem.con.cursor()
+            cur1=self.mem.con.cursor()
+            cur.execute("select * from products where tickers[1] like '%.PA'")
+            for row in cur:
+                name=row['tickers'][0].split(".PA")[0]
+                cur1.execute("update products set tickers[3]=%s where tickers[1]=%s", ("EPA:"+name, row['tickers'][0]))
+            cur1.close()
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805241027)
+
+        if self.dbversion<201805241028:
+            cur=self.mem.con.cursor()
+            cur1=self.mem.con.cursor()
+            cur.execute("select * from products where tickers[1] like '%.DE'")
+            for row in cur:
+                name=row['tickers'][0].split(".DE")[0]
+                cur1.execute("update products set tickers[3]=%s where tickers[1]=%s", ("ETR:"+name, row['tickers'][0]))
+            cur1.close()
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805241028)
+            
+        if self.dbversion<201805241250:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("AMS:INGA", "INGA.AS"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXBME:IB", "^IBEX"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXEURO:PX1 ", "^FCHI"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXDB:DAX", "^GDAXI"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXDJX:.DJI", "^DJI"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXFTSE:UKX", "^FTSE"))
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", ("INDEXFTSE:FTSEMIB", "FTSEMIB.MI"))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805241250)
+        if self.dbversion<201805241335:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set tickers[3]=%s where tickers[1]=%s", (None, "IBEXA.MC"))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805241335)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
-        logging.info ("**** Database already updated")
+        print ("**** Database already updated")
