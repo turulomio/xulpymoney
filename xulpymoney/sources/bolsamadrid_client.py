@@ -125,7 +125,6 @@ class SetOHCL:
         elif self.productype==eProductType.Index:
             r=Render("http://www.bolsamadrid.es/esp/aspx/Indices/InfHistorica.aspx?grupo=IBEX", from_date)
         for i,page in enumerate(r.pages):
-#            print ("Page", i+1, len(r.pages[i]))
             if i==0:#Era la de la búsqueda
                 continue
             self.searchQuotesInHtml(page)
@@ -158,12 +157,10 @@ class CurrentPrice:
             return None
             
     def init__from_html_line_with_date(self, line):
-#        print (line)
         line=line.split("FichaValor.aspx?ISIN=")[1]#Removes begin
         line=line[:-5]#Removes end
         line=line.replace(' class="DifClIg"', "").replace(' class="DifClSb"', "").replace(' class="DifClBj"', "").replace(' align="center" colspan="2"', "").replace(' class="Ult" align="center"',"").replace(' align="center"',"")#Removes anomalies to live td /td
         a=line.split("</td><td>")
-#        print (a)
         self.isin=a[0][:12]
         self.price=a[1].replace(",", ".")
         if len(a)==9:#Ignoring suspendido

@@ -84,6 +84,7 @@ class CurrentPriceTicker:
                 logging.debug(precio)
 
                 hora=line.split('A partir del  ')[1]#Antes
+                print (hora)
                 hora=hora.split('. Mercado abierto.')[0]#Después
                 a=hora.split(" ")
                 hora=ampm2stringtime(a[0], type=1)
@@ -102,6 +103,7 @@ class CurrentPriceTicker:
                 logging.debug(precio)
 
                 hora=line.split('Al cierre: ')[1]#Antes
+                print(hora)
                 hora=hora.split(' CEST')[0]#Después
                 hora=hora.replace("de ", "")
                 hora=hora.split(" ")[2]

@@ -5306,6 +5306,7 @@ class PriorityHistoricalManager(ObjectManager_With_IdName):
             self.append(self.mem.prioritieshistorical.find_by_id(cmb.itemData(i)))
         return self
 
+## Class that represents stock market object. It gives several utils to manage it.
 class StockMarket:
     def __init__(self, mem):
         self.mem=mem
@@ -5327,19 +5328,60 @@ class StockMarket:
         self.closes=row['closes']
         self.zone=self.mem.zones.find_by_name(row['zone'])
         return self
-        
+    ## Returns the close time of a given date
+    def date_closes(self, date):
+        return dtaware(date, self.closes, self.zone.name)
+    
+    ## Returns a datetime with timezone with the todays stockmarket closes
     def today_closes(self):
-        """
-            Returns a datetime with timezone with the todays stockmarket closes
-        """
-        return dtaware(datetime.date.today(), self.closes, self.zone.name)
+        return self.date_closes(datetime.date.today())
 
+    ## Returns a datetime with timezone with the todays stockmarket closes
     def today_starts(self):
-        """
-            Returns a datetime with timezone with the todays stockmarket closes
-        """
         return dtaware(datetime.date.today(), self.starts, self.zone.name)
+        
+    ## When we don't know the datetime of a quote because the webpage we are scrapping doesn't gives us, we can use this functions
+    ## - If it's saturday or sunday it returns last friday at close time
+    ## - If it's not weekend and it's after close time it returns todays close time
+    ## - If it's not weekend and it's before open time it returns yesterday close time. If it's monday it returns last friday at close time
+    ## - If it's not weekend and it's after opent time and before close time it returns aware current datetime
+    ## @param delay Boolean that if it's True (default) now  datetime is minus 15 minutes. If False uses now datetime
+    ## @return Datetime aware, always. It can't be None
+    def valid_dtaware(self, delay=True):
+        if delay==True:
+            now=self.zone.now()-datetime.timedelta(minutes=15)
+        else:
+            now=self.zone.now()
+        if now.weekday()<5:#Weekday
+            if now>self.today_closes():
+                return self.today_closes()
+            elif now<self.today_starts():
+                if now.weekday()>0:#Tuesday to Friday
+                    return dtaware(datetime.date.today()-datetime.timedelta(days=1), self.closes, self.zone.name)
+                else: #Monday
+                    return dtaware(datetime.date.today()-datetime.timedelta(days=3), self.closes, self.zone.name)
+            else:
+                return now
+        elif now.weekday()==5:#Saturday
+            return dtaware(datetime.date.today()-datetime.timedelta(days=1), self.closes, self.zone.name)
+        elif now.weekday()==6:#Sunday
+            return dtaware(datetime.date.today()-datetime.timedelta(days=2), self.closes, self.zone.name)
 
+    ## When we don't know the date pf a quote of a one quote by day product. For example funds... we'll use this function
+    ## - If it's saturday or sunday it returns last thursday at close time
+    ## - If it's not weekend and returns yesterday close time except if it's monday that returns last friday at close time
+    ## @return Datetime aware, always. It can't be None
+    def valid_dtaware_for_one_quote_by_day_products(self):
+        now=self.zone.now()
+        if now.weekday()<5:#Weekday
+            if now.weekday()>0:#Tuesday to Friday
+                return dtaware(datetime.date.today()-datetime.timedelta(days=1), self.closes, self.zone.name)
+            else: #Monday
+                return dtaware(datetime.date.today()-datetime.timedelta(days=3), self.closes, self.zone.name)
+        elif now.weekday()==5:#Saturday
+            return dtaware(datetime.date.today()-datetime.timedelta(days=2), self.closes, self.zone.name)
+        elif now.weekday()==6:#Sunday
+            return dtaware(datetime.date.today()-datetime.timedelta(days=3), self.closes, self.zone.name)
 
 class Currency:
     """Clase que almacena el concepto divisa"""
@@ -8041,45 +8083,68 @@ class Country(Object_With_IdName):
         else:
             return QPixmap(":/xulpymoney/star.gif")
             
-
+## Class to manage datetime timezone and its methods
 class Zone:
-    def __init__(self, mem):
-        self.mem=mem
-        self.id=None
-        self.name=None
-        self.country=None
-        
-    def init__create(self, id, name, country):
-        self.id=id
-        self.name=name
-        self.country=country
-        return self
-        
+    ## Constructor with the following attributes combination
+    ## 1. Zone(mem). Create a Zone with all attributes set to None, except mem
+    ## 2. Zone(mem, id, name, country). Create account passing all attributes
+    ## @param mem MemXulpymoney object
+    ## @param id Integer that represents the Zone Id
+    ## @param name Zone Name
+    ## @param country Country object asociated to the timezone
+    def __init__(self, *args):
+        def init__create(self, id, name, country):
+            self.id=id
+            self.name=name
+            self.country=country
+            return self
+        self.mem=args[0]
+        if len(args)==1:
+            init__create(None, None, None)
+        if len(args)==4:
+            init__create(args[1], args[2], args[3])
+
+    ## Returns a pytz.timezone
     def timezone(self):
         return pytz.timezone(self.name)
         
+    ## Datetime aware with the pyttz.timezone
     def now(self):
         return datetime.datetime.now(pytz.timezone(self.name))
         
+    ## Internal __repr__ function
     def __repr__(self):
-        return "Zone ({}): {}".format(str(self.id), str(self.name))
-        
+        return "Zone ({}): {}".format(str(self.id), str(self.name))            
+
+    ## Not all zones names are in pytz zone names. Sometimes we need a conversión
+    ##
+    ## It's a static method you can invoke with Zone.zone_name_conversion(name)
+    ## @param name String with zone not in pytz
+    ## @return String with zone name already converted if needed
+    @staticmethod
+    def zone_name_conversion(name):
+        if name=="CEST":
+            return "Europe/Berlin"
+        if name.find("GMT")!=-1:
+            return "Etc/{}".format(name)
+        return name
+
 class ZoneManager(ObjectManager_With_IdName):
     def __init__(self, mem):
         ObjectManager_With_IdName.__init__(self)
         self.mem=mem
         
     def load_all(self):
-        self.append(Zone(self.mem).init__create(1,'Europe/Madrid', self.mem.countries.find_by_id("es")))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
-        self.append(Zone(self.mem).init__create(2,'Europe/Lisbon', self.mem.countries.find_by_id("pt")))
-        self.append(Zone(self.mem).init__create(3,'Europe/Rome', self.mem.countries.find_by_id("it")))
-        self.append(Zone(self.mem).init__create(4,'Europe/London', self.mem.countries.find_by_id("en")))
-        self.append(Zone(self.mem).init__create(5,'Asia/Tokyo', self.mem.countries.find_by_id("jp")))
-        self.append(Zone(self.mem).init__create(6,'Europe/Berlin', self.mem.countries.find_by_id("de")))
-        self.append(Zone(self.mem).init__create(7,'America/New_York', self.mem.countries.find_by_id("us")))
-        self.append(Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find_by_id("fr")))
-        self.append(Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find_by_id("cn")))
-        self.append(Zone(self.mem).init__create(10,'UTC', self.mem.countries.find_by_id("es")))
+        self.append(Zone(self.mem,1,'Europe/Madrid', self.mem.countries.find_by_id("es")))
+        self.append(Zone(self.mem,2,'Europe/Lisbon', self.mem.countries.find_by_id("pt")))
+        self.append(Zone(self.mem,3,'Europe/Rome', self.mem.countries.find_by_id("it")))
+        self.append(Zone(self.mem,4,'Europe/London', self.mem.countries.find_by_id("en")))
+        self.append(Zone(self.mem,5,'Asia/Tokyo', self.mem.countries.find_by_id("jp")))
+        self.append(Zone(self.mem,6,'Europe/Berlin', self.mem.countries.find_by_id("de")))
+        self.append(Zone(self.mem,7,'America/New_York', self.mem.countries.find_by_id("us")))
+        self.append(Zone(self.mem,8,'Europe/Paris', self.mem.countries.find_by_id("fr")))
+        self.append(Zone(self.mem,9,'Asia/Hong_Kong', self.mem.countries.find_by_id("cn")))
+        self.append(Zone(self.mem,10,'UTC', self.mem.countries.find_by_id("es")))
 
     def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
@@ -8089,6 +8154,8 @@ class ZoneManager(ObjectManager_With_IdName):
 
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
+
+            
 
 
 class AssetsReport(ODT):
