@@ -37,14 +37,14 @@ class CurrentPriceTicker:
         self.ticker=ticker
         self.xulpymoney=xulpymoney
         self.stockmarket=stockmarket
-        self.datetime_aware=self.stockmarket.estimated_datetime_for_intraday_quote()
+        self.dtaware=self.stockmarket.estimated_datetime_for_intraday_quote()
         self.price=None
 
     def __repr__(self):
         if self.xulpymoney!=None:
-            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.dtaware, self.price)
         else:
-            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
+            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.dtaware , self.price)
 
     def get_price(self):
         class Render(QWebEngineView):
@@ -103,7 +103,7 @@ class CurrentPriceTicker:
                 self.price=Decimal(self.price)
 
         except:
-            print ("ERROR | GET PRICE FAILED: PRECIO {}. DATETIME {}".format(self.price, self.datetime_aware))
+            print ("ERROR | GET PRICE FAILED: PRECIO {}. DATETIME {}".format(self.price, self.dtaware))
             sys.exit(0)
     
 

@@ -19,14 +19,14 @@ class CurrentPriceTicker:
         self.ticker=ticker
         self.stockmarket=stockmarket
         self.xulpymoney=xulpymoney
-        self.datetime_aware=self.stockmarket.estimated_datetime_for_daily_quote()
+        self.dtaware=self.stockmarket.estimated_datetime_for_daily_quote()
         self.price=None
 
     def __repr__(self):
         if self.xulpymoney!=None:
-            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.dtaware, self.price)
         else:
-            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
+            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.dtaware , self.price)
 
     def get_price(self):
         try:

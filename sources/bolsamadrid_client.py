@@ -138,14 +138,14 @@ class CurrentPrice:
     def __init__(self):
         self.isin=None
         self.xulpymoney=None 
-        self.datetime_aware=None
+        self.dtaware=None
         self.price=None
 
-    def init__from_html_line_without_date(self,line,  productype, datetime_aware):
+    def init__from_html_line_without_date(self,line,  productype, dtaware):
         """
         Returns None if fails    
         """
-        self.datetime_aware=datetime_aware
+        self.dtaware=dtaware
         try:
             l=line.split("</td>")#Arr
             if productype==eProductType.PublicBond:
@@ -168,15 +168,15 @@ class CurrentPrice:
                 hour="17:38"
             else:
                 hour=a[8]
-            self.datetime_aware=string2datetime("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
+            self.dtaware=string2datetime("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
             return self
         return None
 
     def __repr__(self):
         if self.xulpymoney!=None:
-            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.dtaware, self.price)
         else:
-            return "PRICE | STOCKMARKET | ES | ISIN | {} | {} | {}".format(self.isin, self.datetime_aware , self.price)
+            return "PRICE | STOCKMARKET | ES | ISIN | {} | {} | {}".format(self.isin, self.dtaware , self.price)
 
 class SetCurrentPrice:
     def __init__(self, arrIsin, arrXulpymoney,  productype):

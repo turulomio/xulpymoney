@@ -6701,7 +6701,7 @@ class ProductUpdate:
         for p in products.arr:
             self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
-        ##### YAHOO INDICES Y CURRENCIES  #####
+        ##### GOOGLE INDICES Y CURRENCIES  #####
         sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
         print(sql)
         products=ProductManager(self.mem)
@@ -6716,7 +6716,7 @@ class ProductUpdate:
         for p in products_quefondos.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work agan
-                self.appendCommand(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id)])       
+                self.appendCommand(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id),  "--STOCKMARKET", str(p.stockmarket.id)])    
                 
         ##### MORNINGSTAR #####
         sql="select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
