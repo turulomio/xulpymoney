@@ -8,14 +8,13 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        
+
         self.mem.data.benchmark.result.get_basic_and_ohcls()
-        
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Since when there is data in the database?"))
         c.setText("The first data is from {}".format(Assets(self.mem).first_datetime_with_user_data()))
         self.layout.addWidget(c)
-        
 
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the investment I gain more money in the last three years?"))
@@ -38,7 +37,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         c.setTitle(self.tr("Which is the product I gain more money in the last three years?"))
         c.setText(self.tr(""))
         self.layout.addWidget(c)
-        
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the benchmark highest and lowest price?"))
         highest=self.mem.data.benchmark.result.ohclDaily.highest()
@@ -50,32 +49,30 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         c.setTitle(self.tr("How many quotes are there in the database?"))
         c.setText(self.tr("There are {} quotes in this Xulpymoney database.".format(self.mem.con.cursor_one_field("select count(*) from quotes"))))
         self.layout.addWidget(c)
-        
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which product has the highest quote?"))
         c.setText(self.tr(""))
         self.layout.addWidget(c)
-        
+
         c=wdgCuriosity(self.mem)
         operations=AccountOperationManager(self.mem)
         operations.load_from_db("select * from opercuentas where importe = (select max(importe) from opercuentas) order by datetime desc limit 1")
         c.setTitle(self.tr("Which is the amount of the largest account operation?"))
         if operations.length()==1:
-            o=operations.arr[0]
+            o=operations.only()
             c.setText(self.tr("The largest account operation took place at {}. It's concept was '{}' and it's amount was {}.".format(o.datetime, o.concepto.name, o.account.currency.string(o.importe))))
         else:
             c.setText(self.tr("There are not account operations yet."))
         self.layout.addWidget(c)
-        
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the amount of the largest credit card operation?"))
         c.setText(self.tr(""))
         self.layout.addWidget(c)
-        
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the amount of the largest investment operation?"))
         c.setText(self.tr(""))
         self.layout.addWidget(c)
         self.layout.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Expanding))
-
-    

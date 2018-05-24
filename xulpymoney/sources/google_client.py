@@ -18,14 +18,14 @@ class CurrentPriceTicker:
         self.ticker=ticker
         self.stockmarket=stockmarket
         self.xulpymoney=xulpymoney
-        self.datetime_aware=self.stockmarket.estimated_datetime_for_intraday_quote()
+        self.dtaware=self.stockmarket.estimated_datetime_for_intraday_quote()
         self.price=None
 
     def __repr__(self):
         if self.xulpymoney!=None:
-            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.datetime_aware, self.price)
+            return "PRICE | XULPYMONEY | {} | {} | {}".format(self.xulpymoney, self.dtaware, self.price)
         else:
-            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.datetime_aware , self.price)
+            return "PRICE | STOCKMARKET | XX | TICKER | {} | {} | {}".format(self.ticker, self.dtaware , self.price)
 
     def get_price(self):
         url = 'http://www.google.com/search?q={}'.format(self.ticker)    # fails
@@ -41,7 +41,7 @@ class CurrentPriceTicker:
                 web=web.split('</span> - <a class="fl"')[0]#Después
                 self.price=Decimal(web.split("</b>")[0].replace(".","").replace(",","."))
             except:
-                print("ERROR | COULDN'T CONVERT DATETIME {} AND PRICE {}".format(self.datetime_aware, self.price))
+                print("ERROR | COULDN'T CONVERT DATETIME {} AND PRICE {}".format(self.dtaware, self.price))
                 sys.exit(0)
             return
 
