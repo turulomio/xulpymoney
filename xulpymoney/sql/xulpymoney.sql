@@ -1382,7 +1382,7 @@ INSERT INTO public.products VALUES ('ABC ARBITRAGE', 'FR0004040608', 'EUR', 1, '
 INSERT INTO public.products VALUES ('Abengoa B', 'ES0105200002', 'EUR', 1, '|MERCADOCONTINUO|', 81701, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', '{3}', NULL, false, '{ABG-P.MC,NULL,BME:ABG-P,NULL}');
 INSERT INTO public.products VALUES ('ABENGOA', 'ES0105200416', 'EUR', 1, '|MERCADOCONTINUO|', 81093, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0105200416||es||False', false, '{ABG.MC,NULL,BME:ABG,NULL}');
 INSERT INTO public.products VALUES ('Abercrombie & Fitch Co.', NULL, 'USD', 1, '|SP500|', 75638, '', '', '', '', 100, 'c', 0, 2, '{1}', '{3}', 'NYSE#ANF||us||False', false, '{ANF,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('Abertis Infraestructuras S.A.', 'ES0111845014', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 78269, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0111845014||es||False', false, '{ABE.MC,NULL,BME:ABE,NULL}');
+INSERT INTO public.products VALUES ('Abertis Infraestructuras S.A.', 'ES0111845014', 'EUR', 1, '|MERCADOCONTINUO|', 78269, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0111845014||es||False', false, '{ABE.MC,NULL,BME:ABE,NULL}');
 INSERT INTO public.products VALUES ('AB INBEV STR VVPR', 'BE0005582532', 'EUR', 1, '|EURONEXT|', 78104, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, 'EURONEXT#BE0005582532||be||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('AbitibiBowater Inc.', NULL, 'USD', 1, NULL, 76585, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#ABH||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('ABLYNX (D)', 'BE0003877942', 'EUR', 1, '|EURONEXT|', 76644, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, 'EURONEXT#BE0003877942||be||False', false, '{NULL,NULL,NULL,NULL}');
@@ -1980,7 +1980,7 @@ INSERT INTO public.products VALUES ('BANCOFAR FUTURO', 'ES0181693039', 'EUR', 2,
 INSERT INTO public.products VALUES ('Banco Latinoamericano de Comercio Exterior S.A. Cl E', NULL, 'USD', 1, NULL, 78200, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#BLX||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Banco Macro S.A.', NULL, 'USD', 1, NULL, 78409, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#BMA||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('BANCO POP.ESPANOL', 'ES0113790531', 'EUR', 1, '|EURONEXT|', 79164, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, 'EURONEXT#ES0113790531||pt||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('BANCO POPULAR', 'ES0113790531', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81103, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0113790531||es||False', false, '{POP.MC,NULL,BME:POP,NULL}');
+INSERT INTO public.products VALUES ('BANCO POPULAR', 'ES0113790531', 'EUR', 1, '|MERCADOCONTINUO|', 81103, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0113790531||es||False', true, '{POP.MC,NULL,BME:POP,NULL}');
 INSERT INTO public.products VALUES ('BancorpSouth Inc.', NULL, 'USD', 1, NULL, 79400, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#BXS||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Banco Santander-Chile', NULL, 'USD', 1, NULL, 75176, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#SAN||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('BANCO SANTANDER', 'ES0113900J37', 'EUR', 1, '|EURONEXT|', 77900, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, 'EURONEXT#ES0113900J37||pt||False', false, '{NULL,NULL,NULL,NULL}');
@@ -3324,6 +3324,7 @@ INSERT INTO public.products VALUES ('Celesio AG', 'DE000CLS1001', 'EUR', 1, '|DE
 INSERT INTO public.products VALUES ('Celestica Inc.', NULL, 'USD', 1, NULL, 77777, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#CLS||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Celgene Corporation', 'US1510201049', 'USD', 1, '|NASDAQ100|SP500|', 77456, '', '', '', '', 100, 'c', 0, 2, '{1}', '{3}', 'CELG||us||False', false, '{CELG,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Cellcom Israel Ltd.', NULL, 'USD', 1, NULL, 78449, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#CEL||us||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Cellnex Telecomm', 'ES0105066007', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81722, 'https://www.cellnextelecom.com/', NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', '{3}', NULL, false, '{CLNX.MC,NULL,BME:CLNX,NULL}');
 INSERT INTO public.products VALUES ('Cemex S.A.B. de C.V.', NULL, 'USD', 1, NULL, 76286, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#CX||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('CEMIG P.', 'BRCMIGACNPR3', 'EUR', 1, '|LATIBEX|', 78447, '', '', '', '', 100, 'c', 0, 1, '{}', '{}', 'MC#BRCMIGACNPR3||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('CEM.PORT.VAL', 'ES0117390411', 'EUR', 1, '|MERCADOCONTINUO|', 78446, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0117390411||es||False', false, '{CPL.MC,NULL,BME:CPL,NULL}');
@@ -4215,7 +4216,7 @@ INSERT INTO public.products VALUES ('FAURECIA', 'FR0000121147', 'EUR', 1, '|EURO
 INSERT INTO public.products VALUES ('FAUVET GIREL', 'FR0000063034', 'EUR', 1, '|EURONEXT|', 80439, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000063034||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('FAYENC.SARREGUEMI.', 'FR0000031973', 'EUR', 1, '|EURONEXT|', 80440, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000031973||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('FBL Financial Group Inc.', NULL, 'USD', 1, NULL, 79686, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#FFG||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('FCC', 'ES0122060314', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 78907, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0122060314||es||False', false, '{FCC.MC,NULL,BME:FCC,NULL}');
+INSERT INTO public.products VALUES ('FCC', 'ES0122060314', 'EUR', 1, '|MERCADOCONTINUO|', 78907, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0122060314||es||False', false, '{FCC.MC,NULL,BME:FCC,NULL}');
 INSERT INTO public.products VALUES ('FDL', 'FR0000030181', 'EUR', 1, '|EURONEXT|', 78388, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000030181||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Federal Agricultural Mortgage Corp. Cl C', NULL, 'USD', 1, NULL, 80046, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#AGM||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Federal Realty Investment Trust', NULL, 'USD', 1, NULL, 78310, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#FRT||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -4791,7 +4792,6 @@ INSERT INTO public.products VALUES ('GALP ENERGIA-NOM', 'PTGAL0AM0009', 'EUR', 1
 INSERT INTO public.products VALUES ('GAMCO Investors Inc. Cl A', NULL, 'USD', 1, NULL, 79931, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#GBL||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('GAMELOFT', 'FR0000079600', 'EUR', 1, '|EURONEXT|', 80508, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000079600||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('G.A.M.', 'ES0141571119', 'EUR', 1, '|MERCADOCONTINUO|', 79036, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0141571119||es||False', false, '{GALQ.MC,NULL,BME:GALQ,NULL}');
-INSERT INTO public.products VALUES ('GAMESA', 'ES0143416115', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 79037, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0143416115||es||False', false, '{GAM.MC,NULL,BME:GAM,NULL}');
 INSERT INTO public.products VALUES ('GameStop Corp. Cl A', NULL, 'USD', 1, NULL, 77222, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#GME||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('GAMMA HOLDING', 'NL0000355824', 'EUR', 1, '|EURONEXT|', 77474, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, 'EURONEXT#NL0000355824||nl||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('GAMMA HOLDING', 'NL0000355865', 'EUR', 1, '|EURONEXT|', 77475, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, 'EURONEXT#NL0000355865||nl||False', false, '{NULL,NULL,NULL,NULL}');
@@ -5004,7 +5004,7 @@ INSERT INTO public.products VALUES ('HAMON', 'BE0003700144', 'EUR', 1, '|EURONEX
 INSERT INTO public.products VALUES ('HAMON STRIP', 'BE0005529970', 'EUR', 1, '|EURONEXT|', 77530, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, 'EURONEXT#BE0005529970||be||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Hanesbrands Inc.', NULL, 'USD', 1, NULL, 76477, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#HBI||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Hanger Orthopedic Group Inc.', NULL, 'USD', 1, NULL, 79447, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#HGR||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('Hang Seng', 'XC0009692762', 'CNY', 3, NULL, 81091, NULL, NULL, NULL, NULL, 100, 'c', 0, 8, '{1}', '{3}', '^HSI||cn||False', false, '{^HSI,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Hang Seng', 'XC0009692762', 'CNY', 3, NULL, 81091, NULL, NULL, NULL, NULL, 100, 'c', 0, 8, '{1}', '{3}', '^HSI||cn||False', false, '{^HSI,NULL,INDEXHANGSENG:HSI,NULL}');
 INSERT INTO public.products VALUES ('Hannover Rückversicherung AG', 'DE0008402215', 'EUR', 1, '|DEUTSCHEBOERSE|', 80287, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#DE0008402215||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Hanover Insurance Group Inc.', NULL, 'USD', 1, NULL, 75522, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#THG||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Hansa Group AG', 'DE0007608606', 'EUR', 1, '|DEUTSCHEBOERSE|', 81217, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#DE0007608606||de||False', false, '{NULL,NULL,NULL,NULL}');
@@ -5315,6 +5315,7 @@ INSERT INTO public.products VALUES ('Inland Real Estate Corp.', NULL, 'USD', 1, 
 INSERT INTO public.products VALUES ('INM.COLONIAL', 'ES0139140018', 'EUR', 1, '|MERCADOCONTINUO|', 77072, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0139140018||es||False', true, '{COL.MC,NULL,BME:COL,NULL}');
 INSERT INTO public.products VALUES ('INM.COLONIAL', 'ES0139140042', 'EUR', 1, '|MERCADOCONTINUO|', 79200, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', NULL, 'MC#ES0139140042||es||False', true, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('INM.DEL SUR', 'ES0154653911', 'EUR', 1, '|MERCADOCONTINUO|', 81350, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', NULL, 'MC#ES0154653911||es||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Inmobiliaria Colonial', 'ES0139140174', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81723, 'https://www.inmocolonial.com/', NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', '{3}', NULL, false, '{COL.MC,NULL,BME:COL,NULL}');
 INSERT INTO public.products VALUES ('INNATE PHARMA', 'FR0010331421', 'EUR', 1, '|EURONEXT|', 77064, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0010331421||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('INNELEC MULTIMEDIA', 'FR0000064297', 'EUR', 1, '|EURONEXT|', 76165, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000064297||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('INNOCONCEPTS', 'NL0000361145', 'EUR', 1, '|EURONEXT|', 76761, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, 'EURONEXT#NL0000361145||nl||False', false, '{NULL,NULL,NULL,NULL}');
@@ -5953,7 +5954,7 @@ INSERT INTO public.products VALUES ('MEETIC', 'FR0004063097', 'EUR', 1, '|EURONE
 INSERT INTO public.products VALUES ('MEETIC', 'FR0011076488', 'EUR', 1, '|EURONEXT|', 76855, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0011076488||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MEETIC', 'FR0011099357', 'EUR', 1, '|EURONEXT|', 76396, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0011099357||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MELEXIS (D)', 'BE0165385973', 'EUR', 1, '|EURONEXT|', 80642, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, 'EURONEXT#BE0165385973||be||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('MELIA HOTELS', 'ES0176252718', 'EUR', 1, '|MERCADOCONTINUO|', 79277, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', NULL, 'MC#ES0176252718||es||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('MELIA HOTELS', 'ES0176252718', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 79277, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, '{9}', NULL, 'MC#ES0176252718||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MEMC Electronic Materials Inc.', NULL, 'USD', 1, NULL, 79290, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#WFR||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MEMSCAP DS', 'FR0011176569', 'EUR', 1, '|EURONEXT|', 76178, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0011176569||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MEMSCAP REGPT', 'FR0010298620', 'EUR', 1, '|EURONEXT|', 77637, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0010298620||fr||False', false, '{NULL,NULL,NULL,NULL}');
@@ -6114,7 +6115,7 @@ INSERT INTO public.products VALUES ('Nalco Holding Co.', NULL, 'USD', 1, NULL, 7
 INSERT INTO public.products VALUES ('NAME', NULL, 'USD', 1, NULL, 78082, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#TICKER||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Nam Tai Electronics Inc.', NULL, 'USD', 1, NULL, 80423, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#NTE||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Nasdaq 100', 'US6311011026', 'USD', 3, NULL, 79788, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, '{1}', '{3}', '^NDX||us||False', false, '{^NDX,NULL,INDEXNASDAQ:NDX,NULL}');
-INSERT INTO public.products VALUES ('Nasdaq Composite', NULL, 'USD', 3, NULL, 81088, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, '{1}', '{3}', '^IXIC||us||False', false, '{^IXIC,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Nasdaq Composite', NULL, 'USD', 3, NULL, 81088, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, '{1}', '{3}', '^IXIC||us||False', false, '{^IXIC,NULL,INDEXNASDAQ:.IXIC,NULL}');
 INSERT INTO public.products VALUES ('National Bank of Greece S.A.', NULL, 'USD', 1, NULL, 76518, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#NBG||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('National Financial Partners Corp.', NULL, 'USD', 1, NULL, 76880, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#NFP||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('National Fuel Gas Co.', NULL, 'USD', 1, NULL, 80883, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#NFG||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -6242,7 +6243,7 @@ INSERT INTO public.products VALUES ('NYRSTAR STRIP (D)', 'BE0005644183', 'EUR', 
 INSERT INTO public.products VALUES ('NYSE Euronext', NULL, 'USD', 1, NULL, 76285, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#NYX||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('NYSE EURONEXT', 'US6294911010', 'EUR', 1, '|EURONEXT|', 79309, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#US6294911010||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Oasis Petroleum Inc.', NULL, 'USD', 1, NULL, 76484, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#OAS||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('Obrascon Huarte Laín (OHL) S.A.', 'ES0142090317', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 79299, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0142090317||es||False', false, '{OHL.MC,NULL,BME:OHL,NULL}');
+INSERT INTO public.products VALUES ('Obrascon Huarte Laín (OHL) S.A.', 'ES0142090317', 'EUR', 1, '|MERCADOCONTINUO|', 79299, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0142090317||es||False', false, '{OHL.MC,NULL,BME:OHL,NULL}');
 INSERT INTO public.products VALUES ('Occidental Petroleum Corp.', NULL, 'USD', 1, NULL, 77725, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#OXY||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('OCCIDENTAL PETROL.', 'US6745991058', 'EUR', 1, '|EURONEXT|', 79312, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, 'EURONEXT#US6745991058||nl||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Oceaneering International Inc.', NULL, 'USD', 1, NULL, 76361, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#OII||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -6570,7 +6571,7 @@ INSERT INTO public.products VALUES ('Prudential Financial Inc.', NULL, 'USD', 1,
 INSERT INTO public.products VALUES ('Prudential PLC', NULL, 'USD', 1, NULL, 76865, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#PUK||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PSB INDUSTRIES', 'FR0000060329', 'EUR', 1, '|EURONEXT|', 75448, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000060329||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PS Business Parks Inc.', NULL, 'USD', 1, NULL, 76098, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#PSB||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('PSI 20', NULL, 'EUR', 3, '', 78127, '', '', '', '', 100, 'c', 0, 9, '{1}', '{3}', 'PSI20.NX||pt||False', false, '{PSI20.LS,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('PSI 20', NULL, 'EUR', 3, '', 78127, '', '', '', '', 100, 'c', 0, 9, '{1}', '{3}', 'PSI20.NX||pt||False', false, '{PSI20.LS,NULL,INDEXEURO:PSI20,NULL}');
 INSERT INTO public.products VALUES ('PSI Aktiengesellschaft', 'DE000A0Z1JH9', 'EUR', 1, '|DEUTSCHEBOERSE|', 80686, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0Z1JH9||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PSN PLAN DE INVERSION', 'ES0167791039', 'EUR', 2, '|f_es_BMF|', 79475, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{8}', 'ES0167791039||es||False', true, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PSN RENTA FIJA', 'ES0170737037', 'EUR', 2, '|f_es_BMF|', 79476, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{8}', 'ES0170737037||es||False', true, '{NULL,NULL,NULL,NULL}');
@@ -7039,7 +7040,7 @@ INSERT INTO public.products VALUES ('SABADELL BS SELECCION ALFA 1', 'ES011118700
 INSERT INTO public.products VALUES ('SABCA (D)', 'BE0003654655', 'EUR', 1, '|EURONEXT|', 80077, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, 'EURONEXT#BE0003654655||be||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('SABETON', 'FR0000060121', 'EUR', 1, '|EURONEXT|', 80753, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000060121||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('SACYR VALLEHERMOSO', 'ES0182870214', 'EUR', 1, '|EURONEXT|', 78515, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, 'EURONEXT#ES0182870214||pt||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('SACYR VALLEHERMOSO', 'ES0182870214', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81534, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0182870214||es||False', false, '{SYV.MC,NULL,BME:SYV,NULL}');
+INSERT INTO public.products VALUES ('SACYR VALLEHERMOSO', 'ES0182870214', 'EUR', 1, '|MERCADOCONTINUO|', 81534, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0182870214||es||False', false, '{SYV.MC,NULL,BME:SYV,NULL}');
 INSERT INTO public.products VALUES ('SAF AG', 'CH0024848738', 'EUR', 1, '|DEUTSCHEBOERSE|', 79670, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#CH0024848738||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Safe Bulkers Inc.', NULL, 'USD', 1, NULL, 80425, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#SB||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Safeguard Scientifics Inc.', NULL, 'USD', 1, NULL, 79864, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#SFE||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -7261,6 +7262,7 @@ INSERT INTO public.products VALUES ('Ship Finance International Ltd.', NULL, 'US
 INSERT INTO public.products VALUES ('SHW AG', 'DE000A1JBPV9', 'EUR', 1, '|DEUTSCHEBOERSE|', 80919, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1JBPV9||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Siemens AG', 'DE0007236101', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|EUROSTOXX|', 80920, '', '', '', '', 100, 'c', 0, 5, '{1}', '{3}', 'DEUTSCHEBOERSE#DE0007236101||de||False', false, '{SIE.DE,NULL,ETR:SIE,NULL}');
 INSERT INTO public.products VALUES ('Siemens AG', NULL, 'USD', 1, NULL, 75032, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#SI||us||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('SIEMENS GAMESA RENEWABLE ENERGY', 'ES0143416115', 'EUR', 1, '|MERCADOCONTINUO|', 79037, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0143416115||es||False', false, '{GAM.MC,NULL,BME:GAM,NULL}');
 INSERT INTO public.products VALUES ('Sigma-Aldrich Corporation', NULL, 'USD', 1, '|NASDAQ100|', 77581, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'SIAL||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('SIGNAUX GIROD', 'FR0000060790', 'EUR', 1, '|EURONEXT|', 81161, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000060790||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Signet Jewelers Ltd.', NULL, 'USD', 1, NULL, 76434, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#SIG||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -7914,7 +7916,7 @@ INSERT INTO public.products VALUES ('VINCI NV', 'FR0010994095', 'EUR', 1, '|CAC|
 INSERT INTO public.products VALUES ('VIRBAC', 'FR0000031577', 'EUR', 1, '|EURONEXT|', 80196, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000031577||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Virgin Media, Inc.', NULL, 'USD', 1, '|NASDAQ100|', 77586, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'VMED||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('VISA Inc. Cl A', NULL, 'USD', 1, NULL, 74954, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#V||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('VISCOFAN', 'ES0184262212', 'EUR', 1, '|MERCADOCONTINUO|', 79397, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0184262212||es||False', false, '{VIS.MC,NULL,BME:VIS,NULL}');
+INSERT INTO public.products VALUES ('VISCOFAN', 'ES0184262212', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 79397, '', '', '', '', 100, 'c', 0, 1, '{9}', '{3}', 'MC#ES0184262212||es||False', false, '{VIS.MC,NULL,BME:VIS,NULL}');
 INSERT INTO public.products VALUES ('Vishay Intertechnology Inc.', NULL, 'USD', 1, NULL, 79023, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#VSH||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Vishay Precision Group Inc.', NULL, 'USD', 1, NULL, 80045, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#VPG||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('VISIODENT', 'FR0000065765', 'EUR', 1, '|EURONEXT|', 77996, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0000065765||fr||False', false, '{NULL,NULL,NULL,NULL}');
@@ -8117,7 +8119,7 @@ INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5')
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 80840, 74747, 81710, 79360, 81105, 81083, 81090, 79223, 78384, 81117, 81715, 74788, 78687, 81111, 79359, 81719, 81720, 79142, 81394, 81436');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO public.globals VALUES (1, 'Version', '201805241335');
+INSERT INTO public.globals VALUES (1, 'Version', '201805250445');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '1997');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
