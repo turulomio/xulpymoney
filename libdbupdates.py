@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201805241335
+        self.lastcodeupdate=201805250445
         self.need_update()
 
    
@@ -2287,6 +2287,28 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201805241335)
+        if self.dbversion<201805250445:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set tickers[3]=%s where id=%s", ("INDEXHANGSENG:HSI", 81091))
+            cur.execute("update products set tickers[3]=%s where id=%s", ("INDEXNASDAQ:.IXIC", 81088))
+            cur.execute("update products set tickers[3]=%s where id=%s", ("INDEXEURO:PSI20", 78127))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81103))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 81103))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 78269))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81722, 'Cellnex Telecomm', 'ES0105066007', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 'https://www.cellnextelecom.com/', None, None, None, 100, 'c', 0, 1, ["CLNX.MC", None, "BME:CLNX", None], [9, ],[3, ], None, False ))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 78907))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 79037))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81723, 'Inmobiliaria Colonial', 'ES0139140174', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 'https://www.inmocolonial.com/', None, None, None, 100, 'c', 0, 1, ["COL.MC", None, "BME:COL", None], [9, ],[3, ], None, False ))
+            cur.execute("update products set agrupations=%s where id=%s", ('|IBEX|MERCADOCONTINUO|', 79277))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 79299))
+            cur.execute("update products set name=%s where id=%s", ('SIEMENS GAMESA RENEWABLE ENERGY', 79037))
+            cur.execute("update products set agrupations=%s where id=%s", ('|IBEX|MERCADOCONTINUO|', 79397))
+            cur.execute("update products set agrupations=%s where id=%s", ('|MERCADOCONTINUO|', 81534))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201805250445)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
