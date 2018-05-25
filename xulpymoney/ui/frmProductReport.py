@@ -422,16 +422,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.viewIntraday.display()
 
         #tblIntradia
-        self.product.result.intradia.myqtablewidget(self.tblIntradia)
-        if self.product.result.intradia.length()>0:
-            self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
-
+        try:
+            self.product.result.intradia.myqtablewidget(self.tblIntradia)
+            if self.product.result.intradia.length()>0:
+                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
+        except:
+            logging.error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:
             self.tblMensuales.clear()
             return
-        
+
         minyear=self.product.result.ohclMonthly.arr[0].year
         rowcount=int(datetime.date.today().year-minyear+1)
         self.tblMensuales.applySettings()
