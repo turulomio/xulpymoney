@@ -192,8 +192,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 self.actionFavorites.setText(self.tr("Add to favorites"))
         menu.addSeparator()
         menu.addAction(self.actionPurge)
-        
-        
+
         if len (self.products.selected)==1:
             if self.products.selected[0].id==79329:
                 menu.addSeparator()
@@ -234,12 +233,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionProductPriceLastRemove.setEnabled(False)
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
-        
-        
     @pyqtSlot() 
     def on_actionMergeCodes_triggered(self):
-        #Only two checked in custom contest       
-        d=QDialog(self)        
+        #Only two checked in custom contest
+        d=QDialog(self)
         d.setFixedSize(800, 210)
         d.setWindowTitle(self.tr("Merging codes"))
         w=wdgMergeCodes(self.mem, self.products.selected[0], self.products.selected[1])
@@ -251,12 +248,11 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     
     def on_tblInvestments_itemSelectionChanged(self):
-        del self.products.selected
-        self.products.selected=[]
+        self.products.cleanSelection()
         for i in self.tblInvestments.selectedItems():
             if i.column()==0:#only once per row
                 self.products.selected.append(self.products.arr[i.row()])
-        print (self.products.selected)
+        logging.debug(self.products.selected)
 
     @pyqtSlot()  
     def on_actionPurge_triggered(self):
