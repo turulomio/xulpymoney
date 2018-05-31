@@ -10,6 +10,17 @@
 
 import logging
 
+
+## Defines who self.selected is managed
+## If can take the following values
+## - Object self.selected is a object
+## - List self.selected is a list of objects
+## - Manager. Selef selected is an object
+class ManagerSelectionMode:
+    Object=0
+    List=1
+    Manager=2
+
 class MyMem:
     def __init__(self):
         self.mem=None
@@ -56,12 +67,64 @@ class ObjectManager(object):
         
     def last(self):
         return self.arr[self.length()-1]
+
         
         
     def print(self):
         print ("Objects in {}".format(self.__class__))
         for q in self.arr:
             print(" * {}".format(q))
+
+
+## Manager Selection class
+## By default selectionmode is
+class ManagerSelection(object):
+    def __init__(self):
+        self.__selected=None
+        self.__selectionmode=ManagerSelectionMode.Object
+        
+    @property
+    def selected(self):
+        return self.__selected
+        
+    @selected.setter
+    def selected(self, value):
+        self.__selected=value
+        
+    @property
+    def selectionmode(self):
+        return self.__selectionmode
+        
+    @selectionmode.setter
+    def selectionmode(self, value):
+        print("selectionmode.setter")
+        self.__selectionmode=value
+        if value==ManagerSelectionMode.Object:
+            self.selected=None
+        elif value==ManagerSelectionMode.List:
+            self.selected=[]
+        elif value==ManagerSelectionMode.Manager:#Returns parent __class__
+            self.selected=self.__class__.__bases__[0]()
+        
+    def cleanSelection(self):
+        if self.selectionmode==ManagerSelectionMode.Object:
+            self.selected=None
+        elif self.selectionmode==ManagerSelectionMode.List:
+            self.selected=[]
+        elif self.selectionmode==ManagerSelectionMode.Manager:#Returns parent __class__
+            self.selected.clean()
+    
+    ## Useful to setselection without interactivvite ui
+    ## @param list List of objects. These objects have o.id so I can append them
+    def setSelected(self, list):
+        self.cleanSelection()
+        if self.selectionmode==ManagerSelectionMode.List:
+            for o in list:
+                self.selected.append(o)
+        elif self.selectionmode==ManagerSelectionMode.Manager:
+            for o in list:
+                self.selected.append(o)
+            
 
 ## Objects in DictListObjectManager has and id. The Id can be a integer or a string or ...
 class ObjectManager_With_Id(ObjectManager):
@@ -221,13 +284,8 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
 ## It Can be a DictObjectManager without id
 ## It doesn't need to cfreate DictListObjectManager_With_IdName, because all funcions are used with ObjectManager_With_IdName
 class DictObjectManager_With_Id(object):
-    ## @param selectable Create an attribute to self.selected if it's true than it's a DictObjectManager_With_Id but with selectable=False to avoid recursivity
-    def __init__(self, selectable=True):
+    def __init__(self):
         self.dic={}
-        ## It's a DictObjectManager_With_Id so we can work with one or several at the same time
-        ## We can access using keys, values or items
-        if selectable==True:
-            self.selected=DictObjectManager_With_Id(selectable=False)
 
     def append(self,  obj):
         self.dic[str(obj.id)]=obj
@@ -244,7 +302,7 @@ class DictObjectManager_With_Id(object):
     def remove(self, obj):
         del self.dic[str(obj.id)]
         
-    def clear(self):
+    def clean(self):
         self.dic={}
 
     def length(self):
@@ -263,7 +321,7 @@ class DictObjectManager_With_Id(object):
             return self.dic[str(o.id)]    
         except:
             if log:
-                print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, o.id))
+                print ("DictObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, o.id))
             return None        
 
     def find_by_id(self, id,  log=False):
@@ -272,18 +330,12 @@ class DictObjectManager_With_Id(object):
             return self.dic[str(id)]    
         except:
             if log:
-                print ("DictListObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, id))
+                print ("DictObjectManager_With_IdName ({}) fails finding {}".format(self.__class__.__name__, id))
             return None
             
     def values_order_by_id(self):
         return sorted(self.dic.values(), key=lambda o: o.id)
-        
-    ## Useful to setselection without interactivvite ui
-    ## @param list List of objects. These objects have o.id so I can append them
-    def setSelected(self, list):
-        self.selected.clear()
-        for o in list:
-            self.selected.append(o)
+
 
 class DictObjectManager_With_IdName(DictObjectManager_With_Id):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
@@ -352,3 +404,40 @@ if __name__ == "__main__":
          else:
              print("  * DictObjectManager took {} more time than ObjectManager".format(dtime-ltime))
 
+class DictObjectManager_With_Id_Selectable(DictObjectManager_With_Id, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_Id.__init__(self)
+        ManagerSelection.__init__(self)
+class DictObjectManager_With_IdDate_Selectable(DictObjectManager_With_IdDate, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdDate.__init__(self)
+        ManagerSelection.__init__(self)
+class DictObjectManager_With_IdDatetime_Selectable(DictObjectManager_With_IdDatetime, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdDatetime.__init__(self)
+        ManagerSelection.__init__(self)
+class DictObjectManager_With_IdName_Selectable(DictObjectManager_With_IdName, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdName.__init__(self)
+        ManagerSelection.__init__(self)
+        
+class ObjectManager_Selectable(ObjectManager, ManagerSelection):
+    def __init__(self):
+        ObjectManager.__init__(self)
+        ManagerSelection.__init__(self)
+class ObjectManager_With_Id_Selectable(ObjectManager_With_Id, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_Id.__init__(self)
+        ManagerSelection.__init__(self)
+class ObjectManager_With_IdDate_Selectable(ObjectManager_With_IdDate, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdDate.__init__(self)
+        ManagerSelection.__init__(self)
+class ObjectManager_With_IdDatetime_Selectable(ObjectManager_With_IdDatetime, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdDatetime.__init__(self)
+        ManagerSelection.__init__(self)
+class ObjectManager_With_IdName_Selectable(ObjectManager_With_IdName, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdName.__init__(self)
+        ManagerSelection.__init__(self)

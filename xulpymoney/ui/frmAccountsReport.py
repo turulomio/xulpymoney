@@ -349,7 +349,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblOperaciones_itemSelectionChanged(self):
-        self.accountoperations.selected.clear()
+        self.accountoperations.selected.clean()
         for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
             if i.column()==1 and i.row()!=0:#Initial month
                 id=int(self.tblOperaciones.item(i.row(), 5).text())#Id it's hidden in the fifth column

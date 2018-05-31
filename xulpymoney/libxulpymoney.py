@@ -22,7 +22,7 @@ from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty, deprecated
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType
-from libmanagers import Object_With_IdName, ObjectManager_With_IdName, ObjectManager_With_IdDatetime,  ObjectManager, ObjectManager_With_Id, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime,  DictObjectManager_With_IdName
+from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -294,9 +294,9 @@ class AccountOperationOfInvestmentOperation:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
-class SimulationTypeManager(ObjectManager_With_IdName):
+class SimulationTypeManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -314,9 +314,9 @@ class SimulationTypeManager(ObjectManager_With_IdName):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-class InvestmentManager(ObjectManager_With_IdName):
+class InvestmentManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem, cuentas, products, benchmark):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
         self.accounts=cuentas
         self.products=products
@@ -870,9 +870,9 @@ class InvestmentManager(ObjectManager_With_IdName):
             return False
         
 ## Class to manage products
-class ProductManager(ObjectManager_With_IdName):
+class ProductManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def find_by_isin(self, isin):
@@ -1032,10 +1032,10 @@ class ProductManager(ObjectManager_With_IdName):
 
 
 
-class ProductModesManager(ObjectManager_With_IdName):
+class ProductModesManager(ObjectManager_With_IdName_Selectable):
     """Agrupa los mode"""
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem     
     
     def load_all(self):
@@ -1043,9 +1043,9 @@ class ProductModesManager(ObjectManager_With_IdName):
         self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
         self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
 
-class SimulationManager(ObjectManager_With_IdName):
+class SimulationManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
             
     def delete(self, simulation):
@@ -1081,9 +1081,9 @@ class SimulationManager(ObjectManager_With_IdName):
             table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
-class StockMarketManager(ObjectManager_With_IdName):
+class StockMarketManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     ## Load in the Manager all Stockmarket objects
@@ -1130,9 +1130,9 @@ class StockMarketManager(ObjectManager_With_IdName):
             self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
         cur.close()
 
-class ConceptManager(ObjectManager_With_IdName):
+class ConceptManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem 
                  
         
@@ -1225,9 +1225,9 @@ class ConceptManager(ObjectManager_With_IdName):
 
 
 
-class CountryManager(ObjectManager_With_IdName):
+class CountryManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
         
     def load_all(self):
@@ -1267,9 +1267,9 @@ class CountryManager(ObjectManager_With_IdName):
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 
-class AccountManager(ObjectManager_With_IdName):   
+class AccountManager(ObjectManager_With_IdName_Selectable):   
     def __init__(self, mem,  setebs):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
         self.ebs=setebs
 
@@ -1366,10 +1366,11 @@ class ReinvestModel:
 
 
 
-class AccountOperationManager(DictObjectManager_With_IdDatetime):
+class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        DictObjectManager_With_IdDatetime.__init__(self)
+        DictObjectManager_With_IdDatetime_Selectable.__init__(self)
+        self.selectionmode=ManagerSelectionMode.Manager
         self.mem=mem
         
     def load_from_db(self, sql):
@@ -1452,9 +1453,9 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime):
                 if o.id==self.selected.only().id:
                     table.selectRow(i+1)
 
-class CurrencyManager(ObjectManager_With_IdName):
+class CurrencyManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
     
     def load_all(self):
@@ -1480,10 +1481,10 @@ class CurrencyManager(ObjectManager_With_IdName):
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
-class DividendHeterogeneusManager(ObjectManager_With_IdDatetime):
+class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):
     """Class that  groups dividends from a Xulpymoney Product"""
     def __init__(self, mem):
-        ObjectManager_With_IdDatetime.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.mem=mem
             
     def gross(self):
@@ -1731,9 +1732,9 @@ class EstimationEPSManager:
         table.setFocus()
 
         
-class BankManager(ObjectManager_With_IdName):
+class BankManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
 
     def load_from_db(self, sql):
@@ -1750,10 +1751,10 @@ class BankManager(ObjectManager_With_IdName):
         self.remove(bank)
 
 
-class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime):       
+class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        ObjectManager_With_IdDatetime.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.mem=mem
         
     def get_highest_io_id(self):
@@ -1916,10 +1917,10 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             if self.investment.hasSameAccountCurrency()==False:
                 tabla.setItem(rownumber, 8, qright(a.currency_conversion))
 
-class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime):    
+class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        ObjectManager_With_IdDatetime.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.mem=mem
     def __repr__(self):
         try:
@@ -2305,10 +2306,10 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         tabla.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
         tabla.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
 
-class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id):       
+class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Selectable):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        ObjectManager_With_Id.__init__(self)
+        ObjectManager_With_Id_Selectable.__init__(self)
         self.mem=mem
 
         
@@ -4942,9 +4943,9 @@ class Assets:
         return resultado        
 
 
-class CreditCardManager(ObjectManager_With_IdName):
+class CreditCardManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem, cuentas):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
         self.accounts=cuentas
 
@@ -4998,9 +4999,9 @@ class CreditCardManager(ObjectManager_With_IdName):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class CreditCardOperationManager(ObjectManager_With_IdDatetime):
+class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdDatetime.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.mem=mem
 
     def balance(self):
@@ -5049,9 +5050,9 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime):
                         if a.id==sel.id:
                             tabla.selectRow(rownumber)
 
-class OperationTypeManager(DictObjectManager_With_IdName):
+class OperationTypeManager(DictObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        DictObjectManager_With_IdName.__init__(self)
+        DictObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem     
 
     def load(self):
@@ -5092,11 +5093,11 @@ class OperationTypeManager(DictObjectManager_With_IdName):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-class AgrupationManager(ObjectManager_With_IdName):
+class AgrupationManager(ObjectManager_With_IdName_Selectable):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5174,10 +5175,10 @@ class AgrupationManager(ObjectManager_With_IdName):
             resultado.append(self.mem.agrupations.find_by_id(cmb.itemData(i)))
         return resultado
 
-class LeverageManager(ObjectManager_With_IdName):
+class LeverageManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -5190,9 +5191,9 @@ class LeverageManager(ObjectManager_With_IdName):
         self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), 10))
 
 
-class OrderManager(ObjectManager_With_Id):
+class OrderManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_Id.__init__(self)
+        ObjectManager_With_Id_Selectable.__init__(self)
         self.mem=mem
         
     def init__from_db(self, sql):
@@ -5273,10 +5274,10 @@ class OrderManager(ObjectManager_With_Id):
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
 
-class PriorityManager(ObjectManager_With_IdName):
+class PriorityManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
                 
     def load_all(self):
@@ -5310,10 +5311,10 @@ class PriorityManager(ObjectManager_With_IdName):
             self.append(self.mem.priorities.find_by_id(cmb.itemData(i)))
         return self
                 
-class PriorityHistoricalManager(ObjectManager_With_IdName):
+class PriorityHistoricalManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -7280,9 +7281,9 @@ class OHCLMonthlyManager(OHCLManager):
         
     
 ## Manages languages
-class LanguageManager(ObjectManager_With_IdName):
+class LanguageManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
         
     def load_all(self):
@@ -7478,7 +7479,7 @@ class Simulation:
         self.mem=mem
         self.database=original_db
         self.id=None
-        self.name=None#self.simulated_db, used to reuse ObjectManager_With_IdName
+        self.name=None#self.simulated_db, used to reuse ObjectManager_With_IdName_Selectable
         self.creation=None
         self.type=None
         self.starting=None
@@ -7592,9 +7593,9 @@ class Split:
         else:
             return "Split"
 
-class SplitManager(ObjectManager_With_IdName):
+class SplitManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem, product):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.product=product
         self.mem=mem
         
@@ -7789,9 +7790,9 @@ class ProductType(Object_With_IdName):
         Object_With_IdName.__init__(self, *args)
 
 ## Set of product types
-class ProductTypesManager(ObjectManager_With_IdName):
+class ProductTypesManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
@@ -8203,9 +8204,9 @@ class Zone:
             return "Etc/{}".format(name)
         return name
 
-class ZoneManager(ObjectManager_With_IdName):
+class ZoneManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        ObjectManager_With_IdName.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
         
     def load_all(self):
