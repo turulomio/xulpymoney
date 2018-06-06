@@ -18,11 +18,6 @@ from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, Con
 from odf.office import Annotation
 
 from decimal import Decimal
-"""
-    This file is from the Xulpymoney project. if you want to change it. Ask to project administrator
-"""
-
-
 
 class ODF:
     def __init__(self, filename):
