@@ -452,6 +452,9 @@ class OdfCell:
     def setComment(self, comment):
         self.comment=comment
 
+
+## Class to create a sheet in a ods document
+## By default cursor position and split position is set to "A1" cell
 class OdfSheet:
     def __init__(self, doc,  title):
         self.doc=doc
@@ -498,8 +501,8 @@ B1:
             return "2"
 
 
-        self.horizontalSplitPosition=str(letter2index(letter))
-        self.verticalSplitPosition=str(number2index(number))
+        self.horizontalSplitPosition=str(column2index(letter))
+        self.verticalSplitPosition=str(row2index(number))
         self.horizontalSplitMode="0" if self.horizontalSplitPosition=="0" else "2"
         self.verticalSplitMode="0" if self.verticalSplitPosition=="0" else "2"
         self.activeSplitRange=setActiveSplitRange()
@@ -513,8 +516,8 @@ B1:
         """
             Sets the cursor in a Sheet
         """
-        self.cursorPositionX=letter2index(letter)
-        self.cursorPositionY=number2index(number)
+        self.cursorPositionX=column2index(letter)
+        self.cursorPositionY=row2index(number)
 
     def setComment(self, letter, number, comment):
         """
@@ -533,13 +536,6 @@ B1:
             s.addElement(TableColumnProperties(columnwidth="{}{}".format(w, unit)))
             self.doc.automaticstyles.addElement(s)   
         self.widths=widths
-
-#    def letter2index(self, letters):
-#        def caracter2value(caracter):
-#            return ord(caracter)-65
-#        ############################
-#        if len(letters)==1:
-#            return caracter2value(letters[0])
 
     def lastLetter(self):
         """
@@ -568,8 +564,6 @@ B1:
         c=self.getCell(letter, number)
         c.setSpanning(columns, rows)
 
-#    def number2index(self, number):
-#        return int(number)-1
         
     def addCell(self, cell): 
         self.arr.append(cell)
@@ -600,7 +594,7 @@ B1:
         rows=self.rows()
         grid=[[None for x in range(columns)] for y in range(rows)]
         for cell in self.arr:
-            grid[number2index(cell.number)][letter2index(cell.letter)]=cell
+            grid[row2index(cell.number)][column2index(cell.letter)]=cell
         
         table = Table(name=self.title)
         for c in range(columns):#Create columns
@@ -626,7 +620,7 @@ B1:
         """
         r=0
         for cell in self.arr:
-            column=letter2index(cell.letter)
+            column=column2number(cell.letter)
             if column>r:
                 r=column
         return r+1
@@ -637,7 +631,7 @@ B1:
         """
         r=0
         for cell in self.arr:
-            column=number2index(cell.number)
+            column=row2number(cell.number)
             if column>r:
                 r=column
         return r+1
@@ -1006,8 +1000,8 @@ class ODS_Read:
         """
             Returns the celll value
         """
-        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
-        cell=row.getElementsByType(TableCell)[letter2index(letter)]
+        row=sheet_element.getElementsByType(TableRow)[row2index(number)]
+        cell=row.getElementsByType(TableCell)[column2index(letter)]
         r=None
         
         if cell.getAttribute('valuetype')=='string':
@@ -1034,9 +1028,8 @@ class ODS_Read:
         """
             Returns an odfcell object
         """
-        
-        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
-        cell=row.getElementsByType(TableCell)[letter2index(letter)]
+        row=sheet_element.getElementsByType(TableRow)[row2index(number)]
+        cell=row.getElementsByType(TableCell)[column2index(letter)]
         object=self.getCellValue(sheet_element, letter, number)
         #Get spanning
         spanning_columns=cell.getAttribute('numbercolumnsspanned')
@@ -1081,8 +1074,8 @@ removeChild(oldchild) – Re
         """
 #        if cell.__class__ not in [ODFCell, ODFFORMULA]: FALTA PROGRAMAR
         
-        row=sheet_element.getElementsByType(TableRow)[number2index(number)]
-        oldcell=row.getElementsByType(TableCell)[letter2index(letter)]
+        row=sheet_element.getElementsByType(TableRow)[row2index(number)]
+        oldcell=row.getElementsByType(TableCell)[column2index(letter)]
         row.insertBefore(cell.generate(), oldcell)
         row.removeChild(oldcell)
         
@@ -1306,40 +1299,57 @@ class ODS_Write(ODS):
 
 
 ##########################################################################################
+## Allows to operate with columns letter names
+## @param letter String with the column name. For example A or AA...
+## @param number Columns to move
+## @return String With the name of the column after movement
 def letter_add(letter, number):
-    """Add to columns to letter
-    el ord de A=65
-    el ord de Z=90
-    
-    Z es sumar 24
-    """
-    maxord=ord(letter)+number
-    result=""
-    while maxord>90:
-        result=result+"A"
-        maxord=maxord-26   
-    result=result+chr(maxord)
-    return result
+    letter_value=column2number(letter)+number
+    return number2column(letter_value)
+
 
 def number_add(letter,number):
     return str(int(letter)+number)
 
+## Convierte un número a una columna de hoja de datos
+def number2column(n):
+    """Number to Excel-style column name, e.g., 1 = A, 26 = Z, 27 = AA, 703 = AAA."""
+    name = ''
+    while n > 0:
+        n, r = divmod (n - 1, 26)
+        name = chr(r + ord('A')) + name
+    return name
 
-def letter2index(letters):
-    """
-        Converts sheet leter to an index begining with 0
-    """
-    def caracter2value(caracter):
-        return ord(caracter)-65
-    ############################
-    if len(letters)==1:
-        return caracter2value(letters[0])
-        
-def number2index( number):
-    """
-        Converts sheet number to an index begining with 0
-    """
+## Convierte una columna de hoja de datos a un número
+def column2number(name):
+    """Excel-style column name to number, e.g., A = 1, Z = 26, AA = 27, AAA = 703."""
+    n = 0
+    for c in name:
+        n = n * 26 + 1 + ord(c) - ord('A')
+    return n
+
+## Convierte una columna de hoja de datos a un indice es decir el numero -1
+def column2index(name):
+    return column2number(name)-1
+
+## Convierte el numero de la fila de la hoja de datos a un índice, es decir el número -1
+def row2index(number):
     return int(number)-1
+
+## Covierte el numero cadena de la base de datos a numero entero
+def row2number(strnumber):
+    return int(strnumber)
+
+## Convierte el numero de la fila al numero cadena de la hoja de datos
+def number2row(number):
+    return str(number)
+## Convierte el indice de la fila al numero cadena de la hoja de datos
+def index2row(index):
+    return str(index+1)
+## Convierte el indice de la columna a la cadena de letras de la columna de la hoja de datos
+def index2column(index):
+    return number2column(index+1)
+    
 
 def makedirs(dir):
     try:
@@ -1378,6 +1388,8 @@ if __name__ == "__main__":
     s2.setColumnsWidth([330, 150])
     s2.setCursorPosition("D", "6")
     s2.setSplitPosition("B", "2")
+    
+    #Adding a cell to s1 after s2 definition
     cell=OdfCell("B", "10", "Celda con OdfCell", "HeaderYellow")
     cell.setComment("Comentario")
     cell.setSpanning(2, 2)
@@ -1389,15 +1401,11 @@ if __name__ == "__main__":
     for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderRed", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
         s3.add("B", number_add("1", number) , style, style=style)
     doc.setActiveSheet(s3)
-    
-    
     s3.add("A",number_add("2", number+1) ,"LibODFGenerator has the folowing default cell classes:")
     s3.add("B",number_add("2", number+1) ,OdfMoney(1234.23, "EUR"))
     s3.add("C",number_add("2", number+1) ,OdfMoney(-1234.23, "EUR"))
     s3.add("B",number_add("2", number+2) ,OdfPercentage(1234.23, 10000))
     s3.add("C",number_add("2", number+2) ,OdfPercentage(-1234.23, 25000))
-    s3.setSplitPosition("B", "1")
-    s3.setCursorPosition("B", "1")
 
 
     s4=doc.createSheet("Splitting")
