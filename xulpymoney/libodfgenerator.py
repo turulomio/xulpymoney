@@ -536,26 +536,15 @@ B1:
             s.addElement(TableColumnProperties(columnwidth="{}{}".format(w, unit)))
             self.doc.automaticstyles.addElement(s)   
         self.widths=widths
+        
+    ## Returns the last letter used in the sheet . Returns a string with the letter name of the column
+    def lastColumn(self):
+        return number2column(self.columns())
 
-    def lastLetter(self):
-        """
-            Returns the last letter used. Returns a string.
-        """
-        max_letter=""
-        for c in self.arr:
-            if c.letter>max_letter:
-                max_letter=c.letter
-        return max_letter
-
-    def lastNumber(self):
-        """
-            Returns the last number used. Returns a string
-        """
-        max_number=""
-        for c in self.arr:
-            if c.number>max_number:
-                max_number=c.letter
-        return max_number
+    ## Returns the last  row name used
+    ## @return string row name
+    def lastRow(self):
+        return  number2row(self.rows())
 
     def mergeCells(self, letter, number,  columns, rows):
         """
@@ -564,7 +553,6 @@ B1:
         c=self.getCell(letter, number)
         c.setSpanning(columns, rows)
 
-        
     def addCell(self, cell): 
         self.arr.append(cell)
         
@@ -623,18 +611,16 @@ B1:
             column=column2number(cell.letter)
             if column>r:
                 r=column
-        return r+1
+        return r
 
+    ## Return the number of rows that are used in the cell.
     def rows(self):
-        """
-            Gets column number
-        """
         r=0
         for cell in self.arr:
             column=row2number(cell.number)
             if column>r:
                 r=column
-        return r+1
+        return r
 
 class OdfFormula:
 
@@ -1311,9 +1297,10 @@ def letter_add(letter, number):
 def number_add(letter,number):
     return str(int(letter)+number)
 
-## Convierte un número a una columna de hoja de datos
+## Convierte un número  con el numero de columna al nombre de la columna de hoja de datos
+##
+## Number to Excel-style column name, e.g., 1 = A, 26 = Z, 27 = AA, 703 = AAA.
 def number2column(n):
-    """Number to Excel-style column name, e.g., 1 = A, 26 = Z, 27 = AA, 703 = AAA."""
     name = ''
     while n > 0:
         n, r = divmod (n - 1, 26)
@@ -1321,36 +1308,41 @@ def number2column(n):
     return name
 
 ## Convierte una columna de hoja de datos a un número
+##
+## Excel-style column name to number, e.g., A = 1, Z = 26, AA = 27, AAA = 703.
 def column2number(name):
-    """Excel-style column name to number, e.g., A = 1, Z = 26, AA = 27, AAA = 703."""
     n = 0
     for c in name:
         n = n * 26 + 1 + ord(c) - ord('A')
     return n
 
-## Convierte una columna de hoja de datos a un indice es decir el numero -1
+## Converts a column name to a index position (number of column -1)
 def column2index(name):
     return column2number(name)-1
 
-## Convierte el numero de la fila de la hoja de datos a un índice, es decir el número -1
+## Convierte el nombre de la fila de la hoja de datos a un índice, es decir el número de la fila -1
 def row2index(number):
     return int(number)-1
 
-## Covierte el numero cadena de la base de datos a numero entero
+## Covierte el nombre de la fila de la hoja de datos a un  numero entero que corresponde con el numero de la fila
 def row2number(strnumber):
     return int(strnumber)
 
-## Convierte el numero de la fila al numero cadena de la hoja de datos
+## Convierte el numero de la fila al nombre de la fila en la hoja de datos , que corresponde con un string del numero de la fila
 def number2row(number):
     return str(number)
+    
 ## Convierte el indice de la fila al numero cadena de la hoja de datos
 def index2row(index):
     return str(index+1)
+    
 ## Convierte el indice de la columna a la cadena de letras de la columna de la hoja de datos
 def index2column(index):
     return number2column(index+1)
     
-
+## Crea un directorio con todos sus subdirectorios
+##
+## No produce error si ya está creado.
 def makedirs(dir):
     try:
         os.makedirs(dir)
@@ -1400,7 +1392,6 @@ if __name__ == "__main__":
     s3.add("A","1","LibODFGenerator has the folowing default Styles:")
     for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderRed", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
         s3.add("B", number_add("1", number) , style, style=style)
-    doc.setActiveSheet(s3)
     s3.add("A",number_add("2", number+1) ,"LibODFGenerator has the folowing default cell classes:")
     s3.add("B",number_add("2", number+1) ,OdfMoney(1234.23, "EUR"))
     s3.add("C",number_add("2", number+1) ,OdfMoney(-1234.23, "EUR"))
@@ -1414,6 +1405,8 @@ if __name__ == "__main__":
             s4.add(letter, str(number), letter+str(number), "HeaderYellowLeft")
     s4.setCursorPosition("C", "3")
     s4.setSplitPosition("C", "3")
+    
+    doc.setActiveSheet(s3)
     doc.save()
     print("ODS Generated")
 
