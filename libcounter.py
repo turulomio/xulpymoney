@@ -1,5 +1,5 @@
 ## @package libcounter
-## This file is from pysgae project
+## This file is from Xulpymoney project
 ## Do not edit, It will be overriden
 
 import datetime
