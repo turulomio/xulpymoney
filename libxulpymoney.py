@@ -1430,17 +1430,17 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).setFancy(a.comentario)))
             tabla.setItem(rownumber, 5+diff, qleft(a.id))
-            if self.selected!=None:
-                if a.id==self.selected.id:
+            if self.selected.length()>0:
+                if a.id==self.selected.only().id:
                     tabla.selectRow(rownumber+1)
-            
+
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-#        table.setColumnHidden(5, True)
+        table.setColumnHidden(5, True)
         for i, o in enumerate(self.values_order_by_datetime()):
             importe=Money(self.mem, o.importe, account.currency)
             lastmonthbalance=lastmonthbalance+importe

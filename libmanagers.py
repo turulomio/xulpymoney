@@ -357,14 +357,14 @@ class DictObjectManager_With_IdDate(DictObjectManager_With_Id):
 
 class DictObjectManager_With_IdDatetime(DictObjectManager_With_Id):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dict to access objects of the set"""
-    
+
     def __init__(self):
         DictObjectManager_With_Id.__init__(self)
 
     ## Uses dict because is faster
     def values_order_by_datetime(self):
         return sorted(self.dic.values(), key=lambda o: o.datetime)
-        
+
 ## Usefull when creating a class with two attributes self.id and self.name only
 class Object_With_IdName:
     ## Constructor with the following attributes combination
