@@ -54,12 +54,11 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         #Coloca en tabla los sumaatorios
         for i,  s in enumerate(suma):
             self.table.setItem(i, 13,self.mem.localcurrency.qtablewidgetitem(s) )
-        
+
         #Add years total
         self.table.setItem(rows, 0, qcenter(self.tr("Total")))
         self.table.setItem(rows, 13, self.mem.localcurrency.qtablewidgetitem(sum(suma)))
 
-    
     @pyqtSlot() 
     def on_actionShowMonth_triggered(self):
         newtab = QWidget()
@@ -68,13 +67,11 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
         set=AccountOperationManager(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
-        set.order_by_datetime()
         set.myqtablewidget(table, True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
         self.tab.setCurrentWidget(newtab)
 
-    
     @pyqtSlot() 
     def on_actionShowYear_triggered(self):
         newtab = QWidget()
