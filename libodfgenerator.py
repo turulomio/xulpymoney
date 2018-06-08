@@ -564,10 +564,10 @@ B1:
         elif result.__class__ in (list,):#Una lista
             for i,row in enumerate(result):
                 if row.__class__ in (int, str, float, datetime.datetime,  datetime.date):#Una lista de una columna
-                    self.addCell(OdfCell(letter, number_add(number, i), result[i], style))
+                    self.addCell(OdfCell(letter, rowAdd(number, i), result[i], style))
                 elif row.__class__ in (list, ):#Una lista de varias columnas
                     for j,column in enumerate(row):
-                        self.addCell(OdfCell(letter_add(letter, j), number_add(number, i), result[i][j], style))
+                        self.addCell(OdfCell(columnAdd(letter, j), rowAdd(number, i), result[i][j], style))
                 else:
                     logging.warning(row.__class__, "ROW CLASS NOT FOUND",  row)
 
@@ -1284,12 +1284,12 @@ class ODS_Write(ODS):
 ## @param letter String with the column name. For example A or AA...
 ## @param number Columns to move
 ## @return String With the name of the column after movement
-def letter_add(letter, number):
+def columnAdd(letter, number):
     letter_value=column2number(letter)+number
     return number2column(letter_value)
 
 
-def number_add(letter,number):
+def rowAdd(letter,number):
     return str(int(letter)+number)
 
 ## Convierte un número  con el numero de columna al nombre de la columna de hoja de datos
@@ -1386,12 +1386,12 @@ if __name__ == "__main__":
     s3.setColumnsWidth([400, 150, 150])
     s3.add("A","1","LibODFGenerator has the folowing default Styles:")
     for number,  style in enumerate(["HeaderOrange", "HeaderYellow", "HeaderGreen", "HeaderRed", "HeaderGray", "HeaderOrangeLeft", "HeaderYellowLeft","HeaderGreenLeft",  "HeaderGrayLeft", "TextLeft", "TextRight", "TextCenter"]):
-        s3.add("B", number_add("1", number) , style, style=style)
-    s3.add("A",number_add("2", number+1) ,"LibODFGenerator has the folowing default cell classes:")
-    s3.add("B",number_add("2", number+1) ,OdfMoney(1234.23, "EUR"))
-    s3.add("C",number_add("2", number+1) ,OdfMoney(-1234.23, "EUR"))
-    s3.add("B",number_add("2", number+2) ,OdfPercentage(1234.23, 10000))
-    s3.add("C",number_add("2", number+2) ,OdfPercentage(-1234.23, 25000))
+        s3.add("B", rowAdd("1", number) , style, style=style)
+    s3.add("A",rowAdd("2", number+1) ,"LibODFGenerator has the folowing default cell classes:")
+    s3.add("B",rowAdd("2", number+1) ,OdfMoney(1234.23, "EUR"))
+    s3.add("C",rowAdd("2", number+1) ,OdfMoney(-1234.23, "EUR"))
+    s3.add("B",rowAdd("2", number+2) ,OdfPercentage(1234.23, 10000))
+    s3.add("C",rowAdd("2", number+2) ,OdfPercentage(-1234.23, 25000))
 
 
     s4=doc.createSheet("Splitting")
