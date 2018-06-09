@@ -5719,14 +5719,14 @@ INSERT INTO public.products VALUES ('LYXETFSMALLC', 'FR0010168773', 'EUR', 4, NU
 INSERT INTO public.products VALUES ('LYXETFSP500A', 'LU0496786574', 'EUR', 4, NULL, 81511, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#LU0496786574||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXETFSTXX60', 'FR0010345371', 'EUR', 4, NULL, 81512, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0010345371||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXETFWORDWA', 'FR0010527275', 'EUR', 4, NULL, 79210, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0010527275||es||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('LYXIBEX2INVE', 'FR0011036268', 'EUR', 4, NULL, 79217, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0011036268||es||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('LYXIBEXINVER', 'FR0010762492', 'EUR', 4, NULL, 79230, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0010762492||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXNDX1ETF', 'FR0007063177', 'EUR', 4, NULL, 79232, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0007063177||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXOR ETF DAILY SHORTDAX X2 | DAX 30, INDEX', NULL, 'EUR', 4, '|e_fr_LYXOR|', 81692, NULL, '', '', '', 100, 'p', 2, 3, '{1}', '{3}', NULL, false, '{DSD.PA,NULL,EPA:DSD,NULL}');
 INSERT INTO public.products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', 81394, '', '', '', '', 100, 'c', 2, 3, '{1}', '{3}', 'LVE.PA||fr||False', false, '{LVE.PA,NULL,EPA:LVE,NULL}');
 INSERT INTO public.products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', 'LU0252634307', 'EUR', 4, '', 81693, '', '', '', '', 100, 'c', 2, 3, '{1}', '{3}', '', false, '{LVD.PA,NULL,EPA:LVD,NULL}');
 INSERT INTO public.products VALUES ('LYXOR ETF LEVERAGED CAC 40', 'FR0010592014  ', 'EUR', 4, '', 81709, '', NULL, NULL, NULL, 100, 'c', 2, 3, '{1}', '{3}', NULL, false, '{LVC.PA,NULL,EPA:LVC,NULL}');
 INSERT INTO public.products VALUES ('LYXOR ETF LEVERAGED FTSE MIB', 'FR0010446658  ', 'EUR', 4, '', 81708, '', NULL, NULL, NULL, 100, 'c', 2, 6, '{1}', '{3}', NULL, false, '{LEVMIB.MI,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Lyxor Ibex 35 Doble Inverso Diario UCITS ETF Acc', 'FR0011036268', 'EUR', 4, NULL, 79217, NULL, NULL, NULL, NULL, 100, 'c', 2, 1, NULL, NULL, 'MC#FR0011036268||es||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('Lyxor Ibex 35 Inverso Diario UCITS ETF Acc', 'FR0010762492', 'EUR', 4, NULL, 79230, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, 'MC#FR0010762492||es||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, '|e_fr_LYXOR|', 79228, '', '', '', '', 100, 'c', 2, 1, '{1}', '{3}', 'MC#FR0011042753||es||False', false, '{IBEXA.MC,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('LYXOR IBEX ETF', 'FR0010251744', 'EUR', 4, '|e_fr_LYXOR|', 81357, '', '', '', '', 100, 'c', 0, 1, '{1}', '{3}', 'MC#FR0010251744||es||False', false, '{LYXIB.MC,NULL,BME:LYXIB,NULL}');
 INSERT INTO public.products VALUES ('LYXOR XBEAR ES50', 'FR0010424143', 'EUR', 4, '|e_fr_LYXOR|', 81092, '', '', '', '', 100, 'p', 2, 3, '{1}', '{3}', 'BXX.PA||fr||False', false, '{BXX.PA,NULL,EPA:BXX,NULL}');
@@ -8109,7 +8109,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('zooplus AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Zuoan Fashion Ltd.', NULL, 'USD', 1, NULL, 78062, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-80');
+INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
 INSERT INTO public.globals VALUES (13, 'mem/benchmarkid', '79329');
@@ -8119,7 +8119,7 @@ INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5')
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 80840, 74747, 81710, 79360, 81105, 81083, 81090, 79223, 78384, 81117, 81715, 74788, 78687, 81111, 79359, 81719, 81720, 79142, 81394, 81436');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO public.globals VALUES (1, 'Version', '201805250445');
+INSERT INTO public.globals VALUES (1, 'Version', '201806090913');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '1997');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
