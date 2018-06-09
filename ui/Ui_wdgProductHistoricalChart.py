@@ -78,7 +78,6 @@ class Ui_wdgProductHistoricalChart(object):
         self.chkSMA200.setObjectName("chkSMA200")
         self.horizontalLayout_3.addWidget(self.chkSMA200)
         self.chkMedian = QtWidgets.QCheckBox(wdgProductHistoricalChart)
-        self.chkMedian.setChecked(True)
         self.chkMedian.setObjectName("chkMedian")
         self.horizontalLayout_3.addWidget(self.chkMedian)
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
