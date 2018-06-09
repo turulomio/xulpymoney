@@ -21,7 +21,7 @@ import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty, deprecated
-from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType
+from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType
 from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -5183,14 +5183,13 @@ class LeverageManager(ObjectManager_With_IdName_Selectable):
         self.mem=mem
 
     def load_all(self):
-        self.append(Leverage(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), 1))
-        self.append(Leverage(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), 10))
-        self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2))
-        self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3))
-        self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
-        self.append(Leverage(self.mem).init__create( 5,QApplication.translate("Core","Leverage x5"), 5))
-        self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), 10))
-
+        self.append(Leverage(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), eLeverageType.NotLeveraged))
+        self.append(Leverage(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), eLeverageType.Variable))
+        self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), eLeverageType.X2))
+        self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), eLeverageType.X3))
+        self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), eLeverageType.X4))
+        self.append(Leverage(self.mem).init__create( 5,QApplication.translate("Core","Leverage x5"), eLeverageType.X5))
+        self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), eLeverageType.X10))
 
 class OrderManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
@@ -5472,8 +5471,8 @@ class Currency:
             a.setForeground(QColor(255, 0, 0))
         return a
 
+## Class that compares two products, removes ohclDaily that aren't in both products
 class ProductComparation:
-    """Compares two products, removes ohclDaily that aren't in both products"""
     def __init__(self, mem, product1, product2):
         self.mem=mem
         
@@ -5594,6 +5593,28 @@ class ProductComparation:
         r.append(last)
         for index in range(idx+1, self.set1.length()):
             last=last*(1+ self.set1.arr[index-1].percentage(self.set1.arr[index]).value/self.product1.leveraged.multiplier)
+            r.append(last)
+        return r
+        
+    def product1PercentageFromFirstProduct2InversePrice(self):
+        """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. """
+        idx=self.index(self.__fromDate)
+        r=[]
+        last=self.set2.arr[idx].close
+        r.append(last)
+        for index in range(idx+1, self.set1.length()):
+            last=last*(1- self.set1.arr[index-1].percentage(self.set1.arr[index]).value)
+            r.append(last)
+        return r 
+        
+    def product1PercentageFromFirstProduct2InversePriceLeveragedReduced(self):
+        """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. Contrala leverages"""
+        idx=self.index(self.__fromDate)
+        r=[]
+        last=self.set2.arr[idx].close
+        r.append(last)
+        for index in range(idx+1, self.set1.length()):
+            last=last*(1- self.set1.arr[index-1].percentage(self.set1.arr[index]).value/self.product1.leveraged.multiplier)
             r.append(last)
         return r
             

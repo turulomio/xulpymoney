@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneytypes import eTickerPosition
+from libxulpymoneytypes import eTickerPosition, eLeverageType
 import sys
 class Update:
     """DB update system
@@ -21,7 +21,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201805250445
+        self.lastcodeupdate=201806090913
         self.need_update()
 
    
@@ -2309,6 +2309,13 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201805250445)
+        if self.dbversion<201806090913:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set name=%s where id=%s", ('Lyxor Ibex 35 Inverso Diario UCITS ETF Acc', 79230))
+            cur.execute("update products set name=%s,leveraged=%s where id=%s", ('Lyxor Ibex 35 Doble Inverso Diario UCITS ETF Acc', eLeverageType.X2,  79217))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201806090913)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

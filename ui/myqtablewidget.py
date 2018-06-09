@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from libodfgenerator import ODS,  letter_add,  number_add,  OdfMoney,  OdfPercentage
+from libodfgenerator import ODS,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
 import datetime
 import logging
 from decimal import Decimal
@@ -128,12 +128,12 @@ class Table2ODS(ODS):
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange")
+                sheet.add(columnAdd(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange")
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
                 try:#Caputuro cuando se numera sin items 1, 2, 3
-                    sheet.add("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
+                    sheet.add("A", rowAdd(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
                 except:
                     pass
         #Items
@@ -141,7 +141,7 @@ class Table2ODS(ODS):
             for letter in range(table.columnCount()):
                 try:
                     o=self.itemtext2object(table.item(number, letter).text())
-                    sheet.add(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o))
+                    sheet.add(columnAdd(firstcontentletter, letter), rowAdd(firstcontentnumber, number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
         sheet.setCursorPosition(firstcontentletter, table.rowCount()+2)
