@@ -1,15 +1,15 @@
 ## @package libcounter
-## This file is from Xulpymoney project
+## This file is from xulpymoney project
 ## Do not edit, It will be overriden
 
 import datetime
 import math
 import platform
+import sys
 from colorama import Style, Fore, init
 
 init(autoreset=True)
 
-# FROM PYSGAE
 class Counter:
     def __init__(self, maxsteps):
         self.current=0
@@ -17,6 +17,14 @@ class Counter:
         self.dt_start=datetime.datetime.now()
         self.dt_end=None
         self.name="Counter"
+        self.__sameline=True#If true counter rewrites same line
+        
+    def sameLine(self):
+        return self.__sameline
+        
+    ## Sets if output must be shown in a line
+    def setSameLine(self, bool):
+        self.sameline=bool
 
     def setName(self, name):
         self.name=name
@@ -75,7 +83,13 @@ class Counter:
             tpc_completado=Style.BRIGHT+Fore.GREEN + str(self.tpc_completado())+ Style.NORMAL+ Fore.WHITE
             segundos_current=Style.BRIGHT+Fore.GREEN + self.segundos2fechastring(self.seconds_current())+ Style.NORMAL+ Fore.WHITE
             segundos_estimados=Style.BRIGHT+Fore.RED + self.segundos2fechastring(self.seconds_estimated())+ Style.NORMAL+ Fore.WHITE
-        print ("{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(self.name, tpc_completado, segundos_current, segundos_estimados))
+        s="{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(self.name, tpc_completado, segundos_current, segundos_estimados)
+        if self.sameLine()==True:
+            sys.stdout.write("\b"*(len(s)+10))
+            sys.stdout.write(s)
+            sys.stdout.flush()
+        else:
+            print(s)
 
     def message_final(self):
         print("El proceso duró {}".format(Style.BRIGHT+Fore.RED+self.segundos2fechastring(self.seconds_current())+ Style.NORMAL+ Fore.WHITE))
