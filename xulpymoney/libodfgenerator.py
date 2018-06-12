@@ -1347,7 +1347,6 @@ def makedirs(dir):
 def ODFPYversion():
     return __version__.split("/")[1]
 
-
 if __name__ == "__main__":
     #ODS
     doc=ODS_Write("libodfgenerator.ods")
