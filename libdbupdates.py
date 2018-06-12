@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneytypes import eTickerPosition, eLeverageType
+from libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType
 import sys
 class Update:
     """DB update system
@@ -2316,6 +2316,19 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201806090913)
+        if self.dbversion<201806111657:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81724, 'Pictet-Multi Asset Global Opportunities R EUR', 'LU0941349275', 'EUR', 2, '', None, None, None, None, 100, 'c', 1, 3, [None, 'F00000QGX8', None, None], None ,[8, ], None, False ))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81725, 'Old Mutual Glb Eq Abs Rt A Eur Hdg Acc', 'IE00BLP5S460', 'EUR', 2, '', None, None, None, None, 100, 'c', 1, 3, [None, 'F00000TG3D', None, None], None ,[8, ], None, False ))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81726, 'Amundi Fds Ii Multi-Strat Gr A Eur Nd', 'LU0363629790', 'EUR', 2, '', None, None, None, None, 100, 'c', 1, 3, [None, 'F0000022V6', None, None], None ,[8, ], None, False ))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, priority, priorityhistorical, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81727, 'BlackRock Strategic Funds BSF Americas Diversified Equity Absolute Return Fund A2 EUR Hedged', 'LU0725892466', 'EUR', 2, '', None, None, None, None, 100, 'c', 1, 3, [None, 'F00000NR69', None, None], None ,[8, ], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201806111657)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
