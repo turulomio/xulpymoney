@@ -27,7 +27,6 @@ def appendSource(arr, name):
             counter.next_step()
         except:
             sourceoutput.append(b"ERROR | appendSource\n")
-    counter.message_final()
     return commands, sourceoutput
 
 def appendSourceWithConcurrence(arr, name,  num_workers):
@@ -55,7 +54,6 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
                 sourceoutput.append(future.result())
             except:
                 sourceoutput.append(b"ERROR | appendSourceWithConcurrence\n")
-    counter.message_final()
     return commands, sourceoutput
     ###################################################################
 
