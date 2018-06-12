@@ -12,22 +12,33 @@ init(autoreset=True)
 
 class Counter:
     def __init__(self, maxsteps):
-        self.current=0
-        self.max=maxsteps
+        self.__current=0
+        self.setMaxSteps(maxsteps)
         self.dt_start=datetime.datetime.now()
         self.dt_end=None
-        self.name="Counter"
-        self.__sameline=True#If true counter rewrites same line
+        self.setName("Counter")
+        self.setSameLine(True)
         
+    ## Gets if output must be shown in a line
+    ## @return Boolean
     def sameLine(self):
         return self.__sameline
         
     ## Sets if output must be shown in a line
     def setSameLine(self, bool):
-        self.sameline=bool
+        self.__sameline=bool
+        
+    def maxSteps(self):
+        return self.__maxsteps
+        
+    def setMaxSteps(self, value):
+        self.__maxsteps=value
+
+    def name(self):
+        return self.__name
 
     def setName(self, name):
-        self.name=name
+        self.__name=name
         
     def segundos2fechastring(self, segundos):
         dias=int(segundos/(24*60*60))
@@ -44,18 +55,18 @@ class Counter:
         """
             Función que devuelve segundos estimados que quedan
         """
-        if self.current==0:
+        if self.__current==0:
             return 0
-        resultado=(self.max-self.current)*(datetime.datetime.now()-self.dt_start).total_seconds()/self.current
+        resultado=(self.maxSteps()-self.__current)*(datetime.datetime.now()-self.dt_start).total_seconds()/self.__current
         return resultado    
         
     def seconds_estimated(self):
         """
             Función que devuelve segundos totales estimados que durará el proceso
         """
-        if self.current==0:
+        if self.__current==0:
             return 0
-        resultado=self.max*(datetime.datetime.now()-self.dt_start).total_seconds()/self.current
+        resultado=self.maxSteps()*(datetime.datetime.now()-self.dt_start).total_seconds()/self.__current
         return resultado
         
     def seconds_current(self):
@@ -63,15 +74,15 @@ class Counter:
         return (datetime.datetime.now()-self.dt_start).total_seconds()
         
     def next_step(self):
-        self.current=self.current+1
-        if self.current>self.max:
-            print ("You need to change counter maximum steps in the constructor to {}".format(self.current))
+        self.__current=self.__current+1
+        if self.__current>self.maxSteps():
+            print ("You need to change counter maximum steps in the constructor to {}".format(self.__current))
         self.message_step()
         
     def tpc_completado(self):
-        if self.max==0:
+        if self.maxSteps()==0:
             return int(0)
-        return int(100*self.current/self.max)
+        return int(100*self.__current/self.maxSteps())
 
     def message_step(self):
         global parser
@@ -83,7 +94,7 @@ class Counter:
             tpc_completado=Style.BRIGHT+Fore.GREEN + str(self.tpc_completado())+ Style.NORMAL+ Fore.WHITE
             segundos_current=Style.BRIGHT+Fore.GREEN + self.segundos2fechastring(self.seconds_current())+ Style.NORMAL+ Fore.WHITE
             segundos_estimados=Style.BRIGHT+Fore.RED + self.segundos2fechastring(self.seconds_estimated())+ Style.NORMAL+ Fore.WHITE
-        s="{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(self.name, tpc_completado, segundos_current, segundos_estimados)
+        s="{}. Completado {} %. Tiempo transcurrido: {}. Tiempo estimado: {}. ".format(Fore.YELLOW + self.name()+Fore.RESET, tpc_completado, segundos_current, segundos_estimados)
         if self.sameLine()==True:
             sys.stdout.write("\b"*(len(s)+10))
             sys.stdout.write(s)
@@ -92,4 +103,28 @@ class Counter:
             print(s)
 
     def message_final(self):
+        if self.sameLine()==True:
+            sys.stdout.flush()
+            print("\n")
         print("El proceso duró {}".format(Style.BRIGHT+Fore.RED+self.segundos2fechastring(self.seconds_current())+ Style.NORMAL+ Fore.WHITE))
+
+
+if __name__ == "__main__":
+    import time
+    print (Fore.GREEN + "This is a counter in the same line")
+    c=Counter(10)
+    c.setName("Counter in the same line")
+    for x in range(c.maxSteps()):
+        time.sleep(0.3)
+        c.next_step()
+    c.message_final()
+    print()
+
+    print (Fore.GREEN + "This is a normal counter")
+    c=Counter(10)
+    c.setName("Normal counter")
+    c.setSameLine(False)
+    for x in range(c.maxSteps()):
+        time.sleep(0.3)
+        c.next_step()
+    c.message_final()
