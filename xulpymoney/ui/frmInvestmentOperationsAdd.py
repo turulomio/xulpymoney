@@ -61,7 +61,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.wdg2CTaxes.setTextA(self.operinversion.impuestos)
             self.wdg2CComission.setTextA(self.operinversion.comision)
             self.wdg2CPrice.setTextA(self.operinversion.valor_accion)
-            self.txtAcciones.setText(self.operinversion.acciones)
+            self.txtAcciones.setText(self.operinversion.shares)
 
         self.wdg2CTaxes.textChanged.connect(self.on_wdg2CTaxes_mytextChanged)
         self.wdg2CComission.textChanged.connect(self.on_wdg2CComission_mytextChanged)
@@ -99,11 +99,11 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion.comision=self.wdg2CComission.decimalA()
         self.operinversion.valor_accion=self.wdg2CPrice.decimalA()
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
-        self.operinversion.acciones=self.txtAcciones.decimal()
+        self.operinversion.shares=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
 #            self.operinversion.importe=self.txtNetBruto.decimal()
             self.operinversion.show_in_ranges=False
-            if self.operinversion.acciones>Decimal('0'):
+            if self.operinversion.shares>Decimal('0'):
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
@@ -112,7 +112,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 return        
         elif id_tiposoperaciones==4: #Compra
 #            self.operinversion.importe=self.txtNet.decimal()
-            if self.operinversion.acciones<0: 
+            if self.operinversion.shares<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
@@ -121,7 +121,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 return
         elif id_tiposoperaciones==6: #Añadido    
 #            self.operinversion.importe=self.txtNet.decimal()
-            if self.operinversion.acciones<0: 
+            if self.operinversion.shares<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)

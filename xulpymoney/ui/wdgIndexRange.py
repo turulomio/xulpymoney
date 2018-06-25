@@ -83,7 +83,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             for i in arr:
                 if i[0]>=min and i[0]<max:
                     o=i[1]
-                    resultado=resultado+ self.tr("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.investment.name, o.investment.account.name, round(o.acciones, 0),  o.price(type=1), o.gross(type=1)))
+                    resultado=resultado+ self.tr("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.investment.name, o.investment.account.name, round(o.shares, 0),  o.price(type=1), o.gross(type=1)))
             return resultado[:-1]
         ######################################################
         inicio=datetime.datetime.now()

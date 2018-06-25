@@ -88,7 +88,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
-                acciones=self.investment.acciones()
+                acciones=self.investment.shares()
                 tpccalculado=Percentage(estimacion.estimation, self.investment.product.result.basic.last.quote)
                 self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
                 self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
@@ -223,7 +223,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         w.exec_()
         
         #if num shares after add is 0, changes expiration date to today-1
-        if self.investment.acciones()==0:
+        if self.investment.shares()==0:
             self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
             self.on_cmdInvestment_released()
             
@@ -236,7 +236,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.update_tables() 
         
         #if num shares after add is 0, changes expiration date to today-1
-        if self.investment.acciones()==0:
+        if self.investment.shares()==0:
             self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
             self.on_cmdInvestment_released()
 
@@ -253,7 +253,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         w.exec_()
         
         #if num shares after add is 0, changes expiration date to today-1
-        if self.investment.acciones()==0:
+        if self.investment.shares()==0:
             self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
             self.on_cmdInvestment_released()
         
@@ -292,7 +292,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.con.commit()     
         
         #if num shares after add is 0, changes expiration date to today-1
-        if self.investment.acciones()==0:
+        if self.investment.shares()==0:
             self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
             self.on_cmdInvestment_released()
         

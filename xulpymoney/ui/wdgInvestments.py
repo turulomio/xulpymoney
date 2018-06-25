@@ -240,7 +240,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     @pyqtSlot(int, int) 
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         if column==8:#TPC Venta
-            qmessagebox(self.tr("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
+            qmessagebox(self.tr("Shares number: {0}").format(self.selInvestment.shares())+"\n"+
                     self.tr("Purchase price average: {0}").format(self.selInvestment.op_actual.average_price().local())+"\n"+
                     self.tr("Selling point: {}").format(self.selInvestment.venta)+"\n"+
                     self.tr("Selling all shares you get {}").format(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta)).local())
