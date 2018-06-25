@@ -45,7 +45,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.investment.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
         self.on_radRe_clicked()
 
-    def acciones(self):
+    def shares(self):
         resultado=Decimal(0)
         
         if self.radDes.isChecked():#DESINVERSION
@@ -54,15 +54,15 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             for rec in self.investment.op_actual.arr:
                 pendiente=rec.pendiente(q)
                 if (perdida+pendiente).isZero():
-                    resultado=resultado+rec.acciones
+                    resultado=resultado+rec.shares
                     break
                 elif (perdida+pendiente).isGTZero():
-                    resultado=resultado+rec.acciones
+                    resultado=resultado+rec.shares
                     perdida=perdida+pendiente
                 elif (perdida+pendiente).isLTZero():
                     # Si de tantas acciones queda pendiente "pendiente"
                     # X                                queda la perdida
-                    acciones=abs(int(perdida.amount*rec.acciones/pendiente.amount))
+                    acciones=abs(int(perdida.amount*rec.shares/pendiente.amount))
                     resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
         else:#REINVERSION
@@ -110,7 +110,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             qmessagebox(self.tr("Share price can't be 0"))
             return
         
-        acciones=self.acciones()
+        acciones=self.shares()
         importe=valor_accion*acciones
         self.txtAcciones.setText(acciones)
         self.txtImporte.setText(importe)
@@ -132,7 +132,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_op.myqtablewidget(self.tblOperaciones)
         self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespues, quote=self.investment.product.result.basic.last)
         self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
-        self.gains(self.tblGainsAfter,  self.investment.acciones()+self.acciones(), self.sim_opactual.average_price())
+        self.gains(self.tblGainsAfter,  self.investment.shares()+self.shares(), self.sim_opactual.average_price())
         
         #After at
         self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespuesAt, quote=at)
@@ -144,7 +144,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         #Before
         self.tabAB.setCurrentIndex(1)
         self.tabOpAcHi.setCurrentIndex(1)
-        self.gains(self.tblGainsBefore, self.investment.acciones(), self.investment.op_actual.average_price())
+        self.gains(self.tblGainsBefore, self.investment.shares(), self.investment.op_actual.average_price())
         
         self.cmdOrder.setEnabled(True)
         self.cmdGraph.setEnabled(True)

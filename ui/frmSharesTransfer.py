@@ -11,7 +11,7 @@ class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):
         self.mem=mem
         self.origen=origen#Clase inversión
         self.lbl.setText(self.tr("Shares transfer from\n{0}").format(self.origen.name))
-        self.txtAcciones.setText(str(self.origen.acciones()))
+        self.txtAcciones.setText(str(self.origen.shares()))
         self.mem.data.investments_active().qcombobox_same_investmentmq(self.combo, self.origen.product)
 
     @pyqtSlot()  

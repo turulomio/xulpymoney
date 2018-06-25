@@ -48,7 +48,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 self.operinversiones=self.investment.op_actual.copy_until_datetime(None, self.mem, self.investment)
             self.operinversiones.myqtablewidget(self.table, self.investment.product.result.basic.last,  type)
             suminvertido=self.operinversiones.invertido(type)
-        sumacciones=self.operinversiones.acciones()
+        sumacciones=self.operinversiones.shares()
         
         if sumacciones==Decimal(0):
             self.puntoventa=Money(self.mem, 0, self.investment.account.currency)

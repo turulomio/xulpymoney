@@ -53,7 +53,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @pyqtSlot()
     def on_actionShowReinvest_triggered(self):
-        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
+        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
@@ -72,7 +72,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 
     @pyqtSlot()
     def on_actionShowReinvestSameProduct_triggered(self):
-        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
+        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         

@@ -312,8 +312,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 2, tpc.qtablewidgetitem())
                 self.tblTPC.setItem(row, 3,  (tpc*365/days).qtablewidgetitem())
                 if self.investment:
-                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.investment.acciones(), self.investment.balance()))
-                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.investment.acciones()*(self.product.result.basic.last.quote-quote.quote)))
+                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.investment.shares(), self.investment.balance()))
+                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.investment.shares()*(self.product.result.basic.last.quote-quote.quote)))
             except:
                 self.tblTPC.setItem(row, 2, Percentage().qtablewidgetitem())    
                 self.tblTPC.setItem(row, 3,  Percentage().qtablewidgetitem())
@@ -467,7 +467,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.investment,  None)
         w.wdgDT.setCombine(self.mem, self.selDPS.date, self.product.stockmarket.closes, self.product.stockmarket.zone)
-        gross=self.selDPS.gross*self.investment.acciones(self.selDPS.date)
+        gross=self.selDPS.gross*self.investment.shares(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)
         w.txtRetencion.setText(gross*self.mem.taxcapitalappreciation)
