@@ -20,7 +20,7 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
-from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty, deprecated
+from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType
 from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
@@ -1087,26 +1087,27 @@ class StockMarketManager(ObjectManager_With_IdName_Selectable):
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
-    ## Load in the Manager all Stockmarket objects
+    ## Load in the Manager all Stockmarket objects. Originally StockMarkets was a db table with this values.
+    ## @code
+    ##         id | country |  starts  |              name               |  closes  |       zone       
+    ##----+---------+----------+---------------------------------+----------+------------------
+    ## 11 | be      | 07:00:00 | Bolsa de Bélgica                | 17:38:00 | Europe/Madrid
+    ## 12 | nl      | 07:00:00 | Bolsa de Amsterdam              | 17:38:00 | Europe/Madrid
+    ## 13 | ie      | 07:00:00 | Bolsa de Dublín                 | 17:38:00 | Europe/Madrid
+    ## 14 | fi      | 07:00:00 | Bolsa de Helsinki               | 17:38:00 | Europe/Madrid
+    ##  6 | it      | 07:00:00 | Bolsa de Milán                  | 17:38:00 | Europe/Rome
+    ##  7 | jp      | 09:00:00 | Bolsa de Tokio                  | 20:00:00 | Asia/Tokyo
+    ##  5 | de      | 09:00:00 | Bosa de Frankfurt               | 17:38:00 | Europe/Berlin
+    ##  2 | us      | 09:30:00 | Bolsa de New York               | 16:38:00 | America/New_York
+    ## 10 | eu      | 07:00:00 | Bolsa Europea                   | 17:38:00 | Europe/Madrid
+    ##  9 | pt      | 07:00:00 | Bolsa de Lisboa                 | 17:38:00 | Europe/Lisbon
+    ##  4 | en      | 07:00:00 | Bolsa de Londres                | 17:38:00 | Europe/London
+    ##  8 | cn      | 00:00:00 | Bolsa de Hong Kong              | 20:00:00 | Asia/Hong_Kong
+    ##  1 | es      | 09:00:00 | Bolsa de Madrid                 | 17:38:00 | Europe/Madrid
+    ##  3 | fr      | 09:00:00 | Bolsa de París                  | 17:38:00 | Europe/Paris
+    ## 15 | earth   | 09:00:00 | No cotiza en mercados oficiales | 17:38:00 | Europe/Madrid
+    ## @endcode
     def load_all(self):
-        #         id | country |  starts  |              name               |  closes  |       zone       
-        #----+---------+----------+---------------------------------+----------+------------------
-        # 11 | be      | 07:00:00 | Bolsa de Bélgica                | 17:38:00 | Europe/Madrid
-        # 12 | nl      | 07:00:00 | Bolsa de Amsterdam              | 17:38:00 | Europe/Madrid
-        # 13 | ie      | 07:00:00 | Bolsa de Dublín                 | 17:38:00 | Europe/Madrid
-        # 14 | fi      | 07:00:00 | Bolsa de Helsinki               | 17:38:00 | Europe/Madrid
-        #  6 | it      | 07:00:00 | Bolsa de Milán                  | 17:38:00 | Europe/Rome
-        #  7 | jp      | 09:00:00 | Bolsa de Tokio                  | 20:00:00 | Asia/Tokyo
-        #  5 | de      | 09:00:00 | Bosa de Frankfurt               | 17:38:00 | Europe/Berlin
-        #  2 | us      | 09:30:00 | Bolsa de New York               | 16:38:00 | America/New_York
-        # 10 | eu      | 07:00:00 | Bolsa Europea                   | 17:38:00 | Europe/Madrid
-        #  9 | pt      | 07:00:00 | Bolsa de Lisboa                 | 17:38:00 | Europe/Lisbon
-        #  4 | en      | 07:00:00 | Bolsa de Londres                | 17:38:00 | Europe/London
-        #  8 | cn      | 00:00:00 | Bolsa de Hong Kong              | 20:00:00 | Asia/Hong_Kong
-        #  1 | es      | 09:00:00 | Bolsa de Madrid                 | 17:38:00 | Europe/Madrid
-        #  3 | fr      | 09:00:00 | Bolsa de París                  | 17:38:00 | Europe/Paris
-        # 15 | earth   | 09:00:00 | No cotiza en mercados oficiales | 17:38:00 | Europe/Madrid
-
         self.append(StockMarket(self.mem).init__create( 1, "Bolsa de Madrid", "es", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
         self.append(StockMarket(self.mem).init__create( 11, "Bolsa de Bélgica", "be", datetime.time(9, 0), datetime.time(17, 38), "Europe/Brussels"))
         self.append(StockMarket(self.mem).init__create( 12, "Bolsa de Amsterdam", "nl", datetime.time(9, 0), datetime.time(17, 38), "Europe/Amsterdam"))
@@ -1122,14 +1123,6 @@ class StockMarketManager(ObjectManager_With_IdName_Selectable):
         self.append(StockMarket(self.mem).init__create( 8, "Bolsa de Hong Kong", "cn", datetime.time(9, 30), datetime.time(16, 8), "Asia/Hong_Kong"))
         self.append(StockMarket(self.mem).init__create( 3, "Bolsa de Paris", "fr", datetime.time(9, 0), datetime.time(17, 38), "Europe/Paris"))
         self.append(StockMarket(self.mem).init__create( 15, "No cotiza en mercados oficiales", "earth", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
-
-    @deprecated
-    def load_all_from_db(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select * from stockmarkets")
-        for row in cur:
-            self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
-        cur.close()
 
 class ConceptManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
