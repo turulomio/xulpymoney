@@ -20,7 +20,7 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
-from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty
+from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty,  l10nDecimal
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType
 from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
@@ -1439,6 +1439,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
+            print (o.importe,  l10nDecimal(o.importe))
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
             table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))       
             table.setItem(i+1, 5, qleft(o.id))
@@ -5444,7 +5445,8 @@ class Currency:
         if number==None:
             return "None " + self.symbol
         else:
-            return "{0} {1}".format(round(number, digits),self.symbol)
+            return l10nDecimal(number, digits)
+            #return "{0} {1}".format(round(number, digits),self.symbol)
             
     def currencies_exchange(self, cur,  quote, origen, destino):
         cambio=Quote.valor2(cur, origen+"2"+destino, quote['fecha'],  quote['hora'])

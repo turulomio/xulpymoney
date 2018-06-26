@@ -1,6 +1,6 @@
 ## @package libxulpymoneyfunctions
 ## @brief Package with all xulpymoney auxiliar functions.
-from PyQt5.QtCore import Qt,  QCoreApplication
+from PyQt5.QtCore import Qt,  QCoreApplication, QLocale
 from PyQt5.QtGui import QIcon,  QColor
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
 from decimal import Decimal
@@ -579,6 +579,13 @@ def web2utf8(cadena):
     cadena=cadena.replace('&Ntilde;','Ñ')
     
     return cadena
+    
+## Converts a decimal to a localized number string
+def l10nDecimal(dec, digits=2):
+    l=QLocale()
+    
+    return l.toCurrencyString(float(dec))
+    
     
 def function_name(clas):
     #    print (inspect.stack()[0][0].f_code.co_name)
