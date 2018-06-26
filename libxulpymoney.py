@@ -873,7 +873,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
 class ProductManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
-        self.selectionmode=ManagerSelectionMode.List
+        self.setSelectionMode(ManagerSelectionMode.List)
         self.mem=mem
 
     def find_by_isin(self, isin):
@@ -1361,10 +1361,9 @@ class ReinvestModel:
 
 
 class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
-    """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         DictObjectManager_With_IdDatetime_Selectable.__init__(self)
-        self.selectionmode=ManagerSelectionMode.Manager
+        self.setSelectionMode(ManagerSelectionMode.Manager)
         self.mem=mem
         
     def load_from_db(self, sql):

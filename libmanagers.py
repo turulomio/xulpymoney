@@ -91,12 +91,10 @@ class ManagerSelection(object):
     def selected(self, value):
         self.__selected=value
         
-    @property
-    def selectionmode(self):
+    def selectionMode(self):
         return self.__selectionmode
         
-    @selectionmode.setter
-    def selectionmode(self, value):
+    def setSelectionMode(self, value):
         self.__selectionmode=value
         if value==ManagerSelectionMode.Object:
             self.selected=None
@@ -106,21 +104,21 @@ class ManagerSelection(object):
             self.selected=self.__class__.__bases__[0]()
         
     def cleanSelection(self):
-        if self.selectionmode==ManagerSelectionMode.Object:
+        if self.selectionMode()==ManagerSelectionMode.Object:
             self.selected=None
-        elif self.selectionmode==ManagerSelectionMode.List:
+        elif self.selectionMode()==ManagerSelectionMode.List:
             self.selected=[]
-        elif self.selectionmode==ManagerSelectionMode.Manager:#Returns parent __class__
+        elif self.selectionMode()==ManagerSelectionMode.Manager:#Returns parent __class__
             self.selected.clean()
     
     ## Useful to setselection without interactivvite ui
     ## @param list List of objects. These objects have o.id so I can append them
     def setSelected(self, list):
         self.cleanSelection()
-        if self.selectionmode==ManagerSelectionMode.List:
+        if self.selectionMode()==ManagerSelectionMode.List:
             for o in list:
                 self.selected.append(o)
-        elif self.selectionmode==ManagerSelectionMode.Manager:
+        elif self.selectionMode()==ManagerSelectionMode.Manager:
             for o in list:
                 self.selected.append(o)
             
