@@ -97,7 +97,6 @@ class ManagerSelection(object):
         
     @selectionmode.setter
     def selectionmode(self, value):
-        print("selectionmode.setter")
         self.__selectionmode=value
         if value==ManagerSelectionMode.Object:
             self.selected=None
