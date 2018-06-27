@@ -73,6 +73,7 @@ arrMorningStar=[]
 arrQueFondos=[]
 arrGoogle=[]
 arrYahoo=[]
+arrInfobolsa=[]
 lock=multiprocessing.Lock()
 if args.filename==None:
     filename="{}/clients.txt".format(dir_tmp)
@@ -93,6 +94,8 @@ for line in f.readlines():
         arrGoogle.append(line)
     if line.find("yahoo")!=-1:
         arrYahoo.append(line)
+    if line.find("infobolsa")!=-1:
+        arrYahoo.append(line)
 f.close()
 
 futures=[]
@@ -102,6 +105,7 @@ with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
         futures.append(executor.submit(appendSourceWithConcurrence, arrQueFondos, "xulpymoney_quefondos_client", cpu_count()+1))
         futures.append(executor.submit(appendSourceWithConcurrence, arrGoogle, "xulpymoney_google_client",cpu_count()+1))
         futures.append(executor.submit(appendSourceWithConcurrence, arrYahoo, "xulpymoney_yahoo_client", cpu_count()+1))
+        futures.append(executor.submit(appendSourceWithConcurrence, arrInfobolsa, "xulpymoney_infobolsa_client", cpu_count()+1))
 
 f=open(output, "w")
 for fut in as_completed(futures):

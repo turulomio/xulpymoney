@@ -6697,21 +6697,6 @@ class ProductUpdate:
         ibex=Product(self.mem).init__db(79329)
         self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
-#        ##### YAHOO #####
-#        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Yahoo), used)
-#        yahoo=ProductManager(self.mem)
-#        yahoo.load_from_db(sql)    
-#        for p in yahoo.arr:
-#            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
-#
-#
-#
-#        ##### YAHOO INDICES Y CURRENCIES  #####
-#        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Yahoo))
-#        yahoo=ProductManager(self.mem)
-#        yahoo.load_from_db(sql)    
-#        for p in yahoo.arr:
-#            self.appendCommand(["xulpymoney_yahoo_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id)])
         ##### GOOGLE #####
         sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used)
         print(sql)
@@ -6720,13 +6705,21 @@ class ProductUpdate:
         for p in products.arr:
             self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
-        ##### GOOGLE INDICES Y CURRENCIES  #####
-        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index, eProductType.Currency, eTickerPosition.postgresql(eTickerPosition.Google))
+        ##### GOOGLE INDICES  #####
+        sql="select * from products where type in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google))
         print(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
             self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
+
+        ##### INFOBOLSA CURRENCIES  #####
+        sql="select * from products where type in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo))
+        print(sql)
+        products=ProductManager(self.mem)
+        products.load_from_db(sql)    
+        for p in products.arr:
+            self.appendCommand(["xulpymoney_infobolsa_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
         ##### QUE FONDOS ####
         sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
