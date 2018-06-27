@@ -8056,7 +8056,7 @@ INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 80840, 74747, 81710, 79360, 81105, 81083, 81090, 79223, 78384, 81117, 81715, 74788, 78687, 81111, 79359, 81719, 81720, 79142, 81394, 81436, 81724, 81725, 81726, 81727, 79244');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (1, 'Version', '201806260819');
-INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
+INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '5');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2013');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO public.globals VALUES (7, 'wdgIndexRange/spin', '2.0');
