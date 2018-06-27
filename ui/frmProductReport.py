@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from PyQt5.QtChart import QValueAxis
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, PriorityManager, PriorityHistoricalManager, ProductModesManager, ProductTypesManager
+from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
 from libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
 from libxulpymoneytypes import eHistoricalChartAdjusts
 from frmSelector import frmSelector
@@ -92,8 +92,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblTickers.setEnabled(False)
             self.txtComentario.setReadOnly(True)
             self.cmdAgrupations.setEnabled(False)
-            self.cmdPriority.setEnabled(False)
-            self.cmdPriorityHistorical.setEnabled(False)
             self.chkObsolete.setEnabled(False)
             self.cmdSave.setEnabled(False)
             
@@ -306,7 +304,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblTPC.setItem(row, 1, self.product.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
-#                tpc=(self.product.result.basic.last.quote-quote.quote)*100/quote.quote
                 tpc=Percentage(self.product.result.basic.last.quote-quote.quote, quote.quote)
                 days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, tpc.qtablewidgetitem())
@@ -320,8 +317,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 3,  self.product.currency.qtablewidgetitem(None))     
 
         self.product.agrupations.qcombobox(self.cmbAgrupations)
-        self.product.priority.qcombobox(self.cmbPriority)
-        self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
 
         self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
         self.txtTPC.setText(str(self.product.percentage))
@@ -685,8 +680,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 if value =="":
                     value=None
                 self.product.tickers[i]=value
-            self.product.priority=PriorityManager(self.mem).init__create_from_combo(self.cmbPriority)
-            self.product.priorityhistorical=PriorityHistoricalManager(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
             self.product.comment=self.txtComentario.text()                
             self.product.save()
             self.mem.con.commit()  
@@ -760,33 +753,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         f.lbl.setText(self.tr("Agrupation selection"))
         f.exec_()
         f.selected.qcombobox(self.cmbAgrupations)
-
-    def on_cmdPriority_released(self):
-        if self.product.id==None:#Insertar nueva inversión
-            selected=PriorityManager(self.mem)#Esta vacio
-        else:
-            selected=self.product.priority
-        
-        f=frmSelector(self.mem, self.mem.priorities.clone(self.mem), selected)
-        f.lbl.setText(self.tr("Priority selection"))
-        f.exec_()
-        self.cmbPriority.clear()
-        for item in f.selected.arr:
-            self.cmbPriority.addItem(item.name, item.id)
-
-    def on_cmdPriorityHistorical_released(self):
-        if self.product.id==None:#Insertar nueva inversión
-            selected=PriorityHistoricalManager(self.mem)#“acio
-        else:
-            selected=self.product.priorityhistorical
-        
-        f=frmSelector(self.mem, self.mem.prioritieshistorical.clone(self.mem),  selected) 
-        f.lbl.setText(self.tr("Historical data priority selection"))
-        f.exec_()
-        self.cmbPriorityHistorical.clear()
-        for item in f.selected.arr:
-            self.cmbPriorityHistorical.addItem(item.name, item.id)
-
 
     def on_tblDaily_itemSelectionChanged(self):
         if self.product.result.ohclDaily.selected!=None:

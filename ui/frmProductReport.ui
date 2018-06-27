@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -523,74 +523,6 @@
                            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
                          </property>
                         </item>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_32">
-                      <item>
-                       <widget class="QLabel" name="label_17">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>230</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string>Daily priority</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QComboBox" name="cmbPriority"/>
-                      </item>
-                      <item>
-                       <widget class="QToolButton" name="cmdPriority">
-                        <property name="icon">
-                         <iconset resource="../images/xulpymoney.qrc">
-                          <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_34">
-                      <item>
-                       <widget class="QLabel" name="label_19">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>230</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string>Historical priority</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QComboBox" name="cmbPriorityHistorical"/>
-                      </item>
-                      <item>
-                       <widget class="QToolButton" name="cmdPriorityHistorical">
-                        <property name="icon">
-                         <iconset resource="../images/xulpymoney.qrc">
-                          <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                        </property>
                        </widget>
                       </item>
                      </layout>

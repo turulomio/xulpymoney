@@ -5267,76 +5267,6 @@ class OrderManager(ObjectManager_With_Id_Selectable):
                 for column in range (table.columnCount()):
                     table.item(i, column).setBackground( QColor(255, 182, 182))     
 
-class PriorityManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem):
-        """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem
-                
-    def load_all(self):
-        self.append(Priority(1,"Yahoo Financials. 200 pc."))
-        self.append(Priority(5,"Productos cotizados bonus. 20 pc."))
-        self.append(Priority(6,"Societe Generale Warrants. Todos pc."))
-        self.append(Priority(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
-        self.append(Priority(9,"Mercado continuo from Bolsa de Madrid"))
-        
-    def init__create_from_db(self, arr):
-        """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=PriorityManager(self.mem)
-        if arr==None or len(arr)==0:
-            resultado.arr=[]
-        else:
-            for a in arr:
-                resultado.append(self.mem.priorities.find_by_id(a))
-        return resultado
-        
-    def array_of_id(self):
-        """Used to psycopg.execute automatical pare"""
-        resultado=[]
-        for p in self.arr:
-            resultado.append(p.id)
-        return resultado
-
-        
-    def init__create_from_combo(self, cmb):
-        """Función que convierte un combo de agrupations a un array de agrupations"""
-        for i in range (cmb.count()):
-            self.append(self.mem.priorities.find_by_id(cmb.itemData(i)))
-        return self
-                
-class PriorityHistoricalManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem):
-        """Usa la variable mem.Agrupations"""
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem
-
-    def load_all(self):
-        self.append(PriorityHistorical(3,QApplication.translate("Core","Individual. Yahoo historicals")))
-        self.append(PriorityHistorical(8,QApplication.translate("Core","Individual. Morningstar funds")))
-            
-    def init__create_from_db(self, arr):
-        """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=PriorityHistoricalManager(self.mem)
-        if arr==None or len(arr)==0:
-            resultado.arr=[]
-        else:
-            for a in arr:
-                resultado.append(self.mem.prioritieshistorical.find_by_id(a))
-        return resultado
-
-    def array_of_id(self):
-        """Used to psycopg.execute automatical pare"""
-        resultado=[]
-        for p in self.arr:
-            resultado.append(p.id)
-        return resultado
-
-    def init__create_from_combo(self, cmb):
-        """Función que convierte un combo de agrupations a un array de agrupations"""
-        for i in range (cmb.count()):
-            self.append(self.mem.prioritieshistorical.find_by_id(cmb.itemData(i)))
-        return self
-
 ## Class that represents stock market object. It gives several utils to manage it.
 class StockMarket:
     def __init__(self, mem):
@@ -6034,8 +5964,6 @@ class Product:
         self.leveraged=None
         self.stockmarket=None
         self.tickers=[None]*eTickerPosition.length()#Its a list of strings, eTickerPosition is the 
-        self.priority=None
-        self.priorityhistorical=None
         self.comment=None
         self.obsolete=None
         
@@ -6066,16 +5994,13 @@ class Product:
         self.leveraged=self.mem.leverages.find_by_id(row['leveraged'])
         self.stockmarket=self.mem.stockmarkets.find_by_id(row['stockmarkets_id'])
         self.tickers=row['tickers']
-        self.priority=PriorityManager(self.mem).init__create_from_db(row['priority'])
-        self.priorityhistorical=PriorityHistoricalManager(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         
         return self
 
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers,  priority, priorityhistorical, comment, obsolete, id=None):
-        """agrupations es un setagrupation, priority un PriorityManager y priorityhistorical un PriorityManagerhistorical"""
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, id=None):
         self.name=name
         self.isin=isin
         self.currency=currency
@@ -6092,8 +6017,6 @@ class Product:
         self.leveraged=leveraged        
         self.stockmarket=stockmarket
         self.tickers=tickers
-        self.priority=priority
-        self.priorityhistorical=priorityhistorical
         self.comment=comment
         self.obsolete=obsolete
         return self        
@@ -6118,10 +6041,10 @@ class Product:
             id=cur.fetchone()[0]
             if id>=0:
                 id=-1
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, priority=%s, priorityhistorical=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete,  self.id))
         cur.close()
     
 
@@ -6201,20 +6124,6 @@ class Product:
         if self.id>=0:
             return True
         return False
-        
-    def priority_change(self, cur):
-        """Cambia la primera prioridad y la pone en último lugar, necesita un commit()"""
-        idtochange=self.priority[0]
-        self.priority.remove(idtochange)
-        self.priority.append(idtochange)
-        cur.execute("update products set priority=%s", (str(self.priority)))
-        
-    def priorityhistorical_change(self, cur):
-        """Cambia la primera prioridad y la pone en último lugar"""
-        idtochange=self.priorityhistorical[0]
-        self.priorityhistorical.remove(idtochange)
-        self.priorityhistorical.append(idtochange)
-        cur.execute("update products set priorityhistorical=%s", (str(self.priorityhistorical)))
 
     def fecha_ultima_actualizacion_historica(self):
         """
@@ -7469,17 +7378,6 @@ class Leverage:
         self.multiplier=multiplier
         return self
         
-        
-
-class Priority(Object_With_IdName):
-    def __init__(self, *args):
-        Object_With_IdName.__init__(self, *args)
-        
-
-class PriorityHistorical(Object_With_IdName):
-    def __init__(self, *args):
-        Object_With_IdName.__init__(self, *args)
-
     
 class Simulation:
     def __init__(self,mem, original_db):
@@ -8069,12 +7967,6 @@ class MemXulpymoney:
         
         self.conceptos=ConceptManager(self)
         self.conceptos.load_from_db()
-                
-        self.priorities=PriorityManager(self)
-        self.priorities.load_all()
-        
-        self.prioritieshistorical=PriorityHistoricalManager(self)
-        self.prioritieshistorical.load_all()
 
         self.types=ProductTypesManager(self)
         self.types.load_all()

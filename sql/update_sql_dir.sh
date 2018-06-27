@@ -10,9 +10,6 @@ read -s password
 
 echo "Debe ejecutarse desde el directorio sql"
 PGPASSWORD=$password pg_dump --no-privileges -s -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE > xulpymoney.sql
-PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t stockmarkets --insert > xulpymoney.bolsas
-cat xulpymoney.bolsas| grep -i 'INSERT INTO' | sort >> xulpymoney.sql
-rm xulpymoney.bolsas
 PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t products --insert > xulpymoney.products
 cat xulpymoney.products| grep -i 'INSERT INTO' | sort >> xulpymoney.sql
 rm xulpymoney.products
