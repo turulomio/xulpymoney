@@ -647,10 +647,9 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsAutoUpdate_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products 
-                where obsolete=false and (tickers<>array[NULL,NULL,NULL,NULL] or isin is not null)
+                where id in ({})
                 order by name
-                """)
-
+                """.format(list2string(list(self.mem.autoupdate))))
         self.layout.addWidget(self.w)
         self.w.show()       
     
@@ -658,9 +657,9 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsNotAutoUpdate_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products 
-                where obsolete=false and (tickers=array[NULL,NULL,NULL,NULL] or isin is null)
+                where obsolete=false and id not in ({})
                 order by name
-                """)
+                """.format(list2string(list(self.mem.autoupdate))))
         self.layout.addWidget(self.w)
         self.w.show()            
         
