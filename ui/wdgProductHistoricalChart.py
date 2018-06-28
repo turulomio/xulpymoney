@@ -27,7 +27,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.dtFrom.blockSignals(True)
         self.HistoricalChartAdjusts=eHistoricalChartAdjusts.Splits
         
-    def __pen(self, style, color):
+    def _pen(self, style, color):
         pen=QPen()
         pen.setStyle(style)
         pen.setColor(color)
@@ -249,19 +249,19 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
                 if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
                     new_selling_price=self.view.appendTemporalSeries(self.tr("Reinvestment selling price at {} to gain {}".format(new_sell_price_1, gains_1)),  self.product.currency)
                     new_selling_price.setColor(QColor(170, 85, 85))
-                    new_selling_price.setPen(self.__pen(Qt.DashLine, QColor(170, 85, 85)))
+                    new_selling_price.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
                     self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price_1.amount)
                     self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price_1.amount)
                 
                 new_average_price=self.view.appendTemporalSeries(self.tr("Reinvestment average price at {}").format(new_avg_1),  self.product.currency)
                 new_average_price.setColor(QColor(85, 85, 170))
-                new_average_price.setPen(self.__pen(Qt.DashLine, QColor(85, 85, 170)))
+                new_average_price.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
                 self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg_1.amount)
                 self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg_1.amount)
                 
                 new_purchase_price=self.view.appendTemporalSeries(self.tr("Reinvestment purchase at {}").format(new_purchase_price_1),  self.product.currency)
                 new_purchase_price.setColor(QColor(85, 170, 127))
-                new_purchase_price.setPen(self.__pen(Qt.DashLine, QColor(85, 170, 127)))
+                new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
                 self.view.appendTemporalSeriesData(new_purchase_price, self.sim_opactual.first().datetime, new_purchase_price_1.amount)
                 self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), new_purchase_price_1.amount) 
                 
@@ -396,13 +396,13 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         m_new_selling_price=inv.op_actual.average_price_after_a_gains_percentage(percentage)
         new_average_price=self.view.appendTemporalSeries(self.tr("Buy: {}".format(m_new_average_price)),  self.product.currency)
         new_average_price.setColor(QColor(85, 170, 127))
-        new_average_price.setPen(self.__pen(Qt.SolidLine, QColor(85, 170, 127)))
+        new_average_price.setPen(self._pen(Qt.SolidLine, QColor(85, 170, 127)))
         self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_new_average_price.amount)
         self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_new_average_price.amount)
 
         new_selling_price=self.view.appendTemporalSeries(self.tr("Sell at {} to gain {}".format(m_new_selling_price, inv.op_actual.gains_from_percentage(percentage))),  self.product.currency)
         new_selling_price.setColor(QColor(170, 85, 85))
-        new_selling_price.setPen(self.__pen(Qt.SolidLine, QColor(170, 85, 85)))
+        new_selling_price.setPen(self._pen(Qt.SolidLine, QColor(170, 85, 85)))
         self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
 
@@ -425,7 +425,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         (inv.op_actual, inv.op_historica)=inv.op.calcular()
         new_purchase_price=self.view.appendTemporalSeries(self.tr("First reinvestment purchase: {}").format(m_r1_purchase.string()),  self.product.currency)
         new_purchase_price.setColor(QColor(85, 170, 127))
-        new_purchase_price.setPen(self.__pen(Qt.DashLine, QColor(85, 170, 127)))
+        new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
         self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_r1_purchase.amount)
         self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_r1_purchase.amount)
         
@@ -433,13 +433,13 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         m_r1_sell=inv.op_actual.average_price_after_a_gains_percentage(percentage)
         new_average_price=self.view.appendTemporalSeries(self.tr("First reinvestment average price: {}").format(m_r1_average.string()),  self.product.currency)
         new_average_price.setColor(QColor(85, 85, 170))
-        new_average_price.setPen(self.__pen(Qt.DashLine, QColor(85, 85, 170)))
+        new_average_price.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
         self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_r1_average.amount)
         self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_r1_average.amount)
 
         new_selling_price=self.view.appendTemporalSeries(self.tr("First reinvestment sale price at {} to gain {}".format(m_r1_sell, inv.op_actual.gains_from_percentage(percentage))),   self.product.currency)
         new_selling_price.setColor(QColor(170, 85, 85))
-        new_selling_price.setPen(self.__pen(Qt.DashLine, QColor(170, 85, 85)))
+        new_selling_price.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
         self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_r1_sell.amount)
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  m_r1_sell.amount)
         
@@ -464,7 +464,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         (inv.op_actual, inv.op_historica)=inv.op.calcular()
         new_purchase_price=self.view.appendTemporalSeries(self.tr("Second reinvestment purchase: {}").format(m_r2_purchase),  self.product.currency)
         new_purchase_price.setColor(QColor(85, 170, 127))
-        new_purchase_price.setPen(self.__pen(Qt.DotLine, QColor(85, 170, 127)))
+        new_purchase_price.setPen(self._pen(Qt.DotLine, QColor(85, 170, 127)))
         self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_r2_purchase.amount)
         self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_r2_purchase.amount)
         
@@ -472,12 +472,12 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         m_r2_sell=inv.op_actual.average_price_after_a_gains_percentage(percentage)
         new_average_price=self.view.appendTemporalSeries(self.tr("Second reinvestment average price: {}").format(m_r2_average),  self.product.currency)
         new_average_price.setColor(QColor(85, 85, 170))
-        new_average_price.setPen(self.__pen(Qt.DotLine, QColor(85, 85, 170)))
+        new_average_price.setPen(self._pen(Qt.DotLine, QColor(85, 85, 170)))
         self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_r2_average.amount)
         self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_r2_average.amount)
 
         new_selling_price=self.view.appendTemporalSeries(self.tr("Second reinvestment sale price at {} to gain {}".format(m_r2_sell, inv.op_actual.gains_from_percentage(percentage))),   self.product.currency)
         new_selling_price.setColor(QColor(170, 85, 85))
-        new_selling_price.setPen(self.__pen(Qt.DotLine, QColor(170, 85, 85)))
+        new_selling_price.setPen(self._pen(Qt.DotLine, QColor(170, 85, 85)))
         self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_r2_sell.amount)
         self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  m_r2_sell.amount)

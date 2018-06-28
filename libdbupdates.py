@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201806270926
+        self.lastcodeupdate=201806281028
         self.need_update()
 
    
@@ -2343,7 +2343,13 @@ Return False, in other cases';""")
             cur.execute("ALTER TABLE products DROP COLUMN priorityhistorical")
             cur.close()
             self.mem.con.commit() 
-            self.set_database_version(201806270926)     
+            self.set_database_version(201806270926)
+        if self.dbversion<201806281028:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set percentage=0 where id in (81724,81725,81726,81727)")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201806281028)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
