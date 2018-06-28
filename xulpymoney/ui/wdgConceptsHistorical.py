@@ -12,7 +12,6 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.setupUi(self)
         self.mem=mem
         self.concepto=concepto
-         
 
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
@@ -32,8 +31,6 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
                 ) as uni 
         group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;
         """.format(self.concepto.id)
-        
-#        sql="select date_part('year',datetime) as year,  date_part('month',datetime) as month, sum(importe) as suma from opercuentastarjetas where id_conceptos={0} group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;".format(self.concepto.id)
         cur.execute(sql)
         if cur.rowcount!=0:
             arr=cur.fetchall()            
@@ -66,7 +63,21 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         table = myQTableWidget(newtab)
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
         set=AccountOperationManager(self.mem)
-        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
+        set.load_from_db_with_creditcard("""
+             select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
+             from opercuentas 
+             where
+                 id_conceptos={0} and 
+                 date_part('year',datetime)={1} and 
+                 date_part('month',datetime)={2} 
+             union all 
+             select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
+             from opertarjetas, tarjetas 
+             where 
+                 opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
+                 id_conceptos={0} and 
+                 date_part('year',datetime)={1} and 
+                 date_part('month',datetime)={2}""".format (self.concepto.id, self.year, self.month))
         set.myqtablewidget(table, True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
@@ -109,7 +120,6 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
                 self.month=0
             else:
                 self.month=i.column()
-                
             self.year=self.firstyear+i.row()
         print ("Selected year: {0}. Selected month: {1}.".format(self.year, self.month))
 

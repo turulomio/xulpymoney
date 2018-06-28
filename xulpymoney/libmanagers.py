@@ -286,30 +286,30 @@ class DictObjectManager_With_Id(object):
 
     def append(self,  obj):
         self.dic[str(obj.id)]=obj
-        
+
     def values(self):
         return self.dic.values()
-        
+
     def keys(self):
         return self.dic.keys()
-        
+
     def items(self):
         return self.dic.items()
-        
+
     def remove(self, obj):
         del self.dic[str(obj.id)]
-        
+
     def clean(self):
         self.dic={}
 
     def length(self):
         return len(self.dic)
-        
+
     ## Sometimes there is a dictionary with a unique valor. This function returns the value, not the key.
     ## I dón't use first because dict has no orders.
     def only(self):
         return self.dic[next(iter(self.dic))]
-        
+
     ## Find by object passing o that is an object        
     def find(self, o,  log=False):
         """o is and object with id parameter"""
@@ -378,6 +378,53 @@ class Object_With_IdName:
         if len(args)==2:
             init__create(*args)
 
+
+class DictObjectManager_With_Id_Selectable(DictObjectManager_With_Id, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_Id.__init__(self)
+        ManagerSelection.__init__(self)
+
+class DictObjectManager_With_IdDate_Selectable(DictObjectManager_With_IdDate, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdDate.__init__(self)
+        ManagerSelection.__init__(self)
+
+class DictObjectManager_With_IdDatetime_Selectable(DictObjectManager_With_IdDatetime, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdDatetime.__init__(self)
+        ManagerSelection.__init__(self)
+
+class DictObjectManager_With_IdName_Selectable(DictObjectManager_With_IdName, ManagerSelection):
+    def __init__(self):
+        DictObjectManager_With_IdName.__init__(self)
+        ManagerSelection.__init__(self)
+
+class ObjectManager_Selectable(ObjectManager, ManagerSelection):
+    def __init__(self):
+        ObjectManager.__init__(self)
+        ManagerSelection.__init__(self)
+
+class ObjectManager_With_Id_Selectable(ObjectManager_With_Id, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_Id.__init__(self)
+        ManagerSelection.__init__(self)
+
+class ObjectManager_With_IdDate_Selectable(ObjectManager_With_IdDate, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdDate.__init__(self)
+        ManagerSelection.__init__(self)
+
+class ObjectManager_With_IdDatetime_Selectable(ObjectManager_With_IdDatetime, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdDatetime.__init__(self)
+        ManagerSelection.__init__(self)
+
+class ObjectManager_With_IdName_Selectable(ObjectManager_With_IdName, ManagerSelection):
+    def __init__(self):
+        ObjectManager_With_IdName.__init__(self)
+        ManagerSelection.__init__(self)
+
+
 if __name__ == "__main__":
      import datetime
      sizes=(1,10,100,1000,10000,100000,1000000,3000000)
@@ -401,40 +448,3 @@ if __name__ == "__main__":
          else:
              print("  * DictObjectManager took {} more time than ObjectManager".format(dtime-ltime))
 
-class DictObjectManager_With_Id_Selectable(DictObjectManager_With_Id, ManagerSelection):
-    def __init__(self):
-        DictObjectManager_With_Id.__init__(self)
-        ManagerSelection.__init__(self)
-class DictObjectManager_With_IdDate_Selectable(DictObjectManager_With_IdDate, ManagerSelection):
-    def __init__(self):
-        DictObjectManager_With_IdDate.__init__(self)
-        ManagerSelection.__init__(self)
-class DictObjectManager_With_IdDatetime_Selectable(DictObjectManager_With_IdDatetime, ManagerSelection):
-    def __init__(self):
-        DictObjectManager_With_IdDatetime.__init__(self)
-        ManagerSelection.__init__(self)
-class DictObjectManager_With_IdName_Selectable(DictObjectManager_With_IdName, ManagerSelection):
-    def __init__(self):
-        DictObjectManager_With_IdName.__init__(self)
-        ManagerSelection.__init__(self)
-        
-class ObjectManager_Selectable(ObjectManager, ManagerSelection):
-    def __init__(self):
-        ObjectManager.__init__(self)
-        ManagerSelection.__init__(self)
-class ObjectManager_With_Id_Selectable(ObjectManager_With_Id, ManagerSelection):
-    def __init__(self):
-        ObjectManager_With_Id.__init__(self)
-        ManagerSelection.__init__(self)
-class ObjectManager_With_IdDate_Selectable(ObjectManager_With_IdDate, ManagerSelection):
-    def __init__(self):
-        ObjectManager_With_IdDate.__init__(self)
-        ManagerSelection.__init__(self)
-class ObjectManager_With_IdDatetime_Selectable(ObjectManager_With_IdDatetime, ManagerSelection):
-    def __init__(self):
-        ObjectManager_With_IdDatetime.__init__(self)
-        ManagerSelection.__init__(self)
-class ObjectManager_With_IdName_Selectable(ObjectManager_With_IdName, ManagerSelection):
-    def __init__(self):
-        ObjectManager_With_IdName.__init__(self)
-        ManagerSelection.__init__(self)
