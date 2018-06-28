@@ -6047,15 +6047,12 @@ class Product:
             cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete,  self.id))
         cur.close()
     
-
+    ## Return if the product has autoupdate in some source
     def has_autoupdate(self):
-        """Return if the product has autoupdate in some source
-        REMEMBER TO CHANGE on_actionProductsAutoUpdate_triggered en frmMain"""
         if self.obsolete==True:
             return False
-        if self.isin!=None or self.tickers!=[None, None, None, None]:
+        if self.id in self.mem.autoupdate:
             return True
-            
         return False
         
     def setinvestments(self):
@@ -6543,6 +6540,38 @@ class ProductUpdate:
         r=f.read()
         f.close()
         return r
+
+
+    ## Returns a set with all ids of products that are searched in ProductUpdate.setGlobalCommands.
+    ##
+    ## Developer must change this querys after changeing setGlobalCommands querys.
+    ## @param mem. Xulpymoney mem
+    ## @return set. Set with integers (products_id)
+    @staticmethod
+    def generateAutoupdateSet(mem):
+        r=set()
+        used=""
+        ##### BOLSAMADRID #####
+        cur=mem.con.cursor()
+        sqls=[
+            "select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used), 
+            "select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used), 
+            "select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used), 
+            "select * from products where type in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google)), 
+            "select * from products where type in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo)), 
+            "select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used), 
+            "select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        ]
+        for sql in sqls:
+            cur.execute(sql)
+            for row in cur:
+                r.add(row['id'])
+        cur.close()
+        return r
+
+
+
+
 
     ## Function that executes xulpymoney_run_client and generate a QuoteManager 
     ## Source commands must be created before in file "{}/clients.txt".format(dir_tmp)
@@ -7947,6 +7976,9 @@ class MemXulpymoney:
     def load_db_data(self, progress=True, load_data=True):
         """Esto debe ejecutarse una vez establecida la conexión"""
         inicio=datetime.datetime.now()
+        
+        self.autoupdate=ProductUpdate.generateAutoupdateSet(self) #Set with a list of products with autoupdate
+        logging.info("There are {} products with autoupdate".format(len(self.autoupdate)))
         
         self.currencies=CurrencyManager(self)
         self.currencies.load_all()
