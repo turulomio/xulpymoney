@@ -1365,7 +1365,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
         DictObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.setSelectionMode(ManagerSelectionMode.Manager)
         self.mem=mem
-        
+
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
@@ -1373,24 +1373,25 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             co=AccountOperation(self.mem,  row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts.find_by_id(row['id_cuentas']), row['id_opercuentas'])
             self.append(co)
         cur.close()
-    
+
     def load_from_db_with_creditcard(self, sql):
         """Usado en unionall opercuentas y opertarjetas y se crea un campo id_tarjetas con el id de la tarjeta y -1 sino tiene es decir opercuentas"""
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
-        for row in cur:        
+        fakeid=-999999999#AccountOperationManager is a DictObjectManager needs and id. tarjetasoperation is None, that's what i make a fake id
+        for row in cur:
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
                 comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards.find_by_id(row['id_tarjetas']).name, row['comentario'] )
-            
-            co=AccountOperation(self.mem,  row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), None)
+            co=AccountOperation(self.mem, row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), fakeid)
             self.append(co)
+            fakeid=fakeid+1
         cur.close()
 
-    def myqtablewidget(self, tabla,   show_accounts=False,  parentname=None):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
-        show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
+    ## Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
+    ## show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)
+    def myqtablewidget(self, tabla, show_accounts=False):
         ##HEADERS
         diff=0
         if show_accounts==True:
@@ -1406,11 +1407,11 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
         tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core","Balance" )))
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
-        tabla.setColumnHidden(5+diff, True)
         ##DATA 
         tabla.clearContents()
-        tabla.applySettings()  
+        tabla.applySettings()
         tabla.setRowCount(self.length())
+        tabla.setColumnHidden(5+diff, True)
         balance=0
         for rownumber, a in enumerate(self.values_order_by_datetime()):
             balance=balance+a.importe
@@ -1429,7 +1430,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.applySettings()
         table.clearContents()
-        table.setRowCount(self.length()+1)        
+        table.setRowCount(self.length()+1)
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
         table.setColumnHidden(5, True)
