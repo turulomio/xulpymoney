@@ -106,6 +106,7 @@ def sync_data(con_source, con_target, progress=None):
     estimation_dps=0#Number of estimation_dps synced
     estimation_eps=0#Number of estimation_eps synced
     dps=0
+    splits=0 #Number of splits synced
     products=0#Number of products synced
     
     #Iterate all products
@@ -174,9 +175,24 @@ def sync_data(con_source, con_target, progress=None):
                 estimation_eps=estimation_eps+1
                 output=output+"*"
                 
+        ## SPLITS  #####################################################################
+        #Search last datetime
+        cur2_target.execute("select max(datetime) as max from splits where products_id=%s", (row['id'], ))
+        max=cur2_target.fetchone()[0]
+        #Ask for quotes in source with last datetime
+        if max==None:#No hay ningun registro y selecciona todos
+            cur_source.execute("select * from splits where products_id=%s", (row['id'], ))
+        else:#Hay registro y selecciona los posteriores a el
+            cur_source.execute("select * from splits where products_id=%s and datetime>%s", (row['id'], max))
+        if cur_source.rowcount!=0:
+            for  row_source in cur_source: #Inserts them 
+                cur2_target.execute("insert into splits (datetime, products_id, before, after, comment) values (%s,%s,%s,%s,%s)", ( row_source['datetime'], row_source['products_id'], row_source['before'], row_source['after'], row_source['comment']))
+                splits=splits+1
+                output=output+"s"
+
         if output!="{}: ".format(row['name']):
             products=products+1
-            logging.info(output)
+            print(output)
             
         if progress!=None:#If there's a progress bar
             progress.setValue(cur_target.rownumber)
@@ -190,7 +206,8 @@ def sync_data(con_source, con_target, progress=None):
     - {} quotes
     - {} dividends per share
     - {} dividend per share estimations
-    - {} earnings per share estimations""").format(  products,  quotes, dps, estimation_dps,  estimation_eps)
+    - {} earnings per share estimations
+    - {} splits / contrasplits""").format(  products,  quotes, dps, estimation_dps,  estimation_eps, splits)
             
         qmessagebox(s)  
     

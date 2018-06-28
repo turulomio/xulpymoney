@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>AssetsReport</name>
     <message>
@@ -1188,7 +1189,7 @@ Do you want to activate it?</source>
         <translation>TOTAL</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>frmAbout</name>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="309"/>
@@ -1202,12 +1203,12 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="321"/>
-        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
+        <source>NÃºmero de Deuda pÃºblica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="323"/>
-        <source>N&#xc3;&#xba;mero de Deuda privada</source>
+        <source>NÃºmero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1255,7 +1256,7 @@ Do you want to activate it?</source>
         <source>Products</source>
         <translation>Productos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/Ui_frmAbout.py" line="290"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1524,7 +1525,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="447"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -2056,7 +2057,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmInit.py" line="133"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing the button below, you will create needed database to run Xulpymoney. It&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;body&gt;&lt;p&gt;Pulsando el botón inferior, crearás la base de datos necesarias para la ejecución de Xulpymoney. Será creada en el lenguaje seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/frmInit.py" line="59"/>
@@ -2789,12 +2790,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="59"/>
-        <source>Xulpymoney 2010-{0} &#xa9;</source>
+        <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="56"/>
-        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
     <message>
@@ -3878,7 +3879,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmProductReport.py" line="1224"/>
         <source>Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value</source>
-        <translation type="unfinished"></translation>
+        <translation>Necesita un ficherocon la primer hoja con dos columnas. Fecha/Fecha y hora en formato ISO y un valor</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="702"/>
@@ -3933,7 +3934,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmProductReport.py" line="1073"/>
         <source>Adjust Split / Contrasplit manually in prices</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustar Split / Contrasplit manualmente en precios</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmProductReport.py" line="1157"/>
@@ -7246,17 +7247,17 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="83"/>
         <source>Next error</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente error</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="84"/>
         <source>Update results</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar resultados</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="81"/>
         <source>Update used products</source>
-        <translation>Actualizar productor utilizados</translation>
+        <translation>Actualizar productos utilizados</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="82"/>
@@ -7313,7 +7314,7 @@ Do you want to execute this oportunity?</source>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="87"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
         <translation>Xulpymoney SIMULADA EN {} 2010-{} ©</translation>
     </message>
 </context>
@@ -7755,22 +7756,22 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/wdgTotal.py" line="671"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaciones de venta de {0} (Vendidas después de un año)</translation>
     </message>
     <message>
         <location filename="../ui/wdgTotal.py" line="679"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaciones de venta de {0} de {1} (Vendidas después de un año)</translation>
     </message>
     <message>
         <location filename="../ui/wdgTotal.py" line="710"/>
         <source>Selling operations of {0} (Sold before a year)</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaciones de venta de {0} (Vendidas antes de un año)</translation>
     </message>
     <message>
         <location filename="../ui/wdgTotal.py" line="718"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaciones de venta de {0} de {1} (Vendidas antes de un año)</translation>
     </message>
     <message>
         <location filename="../ui/wdgTotal.py" line="751"/>
