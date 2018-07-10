@@ -21,7 +21,7 @@ import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
 from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty,  l10nDecimal
-from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType
+from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
 from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -4672,9 +4672,9 @@ class AnnualTarget:
         self.lastyear_assests=None
         self.saved_in_db=False #Controls if AnnualTarget is saved in the table annualtargets
     
+    ## Fills the object with data from db.
+    ## If lastyear_assests=None it gets the assests from db
     def init__from_db(self, year, lastyear_assests=None):
-        """Fills the object with data from db.
-        If lastyear_assests=None it gets the assests from db"""
         cur=self.mem.con.cursor()
         
         if lastyear_assests==None:
@@ -4703,46 +4703,20 @@ class AnnualTarget:
             cur.execute("update annualtargets set percentage=%s where year=%s", (self.percentage, self.year))
         cur.close()
         
+    ## Returns the amount of tthe annual target
     def annual_balance(self):
-        """Returns the percentage of the last year assests"""
         return self.lastyear_assests.amount*self.percentage/100
         
+    ## Returns the amount of the monthly target (annual/12)
     def monthly_balance(self):
-        """Returns the monthly balance (annual/12)"""
         return self.annual_balance()/12
-        
-    def qtablewidgetitem_monthly(self, amount):
-        """returns a qtablewidgetitem colored"""
-        item=self.mem.localcurrency.qtablewidgetitem(amount)
-        if amount<self.monthly_balance():   
-            item.setBackground(QColor(255, 148, 148))
-        else:
-            item.setBackground(QColor(148, 255, 148))
-        return item
-        
-    def qtablewidgetitem_annual(self, amount):
-        item=self.mem.localcurrency.qtablewidgetitem(amount)
-        if amount<self.annual_balance():   
-            item.setBackground(QColor(255, 148, 148))
-        else:
-            item.setBackground(QColor(148, 255, 148))
-        return item
-    def qtablewidgetitem_accumulated(self, amount, month):
-        """month: january=1"""
-        item=self.mem.localcurrency.qtablewidgetitem(amount)
-        if amount<self.monthly_balance()*month:   
-            item.setBackground(QColor(255, 148, 148))
-        else:
-            item.setBackground(QColor(148, 255, 148))
-        return item
-        
 
 class Assets:
     def __init__(self, mem):
         self.mem=mem        
     
+    ## Devuelve la datetime actual si no hay datos. Base de datos vacía
     def first_datetime_with_user_data(self):        
-        """Devuelve la datetime actual si no hay datos. Base de datos vacía"""
         cur=self.mem.con.cursor()
         sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime limit 1;'
         cur.execute(sql)
@@ -5396,6 +5370,15 @@ class Currency:
             a.setForeground(QColor(255, 0, 0))
         return a
 
+    ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
+    def qtablewidgetitem_with_target(self, amount, target, digits=2):
+        item=self.qtablewidgetitem(amount, digits)
+        if amount<target:   
+            item.setBackground(eQColor.Red)
+        else:
+            item.setBackground(eQColor.Green)
+        return item
+        
 ## Class that compares two products, removes ohclDaily that aren't in both products
 class ProductComparation:
     def __init__(self, mem, product1, product2):

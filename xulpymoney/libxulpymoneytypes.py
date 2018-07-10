@@ -1,8 +1,13 @@
 ## @package libxulpymoneytypes
 ## @brief Package with all xulpymoney types.
-
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QApplication
 from enum import IntEnum
+
+## Class with used QColors in app
+class eQColor:
+    Red=QColor(255, 148, 148)
+    Green=QColor(148, 255, 148)
         
 class eProductType(IntEnum):
     """

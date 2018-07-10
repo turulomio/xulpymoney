@@ -321,11 +321,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
             self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(1, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g().amount))
+            self.tblTargets.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount, self.annualtarget.monthly_balance()))
             self.tblTargets.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.tblTargets.setItem(4, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g.amount, i))
+            self.tblTargets.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.monthly_balance()*i))
         self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.tblTargets.setItem(1, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g.amount))
+        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.annual_balance()))
         self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
                 
         s=""
@@ -341,21 +341,25 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tblTargetsPlus.clearContents()
         self.tblTargetsPlus.applySettings()
         inicio=datetime.datetime.now()     
+
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
+#        sumd_g_f=Money(self.mem, 0, self.mem.localcurrency)
+        sumf=Money(self.mem, 0, self.mem.localcurrency)
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
-            sumd_g=sumd_g+m.d_g()+m.funds_revaluation()
+            sumd_g=sumd_g+m.d_g()
+            sumf=sumf+m.funds_revaluation()
             self.tblTargetsPlus.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
             self.tblTargetsPlus.setItem(1, i-1,m.d_g().qtablewidgetitem())
             self.tblTargetsPlus.setItem(2, i-1, m.funds_revaluation().qtablewidgetitem())
-            self.tblTargetsPlus.setItem(3, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g().amount+m.funds_revaluation().amount))
+            self.tblTargetsPlus.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount+m.funds_revaluation().amount, self.annualtarget.monthly_balance()))
             
             self.tblTargetsPlus.setItem(5, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.tblTargetsPlus.setItem(6, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g.amount, i))
+            self.tblTargetsPlus.setItem(6, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount, self.annualtarget.monthly_balance()*i))
         self.tblTargetsPlus.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
         self.tblTargetsPlus.setItem(1, 12, sumd_g.qtablewidgetitem())
-        self.tblTargetsPlus.setItem(2, 12, self.setData.funds_revaluation().qtablewidgetitem())
-        self.tblTargetsPlus.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g.amount))
+        self.tblTargetsPlus.setItem(2, 12, sumf.qtablewidgetitem())
+        self.tblTargetsPlus.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount,self.annualtarget.annual_balance()))
         self.tblTargetsPlus.setCurrentCell(2, datetime.date.today().month-1)   
                 
         s=""
