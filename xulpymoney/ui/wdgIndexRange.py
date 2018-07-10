@@ -1,11 +1,10 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from Ui_wdgIndexRange import Ui_wdgIndexRange
 from libxulpymoney import Assets, Percentage
 from libxulpymoneyfunctions import qcenter
-from libxulpymoneytypes import eProductType
+from libxulpymoneytypes import eProductType,  eQColor
 from frmProductReport import frmProductReport
 from frmQuotesIBM import frmQuotesIBM
 from wdgCalculator import wdgCalculator
@@ -143,9 +142,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
             if bottom<self.cmbBenchmarkCurrent_price():
                 if self.cmbBenchmarkCurrent_price()<=top: ##Colorize current price
-                    self.table.item(i, 0).setBackground(QColor(255, 160, 160))
+                    self.table.item(i, 0).setBackground(eQColor.Red)
                 if colorized<=rangescovered:
-                    self.table.item(i, 1).setBackground(QColor(160, 255, 160))
+                    self.table.item(i, 1).setBackground(eQColor.Green)
                     colorized=colorized+1
 
         #Prints label

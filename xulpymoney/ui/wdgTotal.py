@@ -1,9 +1,10 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
-from PyQt5.QtGui import QIcon, QColor, QFont
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
 from libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
+from libxulpymoneytypes import eQColor
 from myqtablewidget import myQTableWidget
 from decimal import Decimal
 from canvaschart import VCTemporalSeries
@@ -382,10 +383,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 return item
             if not dg_e.isGETZero():
                 item.setText(self.tr("Work"))
-                item.setBackground(QColor(255, 148, 148))
+                item.setBackground(eQColor.Red)
             else:
                 item.setText(self.tr("Invest"))
-                item.setBackground(QColor(148, 255, 148))
+                item.setBackground(eQColor.Green)
             return item            
         ##------------------------------------------------
         inicio=datetime.datetime.now()    
@@ -420,10 +421,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 return item
             if not res.isGETZero():
                 item.setText(self.tr("No"))
-                item.setBackground(QColor(255, 148, 148))
+                item.setBackground(eQColor.Red)
             else:
                 item.setText(self.tr("Yes"))
-                item.setBackground(QColor(148, 255, 148))
+                item.setBackground(eQColor.Green)
             return item            
         ##------------------------------------------------
         inicio=datetime.datetime.now()    

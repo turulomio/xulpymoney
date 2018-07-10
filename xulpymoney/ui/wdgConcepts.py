@@ -1,9 +1,9 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
 from libxulpymoney import Assets,  Percentage
 from libxulpymoneyfunctions import qmessagebox
+from libxulpymoneytypes import eQColor
 from Ui_wdgConcepts import Ui_wdgConcepts
 from wdgConceptsHistorical import wdgConceptsHistorical
 from canvaschart import VCPie
@@ -54,9 +54,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblExpenses.item(i, 1).setBackground( QColor(182, 255, 182))          
+                    self.tblExpenses.item(i, 1).setBackground( eQColor.Green)          
                 else:
-                    self.tblExpenses.item(i, 1).setBackground( QColor(255, 182, 182))      
+                    self.tblExpenses.item(i, 1).setBackground( eQColor.Red)      
                 self.viewExpenses.appendData(a[0].name.upper(), a[1])
         self.viewExpenses.display()
                 
@@ -82,9 +82,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblIncomes.item(i, 1).setBackground( QColor(182, 255, 182))          
+                    self.tblIncomes.item(i, 1).setBackground( eQColor.Green)          
                 else:
-                    self.tblIncomes.item(i, 1).setBackground( QColor(255, 182, 182))      
+                    self.tblIncomes.item(i, 1).setBackground( eQColor.Red)      
                 self.viewIncomes.appendData(a[0].name.upper(), a[1])
         self.viewIncomes.display()
         self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))

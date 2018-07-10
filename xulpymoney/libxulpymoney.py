@@ -368,9 +368,9 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
             if tpc_invertido.isValid() and tpc_venta.isValid():
                 if tpc_invertido.value_100()<=-Decimal(50):   
-                    table.item(i, 7).setBackground(QColor(255, 148, 148))
+                    table.item(i, 7).setBackground(eQColor.Red)
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
-                    table.item(i, 8).setBackground(QColor(148, 255, 148))
+                    table.item(i, 8).setBackground(eQColor.Green)
 
     def myqtablewidget_lastCurrent(self, table,  percentage):
         """
@@ -393,7 +393,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
                 table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
                 if lasttpc<Percentage(percentage, 1):   
-                    table.item(i, 6).setBackground(QColor(255, 148, 148))
+                    table.item(i, 6).setBackground(eQColor.Red)
             except:
                 logging.error("I couldn't show last of {}".format(inv.name))
 
@@ -423,7 +423,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
                 table.setItem(i, 1, qdate(inv.selling_expiration))    
                 if inv.selling_expiration<datetime.date.today():
-                    table.item(i, 1).setBackground( QColor(255, 182, 182))       
+                    table.item(i, 1).setBackground(eQColor.Red)       
                 table.setItem(i, 2, qleft(inv.name))
                 table.setItem(i, 3, qleft(inv.account.name))   
                 table.setItem(i, 4, qright(inv.shares()))
@@ -1021,7 +1021,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     
             if p.estimations_dps.currentYear()==None:
                 table.setItem(i, 7, Percentage().qtablewidgetitem())
-                table.item(i, 7).setBackground( QColor(255, 182, 182))          
+                table.item(i, 7).setBackground( eQColor.Red)          
             else:
                 table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
                 
@@ -4574,14 +4574,14 @@ class OpportunityManager(ObjectManager_With_IdDate):
             #Color
             if p.is_executed():
                 for column in range (table.columnCount()):
-                    table.item(i, column).setBackground( QColor(182, 255, 182))                     
+                    table.item(i, column).setBackground(eQColor.Green)                     
             elif p.is_removed():
                 for column in range (table.columnCount()):
-                    table.item(i, column).setBackground( QColor(255, 182, 182))     
+                    table.item(i, column).setBackground(eQColor.Red)     
                     
             if p.is_executed()==False and p.is_removed()==False:#Color if current oportunity
                 if p.percentage_from_current_price().value_100()<=Decimal(5):
-                    table.item(i, 4).setBackground(QColor(148, 255, 148))
+                    table.item(i, 4).setBackground(eQColor.Green)
 
 
 class Order:
@@ -5237,10 +5237,10 @@ class OrderManager(ObjectManager_With_Id_Selectable):
             #Color
             if p.is_executed():
                 for column in range (table.columnCount()):
-                    table.item(i, column).setBackground( QColor(182, 255, 182))                     
+                    table.item(i, column).setBackground(eQColor.Green)                     
             elif p.is_expired():
                 for column in range (table.columnCount()):
-                    table.item(i, column).setBackground( QColor(255, 182, 182))     
+                    table.item(i, column).setBackground(eQColor.Red)     
 
 ## Class that represents stock market object. It gives several utils to manage it.
 class StockMarket:
@@ -6490,9 +6490,9 @@ class QuoteIntradayManager(QuoteManager):
                 table.setItem(i, 4, tpcq.qtablewidgetitem())
                 
             if q==self.high():
-                table.item(i, 1).setBackground(QColor(148, 255, 148))
+                table.item(i, 1).setBackground(eQColor.Green)
             elif q==self.product.result.intradia.low():
-                table.item(i, 1).setBackground( QColor(255, 148, 148))             
+                table.item(i, 1).setBackground(eQColor.Red)             
         table.setCurrentCell(self.length()-1, 0)
         table.clearSelection()
 
