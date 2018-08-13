@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from libodfgenerator import ODS,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
+from officegenerator import ODS,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
 import datetime
 import logging
 from decimal import Decimal
