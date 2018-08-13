@@ -19,7 +19,7 @@ from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
 from wdgProductHistoricalChart import wdgProductHistoricalChart
 from canvaschart import  VCTemporalSeries
-from libodfgenerator import ODS_Read
+from officegenerator import ODS_Read
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
