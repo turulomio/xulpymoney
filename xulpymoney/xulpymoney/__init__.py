@@ -1,16 +1,15 @@
-## @package libxulpymoneyversion
+## @package xulpymoney
 ## @brief Package with xulpymoney version information
 import datetime
 
+__version__="0.0.1"
+__versiondate__=datetime.date(2018,8,19)
 version="20180518"
 
 def version_windows():
 #    lastpoint="0"
 #    if version.find("+")!=-1:
 #        lastpoint="1"
-    vd=version_date()
+    vd=__versiondate__
     return "{}.{}.{}".format(vd.year, vd.month, vd.day)
     
-def version_date():
-    versio=version.replace("+","")
-    return datetime.date(int(versio[:-4]),  int(versio[4:-2]),  int(versio[6:]))
