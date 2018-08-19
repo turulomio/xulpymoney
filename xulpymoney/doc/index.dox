@@ -28,6 +28,7 @@ Xulpymoney depends on the following software:
 - <a target="_blank" href="https://github.com/eea/odfpy">OdfPy</a>, to make all king of libreoffice reports.
 - <a target="_blank" href="https://www.riverbankcomputing.com/software/pyqtchart/intro">PyQtChart</a>, to make all king of charts.
 - <a target="_blank" href="https://pypi.org/project/colorama/">Colorama</a>, to give color to console output.
+- <a target="_blank" href="https://pypi.org/project/officegenerator/">OfficeGenerator</a>, to create office documents.
 
 
 

@@ -1,5 +1,0 @@
-#!/bin/bash
-# This software belongs to xulpymoney project
-
-odf2xml -o "$1.no.xml" "$1"
-cat "$1.no.xml" | xmllint --format -
