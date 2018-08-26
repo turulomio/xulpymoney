@@ -557,8 +557,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                         id_tiposoperaciones={0} and 
                                                         date_part('year',datetime)={1} and 
                                                         date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
-        set.sort()
-        set.myqtablewidget(table,  True,  "wdgTotal")
+        set.myqtablewidget(table,  True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
@@ -602,13 +601,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                             id_tiposoperaciones={0} and 
                                                             date_part('year',datetime)={1} and 
                                                             date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month))
-        set.sort()
-        set.myqtablewidget(table,  True,  "wdgTotal")
+        set.myqtablewidget(table,  True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, tabtitle)
-        self.tab.setCurrentWidget(newtab)            
-        
-        
+        self.tab.setCurrentWidget(newtab)
+
     @pyqtSlot() 
     def on_actionShowSellingOperations_triggered(self):
         def show_all():
@@ -753,7 +750,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         else:#Month
             tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
-        set.sort()
+        set.order_by_datetime()
         set.myqtablewidget(table,  True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, tabtitle)
