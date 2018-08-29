@@ -30,6 +30,7 @@ class VCTemporalSeries(QChartView):
         
         self.series=[]
         self.__ohclduration=eOHCLDuration.Day
+
     def setAxisFormat(self, axis,  min, max, type, zone=None):
         """
             type=0 #Value
@@ -51,14 +52,13 @@ class VCTemporalSeries(QChartView):
                 axis.setFormat("hh:mm")
             else:
                 axis.setFormat("yyyy-MM-dd")
-                
+
     def setOHCLDuration(self, ohclduration):
         self.__ohclduration=ohclduration
 
 
     def setAllowHideSeries(self, boolean):
         self._allowHideSeries=boolean
-        
 
         
     def appendTemporalSeries(self, name,  currency=None):
