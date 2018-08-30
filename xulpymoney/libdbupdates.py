@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201806281028
+        self.lastcodeupdate=201808300607
         self.need_update()
 
    
@@ -2350,6 +2350,15 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201806281028)
+        if self.dbversion<201808300607:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81728, 'BONO ESTADO ESPAÑOL 3,45 30072066', 'ES00000128E2', 'EUR', 7, '', None, None, None, None, 0, 'c', 1, 1, [None, None, None, None], None, False ))
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81729, 'BONO ESTADO ESPAÑOL 1,4 30072028', 'ES0000012B88', 'EUR', 7, '', None, None, None, None, 0, 'c', 1, 1, [None, None, None, None], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201808300607)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
