@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11beta1
--- Dumped by pg_dump version 11beta1
+-- Dumped from database version 11beta3
+-- Dumped by pg_dump version 11beta3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1629,7 +1629,7 @@ INSERT INTO public.products VALUES ('AMSTERDAM COMMOD.', 'NL0000313286', 'EUR', 
 INSERT INTO public.products VALUES ('AMT HOLDING', 'NL0000886968', 'EUR', 1, '|EURONEXT|', 75403, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, 'EURONEXT#NL0000886968||nl||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Amundi Cash Corporate IC', 'FR0010251660', 'EUR', 2, '|f_cat_money|', 81717, '', NULL, NULL, NULL, 0, 'c', 0, 3, '', false, '{NULL,F0GBR06QIE,NULL,NULL}');
 INSERT INTO public.products VALUES ('AMUNDI CORTO PLAZO, CLASE I', 'ES0126542036', 'EUR', 2, '|f_es_BMF|', 78654, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ES0126542036||es||False', false, '{NULL,F0GBR04Q4H,NULL,NULL}');
-INSERT INTO public.products VALUES ('Amundi Fds Ii Multi-Strat Gr A Eur Nd', 'LU0363629790', 'EUR', 2, '', 81726, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, NULL, false, '{NULL,F0000022V6,NULL,NULL}');
+INSERT INTO public.products VALUES ('Amundi Fds Ii Multi-Strat Gr A Eur Nd', 'LU0363629790', 'EUR', 2, '', 81726, NULL, NULL, NULL, NULL, 0, 'c', 1, 3, NULL, false, '{NULL,F0000022V6,NULL,NULL}');
 INSERT INTO public.products VALUES ('AMUNDI MULTIESTRATEGIA ALT.', 'ES0118556002', 'EUR', 2, '|f_es_BMF|', 74863, '', '', '', '', 100, 'c', 0, 1, 'ES0118556002||None||False', true, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Anadarko Petroleum Corp.', NULL, 'USD', 1, '|SP500|', 76738, '', '', '', '', 100, 'c', 0, 2, 'NYSE#APC||us||False', false, '{APC,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Analog Devices Inc.', NULL, 'USD', 1, '|SP500|', 79379, '', '', '', '', 100, 'c', 0, 2, 'NYSE#ADI||us||False', false, '{ADI,NULL,NULL,NULL}');
@@ -2527,7 +2527,7 @@ INSERT INTO public.products VALUES ('BK SELECCION BASICOS GARANTIZADO', 'ES01135
 INSERT INTO public.products VALUES ('BK SELECCION BONOS CORPORATIVOS', 'ES0114857032', 'EUR', 2, '|f_es_BMF|', 76674, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ES0114857032||es||False', false, '{NULL,F0GBR04CA1,NULL,NULL}');
 INSERT INTO public.products VALUES ('Black Hills Corp.', NULL, 'USD', 1, NULL, 75822, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#BKH||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('BlackRock Inc.', NULL, 'USD', 1, '|SP500|', 78810, '', '', '', '', 100, 'c', 0, 2, 'NYSE#BLK||us||False', false, '{BLK,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('BlackRock Strategic Funds BSF Americas Diversified Equity Absolute Return Fund A2 EUR Hedged', 'LU0725892466', 'EUR', 2, '', 81727, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, NULL, false, '{NULL,F00000NR69,NULL,NULL}');
+INSERT INTO public.products VALUES ('BlackRock Strategic Funds BSF Americas Diversified Equity Absolute Return Fund A2 EUR Hedged', 'LU0725892466', 'EUR', 2, '', 81727, NULL, NULL, NULL, NULL, 0, 'c', 1, 3, NULL, false, '{NULL,F00000NR69,NULL,NULL}');
 INSERT INTO public.products VALUES ('BLEECKER', 'FR0000062150', 'EUR', 1, '|EURONEXT|', 76547, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'EURONEXT#FR0000062150||fr||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Blount International Inc.', NULL, 'USD', 1, NULL, 81564, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#BLT||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Bluegreen Corp.', NULL, 'USD', 1, NULL, 80537, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#BXG||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -2578,6 +2578,8 @@ INSERT INTO public.products VALUES ('Bono Alemán a 10 años', NULL, 'u', 7, '',
 INSERT INTO public.products VALUES ('Bono Banco Popular 8.00 20210729', 'ES0213790019', 'EUR', 9, '', 81688, '', '', '', '', 80, 'c', 0, 1, 'A3043056', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Bono CaixaBank 4.00 20220209', 'ES0240609000', 'EUR', 9, '', 81689, '', '', '', '', 80, 'c', 0, 1, '', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Bono Español a 10 años', NULL, 'u', 7, '', 74803, '', '', '', '', 100, 'c', 0, 1, 'BUND_ESPAÑOL||es||False', false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('BONO ESTADO ESPAÑOL 1,4 30072028', 'ES0000012B88', 'EUR', 7, '', 81729, NULL, NULL, NULL, NULL, 0, 'c', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('BONO ESTADO ESPAÑOL 3,45 30072066', 'ES00000128E2', 'EUR', 7, '', 81728, NULL, NULL, NULL, NULL, 0, 'c', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('BONO ESTADO ESPAÑOL 4,00  31102064', 'ES00000126D8', 'EUR', 7, NULL, 81682, NULL, NULL, NULL, NULL, 20, 'c', 0, 1, NULL, false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Bono Estado Español 4,20  31012037', 'ES0000012932', 'EUR', 7, '', 81680, '', '', '', '', 20, 'c', 0, 1, '', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Bono Estado Español 4,70  30072041', 'ES00000121S7', 'EUR', 7, '', 81683, '', '', '', '', 20, 'c', 0, 1, '', false, '{NULL,NULL,NULL,NULL}');
@@ -6199,7 +6201,7 @@ INSERT INTO public.products VALUES ('Oil States International Inc.', NULL, 'USD'
 INSERT INTO public.products VALUES ('OIM', 'GB00B063YS85', 'EUR', 1, '|EURONEXT|', 80707, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, 'EURONEXT#GB00B063YS85||be||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('OKAVANDO DELTA FI CLASE I', 'ES0167211004', 'EUR', 2, '|f_es_BMF|', 76448, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ES0167211004||es||False', false, '{NULL,F000005OE0,NULL,NULL}');
 INSERT INTO public.products VALUES ('OKAVANGODELTA', 'ES0167211038', 'EUR', 2, '|f_es_BMF|', 77838, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ES0167211038||es||False', false, '{NULL,F0GBR0604K,NULL,NULL}');
-INSERT INTO public.products VALUES ('Old Mutual Glb Eq Abs Rt A Eur Hdg Acc', 'IE00BLP5S460', 'EUR', 2, '', 81725, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, NULL, false, '{NULL,F00000TG3D,NULL,NULL}');
+INSERT INTO public.products VALUES ('Old Mutual Glb Eq Abs Rt A Eur Hdg Acc', 'IE00BLP5S460', 'EUR', 2, '', 81725, NULL, NULL, NULL, NULL, 0, 'c', 1, 3, NULL, false, '{NULL,F00000TG3D,NULL,NULL}');
 INSERT INTO public.products VALUES ('Old National Bancorp', NULL, 'USD', 1, NULL, 79246, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#ONB||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Old Republic International Corp.', NULL, 'USD', 1, NULL, 77563, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#ORI||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('OL GROUPE', 'FR0010428771', 'EUR', 1, '|EURONEXT|', 75169, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'EURONEXT#FR0010428771||fr||False', false, '{NULL,NULL,NULL,NULL}');
@@ -6370,7 +6372,7 @@ INSERT INTO public.products VALUES ('Phoenix New Media Ltd. Cl A', NULL, 'USD', 
 INSERT INTO public.products VALUES ('Phoenix Solar Aktiengesellschaft', 'DE000A0BVU93', 'EUR', 1, '|DEUTSCHEBOERSE|', 80833, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, 'DEUTSCHEBOERSE#DE000A0BVU93||de||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PICANOL', 'BE0003807246', 'EUR', 1, '|EURONEXT|', 77101, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, 'EURONEXT#BE0003807246||be||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('PICANOL ST VVPR(D)', 'BE0005631057', 'EUR', 1, '|EURONEXT|', 80749, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, 'EURONEXT#BE0005631057||be||False', false, '{NULL,NULL,NULL,NULL}');
-INSERT INTO public.products VALUES ('Pictet-Multi Asset Global Opportunities R EUR', 'LU0941349275', 'EUR', 2, '', 81724, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, NULL, false, '{NULL,F00000QGX8,NULL,NULL}');
+INSERT INTO public.products VALUES ('Pictet-Multi Asset Global Opportunities R EUR', 'LU0941349275', 'EUR', 2, '', 81724, NULL, NULL, NULL, NULL, 0, 'c', 1, 3, NULL, false, '{NULL,F00000QGX8,NULL,NULL}');
 INSERT INTO public.products VALUES ('Piedmont Natural Gas Co.', NULL, 'USD', 1, NULL, 78948, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#PNY||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Piedmont Office Realty Trust Inc. Cl A', NULL, 'USD', 1, NULL, 77267, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#PDM||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Pier 1 Imports Inc.', NULL, 'USD', 1, NULL, 78882, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#PIR||us||False', false, '{NULL,NULL,NULL,NULL}');
@@ -8051,10 +8053,10 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 80840, 74747, 81710, 79360, 81105, 81083, 81090, 79223, 78384, 81117, 81715, 74788, 78687, 81111, 79359, 81719, 81720, 79142, 81394, 81436, 81724, 81725, 81726, 81727, 79244');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 80840, 74747, 81710, 79360, 81105, 81083, 81090, 79223, 78384, 81117, 81715, 74788, 79359, 81719, 81720, 79142, 81394, 81436, 81727, 79244');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO public.globals VALUES (1, 'Version', '201806270926');
-INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '5');
+INSERT INTO public.globals VALUES (1, 'Version', '201808300607');
+INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2013');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO public.globals VALUES (7, 'wdgIndexRange/spin', '2.0');
