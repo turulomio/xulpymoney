@@ -564,7 +564,7 @@ class Ui_frmMain(object):
         self.actionCalculator.setText(_translate("frmMain", "&Order calculator"))
         self.actionCalculator.setToolTip(_translate("frmMain", "Order calculator"))
         self.actionSearch.setText(_translate("frmMain", "Search"))
-        self.actionSearch.setShortcut(_translate("frmMain", "F2"))
+        self.actionSearch.setShortcut(_translate("frmMain", "Ctrl+B"))
         self.actionIndexesAll.setText(_translate("frmMain", "&All Indexes"))
         self.actionIndexesAll.setShortcut(_translate("frmMain", "Ctrl+I"))
         self.actionIbex35.setText(_translate("frmMain", "&Ibex 35"))

@@ -521,7 +521,7 @@
     <string>Search</string>
    </property>
    <property name="shortcut">
-    <string>F2</string>
+    <string>Ctrl+B</string>
    </property>
   </action>
   <action name="actionIndexesAll">
