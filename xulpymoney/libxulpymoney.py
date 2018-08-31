@@ -6652,14 +6652,21 @@ class ProductUpdate:
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work agan
                 self.appendCommand(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id),  "--STOCKMARKET", str(p.stockmarket.id)])    
                 
-        ##### MORNINGSTAR #####
-        sql="select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        ##### MORNINGSTAR FONDOS #####
+        sql="select * from products where type={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.Fund, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         products_morningstar=ProductManager(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:
             ultima=p.fecha_ultima_actualizacion_historica()
             if datetime.date.today()>ultima+oneday:#Historical data is always refreshed the next day, so dont work again
-                self.appendCommand(["xulpymoney_morningstar_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
+                self.appendCommand(["xulpymoney_morningstar_client", "--fund", "--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])         
+                
+        ##### MORNINGSTAR ETF #####
+        sql="select * from products where type={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.ETF, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        products_morningstar=ProductManager(self.mem)#Total of products_morningstar of an Agrupation
+        products_morningstar.load_from_db(sql)    
+        for p in products_morningstar.arr:
+            self.appendCommand(["xulpymoney_morningstar_client", "--etf", "--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
 ## Class that represents a Quote
 ## A quote can be a datetime duplicated
