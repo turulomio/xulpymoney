@@ -613,7 +613,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id:
                 for d in inv.setDividends_from_current_operations().arr:
                     set.append(d)
-        set.sort()
+        set.order_by_datetime()
         return set
 
     def setinvestments_filter_by_type(self,  type_id):
