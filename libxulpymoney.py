@@ -4502,13 +4502,14 @@ class Opportunity:
     ##Calculates percentage from current price to order price
     def percentage_from_current_price(self):
         return Percentage(self.price-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
-        
 
+
+## Manage Opportunities
 class OpportunityManager(ObjectManager_With_IdDate):
     def __init__(self, mem):
         ObjectManager_With_IdDate.__init__(self)
         self.mem=mem
-        
+
     def init__from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)
@@ -4516,7 +4517,7 @@ class OpportunityManager(ObjectManager_With_IdDate):
             self.append(Opportunity(self.mem, row))
         cur.close()
         return self
-    
+
     ## Removes from array and from database. It doesn't make a database commit
     def remove(self, order):
         """Remove from array"""
@@ -4525,16 +4526,16 @@ class OpportunityManager(ObjectManager_With_IdDate):
 
     def order_by_removed(self):
         self.arr=sorted(self.arr, key=lambda o:o.removed)
-        
+
     def order_by_executed(self):
         self.arr=sorted(self.arr, key=lambda o:o.executed)
-        
+
     def order_by_percentage_from_current_price(self):
         try:
             self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
         except:            
             qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
-        
+
     ## Returns a datetime.date object with the date of the first opportunity in the database
     def date_of_the_first_database_oppportunity(self):
         cur=self.mem.con.cursor()
@@ -4545,15 +4546,16 @@ class OpportunityManager(ObjectManager_With_IdDate):
             return datetime.date.today()
         else:
             return r[0]
-        
+
     def myqtablewidget(self, table):
-        table.setColumnCount(6)
+        table.setColumnCount(7)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Removed")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Product")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Price")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","% from current")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Executed")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Current price")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Opportunity price")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","% from current")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Executed")))
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
@@ -4562,14 +4564,15 @@ class OpportunityManager(ObjectManager_With_IdDate):
             table.setItem(i, 1, qdate(p.removed))      
             table.setItem(i, 2, qleft(p.product.name))
             table.setItem(i, 3, p.product.currency.qtablewidgetitem(p.price))
+            table.setItem(i, 4, p.product.result.basic.last.money().qtablewidgetitem())
             if p.is_in_force():
-                table.setItem(i, 4, p.percentage_from_current_price().qtablewidgetitem())
-            else:
-                table.setItem(i, 4, qempty())
-            if p.is_executed():
-                table.setItem(i, 5, qdate(p.executed))
+                table.setItem(i, 5, p.percentage_from_current_price().qtablewidgetitem())
             else:
                 table.setItem(i, 5, qempty())
+            if p.is_executed():
+                table.setItem(i, 6, qdate(p.executed))
+            else:
+                table.setItem(i, 6, qempty())
                 
             #Color
             if p.is_executed():
