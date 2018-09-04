@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from officegenerator import ODS,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
+from officegenerator import ODS_Write,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
 import datetime
 import logging
 from decimal import Decimal
@@ -96,9 +96,9 @@ class myQTableWidget(QTableWidget):
             if filename:
                 Table2ODS(self.mem,filename, self, "My table")
             
-class Table2ODS(ODS):
+class Table2ODS(ODS_Write):
     def __init__(self, mem, filename, table, title):
-        ODS.__init__(self, filename)
+        ODS_Write.__init__(self, filename)
         self.mem=mem
 #        numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
 #        numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
