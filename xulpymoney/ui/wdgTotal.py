@@ -974,7 +974,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_div_retentions))    
         table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_other_taxes))    
         table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_returned_taxes))    
-        table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes))    
+        table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes+sum_returned_taxes))    
 
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Taxes report of {}").format(self.wyData.year))
