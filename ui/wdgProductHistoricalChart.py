@@ -43,9 +43,9 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         from_=datetime.datetime.today()-datetime.timedelta(days=365*3)
         if self.investment!=None:
             if self.investment.op_actual.length()>0:
-                from_=self.investment.op_actual.first().datetime
+                from_=self.investment.op_actual.first().datetime-datetime.timedelta(days=30)
             elif self.investment.op.length()>0:
-                from_=self.investment.op.first().datetime
+                from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
         self.dtFrom.setDate(from_)
         self.dtFrom.blockSignals(False)
         self.cmbOHCLDuration.currentIndexChanged.disconnect()
