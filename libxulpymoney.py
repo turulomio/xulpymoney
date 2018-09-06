@@ -4563,8 +4563,8 @@ class OpportunityManager(ObjectManager_With_IdDate):
             table.setItem(i, 0, qdate(p.date))
             table.setItem(i, 1, qdate(p.removed))      
             table.setItem(i, 2, qleft(p.product.name))
-            table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem()
-            table.setItem(i, 4, p.product.currency.qtablewidgetitem(p.price)))
+            table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem())
+            table.setItem(i, 4, p.product.currency.qtablewidgetitem(p.price))
             if p.is_in_force():
                 table.setItem(i, 5, p.percentage_from_current_price().qtablewidgetitem())
             else:
