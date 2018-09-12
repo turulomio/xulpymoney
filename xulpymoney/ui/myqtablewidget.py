@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from officegenerator import ODS_Write,  columnAdd,  rowAdd,  OdfMoney,  OdfPercentage
+from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage
 import datetime
 import logging
 from decimal import Decimal
@@ -124,16 +124,16 @@ class Table2ODS(ODS_Write):
         elif table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
             firstcontentletter="A"
             firstcontentnumber="1"
-        sheet.setSplitPosition(firstcontentletter, firstcontentnumber)
+        sheet.setSplitPosition(firstcontentletter+ firstcontentnumber)
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(columnAdd(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange")
+                sheet.add(columnAdd(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "OrangeCenter")
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
                 try:#Caputuro cuando se numera sin items 1, 2, 3
-                    sheet.add("A", rowAdd(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
+                    sheet.add("A", rowAdd(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "YellowLeft")
                 except:
                     pass
         #Items
@@ -144,7 +144,7 @@ class Table2ODS(ODS_Write):
                     sheet.add(columnAdd(firstcontentletter, letter), rowAdd(firstcontentnumber, number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
-        sheet.setCursorPosition(firstcontentletter, table.rowCount()+2)
+        sheet.setCursorPosition(firstcontentletter+ str(table.rowCount()+2))
         self.save()
         
     def itemtext2object(self, t):
@@ -154,14 +154,14 @@ class Table2ODS(ODS_Write):
         if t[-2:]==" %":
             try:
                 number=Decimal(t.replace(" %", ""))
-                return OdfPercentage(number, 100)
+                return Percentage(number, 100)
             except:
                 logging.info("Error converting percentage")
                 pass
         elif t[-2:] in (" €"," $"):
            try:
                 number=Decimal(t.replace(t[-2:], ""))
-                return OdfMoney(number, self.mem.currencies.find_by_symbol(t[-1:]).id)
+                return Currency(number, self.mem.currencies.find_by_symbol(t[-1:]).id)
            except:
                 logging.info("Error converting Money")
         elif t.find(":")!=-1 and t.find("-")!=-1:
@@ -191,9 +191,9 @@ class Table2ODS(ODS_Write):
         """
             Define el style de un objeto
         """
-        if o.__class__==OdfMoney:
-            return "EuroColor"
-        elif o.__class__==OdfPercentage:
-            return "TextRight"
+        if o.__class__==Currency:
+            return "WhiteEuro"
+        elif o.__class__==Percentage:
+            return "WhitePercentage"
         else:
-            return "TextLeft"
+            return "WhiteLeft"

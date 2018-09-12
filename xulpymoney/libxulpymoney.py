@@ -4583,8 +4583,8 @@ class OpportunityManager(ObjectManager_With_IdDate):
                     table.item(i, column).setBackground(eQColor.Red)     
                     
             if p.is_executed()==False and p.is_removed()==False:#Color if current oportunity
-                if p.percentage_from_current_price().value_100()<=Decimal(5):
-                    table.item(i, 4).setBackground(eQColor.Green)
+                if p.percentage_from_current_price().value_100()>Decimal(0):
+                    table.item(i, 3).setBackground(eQColor.Green)
 
 
 class Order:
