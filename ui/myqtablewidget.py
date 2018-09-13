@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage
+from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage,  Coord
 import datetime
 import logging
 from decimal import Decimal
@@ -100,8 +100,6 @@ class Table2ODS(ODS_Write):
     def __init__(self, mem, filename, table, title):
         ODS_Write.__init__(self, filename)
         self.mem=mem
-#        numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
-#        numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
         sheet=self.createSheet(title)
         #Array width
         widths=[]
@@ -113,27 +111,23 @@ class Table2ODS(ODS_Write):
         
         #firstcontentletter and firstcontentnumber
         if table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
-            firstcontentletter="B"
-            firstcontentnumber="1"
+            coord=Coord("B1")
         elif not table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
-            firstcontentletter="A"
-            firstcontentnumber="2"
+            coord=Coord("A2")
         elif not table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
-            firstcontentletter="B"
-            firstcontentnumber="2"
+            coord=Coord("B2")
         elif table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
-            firstcontentletter="A"
-            firstcontentnumber="1"
-        sheet.setSplitPosition(firstcontentletter+ firstcontentnumber)
+            coord=Coord("A1")
+        sheet.setSplitPosition(coord)
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(columnAdd(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "OrangeCenter")
+                sheet.add(columnAdd(coord.letter, letter), "1", table.horizontalHeaderItem(letter).text(), "OrangeCenter")
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
                 try:#Caputuro cuando se numera sin items 1, 2, 3
-                    sheet.add("A", rowAdd(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "YellowLeft")
+                    sheet.add("A", rowAdd(coord.number, number), table.verticalHeaderItem(number).text(), "YellowLeft")
                 except:
                     pass
         #Items
@@ -141,10 +135,10 @@ class Table2ODS(ODS_Write):
             for letter in range(table.columnCount()):
                 try:
                     o=self.itemtext2object(table.item(number, letter).text())
-                    sheet.add(columnAdd(firstcontentletter, letter), rowAdd(firstcontentnumber, number),o, self.object2style(o))
+                    sheet.add(coord.addColumn(letter).addRow(number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
-        sheet.setCursorPosition(firstcontentletter+ str(table.rowCount()+2))
+        sheet.setCursorPosition(coord.letter+ str(table.rowCount()+2))
         self.save()
         
     def itemtext2object(self, t):
@@ -160,7 +154,7 @@ class Table2ODS(ODS_Write):
                 pass
         elif t[-2:] in (" €"," $"):
            try:
-                number=Decimal(t.replace(t[-2:], ""))
+                number=Decimal(t.replace(t[-2:], "").replace(".", "").replace(",", "."))
                 return Currency(number, self.mem.currencies.find_by_symbol(t[-1:]).id)
            except:
                 logging.info("Error converting Money")
@@ -195,5 +189,13 @@ class Table2ODS(ODS_Write):
             return "WhiteEuro"
         elif o.__class__==Percentage:
             return "WhitePercentage"
+        elif o.__class__==datetime.datetime:
+            return "WhiteDatetime"
+        elif o.__class__==datetime.date:
+            return "WhiteDate"
+        elif o.__class__==Decimal:
+            return "WhiteDecimal6"
+        elif o.__class__==int:
+            return "WhiteInteger"
         else:
             return "WhiteLeft"
