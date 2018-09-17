@@ -1,5 +1,10 @@
+import colorama
+import officegenerator
+import platform
+import PyQt5.QtCore
+import PyQt5.QtChart
 from PyQt5.QtWidgets import QDialog
-from libxulpymoneyfunctions import qcenter, qempty
+from libxulpymoneyfunctions import qcenter, qempty, qright
 from Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):
@@ -18,8 +23,10 @@ class frmAbout(QDialog, Ui_frmAbout):
         self.setModal(True)
         self.setupUi(self)
         
+        self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 
+        self.load_tblSoftware()
         self.tblStatistics.applySettings()    
     
     def load_tblStatistics(self):
@@ -120,3 +127,11 @@ class frmAbout(QDialog, Ui_frmAbout):
         pais(cur, 14, self.mem.stockmarkets.find_by_id(14))
         pais(cur, 15, self.mem.stockmarkets.find_by_id(15))
         cur.close()
+
+    ##Function that fills tblSoftware with data 
+    def load_tblSoftware(self):
+        self.tblSoftware.setItem(0, 0 , qright(colorama.__version__))
+        self.tblSoftware.setItem(1, 0 , qright(officegenerator.__version__))
+        self.tblSoftware.setItem(2, 0 , qright(PyQt5.QtCore.PYQT_VERSION_STR))
+        self.tblSoftware.setItem(3, 0 , qright(PyQt5.QtChart.PYQT_CHART_VERSION_STR))
+        self.tblSoftware.setItem(4, 0 , qright(platform.python_version()))
