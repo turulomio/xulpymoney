@@ -123,6 +123,33 @@ class Ui_frmAbout(object):
         self.tblStatistics.setHorizontalHeaderItem(15, item)
         self.horizontalLayout_2.addWidget(self.tblStatistics)
         self.tab.addTab(self.tab_2, "")
+        self.tabSoftware = QtWidgets.QWidget()
+        self.tabSoftware.setObjectName("tabSoftware")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tabSoftware)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.label = QtWidgets.QLabel(self.tabSoftware)
+        self.label.setObjectName("label")
+        self.verticalLayout_3.addWidget(self.label)
+        self.tblSoftware = myQTableWidget(self.tabSoftware)
+        self.tblSoftware.setObjectName("tblSoftware")
+        self.tblSoftware.setColumnCount(2)
+        self.tblSoftware.setRowCount(5)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setVerticalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setVerticalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setVerticalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setVerticalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblSoftware.setHorizontalHeaderItem(1, item)
+        self.verticalLayout_3.addWidget(self.tblSoftware)
+        self.tab.addTab(self.tabSoftware, "")
         self.tabLicense = QtWidgets.QWidget()
         self.tabLicense.setObjectName("tabLicense")
         self.vboxlayout = QtWidgets.QVBoxLayout(self.tabLicense)
@@ -132,7 +159,7 @@ class Ui_frmAbout(object):
         self.txtLicense.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:600;\">GNU GENERAL PUBLIC LICENSE</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Version 3, 29 June 2007 </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Copyright © 2007 Free Software Foundation, Inc. &lt;</span><a href=\"http://fsf.org/\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt; text-decoration: underline; color:#0057ae;\">http://fsf.org/</span></a><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">&gt;</span></p>\n"
@@ -280,7 +307,7 @@ class Ui_frmAbout(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(frmAbout)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(frmAbout)
 
     def retranslateUi(self, frmAbout):
@@ -290,7 +317,7 @@ class Ui_frmAbout(object):
         self.textEdit.setHtml(_translate("frmAbout", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">La página del proyecto se encuentra en </span><a href=\"http://glparchis.sourceforge.net\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt; text-decoration: underline; color:#0057ae;\">http://xulpymoney.sourceforge.net</span></a></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\'; font-size:9pt; text-decoration: underline; color:#0057ae;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Este programa ha sido desarrollado por Mariano Muñoz.</span></p>\n"
@@ -328,6 +355,22 @@ class Ui_frmAbout(object):
         item = self.tblStatistics.horizontalHeaderItem(0)
         item.setText(_translate("frmAbout", "Total"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("frmAbout", "Products"))
+        self.label.setText(_translate("frmAbout", "Xulpymoney is an Open Source application. It uses the following software"))
+        item = self.tblSoftware.verticalHeaderItem(0)
+        item.setText(_translate("frmAbout", "Colorama"))
+        item = self.tblSoftware.verticalHeaderItem(1)
+        item.setText(_translate("frmAbout", "OfficeGenerator"))
+        item = self.tblSoftware.verticalHeaderItem(2)
+        item.setText(_translate("frmAbout", "PyQt"))
+        item = self.tblSoftware.verticalHeaderItem(3)
+        item.setText(_translate("frmAbout", "PyQtCharts"))
+        item = self.tblSoftware.verticalHeaderItem(4)
+        item.setText(_translate("frmAbout", "Python"))
+        item = self.tblSoftware.horizontalHeaderItem(0)
+        item.setText(_translate("frmAbout", "Versión"))
+        item = self.tblSoftware.horizontalHeaderItem(1)
+        item.setText(_translate("frmAbout", "Url"))
+        self.tab.setTabText(self.tab.indexOf(self.tabSoftware), _translate("frmAbout", "Software used"))
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
 
 from myqtablewidget import myQTableWidget
