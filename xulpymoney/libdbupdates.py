@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneytypes import eTickerPosition, eLeverageType
+from libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType
 import sys
 
 class Update:
@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201808300607
+        self.lastcodeupdate=201809191828
         self.need_update()
 
    
@@ -2359,6 +2359,13 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201808300607)
+        if self.dbversion<201809191828:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81730, 'PROSHARES ULTRA GOLD', 'US74347W6012', 'EUR', int(eProductType.ETF), '', 'http://www.proshares.com', None, None, None, 100, 'c', int(eLeverageType.X2), 2, ['UGL', None, 'NYSEARCA: UGL', None], None, False))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201809191828)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
