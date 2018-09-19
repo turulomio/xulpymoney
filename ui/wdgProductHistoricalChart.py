@@ -32,9 +32,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         pen.setStyle(style)
         pen.setColor(color)
         return pen
-        
-    def setHistoricalChartAdjusts(self, historicalchartadjusts):
-        self.HistoricalChartAdjusts=historicalchartadjusts
 
     def setProduct(self, product, investment=None):
         self.product=product
@@ -73,7 +70,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.verticalLayout.removeWidget(self.view)
 
         selected_datetime= day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
-        self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), self.HistoricalChartAdjusts)
+        self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.Splits)
         
         self.view=VCTemporalSeries()
         self.verticalLayout.addWidget(self.view)
@@ -109,6 +106,18 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             med.setColor(QColor(165, 165, 0))
             self.view.appendTemporalSeriesData(med, selected_datetime, median)
             self.view.appendTemporalSeriesData(med, self.mem.localzone.now(), median)
+
+        if not self.chkAdjustSplits.isChecked():#
+            ls=self.view.appendTemporalSeries(self.product.name.upper() + " (No adjust)", self.product.currency)#Line seies
+            for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.NoAdjusts).arr:
+                if ohcl.datetime()>=selected_datetime:
+                    self.view.appendTemporalSeriesData(ls, day_start(ohcl.datetime(), self.mem.localzone), ohcl.close) 
+
+        if self.chkAdjustDividends.isChecked():#
+            ls=self.view.appendTemporalSeries(self.product.name.upper() + (" (Dividend adjust)"), self.product.currency)#Line seies
+            for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.SplitsAndDividends).arr:
+                if ohcl.datetime()>=selected_datetime:
+                    self.view.appendTemporalSeriesData(ls, day_start(ohcl.datetime(), self.mem.localzone), ohcl.close) 
 
         #INVESTMENT
         if self.investment!=None:
@@ -179,6 +188,12 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.display()
     
     def on_chkSMA200_stateChanged(self, state):
+        self.generate()
+        self.display()
+    def on_chkAdjustSplits_stateChanged(self, state):
+        self.generate()
+        self.display()
+    def on_chkAdjustDividends_stateChanged(self, state):
         self.generate()
         self.display()
     
