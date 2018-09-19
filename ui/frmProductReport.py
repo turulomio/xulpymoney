@@ -546,8 +546,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             ods=ODS_Read(filename)
             sheet=ods.getSheetElementByIndex(0)
             for number in range(2, ods.rowNumber(sheet)):
-                date=ods.getCellValue(sheet, "A", str(number))
-                value=ods.getCellValue(sheet, "B", str(number))
+                date=ods.getCellValue(sheet, "A"+ str(number))
+                value=ods.getCellValue(sheet, "B"+ str(number))
                 print (date, value)
                 set.append(Quote(self.mem).init__create(self.product, dtaware(date, self.product.stockmarket.closes, self.product.stockmarket.zone.name),  value))
                 got=got+1
