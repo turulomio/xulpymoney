@@ -9,7 +9,6 @@ from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
 from libxulpymoney import DPS, Percentage, Product, ProductComparation,  Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
 from libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qmessagebox, qleft,  day_end_from_date
-from libxulpymoneytypes import eHistoricalChartAdjusts
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -118,12 +117,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.viewIntraday=VCTemporalSeries()
         self.layIntraday.addWidget(self.viewIntraday)
        
-        self.wdgproducthistoricalchart=wdgProductHistoricalChart(self)
-        self.layHistorical.addWidget(self.wdgproducthistoricalchart)
-        self.wdgproducthistoricalchartSplits=wdgProductHistoricalChart(self)
-        self.layHistoricalSplits.addWidget(self.wdgproducthistoricalchartSplits)
-        self.wdgproducthistoricalchartDividends=wdgProductHistoricalChart(self)
-        self.layHistoricalDividends.addWidget(self.wdgproducthistoricalchartDividends)
+        self.wdgHistorical=wdgProductHistoricalChart(self)
+        self.layHistorical.addWidget(self.wdgHistorical)
         
         self.pseCompare.setupUi(self.mem, self.investment)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
@@ -277,7 +272,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             table.setFocus()
         ## load_historicas
         if index==0:
-            setTable(self.tblDaily, self.product.result.ohclDaily)
+            setTable(self.tblDaily, self.product.result.ohclDailyBeforeSplits)
         elif index==1:
             setTable(self.tblWeekly, self.product.result.ohclWeekly)
         elif index==2:
@@ -403,21 +398,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
             pass
         else:
-            self.wdgproducthistoricalchart.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchart.setHistoricalChartAdjusts(eHistoricalChartAdjusts.NoAdjusts)
-            self.wdgproducthistoricalchart.generate()
-            self.wdgproducthistoricalchart.display()
-            
-            self.wdgproducthistoricalchartSplits.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchartSplits.setHistoricalChartAdjusts(eHistoricalChartAdjusts.Splits)
-            self.wdgproducthistoricalchartSplits.generate()
-            self.wdgproducthistoricalchartSplits.display()
-            
-            self.wdgproducthistoricalchartDividends.setProduct(self.product, self.investment)
-            self.wdgproducthistoricalchartDividends.setHistoricalChartAdjusts(eHistoricalChartAdjusts.Dividends)
-            self.wdgproducthistoricalchartDividends.generate()
-            self.wdgproducthistoricalchartDividends.display()
-                
+            self.wdgHistorical.setProduct(self.product, self.investment)
+            self.wdgHistorical.generate()
+            self.wdgHistorical.display()
+
         #Canvas Intradia
         if self.product.result.intradia.length()<2:
             self.viewIntraday.hide()

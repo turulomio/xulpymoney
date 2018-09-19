@@ -7257,15 +7257,13 @@ class QuotesResult:
         self.mem=mem
         self.product=product
                
-        self.intradiaBeforeSplits=QuoteIntradayManager(self.mem) #Despues del desarrollo deberán ser llamados BeforeSplits, ya que siempre se deberán usar BeforeSplits
-        self.allBeforeSplits=QuoteAllIntradayManager(self.mem)
-        self.basicBeforeSplits=QuoteBasicManager(self.mem, self.product)
+        # These are without splits nor dividends
         self.ohclDailyBeforeSplits=OHCLDailyManager(self.mem, self.product)
         self.ohclMonthlyBeforeSplits=OHCLMonthlyManager(self.mem, self.product)
         self.ohclYearlyBeforeSplits=OHCLYearlyManager(self.mem, self.product)
         self.ohclWeeklyBeforeSplit=OHCLWeeklyManager(self.mem, self.product)
         
-        
+        # These are with splits and without dividends
         self.intradia=QuoteIntradayManager(self.mem)
         self.all=QuoteAllIntradayManager(self.mem)
         self.basic=QuoteBasicManager(self.mem, self.product)
@@ -7274,10 +7272,7 @@ class QuotesResult:
         self.ohclYearly=OHCLYearlyManager(self.mem, self.product)
         self.ohclWeekly=OHCLWeeklyManager(self.mem, self.product)
 
-        
-        self.intradiaAfterDividends=QuoteIntradayManager(self.mem) 
-        self.allAfterDividends=QuoteAllIntradayManager(self.mem)
-        self.basicAfterDividends=QuoteBasicManager(self.mem, self.product)
+        # These are with splits and dividends
         self.ohclDailyAfterDividends=OHCLDailyManager(self.mem, self.product)
         self.ohclMonthlyAfterDividends=OHCLMonthlyManager(self.mem, self.product)
         self.ohclYearlyAfterDividends=OHCLYearlyManager(self.mem, self.product)
@@ -7293,6 +7288,7 @@ class QuotesResult:
             self.product.splits=SplitManager(self.mem, self.product)
             self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
         
+    ## Function that generate all results and computes splits and dividends
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
         inicioall=datetime.datetime.now()  
@@ -7312,13 +7308,16 @@ class QuotesResult:
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
         if self.product.splits.length()>0:
-            self.ohclDaily=self.product.splits.adjustOHCLDailyManager(self.ohclDailyBeforeSplits)
+            self.ohclDaily=self.ohclDailyBeforeSplits.clone(self.mem, self.product)
+            self.ohclDaily=self.product.splits.adjustOHCLDailyManager(self.ohclDaily)
         else:
             self.ohclDaily=self.ohclDailyBeforeSplits
+            
         if self.product.dps.length()>0:
-            self.ohclDailyAfterDividends=self.product.dps.adjustOHCLDailyManager(self.ohclDaily)
+            self.ohclDailyAfterDividends=self.ohclDaily.clone(self.mem, self.product)
+            self.ohclDailyAfterDividends=self.product.dps.adjustOHCLDailyManager(self.ohclDailyAfterDividends)
         else:
-            self.ohclDailyAfterDividends=self.ohclDailyBeforeSplits
+            self.ohclDailyAfterDividends=self.ohclDaily
             
         self.ohclMonthly.load_from_db("""
             select 
@@ -7364,7 +7363,7 @@ class QuotesResult:
         """.format(self.product.id))
         
         self.basic=self.ohclDaily.setquotesbasic()
-        print ("OHCL data of '{}' loaded: {}".format(self.product.name, datetime.datetime.now()-inicioall))
+        print ("QuotesResult.get_basic_and_ohcls of '{}' took {} with {} splits and {} dividends".format(self.product.name, datetime.datetime.now()-inicioall, self.product.splits.length(), self.product.dps.length()))
         
 
     def get_all(self):
@@ -7372,16 +7371,14 @@ class QuotesResult:
         self.load_dps_and_splits()
         self.all.load_from_db(self.product)
 
+    ## Returns the OHCLManager corresponding to it's duration and if has splits and dividends adjust
     def ohcl(self,  ohclduration, historicalchartadjust=eHistoricalChartAdjusts.NoAdjusts):
-        """
-            Returns the OHCLManager corresponding to it's duration
-        """
         if ohclduration==eOHCLDuration.Day:
             if historicalchartadjust==eHistoricalChartAdjusts.Splits:
                 return self.ohclDaily
             elif historicalchartadjust==eHistoricalChartAdjusts.NoAdjusts:
                 return self.ohclDailyBeforeSplits
-            elif historicalchartadjust==eHistoricalChartAdjusts.Dividends:
+            elif historicalchartadjust==eHistoricalChartAdjusts.SplitsAndDividends:
                 return self.ohclDailyAfterDividends
         if ohclduration==eOHCLDuration.Week:
             return self.ohclWeekly

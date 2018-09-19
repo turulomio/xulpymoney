@@ -54,9 +54,12 @@ class eTickerPosition(IntEnum):
 
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
 class eHistoricalChartAdjusts:
+    ## Without splits nor dividens
     NoAdjusts=0
+    ## WithSplits
     Splits=1
-    Dividends=2#Dividends with splits.        
+    ##With splits and dividends
+    SplitsAndDividends=2#Dividends with splits.        
     
 class eOHCLDuration:
     Day=1

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1139</width>
-    <height>994</height>
+    <width>1052</width>
+    <height>825</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1072</width>
-                <height>924</height>
+                <width>598</width>
+                <height>796</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -466,7 +466,7 @@
                          <bool>true</bool>
                         </attribute>
                         <attribute name="verticalHeaderVisible">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </attribute>
                         <row>
                          <property name="text">
@@ -617,7 +617,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>2</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -748,90 +748,23 @@
             <attribute name="title">
              <string>Historical</string>
             </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_35">
+            <layout class="QHBoxLayout" name="horizontalLayout_34">
              <item>
-              <widget class="QTabWidget" name="tabWidget">
-               <property name="tabPosition">
-                <enum>QTabWidget::East</enum>
+              <widget class="QGroupBox" name="groupBox_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="currentIndex">
-                <number>1</number>
+               <property name="title">
+                <string>Historical prices graph</string>
                </property>
-               <widget class="QWidget" name="tabHistoricalNormal">
-                <attribute name="title">
-                 <string>Normal</string>
-                </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_44">
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_2">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="title">
-                    <string>Historical prices graph</string>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_10">
-                    <item>
-                     <layout class="QVBoxLayout" name="layHistorical"/>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="tab_7">
-                <attribute name="title">
-                 <string>Adjusting Splits</string>
-                </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_47">
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_5">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="title">
-                    <string>Historical prices graph</string>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_9">
-                    <item>
-                     <layout class="QVBoxLayout" name="layHistoricalSplits"/>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="tabHistoricalAdjustingDividens">
-                <attribute name="title">
-                 <string>Adjusting Dividends</string>
-                </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_46">
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_4">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="title">
-                    <string>Historical prices graph</string>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_11">
-                    <item>
-                     <layout class="QVBoxLayout" name="layHistoricalDividends"/>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <layout class="QVBoxLayout" name="layHistorical"/>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
@@ -1189,61 +1122,72 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>5</number>
+                 <number>4</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
                 </property>
                 <widget class="QWidget" name="tab_5">
                  <attribute name="title">
-                  <string>Daily prices</string>
+                  <string>Daily prices </string>
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
-                   <widget class="myQTableWidget" name="tblDaily">
-                    <property name="contextMenuPolicy">
-                     <enum>Qt::CustomContextMenu</enum>
-                    </property>
-                    <property name="alternatingRowColors">
-                     <bool>true</bool>
-                    </property>
-                    <property name="selectionBehavior">
-                     <enum>QAbstractItemView::SelectRows</enum>
-                    </property>
-                    <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                    </attribute>
-                    <column>
-                     <property name="text">
-                      <string>Date</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Price</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Open</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Higher</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Lower</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Agrupation Start</string>
-                     </property>
-                    </column>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_12">
+                    <item>
+                     <widget class="myQTableWidget" name="tblDaily">
+                      <property name="contextMenuPolicy">
+                       <enum>Qt::CustomContextMenu</enum>
+                      </property>
+                      <property name="alternatingRowColors">
+                       <bool>true</bool>
+                      </property>
+                      <property name="selectionBehavior">
+                       <enum>QAbstractItemView::SelectRows</enum>
+                      </property>
+                      <attribute name="verticalHeaderVisible">
+                       <bool>false</bool>
+                      </attribute>
+                      <column>
+                       <property name="text">
+                        <string>Date</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Price</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Open</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Higher</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Lower</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Agrupation Start</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_6">
+                      <property name="text">
+                       <string>Splits and dividends hasn't been adjusted in this prices. They are database prices</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
@@ -1251,52 +1195,63 @@
                  <attribute name="title">
                   <string>Weekly prices</string>
                  </attribute>
-                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <layout class="QHBoxLayout" name="horizontalLayout_32">
                   <item>
-                   <widget class="myQTableWidget" name="tblWeekly">
-                    <property name="contextMenuPolicy">
-                     <enum>Qt::CustomContextMenu</enum>
-                    </property>
-                    <property name="alternatingRowColors">
-                     <bool>true</bool>
-                    </property>
-                    <property name="selectionBehavior">
-                     <enum>QAbstractItemView::SelectRows</enum>
-                    </property>
-                    <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                    </attribute>
-                    <column>
-                     <property name="text">
-                      <string>Date</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Price</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Open</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Higher</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Lower</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Agrupation start</string>
-                     </property>
-                    </column>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                    <item>
+                     <widget class="myQTableWidget" name="tblWeekly">
+                      <property name="contextMenuPolicy">
+                       <enum>Qt::CustomContextMenu</enum>
+                      </property>
+                      <property name="alternatingRowColors">
+                       <bool>true</bool>
+                      </property>
+                      <property name="selectionBehavior">
+                       <enum>QAbstractItemView::SelectRows</enum>
+                      </property>
+                      <attribute name="verticalHeaderVisible">
+                       <bool>false</bool>
+                      </attribute>
+                      <column>
+                       <property name="text">
+                        <string>Date</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Price</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Open</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Higher</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Lower</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Agrupation start</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_8">
+                      <property name="text">
+                       <string>Splits and dividends hasn't been adjusted in this prices. They are database prices</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
@@ -1306,50 +1261,61 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <item>
-                   <widget class="myQTableWidget" name="tblMonthly">
-                    <property name="contextMenuPolicy">
-                     <enum>Qt::CustomContextMenu</enum>
-                    </property>
-                    <property name="alternatingRowColors">
-                     <bool>true</bool>
-                    </property>
-                    <property name="selectionBehavior">
-                     <enum>QAbstractItemView::SelectRows</enum>
-                    </property>
-                    <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                    </attribute>
-                    <column>
-                     <property name="text">
-                      <string>Date</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Price</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Open</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Higher</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Lower</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Agrupation start</string>
-                     </property>
-                    </column>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_13">
+                    <item>
+                     <widget class="myQTableWidget" name="tblMonthly">
+                      <property name="contextMenuPolicy">
+                       <enum>Qt::CustomContextMenu</enum>
+                      </property>
+                      <property name="alternatingRowColors">
+                       <bool>true</bool>
+                      </property>
+                      <property name="selectionBehavior">
+                       <enum>QAbstractItemView::SelectRows</enum>
+                      </property>
+                      <attribute name="verticalHeaderVisible">
+                       <bool>false</bool>
+                      </attribute>
+                      <column>
+                       <property name="text">
+                        <string>Date</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Price</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Open</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Higher</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Lower</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Agrupation start</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_17">
+                      <property name="text">
+                       <string>Splits and dividends hasn't been adjusted in this prices. They are database prices</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
@@ -1359,50 +1325,61 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_4">
                   <item>
-                   <widget class="myQTableWidget" name="tblYearly">
-                    <property name="contextMenuPolicy">
-                     <enum>Qt::CustomContextMenu</enum>
-                    </property>
-                    <property name="alternatingRowColors">
-                     <bool>true</bool>
-                    </property>
-                    <property name="selectionBehavior">
-                     <enum>QAbstractItemView::SelectRows</enum>
-                    </property>
-                    <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                    </attribute>
-                    <column>
-                     <property name="text">
-                      <string>Date</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Price</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Open</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Higher</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Lower</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Agrupation start</string>
-                     </property>
-                    </column>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_14">
+                    <item>
+                     <widget class="myQTableWidget" name="tblYearly">
+                      <property name="contextMenuPolicy">
+                       <enum>Qt::CustomContextMenu</enum>
+                      </property>
+                      <property name="alternatingRowColors">
+                       <bool>true</bool>
+                      </property>
+                      <property name="selectionBehavior">
+                       <enum>QAbstractItemView::SelectRows</enum>
+                      </property>
+                      <attribute name="verticalHeaderVisible">
+                       <bool>false</bool>
+                      </attribute>
+                      <column>
+                       <property name="text">
+                        <string>Date</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Price</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Open</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Higher</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Lower</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Agrupation start</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_18">
+                      <property name="text">
+                       <string>Splits and dividends hasn't been adjusted in this prices. They are database prices</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
@@ -1416,84 +1393,95 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
                   <item>
-                   <widget class="myQTableWidget" name="tblMensuales">
-                    <property name="toolTip">
-                     <string>Table has been calculted with the last price of the previous month and the last price of the corresponding month</string>
-                    </property>
-                    <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                    </attribute>
-                    <column>
-                     <property name="text">
-                      <string>Year</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>January</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>February</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>March</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>April</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>May</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>June</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>July</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>August</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>September</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>October</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>November</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>December</string>
-                     </property>
-                    </column>
-                    <column>
-                     <property name="text">
-                      <string>Total</string>
-                     </property>
-                    </column>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_15">
+                    <item>
+                     <widget class="myQTableWidget" name="tblMensuales">
+                      <property name="toolTip">
+                       <string>Table has been calculted with the last price of the previous month and the last price of the corresponding month</string>
+                      </property>
+                      <attribute name="verticalHeaderVisible">
+                       <bool>false</bool>
+                      </attribute>
+                      <column>
+                       <property name="text">
+                        <string>Year</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>January</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>February</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>March</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>April</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>May</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>June</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>July</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>August</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>September</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>October</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>November</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>December</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Total</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_19">
+                      <property name="text">
+                       <string>These percentages have been calculated with prices with adjusted splits</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
