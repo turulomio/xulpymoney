@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11beta3
--- Dumped by pg_dump version 11beta3
+-- Dumped from database version 11beta4
+-- Dumped by pg_dump version 11beta4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -6022,6 +6022,7 @@ INSERT INTO public.products VALUES ('MULTIOPORTUNIDAD', 'ES0106082037', 'EUR', 2
 INSERT INTO public.products VALUES ('MULTIOPORTUNIDAD II', 'ES0164982037', 'EUR', 2, '|f_es_BMF|', 76345, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ES0164982037||es||False', true, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Multi X10 IBEX35 20181221', 'LU1731829377', 'EUR', 5, '', -35, '', '', '', '', 100, 'c', 6, 1, '', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Multi X10 IBEX35 INVERSO 20181221', 'LU1731829450', 'EUR', 5, NULL, -36, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}');
+INSERT INTO public.products VALUES ('MULTI X5 IBEX35 INVERSO 20181221', 'LU1731826605', 'EUR', 5, '', 81731, 'https://bolsa.societegenerale.es/', NULL, NULL, NULL, 100, 'p', 5, 3, NULL, false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('Münchener Rück AG', 'DE0008430026', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|EUROSTOXX|', 80407, '', '', '', '', 100, 'c', 0, 5, 'DEUTSCHEBOERSE#DE0008430026||de||False', false, '{MUV2.DE,NULL,ETR:MUV2,NULL}');
 INSERT INTO public.products VALUES ('Murphy Oil Corp.', NULL, 'USD', 1, NULL, 78226, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'NYSE#MUR||us||False', false, '{NULL,NULL,NULL,NULL}');
 INSERT INTO public.products VALUES ('MUSEE GREVIN', 'FR0000037970', 'EUR', 1, '|EURONEXT|', 76689, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, 'EURONEXT#FR0000037970||fr||False', false, '{NULL,NULL,NULL,NULL}');
@@ -8054,9 +8055,9 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 74788, 81394, 81728, 81479, 81458, 81693, 79228, 81711, 81712, 81714, 81713, 81709, 81730');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 74788, 81394, 81728, 81479, 81458, 81693, 79228, 81709, -36, 81731');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO public.globals VALUES (1, 'Version', '201809191900');
+INSERT INTO public.globals VALUES (1, 'Version', '201809250501');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2013');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');

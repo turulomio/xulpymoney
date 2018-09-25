@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201809191900
+        self.lastcodeupdate=201809250501
         self.need_update()
 
    
@@ -2372,6 +2372,13 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201809191900)
+        if self.dbversion<201809250501:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name, isin, currency, type, agrupations, web, address, phone, mail, percentage, pci, leveraged, stockmarkets_id, tickers, comment, obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81731, 'MULTI X5 IBEX35 INVERSO 20181221', 'LU1731826605', 'EUR', int(eProductType.Warrant), '', 'https://bolsa.societegenerale.es/', None, None, None, 100, 'p', int(eLeverageType.X5), 3, [None, None, None, None], None, False))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201809250501)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
