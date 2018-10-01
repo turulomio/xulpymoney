@@ -8055,7 +8055,7 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 74788, 81394, 81728, 81479, 81458, 81693, 79228, 81709, -36, 81731');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 74788, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 81731');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (1, 'Version', '201809250501');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
