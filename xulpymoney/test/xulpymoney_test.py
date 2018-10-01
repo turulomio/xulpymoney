@@ -1,5 +1,7 @@
-import unittest,  sys
+import unittest
+import sys
 sys.path.append("/usr/lib/xulpymoney")
+from PyQt5.QtWidgets import QDialog
 from libxulpymoney import *
 from frmMain import *
 from frmInit import *

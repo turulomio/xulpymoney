@@ -66,7 +66,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
         file="AssetsReport.odt"
-        doc=AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
+        doc=AssetsReport(self.mem, file)
         doc.generate()
         
         

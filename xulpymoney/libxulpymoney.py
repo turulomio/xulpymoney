@@ -4,7 +4,7 @@
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
-from officegenerator import ODT
+from officegenerator import ODT_Standard
 from odf.text import P
 import datetime
 import time
@@ -20,12 +20,11 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from libxulpymoneyversion import version
-from libxulpymoneyfunctions import qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, makedirs, qempty,  l10nDecimal
+from libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  l10nDecimal
 from libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
 from libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
 getcontext().prec=20
-
 
 class Connection(QObject):
     inactivity_timeout=pyqtSignal()
@@ -8158,18 +8157,13 @@ class ZoneManager(ObjectManager_With_IdName_Selectable):
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
 
-
-            
-
-
-class AssetsReport(ODT):
-    def __init__(self, mem, filename, template):
-        ODT.__init__(self, filename, template)
+class AssetsReport(ODT_Standard, QObject):
+    def __init__(self, mem, filename):
+        ODT_Standard.__init__(self, filename)
+        QObject.__init__(self)
         self.mem=mem
         self.dir=None#Directory in tmp
         
-    def tr (self, s):
-        return QApplication.translate("Core", s)
         
     def generate(self):
         self.dir='/tmp/AssetsReport-{}'.format(datetime.datetime.now())
@@ -8199,6 +8193,7 @@ class AssetsReport(ODT):
         self.header(self.tr("About Xulpymoney"), 1)
         self.header(self.tr("About this report"), 2)
         self.pageBreak()
+        
         ## Assets
         self.header(self.tr("Assets"), 1)
         self.simpleParagraph(self.tr("The total assets of the user is {}.").format(self.vTotal))
@@ -8217,7 +8212,7 @@ class AssetsReport(ODT):
             balance=bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
             sumbalances=sumbalances+balance
             data.append((bank.name, balance))
-        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12)       
+        self.table( [self.tr("Bank"), self.tr("Balance")], data, [4, 3], 9)       
         self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(sumbalances))
         
         self.pageBreak(True)
@@ -8237,7 +8232,7 @@ class AssetsReport(ODT):
         data=zip(*columns)
         
         self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
-                            ["<", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 7)       
+                            data, [2.5]+[1.8]*13, 6)
                 
         ## Target
         target=AnnualTarget(self.mem).init__from_db(datetime.date.today().year)
@@ -8267,7 +8262,7 @@ class AssetsReport(ODT):
         self.mem.data.accounts_active().order_by_name()
         for account in self.mem.data.accounts_active().arr:
             data.append((account.name, account.eb.name, account.balance()))
-        self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 11)       
+        self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], data, [6, 6, 3], 9)       
         
         self.simpleParagraph(self.tr("Sum of all account balances is {}").format(self.mem.data.accounts_active().balance()))
 
@@ -8286,7 +8281,7 @@ class AssetsReport(ODT):
             arr=("{0} ({1})".format(inv.name, inv.account.name), inv.balance(), pendiente, inv.op_actual.tpc_total(inv.product.result.basic.last), inv.percentage_to_selling_point())
             data.append(arr)
 
-        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 9)       
+        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], data, [13,  3, 3, 3, 3], 8)       
         
         suminvertido=self.mem.data.investments_active().invested()
         sumpendiente=self.mem.data.investments_active().pendiente()

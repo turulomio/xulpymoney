@@ -1,6 +1,8 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
+from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem
+from libxulpymoney import Money
+from libxulpymoneyfunctions import qright, qleft
 from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage,  Coord
 import datetime
 import logging
@@ -95,6 +97,42 @@ class myQTableWidget(QTableWidget):
             filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), "table.ods", self.tr("Libreoffice calc (*.ods)"))[0]
             if filename:
                 Table2ODS(self.mem,filename, self, "My table")
+
+    ## Adds a horizontal header array , a vertical header array and a data array
+    ##
+    ## Automatically set alignment
+    def setData(self, header_horizontal, header_vertical, data):
+        self.data_header_horizontal=header_horizontal
+        self.data_header_vertical=header_vertical
+        self.data=data
+        self.setColumnCount(len(self.data_header_horizontal))
+        for i in range(len(self.data)):
+            self.setHorizontalHeaderItem(i, QTableWidgetItem(self.data_header_horizontal[i]))
+        #DATA  
+        self.applySettings()
+        self.clearContents()
+        
+        self.setRowCount(self.length()+1)
+        
+        self.applySettings()
+        self.setRowCount(self.length())        
+        for row in len(self.data):
+            for column in len(self.data_header_horizontal) :
+                self.setitem(row, column, self.object2qtablewidgetitem(self.data[row][column]))
+                    
+    ## Converts a objecct class to a qtablewidgetitem
+    def object2qtablewidgetitem(self, o):
+        if o.__class__ in [int,  float, Decimal, Money]:
+            return qright(o)
+        else:
+            return qleft(o)
+    ## Converts self.data to an other list with officegenerator objects
+    def data2officegeneratordata(self, arr):
+        r=[]
+        for i,  row in enumerate(self.arr):
+            for j,  column in enumerate(row):
+                r.append(self.data[row][column])
+            
             
 class Table2ODS(ODS_Write):
     def __init__(self, mem, filename, table, title):
