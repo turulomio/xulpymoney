@@ -147,22 +147,11 @@ if __name__ == '__main__':
     frm.txtXulpymoney.setText("xulpymoney_pruebas")
     frm.txtPass.setText(access.con.password)
     frm.on_cmdCreate_released()
-#    con=Connection().init__create(access.con.user, access.con.password, access.con.server.access.con.port, "xulpymoney_pruebas")
-#    frm.drop_db() 
-#    if frm.create_db(frm.txtXulpymoney.text()) and frm.create_xulpymoney():
-#        #Load data Xulpymoney infraestructure
-#        mem=MemXulpymoney()
-#        mem.setQTranslator(QTranslator(app))
-#        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
-#        app.installTranslator(mem.qtranslator)
     mem.con=Connection().init__create(access.con.user, access.con.password, access.con.server, access.con.port, "xulpymoney_pruebas")
     mem.con.connect()
     frmMain= frmMain(mem)
     mem.load_db_data()       
-#        
         #Launch tests
     unittest.main(argv=[sys.argv[0]])
-#    else:
-#        print("No pude crear db")
 
  

@@ -3397,7 +3397,7 @@ class DBAdmin:
         f.close()
         
     def xulpymoney_basic_schema(self):
-        try:
+#        try:
             if platform.system()=="Windows":
                 self.load_script("sql/xulpymoney.sql")
             else:
@@ -3428,10 +3428,10 @@ class DBAdmin:
             cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
             cur.execute("insert into conceptos values(67,'{0}',2,false)".format(QApplication.translate("Core","Credit card refund")))          
             cur.close()
-            return True
-        except:
-            print ("Error creating xulpymoney basic schema")
-            return False
+#            return True
+#        except:
+#            print ("Error creating xulpymoney basic schema")
+#            return False
 
         
 class DBData:

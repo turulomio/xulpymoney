@@ -43,6 +43,8 @@ class frmInit(QDialog, Ui_frmInit):
             self.mem.con=con            
             admin=DBAdmin(self.mem.con)
             
+            print("Aq1uin")
+            
             if admin.check_connection()==False:
                 qmessagebox(self.tr("Error conecting to table template1 in database server"))
                 self.reject()
