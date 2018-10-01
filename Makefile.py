@@ -59,6 +59,7 @@ if __name__ == '__main__':
     parser.add_argument('--dist_sources', help="Make a sources tar", action="store_true",default=False)
     parser.add_argument('--dist_linux', help="Make a Linux binary distribution", action="store_true",default=False)
     parser.add_argument('--dist_windows', help="Make a Windows binary distribution", action="store_true",default=False)
+    parser.add_argument('--test', help="Make automatic code tests", action="store_true",default=False)
     parser.add_argument('--python', help="Python path", action="store",default='/usr/bin/python3')
     args=parser.parse_args()
 
@@ -71,6 +72,9 @@ if __name__ == '__main__':
     if args.doc==True:
         shell("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         shell("lrelease xulpymoney.pro")
+    elif args.test==True:
+        os.chdir("test")
+        shell("python3 xulpymoney_test.py ")
     elif args.uninstall==True:
         shell("rm " + prefixbin + "/xulpymoney*")
         shell("rm -Rf " + prefixlib)
