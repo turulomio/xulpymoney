@@ -32,6 +32,7 @@ from frmHelp import frmHelp
 from wdgOrders import wdgOrders
 from wdgOpportunities import wdgOpportunities
 from wdgProducts import wdgProducts
+from wdgProductsComparation import wdgProductsComparation
 from wdgSimulations import wdgSimulations
 from wdgQuotesUpdate import wdgQuotesUpdate
 
@@ -586,12 +587,21 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
     
     @pyqtSlot()  
+    def on_actionProductsComparation_triggered(self):
+        self.w.close()
+        self.w=wdgProductsComparation(self.mem)
+
+        self.layout.addWidget(self.w)
+        self.w.show()            
+
+    @pyqtSlot()  
     def on_actionProductsInvestmentActive_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()        
+
     @pyqtSlot()  
     def on_actionProductsWithoutQuotes_triggered(self):
         self.w.close()

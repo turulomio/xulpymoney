@@ -234,6 +234,7 @@
     <addaction name="separator"/>
     <addaction name="menuMaintenance"/>
     <addaction name="separator"/>
+    <addaction name="actionProductsComparation"/>
     <addaction name="actionFavorites"/>
     <addaction name="actionSearch"/>
     <addaction name="separator"/>
@@ -274,6 +275,7 @@
    <addaction name="separator"/>
    <addaction name="actionOrders"/>
    <addaction name="actionPurchaseOpportunities"/>
+   <addaction name="actionProductsComparation"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionConcepts"/>
@@ -1083,6 +1085,18 @@
    </property>
    <property name="toolTip">
     <string>Purchase opportunities</string>
+   </property>
+  </action>
+  <action name="actionProductsComparation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
+   </property>
+   <property name="text">
+    <string>Compare products</string>
+   </property>
+   <property name="toolTip">
+    <string>Compare products</string>
    </property>
   </action>
  </widget>

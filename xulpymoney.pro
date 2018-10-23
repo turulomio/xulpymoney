@@ -93,6 +93,8 @@ SOURCES         = \
                   ui/Ui_wdgProductHistoricalChart.py \
                   ui/wdgProducts.py \
                   ui/Ui_wdgProducts.py \
+                  ui/wdgProductsComparation.py \
+                  ui/Ui_wdgProductsComparation.py \
                   ui/wdgSimulations.py \
                   ui/Ui_wdgSimulations.py \
                   ui/wdgSimulationsAdd.py \
@@ -164,6 +166,7 @@ FORMS           = \
                   ui/wdgOrdersAdd.ui \
                   ui/wdgProductHistoricalChart.ui \
                   ui/wdgProducts.ui \
+                  ui/wdgProductsComparation.ui \
                   ui/wdgSimulations.ui \
                   ui/wdgSimulationsAdd.ui \
                   ui/wdgTotal.ui \
