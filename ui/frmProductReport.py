@@ -3,9 +3,8 @@ import logging
 import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QFileDialog
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
 from Ui_frmProductReport import Ui_frmProductReport
-from myqtablewidget import myQTableWidget
 from libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
 from libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft
 from frmSelector import frmSelector
@@ -151,17 +150,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             setTable(self.tblMonthly, self.product.result.ohclMonthly)
         elif index==3:
             setTable(self.tblYearly, self.product.result.ohclYearly)
-        
-    def on_cmdComparationData_released(self):
-        d=QDialog(self)        
-        d.resize(800, 600)
-        d.setWindowTitle(self.tr("Comparation data table"))
-        table=myQTableWidget(d)
-        table.settings(self.mem,"frmProductReport" , "tblCompartionData")
-        self.comparation.myqtablewidget(table)
-        lay = QVBoxLayout(d)
-        lay.addWidget(table)
-        d.show()
+
         
     def load_information(self):
         def row_tblTPV(quote,  row):

@@ -1,6 +1,7 @@
 import datetime
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from myqtablewidget import myQTableWidget
 from Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from PyQt5.QtChart import QValueAxis
 from libxulpymoney import ProductComparation
@@ -12,34 +13,32 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        self.product1=product1
-        self.product2=product2
         
-#        self.pseCompare.setupUi(self.mem, self.investment)
-#        self.pseCompare.label.setText(self.tr("Select a product to compare"))
-#        self.pseCompare.setSelected(self.mem.data.benchmark)
-#        self.pseCompare.selectionChanged.connect(self.load_comparation)
-#        self.pseCompare.showProductButton(False)
-        self.cmbCompareTypes.setCurrentIndex(0)
-        self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
-        self.viewCompare=None
-        self.deCompare.dateChanged.connect(self.load_comparation)
-#        self.load_comparation()
-        
-        
-    def load_comparation(self):
-        """Loads comparation canvas"""
-        if self.product.id==None: #Adding a product doesn't need to comparate products.
-            return
+        self.selector1.setupUi(self.mem)
+        self.selector1.label.setText(self.tr("Select a product to compare"))
+        self.selector1.setSelected(product1)
+
+        self.selector1.showProductButton(False)
+        self.selector2.setupUi(self.mem)
+        self.selector2.label.setText(self.tr("Select a product to compare"))
+        if product2==None:
+            self.selector2.setSelected(self.mem.data.benchmark)
+        else:
+            self.selector2.setSelected(product2)
             
+        self.selector2.showProductButton(False)
+        self.cmbCompareTypes.setCurrentIndex(0)
+        
+        
+    def on_cmdComparation_released(self):
         inicio=datetime.datetime.now()
-        if self.pseCompare.selected==None:
-            qmessagebox(self.tr("You must select a product to compare with."))
+        if self.selector1.selected==None or self.selector2.selected==None:
+            qmessagebox(self.tr("You must select a product to compare with"))
             return
-        self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
+        self.comparation=ProductComparation(self.mem, self.selector1.selected, self.selector2.selected)
         if self.viewCompare!=None:
             self.viewCompare.hide()
-            self.layCompareProduct.removeWidget(self.viewCompare)
+            self.verticalLayout.removeWidget(self.viewCompare)
         if self.comparation.canBeMade()==False:
             qmessagebox(self.tr("Comparation can't be made."))
             return
@@ -138,8 +137,18 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewCompare.display()
 
         
-        self.layCompareProduct.addWidget(self.viewCompare)
+        self.verticalLayout.addWidget(self.viewCompare)
         print ("Comparation took {}".format(datetime.datetime.now()-inicio))
 
-    def on_my_cmbCompareTypes_currentIndexChanged(self, int):
-        self.load_comparation()
+
+                
+    def on_cmdComparationData_released(self):
+        d=QDialog(self)        
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Comparation data table"))
+        table=myQTableWidget(d)
+        table.settings(self.mem,"frmProductReport" , "tblCompartionData")
+        self.comparation.myqtablewidget(table)
+        lay = QVBoxLayout(d)
+        lay.addWidget(table)
+        d.show()
