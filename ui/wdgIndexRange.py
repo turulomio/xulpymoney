@@ -127,7 +127,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             PuntRange=PuntRange*(1+Decimal(self.spin.value()/100))
     
         #Calculate zero risk assests and range number covered
-        zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), datetime.date.today()).amount +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today()).amount
+        zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), datetime.date.today()).amount# +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today()).amount
         rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())
         
         #Iterates all ranges and prints table
