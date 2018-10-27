@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201809250501
+        self.lastcodeupdate=201810272132
         self.need_update()
 
    
@@ -2379,6 +2379,13 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201809250501)
+        if self.dbversion<201810272132:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set leveraged=-1 where leveraged=1 and id<81719")
+            cur.execute("update products set leveraged=1 where leveraged=0")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201810272132)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
