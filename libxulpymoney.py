@@ -5153,8 +5153,8 @@ class LeverageManager(ObjectManager_With_IdName_Selectable):
         self.mem=mem
 
     def load_all(self):
-        self.append(Leverage(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), eLeverageType.NotLeveraged))
-        self.append(Leverage(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), eLeverageType.Variable))
+        self.append(Leverage(self.mem).init__create(-1,QApplication.translate("Core","Variable leverage (Warrants)"), eLeverageType.Variable))
+        self.append(Leverage(self.mem).init__create(1 ,QApplication.translate("Core","Not leveraged"), eLeverageType.NotLeveraged))
         self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), eLeverageType.X2))
         self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), eLeverageType.X3))
         self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), eLeverageType.X4))

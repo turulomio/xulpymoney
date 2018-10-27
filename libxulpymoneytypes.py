@@ -74,9 +74,10 @@ class eOHCLDuration:
         combo.addItem(QApplication.translate("Core", "Month"), 3)
         combo.addItem(QApplication.translate("Core", "Year"), 4)
         combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))
+
 class eLeverageType:
-    NotLeveraged=1
     Variable=-1
+    NotLeveraged=1
     X2=2
     X3=3
     X4=4
