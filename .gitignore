@@ -17,3 +17,8 @@ cur/
 tmp/
 __pycache__/
 *.DS_Store
+Xulpymoney.e4p
+build/
+dist/
+doc/html/
+xulpymoney.egg-info/
