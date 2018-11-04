@@ -38,6 +38,6 @@ Dependencies
 
 Changelog
 =========
-X.X.X
+0.1.0
   * Migration from Sourceforge
   * Changed code to python package

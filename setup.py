@@ -36,6 +36,7 @@ class Doxygen(Command):
         print("Creating Doxygen Documentation")
 #        os.system("""sed -i -e "41d" doc/Doxyfile""")#Delete line 41
 #        os.system("""sed -i -e "41iPROJECT_NUMBER         = {}" doc/Doxyfile""".format(__version__))#Insert line 41
+        os.system("rm -Rf build")
         os.chdir("doc")
         os.system("doxygen Doxyfile")
         os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
@@ -108,20 +109,20 @@ class Procedure(Command):
 
     def run(self):
         print("""
-Nueva release
-=============
-1) Cambiar la versión y la fecha de la versión en libxulpymoney.py
-2) Modificar todos los ficheros RELEASE CHANGELOG con la nueva versión y num subversion +1
-4) Subir al subversion y comprobar que queda subversion +1
-5) Crear el fichero .tar.gz (con distribute.sh que pone la version automatico) y subirlo a sourceforge
-6) Crear un nuevo ebuild con la nueva versión
-7) Modificarlo
-8) Subirlo al subversion del portage
-9) Modificar la pagina web
-   - Añádir noticia
-   - Añadir el releas svn e en la página
-10) Comprobar enlaces
-
+Nueva versión:
+  * Cambiar la versión y la fecha en version.py
+  * Modificar el Changelog en README
+  * python setup.py doc
+  * linguist
+  * python setup.py doc
+  * python setup.py install
+  * python setup.py doxygen
+  * git commit -a -m 'xulpymoney-version'
+  * git push
+  * Hacer un nuevo tag en GitHub
+  * python setup.py sdist upload -r pypi
+  * Crea un nuevo ebuild de Gentoo con la nueva versión
+  * Subelo al repositorio del portage
 """)
 
 class Doc(Command):
