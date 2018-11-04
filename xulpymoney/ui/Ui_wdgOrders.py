@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgOrders.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgOrders.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -155,4 +155,4 @@ class Ui_wdgOrders(object):
 
 from myqtablewidget import myQTableWidget
 from wdgYear import wdgYear
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmQuotesIBM.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmQuotesIBM.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -84,4 +84,4 @@ class Ui_frmQuotesIBM(object):
 
 from myqlineedit import myQLineEdit
 from wdgDatetime import wdgDatetime
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

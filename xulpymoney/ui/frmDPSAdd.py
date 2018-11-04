@@ -1,6 +1,6 @@
-from libxulpymoney import DPS
+from xulpymoney.libxulpymoney import DPS
 from PyQt5.QtWidgets import QDialog
-from Ui_frmDPSAdd import Ui_frmDPSAdd
+from xulpymoney.ui.Ui_frmDPSAdd import Ui_frmDPSAdd
 
 class frmDPSAdd(QDialog, Ui_frmDPSAdd):
     def __init__(self, mem,  product,   parent=None):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgLastCurrent.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgLastCurrent.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -193,4 +193,4 @@ class Ui_wdgLastCurrent(object):
         self.actionReinvestCurrent.setToolTip(_translate("wdgLastCurrent", "Simulate reinvestment at product current price"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

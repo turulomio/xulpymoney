@@ -1,11 +1,11 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
-from Ui_wdgOpportunities import Ui_wdgOpportunities
-from libxulpymoney import OpportunityManager
-from wdgOpportunitiesAdd import wdgOpportunitiesAdd
-from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
-from wdgCalculator import wdgCalculator
+from xulpymoney.ui.Ui_wdgOpportunities import Ui_wdgOpportunities
+from xulpymoney.libxulpymoney import OpportunityManager
+from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
+from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
+from xulpymoney.ui.wdgCalculator import wdgCalculator
 
 class wdgOpportunities(QWidget, Ui_wdgOpportunities):
     def __init__(self, mem,  parent=None):

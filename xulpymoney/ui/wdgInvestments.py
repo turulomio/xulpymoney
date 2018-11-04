@@ -1,11 +1,11 @@
-from libxulpymoney import Percentage, Quote,  ProductUpdate
-from libxulpymoneyfunctions import days2string, qmessagebox
+from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate
+from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
-from Ui_wdgInvestments import Ui_wdgInvestments
-from frmInvestmentReport import frmInvestmentReport
-from frmQuotesIBM import frmQuotesIBM
-from frmProductReport import frmProductReport
+from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.frmProductReport import frmProductReport
 
 class wdgInvestments(QWidget, Ui_wdgInvestments):
     def __init__(self, mem,  parent=None):

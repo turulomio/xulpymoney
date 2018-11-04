@@ -2,10 +2,10 @@ import datetime
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from myqtablewidget import myQTableWidget
-from Ui_wdgProductsComparation import Ui_wdgProductsComparation
+from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from PyQt5.QtChart import QValueAxis
-from libxulpymoney import ProductComparation
-from libxulpymoneyfunctions import qmessagebox,  day_end_from_date
+from xulpymoney.libxulpymoney import ProductComparation
+from xulpymoney.libxulpymoneyfunctions import qmessagebox,  day_end_from_date
 from canvaschart import  VCTemporalSeries
 class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
     def __init__(self, mem,  product1=None,  product2=None, parent = None, name = None):

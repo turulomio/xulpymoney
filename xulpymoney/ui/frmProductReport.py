@@ -4,17 +4,17 @@ import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
-from Ui_frmProductReport import Ui_frmProductReport
-from libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
-from libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft
-from frmSelector import frmSelector
-from frmDividendsAdd import frmDividendsAdd
-from frmQuotesIBM import frmQuotesIBM
-from frmSplit import frmSplit
-from frmSplitManual import frmSplitManual
-from frmEstimationsAdd import frmEstimationsAdd
-from frmDPSAdd import frmDPSAdd
-from wdgProductHistoricalChart import wdgProductHistoricalChart
+from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
+from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft
+from xulpymoney.ui.frmSelector import frmSelector
+from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.frmSplit import frmSplit
+from xulpymoney.ui.frmSplitManual import frmSplitManual
+from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
+from xulpymoney.ui.frmDPSAdd import frmDPSAdd
+from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
 from canvaschart import  VCTemporalSeries
 from officegenerator import ODS_Read
 

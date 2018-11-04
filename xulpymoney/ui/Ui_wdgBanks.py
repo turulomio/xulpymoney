@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgBanks.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgBanks.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -186,4 +186,4 @@ class Ui_wdgBanks(object):
         self.actionActive.setToolTip(_translate("wdgBanks", "Is it active?"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

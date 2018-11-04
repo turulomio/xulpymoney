@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgQuotesUpdate.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgQuotesUpdate.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -83,4 +83,4 @@ class Ui_wdgQuotesUpdate(object):
         self.cmdError.setText(_translate("wdgQuotesUpdate", "Next error"))
         self.tab.setTabText(self.tab.indexOf(self.tab_4), _translate("wdgQuotesUpdate", "Update results"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

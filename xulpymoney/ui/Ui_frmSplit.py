@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmSplit.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmSplit.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -137,4 +137,4 @@ class Ui_frmSplit(object):
 
 from myqlineedit import myQLineEdit
 from wdgDatetime import wdgDatetime
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

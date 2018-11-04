@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgInvestmentsOperations.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgInvestmentsOperations.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -185,4 +185,4 @@ class Ui_wdgInvestmentsOperations(object):
 from myqtablewidget import myQTableWidget
 from wdgYear import wdgYear
 from wdgYearMonth import wdgYearMonth
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

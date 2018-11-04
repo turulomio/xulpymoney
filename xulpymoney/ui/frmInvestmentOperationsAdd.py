@@ -2,10 +2,10 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog,  QMessageBox, QVBoxLayout
-from wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
-from libxulpymoney import InvestmentOperation, Money,  qmessagebox
-from frmQuotesIBM import frmQuotesIBM
-from Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
+from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
+from xulpymoney.libxulpymoney import InvestmentOperation, Money,  qmessagebox
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
 from decimal import Decimal
 
 class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):

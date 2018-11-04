@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmTransfer.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmTransfer.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -108,4 +108,4 @@ class Ui_frmTransfer(object):
 
 from myqlineedit import myQLineEdit
 from wdgDatetime import wdgDatetime
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

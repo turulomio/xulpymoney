@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgProductsComparation.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgProductsComparation.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -120,4 +120,4 @@ class Ui_wdgProductsComparation(object):
         self.cmdComparation.setText(_translate("wdgProductsComparation", "Compare"))
 
 from wdgProductSelector import wdgProductSelector
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

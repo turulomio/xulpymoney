@@ -1,12 +1,12 @@
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
-from wdgSimulationsAdd import wdgSimulationsAdd
+from xulpymoney.ui.wdgSimulationsAdd import wdgSimulationsAdd
 import libdbupdates
 import frmMain
-from Ui_wdgSimulations import Ui_wdgSimulations
-from libxulpymoney import Connection, DBAdmin, SimulationManager, MemXulpymoney
-from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneyversion import version_date
+from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
+from xulpymoney.libxulpymoney import Connection, DBAdmin, SimulationManager, MemXulpymoney
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneyversion import version_date
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):
     def __init__(self, mem,  parent = None, name = None):

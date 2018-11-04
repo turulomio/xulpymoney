@@ -5,38 +5,38 @@ from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
-from Ui_frmMain import Ui_frmMain
-from frmAbout import frmAbout
-from libxulpymoney import AssetsReport, Product
-from libxulpymoneyfunctions import list2string, qmessagebox, sync_data
-from libxulpymoneyversion import version_date
-from frmAccess import frmAccess
+from xulpymoney.ui.Ui_frmMain import Ui_frmMain
+from xulpymoney.ui.frmAbout import frmAbout
+from xulpymoney.libxulpymoney import AssetsReport, Product
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
+from xulpymoney.libxulpymoneyversion import version_date
+from xulpymoney.ui.frmAccess import frmAccess
 from myqlineedit import myQLineEdit
-from wdgTotal import wdgTotal
-from wdgDividendsReport import wdgDividendsReport
-from wdgInvestmentClasses import wdgInvestmentClasses
-from wdgAPR import wdgAPR
-from wdgAccounts import wdgAccounts
-from wdgBanks import wdgBanks
-from wdgConcepts import wdgConcepts
-from wdgCalculator import wdgCalculator
-from wdgCuriosities import wdgCuriosities
-from wdgIndexRange import wdgIndexRange
-from wdgInvestments import wdgInvestments
-from wdgInvestmentsOperations import wdgInvestmentsOperations
-from wdgInvestmentsRanking import wdgInvestmentsRanking
-from frmAuxiliarTables import frmAuxiliarTables
-from frmTransfer import frmTransfer
-from frmSettings import frmSettings
-from frmHelp import frmHelp
-from wdgOrders import wdgOrders
-from wdgOpportunities import wdgOpportunities
-from wdgProducts import wdgProducts
-from wdgProductsComparation import wdgProductsComparation
-from wdgSimulations import wdgSimulations
-from wdgQuotesUpdate import wdgQuotesUpdate
+from xulpymoney.ui.wdgTotal import wdgTotal
+from xulpymoney.ui.wdgDividendsReport import wdgDividendsReport
+from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
+from xulpymoney.ui.wdgAPR import wdgAPR
+from xulpymoney.ui.wdgAccounts import wdgAccounts
+from xulpymoney.ui.wdgBanks import wdgBanks
+from xulpymoney.ui.wdgConcepts import wdgConcepts
+from xulpymoney.ui.wdgCalculator import wdgCalculator
+from xulpymoney.ui.wdgCuriosities import wdgCuriosities
+from xulpymoney.ui.wdgIndexRange import wdgIndexRange
+from xulpymoney.ui.wdgInvestments import wdgInvestments
+from xulpymoney.ui.wdgInvestmentsOperations import wdgInvestmentsOperations
+from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
+from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
+from xulpymoney.ui.frmTransfer import frmTransfer
+from xulpymoney.ui.frmSettings import frmSettings
+from xulpymoney.ui.frmHelp import frmHelp
+from xulpymoney.ui.wdgOrders import wdgOrders
+from xulpymoney.ui.wdgOpportunities import wdgOpportunities
+from xulpymoney.ui.wdgProducts import wdgProducts
+from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
+from xulpymoney.ui.wdgSimulations import wdgSimulations
+from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
 
-from wdgLastCurrent import wdgLastCurrent
+from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
 
 class frmMain(QMainWindow, Ui_frmMain):
     def __init__(self, mem, parent = 0,  flags = False):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgCuriosities.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgCuriosities.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -49,4 +49,4 @@ class Ui_wdgCuriosities(object):
         _translate = QtCore.QCoreApplication.translate
         self.lblApp.setText(_translate("wdgCuriosities", "Xulpymoney curiosities"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

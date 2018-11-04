@@ -1,8 +1,8 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor
-from libxulpymoney import    Percentage
-from libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms
-from libxulpymoneytypes import  eOHCLDuration
+from xulpymoney.libxulpymoney import    Percentage
+from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms
+from xulpymoney.libxulpymoneytypes import  eOHCLDuration
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 

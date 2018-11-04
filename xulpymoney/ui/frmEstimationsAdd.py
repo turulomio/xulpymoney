@@ -1,7 +1,7 @@
 import datetime
-from libxulpymoney import EstimationDPS, EstimationEPS
+from xulpymoney.libxulpymoney import EstimationDPS, EstimationEPS
 from PyQt5.QtWidgets import QDialog
-from Ui_frmEstimationsAdd import Ui_frmEstimationsAdd
+from xulpymoney.ui.Ui_frmEstimationsAdd import Ui_frmEstimationsAdd
 
 class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
     def __init__(self, mem,  product,  type, parent=None):

@@ -1,13 +1,13 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
-from Ui_wdgProducts import Ui_wdgProducts
-from frmProductReport import frmProductReport
-from libxulpymoney import ProductManager, QuoteAllIntradayManager
-from libxulpymoneyfunctions import list2string, qmessagebox
-from frmQuotesIBM import frmQuotesIBM
-from wdgMergeCodes import wdgMergeCodes
-from frmEstimationsAdd import frmEstimationsAdd
-from wdgProductHistoricalChart import wdgProductHistoricalBuyChart
+from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
+from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.libxulpymoney import ProductManager, QuoteAllIntradayManager
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.wdgMergeCodes import wdgMergeCodes
+from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
+from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging
 
 class wdgProducts(QWidget, Ui_wdgProducts):

@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QWidget,  QTableWidgetItem,  QMenu
 from PyQt5.QtCore import pyqtSlot
-from Ui_wdgInvestmentsRanking import Ui_wdgInvestmentsRanking
-from frmInvestmentReport import frmInvestmentReport
-from frmProductReport import frmProductReport
-from libxulpymoney import Money
+from xulpymoney.ui.Ui_wdgInvestmentsRanking import Ui_wdgInvestmentsRanking
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.libxulpymoney import Money
 
 class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
     def __init__(self, mem,  parent=None):

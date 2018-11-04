@@ -13,8 +13,8 @@ if platform.system()=="Windows":
 else:
     sys.path.append("/usr/lib/xulpymoney")
 import time
-from libxulpymoney import MemSources
-from libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse
+from xulpymoney.libxulpymoney import MemSources
+from xulpymoney.libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse
 
 
 

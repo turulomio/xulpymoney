@@ -1,11 +1,11 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
-from libxulpymoney import Assets,  Percentage
-from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneytypes import eQColor
-from Ui_wdgConcepts import Ui_wdgConcepts
-from wdgConceptsHistorical import wdgConceptsHistorical
+from xulpymoney.libxulpymoney import Assets,  Percentage
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
+from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 from canvaschart import VCPie
 
 class wdgConcepts(QWidget, Ui_wdgConcepts):

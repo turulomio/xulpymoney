@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgCuriosity.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgCuriosity.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -71,4 +71,4 @@ class Ui_wdgCuriosity(object):
     def retranslateUi(self, wdgCuriosity):
         pass
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,9 +1,9 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
-from libxulpymoney import Opportunity
-from libxulpymoneyfunctions import qmessagebox
-from Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
+from xulpymoney.libxulpymoney import Opportunity
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
 
 class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
     def __init__(self, mem, opportunity=None,  parent=None):

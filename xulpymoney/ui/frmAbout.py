@@ -4,8 +4,8 @@ import platform
 import PyQt5.QtCore
 import PyQt5.QtChart
 from PyQt5.QtWidgets import QDialog
-from libxulpymoneyfunctions import qcenter, qempty, qright
-from Ui_frmAbout import Ui_frmAbout
+from xulpymoney.libxulpymoneyfunctions import qcenter, qempty, qright
+from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):
     def __init__(self, mem,  parent = None, name = None, modal = False):

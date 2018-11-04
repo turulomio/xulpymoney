@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgDividendsReport.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgDividendsReport.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -140,4 +140,4 @@ class Ui_wdgDividendsReport(object):
         self.actionProductReport.setToolTip(_translate("wdgDividendsReport", "Product report"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

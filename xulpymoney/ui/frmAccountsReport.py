@@ -3,13 +3,13 @@ import logging
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager,  CreditCardOperation
-from libxulpymoneyfunctions import b2c,  c2b
-from Ui_frmAccountsReport import Ui_frmAccountsReport
-from frmAccountOperationsAdd import frmAccountOperationsAdd
-from frmCreditCardsAdd import frmCreditCardsAdd
-from frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
-from wdgConceptsHistorical import wdgConceptsHistorical
+from xulpymoney.libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager,  CreditCardOperation
+from xulpymoney.libxulpymoneyfunctions import b2c,  c2b
+from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
+from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
+from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
+from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, account,  parent=None):

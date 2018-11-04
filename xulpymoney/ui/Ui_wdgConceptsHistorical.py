@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgConceptsHistorical.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgConceptsHistorical.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -122,4 +122,4 @@ class Ui_wdgConceptsHistorical(object):
         self.actionShowYear.setToolTip(_translate("wdgConceptsHistorical", "Show year operations"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

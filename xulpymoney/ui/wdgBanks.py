@@ -1,10 +1,10 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit
-from libxulpymoney import Bank, Money, AccountManager, InvestmentManager
-from libxulpymoneyfunctions import wdgBool, qmessagebox
-from frmAccountsReport import frmAccountsReport
-from frmInvestmentReport import frmInvestmentReport
-from Ui_wdgBanks import Ui_wdgBanks
+from xulpymoney.libxulpymoney import Bank, Money, AccountManager, InvestmentManager
+from xulpymoney.libxulpymoneyfunctions import wdgBool, qmessagebox
+from xulpymoney.ui.frmAccountsReport import frmAccountsReport
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.Ui_wdgBanks import Ui_wdgBanks
 
 class wdgBanks(QWidget, Ui_wdgBanks):
     def __init__(self, mem,  parent=None):

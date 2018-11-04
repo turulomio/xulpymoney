@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgYearMonth.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgYearMonth.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #

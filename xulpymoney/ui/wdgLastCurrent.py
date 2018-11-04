@@ -1,12 +1,12 @@
 import logging
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
-from Ui_wdgLastCurrent import Ui_wdgLastCurrent
-from frmInvestmentReport import frmInvestmentReport
-from frmProductReport import frmProductReport
-from wdgCalculator import wdgCalculator
-from wdgDisReinvest import wdgDisReinvest
+from xulpymoney.ui.Ui_wdgLastCurrent import Ui_wdgLastCurrent
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.ui.wdgCalculator import wdgCalculator
+from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from decimal import Decimal
 
 class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):

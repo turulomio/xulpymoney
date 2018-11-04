@@ -2,12 +2,12 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
 from datetime import date
-from libxulpymoney import Money, Percentage
-from libxulpymoneyfunctions import qmessagebox, qright
-from Ui_wdgDividendsReport import Ui_wdgDividendsReport
-from frmInvestmentReport import frmInvestmentReport
-from frmProductReport import frmProductReport
-from frmEstimationsAdd import frmEstimationsAdd
+from xulpymoney.libxulpymoney import Money, Percentage
+from xulpymoney.libxulpymoneyfunctions import qmessagebox, qright
+from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 
 class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def __init__(self, mem,  parent=None):

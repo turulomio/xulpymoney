@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from Ui_wdgCuriosity import Ui_wdgCuriosity
+from xulpymoney.ui.Ui_wdgCuriosity import Ui_wdgCuriosity
 
 class wdgCuriosity(QWidget, Ui_wdgCuriosity):
     def __init__(self, mem,  parent = None):

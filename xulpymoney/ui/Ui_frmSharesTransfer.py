@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmSharesTransfer.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmSharesTransfer.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -78,4 +78,4 @@ class Ui_frmSharesTransfer(object):
         self.txtComision.setText(_translate("frmSharesTransfer", "0"))
 
 from myqlineedit import myQLineEdit
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

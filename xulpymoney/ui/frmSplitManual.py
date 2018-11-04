@@ -1,9 +1,9 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
-from libxulpymoney import QuoteAllIntradayManager, Split
+from xulpymoney.libxulpymoney import QuoteAllIntradayManager, Split
 import datetime
 
-from Ui_frmSplitManual import Ui_frmSplitManual
+from xulpymoney.ui.Ui_frmSplitManual import Ui_frmSplitManual
 
 class frmSplitManual(QDialog, Ui_frmSplitManual):
     def __init__(self, mem, product,  parent = None, name = None, modal = False):

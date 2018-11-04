@@ -1,9 +1,9 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
-from libxulpymoney import Product, ProductManager
-from libxulpymoneyfunctions import b2c, c2b
+from xulpymoney.libxulpymoney import Product, ProductManager
+from xulpymoney.libxulpymoneyfunctions import b2c, c2b
 from decimal import Decimal
-from Ui_frmSettings import Ui_frmSettings
+from xulpymoney.ui.Ui_frmSettings import Ui_frmSettings
 
 class frmSettings(QDialog, Ui_frmSettings):
     def __init__(self, mem, parent = None, name = None, modal = False):

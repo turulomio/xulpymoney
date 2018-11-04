@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmSettings.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmSettings.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -194,4 +194,4 @@ class Ui_frmSettings(object):
         self.label_7.setText(_translate("frmSettings", "Tax gain percentage below a year"))
         self.spnGainsPercentajeBelow.setSuffix(_translate("frmSettings", " %"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

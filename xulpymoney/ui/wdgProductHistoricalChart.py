@@ -4,16 +4,16 @@
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate
 from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap,  QWheelEvent
 from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy,  QPushButton, QVBoxLayout, QDialog
-from Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
+from xulpymoney.ui.Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
 from decimal import Decimal
 from myqlineedit import myQLineEdit
 from canvaschart import   VCTemporalSeries
-from libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
-from libxulpymoneyfunctions import day_start_from_date, day_start
-from libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration,  eOperationType
-from wdgOpportunitiesAdd import wdgOpportunitiesAdd
+from xulpymoney.libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
+from xulpymoney.libxulpymoneyfunctions import day_start_from_date, day_start
+from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration,  eOperationType
+from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 
 
 ## Main class that sets a product (can add an investment too) with setProduct function

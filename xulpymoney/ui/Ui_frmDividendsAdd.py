@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmDividendsAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmDividendsAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -169,4 +169,4 @@ class Ui_frmDividendsAdd(object):
 from myqlineedit import myQLineEdit
 from wdgCurrencyConversion import wdgCurrencyConversion
 from wdgDatetime import wdgDatetime
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

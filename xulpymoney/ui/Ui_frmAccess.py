@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmAccess.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmAccess.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -168,4 +168,4 @@ class Ui_frmAccess(object):
         self.lblUser.setText(_translate("frmAccess", "User"))
         self.lblPass.setText(_translate("frmAccess", "Password"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

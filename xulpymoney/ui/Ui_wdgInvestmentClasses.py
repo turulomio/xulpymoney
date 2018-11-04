@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgInvestmentClasses.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgInvestmentClasses.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -115,4 +115,4 @@ class Ui_wdgInvestmentClasses(object):
         self.tab.setTabText(self.tab.indexOf(self.tab_3), _translate("wdgInvestmentClasses", "By country"))
         self.tab.setTabText(self.tab.indexOf(self.tab_4), _translate("wdgInvestmentClasses", "By investment product"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmInit.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmInit.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -143,4 +143,4 @@ class Ui_frmInit(object):
         self.txtXulpymoney.setText(_translate("frmInit", "xulpymoney"))
         self.cmdCreate.setText(_translate("frmInit", "Create database"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

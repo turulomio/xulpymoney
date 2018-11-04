@@ -1,9 +1,9 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
-from libxulpymoney import Order
-from libxulpymoneyfunctions import qmessagebox
-from Ui_wdgOrdersAdd import Ui_wdgOrdersAdd
+from xulpymoney.libxulpymoney import Order
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.Ui_wdgOrdersAdd import Ui_wdgOrdersAdd
 
 class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
     def __init__(self, mem, order=None, investment=None,   parent=None):

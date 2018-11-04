@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgTotal.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgTotal.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -701,4 +701,4 @@ class Ui_wdgTotal(object):
 
 from myqtablewidget import myQTableWidget
 from wdgYear import wdgYear
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

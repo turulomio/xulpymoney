@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmCreditCardsAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmCreditCardsAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -102,4 +102,4 @@ class Ui_frmCreditCardsAdd(object):
         self.cmd.setText(_translate("frmCreditCardsAdd", "Save"))
 
 from myqlineedit import myQLineEdit
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

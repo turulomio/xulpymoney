@@ -11,7 +11,7 @@ if platform.system()=="Windows":
     sys.path.append("images/")
 else:
     sys.path.append("/usr/lib/xulpymoney")
-from libxulpymoneyfunctions import  dirs_create, b2s
+from xulpymoney.libxulpymoneyfunctions import  dirs_create, b2s
 from libcounter import Counter
 
 def appendSource(arr, name):

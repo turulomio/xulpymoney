@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmAbout.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmAbout.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -374,4 +374,4 @@ class Ui_frmAbout(object):
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgAccounts.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgAccounts.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -116,4 +116,4 @@ class Ui_wdgAccounts(object):
         self.actionTransfer.setToolTip(_translate("wdgAccounts", "Transfer between accounts"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgOpportunitiesAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgOpportunitiesAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -76,4 +76,4 @@ class Ui_wdgOpportunitiesAdd(object):
 
 from myqlineedit import myQLineEdit
 from wdgProductSelector import wdgProductSelector
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

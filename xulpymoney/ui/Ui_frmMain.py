@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmMain.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmMain.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -664,4 +664,4 @@ class Ui_frmMain(object):
         self.actionProductsComparation.setText(_translate("frmMain", "Compare products"))
         self.actionProductsComparation.setToolTip(_translate("frmMain", "Compare products"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

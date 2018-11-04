@@ -3,12 +3,12 @@ import logging
 import pytz
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
-from Ui_wdgDisReinvest import Ui_wdgDisReinvest
-from libxulpymoney import InvestmentOperation, Money, Percentage,  Quote
-from libxulpymoneyfunctions import qmessagebox
-from wdgOrdersAdd import wdgOrdersAdd
+from xulpymoney.ui.Ui_wdgDisReinvest import Ui_wdgDisReinvest
+from xulpymoney.libxulpymoney import InvestmentOperation, Money, Percentage,  Quote
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from decimal import Decimal
-from wdgProductHistoricalChart import wdgProductHistoricalReinvestChart
+from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalReinvestChart
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def __init__(self, mem, inversion,  allProduct=False,  parent=None):

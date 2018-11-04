@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QWidget,  QApplication
 from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
-from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from libxulpymoney import ProductUpdate
+from xulpymoney.ui.Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
+from xulpymoney.libxulpymoney import ProductUpdate
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):

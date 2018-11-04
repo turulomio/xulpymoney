@@ -2,13 +2,13 @@ from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
-from libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
-from libxulpymoneytypes import eQColor
-from myqtablewidget import myQTableWidget
+from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
+from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
+from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
-from canvaschart import VCTemporalSeries
-from Ui_wdgTotal import Ui_wdgTotal
+from xulpymoney.ui.canvaschart import VCTemporalSeries
+from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
 import datetime
 import logging
 

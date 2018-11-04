@@ -2,8 +2,8 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
 from myqtablewidget import myQTableWidget
-from libxulpymoney import ProductManager
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoney import ProductManager
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
@@ -159,4 +159,4 @@ class frmProductSelector(QDialog):
             if i.column()==0:
                 self.products.selected=self.products.arr[i.row()]
 
-from frmProductReport import frmProductReport
+from xulpymoney.ui.frmProductReport import frmProductReport

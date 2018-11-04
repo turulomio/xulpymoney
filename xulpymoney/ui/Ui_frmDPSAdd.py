@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmDPSAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmDPSAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -65,4 +65,4 @@ class Ui_frmDPSAdd(object):
         self.cmd.setText(_translate("frmDPSAdd", "Save DPS"))
 
 from myqlineedit import myQLineEdit
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmProductReport.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmProductReport.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -1089,4 +1089,4 @@ class Ui_frmProductReport(object):
         self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

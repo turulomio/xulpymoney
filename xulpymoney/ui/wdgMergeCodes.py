@@ -1,7 +1,7 @@
 
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem
-from Ui_wdgMergeCodes import Ui_wdgMergeCodes
-from libxulpymoneyfunctions import qcenter, qmessagebox
+from xulpymoney.ui.Ui_wdgMergeCodes import Ui_wdgMergeCodes
+from xulpymoney.libxulpymoneyfunctions import qcenter, qmessagebox
 
 class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
     def __init__(self, mem,  origen, destino, parent = None, name = None, modal = False):

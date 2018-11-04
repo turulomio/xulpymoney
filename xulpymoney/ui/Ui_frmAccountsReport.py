@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmAccountsReport.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmAccountsReport.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -484,4 +484,4 @@ class Ui_frmAccountsReport(object):
 from myqtablewidget import myQTableWidget
 from wdgDatetime import wdgDatetime
 from wdgYearMonth import wdgYearMonth
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

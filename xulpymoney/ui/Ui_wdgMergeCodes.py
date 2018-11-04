@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgMergeCodes.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgMergeCodes.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -92,4 +92,4 @@ class Ui_wdgMergeCodes(object):
         self.cmd.setText(_translate("wdgMergeCodes", "Merge data"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

@@ -2,10 +2,10 @@ import unittest
 import sys
 sys.path.append("/usr/lib/xulpymoney")
 from PyQt5.QtWidgets import QDialog
-from libxulpymoney import *
-from frmMain import *
-from frmInit import *
-from wdgProductSelector import *
+from xulpymoney.libxulpymoney import *
+from xulpymoney.ui.frmMain import *
+from xulpymoney.ui.frmInit import *
+from xulpymoney.ui.wdgProductSelector import *
 
 class TestXulpymoneyData(unittest.TestCase):
     def setUp(self):

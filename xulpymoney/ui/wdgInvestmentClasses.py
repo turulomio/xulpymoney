@@ -1,8 +1,8 @@
-from libxulpymoney import Assets, Money
+from xulpymoney.libxulpymoney import Assets, Money
 import math
 import datetime
 from PyQt5.QtWidgets import QWidget
-from Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
+from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from canvaschart import VCPie
 from PyQt5.QtChart import QChart
 

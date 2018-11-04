@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgSimulationsAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgSimulationsAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -88,4 +88,4 @@ class Ui_wdgSimulationsAdd(object):
         self.groupBox_2.setTitle(_translate("wdgSimulationsAdd", "End date and time"))
 
 from wdgDatetime import wdgDatetime
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

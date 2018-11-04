@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmSelector.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmSelector.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -99,4 +99,4 @@ class Ui_frmSelector(object):
         item.setText(_translate("frmSelector", "Elements"))
         self.cmd.setText(_translate("frmSelector", "Accept selection"))
 
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

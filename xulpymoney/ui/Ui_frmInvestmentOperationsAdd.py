@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmInvestmentOperationsAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmInvestmentOperationsAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -116,4 +116,4 @@ class Ui_frmInvestmentOperationsAdd(object):
 from myqlineedit import myQLineEdit
 from wdgDatetime import wdgDatetime
 from wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

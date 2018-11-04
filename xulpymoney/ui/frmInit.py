@@ -1,8 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QDialog
-from Ui_frmInit import *
-from libxulpymoney import *
+from xulpymoney.ui.Ui_frmInit import *
+from xulpymoney.libxulpymoney import *
 
 class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):

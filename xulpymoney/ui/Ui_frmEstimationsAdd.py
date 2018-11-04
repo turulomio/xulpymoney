@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmEstimationsAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmEstimationsAdd.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -92,4 +92,4 @@ class Ui_frmEstimationsAdd(object):
         self.cmd.setText(_translate("frmEstimationsAdd", "Save estimation"))
 
 from myqlineedit import myQLineEdit
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

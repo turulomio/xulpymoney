@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem
-from Ui_frmSelector import Ui_frmSelector
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.Ui_frmSelector import Ui_frmSelector
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class frmSelector(QDialog, Ui_frmSelector):
     def __init__(self, mem, set,  selectedset, name = None, modal = False  ):

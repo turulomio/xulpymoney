@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmHelp.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmHelp.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -60,4 +60,4 @@ class Ui_frmHelp(object):
         self.lblApp.setText(_translate("frmHelp", "Xulpymoney Help"))
 
 from PyQt5 import QtWebEngineWidgets
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

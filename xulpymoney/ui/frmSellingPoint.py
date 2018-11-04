@@ -1,9 +1,9 @@
 import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog
-from Ui_frmSellingPoint import Ui_frmSellingPoint
-from libxulpymoney import Money,  Quote, InvestmentOperationCurrentHomogeneusManager
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.Ui_frmSellingPoint import Ui_frmSellingPoint
+from xulpymoney.libxulpymoney import Money,  Quote, InvestmentOperationCurrentHomogeneusManager
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from decimal import Decimal
 
 class frmSellingPoint(QDialog, Ui_frmSellingPoint):

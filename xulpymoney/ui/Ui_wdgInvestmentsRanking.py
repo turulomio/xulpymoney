@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/wdgInvestmentsRanking.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgInvestmentsRanking.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -90,4 +90,4 @@ class Ui_wdgInvestmentsRanking(object):
         self.actionProduct.setToolTip(_translate("wdgInvestmentsRanking", "Product report"))
 
 from myqtablewidget import myQTableWidget
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

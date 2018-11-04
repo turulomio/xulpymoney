@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/frmInvestmentReport.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/frmInvestmentReport.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -488,4 +488,4 @@ class Ui_frmInvestmentReport(object):
 from myqlineedit import myQLineEdit
 from myqtablewidget import myQTableWidget
 from wdgProductSelector import wdgProductSelector
-import xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

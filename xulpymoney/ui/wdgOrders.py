@@ -1,12 +1,12 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot, QSize
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
-from libxulpymoney import OrderManager
-from libxulpymoneyfunctions import qmessagebox
-from wdgOrdersAdd import wdgOrdersAdd
-from wdgDisReinvest import wdgDisReinvest
-from Ui_wdgOrders import Ui_wdgOrders
-from frmInvestmentReport import frmInvestmentReport
+from xulpymoney.libxulpymoney import OrderManager
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
+from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
+from xulpymoney.ui.Ui_wdgOrders import Ui_wdgOrders
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 
 class wdgOrders(QWidget, Ui_wdgOrders):
     def __init__(self, mem,  parent=None):

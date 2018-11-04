@@ -1,13 +1,13 @@
 import datetime
-from libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
+from xulpymoney.libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
-from Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
-from frmInvestmentReport import frmInvestmentReport
-from frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
-from frmAccountsReport import frmAccountsReport
-from frmProductReport import frmProductReport
+from xulpymoney.ui.Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from xulpymoney.ui.frmAccountsReport import frmAccountsReport
+from xulpymoney.ui.frmProductReport import frmProductReport
 
 class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     def __init__(self, mem,  parent=None):

@@ -1,13 +1,13 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
-from Ui_wdgIndexRange import Ui_wdgIndexRange
-from libxulpymoney import Assets, Percentage
-from libxulpymoneyfunctions import qcenter
-from libxulpymoneytypes import eProductType,  eQColor
-from frmProductReport import frmProductReport
-from frmQuotesIBM import frmQuotesIBM
-from wdgCalculator import wdgCalculator
+from xulpymoney.ui.Ui_wdgIndexRange import Ui_wdgIndexRange
+from xulpymoney.libxulpymoney import Assets, Percentage
+from xulpymoney.libxulpymoneyfunctions import qcenter
+from xulpymoney.libxulpymoneytypes import eProductType,  eQColor
+from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.wdgCalculator import wdgCalculator
 from decimal import Decimal
 
 class Range:

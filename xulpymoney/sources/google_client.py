@@ -10,8 +10,8 @@ if platform.system()=="Windows":
     sys.path.append("images/")
 else:
     sys.path.append("/usr/lib/xulpymoney")
-from libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
-from libxulpymoney import MemSources
+from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
+from xulpymoney.libxulpymoney import MemSources
         
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney, stockmarket):

@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem
-from libxulpymoney import Money
-from libxulpymoneyfunctions import qright, qleft
+from xulpymoney.libxulpymoney import Money
+from xulpymoney.libxulpymoneyfunctions import qright, qleft
 from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage,  Coord
 import datetime
 import logging

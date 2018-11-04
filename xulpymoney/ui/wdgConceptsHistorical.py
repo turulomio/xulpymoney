@@ -2,9 +2,9 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
 from myqtablewidget import myQTableWidget
-from libxulpymoney import AccountOperationManager
-from libxulpymoneyfunctions import qcenter, qmessagebox
-from Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
+from xulpymoney.libxulpymoney import AccountOperationManager
+from xulpymoney.libxulpymoneyfunctions import qcenter, qmessagebox
+from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
 class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def __init__(self, mem, concepto,  parent=None):

@@ -1,10 +1,10 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
-from Ui_wdgAccounts import Ui_wdgAccounts
-from frmTransfer import frmTransfer
-from frmAccountsReport import frmAccountsReport
-from libxulpymoney import Money
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.Ui_wdgAccounts import Ui_wdgAccounts
+from xulpymoney.ui.frmTransfer import frmTransfer
+from xulpymoney.ui.frmAccountsReport import frmAccountsReport
+from xulpymoney.libxulpymoney import Money
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgAccounts(QWidget, Ui_wdgAccounts):
     def __init__(self, mem,  parent=None):

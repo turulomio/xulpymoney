@@ -2,15 +2,15 @@ import datetime
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
-from Ui_frmInvestmentReport import Ui_frmInvestmentReport
-from frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
-from frmDividendsAdd import frmDividendsAdd
-from frmSellingPoint import frmSellingPoint
-from frmQuotesIBM import frmQuotesIBM
-from wdgDisReinvest import wdgDisReinvest
-from frmSharesTransfer import frmSharesTransfer
-from frmSplit import frmSplit
-from libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
+from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
+from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
+from xulpymoney.ui.frmSellingPoint import frmSellingPoint
+from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
+from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
+from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
+from xulpymoney.ui.frmSplit import frmSplit
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario

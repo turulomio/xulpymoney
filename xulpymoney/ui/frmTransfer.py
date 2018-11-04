@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QDialog
-from Ui_frmTransfer import Ui_frmTransfer
+from xulpymoney.ui.Ui_frmTransfer import Ui_frmTransfer
 
-from libxulpymoney import  Account
-from libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoney import  Account
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class frmTransfer(QDialog, Ui_frmTransfer):
     def __init__(self, mem, origen=None, destino=None,   parent=None):
