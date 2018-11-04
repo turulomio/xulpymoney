@@ -38,6 +38,9 @@ Dependencies
 
 Changelog
 =========
+0.1.1
+  * Added missing files to MANIFEST.in
+
 0.1.0
   * Migration from Sourceforge
   * Changed code to python package

@@ -91,7 +91,7 @@ class Uninstall(Command):
     def run(self):
         if platform.system()=="Linux":
             os.system("rm -Rf {}/xulpymoney*".format(site.getsitepackages()[0]))
-            os.system("rm /usr/bin/xulpymoney*")
+            os.system("rm /usr/bin/xulpymone*")
             os.system("rm /usr/share/pixmaps/xulpymoney.png")
             os.system("rm /usr/share/applications/xulpymoney.desktop")
         else:

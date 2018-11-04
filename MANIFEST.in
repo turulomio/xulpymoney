@@ -1,10 +1,6 @@
 
-include AUTHORS.txt GPL-3.txt INSTALL.txt RELEASES.txt xulpymoney.desktop xulpymoney.pro CHANGELOG.txt *.py
-recursive-include i18n *.ts *.qm
-recursive-include images *.png *.jpg *.gif xulpymoney.qrc
-recursive-include sources *.py
-recursive-include test *.py
-recursive-include ui  wdg* frm* my* canvas*
+include LICENSE.txt README.md xulpymoney.desktop xulpymoney.pro *.py doc/Doxyfile doc/index.doc doc/xulpymoney*
+recursive-include xulpymoney i18n *.ts *.qm *.png *.jpg *.gif xulpymoney.qrc *.py 
 recursive-include sql *
 prune __pycache__
 global-exclude *.pyc 
