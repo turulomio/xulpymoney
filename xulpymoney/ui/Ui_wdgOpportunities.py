@@ -135,6 +135,6 @@ class Ui_wdgOpportunities(object):
         self.actionShowGraphic.setText(_translate("wdgOpportunities", "Show Purchase graphic"))
         self.actionShowGraphic.setToolTip(_translate("wdgOpportunities", "Show Purchase graphic"))
 
-from myqtablewidget import myQTableWidget
-from wdgYear import wdgYear
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

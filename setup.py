@@ -63,8 +63,15 @@ class Compile(Command):
         for filename in os.listdir("xulpymoney/ui/"):
              if filename.startswith("Ui_"):
                  os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
-        # Overwriting myQGLWidget
-#        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_wdgGame.py")
+                 os.system("sed -i -e 's/from canvaschart/from xulpymoney.ui.canvaschart/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgTwoCurrencyLineEdit/from xulpymoney.ui.wdgTwoCurrencyLineEdit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgCurrencyConversion/from xulpymoney.ui.wdgCurrencyConversion/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgProductSelector/from xulpymoney.ui.wdgProductSelector/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgDatetime/from xulpymoney.ui.wdgDatetime/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgYear/from xulpymoney.ui.wdgYear/' xulpymoney/ui/{}".format(filename))
 #        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_frmAbout.py")
         # Overwriting qtablestatistics
 #        os.system("sed -i -e 's/from qtablestatistics/from xulpymoney.ui.qtablestatistics/' xulpymoney/ui/Ui_wdgGame.py")
@@ -148,7 +155,7 @@ setup(name='xulpymoney',
     entry_points = {'console_scripts': [    'xulpymoney=xulpymoney.xulpymoney:main',
                                     ],
                 },
-    install_requires=['PyQt5', 'pyopengl','setuptools'],
+    install_requires=['PyQt5', 'setuptools'],
     data_files=data_files,
     cmdclass={
                         'doxygen': Doxygen,

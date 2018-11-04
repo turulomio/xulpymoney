@@ -113,7 +113,7 @@ class Ui_frmInvestmentOperationsAdd(object):
         self.cmdComissionCalculator.setToolTip(_translate("frmInvestmentOperationsAdd", "Comission calculator"))
         self.cmd.setText(_translate("frmInvestmentOperationsAdd", "Save"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
-from wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
+from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
 import xulpymoney.images.xulpymoney_rc

@@ -77,5 +77,5 @@ class Ui_frmSharesTransfer(object):
         self.lblComisionLabel.setText(_translate("frmSharesTransfer", "Shares transfer comission"))
         self.txtComision.setText(_translate("frmSharesTransfer", "0"))
 
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

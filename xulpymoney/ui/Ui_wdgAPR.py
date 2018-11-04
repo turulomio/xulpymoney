@@ -174,6 +174,6 @@ class Ui_wdgAPR(object):
         item.setText(_translate("wdgAPR", "Comissions"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("wdgAPR", "Invested report"))
 
-from myqtablewidget import myQTableWidget
-from wdgYear import wdgYear
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

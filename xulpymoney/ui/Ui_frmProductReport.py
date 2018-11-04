@@ -1088,5 +1088,5 @@ class Ui_frmProductReport(object):
         self.actionDPSImport.setText(_translate("frmProductReport", "Import dividend per share from Libreoffice ODS"))
         self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

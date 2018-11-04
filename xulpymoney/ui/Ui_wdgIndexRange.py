@@ -220,6 +220,6 @@ class Ui_wdgIndexRange(object):
         self.actionMiddle.setText(_translate("wdgIndexRange", "Middle"))
         self.actionBottom.setText(_translate("wdgIndexRange", "Bottom"))
 
-from myqlineedit import myQLineEdit
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

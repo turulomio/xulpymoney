@@ -600,6 +600,6 @@ class Ui_wdgDisReinvest(object):
         self.tabResultados.setTabText(self.tabResultados.indexOf(self.tab), _translate("wdgDisReinvest", "Gains estimations"))
         self.tabAB.setTabText(self.tabAB.indexOf(self.tab_6), _translate("wdgDisReinvest", "Before"))
 
-from myqlineedit import myQLineEdit
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

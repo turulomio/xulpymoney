@@ -64,5 +64,5 @@ class Ui_frmDPSAdd(object):
         self.txtGross.setText(_translate("frmDPSAdd", "0"))
         self.cmd.setText(_translate("frmDPSAdd", "Save DPS"))
 
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

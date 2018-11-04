@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>364</height>
+    <height>409</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -266,7 +266,7 @@
           </size>
          </property>
          <property name="inputMethodHints">
-          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
+          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>

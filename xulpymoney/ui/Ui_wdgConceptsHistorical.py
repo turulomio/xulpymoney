@@ -121,5 +121,5 @@ class Ui_wdgConceptsHistorical(object):
         self.actionShowYear.setText(_translate("wdgConceptsHistorical", "Show year operations"))
         self.actionShowYear.setToolTip(_translate("wdgConceptsHistorical", "Show year operations"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

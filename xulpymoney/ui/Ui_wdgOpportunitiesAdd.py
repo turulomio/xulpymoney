@@ -74,6 +74,6 @@ class Ui_wdgOpportunitiesAdd(object):
         self.txtPrice.setText(_translate("wdgOpportunitiesAdd", "0"))
         self.label_5.setText(_translate("wdgOpportunitiesAdd", "Price"))
 
-from myqlineedit import myQLineEdit
-from wdgProductSelector import wdgProductSelector
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

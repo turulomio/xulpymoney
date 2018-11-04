@@ -82,6 +82,6 @@ class Ui_frmQuotesIBM(object):
         self.label.setText(_translate("frmQuotesIBM", "Add a price"))
         self.chkCanBePurged.setText(_translate("frmQuotesIBM", "Can be purged?"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

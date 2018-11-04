@@ -87,5 +87,5 @@ class Ui_wdgSimulationsAdd(object):
         self.groupBox.setTitle(_translate("wdgSimulationsAdd", "Start date and time"))
         self.groupBox_2.setTitle(_translate("wdgSimulationsAdd", "End date and time"))
 
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

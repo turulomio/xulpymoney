@@ -153,6 +153,6 @@ class Ui_wdgOrders(object):
         self.actionShowReinvestSameProduct.setText(_translate("wdgOrders", "Show reinvest simulation all investments with same product"))
         self.actionShowReinvestSameProduct.setToolTip(_translate("wdgOrders", "Show reinvest simulation all investments with same product"))
 
-from myqtablewidget import myQTableWidget
-from wdgYear import wdgYear
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

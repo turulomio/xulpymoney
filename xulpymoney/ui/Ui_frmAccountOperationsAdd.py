@@ -118,6 +118,6 @@ class Ui_frmAccountOperationsAdd(object):
         self.label_4.setText(_translate("frmAccountOperationsAdd", "Add a comment"))
         self.cmd.setText(_translate("frmAccountOperationsAdd", "Save"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

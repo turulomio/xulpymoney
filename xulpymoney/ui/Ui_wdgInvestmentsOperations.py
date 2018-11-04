@@ -182,7 +182,7 @@ class Ui_wdgInvestmentsOperations(object):
         self.actionRangeReport.setText(_translate("wdgInvestmentsOperations", "Hide in range report"))
         self.actionRangeReport.setToolTip(_translate("wdgInvestmentsOperations", "Hide in range report"))
 
-from myqtablewidget import myQTableWidget
-from wdgYear import wdgYear
-from wdgYearMonth import wdgYearMonth
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYear import wdgYear
+from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

@@ -100,5 +100,5 @@ class Ui_frmAuxiliarTables(object):
         self.actionChangeName.setText(_translate("frmAuxiliarTables", "Change name"))
         self.actionChangeName.setToolTip(_translate("frmAuxiliarTables", "Change name"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

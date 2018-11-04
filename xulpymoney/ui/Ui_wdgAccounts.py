@@ -115,5 +115,5 @@ class Ui_wdgAccounts(object):
         self.actionTransfer.setText(_translate("wdgAccounts", "Transfer between accounts"))
         self.actionTransfer.setToolTip(_translate("wdgAccounts", "Transfer between accounts"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

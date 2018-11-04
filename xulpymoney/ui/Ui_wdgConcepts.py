@@ -146,6 +146,6 @@ class Ui_wdgConcepts(object):
         self.actionHistoricalReport.setText(_translate("wdgConcepts", "Historical report"))
         self.actionHistoricalReport.setToolTip(_translate("wdgConcepts", "Historical report"))
 
-from myqtablewidget import myQTableWidget
-from wdgYearMonth import wdgYearMonth
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

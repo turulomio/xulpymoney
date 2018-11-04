@@ -12,7 +12,7 @@ class Ui_frmAccess(object):
     def setupUi(self, frmAccess):
         frmAccess.setObjectName("frmAccess")
         frmAccess.setWindowModality(QtCore.Qt.WindowModal)
-        frmAccess.resize(340, 364)
+        frmAccess.resize(340, 409)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -133,7 +133,7 @@ class Ui_frmAccess(object):
         sizePolicy.setHeightForWidth(self.txtPass.sizePolicy().hasHeightForWidth())
         self.txtPass.setSizePolicy(sizePolicy)
         self.txtPass.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.txtPass.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhNoAutoUppercase|QtCore.Qt.ImhNoPredictiveText)
+        self.txtPass.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhNoAutoUppercase|QtCore.Qt.ImhNoPredictiveText|QtCore.Qt.ImhSensitiveData)
         self.txtPass.setEchoMode(QtWidgets.QLineEdit.Password)
         self.txtPass.setObjectName("txtPass")
         self.horizontalLayout_7.addWidget(self.txtPass)

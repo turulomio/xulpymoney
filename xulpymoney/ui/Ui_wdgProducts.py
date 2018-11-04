@@ -248,5 +248,5 @@ class Ui_wdgProducts(object):
         self.actionProductPriceLastRemove.setText(_translate("wdgProducts", "Remove last product price"))
         self.actionProductPriceLastRemove.setToolTip(_translate("wdgProducts", "Remove last product price"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

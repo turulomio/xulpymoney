@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout, QToolButton, QSizePolicy, QSpacerItem
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 from decimal import Decimal
 
 class wdgTwoCurrencyLineEdit(QWidget):

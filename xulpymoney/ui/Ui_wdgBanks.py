@@ -185,5 +185,5 @@ class Ui_wdgBanks(object):
         self.actionActive.setText(_translate("wdgBanks", "Is it active?"))
         self.actionActive.setToolTip(_translate("wdgBanks", "Is it active?"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

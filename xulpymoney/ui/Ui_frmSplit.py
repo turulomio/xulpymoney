@@ -135,6 +135,6 @@ class Ui_frmSplit(object):
         self.txtFinal.setText(_translate("frmSplit", "10"))
         self.label_4.setText(_translate("frmSplit", "Comment"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

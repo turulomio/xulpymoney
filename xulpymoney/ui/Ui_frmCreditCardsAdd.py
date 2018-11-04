@@ -101,5 +101,5 @@ class Ui_frmCreditCardsAdd(object):
         self.label_4.setText(_translate("frmCreditCardsAdd", "Credit card number"))
         self.cmd.setText(_translate("frmCreditCardsAdd", "Save"))
 
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

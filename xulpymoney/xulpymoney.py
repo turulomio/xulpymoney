@@ -9,14 +9,6 @@ import logging
 import signal
 from colorama import init, Style, Fore
 
-def signal_handler(signal, frame):
-        logging.critical(Style.BRIGHT+Fore.RED+app.translate("Core","You pressed 'Ctrl+C', exiting..."))
-        sys.exit(1)
-
-######################
-
-init(autoreset=True)
-
 from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import QApplication,  QDialog
 import xulpymoney.libdbupdates
@@ -26,38 +18,48 @@ from xulpymoney.libxulpymoneyfunctions import addDebugSystem, addCommonToArgPars
 from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.frmMain import frmMain
 
-app = QApplication(sys.argv)
-app.setOrganizationName("Mariano Muñoz ©")
-app.setOrganizationDomain("turulomio.users.sourceforge.net")
-app.setApplicationName("Xulpymoney")
+def signal_handler(signal, frame):
+        logging.critical(Style.BRIGHT+Fore.RED+app.translate("Core","You pressed 'Ctrl+C', exiting..."))
+        sys.exit(1)
 
-signal.signal(signal.SIGINT, signal_handler)
+######################
 
-parser=argparse.ArgumentParser(
-        prog='xulpymoney', 
-        description=app.translate("Core",'Personal accounting system'),  
-        epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(__versiondate__.year)),
-        formatter_class=argparse.RawTextHelpFormatter
-    )
-addCommonToArgParse(parser)
-args=parser.parse_args()        
+def main():
+    init(autoreset=True)
 
-addDebugSystem(args)
+    global app
+    app = QApplication(sys.argv)
+    app.setOrganizationName("Mariano Muñoz ©")
+    app.setOrganizationDomain("turulomio.users.sourceforge.net")
+    app.setApplicationName("Xulpymoney")
 
-mem=MemXulpymoney()
-mem.setQTranslator(QTranslator(app))
-mem.languages.cambiar(mem.language.id)
+    signal.signal(signal.SIGINT, signal_handler)
 
-access=frmAccess(mem)
-access.setLabel(QApplication.translate("Core","Please login to the xulpymoney database"))
-access.config_load()
-access.exec_()
+    parser=argparse.ArgumentParser(
+            prog='xulpymoney', 
+            description=app.translate("Core",'Personal accounting system'),  
+            epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(__versiondate__.year)),
+            formatter_class=argparse.RawTextHelpFormatter
+        )
+    addCommonToArgParse(parser)
+    args=parser.parse_args()        
 
-if access.result()==QDialog.Accepted:
-    mem.con=access.con
+    addDebugSystem(args)
 
-    xulpymoney.libdbupdates.Update(mem)##Update database
+    mem=MemXulpymoney()
+    mem.setQTranslator(QTranslator(app))
+    mem.languages.cambiar(mem.language.id)
 
-    mem.frmMain = frmMain(mem)
-    mem.frmMain.show()
-    sys.exit(app.exec_())
+    access=frmAccess(mem)
+    access.setLabel(QApplication.translate("Core","Please login to the xulpymoney database"))
+    access.config_load()
+    access.exec_()
+
+    if access.result()==QDialog.Accepted:
+        mem.con=access.con
+
+        xulpymoney.libdbupdates.Update(mem)##Update database
+
+        mem.frmMain = frmMain(mem)
+        mem.frmMain.show()
+        sys.exit(app.exec_())

@@ -212,6 +212,6 @@ class Ui_wdgCalculator(object):
         item = self.table.horizontalHeaderItem(2)
         item.setText(_translate("wdgCalculator", "Gains"))
 
-from myqlineedit import myQLineEdit
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

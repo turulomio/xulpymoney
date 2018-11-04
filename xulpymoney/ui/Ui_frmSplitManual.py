@@ -128,6 +128,6 @@ class Ui_frmSplitManual(object):
         self.label_3.setText(_translate("frmSplitManual", "Final Shares"))
         self.txtFinal.setText(_translate("frmSplitManual", "10"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

@@ -485,7 +485,7 @@ class Ui_frmInvestmentReport(object):
         self.actionDisReinvestProduct.setText(_translate("frmInvestmentReport", "Disinvest / Reinvest all product"))
         self.actionDisReinvestProduct.setToolTip(_translate("frmInvestmentReport", "Disinvest / Reinvest all product"))
 
-from myqlineedit import myQLineEdit
-from myqtablewidget import myQTableWidget
-from wdgProductSelector import wdgProductSelector
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

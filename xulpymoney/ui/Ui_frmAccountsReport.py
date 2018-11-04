@@ -481,7 +481,7 @@ class Ui_frmAccountsReport(object):
         self.actionConceptReport.setText(_translate("frmAccountsReport", "Show concept historical report"))
         self.actionConceptReport.setToolTip(_translate("frmAccountsReport", "Show concept historical report"))
 
-from myqtablewidget import myQTableWidget
-from wdgDatetime import wdgDatetime
-from wdgYearMonth import wdgYearMonth
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgDatetime import wdgDatetime
+from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

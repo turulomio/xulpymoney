@@ -116,5 +116,5 @@ class Ui_wdgOrdersAdd(object):
         self.label_6.setText(_translate("wdgOrdersAdd", "Amount"))
         self.txtAmount.setText(_translate("wdgOrdersAdd", "0"))
 
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

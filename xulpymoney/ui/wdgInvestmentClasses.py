@@ -3,7 +3,7 @@ import math
 import datetime
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
-from canvaschart import VCPie
+from xulpymoney.ui.canvaschart import VCPie
 from PyQt5.QtChart import QChart
 
 class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):

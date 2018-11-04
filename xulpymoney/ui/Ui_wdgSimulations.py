@@ -97,5 +97,5 @@ class Ui_wdgSimulations(object):
         self.cmdDelete.setText(_translate("wdgSimulations", "Delete"))
         self.cmdConnect.setText(_translate("wdgSimulations", "Connect"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

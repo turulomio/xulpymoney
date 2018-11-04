@@ -166,7 +166,7 @@ class Ui_frmDividendsAdd(object):
         self.lblLiquido_7.setText(_translate("frmDividendsAdd", "Net amount"))
         self.txtNeto.setText(_translate("frmDividendsAdd", "0"))
 
-from myqlineedit import myQLineEdit
-from wdgCurrencyConversion import wdgCurrencyConversion
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgCurrencyConversion import wdgCurrencyConversion
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

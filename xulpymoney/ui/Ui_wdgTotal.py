@@ -699,6 +699,6 @@ class Ui_wdgTotal(object):
         self.actionGainsByProductType.setText(_translate("wdgTotal", "Gains by product type"))
         self.actionGainsByProductType.setToolTip(_translate("wdgTotal", "Gains by product type"))
 
-from myqtablewidget import myQTableWidget
-from wdgYear import wdgYear
+from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

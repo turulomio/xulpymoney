@@ -187,5 +187,5 @@ class Ui_wdgInvestments(object):
         self.actionProductUpdate.setText(_translate("wdgInvestments", "Update product"))
         self.actionProductUpdate.setToolTip(_translate("wdgInvestments", "Update product"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

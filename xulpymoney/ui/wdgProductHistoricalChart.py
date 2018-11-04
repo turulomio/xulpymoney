@@ -8,8 +8,8 @@ from xulpymoney.ui.Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalCh
 
 import datetime
 from decimal import Decimal
-from myqlineedit import myQLineEdit
-from canvaschart import   VCTemporalSeries
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.canvaschart import   VCTemporalSeries
 from xulpymoney.libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
 from xulpymoney.libxulpymoneyfunctions import day_start_from_date, day_start
 from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration,  eOperationType

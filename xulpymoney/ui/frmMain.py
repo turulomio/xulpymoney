@@ -9,9 +9,9 @@ from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.ui.frmAbout import frmAbout
 from xulpymoney.libxulpymoney import AssetsReport, Product
 from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
-from xulpymoney.libxulpymoneyversion import version_date
+from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgTotal import wdgTotal
 from xulpymoney.ui.wdgDividendsReport import wdgDividendsReport
 from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
@@ -54,10 +54,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
   
         if self.mem.con.is_superuser():
-            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date().year))#print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(__versiondate__.year))#print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
             self.setWindowIcon(self.mem.qicon_admin())
         else:
-            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date().year))
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
 
 
     def actionsEnabled(self, bool):

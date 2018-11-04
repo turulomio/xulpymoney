@@ -192,5 +192,5 @@ class Ui_wdgLastCurrent(object):
         self.actionReinvestCurrent.setText(_translate("wdgLastCurrent", "Simulate reinvestment at product current price"))
         self.actionReinvestCurrent.setToolTip(_translate("wdgLastCurrent", "Simulate reinvestment at product current price"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

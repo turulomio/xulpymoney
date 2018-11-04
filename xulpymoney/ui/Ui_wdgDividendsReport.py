@@ -139,5 +139,5 @@ class Ui_wdgDividendsReport(object):
         self.actionProductReport.setText(_translate("wdgDividendsReport", "Product report"))
         self.actionProductReport.setToolTip(_translate("wdgDividendsReport", "Product report"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

@@ -15,7 +15,7 @@ from xulpymoney.ui.frmSplitManual import frmSplitManual
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.frmDPSAdd import frmDPSAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
-from canvaschart import  VCTemporalSeries
+from xulpymoney.ui.canvaschart import  VCTemporalSeries
 from officegenerator import ODS_Read
 
 class frmProductReport(QDialog, Ui_frmProductReport):

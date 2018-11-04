@@ -106,6 +106,6 @@ class Ui_frmTransfer(object):
         self.txtComision.setText(_translate("frmTransfer", "0"))
         self.cmd.setText(_translate("frmTransfer", "Transfer"))
 
-from myqlineedit import myQLineEdit
-from wdgDatetime import wdgDatetime
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

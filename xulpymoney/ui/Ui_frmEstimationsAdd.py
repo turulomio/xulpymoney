@@ -91,5 +91,5 @@ class Ui_frmEstimationsAdd(object):
         self.label_3.setText(_translate("frmEstimationsAdd", "Add a source"))
         self.cmd.setText(_translate("frmEstimationsAdd", "Save estimation"))
 
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

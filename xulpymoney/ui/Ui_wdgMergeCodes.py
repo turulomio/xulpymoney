@@ -91,5 +91,5 @@ class Ui_wdgMergeCodes(object):
         self.cmdInterchange.setText(_translate("wdgMergeCodes", "..."))
         self.cmd.setText(_translate("wdgMergeCodes", "Merge data"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

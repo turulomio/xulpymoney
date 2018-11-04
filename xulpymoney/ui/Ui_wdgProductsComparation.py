@@ -119,5 +119,5 @@ class Ui_wdgProductsComparation(object):
         self.cmdComparationData.setToolTip(_translate("wdgProductsComparation", "Shows comparation data"))
         self.cmdComparation.setText(_translate("wdgProductsComparation", "Compare"))
 
-from wdgProductSelector import wdgProductSelector
+from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

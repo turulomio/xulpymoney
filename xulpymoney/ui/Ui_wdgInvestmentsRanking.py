@@ -89,5 +89,5 @@ class Ui_wdgInvestmentsRanking(object):
         self.actionProduct.setText(_translate("wdgInvestmentsRanking", "Product report"))
         self.actionProduct.setToolTip(_translate("wdgInvestmentsRanking", "Product report"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

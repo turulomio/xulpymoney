@@ -373,5 +373,5 @@ class Ui_frmAbout(object):
         self.tab.setTabText(self.tab.indexOf(self.tabSoftware), _translate("frmAbout", "Software used"))
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
 
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

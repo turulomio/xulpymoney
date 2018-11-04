@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QToolButton, QInputDialog, QLineEdit, QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
-from myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit
 from decimal import Decimal
 
 class wdgCurrencyConversion(QWidget):

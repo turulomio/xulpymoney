@@ -1,12 +1,12 @@
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
 from xulpymoney.ui.wdgSimulationsAdd import wdgSimulationsAdd
-import libdbupdates
-import frmMain
+import xulpymoney.libdbupdates
+import xulpymoney.ui.frmMain
 from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
 from xulpymoney.libxulpymoney import Connection, DBAdmin, SimulationManager, MemXulpymoney
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.libxulpymoneyversion import version_date
+from xulpymoney.version import __versiondate__
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):
     def __init__(self, mem,  parent = None, name = None):
@@ -75,16 +75,16 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.mem_sim.con=simcon
         
         ##Update database
-        update=libdbupdates.Update(self.mem_sim)
+        update=xulpymoney.libdbupdates.Update(self.mem_sim)
         if update.need_update()==True:
             update.run()
         
-        self.mem_sim.frmMain = frmMain.frmMain(self.mem_sim)
+        self.mem_sim.frmMain = xulpymoney.ui.frmMain.frmMain(self.mem_sim)
         #No puedo visualizarlo, luego voy a usar un qdialog , ya que qmainwindow viene de qwidget.
         
         d=QDialog(self)        
         d.setStyleSheet("QDialog { background-color: rgb(255, 182, 182);  }");        
-        d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} \xa9").format(self.simulations.selected.simulated_db(),  version_date().year))
+        d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} \xa9").format(self.simulations.selected.simulated_db(),  __versiondate__.year))
         icon = QIcon()
         icon.addPixmap(QPixmap(":/xulpymoney/replication.png"), QIcon.Normal, QIcon.Off)
         d.setWindowIcon(icon)

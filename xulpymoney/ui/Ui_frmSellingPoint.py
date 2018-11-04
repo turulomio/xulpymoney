@@ -216,6 +216,6 @@ class Ui_frmSellingPoint(object):
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("frmSellingPoint", "Selling point state"))
         self.cmd.setText(_translate("frmSellingPoint", "Set the selling point"))
 
-from myqlineedit import myQLineEdit
-from myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc
