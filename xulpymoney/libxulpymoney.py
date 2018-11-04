@@ -12,6 +12,7 @@ import logging
 import platform
 import io
 import pytz
+import pkg_resources
 import psycopg2
 import psycopg2.extras
 import sys
@@ -7243,10 +7244,8 @@ class LanguageManager(ObjectManager_With_IdName_Selectable):
 
     def cambiar(self, id):  
         """language es un string"""
-        if platform.system()=="Windows":
-            self.mem.qtranslator.load("i18n/xulpymoney_{0}.qm".format(id))
-        else:
-            self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(id))
+        filename=pkg_resources.resource_filename("xulpymoney","i18n/xulpymoney_{}.qm".format(id))
+        self.mem.qtranslator.load(filename)
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
