@@ -96,6 +96,34 @@ class Uninstall(Command):
         else:
             print(_("Uninstall command only works in Linux"))
 
+class Procedure(Command):
+    description = "Uninstall installed files with install"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        print("""
+Nueva release
+=============
+1) Cambiar la versión y la fecha de la versión en libxulpymoney.py
+2) Modificar todos los ficheros RELEASE CHANGELOG con la nueva versión y num subversion +1
+4) Subir al subversion y comprobar que queda subversion +1
+5) Crear el fichero .tar.gz (con distribute.sh que pone la version automatico) y subirlo a sourceforge
+6) Crear un nuevo ebuild con la nueva versión
+7) Modificarlo
+8) Subirlo al subversion del portage
+9) Modificar la pagina web
+   - Añádir noticia
+   - Añadir el releas svn e en la página
+10) Comprobar enlaces
+
+""")
+
 class Doc(Command):
     description = "Update man pages and translations"
     user_options = []
@@ -152,16 +180,24 @@ setup(name='xulpymoney',
     author_email='turulomio@yahoo.es',
     license='GPL-3',
     packages=['xulpymoney'],
-    entry_points = {'console_scripts': [    'xulpymoney=xulpymoney.xulpymoney:main',
-                                    ],
+    entry_points = {'console_scripts': ['xulpymoney=xulpymoney.xulpymoney:main',
+                                        'xulpymoney_bolsamadrid_client=xulpymoney.sources.bolsamadrid_client:main',
+                                        'xulpymoney_google_client=xulpymoney.sources.google_client:main',
+                                        'xulpymoney_infobolsa_client=xulpymoney.sources.infobolsa_client:main',
+                                        'xulpymoney_morningstar_client=xulpymoney.sources.morningstar_client:main',
+                                        'xulpymoney_quefondos_client=xulpymoney.sources.quefondos_client:main',
+                                        'xulpymoney_run_client=xulpymoney.sources.run_client:main',
+                                        'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
+                                       ],
                 },
-    install_requires=['PyQt5', 'setuptools'],
+    install_requires=['PyQt5', 'setuptools','pycopg', 'pytz','officegenerator', 'PyQtChart', 'colorama'],
     data_files=data_files,
     cmdclass={
                         'doxygen': Doxygen,
                         'doc': Doc,
                         'uninstall':Uninstall, 
                         'compile': Compile, 
+                        'procedure': Procedure, 
                      },
     zip_safe=False,
     include_package_data=True

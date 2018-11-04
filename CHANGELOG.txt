@@ -1,5 +1,0 @@
-xulpymoney 1.0 XXXXXXXX
-=======================
-- Basic funcionality
-- First version
-
