@@ -92,13 +92,9 @@ class Uninstall(Command):
     def run(self):
         if platform.system()=="Linux":
             os.system("rm -Rf {}/xulpymoney*".format(site.getsitepackages()[0]))
-            os.system("rm /usr/bin/xulpymoney")
-#            os.system("rm " + prefixbin + "/xulpymoney*")
-#        shell("rm -Rf " + prefixlib)
-#        shell("rm -Rf " + prefixshare)
-#        shell("rm -fr " + prefixpixmaps + "/xulpymoney.png")
-#        shell("rm -fr " + prefixapplications +"/xulpymoney.desktop")
-
+            os.system("rm /usr/bin/xulpymoney*")
+            os.system("rm /usr/share/pixmaps/xulpymoney.png")
+            os.system("rm /usr/share/applications/xulpymoney.desktop")
         else:
             print(_("Uninstall command only works in Linux"))
 
@@ -123,7 +119,7 @@ app.setOrganizationName("xulpymoney")
 app.setOrganizationDomain("xulpymoney.sourceforge.net")
 app.setApplicationName("xulpymoney")
 translator=QTranslator()
-with open('README.rst', encoding='utf-8') as f:
+with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 if platform.system()=="Linux":
