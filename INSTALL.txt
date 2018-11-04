@@ -1,5 +1,0 @@
-GENTOO INSTRUCTIONS
--------------------
-You need a postgresql server.
-You don't need to create databases, xulpymoney does for you, you only need autentication to the server
-Run xulpymoney_init

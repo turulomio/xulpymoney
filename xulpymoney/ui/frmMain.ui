@@ -1,0 +1,1107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Mariano Muñoz</author>
+ <class>frmMain</class>
+ <widget class="QMainWindow" name="frmMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1458</width>
+    <height>625</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+  </property>
+  <widget class="QWidget" name="central">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="layout"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1458</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>He&amp;lp</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="separator"/>
+    <addaction name="actionCuriosities"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelp"/>
+   </widget>
+   <widget class="QMenu" name="menuBancos">
+    <property name="title">
+     <string>&amp;Banks</string>
+    </property>
+    <addaction name="actionBanks"/>
+   </widget>
+   <widget class="QMenu" name="menuInformes">
+    <property name="title">
+     <string>&amp;Reports</string>
+    </property>
+    <addaction name="actionPurchaseOpportunities"/>
+    <addaction name="separator"/>
+    <addaction name="actionConcepts"/>
+    <addaction name="actionDividendsReport"/>
+    <addaction name="actionEvolutionReport"/>
+    <addaction name="actionIndexRange"/>
+    <addaction name="actionTotalReport"/>
+    <addaction name="separator"/>
+    <addaction name="actionGlobalReport"/>
+   </widget>
+   <widget class="QMenu" name="menuCuentas">
+    <property name="title">
+     <string>A&amp;ccounts</string>
+    </property>
+    <addaction name="actionAccounts"/>
+    <addaction name="separator"/>
+    <addaction name="actionTransfer"/>
+   </widget>
+   <widget class="QMenu" name="menuInversiones">
+    <property name="title">
+     <string>&amp;Investments</string>
+    </property>
+    <addaction name="actionInvestments"/>
+    <addaction name="separator"/>
+    <addaction name="actionOrders"/>
+    <addaction name="actionPurchaseOpportunities"/>
+    <addaction name="separator"/>
+    <addaction name="actionInvestmentsClasses"/>
+    <addaction name="separator"/>
+    <addaction name="actionLastOperation"/>
+    <addaction name="actionInvestmentsOperations"/>
+    <addaction name="separator"/>
+    <addaction name="actionCalculator"/>
+    <addaction name="separator"/>
+    <addaction name="actionInvestmentRanking"/>
+   </widget>
+   <widget class="QMenu" name="menuXulpymoney">
+    <property name="title">
+     <string>&amp;Xulpymoney</string>
+    </property>
+    <addaction name="actionMemory"/>
+    <addaction name="separator"/>
+    <addaction name="actionAuxiliarTables"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionSimulations"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuProducts">
+    <property name="title">
+     <string>Prod&amp;ucts</string>
+    </property>
+    <widget class="QMenu" name="menuIndexes">
+     <property name="title">
+      <string>&amp;Indexes</string>
+     </property>
+     <addaction name="actionEurostoxx50"/>
+     <addaction name="actionIbex35"/>
+     <addaction name="actionMC"/>
+     <addaction name="actionLATIBEX"/>
+     <addaction name="actionSP500"/>
+     <addaction name="actionCAC40"/>
+     <addaction name="actionNasdaq100"/>
+     <addaction name="actionXetra"/>
+     <addaction name="separator"/>
+     <addaction name="actionIndexesAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionIndexesObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuMaintenance">
+     <property name="title">
+      <string>&amp;Maintenance</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionPurgeAll"/>
+    </widget>
+    <widget class="QMenu" name="menuReports">
+     <property name="title">
+      <string>&amp;Reports</string>
+     </property>
+     <addaction name="actionDividends"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsWithoutQuotes"/>
+     <addaction name="actionProductsWithOldPrice"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsWithPriceVariation"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsAutoUpdate"/>
+     <addaction name="actionProductsNotAutoUpdate"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsInvestmentActive"/>
+     <addaction name="actionProductsInvestmentInactive"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsUser"/>
+     <addaction name="actionProductsObsolete"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsWithoutISIN"/>
+     <addaction name="actionISINDuplicado"/>
+    </widget>
+    <widget class="QMenu" name="menuShares">
+     <property name="title">
+      <string>&amp;Shares</string>
+     </property>
+     <addaction name="actionSharesAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionSharesObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuCurrencies">
+     <property name="title">
+      <string>&amp;Currencies</string>
+     </property>
+     <addaction name="actionCurrenciesAll"/>
+    </widget>
+    <widget class="QMenu" name="menuBonds">
+     <property name="title">
+      <string>&amp;Bonds</string>
+     </property>
+     <addaction name="actionBondsPrivate"/>
+     <addaction name="actionBondsPublic"/>
+     <addaction name="actionBondsAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionBondsObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuFunds">
+     <property name="title">
+      <string>&amp;Funds</string>
+     </property>
+     <addaction name="actionFundsAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionFundsObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuETF">
+     <property name="title">
+      <string>&amp;ETF</string>
+     </property>
+     <addaction name="actionETFAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionETFObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuWarrants">
+     <property name="title">
+      <string>&amp;Warrants</string>
+     </property>
+     <addaction name="actionWarrantsInline"/>
+     <addaction name="actionWarrantsPut"/>
+     <addaction name="actionWarrantsCall"/>
+     <addaction name="separator"/>
+     <addaction name="actionWarrantsAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionWarrantsObsolete"/>
+    </widget>
+    <addaction name="menuIndexes"/>
+    <addaction name="menuShares"/>
+    <addaction name="menuETF"/>
+    <addaction name="menuWarrants"/>
+    <addaction name="menuFunds"/>
+    <addaction name="menuBonds"/>
+    <addaction name="menuCurrencies"/>
+    <addaction name="separator"/>
+    <addaction name="menuReports"/>
+    <addaction name="separator"/>
+    <addaction name="menuMaintenance"/>
+    <addaction name="separator"/>
+    <addaction name="actionProductsComparation"/>
+    <addaction name="actionFavorites"/>
+    <addaction name="actionSearch"/>
+    <addaction name="separator"/>
+    <addaction name="actionPriceUpdates"/>
+    <addaction name="separator"/>
+    <addaction name="actionSyncProducts"/>
+   </widget>
+   <addaction name="menuXulpymoney"/>
+   <addaction name="menuBancos"/>
+   <addaction name="menuCuentas"/>
+   <addaction name="menuInversiones"/>
+   <addaction name="menuInformes"/>
+   <addaction name="menuProducts"/>
+   <addaction name="menuAyuda"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>48</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionBanks"/>
+   <addaction name="actionAccounts"/>
+   <addaction name="actionInvestments"/>
+   <addaction name="separator"/>
+   <addaction name="actionOrders"/>
+   <addaction name="actionPurchaseOpportunities"/>
+   <addaction name="actionProductsComparation"/>
+   <addaction name="separator"/>
+   <addaction name="actionIndexRange"/>
+   <addaction name="actionConcepts"/>
+   <addaction name="actionTotalReport"/>
+   <addaction name="separator"/>
+   <addaction name="actionPriceUpdates"/>
+   <addaction name="separator"/>
+   <addaction name="actionLastOperation"/>
+   <addaction name="separator"/>
+   <addaction name="actionCalculator"/>
+   <addaction name="separator"/>
+   <addaction name="actionFavorites"/>
+   <addaction name="separator"/>
+   <addaction name="actionExit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Esc</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionIndexRange">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Index range</string>
+   </property>
+   <property name="toolTip">
+    <string>Index range</string>
+   </property>
+  </action>
+  <action name="actionInvestments">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Investments</string>
+   </property>
+   <property name="toolTip">
+    <string>Investments</string>
+   </property>
+  </action>
+  <action name="actionAuxiliarTables">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/table.png</normaloff>:/xulpymoney/table.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Auxiliar tables</string>
+   </property>
+   <property name="toolTip">
+    <string>Auxiliar tables</string>
+   </property>
+  </action>
+  <action name="actionDividendsReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Dividends report</string>
+   </property>
+  </action>
+  <action name="actionEvolutionReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Evolution report</string>
+   </property>
+   <property name="toolTip">
+    <string>Evolution report</string>
+   </property>
+  </action>
+  <action name="actionTotalReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Total report</string>
+   </property>
+   <property name="toolTip">
+    <string>Total report</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
+  <action name="actionAccounts">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Accounts</string>
+   </property>
+   <property name="toolTip">
+    <string>Accounts</string>
+   </property>
+  </action>
+  <action name="actionBanks">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Banks</string>
+   </property>
+   <property name="toolTip">
+    <string>Banks</string>
+   </property>
+  </action>
+  <action name="actionInvestmentsClasses">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investment types &amp;report</string>
+   </property>
+  </action>
+  <action name="actionTransfer">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Transfer</string>
+   </property>
+   <property name="toolTip">
+    <string>Transfer</string>
+   </property>
+  </action>
+  <action name="actionConcepts">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Concepts</string>
+   </property>
+   <property name="toolTip">
+    <string>Concepts</string>
+   </property>
+  </action>
+  <action name="actionMemory">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Update memory</string>
+   </property>
+   <property name="toolTip">
+    <string>Update memory</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Help</string>
+   </property>
+   <property name="toolTip">
+    <string>Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionInvestmentsOperations">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>I&amp;nvestment operations list</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment operations list</string>
+   </property>
+  </action>
+  <action name="actionCalculator">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kcalc.png</normaloff>:/xulpymoney/kcalc.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Order calculator</string>
+   </property>
+   <property name="toolTip">
+    <string>Order calculator</string>
+   </property>
+  </action>
+  <action name="actionSearch">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionIndexesAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All Indexes</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionIbex35">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Ibex 35</string>
+   </property>
+  </action>
+  <action name="actionEurostoxx50">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/eu.gif</normaloff>:/countries/eu.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Eurostoxx 50</string>
+   </property>
+  </action>
+  <action name="actionSP500">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;S&amp;&amp;P 500</string>
+   </property>
+  </action>
+  <action name="actionCAC40">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/france.gif</normaloff>:/countries/france.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;CAC 40</string>
+   </property>
+  </action>
+  <action name="actionNasdaq100">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Nasdaq 100</string>
+   </property>
+  </action>
+  <action name="actionMC">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Mercado Continuo</string>
+   </property>
+  </action>
+  <action name="actionXetra">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/germany.gif</normaloff>:/countries/germany.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Xetra</string>
+   </property>
+  </action>
+  <action name="actionProductsAutoUpdate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Products with auto update</string>
+   </property>
+   <property name="toolTip">
+    <string>Products with auto update</string>
+   </property>
+  </action>
+  <action name="actionProductsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete products</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete products</string>
+   </property>
+  </action>
+  <action name="actionProductsUser">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;User products</string>
+   </property>
+   <property name="toolTip">
+    <string>User products</string>
+   </property>
+  </action>
+  <action name="actionCurrenciesAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All currencies</string>
+   </property>
+   <property name="toolTip">
+    <string>All currencies</string>
+   </property>
+  </action>
+  <action name="actionFavorites">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+   </property>
+   <property name="text">
+    <string>S&amp;how favorites</string>
+   </property>
+   <property name="toolTip">
+    <string>Show favorites</string>
+   </property>
+  </action>
+  <action name="actionProductsNotAutoUpdate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products &amp;without auto update</string>
+   </property>
+   <property name="toolTip">
+    <string>Products without auto update</string>
+   </property>
+  </action>
+  <action name="actionDividends">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/dinero.png</normaloff>:/images/dinero.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Biggest dividends</string>
+   </property>
+   <property name="toolTip">
+    <string>Biggest dividends</string>
+   </property>
+  </action>
+  <action name="actionWarrantsCall">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>All &amp;call warrants</string>
+   </property>
+  </action>
+  <action name="actionWarrantsPut">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>All &amp;put warrants</string>
+   </property>
+  </action>
+  <action name="actionWarrantsInline">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All inline warrants</string>
+   </property>
+  </action>
+  <action name="actionBondsAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>All &amp;bonds</string>
+   </property>
+   <property name="toolTip">
+    <string>All bonds</string>
+   </property>
+  </action>
+  <action name="actionSharesAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All shares</string>
+   </property>
+   <property name="toolTip">
+    <string>All shares</string>
+   </property>
+  </action>
+  <action name="actionBondsPublic">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>All &amp;public bonds</string>
+   </property>
+   <property name="toolTip">
+    <string>All public bonds</string>
+   </property>
+  </action>
+  <action name="actionBondsPrivate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All private bonds</string>
+   </property>
+   <property name="toolTip">
+    <string>All private bonds</string>
+   </property>
+  </action>
+  <action name="actionWarrantsAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>All &amp;warrants</string>
+   </property>
+   <property name="toolTip">
+    <string>All warrants</string>
+   </property>
+  </action>
+  <action name="actionISINDuplicado">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Duplicated ISIN products</string>
+   </property>
+   <property name="toolTip">
+    <string>Duplicated ISIN products</string>
+   </property>
+  </action>
+  <action name="actionPurgeAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Purge all investments</string>
+   </property>
+   <property name="toolTip">
+    <string>Purge all investments</string>
+   </property>
+  </action>
+  <action name="actionLATIBEX">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;LATIBEX</string>
+   </property>
+   <property name="toolTip">
+    <string>LATIBEX</string>
+   </property>
+  </action>
+  <action name="actionProductsWithoutISIN">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Produ&amp;cts without ISIN</string>
+   </property>
+   <property name="toolTip">
+    <string>Products without ISIN</string>
+   </property>
+  </action>
+  <action name="actionETFAll">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All ETF</string>
+   </property>
+  </action>
+  <action name="actionFundsAll">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;All funds</string>
+   </property>
+  </action>
+  <action name="actionPriceUpdates">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Price updates</string>
+   </property>
+   <property name="toolTip">
+    <string>Price updates</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+  </action>
+  <action name="actionProductsInvestmentActive">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>P&amp;roducts of active investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Products of active investment</string>
+   </property>
+  </action>
+  <action name="actionProductsInvestmentInactive">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products of &amp;inactive investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Products of inactive investment</string>
+   </property>
+  </action>
+  <action name="actionIndexesObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete Indexes</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete Indexes</string>
+   </property>
+  </action>
+  <action name="actionSharesObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete shares</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete shares</string>
+   </property>
+  </action>
+  <action name="actionETFObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete ETFs</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete ETFs</string>
+   </property>
+  </action>
+  <action name="actionWarrantsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete warrants</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete warrants</string>
+   </property>
+  </action>
+  <action name="actionFundsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete funds</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete funds</string>
+   </property>
+  </action>
+  <action name="actionBondsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Obsolete bonds</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete bonds</string>
+   </property>
+  </action>
+  <action name="actionGlobalReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Generate global report</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate global report</string>
+   </property>
+  </action>
+  <action name="actionSyncProducts">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sync products from &amp;other Xulpymoney</string>
+   </property>
+   <property name="toolTip">
+    <string>Move products information to another database</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="actionSimulations">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/replication.png</normaloff>:/xulpymoney/replication.png</iconset>
+   </property>
+   <property name="text">
+    <string>S&amp;imulations</string>
+   </property>
+   <property name="toolTip">
+    <string>Simulations</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionLastOperation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Last operation</string>
+   </property>
+   <property name="toolTip">
+    <string>Last operation</string>
+   </property>
+  </action>
+  <action name="actionOrders">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Market orders</string>
+   </property>
+   <property name="toolTip">
+    <string>Market orders</string>
+   </property>
+  </action>
+  <action name="actionCuriosities">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/curiosity.png</normaloff>:/xulpymoney/curiosity.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Curiosities</string>
+   </property>
+   <property name="toolTip">
+    <string>Curiosities</string>
+   </property>
+  </action>
+  <action name="actionInvestmentRanking">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
+   </property>
+   <property name="text">
+    <string>In&amp;vestment ranking</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment ranking</string>
+   </property>
+  </action>
+  <action name="actionProductsWithoutQuotes">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Product&amp;s without price</string>
+   </property>
+   <property name="toolTip">
+    <string>Products without price</string>
+   </property>
+  </action>
+  <action name="actionProductsWithOldPrice">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/expired.jpg</normaloff>:/xulpymoney/expired.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Products wit&amp;h old price</string>
+   </property>
+   <property name="toolTip">
+    <string>Products with old price</string>
+   </property>
+  </action>
+  <action name="actionProductsWithPriceVariation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products with a price &amp;variation</string>
+   </property>
+   <property name="toolTip">
+    <string>Product&amp;s with a price variation</string>
+   </property>
+  </action>
+  <action name="actionPurchaseOpportunities">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Purchase opportunities</string>
+   </property>
+   <property name="toolTip">
+    <string>Purchase opportunities</string>
+   </property>
+  </action>
+  <action name="actionProductsComparation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
+   </property>
+   <property name="text">
+    <string>Compare products</string>
+   </property>
+   <property name="toolTip">
+    <string>Compare products</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wdgProductHistoricalChart</class>
+ <widget class="QWidget" name="wdgProductHistoricalChart">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1561</width>
+    <height>89</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_7">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Chart type</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cmbChartType">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Lines</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Candles</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Select time range</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cmbOHCLDuration"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Show from selected date</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="cmdFromLeftMax">
+           <property name="text">
+            <string>&lt;&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="cmdFromLeft">
+           <property name="text">
+            <string>&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dtFrom">
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="displayFormat">
+            <string>yyyy-MM-dd</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="cmdFromRight">
+           <property name="text">
+            <string>&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="cmdFromRightMax">
+           <property name="text">
+            <string>&gt;&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="chkSMA50">
+             <property name="text">
+              <string>SMA50</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkSMA200">
+             <property name="text">
+              <string>SMA200</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkMedian">
+             <property name="text">
+              <string>Median</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QCheckBox" name="chkAdjustSplits">
+             <property name="text">
+              <string>Adjust splits</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkAdjustDividends">
+             <property name="text">
+              <string>Adjust splits and dividends</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionProductReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Product report</string>
+   </property>
+   <property name="toolTip">
+    <string>Product report</string>
+   </property>
+  </action>
+  <action name="actionSortTPCDiario">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Daily</string>
+   </property>
+   <property name="toolTip">
+    <string>% Daily</string>
+   </property>
+  </action>
+  <action name="actionSortTPCAnual">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Annual</string>
+   </property>
+   <property name="toolTip">
+    <string>% Annual</string>
+   </property>
+  </action>
+  <action name="actionSortName">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Name</string>
+   </property>
+   <property name="toolTip">
+    <string>Name</string>
+   </property>
+  </action>
+  <action name="actionSortDividend">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Dividend</string>
+   </property>
+   <property name="toolTip">
+    <string>Dividend</string>
+   </property>
+  </action>
+  <action name="actionSortHour">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hour</string>
+   </property>
+   <property name="toolTip">
+    <string>Hour</string>
+   </property>
+  </action>
+  <action name="actionIbex35">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Ibex 35</string>
+   </property>
+  </action>
+  <action name="actionProductNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>New product</string>
+   </property>
+   <property name="toolTip">
+    <string>New user product</string>
+   </property>
+  </action>
+  <action name="actionProductDelete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete product</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete user product</string>
+   </property>
+  </action>
+  <action name="actionFavorites">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add to favorites</string>
+   </property>
+   <property name="toolTip">
+    <string>Add to favorites</string>
+   </property>
+  </action>
+  <action name="actionMergeCodes">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/cakes.png</normaloff>:/images/cakes.png</iconset>
+   </property>
+   <property name="text">
+    <string>Merge selected codes</string>
+   </property>
+   <property name="toolTip">
+    <string>Merge selected codes</string>
+   </property>
+  </action>
+  <action name="actionQuoteNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>New price</string>
+   </property>
+   <property name="toolTip">
+    <string>New price</string>
+   </property>
+  </action>
+  <action name="actionEstimationDPSNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>New DPS estimation</string>
+   </property>
+   <property name="toolTip">
+    <string>New Dividend per share estimation</string>
+   </property>
+  </action>
+  <action name="actionPurge">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Purge investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Deletes quotes innecesary. Leaves open, high, low and close quotes.</string>
+   </property>
+  </action>
+  <action name="actionPurchaseGraphic">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show purchase graphic</string>
+   </property>
+   <property name="toolTip">
+    <string>Show purchase graphic</string>
+   </property>
+  </action>
+  <action name="actionProductPriceLastRemove">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove last product price</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove last product price</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

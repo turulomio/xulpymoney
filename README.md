@@ -1,0 +1,43 @@
+What is Xulpymoney
+==================
+Desktop app to manage personal and financial contability
+
+License
+=======
+GPL-3
+
+Links
+=====
+
+Source code & Development:
+    https://github.com/Turulomio/xulpymoney
+
+Doxygen documentation:
+    http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
+
+Main developer web page:
+    http://turulomio.users.sourceforge.net/en/proyectos.html
+
+Pypi web page:
+    https://pypi.org/project/xulpymoney/
+
+Gentoo ebuild
+    You can find a Gentoo ebuild in https://sourceforge.net/p/xulpymoney/code/HEAD/tree/myportage/app-office/xulpymoney/
+
+
+Dependencies
+============
+* https://www.python.org/, as the main programming language.
+* https://pypi.org/project/colorama/, to give console colors.
+* http://initd.org/psycopg/, to access PostgreSQL database.
+* https://pypi.org/project/PyQt5/, as the main library.
+* https://pypi.org/project/pytz/, to work with timezones.
+* https://pypi.org/project/officegenerator/, to work with LibreOffice and Microsoft Office documents.
+* https://pypi.org/project/PyQtChart/, to work with charts.
+* https://pypi.org/project/colorama/, to work with colors in console.
+
+Changelog
+=========
+X.X.X
+  * Migration from Sourceforge
+  * Changed code to python package

@@ -1,56 +1,206 @@
-from cx_Freeze import setup, Executable
+from setuptools import setup, Command
+
+import gettext
+import logging
+import os
+import platform
+import site
 import sys
-import pytz
-sys.path.append('ui')
-sys.path.append('images')
-from libxulpymoneyversion import version_windows,  version
+from PyQt5.QtCore import QCoreApplication,  QTranslator
+from colorama import Style, Fore
+from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import cpu_count
 
-name="xulpymoney"
+def change_language(language):  
+    """language es un string"""
+    url= "xulpymoney/qm/xulpymoney_{}.qm".format(language)
+    if os.path.exists(url)==True:
+        translator.load(url)
+        QCoreApplication.installTranslator(translator)
+        logging.info(("Language changed to {} using {}".format(language, url)))
+        return
+    if language!="en":
+        logging.warning(Style.BRIGHT+ Fore.CYAN+ app.tr("Language ({}) couldn't be loaded in {}. Using default (en).".format(language, url)))
 
-#Add files
-include_files=[ 'images/xulpymoney.ico', 'GPL-3.txt']
-include_files.append(("i18n/xulpymoney_es.qm", "i18n/xulpymoney_es.qm"))
-include_files.append(("i18n/xulpymoney_fr.qm", "i18n/xulpymoney_fr.qm"))
-include_files.append(("i18n/xulpymoney_ro.qm", "i18n/xulpymoney_ro.qm"))
-include_files.append(("i18n/xulpymoney_ru.qm", "i18n/xulpymoney_ru.qm"))
-include_files.append(("sql/xulpymoney.sql", "sql/xulpymoney.sql"))
+class Doxygen(Command):
+    description = "Create/update doxygen documentation in doc/html"
+    user_options = []
 
-#Build options
-if sys.platform=='win32':
-    finalversion=version_windows()
-    base = 'Win32GUI'
-    include_files.append("xulpymoney.iss")
-    include_files.append(pytz.__path__[0])
-    build_msi_options = {
-           'upgrade_code': '{3849730B-2375-4F76-B4A5-347857A23B9B}',
-           'add_to_path': False,
-           'initial_target_dir': r'[ProgramFilesFolder]\%s' % (name),
-            }
- 
-    build_exe_options = dict(
-        includes = ['PyQt5.QtNetwork',  'PyQt5.QtPrintSupport', 'setuptools',],#'numpy.core._methods','numpy.lib.format' ],
-        excludes=[], 
-        include_files=include_files)
+    def initialize_options(self):
+        pass
 
-    options={'bdist_msi': build_msi_options,
-             'build_exe': build_exe_options}
-else:#linux
-    base="Console"
-    finalversion=version
-    build_options = dict(includes = [], excludes = [], include_files=include_files)
-    options={'build_exe' : build_options}
+    def finalize_options(self):
+        pass
 
-executables = [
-    Executable('xulpymoney.py', base=base, icon='images/xulpymoney.ico', shortcutName= name, shortcutDir='ProgramMenuFolder'), 
-    Executable('xulpymoney_init.py', base=base, icon='images/xulpymoney.ico', shortcutName= name, shortcutDir='ProgramMenuFolder')
-]
+    def run(self):
+        print("Creating Doxygen Documentation")
+#        os.system("""sed -i -e "41d" doc/Doxyfile""")#Delete line 41
+#        os.system("""sed -i -e "41iPROJECT_NUMBER         = {}" doc/Doxyfile""".format(__version__))#Insert line 41
+        os.chdir("doc")
+        os.system("doxygen Doxyfile")
+        os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
+        os.chdir("..")
 
-setup(name=name,
-    version = finalversion,
-    author = 'Mariano Muñoz',
-    author_email="turulomio@yahoo.es", 
-    description = 'Personal and finances accounting system',
-    options = options,
-    url="https://sourceforge.net/projects/xulpymoney/", 
-    executables = executables)
+class Compile(Command):
+    description = "Compile ui and images"
+    user_options = []
 
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        futures=[]
+        with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
+            for filename in os.listdir("xulpymoney/ui/"):
+                if filename.endswith(".ui"):
+                    without_extension=filename[:-3]
+                    futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/{0}.ui -o xulpymoney/ui/Ui_{0}.py".format(without_extension)))
+            futures.append(executor.submit(os.system, "pyrcc5 xulpymoney/images/xulpymoney.qrc -o xulpymoney/images/xulpymoney_rc.py"))
+        # Overwriting xulpymoney_rc
+        for filename in os.listdir("xulpymoney/ui/"):
+             if filename.startswith("Ui_"):
+                 os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from canvaschart/from xulpymoney.ui.canvaschart/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgTwoCurrencyLineEdit/from xulpymoney.ui.wdgTwoCurrencyLineEdit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgCurrencyConversion/from xulpymoney.ui.wdgCurrencyConversion/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgProductSelector/from xulpymoney.ui.wdgProductSelector/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgDatetime/from xulpymoney.ui.wdgDatetime/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgYear/from xulpymoney.ui.wdgYear/' xulpymoney/ui/{}".format(filename))
+#        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_frmAbout.py")
+        # Overwriting qtablestatistics
+#        os.system("sed -i -e 's/from qtablestatistics/from xulpymoney.ui.qtablestatistics/' xulpymoney/ui/Ui_wdgGame.py")
+
+
+class Uninstall(Command):
+    description = "Uninstall installed files with install"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        if platform.system()=="Linux":
+            os.system("rm -Rf {}/xulpymoney*".format(site.getsitepackages()[0]))
+            os.system("rm /usr/bin/xulpymoney*")
+            os.system("rm /usr/share/pixmaps/xulpymoney.png")
+            os.system("rm /usr/share/applications/xulpymoney.desktop")
+        else:
+            print(_("Uninstall command only works in Linux"))
+
+class Procedure(Command):
+    description = "Uninstall installed files with install"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        print("""
+Nueva release
+=============
+1) Cambiar la versión y la fecha de la versión en libxulpymoney.py
+2) Modificar todos los ficheros RELEASE CHANGELOG con la nueva versión y num subversion +1
+4) Subir al subversion y comprobar que queda subversion +1
+5) Crear el fichero .tar.gz (con distribute.sh que pone la version automatico) y subirlo a sourceforge
+6) Crear un nuevo ebuild con la nueva versión
+7) Modificarlo
+8) Subirlo al subversion del portage
+9) Modificar la pagina web
+   - Añádir noticia
+   - Añadir el releas svn e en la página
+10) Comprobar enlaces
+
+""")
+
+class Doc(Command):
+    description = "Update man pages and translations"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        os.system("pylupdate5 -noobsolete -verbose xulpymoney.pro")
+        os.system("lrelease -qt5 xulpymoney.pro")
+    ########################################################################
+
+app=QCoreApplication(sys.argv)
+
+app.setOrganizationName("xulpymoney")
+app.setOrganizationDomain("xulpymoney.sourceforge.net")
+app.setApplicationName("xulpymoney")
+translator=QTranslator()
+with open('README.md', encoding='utf-8') as f:
+    long_description = f.read()
+
+if platform.system()=="Linux":
+    data_files=[
+    ('/usr/share/pixmaps/', ['xulpymoney/images/xulpymoney.png']), 
+    ('/usr/share/applications/', ['xulpymoney.desktop']), 
+               ]
+else:
+    data_files=[]
+
+## Version of officegenerator captured from commons to avoid problems with package dependencies
+__version__= None
+with open('xulpymoney/version.py', encoding='utf-8') as f:
+    for line in f.readlines():
+        if line.find("__version__ =")!=-1:
+            __version__=line.split("'")[1]
+
+setup(name='xulpymoney',
+    version=__version__,
+    description='Parchís game',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    classifiers=['Development Status :: 4 - Beta',
+              'Intended Audience :: Developers',
+              'Topic :: Software Development :: Build Tools',
+              'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+              'Programming Language :: Python :: 3',
+             ], 
+    keywords='parchís game',
+    url='https://xulpymoney.sourceforge.io/',
+    author='Turulomio',
+    author_email='turulomio@yahoo.es',
+    license='GPL-3',
+    packages=['xulpymoney'],
+    entry_points = {'console_scripts': ['xulpymoney=xulpymoney.xulpymoney:main',
+                                        'xulpymoney_bolsamadrid_client=xulpymoney.sources.bolsamadrid_client:main',
+                                        'xulpymoney_google_client=xulpymoney.sources.google_client:main',
+                                        'xulpymoney_infobolsa_client=xulpymoney.sources.infobolsa_client:main',
+                                        'xulpymoney_morningstar_client=xulpymoney.sources.morningstar_client:main',
+                                        'xulpymoney_quefondos_client=xulpymoney.sources.quefondos_client:main',
+                                        'xulpymoney_run_client=xulpymoney.sources.run_client:main',
+                                        'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
+                                       ],
+                },
+    install_requires=['PyQt5', 'setuptools','psycopg2', 'pytz','officegenerator', 'PyQtChart', 'colorama'],
+    data_files=data_files,
+    cmdclass={
+                        'doxygen': Doxygen,
+                        'doc': Doc,
+                        'uninstall':Uninstall, 
+                        'compile': Compile, 
+                        'procedure': Procedure, 
+                     },
+    zip_safe=False,
+    include_package_data=True
+    )
+
+_=gettext.gettext#To avoid warnings

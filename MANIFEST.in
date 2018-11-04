@@ -7,4 +7,4 @@ recursive-include test *.py
 recursive-include ui  wdg* frm* my* canvas*
 recursive-include sql *
 prune __pycache__
-global-exclude *.pyc Ui_*
+global-exclude *.pyc 
