@@ -1,9 +1,9 @@
 import sys
 sys.path.append("/usr/lib/xulpymoney")
-from libxulpymoney import *
-from frmMain import *
-from frmInit import *
-from wdgProductSelector import *
+from xulpymoney.libxulpymoney import *
+from xulpymoney.ui.frmMain import *
+from xulpymoney.ui.frmInit import *
+from xulpymoney.ui.wdgProductSelector import *
 
 ## Parameters simulation
 class MemSimulation(MemXulpymoney):

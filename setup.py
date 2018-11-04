@@ -54,29 +54,20 @@ class Compile(Command):
     def run(self):
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmAbout.ui -o xulpymoney/ui/Ui_frmAbout.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmHelp.ui -o xulpymoney/ui/Ui_frmHelp.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmMain.ui -o xulpymoney/ui/Ui_frmMain.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmSettings.ui -o xulpymoney/ui/Ui_frmSettings.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmGameStatistics.ui -o xulpymoney/ui/Ui_frmGameStatistics.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmInitGame.ui -o xulpymoney/ui/Ui_frmInitGame.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmShowCasilla.ui -o xulpymoney/ui/Ui_frmShowCasilla.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/frmShowFicha.ui -o xulpymoney/ui/Ui_frmShowFicha.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/wdgGame.ui -o xulpymoney/ui/Ui_wdgGame.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/wdgPlayer.ui -o xulpymoney/ui/Ui_wdgPlayer.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/wdgPlayerDado.ui -o xulpymoney/ui/Ui_wdgPlayerDado.py"))
-            futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/wdgUserPanel.ui -o xulpymoney/ui/Ui_wdgUserPanel.py"))
-            futures.append(executor.submit(os.system, "pyrcc5 images/xulpymoney.qrc -o xulpymoney/ui/xulpymoney_rc.py"))
+            for filename in os.listdir("xulpymoney/ui/"):
+                if filename.endswith(".ui"):
+                    without_extension=filename[:-3]
+                    futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/{0}.ui -o xulpymoney/ui/Ui_{0}.py".format(without_extension)))
+            futures.append(executor.submit(os.system, "pyrcc5 xulpymoney/images/xulpymoney.qrc -o xulpymoney/images/xulpymoney_rc.py"))
         # Overwriting xulpymoney_rc
-        for file in ['xulpymoney/ui/Ui_frmAbout.py', 'xulpymoney/ui/Ui_frmHelp.py', 'xulpymoney/ui/Ui_frmMain.py', 'xulpymoney/ui/Ui_frmSettings.py', 
-                     'xulpymoney/ui/Ui_frmGameStatistics.py', 'xulpymoney/ui/Ui_frmInitGame.py', 'xulpymoney/ui/Ui_frmShowFicha.py', 'xulpymoney/ui/Ui_frmShowCasilla.py',
-                     'xulpymoney/ui/Ui_wdgGame.py', 'xulpymoney/ui/Ui_wdgPlayer.py', 'xulpymoney/ui/Ui_wdgPlayerDado.py', 'xulpymoney/ui/Ui_wdgUserPanel.py']:
-            os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.ui.xulpymoney_rc/' {}".format(file))
+        for filename in os.listdir("xulpymoney/ui/"):
+             if filename.startswith("Ui_"):
+                 os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
         # Overwriting myQGLWidget
-        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_wdgGame.py")
-        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_frmAbout.py")
+#        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_wdgGame.py")
+#        os.system("sed -i -e 's/from myQGLWidget/from xulpymoney.ui.myQGLWidget/' xulpymoney/ui/Ui_frmAbout.py")
         # Overwriting qtablestatistics
-        os.system("sed -i -e 's/from qtablestatistics/from xulpymoney.ui.qtablestatistics/' xulpymoney/ui/Ui_wdgGame.py")
+#        os.system("sed -i -e 's/from qtablestatistics/from xulpymoney.ui.qtablestatistics/' xulpymoney/ui/Ui_wdgGame.py")
 
 
 class Uninstall(Command):

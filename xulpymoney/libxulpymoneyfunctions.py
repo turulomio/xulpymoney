@@ -12,7 +12,7 @@ import inspect
 import logging
 import pytz
 import sys
-from libxulpymoneyversion import version, version_date
+from xulpymoney.version import __version__, __versiondate__
 
 ## Sets debug sustem, needs
 ## @param args It's the result of a argparse     args=parser.parse_args()        
@@ -36,7 +36,7 @@ def addDebugSystem(args):
 ## Adds the commons parameter of the program to argparse
 ## @param parser It's a argparse.ArgumentParser
 def addCommonToArgParse(parser):
-    parser.add_argument('--version', action='version', version="{} ({})".format(version, version_date()))
+    parser.add_argument('--version', action='version', version="{} ({})".format(__version__, __versiondate__()))
     parser.add_argument('--debug', help="Debug program information", choices=["DEBUG","INFO","WARNING","ERROR","CRITICAL"], default="ERROR")
 
 ## Function to conver hour strings with AM/PM to a iso string time

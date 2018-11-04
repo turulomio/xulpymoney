@@ -3,7 +3,7 @@
 ## @brief Main Xulpymoney script.
 
 import sys
-import platform
+
 import argparse
 import logging
 import signal
@@ -17,20 +17,14 @@ def signal_handler(signal, frame):
 
 init(autoreset=True)
 
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
-
 from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import QApplication,  QDialog
-import libdbupdates
-from libxulpymoney import MemXulpymoney
-from libxulpymoneyversion import  version_date
-from libxulpymoneyfunctions import addDebugSystem, addCommonToArgParse
-from frmAccess import frmAccess
-from frmMain import frmMain
+import xulpymoney.libdbupdates
+from xulpymoney.libxulpymoney import MemXulpymoney
+from xulpymoney.version import  __versiondate__
+from xulpymoney.libxulpymoneyfunctions import addDebugSystem, addCommonToArgParse
+from xulpymoney.ui.frmAccess import frmAccess
+from xulpymoney.ui.frmMain import frmMain
 
 app = QApplication(sys.argv)
 app.setOrganizationName("Mariano Muñoz ©")
@@ -42,7 +36,7 @@ signal.signal(signal.SIGINT, signal_handler)
 parser=argparse.ArgumentParser(
         prog='xulpymoney', 
         description=app.translate("Core",'Personal accounting system'),  
-        epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(version_date().year)),
+        epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(__versiondate__.year)),
         formatter_class=argparse.RawTextHelpFormatter
     )
 addCommonToArgParse(parser)
@@ -62,7 +56,7 @@ access.exec_()
 if access.result()==QDialog.Accepted:
     mem.con=access.con
 
-    libdbupdates.Update(mem)##Update database
+    xulpymoney.libdbupdates.Update(mem)##Update database
 
     mem.frmMain = frmMain(mem)
     mem.frmMain.show()

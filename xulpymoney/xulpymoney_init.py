@@ -10,7 +10,7 @@ else:
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from frmInit import *
+from xulpymoney.ui.frmInit import *
 
 try:
     os.makedirs( os.environ['HOME']+"/.xulpymoney/tmp/")

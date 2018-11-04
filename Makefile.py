@@ -7,7 +7,7 @@ import platform
 from subprocess import call, check_call
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
-from libxulpymoneyversion import version
+from xulpymoney.libxulpymoneyversion import version
 
 def shell(*args):
     print(" ".join(args))

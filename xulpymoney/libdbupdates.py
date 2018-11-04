@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
-from libxulpymoneyfunctions import qmessagebox
-from libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType
 import sys
 
 class Update:

@@ -3,7 +3,7 @@ import sys
 import pytz
 sys.path.append('ui')
 sys.path.append('images')
-from libxulpymoneyversion import version_windows,  version
+from xulpymoney.libxulpymoneyversion import version_windows,  version
 
 name="xulpymoney"
 
