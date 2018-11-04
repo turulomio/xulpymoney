@@ -149,10 +149,10 @@ with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 if platform.system()=="Linux":
-    data_files=[]
-    #('/usr/share/man/man1/', ['man/man1/xulpymoney.1']), 
-    #            ('/usr/share/man/es/man1/', ['man/es/man1/xulpymoney.1'])
-    #           ]
+    data_files=[
+    ('/usr/share/pixmaps/', ['xulpymoney/images/xulpymoney.png']), 
+    ('/usr/share/applications/', ['xulpymoney.desktop']), 
+               ]
 else:
     data_files=[]
 
@@ -190,7 +190,7 @@ setup(name='xulpymoney',
                                         'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
                                        ],
                 },
-    install_requires=['PyQt5', 'setuptools','pycopg', 'pytz','officegenerator', 'PyQtChart', 'colorama'],
+    install_requires=['PyQt5', 'setuptools','psycopg2', 'pytz','officegenerator', 'PyQtChart', 'colorama'],
     data_files=data_files,
     cmdclass={
                         'doxygen': Doxygen,
