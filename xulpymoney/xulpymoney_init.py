@@ -1,28 +1,21 @@
-#!/usr/bin/python3
-import sys,  os
-import platform
+import sys
+import os
+from PyQt5.QtWidgets import QApplication
+from xulpymoney.ui.frmInit import frmInit
 
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from xulpymoney.ui.frmInit import *
+def main():
 
-try:
-    os.makedirs( os.environ['HOME']+"/.xulpymoney/tmp/")
-except:
-    pass
+    try:
+        os.makedirs( os.environ['HOME']+"/.xulpymoney/tmp/")
+    except:
+        pass
+    app = QApplication(sys.argv)
+    app.setOrganizationName("Mariano Muñoz ©")
+    app.setOrganizationDomain("turulomio.users.sourceforge.net")
+    app.setApplicationName("Xulpymoney Init")
 
-app = QApplication(sys.argv)
-app.setOrganizationName("Mariano Muñoz ©")
-app.setOrganizationDomain("turulomio.users.sourceforge.net")
-app.setApplicationName("Xulpymoney Init")
+    frm = frmInit()
+    frm.show()
 
-frm = frmInit() 
-frm.show()
-
-sys.exit(app.exec_())
+    sys.exit(app.exec_())

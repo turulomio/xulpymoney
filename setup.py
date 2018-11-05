@@ -6,7 +6,7 @@ import os
 import platform
 import site
 import sys
-from PyQt5.QtCore import QCoreApplication,  QTranslator
+#from PyQt5.QtCore import QCoreApplication,  QTranslator
 from colorama import Style, Fore
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
@@ -16,7 +16,7 @@ def change_language(language):
     url= "xulpymoney/qm/xulpymoney_{}.qm".format(language)
     if os.path.exists(url)==True:
         translator.load(url)
-        QCoreApplication.installTranslator(translator)
+#        QCoreApplication.installTranslator(translator)
         logging.info(("Language changed to {} using {}".format(language, url)))
         return
     if language!="en":
@@ -140,12 +140,12 @@ class Doc(Command):
         os.system("lrelease -qt5 xulpymoney.pro")
     ########################################################################
 
-app=QCoreApplication(sys.argv)
+#app=QCoreApplication(sys.argv)
 
-app.setOrganizationName("xulpymoney")
-app.setOrganizationDomain("xulpymoney.sourceforge.net")
-app.setApplicationName("xulpymoney")
-translator=QTranslator()
+#app.setOrganizationName("xulpymoney")
+#app.setOrganizationDomain("xulpymoney.sourceforge.net")
+#app.setApplicationName("xulpymoney")
+#translator=QTranslator()
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
@@ -154,8 +154,10 @@ if platform.system()=="Linux":
     ('/usr/share/pixmaps/', ['xulpymoney/images/xulpymoney.png']), 
     ('/usr/share/applications/', ['xulpymoney.desktop']), 
                ]
+    dependencies=['PyQt5', 'PyQtChart','setuptools','psycopg2', 'pytz','officegenerator', 'colorama'] #PyQt5 and PyQtChart doesn't have egg-info in Gentoo, so I remove it to install it with ebuild without making 2 installations
 else:
     data_files=[]
+    dependencies=['PyQt5', 'setuptools','psycopg2', 'pytz','officegenerator', 'PyQtChart', 'colorama']
 
 ## Version of officegenerator captured from commons to avoid problems with package dependencies
 __version__= None
@@ -182,6 +184,7 @@ setup(name='xulpymoney',
     license='GPL-3',
     packages=['xulpymoney'],
     entry_points = {'console_scripts': ['xulpymoney=xulpymoney.xulpymoney:main',
+                                        'xulpymoney_init=xulpymoney.xulpymoney_init:main',
                                         'xulpymoney_bolsamadrid_client=xulpymoney.sources.bolsamadrid_client:main',
                                         'xulpymoney_google_client=xulpymoney.sources.google_client:main',
                                         'xulpymoney_infobolsa_client=xulpymoney.sources.infobolsa_client:main',
@@ -191,7 +194,7 @@ setup(name='xulpymoney',
                                         'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
                                        ],
                 },
-    install_requires=['PyQt5', 'setuptools','psycopg2', 'pytz','officegenerator', 'PyQtChart', 'colorama'],
+    install_requires= dependencies,
     data_files=data_files,
     cmdclass={
                         'doxygen': Doxygen,
