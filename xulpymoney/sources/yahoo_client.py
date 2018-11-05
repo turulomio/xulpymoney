@@ -6,12 +6,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from decimal import Decimal
 import logging
 import sys
-import platform
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
+
 import time
 from xulpymoney.libxulpymoney import MemSources
 from xulpymoney.libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse

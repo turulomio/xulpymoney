@@ -3,13 +3,7 @@ import argparse
 from requests import get
 from decimal import Decimal
 import sys
-import platform
 import logging
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
 from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
 from xulpymoney.libxulpymoney import MemSources
         

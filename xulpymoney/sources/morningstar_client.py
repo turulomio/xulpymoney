@@ -3,13 +3,7 @@ import argparse
 from urllib.request import urlopen
 from decimal import Decimal
 import sys
-import platform
 import logging
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
 from PyQt5.QtWidgets import QApplication
 from xulpymoney.libxulpymoney import MemSources
 from xulpymoney.libxulpymoneyfunctions import addDebugSystem, addCommonToArgParse

@@ -4,15 +4,9 @@ import multiprocessing
 from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
-import sys
-import platform
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
+
 from xulpymoney.libxulpymoneyfunctions import  dirs_create, b2s
-from libcounter import Counter
+from xulpymoney.libcounter import Counter
 
 def appendSource(arr, name):
     counter=Counter(len(arr))
@@ -56,12 +50,6 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
                 sourceoutput.append(b"ERROR | appendSourceWithConcurrence\n")
     return commands, sourceoutput
     ###################################################################
-
-if platform.system()=="Windows":
-    sys.path.append("ui/")
-    sys.path.append("images/")
-else:
-    sys.path.append("/usr/lib/xulpymoney")
     
 parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
 parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
