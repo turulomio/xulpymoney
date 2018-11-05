@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 from requests import get
 from decimal import Decimal
@@ -38,8 +37,7 @@ class CurrentPriceTicker:
                 print("ERROR | COULDN'T CONVERT DATETIME {} AND PRICE {}".format(self.dtaware, self.price))
                 sys.exit(0)
             return
-
-if __name__=="__main__":
+def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
     parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)

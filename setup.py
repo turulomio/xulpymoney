@@ -5,7 +5,6 @@ import logging
 import os
 import platform
 import site
-import sys
 #from PyQt5.QtCore import QCoreApplication,  QTranslator
 from colorama import Style, Fore
 from concurrent.futures import ProcessPoolExecutor

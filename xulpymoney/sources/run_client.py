@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 import multiprocessing
 from subprocess import  check_output,    DEVNULL
@@ -50,60 +49,62 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
                 sourceoutput.append(b"ERROR | appendSourceWithConcurrence\n")
     return commands, sourceoutput
     ###################################################################
-    
-parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
-parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
-args=parser.parse_args()
 
-dir_tmp=dirs_create()
-arrBolsaMadrid=[]
-arrMorningStar=[]
-arrQueFondos=[]
-arrGoogle=[]
-arrYahoo=[]
-arrInfobolsa=[]
-lock=multiprocessing.Lock()
-if args.filename==None:
-    filename="{}/clients.txt".format(dir_tmp)
-    output="{}/clients_result.txt".format(dir_tmp)
-else:
-    filename=args.filename
-    output= "{}.clients_result.txt".format(filename)
-f=open(filename, "r")
-for line in f.readlines():
-    line=line[:-1]
-    if line.find("bolsamadrid")!=-1:
-        arrBolsaMadrid.append(line)
-    if line.find("morningstar")!=-1:
-        arrMorningStar.append(line)
-    if line.find("quefondos")!=-1:
-        arrQueFondos.append(line)
-    if line.find("google")!=-1:
-        arrGoogle.append(line)
-    if line.find("yahoo")!=-1:
-        arrYahoo.append(line)
-    if line.find("infobolsa")!=-1:
-        arrYahoo.append(line)
-f.close()
+def main():
+    parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
+    parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
+    args=parser.parse_args()
 
-futures=[]
-with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
-        futures.append(executor.submit(appendSource, arrBolsaMadrid, "xulpymoney_bolsamadrid_client"))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, "xulpymoney_morningstar_client", cpu_count()+1))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrQueFondos, "xulpymoney_quefondos_client", cpu_count()+1))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrGoogle, "xulpymoney_google_client",cpu_count()+1))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrYahoo, "xulpymoney_yahoo_client", cpu_count()+1))
-        futures.append(executor.submit(appendSourceWithConcurrence, arrInfobolsa, "xulpymoney_infobolsa_client", cpu_count()+1))
+    dir_tmp=dirs_create()
+    arrBolsaMadrid=[]
+    arrMorningStar=[]
+    arrQueFondos=[]
+    arrGoogle=[]
+    arrYahoo=[]
+    arrInfobolsa=[]
+    global lock
+    lock=multiprocessing.Lock()
+    if args.filename==None:
+        filename="{}/clients.txt".format(dir_tmp)
+        output="{}/clients_result.txt".format(dir_tmp)
+    else:
+        filename=args.filename
+        output= "{}.clients_result.txt".format(filename)
+    f=open(filename, "r")
+    for line in f.readlines():
+        line=line[:-1]
+        if line.find("bolsamadrid")!=-1:
+            arrBolsaMadrid.append(line)
+        if line.find("morningstar")!=-1:
+            arrMorningStar.append(line)
+        if line.find("quefondos")!=-1:
+            arrQueFondos.append(line)
+        if line.find("google")!=-1:
+            arrGoogle.append(line)
+        if line.find("yahoo")!=-1:
+            arrYahoo.append(line)
+        if line.find("infobolsa")!=-1:
+            arrYahoo.append(line)
+    f.close()
 
-f=open(output, "w")
-for fut in as_completed(futures):
-    commands, out=fut.result()
-    for i, c in enumerate(commands):
-        f.write("{}\n".format(commands[i]))
-        for o in b2s(out[i]).split("\n"):
-            if o=="":
-                f.write("\n")
-            else:
-                f.write("  + {}\n".format(o))
-f.close()
+    futures=[]
+    with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
+            futures.append(executor.submit(appendSource, arrBolsaMadrid, "xulpymoney_bolsamadrid_client"))
+            futures.append(executor.submit(appendSourceWithConcurrence, arrMorningStar, "xulpymoney_morningstar_client", cpu_count()+1))
+            futures.append(executor.submit(appendSourceWithConcurrence, arrQueFondos, "xulpymoney_quefondos_client", cpu_count()+1))
+            futures.append(executor.submit(appendSourceWithConcurrence, arrGoogle, "xulpymoney_google_client",cpu_count()+1))
+            futures.append(executor.submit(appendSourceWithConcurrence, arrYahoo, "xulpymoney_yahoo_client", cpu_count()+1))
+            futures.append(executor.submit(appendSourceWithConcurrence, arrInfobolsa, "xulpymoney_infobolsa_client", cpu_count()+1))
+
+    f=open(output, "w")
+    for fut in as_completed(futures):
+        commands, out=fut.result()
+        for i, c in enumerate(commands):
+            f.write("{}\n".format(commands[i]))
+            for o in b2s(out[i]).split("\n"):
+                if o=="":
+                    f.write("\n")
+                else:
+                    f.write("  + {}\n".format(o))
+    f.close()
 

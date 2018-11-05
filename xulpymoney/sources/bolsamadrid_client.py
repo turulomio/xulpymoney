@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 import time
 from decimal import Decimal
@@ -287,7 +286,8 @@ class SetCurrentPrice:
         for cp in self.arr:
             print (cp)
 
-if __name__=="__main__":
+def main():
+    global app
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
     group1=parser.add_mutually_exclusive_group(required=True)

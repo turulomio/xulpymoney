@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 from urllib.request import urlopen
 from decimal import Decimal
@@ -40,7 +39,7 @@ class CurrentPriceTicker:
                 return
         print ("ERROR | ERROR PARSING")
 
-if __name__=="__main__":
+def main():
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser()
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)

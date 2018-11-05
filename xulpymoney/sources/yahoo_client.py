@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
@@ -101,8 +100,7 @@ class CurrentPriceTicker:
             print ("ERROR | GET PRICE FAILED: PRECIO {}. DATETIME {}".format(self.price, self.dtaware))
             sys.exit(0)
     
-
-if __name__=="__main__":#Por defecto se pone WARNING y mostrar´ia ERROR y CRITICAL
+def main():
     app = QApplication(sys.argv)
     parser=argparse.ArgumentParser()
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
