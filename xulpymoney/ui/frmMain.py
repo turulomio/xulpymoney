@@ -59,9 +59,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             
-        p=ProductManager(self.mem)
-        p.update_from_internet()
-
 
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
@@ -683,6 +680,12 @@ class frmMain(QMainWindow, Ui_frmMain):
 
         self.layout.addWidget(self.w)
         self.w.show()
+        
+    @pyqtSlot()  
+    def on_actionProductsUpdate_triggered(self):
+        p=ProductManager(self.mem)
+        p.update_from_internet()
+
         
     @pyqtSlot()  
     def on_actionProductsWithoutISIN_triggered(self):

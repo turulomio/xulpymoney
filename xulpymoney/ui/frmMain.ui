@@ -222,6 +222,8 @@
      <addaction name="separator"/>
      <addaction name="actionWarrantsObsolete"/>
     </widget>
+    <addaction name="actionProductsUpdate"/>
+    <addaction name="separator"/>
     <addaction name="menuIndexes"/>
     <addaction name="menuShares"/>
     <addaction name="menuETF"/>
@@ -1093,10 +1095,22 @@
      <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
    </property>
    <property name="text">
-    <string>Compare products</string>
+    <string>Compare pro&amp;ducts</string>
    </property>
    <property name="toolTip">
     <string>Compare products</string>
+   </property>
+  </action>
+  <action name="actionProductsUpdate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products update from Internet</string>
+   </property>
+   <property name="toolTip">
+    <string>Products update from Internet</string>
    </property>
   </action>
  </widget>
