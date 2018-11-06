@@ -4,7 +4,7 @@
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
-from officegenerator import ODT_Standard, ODS_Write, Coord,  ODS_Read
+from officegenerator import ODT_Standard, ODS_Write, Coord,  OpenPyXL
 from odf.text import P
 import datetime
 import time
@@ -25,7 +25,6 @@ from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qrig
 from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
-from odf.table import TableRow, TableCell
 getcontext().prec=20
 
 class Connection(QObject):
@@ -995,49 +994,71 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
 
 
     def update_from_internet(self):
-        def cell_data(cell):
-            ps = cell.getElementsByType(P)
-            textContent = ""
-            for p in ps:
-                for n in p.childNodes:  
-                        if (n.nodeType == 1 and n.tagName == "text:span"):
-                            for c in n.childNodes:
-                                if (c.nodeType == 3):
-                                    textContent = '{}{}'.format(textContent, n.data)
-
-                        if (n.nodeType == 3):
-                            textContent = '{}{}'.format(textContent, n.data)
-            return textContent
-        def product_ods(row):
-            cells = row.getElementsByType(TableCell)
-            if cell_data(cells[0])=="ID":
+        def product_xlsx(row):
+            try:
+                p=Product(self.mem)
+                tickers=[None]*4
+                for cell in row:
+                    if cell.column=="A":
+                        p.id=cell.value
+                    elif cell.column=="B":
+                        p.name=cell.value
+                    elif cell.column=="C":
+                        p.isin=cell.value
+                    elif cell.column=="D":
+                        p.stockmarket=self.mem.stockmarkets.find_by_name(cell.value)
+                        if p.stockmarket==None:
+                            raise
+                    elif cell.column=="E":
+                        p.currency=self.mem.currencies.find_by_id(cell.value)
+                        if p.currency==None:
+                            raise
+                    elif cell.column=="F":
+                        p.type=self.mem.types.find_by_name(cell.value)
+                        if p.type==None:
+                            raise
+                    elif cell.column=="G":
+                        p.agrupations=self.mem.agrupations.clone_from_dbstring(cell.value)
+                        if p.agrupations==None:
+                            raise
+                    elif cell.column=="H":
+                        p.web=cell.value
+                    elif cell.column=="I":
+                        p.address=cell.value
+                    elif cell.column=="J":
+                        p.phone=cell.value
+                    elif cell.column=="K":
+                        p.mail=cell.value
+                    elif cell.column=="L":
+                        p.percentage=cell.value
+                    elif cell.column=="M":
+                        p.mode=self.mem.investmentsmodes.find_by_id(cell.value)
+                        if p.mode==None:
+                            raise
+                    elif cell.column=="N":
+                        p.leveraged=self.mem.leverages.find_by_name(cell.value)
+                        if p.leveraged==None:
+                            raise
+                    elif cell.column=="O":
+                        p.comment=cell.value
+                    elif cell.column=="P":
+                        p.obsolete=str2bool(cell.value)
+                    elif cell.column=="Q":
+                        tickers[0]=cell.value
+                    elif cell.column=="R":
+                        tickers[1]=cell.value
+                    elif cell.column=="S":
+                        tickers[2]=cell.value
+                    elif cell.column=="T":
+                        tickers[3]=cell.value
+                    p.tickers=tickers
+                return p
+            except:
+                print("Error creando ProductODS con Id: {}".format(p.id))
                 return None
-            print(len(cells))
-#            try:
-            p=Product(self.mem)
-            cells = row.getElementsByType(TableCell)
-            p.id=int(cell_data(cells[0]))
-            p.name=cell_data(cells[1])
-            p.isin=None if cell_data(cells[2]) in ["",  None]  else cell_data(cells[2]) 
-            p.stockmarket=self.mem.stockmarkets.find_by_name(cell_data(cells[3]))
-            p.currency=self.mem.currencies.find_by_id(cell_data(cells[4]))
-            p.type=self.mem.types.find_by_name(cell_data(cells[5]))
-            p.agrupations=self.mem.agrupations.clone_from_dbstring(cell_data(cells[6]))
-            p.web=None if cell_data(cells[7]) in ["",  None]  else cell_data(cells[7]) 
-            p.address=None if cell_data(cells[8]) in ["",  None]  else cell_data(cells[8]) 
-            p.phone=None if cell_data(cells[9]) in ["",  None]  else cell_data(cells[9]) 
-            p.mail=None if cell_data(cells[10]) in ["",  None]  else cell_data(cells[10]) 
-            p.percentage=int(cell_data(cells[11]))
-            p.mode=self.mem.investmentsmodes.find_by_id(cell_data(cells[12]))
-            p.leveraged=self.mem.leverages.find_by_name(cell_data(cells[13]))
-            
-            return p
-#            except:
-#                print("Error creando ProductODS con Id: {}".format(cell_data(cells[0])))
-#                return None
         #Download file 
         from urllib.request import urlretrieve
-        urlretrieve ("https://github.com/Turulomio/xulpymoney/blob/master/products.ods?raw=true", "product.ods")
+        urlretrieve ("https://github.com/Turulomio/xulpymoney/blob/master/products.xlsx?raw=true", "product.xlsx")
         
         oldlanguage=self.mem.language.id
         self.mem.languages.cambiar("es")
@@ -1047,50 +1068,60 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         products.load_from_db("select * from products order by id")
         
         #Iterate ods and load in product object
-        ods=ODS_Read("products.ods")
-        sheet=ods.getSheetElementByIndex(0)
-        rows = sheet.getElementsByType(TableRow)
+        xlsx=OpenPyXL("product.xlsx","product.xlsx")  
+        xlsx.setCurrentSheet(0)
         # for each row
         changed=[]
         added=[]
-        for number,  row in enumerate(rows):
-            p_ods=product_ods(row)
-            if p_ods==None:
+        for row in xlsx.ws_current.iter_rows():
+            p_xlsx=product_xlsx(row)
+            if p_xlsx==None:
                 continue
 
-            p_db=products.find_by_id(p_ods.id)       
+            p_db=products.find_by_id(p_xlsx.id)       
        
             if p_db==None:
-                added.append(p_ods)
+                added.append(p_xlsx)
             elif (  
-                        p_db.id!=p_ods.id or
-                        p_db.name!=p_ods.name or
-                        p_db.isin!=p_ods.isin or
-                        p_db.stockmarket.id!=p_ods.stockmarket.id or
-                        p_db.currency.id!=p_ods.currency.id or
-                        p_db.type.id!=p_ods.type.id or
-                        p_db.agrupations.dbstring()!=p_ods.agrupations.dbstring() or 
-                        p_db.web!=p_ods.web or
-                        p_db.address!=p_ods.address or
-                        p_db.phone!=p_ods.phone or
-                        p_db.mail!=p_ods.mail or
-                        p_db.percentage!=p_ods.percentage or
-                        p_db.mode.id!=p_ods.mode.id or
-                        p_db.leveraged.id!=p_ods.leveraged.id
+                        p_db.id!=p_xlsx.id or
+                        p_db.name!=p_xlsx.name or
+                        p_db.isin!=p_xlsx.isin or
+                        p_db.stockmarket.id!=p_xlsx.stockmarket.id or
+                        p_db.currency.id!=p_xlsx.currency.id or
+                        p_db.type.id!=p_xlsx.type.id or
+                        p_db.agrupations.dbstring()!=p_xlsx.agrupations.dbstring() or 
+                        p_db.web!=p_xlsx.web or
+                        p_db.address!=p_xlsx.address or
+                        p_db.phone!=p_xlsx.phone or
+                        p_db.mail!=p_xlsx.mail or
+                        p_db.percentage!=p_xlsx.percentage or
+                        p_db.mode.id!=p_xlsx.mode.id or
+                        p_db.leveraged.id!=p_xlsx.leveraged.id or
+                        p_db.comment!=p_xlsx.comment or 
+                        p_db.obsolete!=p_xlsx.obsolete or
+                        p_db.tickers[0]!=p_xlsx.tickers[0] or
+                        p_db.tickers[1]!=p_xlsx.tickers[1] or
+                        p_db.tickers[2]!=p_xlsx.tickers[2] or
+                        p_db.tickers[3]!=p_xlsx.tickers[3]
                     ):
-                    changed.append(p_ods)
-
-
+                changed.append(p_xlsx)
 
         #Sumary
         print("{} Products changed".format(len(changed)))
         for p in changed:
-            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name)
+            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            p.save()
         print("{} Products added".format(len(added)))
         for p in added:
-            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring())
-        
+            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id,stockmarkets_id) values (%s,%s)",  (p.id, 1))
+            cur.close()
+            p.save()
+        self.mem.con.commit()
         self.mem.languages.cambiar(oldlanguage)
+        os.remove("product.xlsx")
 
     def list_ISIN_XULPYMONEY(self):
         """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
