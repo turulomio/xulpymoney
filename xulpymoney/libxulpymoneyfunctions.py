@@ -506,7 +506,14 @@ def dtaware(date, hour, zonename):
 def str2bool(s):
     if s=="True":
         return True
-    return False
+    return False    
+## Converts boolean to  True or False string
+## @param s String
+## @return Boolean
+def bool2string(b):
+    if b==True:
+        return "VERDADERO"
+    return "FALSO"
     
 def none2decimal0(s):
     if s==None:

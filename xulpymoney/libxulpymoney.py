@@ -4,7 +4,7 @@
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
-from officegenerator import ODT_Standard
+from officegenerator import ODT_Standard, ODS_Write, Coord
 from odf.text import P
 import datetime
 import time
@@ -980,6 +980,18 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 result.append(a)
         return result
         
+    ## Function that store products in a libreoffice ods file
+    def save(self, filename):
+        products=ProductManager(self.mem)
+        products.load_from_db("select * from products order by id")
+        ods=ODS_Write(filename)
+        s1=ods.createSheet("Products")
+        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE	',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS']], "OrangeCenter")
+        for row, p in enumerate(products.arr):
+            print(p.name)
+            s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
+        ods.save()
+
     def list_ISIN_XULPYMONEY(self):
         """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
         suf=[]

@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.ui.frmAbout import frmAbout
-from xulpymoney.libxulpymoney import AssetsReport, Product
+from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -58,6 +58,9 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.setWindowIcon(self.mem.qicon_admin())
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
+            
+        p=ProductManager(self.mem)
+        p.save("products.ods")
 
 
     def actionsEnabled(self, bool):
