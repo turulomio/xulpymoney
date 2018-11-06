@@ -3932,7 +3932,7 @@ class Account:
         if len(args)==7:
             self.name=args[1]
             self.eb=args[2]
-            self.activa=args[3]
+            self.active=args[3]
             self.numero=args[4]
             self.currency=args[5]
             self.id=args[6]
