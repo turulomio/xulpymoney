@@ -60,7 +60,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             
         p=ProductManager(self.mem)
-        p.save("products.ods")
+        p.update_from_internet()
 
 
     def actionsEnabled(self, bool):

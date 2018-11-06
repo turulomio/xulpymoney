@@ -4,7 +4,7 @@
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
-from officegenerator import ODT_Standard, ODS_Write, Coord
+from officegenerator import ODT_Standard, ODS_Write, Coord,  ODS_Read
 from odf.text import P
 import datetime
 import time
@@ -25,6 +25,7 @@ from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qrig
 from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
+from odf.table import TableRow, TableCell
 getcontext().prec=20
 
 class Connection(QObject):
@@ -981,7 +982,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         return result
         
     ## Function that store products in a libreoffice ods file
-    def save(self, filename):
+    def save_to_ods(self, filename):
         products=ProductManager(self.mem)
         products.load_from_db("select * from products order by id")
         ods=ODS_Write(filename)
@@ -991,6 +992,105 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             print(p.name)
             s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
         ods.save()
+
+
+    def update_from_internet(self):
+        def cell_data(cell):
+            ps = cell.getElementsByType(P)
+            textContent = ""
+            for p in ps:
+                for n in p.childNodes:  
+                        if (n.nodeType == 1 and n.tagName == "text:span"):
+                            for c in n.childNodes:
+                                if (c.nodeType == 3):
+                                    textContent = '{}{}'.format(textContent, n.data)
+
+                        if (n.nodeType == 3):
+                            textContent = '{}{}'.format(textContent, n.data)
+            return textContent
+        def product_ods(row):
+            cells = row.getElementsByType(TableCell)
+            if cell_data(cells[0])=="ID":
+                return None
+            print(len(cells))
+#            try:
+            p=Product(self.mem)
+            cells = row.getElementsByType(TableCell)
+            p.id=int(cell_data(cells[0]))
+            p.name=cell_data(cells[1])
+            p.isin=None if cell_data(cells[2]) in ["",  None]  else cell_data(cells[2]) 
+            p.stockmarket=self.mem.stockmarkets.find_by_name(cell_data(cells[3]))
+            p.currency=self.mem.currencies.find_by_id(cell_data(cells[4]))
+            p.type=self.mem.types.find_by_name(cell_data(cells[5]))
+            p.agrupations=self.mem.agrupations.clone_from_dbstring(cell_data(cells[6]))
+            p.web=None if cell_data(cells[7]) in ["",  None]  else cell_data(cells[7]) 
+            p.address=None if cell_data(cells[8]) in ["",  None]  else cell_data(cells[8]) 
+            p.phone=None if cell_data(cells[9]) in ["",  None]  else cell_data(cells[9]) 
+            p.mail=None if cell_data(cells[10]) in ["",  None]  else cell_data(cells[10]) 
+            p.percentage=int(cell_data(cells[11]))
+            p.mode=self.mem.investmentsmodes.find_by_id(cell_data(cells[12]))
+            p.leveraged=self.mem.leverages.find_by_name(cell_data(cells[13]))
+            
+            return p
+#            except:
+#                print("Error creando ProductODS con Id: {}".format(cell_data(cells[0])))
+#                return None
+        #Download file 
+        from urllib.request import urlretrieve
+        urlretrieve ("https://github.com/Turulomio/xulpymoney/blob/master/products.ods?raw=true", "product.ods")
+        
+        oldlanguage=self.mem.language.id
+        self.mem.languages.cambiar("es")
+        
+        #Load database products
+        products=ProductManager(self.mem)
+        products.load_from_db("select * from products order by id")
+        
+        #Iterate ods and load in product object
+        ods=ODS_Read("products.ods")
+        sheet=ods.getSheetElementByIndex(0)
+        rows = sheet.getElementsByType(TableRow)
+        # for each row
+        changed=[]
+        added=[]
+        for number,  row in enumerate(rows):
+            p_ods=product_ods(row)
+            if p_ods==None:
+                continue
+
+            p_db=products.find_by_id(p_ods.id)       
+       
+            if p_db==None:
+                added.append(p_ods)
+            elif (  
+                        p_db.id!=p_ods.id or
+                        p_db.name!=p_ods.name or
+                        p_db.isin!=p_ods.isin or
+                        p_db.stockmarket.id!=p_ods.stockmarket.id or
+                        p_db.currency.id!=p_ods.currency.id or
+                        p_db.type.id!=p_ods.type.id or
+                        p_db.agrupations.dbstring()!=p_ods.agrupations.dbstring() or 
+                        p_db.web!=p_ods.web or
+                        p_db.address!=p_ods.address or
+                        p_db.phone!=p_ods.phone or
+                        p_db.mail!=p_ods.mail or
+                        p_db.percentage!=p_ods.percentage or
+                        p_db.mode.id!=p_ods.mode.id or
+                        p_db.leveraged.id!=p_ods.leveraged.id
+                    ):
+                    changed.append(p_ods)
+
+
+
+        #Sumary
+        print("{} Products changed".format(len(changed)))
+        for p in changed:
+            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name)
+        print("{} Products added".format(len(added)))
+        for p in added:
+            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring())
+        
+        self.mem.languages.cambiar(oldlanguage)
 
     def list_ISIN_XULPYMONEY(self):
         """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
