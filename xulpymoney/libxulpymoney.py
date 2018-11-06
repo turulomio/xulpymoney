@@ -1122,6 +1122,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         self.mem.con.commit()
         self.mem.languages.cambiar(oldlanguage)
         os.remove("product.xlsx")
+        self.mem.data.load()
 
     def list_ISIN_XULPYMONEY(self):
         """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
