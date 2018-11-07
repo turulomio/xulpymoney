@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -79,7 +79,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>598</width>
+                <width>965</width>
                 <height>796</height>
                </rect>
               </property>
@@ -466,7 +466,7 @@
                          <bool>true</bool>
                         </attribute>
                         <attribute name="verticalHeaderVisible">
-                         <bool>false</bool>
+                         <bool>true</bool>
                         </attribute>
                         <row>
                          <property name="text">
@@ -617,7 +617,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
