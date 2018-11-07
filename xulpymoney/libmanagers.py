@@ -134,6 +134,13 @@ class ObjectManager_With_Id(ObjectManager):
             if a.id==id:
                 return i
         return None
+        
+    ##Returns an array with all object ids
+    def array_of_ids(self):
+        r=[]
+        for o in self.arr:
+            r.append(o.id)
+        return r
     
 
     ## Search by id iterating array

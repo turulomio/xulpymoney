@@ -21,7 +21,7 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  l10nDecimal
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  l10nDecimal, deprecated
 from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
@@ -886,6 +886,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 return p
         return None                
         
+    @deprecated
     def load_from_inversiones_query(self, sql, progress=True):
         """sql es una query sobre la tabla inversiones"""
         cur=self.mem.con.cursor()
@@ -921,8 +922,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 QApplication.processEvents()
                 
             inv=Product(self.mem).init__db_row(rowms)
-            inv.estimations_dps.load_from_db()
-            inv.result.basic.load_from_db()
             self.append(inv)
         cur.close()
 
@@ -978,6 +977,28 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         for a in self.arr:
             if a.type.id==type.id:
                 result.append(a)
+        return result
+
+    ## Generate a new ProductManager object finding ids of parameter array in self.arr
+    ## @param arrInt Array of integers to seach in self.arr
+    ## @return ProductManager with the products matchind ids in arrInt.
+    def ProductManager_with_id_in_list(self, arrInt, needstatus=0, progress=False):
+        result=ProductManager(self.mem)
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(len(arrInt)),None, 0, len(arrInt))
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
+            pd.forceShow()
+        for i, id in enumerate(arrInt):
+            selected=self.mem.data.products.find_by_id(id)
+            if selected!=None:
+                result.append(selected)
+                selected.needStatus(needstatus)
+            if progress==True:
+                pd.setValue(i)
+                pd.update()
+                QApplication.processEvents()
         return result
         
     ## Function that store products in a libreoffice ods file
@@ -3590,13 +3611,22 @@ class DBData:
             This method will subsitute load_actives and load_inactives
         """
         inicio=datetime.datetime.now()
-        self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
-        self.benchmark.result.basic.load_from_db()
         
+        start=datetime.datetime.now()
+        self.products=ProductManager(self.mem)
+        self.products.load_from_db("select * from products", progress)
+        print("DBData > Products took {}".format(datetime.datetime.now()-start))
+        
+        self.benchmark=self.products.find_by_id(int(self.mem.settingsdb.value("mem/benchmark", "79329" )))
+        
+        #Loading currencies
+        start=datetime.datetime.now()
         self.currencies=ProductManager(self.mem)
-        self.currencies.load_from_db("select * from products where type=6")
-        for p in self.currencies.arr:
-            p.result.get_all()
+        for p in self.products.arr:
+            if p.type.id==6:
+                p.needStatus(3)
+                self.currencies.append(p)
+        print("DBData > Currencies took {}".format(datetime.datetime.now()-start))
         
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
@@ -3607,15 +3637,14 @@ class DBData:
         self.creditcards=CreditCardManager(self.mem, self.accounts)
         self.creditcards.load_from_db("select * from tarjetas")
 
-        self.products=ProductManager(self.mem)
-        self.products.load_from_inversiones_query("select distinct(products_id) from inversiones", progress)
-        
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
+        #change status to 1 to self.investments products
+        for inv in self.investments.arr:
+            inv.product.needStatus(1)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
-        
-        
+
     def accounts_active(self):        
         r=AccountManager(self.mem, self.banks)
         for b in self.accounts.arr:
@@ -3671,8 +3700,7 @@ class DBData:
             if b.active==False:
                 r.append(b)
         return r        
-    
-    
+
     def banks_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
@@ -3690,16 +3718,16 @@ class DBData:
     def investments_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.investments_active()()
+            return self.investments_active()
         else:
-            return self.investments_inactive()()
+            return self.investments_inactive()
 
     def creditcards_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.creditcards_active()()
+            return self.creditcards_active()
         else:
-            return self.creditcards_inactive()()
+            return self.creditcards_inactive()
 
         
 class Dividend:
@@ -6100,13 +6128,19 @@ class Product:
         self.comment=None
         self.obsolete=None
         
+        ## Variable with the current product status
+        ## 0 No data
+        ## 1 Loaded splits and triplete and estimations_dps
+        ## 2 Load estimations_eps, dps, eps, ohcls and dividends
+        ## 3 Load all quotes
+        self.status=0
+        
         self.result=None#Variable en la que se almacena QuotesResult
-        self.estimations_dps=EstimationDPSManager(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
-        self.estimations_eps=EstimationEPSManager(self.mem, self)
-        self.result=QuotesResult(self.mem,self)
-
+        self.estimations_dps=None#Es un diccionario que guarda objetos estimations_dps con clave el año
+        self.estimations_eps=None
         self.dps=None #It's created when loading quotes in quotes result
         self.splits=None #It's created when loading quotes in quotes result
+    
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
                 
@@ -6187,6 +6221,79 @@ class Product:
         if self.id in self.mem.autoupdate:
             return True
         return False
+        
+    ## La forma para ver si un objeto no se han cargado valores es que sea None y para borrarlos es ponerlos a None
+    ## Variable with the current product status
+    ## 0 No data. Tendra los siguientes valores
+    ## 1 Loaded splits and triplete and estimations_dps,splits
+    ## 2 Load estimations_eps, dps, , dividends, ohcls 
+    ## 3 Load all quotes
+    
+    ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
+    def needStatus(self, status_to):
+        if self.status==status_to:
+            return
+        #0
+        if self.status==0 and status_to==1: #MAIN
+            start=datetime.datetime.now()
+            self.estimations_dps=EstimationDPSManager(self.mem, self)
+            self.estimations_dps.load_from_db()
+            self.splits=SplitManager(self.mem, self)
+            self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
+            self.result=QuotesResult(self.mem, self)
+            self.result.get_basic()
+            
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            self.status=1
+        elif self.status==0 and status_to==2:
+            self.needStatus(1)
+            self.needStatus(2)
+        elif self.status==0 and status_to==3:
+            self.needStatus(1)
+            self.needStatus(2)
+            self.needStatus(3)
+        elif self.status==1 and status_to==2: #MAIN
+            start=datetime.datetime.now()
+            self.estimations_eps=EstimationEPSManager(self.mem, self)
+            self.estimations_eps.load_from_db()
+            self.dps=DPSManager(self.mem, self)
+            self.dps.load_from_db()           
+            self.result.get_ohcls()
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            self.status=2
+        elif self.status==1 and status_to==3:
+            self.needStatus(2)
+            self.needStatus(3)
+        elif self.status==2 and status_to==3:#MAIN
+            start=datetime.datetime.now()
+            self.result.get_all()
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            self.status=3
+        
+    
+    ## ESTA FUNCION DEBE RECARGAR CADA STATUS INCLUSO SI ES EL MISMO
+    ## SE USA CUANDO SE HAN MODIFICADO VALORES
+    ## ENTEORIA SOLO ES NECESARIA PARA LIBERAR MEMORIA PORQUE  CAMBIANDO EL STATUS FUNCIONARIA
+    
+    ## FALTA ACTUALIZAR SI SIN IGUALES
+    def revokeStatus(self, status_to):
+        if self.status==status_to:
+            return
+        # 1
+        elif self.status==1 and status_to==0:
+            self.status=0
+        #2
+        elif self.status==2 and status_to==0:
+            self.status=0
+        elif self.status==2 and status_to==1:
+            self.status=1
+        #3
+        elif self.status==3 and status_to==0:
+            self.status=0
+        elif self.status==3 and status_to==1:
+            self.status=1
+        elif self.status==3 and status_to==2:
+            self.status=2
         
     def setinvestments(self):
         """Returns a InvestmentManager object with all the investments of the product. Investments can be active or inactive"""
@@ -7400,7 +7507,31 @@ class QuotesResult:
     def __init__(self,mem,  product):
         self.mem=mem
         self.product=product
-               
+
+    def get_basic(self):
+        self.basic=QuoteBasicManager(self.mem, self.product)
+        self.basic.load_from_db()
+
+#    ## Only once. If it's already in memory. It ignore it
+#    ## @param force Boolean that if it'sTrue load from database again even if dps is not null
+#    def load_dps_and_splits(self, force=False):
+#        if self.product.dps==None or force==True:
+#            self.product.dps=DPSManager(self.mem, self.product)
+#            self.product.dps.load_from_db()     
+#        if self.product.splits==None or force==True:
+#            self.product.splits=SplitManager(self.mem, self.product)
+#            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
+#        
+
+    def get_intraday(self, date):
+        self.intradia=QuoteIntradayManager(self.mem)
+        self.intradia.load_from_db(date,  self.product)
+
+    ## Function that generate all results and computes splits and dividends
+    def get_ohcls(self):
+        """Tambien sirve para recargar"""
+        inicioall=datetime.datetime.now()  
+                       
         # These are without splits nor dividends
         self.ohclDailyBeforeSplits=OHCLDailyManager(self.mem, self.product)
         self.ohclMonthlyBeforeSplits=OHCLMonthlyManager(self.mem, self.product)
@@ -7408,9 +7539,6 @@ class QuotesResult:
         self.ohclWeeklyBeforeSplit=OHCLWeeklyManager(self.mem, self.product)
         
         # These are with splits and without dividends
-        self.intradia=QuoteIntradayManager(self.mem)
-        self.all=QuoteAllIntradayManager(self.mem)
-        self.basic=QuoteBasicManager(self.mem, self.product)
         self.ohclDaily=OHCLDailyManager(self.mem, self.product)
         self.ohclMonthly=OHCLMonthlyManager(self.mem, self.product)
         self.ohclYearly=OHCLYearlyManager(self.mem, self.product)
@@ -7421,22 +7549,7 @@ class QuotesResult:
         self.ohclMonthlyAfterDividends=OHCLMonthlyManager(self.mem, self.product)
         self.ohclYearlyAfterDividends=OHCLYearlyManager(self.mem, self.product)
         self.ohclWeeklyAfterDividends=OHCLWeeklyManager(self.mem, self.product)
-
-    ## Only once. If it's already in memory. It ignore it
-    ## @param force Boolean that if it'sTrue load from database again even if dps is not null
-    def load_dps_and_splits(self, force=False):
-        if self.product.dps==None or force==True:
-            self.product.dps=DPSManager(self.mem, self.product)
-            self.product.dps.load_from_db()     
-        if self.product.splits==None or force==True:
-            self.product.splits=SplitManager(self.mem, self.product)
-            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
         
-    ## Function that generate all results and computes splits and dividends
-    def get_basic_and_ohcls(self):
-        """Tambien sirve para recargar"""
-        inicioall=datetime.datetime.now()  
-        self.load_dps_and_splits()
         self.ohclDailyBeforeSplits.load_from_db("""
             select 
                 id, 
@@ -7506,13 +7619,12 @@ class QuotesResult:
             order by year 
         """.format(self.product.id))
         
-        self.basic=self.ohclDaily.setquotesbasic()
-        print ("QuotesResult.get_basic_and_ohcls of '{}' took {} with {} splits and {} dividends".format(self.product.name, datetime.datetime.now()-inicioall, self.product.splits.length(), self.product.dps.length()))
+        print ("QuotesResult.get_ohcls of '{}' took {} with {} splits and {} dividends".format(self.product.name, datetime.datetime.now()-inicioall, self.product.splits.length(), self.product.dps.length()))
         
 
     def get_all(self):
         """Gets all in a set intradays form"""
-        self.load_dps_and_splits()
+        self.all=QuoteAllIntradayManager(self.mem)
         self.all.load_from_db(self.product)
 
     ## Returns the OHCLManager corresponding to it's duration and if has splits and dividends adjust

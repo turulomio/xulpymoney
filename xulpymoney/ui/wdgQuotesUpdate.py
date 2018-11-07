@@ -20,11 +20,14 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QApplication.processEvents()
         ##### PROCESS #####
         self.quotes=self.update.run()
-        self.quotes.save()
+        (insertados, ignored, modificados, malos)=self.quotes.save()
         self.mem.con.commit()
         self.txtCR2Q.append(self.update.readResults())
         self.txtCR2Q.append("Quotes added:")
-        for q in self.quotes.arr:
+        for q in insertados:
+            self.txtCR2Q.append(" - {}".format(q))
+        self.txtCR2Q.append("Quoted modified:")
+        for q in insertados:
             self.txtCR2Q.append(" - {}".format(q))
         self.mem.data.load()
         
