@@ -6216,12 +6216,14 @@ class Product:
             return
         #0
         if self.status==0 and status_to==1: #MAIN
+            start=datetime.datetime.now()
             self.estimations_dps=EstimationDPSManager(self.mem, self)
             self.estimations_dps.load_from_db()
             self.splits=SplitManager(self.mem, self)
             self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
             self.result=QuotesResult(self.mem, self)
             self.result.get_basic()
+            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=1
         elif self.status==0 and status_to==2:
             self.needStatus(1)
@@ -6231,17 +6233,21 @@ class Product:
             self.needStatus(2)
             self.needStatus(3)
         elif self.status==1 and status_to==2: #MAIN
+            start=datetime.datetime.now()
             self.estimations_eps=EstimationEPSManager(self.mem, self)
             self.estimations_eps.load_from_db()
             self.dps=DPSManager(self.mem, self)
             self.dps.load_from_db()           
             self.result.get_ohcls()
+            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=2
         elif self.status==1 and status_to==3:
             self.needStatus(2)
             self.needStatus(3)
         elif self.status==2 and status_to==3:#MAIN
+            start=datetime.datetime.now()
             self.result.get_all()
+            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=3
         
     
