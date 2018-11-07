@@ -26,7 +26,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
         self.investments=None#SetINvestments of the selected product
         self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", 79228)))
-        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, self.product)
+        self.product.needStatus(1)
+        self.mem.data.investments.ProductManager_distinct_products(needstatus=1).qcombobox_not_obsolete(self.cmbProducts, self.product)
         
     def setProduct(self,  product):
         print("setproduct")
@@ -36,7 +37,6 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def setInvestment(self, investment):
         self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-
 
     def cmbPrice_load(self):       
         if self.product:

@@ -627,6 +627,14 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 r.append(inv)
         return r
         
+    ## Returns a Products Manager generated from self.mem.data.products with the products with investments
+    def ProductManager_distinct_products(self, needstatus):
+        setproducts=set()
+        for inv in self.arr:
+            setproducts.add(inv.product.id)
+        r=ProductManager(self.mem)
+        return r.ProductManager_with_id_in_list( list(setproducts), needstatus)
+            
         
 
     def setInvestments_merging_investments_with_same_product_merging_operations(self):
@@ -3618,6 +3626,7 @@ class DBData:
         print("DBData > Products took {}".format(datetime.datetime.now()-start))
         
         self.benchmark=self.products.find_by_id(int(self.mem.settingsdb.value("mem/benchmark", "79329" )))
+        self.benchmark.needStatus(2)
         
         #Loading currencies
         start=datetime.datetime.now()
@@ -4626,9 +4635,8 @@ class Opportunity:
             self.executed=executed
             self.price=price
             if products_id!=None:
-                self.product=Product(self.mem).init__db(products_id)         
-                self.product.estimations_dps.load_from_db()
-                self.product.result.basic.load_from_db()
+                self.product=self.mem.data.products.find_by_id(products_id)
+                self.product.needStatus(1)
             else:
                 self.product=None
             self.id=id

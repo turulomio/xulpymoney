@@ -24,10 +24,10 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.mem.con.commit()
         self.txtCR2Q.append(self.update.readResults())
         self.txtCR2Q.append("Quotes added:")
-        for q in insertados:
+        for q in insertados.arr:
             self.txtCR2Q.append(" - {}".format(q))
         self.txtCR2Q.append("Quoted modified:")
-        for q in insertados:
+        for q in insertados.arr:
             self.txtCR2Q.append(" - {}".format(q))
         self.mem.data.load()
         
