@@ -1153,6 +1153,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
+            p.needStatus(1)
             table.setItem(i, 0, QTableWidgetItem(str(p.id)))
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
             table.item(i, 1).setIcon(p.stockmarket.country.qicon())
