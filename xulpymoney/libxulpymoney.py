@@ -978,6 +978,28 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             if a.type.id==type.id:
                 result.append(a)
         return result
+
+    ## Generate a new ProductManager object finding ids of parameter array in self.arr
+    ## @param arrInt Array of integers to seach in self.arr
+    ## @return ProductManager with the products matchind ids in arrInt.
+    def ProductManager_with_id_in_list(self, arrInt, needstatus=0, progress=False):
+        result=ProductManager(self.mem)
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(len(arrInt)),None, 0, len(arrInt))
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
+            pd.forceShow()
+        for i, id in enumerate(arrInt):
+            selected=self.mem.data.products.find_by_id(id)
+            if selected!=None:
+                result.append(selected)
+                selected.needStatus(needstatus)
+            if progress==True:
+                pd.setValue(i)
+                pd.update()
+                QApplication.processEvents()
+        return result
         
     ## Function that store products in a libreoffice ods file
     def save_to_ods(self, filename):
@@ -1153,7 +1175,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
-            p.needStatus(1)
             table.setItem(i, 0, QTableWidgetItem(str(p.id)))
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
             table.item(i, 1).setIcon(p.stockmarket.country.qicon())
@@ -3623,8 +3644,7 @@ class DBData:
             inv.product.needStatus(1)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
-        
-        
+
     def accounts_active(self):        
         r=AccountManager(self.mem, self.banks)
         for b in self.accounts.arr:
@@ -3680,8 +3700,7 @@ class DBData:
             if b.active==False:
                 r.append(b)
         return r        
-    
-    
+
     def banks_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
@@ -3699,16 +3718,16 @@ class DBData:
     def investments_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.investments_active()()
+            return self.investments_active()
         else:
-            return self.investments_inactive()()
+            return self.investments_inactive()
 
     def creditcards_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.creditcards_active()()
+            return self.creditcards_active()
         else:
-            return self.creditcards_inactive()()
+            return self.creditcards_inactive()
 
         
 class Dividend:
@@ -6223,7 +6242,8 @@ class Product:
             self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
             self.result=QuotesResult(self.mem, self)
             self.result.get_basic()
-            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=1
         elif self.status==0 and status_to==2:
             self.needStatus(1)
@@ -6239,7 +6259,7 @@ class Product:
             self.dps=DPSManager(self.mem, self)
             self.dps.load_from_db()           
             self.result.get_ohcls()
-            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=2
         elif self.status==1 and status_to==3:
             self.needStatus(2)
@@ -6247,7 +6267,7 @@ class Product:
         elif self.status==2 and status_to==3:#MAIN
             start=datetime.datetime.now()
             self.result.get_all()
-            print("Product {} took {} tp pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
             self.status=3
         
     

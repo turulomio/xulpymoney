@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.libxulpymoney import ProductManager, QuoteAllIntradayManager
 from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
@@ -15,8 +16,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.products=ProductManager(self.mem)
-        self.products.selected=[]#Can be selected several products
         self.tblInvestments.settings(self.mem, "wdgProducts")
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.showingfavorites=False#Switch to know if widget is showing favorites            
@@ -27,8 +26,16 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def build_array(self, sql):
         self.sql=sql
         logging.debug(sql)
-        self.products.load_from_db(self.sql, True)
+        
+        self.products=ProductManager(self.mem)
+        self.products.setSelectionMode(ManagerSelectionMode.List)
+        
+        # Will use data products
+        tmp=ProductManager(self.mem)
+        tmp.load_from_db(self.sql, False)
+        self.products=self.mem.data.products.ProductManager_with_id_in_list(tmp.array_of_ids(), needstatus=1, progress=True)          
         self.products.order_by_upper_name()
+        
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
 
         
@@ -45,7 +52,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.products.myqtablewidget(self.tblInvestments)
         else:
             self.mem.favorites.append(self.products.selected[0].id)
-        print ("Favoritos", self.mem.favorites)
+        logging.debug("Favoritos: {}".format(self.mem.favorites))
         self.mem.save_MemSettingsDB()
 
     @pyqtSlot()  
@@ -55,9 +62,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionProductDelete_triggered(self):
-         
         if self.products.selected[0].is_deletable()==False:
-            qmessagebox(self.tr("This product can't be removed, because is marked as not romavable"))
+            qmessagebox(self.tr("This product can't be removed, because is marked as not remavable"))
             return
             
         if self.products.selected[0].is_system()==True:
