@@ -1260,13 +1260,15 @@ class StockMarketManager(ObjectManager_With_IdName_Selectable):
         self.append(StockMarket(self.mem).init__create( 6, "Bolsa de Milán", "it", datetime.time(9, 0), datetime.time(17, 38), "Europe/Rome"))
         self.append(StockMarket(self.mem).init__create( 7, "Bolsa de Tokio", "jp", datetime.time(9, 0), datetime.time(15, 8), "Asia/Tokyo"))
         self.append(StockMarket(self.mem).init__create( 5, "Bolsa de Frankfurt", "de", datetime.time(9, 0), datetime.time(17, 38), "Europe/Berlin"))
-        self.append(StockMarket(self.mem).init__create( 2, "Bolsa de New York", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
+        self.append(StockMarket(self.mem).init__create( 2, "NYSE Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
         self.append(StockMarket(self.mem).init__create( 10, "Bolsa Europea", "eu", datetime.time(9, 0), datetime.time(17, 38), "Europe/Brussels"))
         self.append(StockMarket(self.mem).init__create( 9, "Bolsa de Lisboa", "pt", datetime.time(9, 0), datetime.time(17, 38), "Europe/Lisbon"))
         self.append(StockMarket(self.mem).init__create( 4, "Bolsa de Londres", "en", datetime.time(8, 0), datetime.time(16, 38), "Europe/London"))
         self.append(StockMarket(self.mem).init__create( 8, "Bolsa de Hong Kong", "cn", datetime.time(9, 30), datetime.time(16, 8), "Asia/Hong_Kong"))
         self.append(StockMarket(self.mem).init__create( 3, "Bolsa de Paris", "fr", datetime.time(9, 0), datetime.time(17, 38), "Europe/Paris"))
         self.append(StockMarket(self.mem).init__create( 15, "No cotiza en mercados oficiales", "earth", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
+        self.append(StockMarket(self.mem).init__create( 16, "AMEX Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
+        self.append(StockMarket(self.mem).init__create( 17, "Nasdaq Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
 
 class ConceptManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
