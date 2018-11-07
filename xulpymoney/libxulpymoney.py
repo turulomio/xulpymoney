@@ -3600,15 +3600,11 @@ class DBData:
         #Loading currencies
         start=datetime.datetime.now()
         self.currencies=ProductManager(self.mem)
-        for p in self.products:
+        for p in self.products.arr:
             if p.type.id==6:
-                p.changeStatus(p.status, 3)
+                p.needStatus(3)
                 self.currencies.append(p)
         print("DBData > Currencies took {}".format(datetime.datetime.now()-start))
-            
-        self.currencies.load_from_db("select * from products where type=6")
-        for p in self.currencies.arr:
-            p.result.get_all()
         
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
@@ -3619,9 +3615,11 @@ class DBData:
         self.creditcards=CreditCardManager(self.mem, self.accounts)
         self.creditcards.load_from_db("select * from tarjetas")
 
-        
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
+        #change status to 1 to self.investments products
+        for inv in self.investments.arr:
+            inv.product.needStatus(1)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
         
@@ -6219,11 +6217,18 @@ class Product:
         if self.status==0 and status_to==1: #MAIN
             self.estimations_dps=EstimationDPSManager(self.mem, self)
             self.estimations_dps.load_from_db()
-            self.splits=SplitManager(self.mem, self.product)
-            self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
+            self.splits=SplitManager(self.mem, self)
+            self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
             self.result=QuotesResult(self.mem, self)
             self.result.get_basic()
             self.status=1
+        elif self.status==0 and status_to==2:
+            self.needStatus(1)
+            self.needStatus(2)
+        elif self.status==0 and status_to==3:
+            self.needStatus(1)
+            self.needStatus(2)
+            self.needStatus(3)
         elif self.status==1 and status_to==2: #MAIN
             self.estimations_eps=EstimationEPSManager(self.mem, self)
             self.estimations_eps.load_from_db()
@@ -6231,10 +6236,12 @@ class Product:
             self.dps.load_from_db()           
             self.result.get_ohcls()
             self.status=2
+        elif self.status==1 and status_to==3:
+            self.needStatus(2)
+            self.needStatus(3)
         elif self.status==2 and status_to==3:#MAIN
             self.result.get_all()
             self.status=3
-
         
     
     ## ESTA FUNCION DEBE RECARGAR CADA STATUS INCLUSO SI ES EL MISMO
@@ -7488,6 +7495,11 @@ class QuotesResult:
 #            self.product.splits=SplitManager(self.mem, self.product)
 #            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
 #        
+
+    def get_intraday(self, date):
+        self.intradia=QuoteIntradayManager(self.mem)
+        self.intradia.load_from_db(date,  self.product)
+
     ## Function that generate all results and computes splits and dividends
     def get_ohcls(self):
         """Tambien sirve para recargar"""
@@ -7585,7 +7597,7 @@ class QuotesResult:
 
     def get_all(self):
         """Gets all in a set intradays form"""
-        self.all=QuoteAllIntradayManager(self.mem, self)
+        self.all=QuoteAllIntradayManager(self.mem)
         self.all.load_from_db(self.product)
 
     ## Returns the OHCLManager corresponding to it's duration and if has splits and dividends adjust
