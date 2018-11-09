@@ -628,12 +628,12 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         return r
         
     ## Returns a Products Manager generated from self.mem.data.products with the products with investments
-    def ProductManager_distinct_products(self, needstatus):
+    def ProductManager_distinct_products(self):
         setproducts=set()
         for inv in self.arr:
             setproducts.add(inv.product.id)
         r=ProductManager(self.mem)
-        return r.ProductManager_with_id_in_list( list(setproducts), needstatus)
+        return r.ProductManager_with_id_in_list( list(setproducts))
             
         
 
@@ -932,6 +932,24 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             inv=Product(self.mem).init__db_row(rowms)
             self.append(inv)
         cur.close()
+        
+
+    ## Passes product.needStatus method to all products in arr
+    ## @param needstatus Status needed
+    ## @param progress Boolean. If true shows a progress bar
+    def needStatus(self, needstatus,  progress=False):
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading additional data to {0} products from database").format(self.length()),None, 0,self.length())
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
+            pd.forceShow()
+        for i, product in enumerate(self.arr):
+            if progress==True:
+                pd.setValue(i)
+                pd.update()
+                QApplication.processEvents()
+            product.needStatus(needstatus)
 
     def order_by_datetime(self):
         """Orders the Set using self.arr"""
@@ -990,23 +1008,31 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
     ## Generate a new ProductManager object finding ids of parameter array in self.arr
     ## @param arrInt Array of integers to seach in self.arr
     ## @return ProductManager with the products matchind ids in arrInt.
-    def ProductManager_with_id_in_list(self, arrInt, needstatus=0, progress=False):
+    def ProductManager_with_id_in_list(self, arrInt):
         result=ProductManager(self.mem)
-        if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(len(arrInt)),None, 0, len(arrInt))
-            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
-            pd.forceShow()
         for i, id in enumerate(arrInt):
             selected=self.mem.data.products.find_by_id(id)
             if selected!=None:
                 result.append(selected)
-                selected.needStatus(needstatus)
-            if progress==True:
-                pd.setValue(i)
-                pd.update()
-                QApplication.processEvents()
+        return result
+        
+
+    ## Generate a new ProductManager object with products that contains parameter string
+    ## @param s String to seach
+    ## @return ProductManager that is a subset of this class
+    def ProductManager_contains_string(self, s):
+        def find_attribute(att, s):
+            if att==None:
+                return False
+            if att.upper().find(s)!=-1:
+                return True
+            return False
+        # #############################################
+        s=s.upper()
+        result=ProductManager(self.mem)
+        for o in self.arr:
+            if find_attribute(o.name, s) or find_attribute(o.isin, s) or any(find_attribute(ticker, s) for ticker in o.tickers):
+                result.append(o)
         return result
         
     ## Function that store products in a libreoffice ods file
@@ -3649,8 +3675,8 @@ class DBData:
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
         #change status to 1 to self.investments products
-        for inv in self.investments.arr:
-            inv.product.needStatus(1)
+        pros=self.investments.ProductManager_distinct_products()
+        pros.needStatus(1, progress=True)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
 

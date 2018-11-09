@@ -33,7 +33,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         # Will use data products
         tmp=ProductManager(self.mem)
         tmp.load_from_db(self.sql, False)
-        self.products=self.mem.data.products.ProductManager_with_id_in_list(tmp.array_of_ids(), needstatus=1, progress=True)          
+        self.products=self.mem.data.products.ProductManager_with_id_in_list(tmp.array_of_ids())     
+        self.products.needStatus(needstatus=1, progress=True)
         self.products.order_by_upper_name()
         
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))

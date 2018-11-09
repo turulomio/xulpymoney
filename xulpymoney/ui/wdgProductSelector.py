@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
 from xulpymoney.ui.myqtablewidget import myQTableWidget
-from xulpymoney.libxulpymoney import ProductManager
+from xulpymoney.libxulpymoney import ProductManager, ManagerSelectionMode
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgProductSelector(QWidget):
@@ -58,6 +58,7 @@ class wdgProductSelector(QWidget):
     def setSelected(self, product):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
         self.selected=product
+        print (self.selected)
         if self.selected==None:
             self.txt.setText(self.tr("Not selected"))
             self.cmdProduct.setEnabled(False)     
@@ -131,24 +132,15 @@ class frmProductSelector(QDialog):
         self.tblInvestments.cellDoubleClicked.connect(self.on_tblInvestments_cellDoubleClicked)
         
     def on_cmd_released(self):
-        if len(self.txt.text().upper())<=3:            
-            qmessagebox(self.tr("Search too wide. You need more than 3 characters"))
+        if len(self.txt.text().upper())<=2:            
+            qmessagebox(self.tr("Search too wide. You need more than 2 characters"))
             return
-
-        self.products.load_from_db("""
-                select * 
-                from products 
-                where 
-                    id::text like '%{0}%' or 
-                    upper(name) like '%{0}%' or 
-                    upper(isin) like '%{0}%' or 
-                    '%{0}%' like any (tickers) or 
-                    upper(comment) like '%{0}%' 
-                order by name""".format(self.txt.text().upper()))
+                
+        self.products=self.mem.data.products.ProductManager_contains_string(self.txt.text().upper())
+        self.products.setSelectionMode(ManagerSelectionMode.Object)
+        self.products.needStatus(1, progress=True)
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
         self.products.myqtablewidget(self.tblInvestments)  
-        
-        print("Aqui")
         
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
