@@ -1031,9 +1031,16 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         s=s.upper()
         result=ProductManager(self.mem)
         for o in self.arr:
-            if find_attribute(o.name, s) or find_attribute(o.isin, s) or any(find_attribute(ticker, s) for ticker in o.tickers):
+            if find_attribute(o.name, s) or find_attribute(o.isin, s) or any(find_attribute(ticker, s) for ticker in o.tickers) or find_attribute(o.comment, s):
                 result.append(o)
         return result
+        
+    ## Removes a product and return a boolean. NO HACE COMMIT
+    def remove(self, o):
+        if o.remove():
+            ObjectManager_With_Id_Selectable.remove(self, o)
+            return True
+        return False
         
     ## Function that store products in a libreoffice ods file
     def save_to_ods(self, filename):
@@ -6393,6 +6400,22 @@ class Product:
     def is_system(self):
         """Returns if the product is a system product or a user product"""
         if self.id>=0:
+            return True
+        return False
+
+    ## @return boolen if could be done
+    ## NO HACE COMMIT
+    def remove(self):     
+        if self.is_deletable()==True and self.is_system()==False:
+            cur=self.mem.con.cursor()
+            cur.execute("delete from quotes where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from estimations_eps where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from dps where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from splits where products_id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from opportunities where products_id=%s", (self.products.selected[0].id, ))
+            cur.close()
             return True
         return False
 

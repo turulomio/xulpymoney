@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
 from xulpymoney.libmanagers import ManagerSelectionMode
-from xulpymoney.libxulpymoney import ProductManager, QuoteAllIntradayManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox
+from xulpymoney.libxulpymoney import QuoteAllIntradayManager
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgMergeCodes import wdgMergeCodes
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
@@ -12,54 +12,48 @@ from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging
 
 class wdgProducts(QWidget, Ui_wdgProducts):
-    def __init__(self, mem,  sql,  parent=None):
+    def __init__(self, mem,  arrInt=[],  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         self.tblInvestments.settings(self.mem, "wdgProducts")
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
-        self.showingfavorites=False#Switch to know if widget is showing favorites            
-
-        self.build_array(sql)
-        self.products.myqtablewidget(self.tblInvestments)
+        self.arrInt=arrInt#Lista de ids of products showed and used to show
+        self.build_array_from_arrInt()
     
-    def build_array(self, sql):
-        self.sql=sql
-        logging.debug(sql)
-        
-        self.products=ProductManager(self.mem)
+    def build_array_from_arrInt(self):        
+        self.products=self.mem.data.products.ProductManager_with_id_in_list(self.arrInt)
         self.products.setSelectionMode(ManagerSelectionMode.List)
-        
-        # Will use data products
-        tmp=ProductManager(self.mem)
-        tmp.load_from_db(self.sql, False)
-        self.products=self.mem.data.products.ProductManager_with_id_in_list(tmp.array_of_ids())     
         self.products.needStatus(needstatus=1, progress=True)
         self.products.order_by_upper_name()
-        
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
+        self.products.myqtablewidget(self.tblInvestments)
 
         
     @pyqtSlot()  
     def on_actionFavorites_triggered(self):      
         if self.products.selected[0].id in self.mem.favorites:
             self.mem.favorites.remove(self.products.selected[0].id)
-            if self.showingfavorites==True:
-                if len(self.mem.favorites)>0:
-                    self.sql="select * from products where id in ("+list2string(self.mem.favorites)+") order by name, id"
-                else:
-                    self.sql="select * from products where id=-99999999"
-            self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments)
         else:
             self.mem.favorites.append(self.products.selected[0].id)
         logging.debug("Favoritos: {}".format(self.mem.favorites))
         self.mem.save_MemSettingsDB()
+        
+        del self.arrInt
+        self.arrInt=[]
+        for f in self.mem.favorites:
+            self.arrInt.append(f)
+        self.build_array_from_arrInt()
+        
 
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
-        self.build_array("select * from products where agrupations like '%|IBEX|%' and obsolete=False order by name,id")
-        self.products.myqtablewidget(self.tblInvestments)       
+        del self.arrInt
+        self.arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring.find("|IBEX|")!=-1 and p.obsolete==False:
+                self.arrInt.append(p.id)
+        self.build_array_from_arrInt()
 
     @pyqtSlot() 
     def on_actionProductDelete_triggered(self):
@@ -73,28 +67,22 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             
         respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.products.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            cur = self.mem.con.cursor()
-            cur.execute("delete from quotes where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from estimations_eps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from dps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
+            self.arrInt.remove(self.products.selected[0].id)
+            self.mem.data.products.remove(self.products.selected[0])
             self.mem.con.commit()
-            cur.close()     
-            self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments)  
-            
+            self.build_array_from_arrInt()            
 
     @pyqtSlot() 
     def on_actionProductNew_triggered(self):
         w=frmProductReport(self.mem, None, self)
         w.exec_()        
-        self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments)
+        del self.arrInt
+        self.arrInt=[w.product.id, ]
+        self.build_array_from_arrInt()
 
     @pyqtSlot() 
     def on_actionPurchaseGraphic_triggered(self):
-        self.products.selected[0].result.get_basic_and_ohcls()
+        self.products.selected[0].needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
@@ -112,8 +100,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.products.selected[0], None,  self)
         w.exec_()        
-        self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments)
+        self.build_array_from_arrInt()
         
     @pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
@@ -153,29 +140,35 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.on_actionProductReport_triggered()
 
     def on_cmd_pressed(self):
-        if len(self.txt.text().upper())<=3:            
-            qmessagebox(self.tr("Search too wide. You need more than 3 characters"))
+        if len(self.txt.text().upper())<=2:            
+            qmessagebox(self.tr("Search too wide. You need more than 2 characters"))
             return
-            
-        #Stock exchange Filter
-        stockmarketfilter=""
+        
+        # To filter by stockmarket
+        sm=None
         if self.chkStockExchange.checkState()==Qt.Checked:
-            bolsa=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
-            stockmarketfilter=" and stockmarkets_id={0} ".format(bolsa.id)
+            sm=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))     
             
+        # To filter by obsolete
+        obsolete=False
         if self.chkObsolete.checkState()==Qt.Checked:
-            obsoletefilter=""
-        else:
-            obsoletefilter=" and obsolete=False "
+            obsolete=True
+            
+        del self.arrInt
+        self.arrInt=[]
+        #Temporal ProductManager
+        pros=self.mem.data.products.ProductManager_contains_string(self.txt.text())
+        for p in pros.arr:
+            #Filter sm
+            if sm==None or sm.id==p.stockmarket.id:
+                self.arrInt.append(p.id)
+            #Filter obsolete
+            if p.obsolete==False:
+                self.arrInt.append(p.id)
+            elif p.obsolete==True and obsolete==True:
+                self.arrInt.append(p.id)
 
-        self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
-                "%' or upper(name) like '%"+(self.txt.text().upper())+
-                "%' or upper(isin) like '%"+(self.txt.text().upper())+
-                "%' or '{}'=any(tickers) ".format(self.txt.text().upper())+
-                " or upper(comment) like '%"+(self.txt.text().upper())+
-                "%') "+ stockmarketfilter +obsoletefilter)
-        self.products.myqtablewidget(self.tblInvestments)          
-
+        self.build_array_from_arrInt()
 
     def on_tblInvestments_customContextMenuRequested(self,  pos):
 
@@ -250,9 +243,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
-        self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments)
-
+        self.arrInt.remove(self.products.selected[0].id)
+        self.build_array_from_arrInt()
     
     def on_tblInvestments_itemSelectionChanged(self):
         self.products.cleanSelection()
@@ -275,23 +267,23 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     @pyqtSlot()  
     def on_actionQuoteNew_triggered(self):
         w=frmQuotesIBM(self.mem,  self.products.selected[0])
-        w.exec_()               
-        self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments)  
+        w.exec_()
+        self.build_array_from_arrInt()
         
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
         self.products.selected[0].result.basic.last.delete()
         self.mem.con.commit()
-        self.products.selected[0].result.basic.load_from_db()
-        self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments)
+        self.products.revokeStatus(0)
+        self.products.needStatus(1)
+        self.build_array_from_arrInt()
         
     @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
         d.exec_()
         if d.result()==QDialog.Accepted:
-            self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments)  
+            self.products.revokeStatus(0)
+            self.products.needStatus(1)
+            self.build_array_from_arrInt()
             
