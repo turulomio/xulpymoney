@@ -130,7 +130,6 @@
      <addaction name="actionEurostoxx50"/>
      <addaction name="actionIbex35"/>
      <addaction name="actionMC"/>
-     <addaction name="actionLATIBEX"/>
      <addaction name="actionSP500"/>
      <addaction name="actionCAC40"/>
      <addaction name="actionNasdaq100"/>
@@ -798,18 +797,6 @@
     <string>Purge all investments</string>
    </property>
   </action>
-  <action name="actionLATIBEX">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;LATIBEX</string>
-   </property>
-   <property name="toolTip">
-    <string>LATIBEX</string>
-   </property>
-  </action>
   <action name="actionProductsWithoutISIN">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
@@ -1107,7 +1094,7 @@
      <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
    </property>
    <property name="text">
-    <string>Products update from Internet</string>
+    <string>Products &amp;update from Internet</string>
    </property>
    <property name="toolTip">
     <string>Products update from Internet</string>

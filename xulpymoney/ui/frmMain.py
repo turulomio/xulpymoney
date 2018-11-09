@@ -156,7 +156,6 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionInvestmentsClasses_triggered(self):
         self.w.close()
         self.w=wdgInvestmentClasses(self.mem, self)
-                
         self.layout.addWidget(self.w)
         self.w.update()
         self.w.show()
@@ -197,13 +196,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgInvestments(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
+
     @pyqtSlot()  
     def on_actionLastOperation_triggered(self):
         self.w.close()
         self.w=wdgLastCurrent(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
-        
+
     @pyqtSlot()  
     def on_actionInvestmentsOperations_triggered(self):
         self.w.close()
@@ -338,8 +338,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|NASDAQ100|%' and obsolete=false  order by name,id")
 
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|NASDAQ100|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
             
@@ -366,8 +370,11 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionMC_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem, "select * from products where agrupations like '%|MERCADOCONTINUO|%' and obsolete=false  order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -423,54 +430,76 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionSharesAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=1 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Share and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()         
         
     @pyqtSlot()  
     def on_actionSharesObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=1  and obsolete=true order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Share and p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()        
         
     @pyqtSlot()  
     def on_actionWarrantsAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Warrant and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()          
         
     @pyqtSlot()  
     def on_actionWarrantsObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=true order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Warrant and p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()          
         
     @pyqtSlot()  
     def on_actionWarrantsCall_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='c'  and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Warrant and p.mode.id=='c' and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()              
     @pyqtSlot()  
     def on_actionWarrantsPut_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='p'  and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Warrant and p.mode.id=='p' and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()              
+        
     @pyqtSlot()  
     def on_actionWarrantsInline_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='i'  and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Warrant and p.mode.id=='i' and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()      
 
@@ -479,7 +508,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
-            if p.type.id==eProductType.Funds and p.obsolete==False:
+            if p.type.id==eProductType.Fund and p.obsolete==False:
                 arrInt.append(p.id)
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
@@ -490,7 +519,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
-            if p.type.id==eProductType.Funds and p.obsolete==True:
+            if p.type.id==eProductType.Fund and p.obsolete==True:
                 arrInt.append(p.id)
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
@@ -598,36 +627,44 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|IBEX|%' and obsolete=false  order by name,id")
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|IBEX|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()        
 
     @pyqtSlot()  
-    def on_actionLATIBEX_triggered(self):
-        self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|LATIBEX|%' and obsolete=false order by name,id")
-        self.layout.addWidget(self.w)
-        self.w.show()
-        
-    @pyqtSlot()  
     def on_actionIndexesAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=False order by stockmarkets_id,name")
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Index:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()      
         
     @pyqtSlot()  
     def on_actionIndexesObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=true order by stockmarkets_id,name")
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Index and p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()        
+        self.w.show()     
                 
     @pyqtSlot()  
     def on_actionSP500_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|SP500|%'  and obsolete=false order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|SP500|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
     
@@ -641,19 +678,28 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsInvestmentActive_triggered(self):
-        self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
-
+        self.w.close()       
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select * from products where id in (select products_id from inversiones where active=true) order by name")
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()        
 
     @pyqtSlot()  
     def on_actionProductsWithoutQuotes_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select p.*,q.* from products p, quote(p.id, now()) q where p.id=q.id and q.quote is null and obsolete=False order by name")
-
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select p.*,q.* from products p, quote(p.id, now()) q where p.id=q.id and q.quote is null and obsolete=False order by name")
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()        
+        self.w.show()       
+
     @pyqtSlot()  
     def on_actionProductsWithPriceVariation_triggered(self):
         self.w.close()        
@@ -679,50 +725,76 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionProductsWithOldPrice_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select p.* from products p, quote(p.id, now()) q where p.id=q.id and q.datetime<now() -interval '30 day' and obsolete=False order by name")
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select p.* from products p, quote(p.id, now()) q where p.id=q.id and q.datetime<now() -interval '30 day' and obsolete=False order by name")
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()    
         
     @pyqtSlot()  
     def on_actionProductsInvestmentInactive_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=false) order by name")
-
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select * from products where id in (select products_id from inversiones where active=false) order by name")
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()    
+        self.w.show()
+
     @pyqtSlot()  
     def on_actionProductsObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where obsolete=true order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
                 
     @pyqtSlot()  
     def on_actionProductsAutoUpdate_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  """select * from products 
+        prod=ProductManager(self.mem)
+        prod.load_from_db("""select * from products 
                 where id in ({})
                 order by name
                 """.format(list2string(list(self.mem.autoupdate))))
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()       
     
     @pyqtSlot()  
     def on_actionProductsNotAutoUpdate_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  """select * from products 
+        prod=ProductManager(self.mem)
+        prod.load_from_db("""select * from products 
                 where obsolete=false and id not in ({})
                 order by name
                 """.format(list2string(list(self.mem.autoupdate))))
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()            
         
     @pyqtSlot()  
     def on_actionProductsUser_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id<0 order by name, id ")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.id<0:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -735,8 +807,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionProductsWithoutISIN_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products  where obsolete=false and (isin is null or isin ='') order by name,id")
-
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select * from products  where obsolete=false and (isin is null or isin ='') order by name,id")
+        arrInt=[]
+        for p in prod.arr:
+            arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
 
@@ -750,16 +826,18 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionXetra_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|DAX|%'  and obsolete=false order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|DAX|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()        
         
     @pyqtSlot()  
     def on_actionSearch_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  self.sqlvacio)
-
+        self.w=wdgProducts(self.mem)
         self.layout.addWidget(self.w)
         self.w.show()
         
