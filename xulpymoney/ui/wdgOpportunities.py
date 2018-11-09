@@ -81,7 +81,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
 
     @pyqtSlot() 
     def on_actionShowGraphic_triggered(self):
-        self.opportunities.selected.product.result.get_basic_and_ohcls()
+        self.opportunities.selected.product.result.needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
@@ -93,6 +93,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         wc.display()
         lay.addWidget(wc)
         d.exec_()
+
     def load_OpportunityData(self, frm):
         """Carga los datos de la orden en el frmInvestmentOperationsAdd"""
         if self.opportunities.selected.shares<0:

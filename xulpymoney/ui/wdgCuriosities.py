@@ -9,7 +9,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         self.setupUi(self)
         self.mem=mem
 
-        self.mem.data.benchmark.result.get_basic_and_ohcls()
+        self.mem.data.benchmark.needStatus(2)
 
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Since when there is data in the database?"))

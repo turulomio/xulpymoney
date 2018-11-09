@@ -102,7 +102,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
 
     @pyqtSlot()
     def on_cmdGraph_released(self):
-        self.product.result.get_basic_and_ohcls()
+        self.product.needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))

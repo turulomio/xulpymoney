@@ -151,7 +151,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
                 
     @pyqtSlot()
     def on_cmdGraph_released(self):
-        self.investment.product.result.get_basic_and_ohcls()
+        self.investment.product.needStatus(2)
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Reinvest graph"))
         d.showMaximized()

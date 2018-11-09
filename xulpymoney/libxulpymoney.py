@@ -1501,7 +1501,7 @@ class Report:
         id_product=79329
         ibex=Product(self.mem).init__db(id_product)
         ibex.result=QuotesResult(self.mem, ibex)
-        ibex.result.get_basic_and_ohcls()
+        ibex.needStatus(2)
         bajan=0
         subenfinal=0
         for ohcl in ibex.result.ohclDaily.arr:
@@ -5607,13 +5607,9 @@ class ProductComparation:
         self.product2=product2     
         self.set1=OHCLDailyManager(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
         self.set2=OHCLDailyManager(self.mem, self.product2)
-        self.__commonDates=None
-
-        #Load data if necesary
-        for p in [self.product1, self.product2]:
-            if p.result.ohclDaily.length()==0:
-                p.result.get_basic_and_ohcls()  
-  
+        self.product1.needStatus(2)
+        self.product2.needStatus(2)
+        self.__commonDates=None 
         self.__removeNotCommon()
         
     def setFromDate(self, date):
@@ -6362,22 +6358,23 @@ class Product:
 
     def has_basic_data(self):
         """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, lastyear, thisyearestimation_dps)"""
-        result=QuotesResult(self.mem, self)
-        result.get_basic_and_ohcls()
-        dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
-        print (dps.estimation, dps)
+#        result=QuotesResult(self.mem, self)
+#        result.get_basic_and_ohcls()
+#        dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
+#        print (dps.estimation, dps)
+        self.needStatus(1)
         (last, penultimate, lastyear, estimation)=(False, False, False, False)
-        if result.basic.last: 
-            if result.basic.last.quote:
+        if self.result.basic.last: 
+            if self.result.basic.last.quote:
                 last=True
-        if result.basic.penultimate: 
-            if result.basic.penultimate.quote:
+        if self.result.basic.penultimate: 
+            if self.result.basic.penultimate.quote:
                 penultimate=True
-        if result.basic.lastyear: 
-            if result.basic.lastyear.quote:
+        if self.result.basic.lastyear: 
+            if self.result.basic.lastyear.quote:
                 lastyear=True
-        if dps:
-           if dps.estimation!=None:
+        if self.dps:
+           if self.dps.estimation!=None:
                 estimation=True
         return (last, penultimate, lastyear, estimation)
         
