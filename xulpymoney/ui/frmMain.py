@@ -231,10 +231,14 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionCAC40_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|CAC|%' and obsolete=false order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|CAC|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()                
+        self.w.show()
+        
     @pyqtSlot()  
     def on_actionActive_triggered(self):
         self.w.close()
@@ -253,7 +257,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionCurrenciesAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=6 order by name,id")
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Currency and p.obsolete==False:
+                arrInt.append(p.id)
+            
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
 
@@ -261,7 +270,9 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionDividends_triggered(self):
         """Shows products with current year estimations_dps and with quotes in current year"""
         self.w.close()
-        self.w=wdgProducts(self.mem, "select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()));")
+        prod=ProductManager(self.mem)
+        prod.load_from_db("select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()))")
+        self.w=wdgProducts(self.mem,  prod.array_of_ids())
         self.layout.addWidget(self.w)
         self.w.on_actionSortDividend_triggered()
         self.w.show()
@@ -336,16 +347,19 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionISINDuplicado_triggered(self):
         self.w.close()
         cur=self.mem.con.cursor()
+        
+        
         #ßaca los isin duplicados buscando distintct isin, bolsa con mas de dos registros
         cur.execute("select isin, stockmarkets_id, count(*) as num from products  where isin!='' group by isin, stockmarkets_id having count(*)>1 order by num desc;")
         isins=set([])
         for row in cur:
             isins.add(row['isin'] )
+        arrInt=[]
         if len(isins)>0:
-            self.w=wdgProducts(self.mem,  "select * from products where isin in ("+list2string(list(isins))+") order by isin, stockmarkets_id")
-        else:
-            self.w=wdgProducts(self.mem, self.sqlvacio)
-
+            for p in self.mem.data.products.arr:
+                if p.isin in isins:
+                    arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -361,24 +375,33 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionETFAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.ETF and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
     @pyqtSlot()  
     def on_actionETFObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=true order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.ETF and p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
     @pyqtSlot()  
     def on_actionEurostoxx50_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|EUROSTOXX|%'  and obsolete=false order by name,id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.agrupations.dbstring().find("|EUROSTOXX|")!=-1 and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -454,16 +477,22 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionFundsAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Funds and p.obsolete==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()        
         
     @pyqtSlot()  
     def on_actionFundsObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=true order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.Funds and p.obsolete==True:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()                        
 
