@@ -9,6 +9,7 @@ from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.ui.frmAbout import frmAbout
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
+from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.myqlineedit import myQLineEdit
@@ -469,16 +470,24 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionBondsPublic_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=7 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.PublicBond and p.obsolete==False:
+                arrInt.append(p.id)
+            
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()                        
 
     @pyqtSlot()  
     def on_actionBondsPrivate_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=9 and obsolete=false order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id==eProductType.PrivateBond and p.obsolete==False:
+                arrInt.append(p.id)
+            
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
 
@@ -535,7 +544,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionBondsAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=false order by name, id")
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id in (eProductType.PrivateBond,  eProductType.PublicBond) and p.obsolete==False:
+                arrInt.append(p.id)
+            
+        self.w=wdgProducts(self.mem,  arrInt)
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -543,8 +557,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionBondsObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=true order by name, id")
-
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.type.id in (eProductType.PrivateBond,  eProductType.PublicBond) and p.obsolete==True:
+                arrInt.append(p.id)
+            
+        self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
 

@@ -149,23 +149,15 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if self.chkStockExchange.checkState()==Qt.Checked:
             sm=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))     
             
-        # To filter by obsolete
-        obsolete=False
-        if self.chkObsolete.checkState()==Qt.Checked:
-            obsolete=True
-            
         del self.arrInt
         self.arrInt=[]
         #Temporal ProductManager
         pros=self.mem.data.products.ProductManager_contains_string(self.txt.text())
         for p in pros.arr:
             #Filter sm
-            if sm==None or sm.id==p.stockmarket.id:
-                self.arrInt.append(p.id)
-            #Filter obsolete
-            if p.obsolete==False:
-                self.arrInt.append(p.id)
-            elif p.obsolete==True and obsolete==True:
+            if sm!=None and sm.id!=p.stockmarket.id:
+                continue
+            else:
                 self.arrInt.append(p.id)
 
         self.build_array_from_arrInt()
