@@ -86,14 +86,14 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgInvestmentsRanking.py \
                   xulpymoney/ui/wdgLastCurrent.py \
                   xulpymoney/ui/Ui_wdgLastCurrent.py \
-                  xulpymoney/ui/wdgMergeCodes.py \
-                  xulpymoney/ui/Ui_wdgMergeCodes.py \
                   xulpymoney/ui/wdgProductHistoricalChart.py \
                   xulpymoney/ui/Ui_wdgProductHistoricalChart.py \
                   xulpymoney/ui/wdgProducts.py \
                   xulpymoney/ui/Ui_wdgProducts.py \
                   xulpymoney/ui/wdgProductsComparation.py \
                   xulpymoney/ui/Ui_wdgProductsComparation.py \
+                  xulpymoney/ui/wdgProductsDataMove.py \
+                  xulpymoney/ui/Ui_wdgProductsDataMove.py \
                   xulpymoney/ui/wdgSimulations.py \
                   xulpymoney/ui/Ui_wdgSimulations.py \
                   xulpymoney/ui/wdgSimulationsAdd.py \
@@ -158,7 +158,6 @@ FORMS           = \
                   xulpymoney/ui/wdgInvestmentsOperations.ui \
                   xulpymoney/ui/wdgInvestmentsRanking.ui \
                   xulpymoney/ui/wdgLastCurrent.ui \
-                  xulpymoney/ui/wdgMergeCodes.ui \
                   xulpymoney/ui/wdgOpportunities.ui \
                   xulpymoney/ui/wdgOpportunitiesAdd.ui \
                   xulpymoney/ui/wdgOrders.ui \
@@ -166,6 +165,7 @@ FORMS           = \
                   xulpymoney/ui/wdgProductHistoricalChart.ui \
                   xulpymoney/ui/wdgProducts.ui \
                   xulpymoney/ui/wdgProductsComparation.ui \
+                  xulpymoney/ui/wdgProductsDataMove.ui \
                   xulpymoney/ui/wdgSimulations.ui \
                   xulpymoney/ui/wdgSimulationsAdd.ui \
                   xulpymoney/ui/wdgTotal.ui \

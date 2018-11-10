@@ -18,17 +18,15 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
          
         self.table.settings(self.mem, "wdgCalculator")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
-        if self.mem.data.products.length()==0:
-            qmessagebox(self.tr("You need to create at least one investment"))
-            self.hasProducts=False        
-            self.close()
-            return
-            
+
         self.investments=None#SetINvestments of the selected product
         self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", 79228)))
         self.product.needStatus(1)
-        self.mem.data.investments.ProductManager_distinct_products(needstatus=1).qcombobox_not_obsolete(self.cmbProducts, self.product)
-        
+        self.cmbProducts.blockSignals(True)
+        prod=self.mem.data.investments.products_distinct().qcombobox_not_obsolete(self.cmbProducts, self.product)
+        prod.needStatus(1,progress=True)
+        self.cmbProducts.blockSignals(False)
+
     def setProduct(self,  product):
         print("setproduct")
         self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(product.id))

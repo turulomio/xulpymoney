@@ -1195,6 +1195,22 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 suf.append(p.isin)
                 suf.append(str(p.id))
         return suf
+
+    ## Move data from product_from to product_to, changing data with the id to the new product id
+    ## It will not remove origin product but it will be empty after this move, so if it's a user product could be removed manually.
+    ## @param product_from. Must be a user product (id<0). 
+    ## @param product_to
+    def move_data_between_products(self,  product_from,  product_to):
+        cur=self.mem.con.cursor()
+        cur.execute("update quotes set id=%s where id=%s",(product_to.id,product_from.id))
+        cur.execute("update dps set id=%s where id=%s",(product_to.id,product_from.id))        
+        cur.execute("update estimations_dps set id=%s where id=%s",(product_to.id,product_from.id))        
+        cur.execute("update estimations_eps set id=%s where id=%s",(product_to.id,product_from.id))      
+        cur.execute("update splits set products_id=%s where products_id=%s",(product_to.id,product_from.id))
+        cur.execute("update opportunities set products_id=%s where products_id=%s",(product_to.id,product_from.id))
+        cur.execute("update inversiones set products_id=%s where products_id=%s",(product_to.id,product_from.id))
+        cur.close()
+
     def myqtablewidget(self, table):
         tachado = QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
@@ -6409,9 +6425,9 @@ class Product:
             cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from estimations_eps where id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from dps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from splits where products_id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from opportunities where products_id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
             cur.close()
             return True
         return False
@@ -6434,38 +6450,6 @@ class Product:
         cur.close()
         return resultado
 
-    def convert_to_system_product(self):
-        """It converts a product id<0 in a product >0"""
-        cur=self.mem.con.cursor()
-        cur.execute("select max(id)+1 from products;")#last id>0
-        newid=cur.fetchone()[0]
-
-        cur.execute("update inversiones set products_id=%s where products_id=%s",(newid,self.id))
-        cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
-        cur.execute("update products set id=%s where id=%s",(newid,self.id))
-        cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
-        cur.execute("update estimations_dps set id=%s where id=%s",(newid,self.id))        
-        cur.execute("update estimations_eps set id=%s where id=%s",(newid,self.id))        
-        cur.close()
-        self.id=newid
-        return self
-
-        
-    def convert_to_user_product(self):
-        """It converts a product id>0 in a product <0"""
-        cur=self.mem.con.cursor()
-        cur.execute("select min(id)-1 from products;")#last id>0
-        newid=cur.fetchone()[0]
-
-        cur.execute("update inversiones set products_id=%s where products_id=%s",(newid,self.id))
-        cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
-        cur.execute("update products set id=%s where id=%s",(newid,self.id))
-        cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
-        cur.execute("update estimations_dps set id=%s where id=%s",(newid,self.id))        
-        cur.execute("update estimations_eps set id=%s where id=%s",(newid,self.id))        
-        cur.close()
-        self.id=newid
-        return self
 
     ## Search in Internet for last quote information
     ## @return QuoteManager QuoteManager object with the quotes found in Internet
@@ -6524,20 +6508,13 @@ class QuoteManager(ObjectManager):
             tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
                 
                 
-class QuoteAllIntradayManager:
+class QuoteAllIntradayManager(ObjectManager):
     """Class that groups all quotes of the database. It's an array of QuoteIntradayManager"""
     def __init__(self, mem):
+        ObjectManager.__init__(self)
         self.mem=mem
-        self.arr=[]
         self.product=None
-        
-    def first_quote(self):
-        """Returns the first quote order by time"""
-        if len(self.arr)!=0:
-            return self.arr[0].open()
-        return None
-        
-                
+ 
     def load_from_db(self,  product):
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         del self.arr

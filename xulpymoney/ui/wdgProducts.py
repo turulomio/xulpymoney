@@ -6,7 +6,7 @@ from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.libxulpymoney import QuoteAllIntradayManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
-from xulpymoney.ui.wdgMergeCodes import wdgMergeCodes
+from xulpymoney.ui.wdgProductsDataMove import wdgProductsDataMove
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 import logging
@@ -229,13 +229,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionMergeCodes_triggered(self):
         #Only two checked in custom contest
         d=QDialog(self)
-        d.setFixedSize(800, 210)
         d.setWindowTitle(self.tr("Merging codes"))
-        w=wdgMergeCodes(self.mem, self.products.selected[0], self.products.selected[1])
+        w=wdgProductsDataMove(self.mem, self.products.selected[0], self.products.selected[1])
         lay = QVBoxLayout(d)
         lay.addWidget(w)
+        d.resize(w.size())
         d.exec_()
-        self.arrInt.remove(self.products.selected[0].id)
         self.build_array_from_arrInt()
     
     def on_tblInvestments_itemSelectionChanged(self):

@@ -81,7 +81,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
 
     @pyqtSlot() 
     def on_actionShowGraphic_triggered(self):
-        self.opportunities.selected.product.result.needStatus(2)
+        self.opportunities.selected.product.needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
