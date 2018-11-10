@@ -5592,12 +5592,6 @@ class Currency:
             return "None " + self.symbol
         else:
             return l10nDecimal(number, digits)
-            #return "{0} {1}".format(round(number, digits),self.symbol)
-            
-    def currencies_exchange(self, cur,  quote, origen, destino):
-        cambio=Quote.valor2(cur, origen+"2"+destino, quote['fecha'],  quote['hora'])
-        exchange={"code":quote['code'],"quote":quote['quote']*cambio['quote'],  "date":cambio['date'], "time":cambio['time'],  "zone":cambio['zone'],  "currency":destino}
-        return exchange
 
     def qtablewidgetitem(self, n, digits=2):
         """Devuelve un QTableWidgetItem mostrando un currency
@@ -5909,8 +5903,17 @@ class Money:
             if currency.id=="EUR":
                 return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
         logging.critical("No existe factor de conversión")
-        return None
+        return None  
+
+    def conversionFactorString(self, currency, dt):
+        """Factor to convert from self currency to parameter currency, using datetime from result. allsetquotesintraday, uses mem"""
+        factor=self.conversionFactor(currency, dt)
         
+        if self.currency==currency:
+            return "No currency conversion factor"
+            
+        return "1 {} = {} {}".format(self.currency.id, factor, currency.id)
+   
     def conversionDatetime(self, currency, dt):
         """
             Returns conversion datetime
