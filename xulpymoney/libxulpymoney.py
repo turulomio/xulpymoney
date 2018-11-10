@@ -443,6 +443,24 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             return None
         return round(average, 2)
             
+    ## Returns and InvestmentManager object with all investmentes with the same product passed as parameter
+    ## @param product Product to search in this InvestmentManager
+    ## @return InvestmentManager
+    def InvestmentManager_with_investments_with_the_same_product(self, product):
+        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            if inv.product.id==product.id:
+                result.append(inv)
+        return result
+
+    ## Change investments with a product_id to another product_id
+    ## @param product_from. 
+    ## @param product_to
+    def change_product_id(self,  product_from,  product_to):
+        for inv in self.InvestmentManager_with_investments_with_the_same_product(product_from).arr:
+            inv.product=product_to
+            inv.save()
+
     def findInvestmentOperation(self, id):
         """Busca la IO en el set o dveuleve None"""
         for inv in self.arr:
@@ -523,7 +541,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 r=r+pendiente
         return r
 
-    def products_distinct(self):
+    def ProductManager_with_investments_distinct_products(self):
         """Returns a SetProduct with all distinct products of the Set investments items"""
         s=set([])
         for i in self.arr:
@@ -626,16 +644,6 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             if inv.product.type.id==type_id:
                 r.append(inv)
         return r
-        
-    ## Returns a Products Manager generated from self.mem.data.products with the products with investments
-    def ProductManager_distinct_products(self):
-        setproducts=set()
-        for inv in self.arr:
-            setproducts.add(inv.product.id)
-        r=ProductManager(self.mem)
-        return r.ProductManager_with_id_in_list( list(setproducts))
-            
-        
 
     def setInvestments_merging_investments_with_same_product_merging_operations(self):
         """
@@ -646,7 +654,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             
         """
         invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
-        for product in self.products_distinct().arr:
+        for product in self.ProductManager_with_investments_distinct_products().arr:
             i=self.investment_merging_operations_with_same_product(product)
             invs.append(i) 
         return invs
@@ -661,7 +669,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             
         """
         invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
-        for product in self.products_distinct().arr:
+        for product in self.ProductManager_with_investments_distinct_products().arr:
             i=self.investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
         return invs
@@ -3698,7 +3706,7 @@ class DBData:
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
         #change status to 1 to self.investments products
-        pros=self.investments.ProductManager_distinct_products()
+        pros=self.investments.ProductManager_with_investments_distinct_products()
         pros.needStatus(1, progress=True)
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
@@ -4303,8 +4311,7 @@ class Investment:
         self.selling_expiration=selling_expiration
         self.id=id
         return self
-        
-        
+
     def copy(self ):
         return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
     
@@ -6283,11 +6290,17 @@ class Product:
     ## 3 Load all quotes
     
     ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
-    def needStatus(self, status_to):
-        if self.status==status_to:
+    ## @param statusneeded  Integer with the status needed 
+    ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing
+    def needStatus(self, statusneeded, downgrade_to=None):
+        if downgrade_to!=None:
+            self.status=downgrade_to
+        
+        
+        if self.status==statusneeded:
             return
         #0
-        if self.status==0 and status_to==1: #MAIN
+        if self.status==0 and statusneeded==1: #MAIN
             start=datetime.datetime.now()
             self.estimations_dps=EstimationDPSManager(self.mem, self)
             self.estimations_dps.load_from_db()
@@ -6296,57 +6309,32 @@ class Product:
             self.result=QuotesResult(self.mem, self)
             self.result.get_basic()
             
-            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=1
-        elif self.status==0 and status_to==2:
+        elif self.status==0 and statusneeded==2:
             self.needStatus(1)
             self.needStatus(2)
-        elif self.status==0 and status_to==3:
+        elif self.status==0 and statusneeded==3:
             self.needStatus(1)
             self.needStatus(2)
             self.needStatus(3)
-        elif self.status==1 and status_to==2: #MAIN
+        elif self.status==1 and statusneeded==2: #MAIN
             start=datetime.datetime.now()
             self.estimations_eps=EstimationEPSManager(self.mem, self)
             self.estimations_eps.load_from_db()
             self.dps=DPSManager(self.mem, self)
             self.dps.load_from_db()           
             self.result.get_ohcls()
-            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=2
-        elif self.status==1 and status_to==3:
+        elif self.status==1 and statusneeded==3:
             self.needStatus(2)
             self.needStatus(3)
-        elif self.status==2 and status_to==3:#MAIN
+        elif self.status==2 and statusneeded==3:#MAIN
             start=datetime.datetime.now()
             self.result.get_all()
-            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, status_to))
+            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=3
-        
-    
-    ## ESTA FUNCION DEBE RECARGAR CADA STATUS INCLUSO SI ES EL MISMO
-    ## SE USA CUANDO SE HAN MODIFICADO VALORES
-    ## ENTEORIA SOLO ES NECESARIA PARA LIBERAR MEMORIA PORQUE  CAMBIANDO EL STATUS FUNCIONARIA
-    
-    ## FALTA ACTUALIZAR SI SIN IGUALES
-    def revokeStatus(self, status_to):
-        if self.status==status_to:
-            return
-        # 1
-        elif self.status==1 and status_to==0:
-            self.status=0
-        #2
-        elif self.status==2 and status_to==0:
-            self.status=0
-        elif self.status==2 and status_to==1:
-            self.status=1
-        #3
-        elif self.status==3 and status_to==0:
-            self.status=0
-        elif self.status==3 and status_to==1:
-            self.status=1
-        elif self.status==3 and status_to==2:
-            self.status=2
         
     def setinvestments(self):
         """Returns a InvestmentManager object with all the investments of the product. Investments can be active or inactive"""
@@ -6421,14 +6409,15 @@ class Product:
     def remove(self):     
         if self.is_deletable()==True and self.is_system()==False:
             cur=self.mem.con.cursor()
-            cur.execute("delete from quotes where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from estimations_eps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from dps where id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from splits where products_id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from opportunities where products_id=%s", (self.products.selected[0].id, ))
-            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from quotes where id=%s", (self.id, ))
+            cur.execute("delete from estimations_dps where id=%s", (self.id, ))
+            cur.execute("delete from estimations_eps where id=%s", (self.id, ))
+            cur.execute("delete from dps where id=%s", (self.id, ))
+            cur.execute("delete from splits where products_id=%s", (self.id, ))
+            cur.execute("delete from opportunities where products_id=%s", (self.id, ))
+            cur.execute("delete from products where id=%s", (self.id, ))
             cur.close()
+            self.needStatus(0, downgrade_to=0)
             return True
         return False
 

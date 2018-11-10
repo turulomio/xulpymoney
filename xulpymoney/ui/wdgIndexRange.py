@@ -171,8 +171,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def on_cmdIRInsertar_pressed(self):
         w=frmQuotesIBM(self.mem, self.benchmark, None,  self)
         w.exec_() 
-        self.benchmark.revokeStatus(0)
-        self.benchmark.needStatus(2)
+        self.benchmark.needStatus(2, downgrade_to=0)
         self.cmbBenchmarkCurrent_load()
         self.load_data()
 

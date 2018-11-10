@@ -23,7 +23,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", 79228)))
         self.product.needStatus(1)
         self.cmbProducts.blockSignals(True)
-        prod=self.mem.data.investments.products_distinct().qcombobox_not_obsolete(self.cmbProducts, self.product)
+        prod=self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, self.product)
         prod.needStatus(1,progress=True)
         self.cmbProducts.blockSignals(False)
 

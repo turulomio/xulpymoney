@@ -94,6 +94,11 @@ If origin is a user product, you can delete afterwards, because it won't have an
          </column>
          <column>
           <property name="text">
+           <string>Investments</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
            <string>Oportunities</string>
           </property>
          </column>
@@ -140,6 +145,13 @@ If origin is a user product, you can delete afterwards, because it won't have an
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkInvestments">
+       <property name="text">
+        <string>Change personal investments with origin product to destiny product</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cmd">

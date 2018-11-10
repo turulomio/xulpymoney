@@ -265,8 +265,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionProductPriceLastRemove_triggered(self):
         self.products.selected[0].result.basic.last.delete()
         self.mem.con.commit()
-        self.products.revokeStatus(0)
-        self.products.needStatus(1)
+        self.product.selected[0].needStatus(1, downgrade_to=0)
         self.build_array_from_arrInt()
         
     @pyqtSlot()  
@@ -274,7 +273,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
         d.exec_()
         if d.result()==QDialog.Accepted:
-            self.products.revokeStatus(0)
-            self.products.needStatus(1)
+            self.products.selected[0].needStatus(1, downgrade_to=0)
             self.build_array_from_arrInt()
             

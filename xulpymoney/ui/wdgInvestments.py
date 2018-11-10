@@ -113,7 +113,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_actionProductPrice_triggered(self):
         w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
         w.exec_()
-        self.selInvestment.product.result.basic.load_from_db()
+        self.investments.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 

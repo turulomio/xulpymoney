@@ -323,7 +323,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     dps.borrar()
             self.mem.con.commit()
             self.product.result.load_dps_and_splits(force=True)#Reload becouse, deleting one in one loose index reference
-            self.product.revokeStatus(1)
+            self.product.needStatus(2, downgrade_to=1)
             self.update_due_to_quotes_change()
 
         
@@ -332,7 +332,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
         self.product.dps.myqtablewidget(self.tblDPSPaid)
-        self.product.revokeStatus(1)
+        self.product.needStatus(2, downgrade_to=1)
         self.update_due_to_quotes_change()
         
     @pyqtSlot()
@@ -352,7 +352,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 got=got+1
             print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
             self.mem.con.commit()
-            self.product.revokeStatus(1)
+            self.product.needStatus(2, downgrade_to=1)
             self.update_due_to_quotes_change()
 
     @pyqtSlot()
@@ -362,7 +362,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.mem.con.commit()
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
         
     @pyqtSlot()
     def on_actionEstimationDPSNew_triggered(self):
@@ -377,7 +377,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
             self.mem.con.commit()
             self.product.estimations_eps.myqtablewidget(self.tblEPS)
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
         
     @pyqtSlot()
     def on_actionEstimationEPSNew_triggered(self):
@@ -397,7 +397,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             w=frmQuotesIBM(self.mem,  self.product, quote)
             w.exec_()   
             if w.result()==QDialog.Accepted:
-                self.product.revokeStatus(0)
+                self.product.needStatus(2, downgrade_to=0)
                 self.update_due_to_quotes_change()
         
         
@@ -421,7 +421,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
             set.save()
             self.mem.con.commit()
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 
     @pyqtSlot()
@@ -430,7 +430,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         w.wdgDT.teDate.setSelectedDate(self.calendar.selectedDate())
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 
     @pyqtSlot()
@@ -439,7 +439,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             q.delete()
             self.product.result.intradia.arr.remove(q)
         self.mem.con.commit()
-        self.product.revokeStatus(0)
+        self.product.needStatus(2, downgrade_to=0)
         self.update_due_to_quotes_change()
         
     @pyqtSlot()
@@ -447,7 +447,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for ohcl in self.product.result.ohclDaily.selected:
             ohcl.delete()
         self.mem.con.commit()
-        self.product.revokeStatus(0)
+        self.product.needStatus(2, downgrade_to=0)
         self.update_due_to_quotes_change()
     
     @pyqtSlot()
@@ -455,7 +455,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for ohcl in self.product.result.ohclMonthly.selected:
             ohcl.delete()
         self.mem.con.commit()
-        self.product.revokeStatus(0)
+        self.product.needStatus(2, downgrade_to=0)
         self.update_due_to_quotes_change()
     
     @pyqtSlot()
@@ -463,7 +463,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for ohcl in self.product.result.ohclYearly.selected:
             ohcl.delete()
         self.mem.con.commit()
-        self.product.revokeStatus(0)
+        self.product.needStatus(2, downgrade_to=0)
         self.update_due_to_quotes_change()
 
     def on_calendar_selectionChanged(self):
@@ -473,7 +473,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         w=frmSplitManual(self.mem, self.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
             
     @pyqtSlot()
@@ -484,7 +484,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.commit()
             self.product.splits.append(w.split)
             self.product.splits.order_by_datetime()
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
     
     
@@ -493,14 +493,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         w=frmSplit(self.mem, self.product, self.product.splits.selected)
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            self.product.revokeStatus(0)
+            self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 
     @pyqtSlot()
     def on_actionSplitRemove_triggered(self):
         self.product.splits.delete(self.product.splits.selected)
         self.mem.con.commit()
-        self.product.revokeStatus(0)
+        self.product.needStatus(2, downgrade_to=0)
         self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):

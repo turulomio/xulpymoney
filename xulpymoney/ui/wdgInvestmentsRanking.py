@@ -72,7 +72,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         sumcurrent=Money(self.mem, 0, self.mem.localcurrency)
         sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
         sumdividends=Money(self.mem, 0, self.mem.localcurrency)
-        for product in self.mem.data.investments.products_distinct().arr:
+        for product in self.mem.data.investments.ProductManager_with_investments_distinct_products().arr:
             current=Money(self.mem, 0, self.mem.localcurrency)
             historical=Money(self.mem, 0, self.mem.localcurrency)
             dividends=Money(self.mem, 0, self.mem.localcurrency)
