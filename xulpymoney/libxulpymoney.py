@@ -5591,7 +5591,7 @@ class Currency:
         if number==None:
             return "None " + self.symbol
         else:
-            return l10nDecimal(number, digits)
+            return "{} {}".format(round(number, digits), self.symbol)
 
     def qtablewidgetitem(self, n, digits=2):
         """Devuelve un QTableWidgetItem mostrando un currency
