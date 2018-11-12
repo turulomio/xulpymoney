@@ -13,7 +13,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         self.mem=mem
         self.lblInvestment.setText("{0} ({1})".format(self.product.name,  self.product.id))
         self.quote=quote
-        
+
         if quote==None:#Insert
             if self.product.type.id in (eProductType.Fund, eProductType.PensionPlan):
                 self.chkNone.setCheckState(Qt.Checked)       
@@ -48,7 +48,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if not self.txtQuote.isValid():
             qmessagebox(self.tr("Incorrect data. Try again."))
             return
-        if self.quote==None:#insert              
+        if self.quote==None:#insert
             if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado
                 self.wdgDT.teMicroseconds.setValue(5)
             self.quote=Quote(self.mem).init__create(self.product, self.wdgDT.datetime(), self.txtQuote.decimal())
@@ -56,6 +56,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         else:#update
             self.quote.quote=self.txtQuote.decimal()
             self.quote.save()
+        self.product.needStatus(1, downgrade_to=0)
         self.mem.con.commit()
         self.accept()
 

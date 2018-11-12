@@ -20,7 +20,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.arrInt=arrInt#Lista de ids of products showed and used to show
         self.build_array_from_arrInt()
-    
+
     def build_array_from_arrInt(self):        
         self.products=self.mem.data.products.ProductManager_with_id_in_list(self.arrInt)
         self.products.setSelectionMode(ManagerSelectionMode.List)
@@ -29,8 +29,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
         self.products.myqtablewidget(self.tblInvestments)
 
-        
-    @pyqtSlot()  
+    @pyqtSlot()
     def on_actionFavorites_triggered(self):      
         if self.products.selected[0].id in self.mem.favorites:
             self.mem.favorites.remove(self.products.selected[0].id)
@@ -108,25 +107,25 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.products.myqtablewidget(self.tblInvestments)        
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
-        
-    @pyqtSlot() 
+
+    @pyqtSlot()
     def on_actionSortTPCAnual_triggered(self):
         if self.products.order_by_annual_tpc():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
-        
-    @pyqtSlot() 
+
+    @pyqtSlot()
     def on_actionSortHour_triggered(self):
         self.products.order_by_datetime()
         self.products.myqtablewidget(self.tblInvestments)        
-        
-    @pyqtSlot() 
+
+    @pyqtSlot()
     def on_actionSortName_triggered(self):
         self.products.order_by_upper_name()
         self.products.myqtablewidget(self.tblInvestments)        
-        
-    @pyqtSlot() 
+
+    @pyqtSlot()
     def on_actionSortDividend_triggered(self):
         if self.products.order_by_dividend():
             self.products.myqtablewidget(self.tblInvestments)        
@@ -143,12 +142,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if len(self.txt.text().upper())<=2:            
             qmessagebox(self.tr("Search too wide. You need more than 2 characters"))
             return
-        
+
         # To filter by stockmarket
         sm=None
         if self.chkStockExchange.checkState()==Qt.Checked:
             sm=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))     
-            
+
         del self.arrInt
         self.arrInt=[]
         #Temporal ProductManager
@@ -163,7 +162,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_array_from_arrInt()
 
     def on_tblInvestments_customContextMenuRequested(self,  pos):
-
         menu=QMenu()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurchaseGraphic)
@@ -260,14 +258,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w=frmQuotesIBM(self.mem,  self.products.selected[0])
         w.exec_()
         self.build_array_from_arrInt()
-        
+
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
         self.products.selected[0].result.basic.last.delete()
         self.mem.con.commit()
-        self.product.selected[0].needStatus(1, downgrade_to=0)
+        self.products.selected[0].needStatus(1, downgrade_to=0)
         self.build_array_from_arrInt()
-        
+
     @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
@@ -275,4 +273,3 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if d.result()==QDialog.Accepted:
             self.products.selected[0].needStatus(1, downgrade_to=0)
             self.build_array_from_arrInt()
-            
