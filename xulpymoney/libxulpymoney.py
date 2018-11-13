@@ -1062,7 +1062,8 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
         ods.save()
 
-
+    ## Function that downloads products.xlsx from github repository and compares sheet data with database products.arr
+    ## If detects modifications or new products updates database.
     def update_from_internet(self):
         def product_xlsx(row):
             try:
@@ -6203,7 +6204,35 @@ class Product:
         self.estimations_eps=None
         self.dps=None #It's created when loading quotes in quotes result
         self.splits=None #It's created when loading quotes in quotes result
-    
+        
+#    ## Compares this product with other products
+#    ## Logs differences
+#    def __eq__(self, other):
+#        if (self.id!=other.id or
+#            self.name!=other.name or
+#            self.isin!=other.isin or
+#            self.stockmarket.id!=other.stockmarket.id or
+#            self.currency.id!=other.currency.id or
+#            self.type.id!=other.type.id or
+#            self.agrupations.dbstring()!=other.agrupations.dbstring() or 
+#            self.web!=other.web or
+#            self.address!=other.address or
+#            self.phone!=other.phone or
+#            self.mail!=other.mail or
+#            self.percentage!=other.percentage or
+#            self.mode.id!=other.mode.id or
+#            self.leveraged.id!=other.leveraged.id or
+#            self.comment!=other.comment or 
+#            self.obsolete!=other.obsolete or
+#            self.tickers[0]!=other.tickers[0] or
+#            self.tickers[1]!=other.tickers[1] or
+#            self.tickers[2]!=other.tickers[2] or
+#            self.tickers[3]!=other.tickers[3]):
+#            return False
+#        return True
+#        
+#    def __ne__(self, other):
+#        return not self.__eq__(other)
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
                 

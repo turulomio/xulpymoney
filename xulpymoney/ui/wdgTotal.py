@@ -344,7 +344,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         inicio=datetime.datetime.now()     
 
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
-#        sumd_g_f=Money(self.mem, 0, self.mem.localcurrency)
         sumf=Money(self.mem, 0, self.mem.localcurrency)
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
