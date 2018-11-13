@@ -113,14 +113,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_actionProductPrice_triggered(self):
         w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
         w.exec_()
-        self.investments.product.needStatus(1, downgrade_to=0)
+        self.selInvestment.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
         self.selInvestment.product.result.basic.last.delete()
         self.mem.con.commit()
-        self.selInvestment.product.result.basic.load_from_db()
+        self.selInvestment.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
