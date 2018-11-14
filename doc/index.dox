@@ -2,36 +2,16 @@
 
 Introduction
 ============
-
 Xulpymoney is an opensource personal and financial accounting system
 
 Development
 ===========
 - Turulomio (Idea y development)
 
-Sourceforge
-===========
-This project is hosted in SourceForge, so you can use the next services:
+Github
+======
+This project is hosted in <a href="https://github.com/Turulomio/xulpymoney/">Github</a>, so you can use the next services:
 
-- <a href="https://sourceforge.net/p/xulpymoney/tickets/" target="_blank">Tickets</a>
-
-Software used to develop Xulpymoney
-===================================
-
-<a target="_blank" href="https://eric-ide.python-projects.org/index.html">Eric</a> is used as the main IDE
-
-Xulpymoney depends on the following software:
-- <a target="_blank" href="https://www.python.org/">Python3</a>, as the main programming language.
-- <a target="_blank" href="https://www.riverbankcomputing.com/software/pyqt/intro">PyQt5</a>, as the main library.
-- <a target="_blank" href="http://initd.org/psycopg/">Psycopg</a>, to connect to postgresql database.
-- <a target="_blank" href="http://pytz.sourceforge.net/">Pytz</a>, to manage timezone aware datetimes.
-- <a target="_blank" href="https://github.com/eea/odfpy">OdfPy</a>, to make all king of libreoffice reports.
-- <a target="_blank" href="https://www.riverbankcomputing.com/software/pyqtchart/intro">PyQtChart</a>, to make all king of charts.
-- <a target="_blank" href="https://pypi.org/project/colorama/">Colorama</a>, to give color to console output.
-- <a target="_blank" href="https://pypi.org/project/officegenerator/">OfficeGenerator</a>, to create office documents.
-
-
-
-
+- <a href="https://github.com/Turulomio/xulpymoney/issues" target="_blank">Issues</a>
 
 */
