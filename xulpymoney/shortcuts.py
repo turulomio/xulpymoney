@@ -14,7 +14,7 @@ def create():
     )
 
     icon=pkg_resources.resource_filename("xulpymoney","images/xulpymoney.ico")
-    shortcut.SetPath (r'xulpymoney.exe')
+    shortcut.SetPath (r'xulpymoney-script.pyw')
     shortcut.SetDescription ("Personal and financial accounting system")
     shortcut.SetIconLocation (icon, 0)
      
