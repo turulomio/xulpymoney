@@ -14,7 +14,7 @@ def create():
     )
 
     icon=pkg_resources.resource_filename("xulpymoney","images/xulpymoney.ico")
-    shortcut.SetPath (r'xulpymoney-script.pyw')
+    shortcut.SetPath (r'xulpymoney.exe')
     shortcut.SetDescription ("Personal and financial accounting system")
     shortcut.SetIconLocation (icon, 0)
      
@@ -27,4 +27,3 @@ def remove():
     desktop_path = shell.SHGetFolderPath (0, shellcon.CSIDL_DESKTOP, 0, 0)
     os.remove(os.path.join (desktop_path, "Xulpymoney.lnk"))
 
-create()

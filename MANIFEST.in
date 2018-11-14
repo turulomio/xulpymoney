@@ -1,6 +1,6 @@
 
 include LICENSE.txt README.md xulpymoney.desktop xulpymoney.pro *.py doc/Doxyfile doc/index.doc doc/xulpymoney*
-recursive-include xulpymoney i18n *.ts *.qm *.png *.jpg *.gif xulpymoney.qrc *.py 
+recursive-include xulpymoney i18n *.ts *.qm *.png *.jpg *.gif xulpymoney.qrc *.py *.ico
 recursive-include sql *
 prune __pycache__
 global-exclude *.pyc 
