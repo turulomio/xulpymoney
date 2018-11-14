@@ -1004,9 +1004,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
-    def subset_with_same_type(self, type):
-        """Returns a SetProduct with all products with the type passed as parameter.
-        Type is an object"""
+    ## Returns a ProductManager with all products with the type passed as parameter.
+    ## @param type ProductType object
+    ## @return ProductManager
+    def ProductManager_with_same_type(self, type):
         result=ProductManager(self.mem)
         for a in self.arr:
             if a.type.id==type.id:
@@ -6915,9 +6916,9 @@ class ProductUpdate:
                 elif p.type.id==eProductType.Share:
                     self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  p.isin, str(p.id),"--share","--fromdate", str( p.fecha_ultima_actualizacion_historica()+oneday)])
                     
-        self.appendCommand(["xulpymoney_bolsamadrid_client","--share"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--share"]+products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.Share.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
-        self.appendCommand(["xulpymoney_bolsamadrid_client","--etf"]+products.subset_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
+        self.appendCommand(["xulpymoney_bolsamadrid_client","--etf"]+products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
         sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used)        
         bm_publicbonds=ProductManager(self.mem)

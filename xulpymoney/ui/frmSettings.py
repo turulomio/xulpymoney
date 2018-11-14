@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
-from xulpymoney.libxulpymoney import Product, ProductManager
 from xulpymoney.libxulpymoneyfunctions import b2c, c2b
+from xulpymoney.libxulpymoneytypes import eProductType
 from decimal import Decimal
 from xulpymoney.ui.Ui_frmSettings import Ui_frmSettings
 
@@ -9,7 +9,7 @@ class frmSettings(QDialog, Ui_frmSettings):
     def __init__(self, mem, parent = None, name = None, modal = False):
         """
         Constructor
-        
+
         @param parent The parent widget of this dialog. (QWidget)
         @param name The name of this dialog. (QString)
         @param modal Flag indicating a modal dialog. (boolean)
@@ -20,12 +20,11 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.setModal(True)
         self.setupUi(self)
         self.mem=mem
-         
+ 
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
-        self.indexes=ProductManager(self.mem)
-        self.indexes.load_from_db("select * from products where type=3 order by name")
+        self.indexes=self.mem.data.products.ProductManager_with_same_type(eProductType.ETF.value)
         self.indexes.order_by_name()
         self.indexes.qcombobox(self.cmbIndex, self.mem.data.benchmark)
         self.spnDividendPercentage.setValue(float(self.mem.dividendwithholding)*100)
@@ -46,8 +45,8 @@ class frmSettings(QDialog, Ui_frmSettings):
     def on_buttonbox_accepted(self):
         self.mem.localcurrency=self.mem.currencies.find_by_id(self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex()))
         self.mem.localzone=self.mem.zones.find_by_id(self.cmbZones.itemData(self.cmbZones.currentIndex()))
-        self.mem.data.benchmark=Product(self.mem).init__db(self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
-        self.mem.data.benchmark.result.basic.load_from_db()
+        self.mem.data.benchmark=self.mem.data.products.find_by_id(self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
+        self.mem.data.benchmark.needStatus(2)
         self.mem.dividendwithholding=Decimal(self.spnDividendPercentage.value())/100
         self.mem.taxcapitalappreciation=Decimal(self.spnGainsPercentaje.value())/100
         self.mem.taxcapitalappreciationbelow=Decimal(self.spnGainsPercentajeBelow.value())/100
