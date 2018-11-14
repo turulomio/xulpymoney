@@ -1,6 +1,7 @@
 import colorama
 import officegenerator
 import platform
+import stdnum
 import PyQt5.QtCore
 import PyQt5.QtChart
 from PyQt5.QtWidgets import QDialog
@@ -135,3 +136,4 @@ class frmAbout(QDialog, Ui_frmAbout):
         self.tblSoftware.setItem(2, 0 , qright(PyQt5.QtCore.PYQT_VERSION_STR))
         self.tblSoftware.setItem(3, 0 , qright(PyQt5.QtChart.PYQT_CHART_VERSION_STR))
         self.tblSoftware.setItem(4, 0 , qright(platform.python_version()))
+        self.tblSoftware.setItem(5, 0, qright(stdnum.__version__))

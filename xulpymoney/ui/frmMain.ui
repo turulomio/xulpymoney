@@ -222,11 +222,6 @@
      <addaction name="separator"/>
      <addaction name="actionWarrantsObsolete"/>
     </widget>
-    <widget class="QMenu" name="menuCompare_pro_ducts">
-     <property name="title">
-      <string>Compare pro&amp;ducts</string>
-     </property>
-    </widget>
     <addaction name="actionProductsUpdate"/>
     <addaction name="separator"/>
     <addaction name="menuIndexes"/>
@@ -241,7 +236,7 @@
     <addaction name="separator"/>
     <addaction name="menuMaintenance"/>
     <addaction name="separator"/>
-    <addaction name="menuCompare_pro_ducts"/>
+    <addaction name="actionProductsComparation"/>
     <addaction name="actionFavorites"/>
     <addaction name="actionSearch"/>
     <addaction name="separator"/>
@@ -282,7 +277,7 @@
    <addaction name="separator"/>
    <addaction name="actionOrders"/>
    <addaction name="actionPurchaseOpportunities"/>
-   <addaction name="menuCompare_pro_ducts"/>
+   <addaction name="actionProductsComparation"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionConcepts"/>
@@ -1100,10 +1095,22 @@
      <normaloff>:/xulpymoney/dialog-ok-apply.png</normaloff>:/xulpymoney/dialog-ok-apply.png</iconset>
    </property>
    <property name="text">
-    <string>Products with invalid ISIN</string>
+    <string>Products with i&amp;nvalid ISIN</string>
    </property>
    <property name="toolTip">
     <string>Products with invalid ISIN</string>
+   </property>
+  </action>
+  <action name="actionProductsComparation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products comparation</string>
+   </property>
+   <property name="toolTip">
+    <string>Products comparation</string>
    </property>
   </action>
  </widget>

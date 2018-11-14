@@ -38,6 +38,13 @@ Dependencies
 
 Changelog
 =========
+0.2.0
+  * Fixed a lot of bugs
+  * Now products update is made from products.xlsx on internet
+  * Create product.needStatus to load necessary quotes automatically
+  * Added python-stdnum dependency to validate ISIN code
+  * Updated and added several products
+
 0.1.1
   * Added missing files to MANIFEST.in
 

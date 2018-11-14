@@ -323,6 +323,11 @@ p, li { white-space: pre-wrap; }
              <string>Python</string>
             </property>
            </row>
+           <row>
+            <property name="text">
+             <string>Python-stdnum</string>
+            </property>
+           </row>
            <column>
             <property name="text">
              <string>Versión</string>
