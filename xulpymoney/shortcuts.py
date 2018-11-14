@@ -27,4 +27,3 @@ def remove():
     desktop_path = shell.SHGetFolderPath (0, shellcon.CSIDL_DESKTOP, 0, 0)
     os.remove(os.path.join (desktop_path, "Xulpymoney.lnk"))
 
-create()

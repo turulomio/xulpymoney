@@ -3,7 +3,7 @@
 ## @brief Main Xulpymoney script.
 
 import sys
-
+import platform
 import argparse
 import logging
 import signal
@@ -42,9 +42,23 @@ def main():
             formatter_class=argparse.RawTextHelpFormatter
         )
     addCommonToArgParse(parser)
+    if platform.system()=="Windows":
+            parser.add_argument('--shortcuts-create', help="Create shortcuts for Windows", action='store_true', default=False)
+            parser.add_argument('--shortcuts-remove', help="Remove shortcuts for Windows", action='store_true', default=False)
+
     args=parser.parse_args()        
 
     addDebugSystem(args)
+
+    if platform.system()=="Windows":
+            if args.shortcuts_create:
+                    from xulpymoney.shortcuts import create
+                    create()
+                    sys.exit(0)
+            if args.shortcuts_remove:
+                    from xulpymoney.shortcuts import remove
+                    remove()
+                    sys.exit(0)
 
     mem=MemXulpymoney()
     mem.setQTranslator(QTranslator(app))

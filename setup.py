@@ -181,6 +181,7 @@ setup(name='xulpymoney',
                         'python-stdnum',
                         'PyQtChart;platform_system=="Windows"',
                         'PyQt5;platform_system=="Windows"',
+                        'pywin32;platform_system=="Windows"',
                         ], #PyQt5 and PyQtChart doesn't have egg-info in Gentoo, so I remove it to install it with ebuild without making 2 installations. Should be added manually when using pip to install
     data_files=data_files,
     cmdclass={
