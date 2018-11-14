@@ -10,17 +10,17 @@ Links
 =====
 
 Source code & Development:
-    https://github.com/Turulomio/xulpymoney
+  * https://github.com/Turulomio/xulpymoney
 
 Doxygen documentation:
-    http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
+  * http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
 
 Main developer web page:
-    https://github.com/Turulomio 
-    http://turulomio.users.sourceforge.net/en/proyectos.html
+  * https://github.com/Turulomio 
+  * http://turulomio.users.sourceforge.net/en/proyectos.html
 
 Pypi web page:
-    https://pypi.org/project/xulpymoney/
+  * https://pypi.org/project/xulpymoney/
 
 Install in Linux
 ================
@@ -29,6 +29,7 @@ If you use Gentoo you can find a ebuild in https://sourceforge.net/p/xulpymoney/
 If you use other distribution, you need to install PyQtChart manually. PyQtChart is not in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
 
 `pip install PyQtChart`
+
 `pip install xulpymoney`
 
 Intall in Windows
@@ -57,6 +58,7 @@ Dependencies
 * https://pypi.org/project/officegenerator/, to work with LibreOffice and Microsoft Office documents.
 * https://pypi.org/project/PyQtChart/, to work with charts.
 * https://pypi.org/project/colorama/, to work with colors in console.
+* https://pypi.org/project/pywin32/, to create shortcuts.
 
 Changelog
 =========
