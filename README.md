@@ -16,21 +16,36 @@ Doxygen documentation:
     http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
 
 Main developer web page:
+    https://github.com/Turulomio 
     http://turulomio.users.sourceforge.net/en/proyectos.html
 
 Pypi web page:
     https://pypi.org/project/xulpymoney/
 
-Gentoo ebuild
-    You can find a Gentoo ebuild in https://sourceforge.net/p/xulpymoney/code/HEAD/tree/myportage/app-office/xulpymoney/
+Install in Linux
+================
+If you use Gentoo you can find a ebuild in https://sourceforge.net/p/xulpymoney/code/HEAD/tree/myportage/app-office/xulpymoney/
 
-Install
-=======
-We need to install PyQtChart manually. PyQtChart is not in setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
+If you use other distribution, you need to install PyQtChart manually. PyQtChart is not in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
 
 `pip install PyQtChart`
 `pip install xulpymoney`
 
+Intall in Windows
+=================
+You need to install Python from https://www.python.org and add it to the PATH
+
+You must open a console with Administrator privileges and type:
+
+`pip install xulpymoney`
+
+If you want to create a Desktop shortcut to launch Xulpymoney you must write:
+
+`xulpymoney.exe --shortcuts-create`
+
+If you want to delete that Desktop shortcut you can write:
+
+`xulpymoney.exe --shortcuts-remove`
 
 Dependencies
 ============
