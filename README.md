@@ -45,6 +45,9 @@ Dependencies
 
 Changelog
 =========
+0.3.0
+  * Added platform dependent dependencies
+
 0.2.0
   * Fixed a lot of bugs
   * Now products update is made from products.xlsx on internet
