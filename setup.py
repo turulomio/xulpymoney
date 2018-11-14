@@ -1,25 +1,10 @@
 from setuptools import setup, Command
-
-import gettext
 import logging
 import os
 import platform
 import site
-#from PyQt5.QtCore import QCoreApplication,  QTranslator
-from colorama import Style, Fore
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
-
-def change_language(language):  
-    """language es un string"""
-    url= "xulpymoney/qm/xulpymoney_{}.qm".format(language)
-    if os.path.exists(url)==True:
-        translator.load(url)
-#        QCoreApplication.installTranslator(translator)
-        logging.info(("Language changed to {} using {}".format(language, url)))
-        return
-    if language!="en":
-        logging.warning(Style.BRIGHT+ Fore.CYAN+ app.tr("Language ({}) couldn't be loaded in {}. Using default (en).".format(language, url)))
 
 class Doxygen(Command):
     description = "Create/update doxygen documentation in doc/html"
@@ -33,8 +18,8 @@ class Doxygen(Command):
 
     def run(self):
         print("Creating Doxygen Documentation")
-#        os.system("""sed -i -e "41d" doc/Doxyfile""")#Delete line 41
-#        os.system("""sed -i -e "41iPROJECT_NUMBER         = {}" doc/Doxyfile""".format(__version__))#Insert line 41
+        os.system("""sed -i -e "41d" doc/Doxyfile""")#Delete line 41
+        os.system("""sed -i -e "41iPROJECT_NUMBER         = {}" doc/Doxyfile""".format(__version__))#Insert line 41
         os.system("rm -Rf build")
         os.chdir("doc")
         os.system("doxygen Doxyfile")
@@ -90,7 +75,7 @@ class Uninstall(Command):
             os.system("rm /usr/share/pixmaps/xulpymoney.png")
             os.system("rm /usr/share/applications/xulpymoney.desktop")
         else:
-            print(_("Uninstall command only works in Linux"))
+            print("Uninstall command only works in Linux")
 
 class Procedure(Command):
     description = "Uninstall installed files with install"
@@ -200,4 +185,3 @@ setup(name='xulpymoney',
     include_package_data=True
     )
 
-_=gettext.gettext#To avoid warnings

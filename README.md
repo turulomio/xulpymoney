@@ -24,6 +24,13 @@ Pypi web page:
 Gentoo ebuild
     You can find a Gentoo ebuild in https://sourceforge.net/p/xulpymoney/code/HEAD/tree/myportage/app-office/xulpymoney/
 
+Install
+=======
+We need to install PyQtChart manually. PyQtChart is not in setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
+
+`pip install PyQtChart`
+`pip install xulpymoney`
+
 
 Dependencies
 ============
@@ -49,5 +56,5 @@ Changelog
   * Added missing files to MANIFEST.in
 
 0.1.0
-  * Migration from Sourceforge
+*  * Migration from Sourceforge
   * Changed code to python package
