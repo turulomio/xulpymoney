@@ -24,7 +24,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
-        self.indexes=self.mem.data.products.ProductManager_with_same_type(eProductType.ETF.value)
+        self.indexes=self.mem.data.products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.Index.value))
         self.indexes.order_by_name()
         self.indexes.qcombobox(self.cmbIndex, self.mem.data.benchmark)
         self.spnDividendPercentage.setValue(float(self.mem.dividendwithholding)*100)
