@@ -32,8 +32,8 @@ If you use other distribution, you need to install PyQtChart manually. PyQtChart
 
 `pip install xulpymoney`
 
-Intall in Windows
-=================
+Install in Windows
+==================
 You need to install Python from https://www.python.org and add it to the PATH
 
 You must open a console with Administrator privileges and type:
@@ -61,6 +61,11 @@ Dependencies
 
 Changelog
 =========
+0.4.0
+  * Xulpymoney is now a gui_script.
+  * You can create shortcuts with xulpymoney --shortcuts-create
+  * Removed old installation system in Windows. Added Windows installation instructions in README
+
 0.3.0
   * Added platform dependent dependencies
 
