@@ -57,7 +57,6 @@ Dependencies
 * https://pypi.org/project/pytz/, to work with timezones.
 * https://pypi.org/project/officegenerator/, to work with LibreOffice and Microsoft Office documents.
 * https://pypi.org/project/PyQtChart/, to work with charts.
-* https://pypi.org/project/colorama/, to work with colors in console.
 * https://pypi.org/project/pywin32/, to create shortcuts.
 
 Changelog
