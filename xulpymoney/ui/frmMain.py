@@ -36,6 +36,7 @@ from xulpymoney.ui.wdgProducts import wdgProducts
 from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
 from xulpymoney.ui.wdgSimulations import wdgSimulations
 from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
+from stdnum.isin import is_valid
 
 from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
 
@@ -689,6 +690,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()        
 
     @pyqtSlot()  
+    def on_actionProductsInvalidISIN_triggered(self):
+        self.w.close()
+        arrInt=[]
+        for p in self.mem.data.products.arr:
+            if p.isin!=None and is_valid(p.isin)==False:
+                arrInt.append(p.id)
+        self.w=wdgProducts(self.mem,  arrInt)
+        self.layout.addWidget(self.w)
+        self.w.show()
+
+    @pyqtSlot()  
     def on_actionProductsWithoutQuotes_triggered(self):
         self.w.close()
         prod=ProductManager(self.mem)
@@ -722,6 +734,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgProducts(self.mem, sql)
         self.layout.addWidget(self.w)
         self.w.show()       
+
     @pyqtSlot()  
     def on_actionProductsWithOldPrice_triggered(self):
         self.w.close()
