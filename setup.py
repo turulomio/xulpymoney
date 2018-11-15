@@ -2,6 +2,7 @@ from setuptools import setup, Command
 import logging
 import os
 import platform
+import shutil
 import site
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
@@ -25,6 +26,19 @@ class Doxygen(Command):
         os.system("doxygen Doxyfile")
         os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
         os.chdir("..")
+class PyInstaller(Command):
+    description = "pyinstaller file generator"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        shutil.rmtree("build")
+        os.system("""pyinstaller xulpymoney/xulpymoney.py -n xulpymoney-{}  --onefile   --windowed --icon xulpymoney/images/xulpymoney.ico""".format(__version__))
 
 class Compile(Command):
     description = "Compile ui and images"
@@ -189,7 +203,8 @@ setup(name='xulpymoney',
                         'doc': Doc,
                         'uninstall':Uninstall, 
                         'compile': Compile, 
-                        'procedure': Procedure, 
+                        'procedure': Procedure,
+                        'pyinstaller': PyInstaller,
                      },
     zip_safe=False,
     include_package_data=True

@@ -77,3 +77,6 @@ def main():
         mem.frmMain = frmMain(mem)
         mem.frmMain.show()
         sys.exit(app.exec_())
+
+if __name__=="__main__":
+        main()
