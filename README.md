@@ -8,10 +8,6 @@ GPL-3
 
 Links
 =====
-
-Source code & Development:
-  * https://github.com/Turulomio/xulpymoney
-
 Doxygen documentation:
   * http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
 
@@ -23,13 +19,15 @@ Pypi web page:
 
 Install in Linux
 ================
-If you use Gentoo you can find a ebuild in https://sourceforge.net/p/xulpymoney/code/HEAD/tree/myportage/app-office/xulpymoney/
+If you use Gentoo you can find a ebuild in https://github.com/Turulomio/myportage/tree/master/app-office/xulpymoney
 
-If you use other distribution, you need to install PyQtChart manually. PyQtChart is not in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
+If you use other distribution compatible con pip, you need to install PyQtChart and xulpymoney with the following commands:
 
 `pip install PyQtChart`
 
 `pip install xulpymoney`
+
+You need to install PyQtChart first, because is not in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
 
 Install in Windows as a python module
 =====================================
