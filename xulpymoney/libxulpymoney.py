@@ -7551,6 +7551,7 @@ class LanguageManager(ObjectManager_With_IdName_Selectable):
     def cambiar(self, id):  
         """language es un string"""
         filename=pkg_resources.resource_filename("xulpymoney","i18n/xulpymoney_{}.qm".format(id))
+        logging.debug(filename)
         self.mem.qtranslator.load(filename)
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)

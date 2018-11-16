@@ -1,5 +1,4 @@
 from setuptools import setup, Command
-import logging
 import os
 import platform
 import shutil
@@ -27,7 +26,7 @@ class Doxygen(Command):
         os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
         os.chdir("..")
 class PyInstaller(Command):
-    description = "pyinstaller file generator"
+    description = "We run pyinstaller in build to avoid doing a ./xulpymoney module imort. I had problems with i18n. Before running this command I must have done a install, removing old installations"
     user_options = []
 
     def initialize_options(self):
@@ -37,8 +36,14 @@ class PyInstaller(Command):
         pass
 
     def run(self):
-        shutil.rmtree("build")
-        os.system("""pyinstaller xulpymoney/xulpymoney.py -n xulpymoney-{}  --onefile   --windowed --icon xulpymoney/images/xulpymoney.ico""".format(__version__))
+        os.system("python setup.py uninstall")
+        os.system("python setup.py install")
+        f=open("build/run.py","w")
+        f.write("import xulpymoney\n")
+        f.write("xulpymoney.main()\n")
+        f.close()
+        os.chdir("build")
+        os.system("""pyinstaller run.py -n xulpymoney-{} --onefile --windowed --icon ../xulpymoney/images/xulpymoney.ico --distpath ../dist""".format(__version__))
 
 class Compile(Command):
     description = "Compile ui and images"
@@ -89,7 +94,17 @@ class Uninstall(Command):
             os.system("rm /usr/share/pixmaps/xulpymoney.png")
             os.system("rm /usr/share/applications/xulpymoney.desktop")
         else:
-            print("Uninstall command only works in Linux")
+            print(site.getsitepackages())
+            for file in os.listdir(site.getsitepackages()[1]):#site packages
+                path=site.getsitepackages()[1]+"\\"+ file
+                if file.find("xulpymoney")!=-1:
+                    shutil.rmtree(path)
+                    print(path,  "Erased")
+            for file in os.listdir(site.getsitepackages()[0]+"\\Scripts\\"):#Scripts
+                path=site.getsitepackages()[0]+"\\scripts\\"+ file
+                if file.find("xulpymoney")!=-1:
+                    os.remove(path)
+                    print(path,  "Erased")
 
 class Procedure(Command):
     description = "Uninstall installed files with install"
