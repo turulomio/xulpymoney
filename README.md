@@ -17,7 +17,6 @@ Doxygen documentation:
 
 Main developer web page:
   * https://github.com/Turulomio 
-  * http://turulomio.users.sourceforge.net/en/proyectos.html
 
 Pypi web page:
   * https://pypi.org/project/xulpymoney/
@@ -32,8 +31,8 @@ If you use other distribution, you need to install PyQtChart manually. PyQtChart
 
 `pip install xulpymoney`
 
-Install in Windows
-==================
+Install in Windows as a python module
+=====================================
 You need to install Python from https://www.python.org and add it to the PATH
 
 You must open a console with Administrator privileges and type:
@@ -48,6 +47,12 @@ If you want to delete that Desktop shortcut you can write:
 
 `xulpymoney.exe --shortcuts-remove`
 
+Install in Windows as a standalone application
+==============================================
+You need to download xulpymoney-X.X.X.exe from github release
+
+Just execute it
+
 Dependencies
 ============
 * https://www.python.org/, as the main programming language.
@@ -61,6 +66,10 @@ Dependencies
 
 Changelog
 =========
+0.5.0
+  * Solved several bugs
+  * Added setup.py pyinstaller to generate one standalone exe to distribute in Windows
+
 0.4.0
   * Xulpymoney is now a gui_script.
   * You can create shortcuts with xulpymoney --shortcuts-create

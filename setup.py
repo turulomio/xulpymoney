@@ -132,6 +132,10 @@ Nueva versión:
   * python setup.py sdist upload -r pypi
   * Crea un nuevo ebuild de Gentoo con la nueva versión
   * Subelo al repositorio del portage
+  * Change to windows. Enter in an Administrator console.
+  * Change to xulpymoney source directory and make git pull
+  * python setup.py pyinstaller
+  * Add file to github release
 """)
 
 class Doc(Command):
