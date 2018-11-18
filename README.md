@@ -1,11 +1,3 @@
-What is Xulpymoney
-==================
-Desktop app to manage personal and financial contability
-
-License
-=======
-GPL-3
-
 Links
 =====
 Doxygen documentation:
