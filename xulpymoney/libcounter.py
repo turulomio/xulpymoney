@@ -1,4 +1,4 @@
-## @package libcounter
+## @namespace xulpymoney.libcounter
 ## This file is from xulpymoney project
 ## Do not edit, It will be overriden
 

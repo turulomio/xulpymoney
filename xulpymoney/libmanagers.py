@@ -1,4 +1,4 @@
-## @package libmanagers
+## @namespace xulpymoney.libmanagers
 ## @brief Module with objects managers as list or as dictionary.
 ##
 ## This file is from pysgae project. Do not edit, It will be overriden.

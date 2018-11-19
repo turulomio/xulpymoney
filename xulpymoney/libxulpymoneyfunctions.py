@@ -1,4 +1,4 @@
-## @package libxulpymoneyfunctions
+## @namespace xulpymoney.libxulpymoneyfunctions
 ## @brief Package with all xulpymoney auxiliar functions.
 from PyQt5.QtCore import Qt,  QCoreApplication, QLocale
 from PyQt5.QtGui import QIcon,  QColor

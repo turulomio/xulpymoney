@@ -1,4 +1,4 @@
-## @package libxulpymoney
+## @namespace xulpymoney.libxulpymoney
 ## @brief Package with all xulpymoney core classes .
 
 from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator

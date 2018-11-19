@@ -1,4 +1,4 @@
-## @package wdgProductHistoricalChart
+## @namespace xulpymoney.ui.wdgProductHistoricalChart
 ## @brief Several product historical chart widgets
 
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate

@@ -1,4 +1,4 @@
-## @package frmMain
+## @namesapace xulpymoney.ui.frmMain
 ## @brief User interface main window.
 
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize

@@ -1,4 +1,4 @@
-## @package libxulpymoneytypes
+## @namespace xulpymoney.libxulpymoneytypes
 ## @brief Package with all xulpymoney types.
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QApplication
