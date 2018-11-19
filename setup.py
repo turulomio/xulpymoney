@@ -153,24 +153,39 @@ class Doc(Command):
         os.system("lrelease -qt5 xulpymoney.pro")
     ########################################################################
 
-#app=QCoreApplication(sys.argv)
-
-#app.setOrganizationName("xulpymoney")
-#app.setOrganizationDomain("xulpymoney.sourceforge.net")
-#app.setApplicationName("xulpymoney")
-#translator=QTranslator()
+#Description
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
+#entry_points
+entry_points={
+        'console_scripts': [
+            'xulpymoney_bolsamadrid_client=xulpymoney.sources.bolsamadrid_client:main',
+            'xulpymoney_google_client=xulpymoney.sources.google_client:main',
+            'xulpymoney_infobolsa_client=xulpymoney.sources.infobolsa_client:main',
+            'xulpymoney_morningstar_client=xulpymoney.sources.morningstar_client:main',
+            'xulpymoney_quefondos_client=xulpymoney.sources.quefondos_client:main',
+            'xulpymoney_run_client=xulpymoney.sources.run_client:main',
+            'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
+        ],
+        'gui_scripts':  [
+            'xulpymoney=xulpymoney.xulpymoney:main',
+            'xulpymoney_init=xulpymoney.xulpymoney_init:main',
+        ],
+    }
+if platform.system()=="Windows":
+    entry_points['console_scripts'].append( 'xulpymoney_shortcuts=xulpymoney.shortcuts:create',)
+
+#data_files
 if platform.system()=="Linux":
     data_files=[
-    ('/usr/share/pixmaps/', ['xulpymoney/images/xulpymoney.png']), 
-    ('/usr/share/applications/', ['xulpymoney.desktop']), 
-               ]
+        ('/usr/share/pixmaps/', ['xulpymoney/images/xulpymoney.png']), 
+        ('/usr/share/applications/', ['xulpymoney.desktop']), 
+    ]
 else:
     data_files=[]
 
-## Version of officegenerator captured from commons to avoid problems with package dependencies
+#__version__
 __version__= None
 with open('xulpymoney/version.py', encoding='utf-8') as f:
     for line in f.readlines():
@@ -194,18 +209,7 @@ setup(name='xulpymoney',
     author_email='turulomio@yahoo.es',
     license='GPL-3',
     packages=['xulpymoney'],
-    entry_points = {'console_scripts': ['xulpymoney_init=xulpymoney.xulpymoney_init:main',
-                                        'xulpymoney_bolsamadrid_client=xulpymoney.sources.bolsamadrid_client:main',
-                                        'xulpymoney_google_client=xulpymoney.sources.google_client:main',
-                                        'xulpymoney_infobolsa_client=xulpymoney.sources.infobolsa_client:main',
-                                        'xulpymoney_morningstar_client=xulpymoney.sources.morningstar_client:main',
-                                        'xulpymoney_quefondos_client=xulpymoney.sources.quefondos_client:main',
-                                        'xulpymoney_run_client=xulpymoney.sources.run_client:main',
-                                        'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
-                                       ],
-                    'gui_scripts': ['xulpymoney=xulpymoney.xulpymoney:main',
-                                       ],
-                },
+    entry_points = entry_points, 
     install_requires= [ 'setuptools',
                         'psycopg2', 
                         'pytz',
