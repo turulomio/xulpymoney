@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>merge.png</file>
     <file>libreoffice_calc.png</file>
     <file>crown.png</file>
     <file>curiosity.png</file>

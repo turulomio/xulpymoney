@@ -158,6 +158,10 @@ If origin is a user product, you can delete afterwards, because it won't have an
        <property name="text">
         <string>Move data</string>
        </property>
+       <property name="icon">
+        <iconset resource="../images/xulpymoney.qrc">
+         <normaloff>:/xulpymoney/merge.png</normaloff>:/xulpymoney/merge.png</iconset>
+       </property>
       </widget>
      </item>
     </layout>

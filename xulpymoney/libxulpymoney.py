@@ -1849,8 +1849,9 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
         table.setItem(self.length(), 5, sumneto.qtablewidgetitem())
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
-class EstimationDPSManager:
+class EstimationDPSManager(ObjectManager):
     def __init__(self, mem,  product):
+        ObjectManager.__init__(self)
         self.arr=[]
         self.mem=mem   
         self.product=product
@@ -1906,8 +1907,9 @@ class EstimationDPSManager:
         table.setCurrentCell(len(self.arr)-1, 0)
         table.setFocus()
 
-class EstimationEPSManager:
+class EstimationEPSManager(ObjectManager):
     def __init__(self, mem,  product):
+        ObjectManager.__init__(self)
         self.arr=[]
         self.mem=mem   
         self.product=product

@@ -161,7 +161,7 @@ class Ui_wdgProducts(object):
         self.actionFavorites.setObjectName("actionFavorites")
         self.actionMergeCodes = QtWidgets.QAction(wdgProducts)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/images/cakes.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/xulpymoney/merge.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionMergeCodes.setIcon(icon7)
         self.actionMergeCodes.setObjectName("actionMergeCodes")
         self.actionQuoteNew = QtWidgets.QAction(wdgProducts)

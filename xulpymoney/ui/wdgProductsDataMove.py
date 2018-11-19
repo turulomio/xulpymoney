@@ -31,6 +31,11 @@ class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
             self.table.setItem(i, 3, qright(p.result.all.length()))
             self.table.setItem(i, 4, qright(p.dps.length()))
             self.table.setItem(i, 5, qright(self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(p).length()))
+            opportunities=self.mem.con.cursor_one_field("select count(*) from opportunities where products_id=%s and executed is null and removed is null", (p.id, ))
+            self.table.setItem(i, 6, qright(opportunities))
+            self.table.setItem(i, 7, qright(p.splits.length()))
+            self.table.setItem(i, 8, qright(p.estimations_dps.length()))
+            self.table.setItem(i, 9, qright(p.estimations_eps.length()))
 
     def on_cmd_released(self):
         reply = QMessageBox.question(None, self.tr('Moving data between products'), self.tr("This action can't be undone.\nDo you want to continue?"), QMessageBox.Yes, QMessageBox.No)                  

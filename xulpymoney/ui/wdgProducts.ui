@@ -313,8 +313,8 @@
   </action>
   <action name="actionMergeCodes">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/cakes.png</normaloff>:/images/cakes.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/merge.png</normaloff>:/xulpymoney/merge.png</iconset>
    </property>
    <property name="text">
     <string>Merge selected codes</string>
