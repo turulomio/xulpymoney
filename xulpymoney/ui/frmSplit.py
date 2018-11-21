@@ -32,7 +32,7 @@ class frmSplit(QDialog, Ui_frmSplit):
             self.split.product=self.product
         else:
             self.split=split
-            self.wdgDt.set(self.mem, datetime.datetime.now(), self.mem.localzone)
+            self.wdgDt.set(self.mem, self.split.datetime, self.mem.localzone)
             self.txtInitial.setText(self.split.before)
             self.txtFinal.setText(self.split.after)
             self.txtComment.setText(self.split.comment)

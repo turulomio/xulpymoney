@@ -7777,6 +7777,8 @@ class SimulationType:
         else:
             return QIcon(":/xulpymoney/replication.png")    
 
+
+## Split associated to a product quotes. It's a record in splits table. It doesn't modifie quotes in database. RECOMENDED
 class Split:
     def __init__(self, mem):
         self.mem=mem
@@ -7788,7 +7790,7 @@ class Split:
         self.comment=None
                 
     def __repr__(self):
-        return ("Instancia de SplitNew: {0} ({1})".format( self.id, self.id))
+        return ("Instancia de Split: {0} ({1})".format( self.id, self.id))
         
     def init__create(self, product, datetime, before, after, comment, id=None):
         self.id=id
@@ -7903,8 +7905,10 @@ class SplitManager(ObjectManager_With_IdName_Selectable):
             r.append(self.adjustOHCLDaily(ohcl))
         return r
 
+## Class to make calculations with splits or contrasplits, between two datetimes
+## This class updates quotes, and investment operations
+## It's not recommended. Only useful to update quotes already in database with jumps in splits.
 class SplitManual:
-    """Class to make calculations with splits or contrasplits, between two datetimes"""
     def __init__(self, mem, product, sharesinitial,  sharesfinal,  dtinitial, dtfinal):
         self.mem=mem
         self.initial=sharesinitial

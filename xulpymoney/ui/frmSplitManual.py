@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
-from xulpymoney.libxulpymoney import QuoteAllIntradayManager, Split
+from xulpymoney.libxulpymoney import QuoteAllIntradayManager, SplitManual
 import datetime
 
 from xulpymoney.ui.Ui_frmSplitManual import Ui_frmSplitManual
@@ -40,7 +40,7 @@ class frmSplitManual(QDialog, Ui_frmSplitManual):
         
     def generateExample(self):
         try:
-            self.split=Split(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
+            self.split=SplitManual(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
             self.lblExample.setText(self.tr("If you have 1000 shares of 10 \u20ac of price, you will have {0:.6f} shares of {1:.6f} \u20ac of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(True)
         except:
