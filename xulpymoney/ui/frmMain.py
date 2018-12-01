@@ -60,6 +60,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.setWindowIcon(self.mem.qicon_admin())
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
+            self.actionDocumentsPurge.setEnabled(False)
             
 
     def actionsEnabled(self, bool):

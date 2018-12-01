@@ -1057,7 +1057,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         products.load_from_db("select * from products order by id")
         ods=ODS_Write(filename)
         s1=ods.createSheet("Products")
-        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE	',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS']], "OrangeCenter")
+        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE    ',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS']], "OrangeCenter")
         for row, p in enumerate(products.arr):
             print(p.name)
             s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
@@ -1357,6 +1357,7 @@ class StockMarketManager(ObjectManager_With_IdName_Selectable):
         self.append(StockMarket(self.mem).init__create( 15, "No cotiza en mercados oficiales", "earth", datetime.time(9, 0), datetime.time(17, 38), "Europe/Madrid"))
         self.append(StockMarket(self.mem).init__create( 16, "AMEX Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
         self.append(StockMarket(self.mem).init__create( 17, "Nasdaq Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
+        self.append(StockMarket(self.mem).init__create( 18, "Luxembourg Stock Exchange", "lu", datetime.time(9, 0), datetime.time(17, 38), "Europe/Luxembourg"))
 
 class ConceptManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -1476,6 +1477,7 @@ class CountryManager(ObjectManager_With_IdName_Selectable):
         self.append(Country("us",QApplication.translate("Core","United States of America")))
         self.append(Country("ro",QApplication.translate("Core","Romanian")))
         self.append(Country("ru",QApplication.translate("Core","Rusia")))
+        self.append(Country("lu",QApplication.translate("Core","Luxembourg")))
         self.order_by_name()
 
     def qcombobox(self, combo,  country=None):
@@ -8395,6 +8397,8 @@ class Country(Object_With_IdName):
             return QPixmap(":/countries/rumania.png")
         elif self.id=="ru":
             return QPixmap(":/countries/rusia.png")
+        elif self.id=="lu":
+            return QPixmap(":/countries/luxembourg.png")
         else:
             return QPixmap(":/xulpymoney/star.gif")
             
@@ -8464,6 +8468,7 @@ class ZoneManager(ObjectManager_With_IdName_Selectable):
         self.append(Zone(self.mem,12,'Europe/Dublin', self.mem.countries.find_by_id("ie")))
         self.append(Zone(self.mem,13,'Europe/Helsinki', self.mem.countries.find_by_id("fi")))
         self.append(Zone(self.mem,14,'Europe/Lisbon', self.mem.countries.find_by_id("pt")))
+        self.append(Zone(self.mem,15,'Europe/Luxembourg', self.mem.countries.find_by_id("lu")))
         
     def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
