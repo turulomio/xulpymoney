@@ -1358,6 +1358,16 @@ class StockMarketManager(ObjectManager_With_IdName_Selectable):
         self.append(StockMarket(self.mem).init__create( 16, "AMEX Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
         self.append(StockMarket(self.mem).init__create( 17, "Nasdaq Stock Exchange", "us", datetime.time(9, 30), datetime.time(16, 38), "America/New_York"))
         self.append(StockMarket(self.mem).init__create( 18, "Luxembourg Stock Exchange", "lu", datetime.time(9, 0), datetime.time(17, 38), "Europe/Luxembourg"))
+        
+    ## Personalized combobox with country flag
+    def qcombobox(self, combo, selected=None):   
+        self.order_by_name()
+        combo.clear()
+        for a in self.arr:
+            combo.addItem(a.country.qicon(), a.name, a.id)
+ 
+        if selected!=None:
+            combo.setCurrentIndex(combo.findData(selected.id))
 
 class ConceptManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
