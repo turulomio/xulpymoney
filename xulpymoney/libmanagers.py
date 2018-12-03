@@ -1,12 +1,11 @@
-## @namespace xulpymoney.libmanagers
 ## @brief Module with objects managers as list or as dictionary.
 ##
-## This file is from pysgae project. Do not edit, It will be overriden.
+## This file is from Xulpymoney project. Do not edit, It will be overriden.
 ##
 ## You have to use list objects if you are going to make selections and secuential access.
 ##
 ## You have to use dictionary objects i f you are going to make unordered access to the dictionary. It consumes more memory. To access a selected item in a table you have to hide a column with the id and getit when selecting a row
-
+##
 
 import logging
 
