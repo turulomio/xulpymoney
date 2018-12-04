@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
-    <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
+    <normaloff>:/xulpymoney/dividends.png</normaloff>:/xulpymoney/dividends.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -257,7 +257,12 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="cmd"/>
+        <widget class="QPushButton" name="cmd">
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_4">

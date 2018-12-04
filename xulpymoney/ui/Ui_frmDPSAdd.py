@@ -12,9 +12,9 @@ class Ui_frmDPSAdd(object):
     def setupUi(self, frmDPSAdd):
         frmDPSAdd.setObjectName("frmDPSAdd")
         frmDPSAdd.setWindowModality(QtCore.Qt.ApplicationModal)
-        frmDPSAdd.resize(359, 288)
+        frmDPSAdd.resize(408, 364)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/coins.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/dividends.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmDPSAdd.setWindowIcon(icon)
         frmDPSAdd.setModal(True)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(frmDPSAdd)

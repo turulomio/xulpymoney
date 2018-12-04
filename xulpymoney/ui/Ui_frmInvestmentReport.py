@@ -359,7 +359,7 @@ class Ui_frmInvestmentReport(object):
         self.verticalLayout_16.addLayout(self.horizontalLayout_6)
         self.horizontalLayout_7.addLayout(self.verticalLayout_16)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/xulpymoney/star.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/xulpymoney/dividends.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tab.addTab(self.tabDividends, icon7, "")
         self.verticalLayout_9.addWidget(self.tab)
         self.verticalLayout_10.addLayout(self.verticalLayout_9)
@@ -419,7 +419,7 @@ class Ui_frmInvestmentReport(object):
         self.actionDisReinvestProduct.setObjectName("actionDisReinvestProduct")
 
         self.retranslateUi(frmInvestmentReport)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(4)
         self.chkExpiration.toggled['bool'].connect(self.calExpiration.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(frmInvestmentReport)
 

@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>cloud_download.png</file>
+    <file>dividends_biggest.png</file>
+    <file>dividends.png</file>
     <file>merge.png</file>
     <file>libreoffice_calc.png</file>
     <file>crown.png</file>
