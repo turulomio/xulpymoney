@@ -1,5 +1,10 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>order.jpg</file>
+    <file>investment.png</file>
+    <file>opportunity.png</file>
+    <file>totalreport.png</file>
+    <file>layers.png</file>
     <file>cloud_download.png</file>
     <file>dividends_biggest.png</file>
     <file>dividends.png</file>

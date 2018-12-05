@@ -256,6 +256,12 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>26</width>
+     <height>26</height>
+    </size>
+   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonIconOnly</enum>
    </property>
@@ -289,6 +295,12 @@
   <widget class="QToolBar" name="tlbProducts">
    <property name="windowTitle">
     <string>Products toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>26</width>
+     <height>26</height>
+    </size>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -339,7 +351,7 @@
   <action name="actionIndexRange">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+     <normaloff>:/xulpymoney/layers.png</normaloff>:/xulpymoney/layers.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Index range</string>
@@ -351,7 +363,7 @@
   <action name="actionInvestments">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+     <normaloff>:/xulpymoney/investment.png</normaloff>:/xulpymoney/investment.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Investments</string>
@@ -396,7 +408,7 @@
   <action name="actionTotalReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+     <normaloff>:/xulpymoney/totalreport.png</normaloff>:/xulpymoney/totalreport.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Total report</string>
@@ -1008,7 +1020,7 @@
   <action name="actionOrders">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+     <normaloff>:/xulpymoney/order.jpg</normaloff>:/xulpymoney/order.jpg</iconset>
    </property>
    <property name="text">
     <string>&amp;Market orders</string>
@@ -1080,7 +1092,7 @@
   <action name="actionPurchaseOpportunities">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+     <normaloff>:/xulpymoney/opportunity.png</normaloff>:/xulpymoney/opportunity.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Purchase opportunities</string>
