@@ -252,9 +252,9 @@
    <addaction name="menuProducts"/>
    <addaction name="menuAyuda"/>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="tbMain">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Main toolbar</string>
    </property>
    <property name="iconSize">
     <size>
@@ -287,12 +287,9 @@
    <addaction name="actionInvestmentRanking"/>
    <addaction name="separator"/>
    <addaction name="actionCalculator"/>
-   <addaction name="separator"/>
-   <addaction name="actionSettings"/>
-   <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QToolBar" name="tlbProducts">
+  <widget class="QToolBar" name="tbProducts">
    <property name="windowTitle">
     <string>Products toolbar</string>
    </property>
@@ -316,7 +313,20 @@
    <addaction name="separator"/>
    <addaction name="actionPriceUpdates"/>
    <addaction name="actionSyncProducts"/>
+  </widget>
+  <widget class="QToolBar" name="tbSettings">
+   <property name="windowTitle">
+    <string>Settings toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
    <addaction name="actionProductsUpdate"/>
+   <addaction name="actionSettings"/>
+   <addaction name="actionExit"/>
   </widget>
   <action name="actionExit">
    <property name="icon">
@@ -1020,7 +1030,7 @@
   <action name="actionOrders">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/order.jpg</normaloff>:/xulpymoney/order.jpg</iconset>
+     <normaloff>:/xulpymoney/order.png</normaloff>:/xulpymoney/order.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Market orders</string>
