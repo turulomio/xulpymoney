@@ -252,7 +252,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         for a in self.arr:
             if a.name==name:
                 return a
-        logging.debug("{} didn't find the name".format(self.__class__))
+        logging.debug("{} didn't find the name: {}".format(self.__class__, name))
         return None
         
     def order_by_name(self):

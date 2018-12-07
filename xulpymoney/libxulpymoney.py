@@ -1076,52 +1076,54 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                     elif cell.column=="B":
                         p.name=cell.value
                     elif cell.column=="C":
-                        p.isin=cell.value
+                        p.high_low=str2bool(cell.value)
                     elif cell.column=="D":
+                        p.isin=cell.value
+                    elif cell.column=="E":
                         p.stockmarket=self.mem.stockmarkets.find_by_name(cell.value)
                         if p.stockmarket==None:
                             raise
-                    elif cell.column=="E":
+                    elif cell.column=="F":
                         p.currency=self.mem.currencies.find_by_id(cell.value)
                         if p.currency==None:
                             raise
-                    elif cell.column=="F":
+                    elif cell.column=="G":
                         p.type=self.mem.types.find_by_name(cell.value)
                         if p.type==None:
                             raise
-                    elif cell.column=="G":
+                    elif cell.column=="H":
                         p.agrupations=self.mem.agrupations.clone_from_dbstring(cell.value)
                         if p.agrupations==None:
                             raise
-                    elif cell.column=="H":
-                        p.web=cell.value
                     elif cell.column=="I":
-                        p.address=cell.value
+                        p.web=cell.value
                     elif cell.column=="J":
-                        p.phone=cell.value
+                        p.address=cell.value
                     elif cell.column=="K":
-                        p.mail=cell.value
+                        p.phone=cell.value
                     elif cell.column=="L":
-                        p.percentage=cell.value
+                        p.mail=cell.value
                     elif cell.column=="M":
+                        p.percentage=cell.value
+                    elif cell.column=="N":
                         p.mode=self.mem.investmentsmodes.find_by_id(cell.value)
                         if p.mode==None:
                             raise
-                    elif cell.column=="N":
+                    elif cell.column=="O":
                         p.leveraged=self.mem.leverages.find_by_name(cell.value)
                         if p.leveraged==None:
                             raise
-                    elif cell.column=="O":
-                        p.comment=cell.value
                     elif cell.column=="P":
-                        p.obsolete=str2bool(cell.value)
+                        p.comment=cell.value
                     elif cell.column=="Q":
-                        tickers[0]=cell.value
+                        p.obsolete=str2bool(cell.value)
                     elif cell.column=="R":
-                        tickers[1]=cell.value
+                        tickers[0]=cell.value
                     elif cell.column=="S":
-                        tickers[2]=cell.value
+                        tickers[1]=cell.value
                     elif cell.column=="T":
+                        tickers[2]=cell.value
+                    elif cell.column=="U":
                         tickers[3]=cell.value
                     p.tickers=tickers
                 return p
@@ -1157,6 +1159,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             elif (  
                         p_db.id!=p_xlsx.id or
                         p_db.name!=p_xlsx.name or
+                        p_db.high_low!=p_xlsx.high_low or
                         p_db.isin!=p_xlsx.isin or
                         p_db.stockmarket.id!=p_xlsx.stockmarket.id or
                         p_db.currency.id!=p_xlsx.currency.id or
@@ -1181,11 +1184,11 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         #Sumary
         print("{} Products changed".format(len(changed)))
         for p in changed:
-            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             p.save()
         print("{} Products added".format(len(added)))
         for p in added:
-            print("  +", p,  p.currency.id ,  p.type.name, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
             cur=self.mem.con.cursor()
             cur.execute("insert into products (id,stockmarkets_id) values (%s,%s)",  (p.id, 1))
