@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201810272132
+        self.lastcodeupdate=201812070558
         self.need_update()
 
    
@@ -2386,6 +2386,26 @@ Return False, in other cases';""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201810272132)
+        if self.dbversion<201812070558:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table products add column high_low boolean")
+            cur.execute("CREATE SEQUENCE high_low_contract_seq  INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;")
+            cur.execute("""
+CREATE TABLE high_low_contract (
+    id integer NOT NULL DEFAULT nextval('high_low_contract_seq'::regclass), 
+    products_id integer NOT NULL,  
+    datetime timestamp with time zone NOT NULL,  
+    guarantee numeric(100,2) NOT NULL,
+    adjustment numeric(100,2) NOT NULL,
+    commission numeric(100,2) NOT NULL,
+    interest numeric(100,2) NOT NULL,
+    CONSTRAINT high_low_contract_pk PRIMARY KEY (id),
+    CONSTRAINT high_low_contract_fk_products_id FOREIGN KEY (products_id) REFERENCES products (id) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE RESTRICT
+) WITH (  OIDS=FALSE);
+            """)
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201812070558)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
