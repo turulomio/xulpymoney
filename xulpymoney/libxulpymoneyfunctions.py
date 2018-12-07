@@ -618,3 +618,14 @@ def function_name(clas):
     #    print (clas.__class__.__name__)
     #    print (clas.__module__)
     return "{0}.{1}".format(clas.__class__.__name__,inspect.stack()[1][3])
+    
+    
+#    
+#def launchFrmInvestmentReport(mem, high_low, investment, parent):
+#    if high_low==False:
+#        w=frmInvestmentReport(mem,  investment, parent)
+#        w.exec_()
+#    else:
+#        w=frmInvestmentHlReport(mem, investment, parent)
+#        w.exec_()
+#    return w

@@ -28,6 +28,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_frmInvestmentOperationsAdd.py \
                   xulpymoney/ui/frmInvestmentReport.py \
                   xulpymoney/ui/Ui_frmInvestmentReport.py \
+                  xulpymoney/ui/frmInvestmentHlReport.py \
+                  xulpymoney/ui/Ui_frmInvestmentHlReport.py \
                   xulpymoney/ui/frmMain.py \
                   xulpymoney/ui/Ui_frmMain.py \
                   xulpymoney/ui/frmProductReport.py \
@@ -130,6 +132,7 @@ FORMS           = \
                   xulpymoney/ui/frmEstimationsAdd.ui \
                   xulpymoney/ui/frmHelp.ui \
                   xulpymoney/ui/frmInit.ui \
+                  xulpymoney/ui/frmInvestmentHlReport.ui \
                   xulpymoney/ui/frmInvestmentOperationsAdd.ui \
                   xulpymoney/ui/frmInvestmentReport.ui \
                   xulpymoney/ui/frmMain.ui \
