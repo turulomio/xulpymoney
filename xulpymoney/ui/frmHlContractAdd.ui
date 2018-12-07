@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>390</height>
+    <width>450</width>
+    <height>290</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,29 +84,12 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Select dividend type</string>
+          <string>Guarantee amount</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="cmb">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="lblGross">
-         <property name="text">
-          <string>Gross amount</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="myQLineEdit" name="txtBruto">
+        <widget class="myQLineEdit" name="txtGuarantee">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -121,10 +104,49 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="lblGrossAccount">
+       <item row="1" column="0">
+        <widget class="QLabel" name="lblLiquido_7">
          <property name="text">
-          <string>Gross amount in account currency</string>
+          <string>Adjustment amount</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="myQLineEdit" name="txtAdjustment">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lblGross">
+         <property name="text">
+          <string>Interest amount</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="myQLineEdit" name="txtInterest">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -132,14 +154,14 @@
         <widget class="wdgCurrencyConversion" name="wdgCurrencyConversion" native="true"/>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="lblLiquido_4">
+        <widget class="QLabel" name="lblLiquido">
          <property name="text">
-          <string>Withholding tax amount</string>
+          <string>Commission amount</string>
          </property>
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="myQLineEdit" name="txtRetencion">
+        <widget class="myQLineEdit" name="txtCommission">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -151,95 +173,10 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="lblLiquido_5">
-         <property name="text">
-          <string>Dividend per share</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="myQLineEdit" name="txtDPA">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="lblLiquido">
-         <property name="text">
-          <string>Comission</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="myQLineEdit" name="txtComision">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="lblLiquido_7">
-         <property name="text">
-          <string>Net amount</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="myQLineEdit" name="txtNeto">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="lblTPC">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -303,13 +240,9 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>cmb</tabstop>
-  <tabstop>txtBruto</tabstop>
-  <tabstop>txtRetencion</tabstop>
-  <tabstop>txtDPA</tabstop>
-  <tabstop>txtComision</tabstop>
+  <tabstop>txtInterest</tabstop>
+  <tabstop>txtCommission</tabstop>
   <tabstop>cmd</tabstop>
-  <tabstop>txtNeto</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
