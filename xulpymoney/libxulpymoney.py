@@ -3412,6 +3412,11 @@ class Comment:
             Usado en comentario que muestra la opertarjeta que quiero devolver.
         """
         return "10006,{}".format(opercreditcardtorefund.id)        
+    def setEncoded10007(self, hlcontract):
+        """
+            Usado en comentario que muestra la opertarjeta que quiero devolver.
+        """
+        return "10007,{}".format(hlcontract.id)        
         
     def setFancy(self, string):
         """Sets the comment to show in app"""
@@ -8175,20 +8180,143 @@ class ProductTypesManager(ObjectManager_With_IdName_Selectable):
                 r.append(t)
         return r
 
-
+## Class to manage CDF daily contracts.
 class HlContract:
     def __init__(self, mem, investment):
         self.mem=mem
+        self.id=None
         self.investment=investment
         self.datetime=None
         self.guarantee=0
         self.adjustment=0
-        self.comission=0
+        self.commission=0
         self.interest=0
+        self.guarantee_ao=None#Integers to point operaccount
+        self.adjustment_ao=None
+        self.interest_ao=None
+        self.commission_ao=None
+
+    def __repr__(self):
+        return ("HLContract {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}. Currency conversion {7}".format(self.investment.name, self.investment.id,  self.datetime, self.tipooperacion.name,  self.shares,  self.valor_accion, id(self), self.currency_conversion))
+
+    def init__db_row(self,  row):
+        self.id=row['id']
+        self.datetime=row['datetime']
+        self.guarantee=row['guarantee']
+        self.adjustment=row['adjustment']
+        self.commission=row['commission']
+        self.interest=row['interest']
+        self.guarantee_ao=row['guarantee_ao']#Integers to point operaccount
+        self.adjustment_ao=row['adjustment_ao']
+        self.interest_ao=row['interest_ao']
+        self.commission_ao=row['commission_ao']
+        return self
         
+    def init__create(self, id, datetime, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao):
+        self.id=id
+        self.datetime=datetime
+        self.guarantee=guarantee
+        self.adjustment=adjustment
+        self.commission=commission
+        self.interest=interest
+        self.guarantee_ao=guarantee_ao
+        self.adjustment_ao=adjustment_ao
+        self.interest_ao=interest_ao
+        self.commission_ao=commission_ao
+        return self
+        
+    def init__from_accountoperation(self, accountoperation):
+        """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
+        IO returned is an object already created in investments_all()"""
+        cur=self.mem.con.cursor()
+        cur.execute("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
+        if cur.rowcount==0:
+            cur.close()
+            return None
+        row=cur.fetchone()
+        cur.close()
+        investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
+        return investment.op.find(row['id_operinversiones'])
+        
+    def guarantee(self, type=1):
+        if type==1:
+            return Money(self.mem, self.valor_accion, self.investment.product.currency)
+        else:
+            return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            
+    def adjustment(self, type=1):
+        if type==1:
+            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency)
+        else:
+            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            
+    def commission(self, type=1):
+        if self.shares>=Decimal(0):
+            return self.gross(type)+self.comission(type)+self.taxes(type)
+        else:
+            return self.gross(type)-self.comission(type)-self.taxes(type)
+            
+    def interest(self, type=1):
+        if type==1:
+            return Money(self.mem, self.impuestos, self.investment.product.currency)
+        else:
+            return Money(self.mem, self.impuestos, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+
+    def find_by_mem(self, investment, id):
+        """
+            Searchs in mem (needed investments_all())
+            invesment is an Investment object
+            id is the invesmentoperation to find
+        """
+        for i in self.mem.data.investments:
+            if investment.id==i.id:
+                found=i.op.find(id)
+                if found!=None:
+                    return found
+        print ("Investment operation {} hasn't been found in mem".format(id))
+        return None
+
+    def actualizar_cuentaoperacion_asociada(self):
+        """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
+        se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
+        que se puede actualizar en cualquier momento con esta función"""
+        self.comentario=Comment(self.mem).setEncoded10007(self)
+        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como parámetro
+        cur=self.mem.con.cursor()
+        cur.execute("delete from opercuentas where id_operinversiones=%s",(self.id, )) 
+        cur.close()
+        if self.tipooperacion.id==4:#Compra Acciones
+            #Se pone un registro de compra de acciones que resta el balance de la opercuenta
+            importe=-self.gross(type=2)-self.comission(type=2)
+            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
+            c.save()
+        elif self.tipooperacion.id==5:#// Venta Acciones
+            #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
+            importe=self.gross(type=2)-self.comission(type=2)-self.taxes(type=2)
+            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
+            c.save()
+        elif self.tipooperacion.id==6:
+            #//Si hubiera comisión se añade la comisión.
+            if(self.comision!=0):
+                importe=-self.comission(type=2)-self.taxes(type=2)
+                c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.investment.account, self,self.investment, None)
+                c.save()
+
+    def save(self):
+        cur=self.mem.con.cursor()
+        if self.id==None:#insertar
+            cur.execute("insert into high_low_contract(datetime, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao) values (%s,%s,%s,%s,%s, %s, %s, %s, %s) returning id", (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao))
+            self.id=cur.fetchone()[0]
+            self.investment.hl_contracts.append(self)
+        else:
+            cur.execute("update high_low_contract set datetime=%s, guarantee=%s, adjustment=%s, commission=%s, interest=%s,guarantee_ao=%s,adjustment_ao=%s,%interest_ao=%s, commission_ao=%s where id=%s", (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
+            self.actualizar_cuentaoperacion_asociada()
+        cur.close()
+   
 class HlGuaranteeManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
+
 class HlGuaranteeManagerHomogeneus(HlGuaranteeManagerHeterogeneus):
     def __init__(self, mem):
         HlGuaranteeManagerHeterogeneus.__init__(self)
