@@ -6206,6 +6206,7 @@ class Product:
         self.tickers=[None]*eTickerPosition.length()#Its a list of strings, eTickerPosition is the 
         self.comment=None
         self.obsolete=None
+        self.high_low=None#Allow short and long operations
         
         ## Variable with the current product status
         ## 0 No data
@@ -6270,11 +6271,11 @@ class Product:
         self.tickers=row['tickers']
         self.comment=row['comment']
         self.obsolete=row['obsolete']
-        
+        self.high_low=row['high_low']
         return self
 
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, high_low, id=None):
         self.name=name
         self.isin=isin
         self.currency=currency
@@ -6293,6 +6294,7 @@ class Product:
         self.tickers=tickers
         self.comment=comment
         self.obsolete=obsolete
+        self.high_low=high_low
         return self        
 
     def init__db(self, id):
@@ -6315,10 +6317,10 @@ class Product:
             id=cur.fetchone()[0]
             if id>=0:
                 id=-1
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
         cur.close()
     
     ## Return if the product has autoupdate in some source
