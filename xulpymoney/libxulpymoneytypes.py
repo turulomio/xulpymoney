@@ -24,6 +24,7 @@ class eProductType(IntEnum):
     PrivateBond=9
     Deposit=10
     Account=11
+    CFD=12
     
 ## Operation tipes
 class eOperationType:
