@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201812070708
+        self.lastcodeupdate=201812071223
         self.need_update()
 
    
@@ -2412,6 +2412,14 @@ CREATE TABLE high_low_contract (
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812070708)
+        if self.dbversion<201812071223:#Update user products high_low=false
+            cur=self.mem.con.cursor()
+            cur.execute("ALTER TABLE high_low_contract DROP CONSTRAINT high_low_contract_fk_products_id")
+            cur.execute("ALTER TABLE high_low_contract RENAME products_id TO investments_id")           
+            cur.execute("ALTER TABLE high_low_contract ADD CONSTRAINT high_low_contract_fk_investments_id FOREIGN KEY (investments_id) REFERENCES inversiones (id_inversiones) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201812071223)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

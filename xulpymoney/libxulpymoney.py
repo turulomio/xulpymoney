@@ -8175,6 +8175,24 @@ class ProductTypesManager(ObjectManager_With_IdName_Selectable):
                 r.append(t)
         return r
 
+
+class HlContract:
+    def __init__(self, mem, investment):
+        self.mem=mem
+        self.investment=investment
+        self.datetime=None
+        self.guarantee=0
+        self.adjustment=0
+        self.comission=0
+        self.interest=0
+        
+class HlGuaranteeManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
+    def __init__(self, mem):
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
+class HlGuaranteeManagerHomogeneus(HlGuaranteeManagerHeterogeneus):
+    def __init__(self, mem):
+        HlGuaranteeManagerHeterogeneus.__init__(self)
+
 class Language:
     def __init__(self, mem, id, name):
         self.id=id
