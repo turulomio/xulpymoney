@@ -24,7 +24,59 @@ class frmInvestmentHlReport(QDialog, Ui_frmInvestmentHlReport):
         self.setupUi(self)
         self.mem=mem
         self.investment=inversion
+        
+        self.selDividend=None#Dividend seleccionado
+        
+        #arrays asociados a tablas
+        self.op=None#Sera un SetInvestmentOperations
+         
+        self.ise.setupUi(self.mem,  self.investment)
+        
+        self.dividends=DividendHomogeneusManager(self.mem, self.investment)
+        
+        self.tblDividends.settings(self.mem, "frmInvestmentReport")         
+        self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentCurrentAccountCurrency.settings(self.mem, "frmInvestmentReport")
+        self.tblOperations.settings(self.mem, "frmInvestmentReport")
+        self.tblOperationsAccountCurrency.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentHistoricalAccountCurrency.settings(self.mem,  "frmInvestmentReport")
+        self.ise.cmd.released.connect(self.on_cmdISE_released)
+        self.mem.data.accounts_active().qcombobox(self.cmbAccount)
+        
+        if self.investment==None:
+            self.tipo=1
+            self.cmdInvestment.setText(self.tr("Add a new investment"))
+            self.lblTitulo.setText(self.tr("New investment"))
+            self.investment=None
+            self.tab.setCurrentIndex(0)
+            self.tabDividends.setEnabled(False)
+            self.tabOperacionesHistoricas.setEnabled(False)
+            self.tabInvestmentCurrent.setEnabled(False)
+            self.ise.setSelected(None)
+            self.cmdPuntoVenta.setEnabled(False)
+        else:
+            self.tipo=2    
+            self.tab.setCurrentIndex(1)
+            self.lblTitulo.setText(self.investment.name)
+            self.txtInvestment.setText(self.investment.name)
+            self.txtVenta.setText(self.investment.venta)
+            if self.investment.selling_expiration==None:
+                self.chkExpiration.setCheckState(Qt.Unchecked)
+            else:
+                self.chkExpiration.setCheckState(Qt.Checked)
+                self.calExpiration.setSelectedDate(self.investment.selling_expiration)
+            self.ise.setSelected(self.investment.product)
+            self.cmdPuntoVenta.setEnabled(True)
+            self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.investment.account.id))
+            self.update_tables()      
+            if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
+                self.cmbAccount.setEnabled(False)  
 
+        self.cmdInvestment.setEnabled(False)    
+        self.showMaximized()
+        QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends)
