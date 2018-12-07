@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType
+from xulpymoney.libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType, eOperationType
 import sys
 
 class Update:
@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201812071303
+        self.lastcodeupdate=201812071715
         self.need_update()
 
    
@@ -2433,6 +2433,18 @@ CREATE TABLE high_low_contract (
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812071303)
+        if self.dbversion<201812071715:
+            cur=self.mem.con.cursor()            
+            cur.execute("insert into conceptos values(68,%s,%s,false)".format(QApplication.translate("Core","HL adjustment income"), eOperationType.Income))    
+            cur.execute("insert into conceptos values(69,%s,%s,false)".format(QApplication.translate("Core","HL adjustment expense"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(70,%s,%s,false)".format(QApplication.translate("Core","HL Guarantee payment"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(71,%s,%s,false)".format(QApplication.translate("Core","HL Guarantee return"), eOperationType.Income))     
+            cur.execute("insert into conceptos values(72,%s,%s,false)".format(QApplication.translate("Core","HL Operation commission"), eOperationType.Expense))     
+            cur.execute("insert into conceptos values(73,%s,%s,false)".format(QApplication.translate("Core","HL Paid interest"), eOperationType.Expense))     
+            cur.execute("insert into conceptos values(74,%s,%s,false)".format(QApplication.translate("Core","HL Received interest"), eOperationType.Income))     
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201812071715)     
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
