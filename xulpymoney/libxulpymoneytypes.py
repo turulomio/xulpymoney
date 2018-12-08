@@ -84,3 +84,8 @@ class eLeverageType:
     X4=4
     X5=5
     X10=10
+    
+class eMoneyCurrency:
+    Product=1
+    Account=2
+    User=3

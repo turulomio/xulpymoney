@@ -1,4 +1,5 @@
 import datetime
+import logging
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
@@ -11,6 +12,7 @@ from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
 from xulpymoney.ui.frmSplit import frmSplit
 from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -43,6 +45,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblOperationsAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistoricalAccountCurrency.settings(self.mem,  "frmInvestmentReport")
+        self.tblHlContracts.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         
@@ -77,6 +80,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
+        
+        #Removes contract tab when it isn't neccessary
+        if self.investment.product.high_low==False:
+            self.tab.removeTab(5)
+        
+        
         QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
@@ -152,7 +161,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             else:
                 self.chkHistoricalDividends.setChecked(Qt.Checked)
                 self.chkHistoricalDividends.setEnabled(False)
-    
+        
+        #Show contracts if it's a hig_low product
+        if self.investment.product.high_low==True:
+            self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
 
     @pyqtSlot() 
     def on_actionDividendAdd_triggered(self):
@@ -482,8 +494,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         except:
             self.op.selected=None
         print (self.tr("Selected: {0}".format(str(self.op.selected))))
-        
-        
+
     def on_tblDividends_customContextMenuRequested(self,  pos):
         if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
             return
@@ -514,3 +525,36 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.selDividend=None
         print ("Dividend selected: " +  str(self.selDividend))        
 
+
+    def on_chkHistoricalContracts_stateChanged(self, state):
+        self.tblHlContracts.clearSelection()
+        if state==Qt.Unchecked:   
+            self.hlcontracts=self.investment.hlcontractmanager.subSet_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
+        else:
+            self.hlcontracts=self.investment.hlcontractmanager
+            
+        self.hlcontracts.myqtablewidget(self.tblHlContracts, eMoneyCurrency.Account)
+        
+    def on_tblHlContracts_itemSelectionChanged(self):
+        try:
+            for i in self.tblHlContracts.selectedItems():#itera por cada item no row.
+                self.investment.hlcontractmanager.selected=self.investment.hlcontractmanager.arr[i.row()]
+        except:
+            self.investment.hlcontractmanager.cleanSelection()
+        logging.debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.investment.hlcontractmanager.selected))))
+
+    def on_tblHlContracts_customContextMenuRequested(self,  pos):
+        logging.debug("POPPING")
+        if self.investment.hlcontractmanager.selected:
+            self.actionContractEdit.setEnabled(True)
+            self.actionContractRemove.setEnabled(True)
+        else:
+            self.actionContractEdit.setEnabled(False)
+            self.actionContractRemove.setEnabled(False)
+            
+        menu=QMenu()
+        menu.addAction(self.actionContractAdd)
+        menu.addAction(self.actionContractEdit)
+        menu.addAction(self.actionContractRemove)       
+        
+        menu.exec_(self.tblHlContracts.mapToGlobal(pos))
