@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmHlContractAddui</class>
- <widget class="QDialog" name="frmHlContractAddui">
+ <class>frmHlContractAdd</class>
+ <widget class="QDialog" name="frmHlContractAdd">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -150,17 +150,14 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="wdgCurrencyConversion" name="wdgCurrencyConversion" native="true"/>
-       </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="lblLiquido">
          <property name="text">
           <string>Commission amount</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="3" column="1">
         <widget class="myQLineEdit" name="txtCommission">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -230,12 +227,6 @@
    <class>wdgDatetime</class>
    <extends>QWidget</extends>
    <header location="global">wdgDatetime</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>wdgCurrencyConversion</class>
-   <extends>QWidget</extends>
-   <header location="global">wdgCurrencyConversion</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

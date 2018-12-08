@@ -448,8 +448,9 @@ CREATE TABLE public.high_low_contract (
     interest numeric(100,2) NOT NULL,
     guarantee_ao integer,
     adjustment_ao integer,
-    comission_ao integer,
-    interest_ao integer
+    commission_ao integer,
+    interest_ao integer,
+    currency_conversion numeric(10,6) DEFAULT 1 NOT NULL
 );
 
 
@@ -1230,7 +1231,7 @@ ALTER TABLE ONLY public.high_low_contract
 --
 
 ALTER TABLE ONLY public.high_low_contract
-    ADD CONSTRAINT high_low_contract_fk_comission_ao FOREIGN KEY (comission_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
+    ADD CONSTRAINT high_low_contract_fk_comission_ao FOREIGN KEY (commission_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
 
 
 --
@@ -8135,7 +8136,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201812071715');
+INSERT INTO public.globals VALUES (1, 'Version', '201812080918');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');

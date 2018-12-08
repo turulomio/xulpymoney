@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QDialog,  QWidget
+from PyQt5.QtWidgets import QDialog
 from decimal import Decimal
 from xulpymoney.libxulpymoney import HlContract
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmHlContractAdd import Ui_frmHlContractAdd
 
 class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
@@ -9,7 +10,7 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
         """
         Si dividend es None se insertar
         Si dividend es un objeto se modifica"""
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         self.investment=investment
@@ -20,14 +21,13 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
         if self.hlcontract==None:#insert
             self.hlcontract=HlContract(self.mem, self.investment)
             self.cmd.setText(self.tr("Add new High-Low contract"))
-            self.wdgDT.set(self.mem, None, self.mem.localzone)        
-        
+            self.wdgDT.set(self.mem, None, self.mem.localzone)
         else:#update
             self.wdgDT.set(self.mem, self.hlcontract.datetime, self.mem.localzone)
-            self.txtGuarantee.setText(self.hlcontract.getGuarantee(type=2))
-            self.txtAdjustment.setText(self.hlcontract.getAdjustment(type=2))
-            self.txtInterest.setText(self.hlcontract.getInterest(type=2))
-            self.txtCommission.setText(self.hlcontract.getCommission(type=2))
+            self.txtGuarantee.setText(self.hlcontract.getGuarantee(eMoneyCurrency.Product).amount)
+            self.txtAdjustment.setText(self.hlcontract.getAdjustment(eMoneyCurrency.Product).amount)
+            self.txtInterest.setText(self.hlcontract.getInterest(eMoneyCurrency.Product).amount)
+            self.txtCommission.setText(self.hlcontract.getCommission(eMoneyCurrency.Product).amount)
             self.cmd.setText(self.tr("Update High-Low contract"))
 
     def on_cmd_pressed(self):                        
@@ -38,7 +38,7 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
         try:
             self.hlcontract.setGuarantee(self.txtGuarantee.decimal())
             self.hlcontract.setAdjustment(self.txtAdjustment.decimal())
-            self.hlcontract.setCommissions(self.txtCommission.decimal())
+            self.hlcontract.setCommission(self.txtCommission.decimal())
             self.hlcontract.setInterest(self.txtInterest.decimal())
             self.hlcontract.datetime=self.wdgDT.datetime()
         except:

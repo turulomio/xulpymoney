@@ -21,7 +21,7 @@ from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  l10nDecimal, deprecated
-from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor
+from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
 getcontext().prec=20
@@ -8063,8 +8063,9 @@ class ProductTypesManager(ObjectManager_With_IdName_Selectable):
         return r
 
 ## Class to manage CDF daily contracts.
-class HlContract:
+class HlContract(QObject):
     def __init__(self, mem, investment):
+        QObject.__init__(self)
         self.mem=mem
         self.id=None
         self.investment=investment
@@ -8077,23 +8078,17 @@ class HlContract:
         self.adjustment_ao=None
         self.interest_ao=None
         self.commission_ao=None
-    @property
-    def selected(self):
-        return self.__selected
-        
-    @selected.setter
-    def selected(self, value):
-        self.__selected=value
+
     def __repr__(self):
-        return ("HLContract {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}. Currency conversion {7}".format(self.investment.name, self.investment.id,  self.datetime, self.tipooperacion.name,  self.shares,  self.valor_accion, id(self), self.currency_conversion))
+        return (self.tr("HLContract {} for {} at {}").format(self.id, self.investment.name,  self.datetime))
 
     def init__db_row(self,  row):
         self.id=row['id']
         self.datetime=row['datetime']
-        self.guarantee=row['guarantee']
-        self.adjustment=row['adjustment']
-        self.commission=row['commission']
-        self.interest=row['interest']
+        self.setGuarantee(row['guarantee'])
+        self.setAdjustment(row['adjustment'])
+        self.setCommission(row['commission'])
+        self.setInterest(row['interest'])
         self.guarantee_ao=row['guarantee_ao']#Integers to point operaccount
         self.adjustment_ao=row['adjustment_ao']
         self.interest_ao=row['interest_ao']
@@ -8126,26 +8121,26 @@ class HlContract:
         investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
         return investment.op.find(row['id_operinversiones'])
         
-    def getGuarantee(self, type=1):
-        if type==1:
+    def getGuarantee(self, type):
+        if type==eMoneyCurrency.Product:
             return Money(self.mem, self.__guarantee, self.investment.product.currency)
         else:
             return Money(self.mem, self.__guarantee, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def getAdjustment(self, type=1):
-        if type==1:
+    def getAdjustment(self, type):
+        if type==eMoneyCurrency.Product:
             return Money(self.mem, self.__adjustment,  self.investment.product.currency)
         else:
             return Money(self.mem, self.__adjustment, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def getCommission(self, type=1):
-        if type==1:
+    def getCommission(self, type):
+        if type==eMoneyCurrency.Product:
             return Money(self.mem, self.__commission,  self.investment.product.currency)
         else:
             return Money(self.mem, self.__commission, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def getInterest(self, type=1):
-        if type==1:
+    def getInterest(self, type):
+        if type==eMoneyCurrency.Product:
             return Money(self.mem, self.__interest, self.investment.product.currency)
         else:
             return Money(self.mem, self.__interest, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
@@ -8158,6 +8153,26 @@ class HlContract:
         self.__commission=value
     def setAdjustment(self, value):
         self.__adjustment=value
+
+
+    ## Removes from database contract, and all operaccounts asociated
+    def delete_from_db(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from high_low_contract where id=%s", (self.id, ))
+        cur.close()
+        if self.guarantee_ao!=None:
+            AO=AccountOperation(self.mem, self.guarantee_ao)
+            AO.borrar()
+        if self.adjustment_ao!=None:
+            AO=AccountOperation(self.mem, self.adjustment_ao)
+            AO.borrar()
+        if self.interest_ao!=None:
+            AO=AccountOperation(self.mem, self.interest_ao)
+            AO.borrar()
+        if self.commission_ao!=None:
+            AO=AccountOperation(self.mem, self.commission_ao)
+            AO.borrar()
+        
 
     def find_by_mem(self, investment, id):
         """
@@ -8173,64 +8188,40 @@ class HlContract:
         print ("Investment operation {} hasn't been found in mem".format(id))
         return None
 
-    def actualizar_cuentaoperacion_asociada(self):
-        """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
-        se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
-        que se puede actualizar en cualquier momento con esta función"""
-        self.comentario=Comment(self.mem).setEncoded10007(self)
-        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como parámetro
-        cur=self.mem.con.cursor()
-        cur.execute("delete from opercuentas where id_operinversiones=%s",(self.id, )) 
-        cur.close()
-        if self.tipooperacion.id==4:#Compra Acciones
-            #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            importe=-self.gross(type=2)-self.comission(type=2)
-            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
-            c.save()
-        elif self.tipooperacion.id==5:#// Venta Acciones
-            #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            importe=self.gross(type=2)-self.comission(type=2)-self.taxes(type=2)
-            c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
-            c.save()
-        elif self.tipooperacion.id==6:
-            #//Si hubiera comisión se añade la comisión.
-            if(self.comision!=0):
-                importe=-self.comission(type=2)-self.taxes(type=2)
-                c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.investment.account, self,self.investment, None)
-                c.save()
-
     ## Save this HlContract. If self.id==None inserts else updates.
     def save(self):
+        type=eMoneyCurrency.Product
         comment=Comment(self.mem).setEncoded10007(self)
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
             if self.__guarantee!=0:
                 concepto=self.mem.conceptos.find_by_id(71) if self.__guarantee>0 else self.mem.conceptos.find_by_id(70)
-                guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getGuarantee(type=2).value, comment, self.investment.account, None)
+                guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getGuarantee(type).amount, comment, self.investment.account, None)
                 guarantee_AO.save()
                 self.guarantee_ao=guarantee_AO.id
             if self.__adjustment!=0:
                 concepto=self.mem.conceptos.find_by_id(68) if self.__adjustment>0 else self.mem.conceptos.find_by_id(69)
-                adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getAdjustment(type=2).value, comment, self.investment.account, None)
+                adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getAdjustment(type).amount, comment, self.investment.account, None)
                 adjustment_AO.save()
                 self.adjustment_ao=adjustment_AO.id
         
-            cur.execute("insert into high_low_contract(datetime, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao) values (%s,%s,%s,%s,%s, %s, %s, %s, %s) returning id", (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao))
+            cur.execute("insert into high_low_contract(datetime, investments_id, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao) values (%s, %s, %s,%s,%s,%s, %s, %s, %s, %s) returning id", (self.datetime, self.investment.id,  self.getGuarantee(type).amount, self.getAdjustment(type).amount, self.getCommission(type).amount, self.getInterest(type).amount, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao))
             self.id=cur.fetchone()[0]
-            self.investment.hl_contracts.append(self)
+            self.investment.hlcontractmanager.append(self)
+            self.investment.hlcontractmanager.order_by_datetime()
         else:
             if self.guarantee_ao!=None:
                 guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.getGuarantee(type=2)
+                guarantee_AO.importe=self.getGuarantee(type)
                 guarantee_AO.save()
                 self.guarantee_ao=guarantee_AO.id
             if self.adjustment_ao!=None:
                 guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.getGuarantee(type=2)
+                guarantee_AO.importe=self.getGuarantee(type)
                 guarantee_AO.save()
                 self.guarantee_ao=guarantee_AO.id
             cur.execute("update high_low_contract set datetime=%s, guarantee=%s, adjustment=%s, commission=%s, interest=%s,guarantee_ao=%s,adjustment_ao=%s,%interest_ao=%s, commission_ao=%s where id=%s", (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
-            self.actualizar_cuentaoperacion_asociada()
+            self.investment.hlcontractmanager.order_by_datetime()
         cur.close()
    
 class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
@@ -8238,17 +8229,6 @@ class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)        
         self.mem=mem
 
-    ## Function that acts like a constructor
-    ## @param sql, to get from high_low_contract table, for example: select * from high_low_contract order by datetime;
-    def init__from_db(self, sql):
-        self.clean()
-        cur=self.mem.con.cursor()
-        cur.execute(sql)
-        for row in cur:                
-            hl=HlContract(self.mem).init__db_row(row)
-            self.append(hl)
-        cur.close()
-        return self
     ## Returns the sum of guarantees
     def guarantees(self, type):
         currency=self.investment.resultsCurrency(type)
@@ -8278,15 +8258,30 @@ class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
             r=r+o.getCommission(type)
         return r
         
+    ## Removes from array and from database
+    def delete_from_db(self, obj):
+        obj.delete_from_db()
+        ObjectManager_With_IdDatetime_Selectable.remove(self, obj)
+        
 class HlContractManagerHomogeneus(HlContractManagerHeterogeneus, QObject):
     def __init__(self, mem, investment):
         QObject.__init__(self)
         HlContractManagerHeterogeneus.__init__(self, mem)
         self.investment=investment
 
-
+    ## Function that acts like a constructor
+    ## @param sql, to get from high_low_contract table, for example: select * from high_low_contract order by datetime;
+    def init__from_db(self, sql):
+        self.clean()
+        cur=self.mem.con.cursor()
+        cur.execute(sql)
+        for row in cur:
+            hl=HlContract(self.mem, self.investment).init__db_row(row)
+            self.append(hl)
+        cur.close()
+        return self
     ## @param table
-    ## @param type eMoneyCcurrency 
+    ## @param type eMoneyCurrency 
     def myqtablewidget(self, table, type):
         table.setColumnCount(5)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date and time" )))

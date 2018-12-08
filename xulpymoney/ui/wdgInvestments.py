@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
-from xulpymoney.ui.frmInvestmentHlReport import frmInvestmentHlReport
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.frmProductReport import frmProductReport
 
@@ -76,14 +75,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
-        #        launchFrmInvestmentReport(self.mem, self.selInvestment.product.high_low, self.selInvestment, self)
-        print(self.selInvestment.product.high_low)
-        if self.selInvestment.product.high_low==False:
-            w=frmInvestmentReport(self.mem,  self.selInvestment, self)
-            w.exec_()
-        else:
-            w=frmInvestmentHlReport(self.mem, self.selInvestment, self)
-            w.exec_()
+        w=frmInvestmentReport(self.mem,  self.selInvestment, self)
+        w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 

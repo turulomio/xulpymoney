@@ -10,6 +10,7 @@ from xulpymoney.ui.frmSellingPoint import frmSellingPoint
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
+from xulpymoney.ui.frmHlContractAdd import frmHlContractAdd
 from xulpymoney.ui.frmSplit import frmSplit
 from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
@@ -185,6 +186,26 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.selDividend.borrar()
         self.mem.con.commit()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
+
+    @pyqtSlot() 
+    def on_actionContractAdd_triggered(self):
+        w=frmHlContractAdd(self.mem, self.investment,  None, self)
+        w.exec_()
+        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
+
+        
+    @pyqtSlot() 
+    def on_actionContractEdit_triggered(self):
+        w=frmHlContractAdd(self.mem, self.investment, self.hlcontracts.selected, self)
+        w.exec_()
+        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
+
+        
+    @pyqtSlot() 
+    def on_actionContractDelete_triggered(self):
+        self.investment.hlcontractmanager.delete_from_db(self.hlcontracts.selected)
+        self.mem.con.commit()
+        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
 
     @pyqtSlot() 
     def on_actionChangeBenchmarkPrice_triggered(self):
@@ -439,7 +460,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addSeparator()
         menu.addAction(self.actionSplit)
         menu.exec_(self.tblOperations.mapToGlobal(pos))
-        
+
+
     def on_tblInvestmentCurrent_itemSelectionChanged(self):
         self.investment.op_actual.selected=None
         try:
@@ -478,7 +500,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
-
 
     def on_tblOperations_itemSelectionChanged(self):
         self.op.selected=None
@@ -533,28 +554,30 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.hlcontracts=self.investment.hlcontractmanager
             
-        self.hlcontracts.myqtablewidget(self.tblHlContracts, eMoneyCurrency.Account)
-        
+        self.hlcontracts.myqtablewidget(self.tblHlContracts, eMoneyCurrency.Product)
+
+                
     def on_tblHlContracts_itemSelectionChanged(self):
+        logging.debug("POPPING")
         try:
             for i in self.tblHlContracts.selectedItems():#itera por cada item no row.
-                self.investment.hlcontractmanager.selected=self.investment.hlcontractmanager.arr[i.row()]
+                self.hlcontracts.selected=self.investment.hlcontractmanager.arr[i.row()]
         except:
-            self.investment.hlcontractmanager.cleanSelection()
-        logging.debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.investment.hlcontractmanager.selected))))
+            self.hlcontracts.cleanSelection()
+        logging.debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.hlcontracts.selected))))
 
     def on_tblHlContracts_customContextMenuRequested(self,  pos):
         logging.debug("POPPING")
-        if self.investment.hlcontractmanager.selected:
+        if self.hlcontracts.selected:
             self.actionContractEdit.setEnabled(True)
-            self.actionContractRemove.setEnabled(True)
+            self.actionContractDelete.setEnabled(True)
         else:
             self.actionContractEdit.setEnabled(False)
-            self.actionContractRemove.setEnabled(False)
+            self.actionContractDelete.setEnabled(False)
             
         menu=QMenu()
         menu.addAction(self.actionContractAdd)
         menu.addAction(self.actionContractEdit)
-        menu.addAction(self.actionContractRemove)       
+        menu.addAction(self.actionContractDelete)       
         
         menu.exec_(self.tblHlContracts.mapToGlobal(pos))
