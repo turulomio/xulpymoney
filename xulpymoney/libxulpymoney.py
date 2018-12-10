@@ -8280,6 +8280,7 @@ class HlContractManagerHomogeneus(HlContractManagerHeterogeneus, QObject):
             self.append(hl)
         cur.close()
         return self
+
     ## @param table
     ## @param type eMoneyCurrency 
     def myqtablewidget(self, table, type):

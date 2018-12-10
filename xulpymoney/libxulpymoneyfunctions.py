@@ -520,6 +520,12 @@ def none2decimal0(s):
         return Decimal('0')
     return s
 
+
+## Usado en el sistema de estrategia cero
+def relacion_beneficio_riesgo(objetivo, entrada,  stoploss):
+    return Decimal(abs(objetivo-entrada)/abs(entrada-stoploss))
+
+
 def qbool(bool):
     """Prints bool and check. Is read only and enabled"""
     if bool==None:
