@@ -12,7 +12,7 @@ from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
 from xulpymoney.ui.frmHlContractAdd import frmHlContractAdd
 from xulpymoney.ui.frmSplit import frmSplit
-from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager,  InvestmentOperationHomogeneusManager,  days2string
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager, HlContractManagerHomogeneus, InvestmentOperationHomogeneusManager,  days2string
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
@@ -550,7 +550,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_chkHistoricalContracts_stateChanged(self, state):
         self.tblHlContracts.clearSelection()
         if state==Qt.Unchecked:   
-            self.hlcontracts=self.investment.hlcontractmanager.subSet_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
+            if self.investment.op_actual.length()==0:
+                self.hlcontracts=HlContractManagerHomogeneus(self.mem, self.investment)
+            else:
+                self.hlcontracts=self.investment.hlcontractmanager.subSet_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
         else:
             self.hlcontracts=self.investment.hlcontractmanager
             

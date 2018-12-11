@@ -935,7 +935,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         s1=ods.createSheet("Products")
         s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE    ',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS']], "OrangeCenter")
         for row, p in enumerate(products.arr):
-            print(p.name)
             s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
         ods.save()
 
@@ -1908,11 +1907,6 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         result=ProductManager(self.mem)
         result.arr=list(s)
         return result
-        
-    def print_list(self):
-        print ("\n Imprimiendo SIO Heterogéneo",  self)
-        for oia in self.arr:
-            print ("  - ", oia)
 
     def order_by_datetime(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
@@ -1975,6 +1969,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)       
+        print(self.investment, self.investment.product)
         if self.investment.product.high_low==False:
             for o in self.arr:                
                 if o.shares>=0:#Compra
@@ -1986,9 +1981,9 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                     sioa.historizar(o, sioh)
             sioa.get_valor_benchmark(self.mem.data.benchmark)
             return (sioa, sioh)
-        else:
+        else: # Not High-Low product
             for o in self.arr:
-                print("Añadiendo io con {} teniendo el set ioa {}".format(o.shares, sioa.shares()))
+                logging.debug("Añadiendo io con {} teniendo el sioa {}".format(o.shares, sioa.shares()))
                 if sioa.shares()==0:
                     sioa.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
                 elif sioa.shares()>0 and o.shares>0:
@@ -2000,12 +1995,6 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             sioa.get_valor_benchmark(self.mem.data.benchmark)
             return (sioa, sioh)
 
-    def print_list(self):
-        print ("\n Imprimiendo SIO de",  self.investment.name)
-        for oia in self.arr:
-            print ("  - ", oia)
-            
-        
     def myqtablewidget(self, tabla, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_accounts, muestra el producto y la cuenta
@@ -2264,78 +2253,48 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         remaining=io.shares
         while True:#No se usa for porque se van insertando en self.arr en el bucle
             ioa=self.arr[0]
-            print ("Inicio bucle historizado con  ioa con {}, quedando {}".format(ioa.shares, remaining))
+            logging.debug ("Inicio bucle historizado quedando {} con  ioa con {}, ".format(remaining, ioa.shares))
             if io.shares<0 and self.shares()>0: #operacion de venta cuando estoy en positivo. Debo historizar
                 if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    print("A")
+                    logging.debug("A")
                     sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     self.arr.remove(ioa)
                     break
                 if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    print("B")
+                    logging.debug("B")
                     sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.remove(ioa)
                     break
                 else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
-                    print("C")
+                    logging.debug("C")
                     remaining=remaining+ioa.shares
                     sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
+                    self.arr.remove(ioa)                   
+                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     break
 
             elif io.shares>0 and self.shares()<0: #operacion de venta cuando estoy en positivo. Debo historizar
                 if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    print("D")
+                    logging.debug("D")
                     sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     self.arr.remove(ioa)
                     break
                 if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    print("E")
+                    logging.debug("E")
                     sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.remove(ioa)
                     break
                 else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
-                    print("F")
+                    logging.debug("F")
                     remaining=remaining+ioa.shares
                     sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
                     break
 
-            print("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
-        print("Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
+            logging.debug("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
+        logging.debug("Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
 
-#1                if ioa.shares-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
-#                    comisiones=comisiones+io.comision+ioa.comision
-#                    impuestos=impuestos+io.impuestos+ioa.impuestos
-#                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-#                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-abs(accionesventa), 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
-#                    self.arr.remove(ioa)
-#                    accionesventa=Decimal('0')#Sale bucle
-#                    break
-#                elif ioa.shares-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
-#                    comisiones=comisiones+ioa.comision
-#                    impuestos=impuestos+ioa.impuestos
-#                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-#                    accionesventa=accionesventa-ioa.shares                    
-#                    self.arr.remove(ioa)
-#                elif ioa.shares-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
-#                    comisiones=comisiones+io.comision+ioa.comision
-#                    impuestos=impuestos+io.impuestos+ioa.impuestos
-#                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(),  io.tipooperacion, -ioa.shares, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-#                    self.arr.remove(ioa)                    
-#                    accionesventa=Decimal('0')#Sale bucle                    
-#                    break
-#        if inicio-self.shares()-abs(io.shares)!=Decimal('0'):
-#            logging.critical ("Error en historizar. diff {}. Inicio {}. Fin {}. {}".format(inicio-self.shares()-abs(io.shares),  inicio,   self.shares(), io))
-                
-        
-    def print_list(self):
-        self.order_by_datetime()
-        print ("\n Imprimiendo SIOA",  self)
-        for oia in self.arr:
-            print ("  - ", oia)
-        
-        
 class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationCurrentHeterogeneusManager.__init__(self, mem)
@@ -3028,7 +2987,7 @@ class InvestmentOperationCurrent:
         first=Quote(self.mem).init__from_query( self.investment.product, dt_first).quote
         last=Quote(self.mem).init__from_query( self.investment.product, dt_last).quote
         money=Money(self.mem, (last-first)*self.shares, self.investment.product.currency)
-        print("{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.shares, dt_last, dt_first, last, first, last-first,  money))
+        logging.debug("{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.shares, dt_last, dt_first, last, first, last-first,  money))
         if type==1:
             return money
         elif type==2:
@@ -3048,7 +3007,7 @@ class InvestmentOperationCurrent:
         first=Quote(self.mem).init__from_query( self.investment.product, dt_first).quote
         last=Quote(self.mem).init__from_query( self.investment.product, dt_last).quote
         money=Money(self.mem, (last-first)*self.shares, self.investment.product.currency)
-        print("ANNUAL:{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.shares, dt_last, dt_first, last, first, last-first,  money))
+        logging.debug("ANNUAL:{} {} {} accciones. {}-{}. {}-{}={} ({})".format(self.investment.name, self.datetime, self.shares, dt_last, dt_first, last, first, last-first,  money))
         if type==1:
             return money
         elif type==2:
@@ -3323,7 +3282,6 @@ class Comment:
         elif code==10004:#Comentario de cuenta asociada al dividendo
             self.validateLength(1, code, args)
             dividend=self.getDividend(args[0], code)
-            print(dividend)
             investment=self.mem.data.investments.find_by_id(dividend.investment.id)
             if investment.hasSameAccountCurrency():
                 return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
@@ -3536,7 +3494,7 @@ class DBAdmin:
             cont.disconnect()
             return True
         except:
-            print ("Conection to template1 failed")
+            logging.critical ("Conection to template1 failed")
             return False
 
     def create_db(self, database):
@@ -3547,7 +3505,7 @@ class DBAdmin:
             cur=cont.cursor()
             cur.execute("create database {0};".format(database))
         else:
-            print ("You need to be superuser to create database")
+            logging.critical ("You need to be superuser to create database")
             return False
         
         
@@ -3571,7 +3529,7 @@ class DBAdmin:
         """It has database parameter, due to I connect to template to drop database"""
         
         if self.db_exists(database)==False:
-            print("Database doesn't exist")
+            logging.info("Database doesn't exist")
             return True
         
         if self.con.is_superuser():
@@ -3582,15 +3540,15 @@ class DBAdmin:
                 cur=new.cursor()
                 cur.execute("drop database {0};".format(database))
             except:
-                print ("Error in drop()")
+                logging.error ("Error in drop()")
             finally:
                 cur.close()
                 new.disconnect()
                 return False
-            print("Database droped")
+            logging.info("Database droped")
             return True
         else:
-            print ("You need to be superuser to drop a database")
+            logging.warning ("You need to be superuser to drop a database")
             return False
         
 
@@ -3616,7 +3574,7 @@ class DBAdmin:
         cur_destiny.copy_from(f, table_destiny)
         cur_destiny.close()
         f.seek(0)
-        print (f.read())
+        logging.debug (f.read())
         f.close()
         
     def xulpymoney_basic_schema(self):
@@ -3670,7 +3628,7 @@ class DBData:
         start=datetime.datetime.now()
         self.products=ProductManager(self.mem)
         self.products.load_from_db("select * from products", progress)
-        print("DBData > Products took {}".format(datetime.datetime.now()-start))
+        logging.debug("DBData > Products took {}".format(datetime.datetime.now()-start))
         
         self.benchmark=self.products.find_by_id(int(self.mem.settingsdb.value("mem/benchmark", "79329" )))
         self.benchmark.needStatus(2)
@@ -3682,7 +3640,7 @@ class DBData:
             if p.type.id==6:
                 p.needStatus(3)
                 self.currencies.append(p)
-        print("DBData > Currencies took {}".format(datetime.datetime.now()-start))
+        logging.debug("DBData > Currencies took {}".format(datetime.datetime.now()-start))
         
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
@@ -4008,7 +3966,7 @@ class InvestmentOperation:
                 found=i.op.find(id)
                 if found!=None:
                     return found
-        print ("Investment operation {} hasn't been found in mem".format(id))
+        logging.debug ("Investment operation {} hasn't been found in mem".format(id))
         return None
 
     def actualizar_cuentaoperacion_asociada(self):
@@ -4494,7 +4452,7 @@ class Investment:
         else:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
-                print ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
+                logging.debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Money(self.mem, 0, self.product.currency)
             return Money(self.mem, acciones*self.quote2money(quote, type).amount, currency)
         
@@ -4989,11 +4947,9 @@ class Assets:
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.percentage==0:        
                 resultado=resultado+inv.balance( fecha, type=3)
-        #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
             
     def dividends_neto(self, ano,  mes=None):
@@ -5039,15 +4995,12 @@ class Assets:
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        #        inicio=datetime.datetime.now()
         for inv in self.mem.data.investments.arr:
-            print (inv,  inv.product)
             if inv.product.type.id in (eProductType.PublicBond, eProductType.PrivateBond):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.balance().local()
                 else:
                     resultado=resultado+inv.balance( fecha).local()
-        #        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
@@ -5784,7 +5737,6 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount+money.amount, self.currency)
         else:
-            print (self.currency, money.currency )
             logging.error("Before adding, please convert to the same currency")
             raise "MoneyOperationException"
             
@@ -6337,8 +6289,6 @@ class Product:
             self.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.id))
             self.result=QuotesResult(self.mem, self)
             self.result.get_basic()
-            
-            logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=1
         elif self.status==0 and statusneeded==2:
             self.needStatus(1)
@@ -6391,10 +6341,6 @@ class Product:
 
     def has_basic_data(self):
         """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, lastyear, thisyearestimation_dps)"""
-#        result=QuotesResult(self.mem, self)
-#        result.get_basic_and_ohcls()
-#        dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
-#        print (dps.estimation, dps)
         self.needStatus(1)
         (last, penultimate, lastyear, estimation)=(False, False, False, False)
         if self.result.basic.last: 
@@ -6503,7 +6449,7 @@ class QuoteManager(ObjectManager):
             else:
                 malos.append(q)
                 
-        print ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
+        logging.debug ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
         return (insertados, ignored, modificados, malos)
 
     def addTo(self, settoadd):
@@ -6926,7 +6872,7 @@ class ProductUpdate:
 
         ##### GOOGLE #####
         sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used)
-        print(sql)
+        logging.debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
@@ -6934,7 +6880,7 @@ class ProductUpdate:
 
         ##### GOOGLE INDICES  #####
         sql="select * from products where type in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google))
-        print(sql)
+        logging.debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
@@ -6942,7 +6888,7 @@ class ProductUpdate:
 
         ##### INFOBOLSA CURRENCIES  #####
         sql="select * from products where type in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo))
-        print(sql)
+        logging.debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
@@ -7669,7 +7615,7 @@ class QuotesResult:
             order by year 
         """.format(self.product.id))
         
-        print ("QuotesResult.get_ohcls of '{}' took {} with {} splits and {} dividends".format(self.product.name, datetime.datetime.now()-inicioall, self.product.splits.length(), self.product.dps.length()))
+        logging.debug ("QuotesResult.get_ohcls of '{}' took {} with {} splits and {} dividends".format(self.product.name, datetime.datetime.now()-inicioall, self.product.splits.length(), self.product.dps.length()))
         
 
     def get_all(self):
@@ -7741,7 +7687,6 @@ class Simulation:
         
     def save(self):
         cur=self.mem.con.cursor()
-        print (self.type)
         if self.id==None:
             cur.execute("insert into simulations (database, type, starting, ending, creation) values (%s,%s,%s,%s,%s) returning id", (self.database, self.type.id, self.starting, self.ending, self.creation))
             self.id=cur.fetchone()[0]
@@ -8185,7 +8130,7 @@ class HlContract(QObject):
                 found=i.op.find(id)
                 if found!=None:
                     return found
-        print ("Investment operation {} hasn't been found in mem".format(id))
+        logging.warning ("Investment operation {} hasn't been found in mem".format(id))
         return None
 
     ## Save this HlContract. If self.id==None inserts else updates.
@@ -8319,7 +8264,6 @@ class Maintenance:
     def regenera_todas_opercuentasdeoperinversiones(self):
          
         for inv in self.mem.data.investments.arr:
-            print (inv)
             inv.actualizar_cuentasoperaciones_asociadas()
         self.mem.con.commit()        
         
@@ -8482,7 +8426,7 @@ class MemXulpymoney:
         self.con=Connection().init__create(args.user,  password,  args.host, args.port, args.db)
         self.con.connect()
         if not self.con.is_active():
-            print (QCoreApplication.translate("Core", "Error connecting to database"))
+            logging.critical(QCoreApplication.translate("Core", "Error connecting to database"))
             sys.exit(255)        
         self.load_db_data(progress=False, load_data=False)
         return args
@@ -8495,27 +8439,6 @@ class MemXulpymoney:
     def setQTranslator(self, qtranslator):
         self.qtranslator=qtranslator
 
-    def set_admin_mode(self, pasw):
-        cur=self.con.cursor()
-        cur.execute("update globals set value=md5(%s) where id_globals=6;", (pasw, ))
-        cur.close()
-        
-    def check_admin_mode(self, pasw):
-        """Returns: 
-                - None: No admin password yet
-                - True: parameter pasw is ok
-                - False: parameter pasw is wrong"""
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=6")
-        val=cur.fetchone()[0]
-        if val==None or val=="":
-            resultado=None
-        else:
-            cur.execute("select value=md5(%s) from globals where id_globals=6;", (pasw, ))
-            resultado=cur.fetchone()[0]
-        cur.close()
-        print (resultado,  "check_admin_mode")
-        return resultado
         
 
     def load_db_data(self, progress=True, load_data=True):
