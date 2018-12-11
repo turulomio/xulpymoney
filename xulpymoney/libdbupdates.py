@@ -21,11 +21,10 @@ class Update:
     """
     def __init__(self, mem):
         self.mem=mem
-        self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201812110601
+        self.dbversion=self.get_database_version()
+        self.lastcodeupdate=201812110755
         self.need_update()
 
-   
     def get_database_version(self):
         """REturns None or an Int"""
         cur=self.mem.con.cursor()
@@ -37,7 +36,7 @@ class Update:
         cur.close()
         self.dbversion=int(resultado)
         return self.dbversion
-        
+
     def set_database_version(self, valor):
         """Tiene el commit"""
         print("**** Updating database from {} to {}".format(self.dbversion, valor))
@@ -59,10 +58,10 @@ class Update:
             qmessagebox(QApplication.translate("Core","Xulpymoney app is older than database. Please update it."))
             sys.exit(3)
             return
-            
+
         if self.dbversion==self.lastcodeupdate:
             return 
-        
+
         if self.dbversion<self.lastcodeupdate:
             if self.mem.con.is_superuser():
                 self.run()
@@ -2461,6 +2460,12 @@ CREATE TABLE high_low_contract (
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812110601)
+        if self.dbversion<201812110755:
+            cur=self.mem.con.cursor()
+            cur.execute("ALTER TABLE opportunities DROP COLUMN pci")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201812110755)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
