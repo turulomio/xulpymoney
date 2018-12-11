@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from xulpymoney.ui.Ui_wdgOpportunities import Ui_wdgOpportunities
-from xulpymoney.libxulpymoney import OpportunityManager
+from xulpymoney.opportunities import OpportunityManager
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 from xulpymoney.ui.wdgCalculator import wdgCalculator
@@ -57,7 +57,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
             d.setWindowTitle(self.tr("Investment calculator"))
             w=wdgCalculator(self.mem, self)
             w.setProduct(self.opportunities.selected.product)
-            w.txtFinalPrice.setText(self.opportunities.selected.price)
+            w.txtFinalPrice.setText(self.opportunities.selected.entry)
             lay = QVBoxLayout(d)
             lay.addWidget(w)
             d.exec_()
@@ -88,7 +88,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         lay = QVBoxLayout(d)
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.opportunities.selected.product, None)
-        wc.setPrice(self.opportunities.selected.price)
+        wc.setPrice(self.opportunities.selected.entry)
         wc.generate()
         wc.display()
         lay.addWidget(wc)
@@ -101,7 +101,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         else:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(4))#Purchase
         frm.txtAcciones.setText(self.opportunities.selected.shares)
-        frm.wdg2CPrice.setTextA(self.opportunities.selected.price)
+        frm.wdg2CPrice.setTextA(self.opportunities.selected.entry)
 
     @pyqtSlot(int)     
     def on_cmbMode_currentIndexChanged(self, index):

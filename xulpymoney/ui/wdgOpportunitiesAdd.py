@@ -1,7 +1,7 @@
 import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
-from xulpymoney.libxulpymoney import Opportunity
+from xulpymoney.opportunities import Opportunity
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
 
@@ -22,7 +22,7 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
         else:
             self.lbl.setText("Edit opportunity")
             self.deDate.setDate(self.opportunity.date)
-            self.txtPrice.setText(self.opportunity.price)
+            self.txtPrice.setText(self.opportunity.entry)
             self.productSelector.setSelected(self.opportunity.product)
 
     @pyqtSlot()
@@ -35,7 +35,7 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
             return
             
         self.opportunity.date=self.deDate.date().toPyDate()
-        self.opportunity.price=self.txtPrice.decimal()
+        self.opportunity.entry=self.txtPrice.decimal()
         self.opportunity.product=self.productSelector.selected
         
         self.opportunity.save()

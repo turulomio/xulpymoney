@@ -139,6 +139,7 @@ class frmProductSelector(QDialog):
         self.products=self.mem.data.products.ProductManager_contains_string(self.txt.text().upper())
         self.products.setSelectionMode(ManagerSelectionMode.Object)
         self.products.needStatus(1, progress=True)
+        self.products.order_by_name()
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
         self.products.myqtablewidget(self.tblInvestments)  
         
