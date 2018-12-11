@@ -597,8 +597,11 @@ CREATE TABLE public.opportunities (
     date date NOT NULL,
     removed date,
     executed date,
-    price numeric(100,2) NOT NULL,
-    products_id integer NOT NULL
+    entry numeric(100,2) NOT NULL,
+    products_id integer NOT NULL,
+    target numeric(100,2),
+    stoploss numeric(100,2),
+    pci character(1) DEFAULT 'c'::bpchar
 );
 
 
@@ -8136,7 +8139,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201812080918');
+INSERT INTO public.globals VALUES (1, 'Version', '201812110601');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8149,7 +8152,7 @@ INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2009');
-INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
+INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '1');
 INSERT INTO public.globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO public.globals VALUES (8, 'wdgIndexRange/invertir', '5000');
 INSERT INTO public.globals VALUES (9, 'wdgIndexRange/minimo', '500');
