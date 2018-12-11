@@ -308,11 +308,11 @@ def list2string(lista):
                 resultado=resultado+ "'" + str(l) + "', "
             return resultado[:-2]
             
-def string2list(s):
+def string2list_of_integers(s, separator=", "):
     """Convers a string of integer separated by comma, into a list of integer"""
     arr=[]
     if s!="":
-        arrs=s.split(",")
+        arrs=s.split(separator)
         for a in arrs:
             arr.append(int(a))
     return arr
