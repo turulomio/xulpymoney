@@ -129,4 +129,3 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             if i.column()==0:
                 self.selAccount=self.accounts.arr[i.row()]
                 break
-        print (self.selAccount)

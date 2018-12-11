@@ -25,7 +25,6 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
             if maxgains<consolidado:
                 maxgains=consolidado
                 selected=inv
-                print (inv.name, consolidado)
         if selected==None:
             c.setText(self.tr("You still hasn't gains"))
         else:

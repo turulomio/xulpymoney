@@ -20,7 +20,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  l10nDecimal, deprecated
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
 from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
@@ -1564,7 +1564,6 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
-            print (o.importe,  l10nDecimal(o.importe))
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
             table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))       
             table.setItem(i+1, 5, qleft(o.id))
@@ -2246,7 +2245,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
     def historizar_high_low(self, io,  sioh):
         self.order_by_datetime()
         
-        print("Historizando io con {} en sioa con {}".format(io.shares, self.shares()))
+        logging.debug("Historizando io con {} en sioa con {}".format(io.shares, self.shares()))
         
         comisiones=Decimal('0')
         impuestos=Decimal('0')
