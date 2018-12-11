@@ -404,17 +404,18 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, -1)
         inv.op=InvestmentOperationHomogeneusManager(self.mem, inv)
         p_last_operation=Percentage(self.txtLastOperationPercentage.decimal(), 100)
-        buyprice=self.txtBuyPrice.decimal()
+
+        m_purchase=Money(self.mem, self.txtBuyPrice.decimal(), self.product.currency)
         #index=0 purchase, 1 = first reinvestment
         lastIO=None
         for index, amount in enumerate(self.amounts):
             lastIO=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
                                                                                             self.mem.localzone.now(), 
                                                                                             inv, 
-                                                                                            int(self.amounts[index]/buyprice), 
+                                                                                            int(self.amounts[index]/m_purchase.amount), 
                                                                                             0, 
                                                                                             0, 
-                                                                                            buyprice, 
+                                                                                            m_purchase.amount, 
                                                                                             "",  
                                                                                             True, 
                                                                                             1,  
@@ -422,30 +423,28 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
                                                                                         )
             inv.op.append(lastIO)
             (inv.op_actual, inv.op_historica)=inv.op.calcular()
-            
-            m_r1_purchase=Money(self.mem, lastIO.valor_accion*(1-p_last_operation.value),  self.product.currency)
-            new_purchase_price=self.view.appendTemporalSeries(self.tr("Purchase {}: {}").format(index, m_r1_purchase.string()),  self.product.currency)
+            new_purchase_price=self.view.appendTemporalSeries(self.tr("Purchase price {}: {}").format(index, m_purchase.string()),  self.product.currency)
             new_purchase_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Buy))
             new_purchase_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Buy))
-            self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_r1_purchase.amount)
-            self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_r1_purchase.amount)
+            self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_purchase.amount)
+            self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_purchase.amount)
         
-            
             m_new_average_price=inv.op_actual.average_price()
             m_new_selling_price=inv.op_actual.average_price_after_a_gains_percentage(percentage)
-            new_average_price=self.view.appendTemporalSeries(self.tr("Buy {}: {}".format(index, m_new_average_price)),  self.product.currency)
+            new_average_price=self.view.appendTemporalSeries(self.tr("Average price {}: {}".format(index, m_new_average_price)),  self.product.currency)
             new_average_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Average))
             new_average_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Average))
             self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_new_average_price.amount)
             self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_new_average_price.amount)
 
-            new_selling_price=self.view.appendTemporalSeries(self.tr("Sell {} at {} to gain {}".format(index, m_new_selling_price, inv.op_actual.gains_from_percentage(percentage))),  self.product.currency)
+            new_selling_price=self.view.appendTemporalSeries(self.tr("Sell price {} at {} to gain {}".format(index, m_new_selling_price, inv.op_actual.gains_from_percentage(percentage))),  self.product.currency)
             new_selling_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Sell))
             new_selling_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Sell))
             self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
             self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
 
-            buyprice=lastIO.valor_accion*(1-p_last_operation.value)
+#            buyprice=lastIO.valor_accion*(1-p_last_operation.value)
+            m_purchase=Money(self.mem, lastIO.valor_accion*(1-p_last_operation.value),  self.product.currency)
 
 #        #FIRST REINVESTMENT
 #        p_last_operation=Percentage(self.txtLastOperationPercentage.decimal(), 100)
