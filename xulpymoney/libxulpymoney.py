@@ -2465,12 +2465,12 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             
-            tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.shares)))
+            tabla.setItem(rownumber, 1, qright(a.shares))
             tabla.setItem(rownumber, 2, a.price(type).qtablewidgetitem())            
             tabla.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.tpc_anual(quote, quote_lastyear, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.tpc_anual().qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -3115,23 +3115,35 @@ class InvestmentOperationCurrent:
         elif type==eMoneyCurrency.User:
             return money.convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
             
-    def tpc_anual(self,  last,  lastyear, type=1):        
-        """
-            last is a Money object with investment.product currency
-            type puede ser:
-                1 Da el tanto por  ciento en la currency de la inversi´on
-                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
-                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
-        """
-        mlast=self.investment.quote2money(last, type)
-        
-        if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
-            mlastyear=self.price(type)
+    def tpc_anual(self):        
+#        """
+#            last is a Money object with investment.product currency
+#            type puede ser:
+#                1 Da el tanto por  ciento en la currency de la inversi´on
+#                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
+#                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
+#        """
+#        mlast=self.investment.quote2money(last, type)
+#        
+#        if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
+#            mlastyear=self.price(type)
+#        else:
+#            mlastyear=self.investment.quote2money(lastyear, type)
+#            
+#        return Percentage(mlast-mlastyear, mlastyear)
+        last=self.investment.product.result.basic.last.quote
+        if self.datetime.year==datetime.date.today().year:
+            lastyear=self.valor_accion #Product value, self.price(type) not needed.
         else:
-            mlastyear=self.investment.quote2money(lastyear, type)
-            
-        return Percentage(mlast-mlastyear, mlastyear)
-    
+            lastyear=self.investment.product.result.basic.lastyear.quote
+        if last==None or lastyear==None:
+            return Percentage()
+
+        if self.shares>0:
+            return Percentage(last-lastyear, lastyear)
+        else:
+            return Percentage(-(last-lastyear), lastyear)
+
     def tpc_total(self,  last,  type=1):
         """
             last is a Quote object 
