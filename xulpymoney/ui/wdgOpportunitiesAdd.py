@@ -22,12 +22,14 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
         else:
             self.lbl.setText("Edit opportunity")
             self.deDate.setDate(self.opportunity.date)
-            self.txtPrice.setText(self.opportunity.entry)
+            self.txtEntry.setText(self.opportunity.entry)
+            self.txtTarget.setText(self.opportunity.target)
+            self.txtStoploss.setText(self.opportunity.stoploss)
             self.productSelector.setSelected(self.opportunity.product)
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
-        if not (self.txtPrice.isValid()):
+        if not (self.txtEntry.isValid()):
             qmessagebox(self.tr("Incorrect data. Try again."))
             return
         if self.productSelector.selected==None:
@@ -35,7 +37,9 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
             return
             
         self.opportunity.date=self.deDate.date().toPyDate()
-        self.opportunity.entry=self.txtPrice.decimal()
+        self.opportunity.entry=self.txtEntry.decimal()
+        self.opportunity.target=self.txtTarget.decimal()
+        self.opportunity.stoploss=self.txtStoploss.decimal()
         self.opportunity.product=self.productSelector.selected
         
         self.opportunity.save()
