@@ -2455,7 +2455,6 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
 
         if quote==None:
             quote=self.investment.product.result.basic.last
-        quote_lastyear=self.investment.product.result.basic.lastyear
 
         tabla.applySettings()
         tabla.clearContents()
@@ -2713,20 +2712,16 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Account" )))
         tabla.setHorizontalHeaderItem(2+diff, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
         tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
-        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Initial gross" )))
+        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Final gross" )))
+        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Gross gains" )))
         tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
         tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
         tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
         tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
-        #DATA    
-                
-                
+
         currency=self.investment.resultsCurrency(type)
-        
-        
         (sumbruto, sumneto)=(Money(self.mem, 0, currency), Money(self.mem, 0, currency))
         sumsaldosinicio=Money(self.mem, 0, currency)
         sumsaldosfinal=Money(self.mem, 0, currency)
@@ -2735,8 +2730,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         sumoperacionesnegativas=Money(self.mem, 0, currency)
         sumimpuestos=Money(self.mem, 0, currency)
         sumcomision=Money(self.mem, 0, currency)
- 
- 
+
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
@@ -2842,11 +2836,10 @@ class InvestmentOperationHistorical:
         return False
         
     def consolidado_bruto(self, type=1):
-        """Solo acciones"""
-        currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        return self.bruto_venta(type)-self.bruto_compra(type)
+        try:
+            return self.bruto_venta(type)-self.bruto_compra(type)
+        except:
+            return Money(self.mem, 0, self.investment.resultsCurrency(type))
         
     def consolidado_neto(self, type=1):
         currency=self.investment.resultsCurrency(type)
@@ -2860,23 +2853,33 @@ class InvestmentOperationHistorical:
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)
 
-    def bruto_compra(self, type=1):
-        currency=self.investment.resultsCurrency(type)
+    def bruto_compra(self, type=eMoneyCurrency.Product):
         if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        if type==1:
-            return Money(self.mem, -self.shares*self.valor_accion_compra, self.investment.product.currency)
+            value=0
+        if self.investment.product.high_low==True:
+            value=abs(self.shares)*self.valor_accion_compra*self.investment.product.leveraged.multiplier
         else:
-            return Money(self.mem, -self.shares*self.valor_accion_compra, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
+            value=self.shares*self.valor_accion_compra
+            
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        else:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
         
     def bruto_venta(self, type=1):
-        currency=self.investment.resultsCurrency(type)
         if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        if type==1:
-            return Money(self.mem, -self.shares*self.valor_accion_venta, self.investment.product.currency)
+            value=0
+        if self.investment.product.high_low==True:
+            value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
         else:
-            return Money(self.mem, -self.shares*self.valor_accion_venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion_venta)
+            value=self.shares*self.valor_accion_venta
+            
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        else:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
         
     def taxes(self, type=1):
         if type==1:
@@ -3116,21 +3119,6 @@ class InvestmentOperationCurrent:
             return money.convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
             
     def tpc_anual(self):        
-#        """
-#            last is a Money object with investment.product currency
-#            type puede ser:
-#                1 Da el tanto por  ciento en la currency de la inversi´on
-#                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
-#                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
-#        """
-#        mlast=self.investment.quote2money(last, type)
-#        
-#        if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
-#            mlastyear=self.price(type)
-#        else:
-#            mlastyear=self.investment.quote2money(lastyear, type)
-#            
-#        return Percentage(mlast-mlastyear, mlastyear)
         last=self.investment.product.result.basic.last.quote
         if self.datetime.year==datetime.date.today().year:
             lastyear=self.valor_accion #Product value, self.price(type) not needed.
