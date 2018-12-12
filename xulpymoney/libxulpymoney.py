@@ -228,7 +228,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
-            table.setItem(i, 4, inv.product.result.basic.tpc_diario().qtablewidgetitem())
+            table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
             table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
@@ -2353,10 +2353,9 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.penultimate( type)
         return resultado
         
-        
+    ## Función que calcula la diferencia de balance entre last y penultimate
+    ## Necesita haber cargado mq getbasic y operinversionesactual
     def gains_last_day(self, type=1):
-        """Función que calcula la diferencia de balance entre last y penultimate
-        Necesita haber cargado mq getbasic y operinversionesactual"""
         return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
 
     def gains_in_selling_point(self, type=1):
@@ -2397,6 +2396,18 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             if pendiente.isLETZero():
                 resultado=resultado+pendiente
         return resultado
+
+    ## We dont'use result basic tpc_diario due to HL can be sold or bought
+    def tpc_diario(self):
+        last=self.investment.product.result.basic.last.quote
+        penultimate=self.investment.product.result.basic.penultimate.quote
+        if last==None or penultimate==None:
+            return Percentage()
+            
+        if self.shares()>0:
+            return Percentage(last-penultimate, penultimate)
+        else:
+            return Percentage(-(last-penultimate), penultimate)
 
     def tpc_tae(self, last,  type=1):
         dias=self.average_age()
@@ -2952,17 +2963,20 @@ class InvestmentOperationCurrent:
         else:
             self.referenciaindice=quote
         return self.referenciaindice
-        
-    def invertido(self, type=1):
-        """Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
-        Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
-        """
-        if type==1:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
-        elif type==3:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
+    ## Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
+    ## Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
+    def invertido(self, type=eMoneyCurrency.Product):
+        if self.investment.product.high_low==True:
+            value=abs(self.shares*self.valor_accion*self.investment.product.leveraged.multiplier)
+        else:
+            value=self.shares*self.valor_accion
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
     
     def price(self, type=1):
         if type==1:
@@ -3039,55 +3053,67 @@ class InvestmentOperationCurrent:
         elif type==2:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def balance(self,  lastquote, type=1):
+    def balance(self,  lastquote, type=eMoneyCurrency.Product):
         """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote
                 type si da el resultado en la currency del account o en el de la inversion"""
-        currency=self.investment.resultsCurrency(type)
         if lastquote.quote==None:#Empty xulpy
-            return Money(self.mem, 0, currency)
+            value=0
+        elif self.investment.product.high_low==True:
+            if self.shares>0:# Bought
+                value=self.shares*lastquote.quote*self.investment.product.leveraged.multiplier
+            else:
+                diff=(lastquote.quote-self.valor_accion)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
+        else: #HL False
+            value=self.shares*lastquote.quote
             
-        if self.investment.product.high_low==True:
-            m=abs(self.shares*lastquote.quote*self.investment.product.leveraged.multiplier)
-        else:
-            m=self.shares*lastquote.quote
-        if type==1:
-            return Money(self.mem, m, self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, m, self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime)
-        elif type==3:
-            return Money(self.mem, m, self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
+        money=Money(self.mem, value, self.investment.product.currency)
+
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert(self.investment.account.currency, lastquote.datetime)
+        elif type==eMoneyCurrency.User:
+            return money.convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
         if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
             return True
         return False
-        
+
+    ## Función que calcula el balance  pendiente de la operacion de inversion actual
+    ## Necesita haber cargado mq getbasic y operinversionesactual 
+    ## lasquote es un objeto Quote
     def pendiente(self, lastquote,  type=1):
-        """Función que calcula el balance  pendiente de la operacion de inversion actual
-                Necesita haber cargado mq getbasic y operinversionesactual
-                lasquote es un objeto Quote
-                """
         return self.balance(lastquote, type)-self.invertido(type)
+            
 
-    def penultimate(self, type=1):
-        """
-            Función que calcula elbalance en el penultimate ida
-        """
-        
-        currency=self.investment.resultsCurrency(type)
+    ## Función que calcula elbalance en el penultimate ida
+    def penultimate(self, type=eMoneyCurrency.Product):        
         penultimate=self.investment.product.result.basic.penultimate
-        if self.shares==0 or penultimate.quote==None:#Empty xulpy
+        if penultimate.quote==None:#Empty xulpy
             logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.investment.name))
-            return Money(self.mem, 0, currency)
+            value=0
+        elif self.investment.product.high_low==True:
+            if self.shares>0:# Bought
+                value=self.shares*penultimate.quote*self.investment.product.leveraged.multiplier
+            else:
+                diff=(penultimate.quote-self.valor_accion)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
+        elif self.investment.product.high_low==False:
+            value=self.shares*penultimate.quote
 
-        if type==1:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency).convert(self.investment.account.currency, penultimate.datetime)#Al ser balance actual usa el datetime actual
-        elif type==3:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency).convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert(self.investment.account.currency, penultimate.datetime)#Al ser balance actual usa el datetime actual
+        elif type==eMoneyCurrency.User:
+            return money.convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
             
     def tpc_anual(self,  last,  lastyear, type=1):        
         """
