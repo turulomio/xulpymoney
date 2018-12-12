@@ -79,12 +79,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
 
+            #Removes contract tab when it isn't neccessary
+            if self.investment.product.high_low==False:
+                self.tab.removeTab(5)
+
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
         
-        #Removes contract tab when it isn't neccessary
-        if self.investment.product.high_low==False:
-            self.tab.removeTab(5)
         
         
         QApplication.restoreOverrideCursor()
