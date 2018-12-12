@@ -3044,15 +3044,19 @@ class InvestmentOperationCurrent:
                 - lastquote: objeto Quote
                 type si da el resultado en la currency del account o en el de la inversion"""
         currency=self.investment.resultsCurrency(type)
-        if self.shares==0 or lastquote.quote==None:#Empty xulpy
+        if lastquote.quote==None:#Empty xulpy
             return Money(self.mem, 0, currency)
-
+            
+        if self.investment.product.high_low==True:
+            m=abs(self.shares*lastquote.quote*self.investment.product.leveraged.multiplier)
+        else:
+            m=self.shares*lastquote.quote
         if type==1:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency)
+            return Money(self.mem, m, self.investment.product.currency)
         elif type==2:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime)
+            return Money(self.mem, m, self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime)
         elif type==3:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
+            return Money(self.mem, m, self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
@@ -4259,6 +4263,20 @@ class Investment:
         self.id=id
         return self
 
+    ## Replicates an investment with data at datetime
+    ## Loads self.op, self.op_actual, self.op_historica and self.hlcontractmanager
+    ## @param dt Datetime 
+    ## @return Investment
+    def Investment_At_Datetime(self, dt):
+        start=datetime.datetime.now()
+        r=self.copy()
+        r.op=self.op.copy_until_datetime(dt, self.mem, r)
+        (r.op_actual,  r.op_historica)=r.op.calcular()
+        if r.product.high_low==True:
+            r.hlcontractmanager=self.hlcontractmanager.copy_until_datetime(dt, self.mem, r)
+        logging.debug("Creating Investment_At_Datetime of {} took {}".format(self, datetime.datetime.now()-start))
+        return r
+
     def copy(self ):
         return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
     
@@ -4437,14 +4455,12 @@ class Investment:
             return QMessageBox.No
         return QMessageBox.Yes
         
+    ## Función que calcula el balance de la inversión
     def balance(self, fecha=None, type=1):
-        """Función que calcula el balance de la inversión
-            Si el cur es None se calcula el actual 
-                Necesita haber cargado mq getbasic y operinversionesactual"""     
-        acciones=self.shares(fecha)
-        currency=self.resultsCurrency(type)
-        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-            return Money(self.mem, 0, currency)
+#        acciones=self.shares(fecha)
+#        currency=self.resultsCurrency(type)
+#        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
+#            return Money(self.mem, 0, currency)
                 
         if fecha==None:
             return self.op_actual.balance(self.product.result.basic.last, type)
@@ -4453,7 +4469,8 @@ class Investment:
             if quote.datetime==None:
                 logging.debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Money(self.mem, 0, self.product.currency)
-            return Money(self.mem, acciones*self.quote2money(quote, type).amount, currency)
+            return self.Investment_At_Datetime(self.mem.localzone.now()).op_actual.balance(quote, type)
+
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
