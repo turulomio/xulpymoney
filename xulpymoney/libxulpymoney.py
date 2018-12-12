@@ -4249,11 +4249,11 @@ class Investment:
         self.selling_expiration=None
         self.merge=0#Used for mergin investments. 0 normal investment, 1 merging current operations, 2 merging operations
 
-    def init__create(self, name, venta, cuenta, inversionmq, selling_expiration, active, id=None):
+    def init__create(self, name, venta, cuenta, product, selling_expiration, active, id=None):
         self.name=name
         self.venta=venta
         self.account=cuenta
-        self.product=inversionmq
+        self.product=product
         self.active=active
         self.selling_expiration=selling_expiration
         self.id=id
@@ -4455,14 +4455,14 @@ class Investment:
                 return Money(self.mem, 0, self.product.currency)
             return Money(self.mem, acciones*self.quote2money(quote, type).amount, currency)
         
+    ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
+    ## Necesita haber cargado mq getbasic y operinversionesactual
     def invertido(self, date=None, type=1):
-        """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
-        Necesita haber cargado mq getbasic y operinversionesactual"""
         if date==None or date==datetime.date.today():#Current
             return self.op_actual.invertido(type)
         else:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
-            invfake=Investment(self.mem).copy()
+            invfake=self.copy()
             invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
             (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
             return invfake.op_actual.invertido(type)
