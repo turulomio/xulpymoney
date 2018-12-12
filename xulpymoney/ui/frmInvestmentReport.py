@@ -119,7 +119,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 dt=self.mem.localzone.now()
             else:
                 dt=first.datetime
-            self.op=self.investment.op.subSet_from_datetime(dt, self.mem, self.investment)
+            self.op=self.investment.op.ObjectManager_from_datetime(dt, self.mem, self.investment)
         else:
             self.op=self.investment.op
             
@@ -554,7 +554,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             if self.investment.op_actual.length()==0:
                 self.hlcontracts=HlContractManagerHomogeneus(self.mem, self.investment)
             else:
-                self.hlcontracts=self.investment.hlcontractmanager.subSet_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
+                self.hlcontracts=self.investment.hlcontractmanager.ObjectManager_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
         else:
             self.hlcontracts=self.investment.hlcontractmanager
             

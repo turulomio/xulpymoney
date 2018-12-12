@@ -318,7 +318,17 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         if average==None:
             return None
         return round(average, 2)
-            
+
+    ## Returns an InvestmentManager with operations with datetime before to parameter
+    ## @param dt Aware datetime
+    ## @return InvestmentManager
+    def InvestmentManager_At_Datetime(self, dt):
+        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            result.append(inv.Investment_At_Datetime(dt))
+        return result
+
+
     ## Returns and InvestmentManager object with all investmentes with the same product passed as parameter
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
@@ -2153,7 +2163,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             tabla.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.balance(a.investment.product.result.basic.last, type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.pendiente(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8, a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.lastyear, type=2).qtablewidgetitem())
+            tabla.setItem(rownumber, 8, a.tpc_anual().qtablewidgetitem())
             tabla.setItem(rownumber, 9, a.tpc_tae(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             tabla.setItem(rownumber, 10, a.tpc_total(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -2273,22 +2283,22 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     break
 
-            elif io.shares>0 and self.shares()<0: #operacion de venta cuando estoy en positivo. Debo historizar
+            elif io.shares>0 and self.shares()<0: #operacion de compra cuando estoy en negativo. Debo historizar
                 if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
                     logging.debug("D")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     self.arr.remove(ioa)
                     break
                 if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
                     logging.debug("E")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.remove(ioa)
                     break
                 else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
                     logging.debug("F")
                     remaining=remaining+ioa.shares
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
                     break
 
             logging.debug("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
@@ -2859,7 +2869,7 @@ class InvestmentOperationHistorical:
         if self.investment.product.high_low==True:
             value=abs(self.shares)*self.valor_accion_compra*self.investment.product.leveraged.multiplier
         else:
-            value=self.shares*self.valor_accion_compra
+            value=abs(self.shares)*self.valor_accion_compra
             
         money=Money(self.mem, value, self.investment.product.currency)
         if type==eMoneyCurrency.Product:
@@ -2868,12 +2878,27 @@ class InvestmentOperationHistorical:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
         
     def bruto_venta(self, type=1):
+#        if self.tipooperacion.id in (9, 10):
+#            value=0
+#        if self.investment.product.high_low==True:
+#            value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
+#        else:
+#            value=self.shares*self.valor_accion_venta
+#            
+            
+            
         if self.tipooperacion.id in (9, 10):
             value=0
-        if self.investment.product.high_low==True:
-            value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
-        else:
-            value=self.shares*self.valor_accion_venta
+        elif self.investment.product.high_low==True:
+            if self.shares<0:# Sell after a primary bought
+                value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
+            else:# Bought after a primary sell
+                diff=(self.valor_accion_venta-self.valor_accion_compra)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion_compra*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
+        else: #HL False
+            value=abs(self.shares)*self.valor_accion_venta
+            
             
         money=Money(self.mem, value, self.investment.product.currency)
         if type==eMoneyCurrency.Product:
@@ -4296,10 +4321,10 @@ class Investment:
     def Investment_At_Datetime(self, dt):
         start=datetime.datetime.now()
         r=self.copy()
-        r.op=self.op.copy_until_datetime(dt, self.mem, r)
+        r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
         (r.op_actual,  r.op_historica)=r.op.calcular()
         if r.product.high_low==True:
-            r.hlcontractmanager=self.hlcontractmanager.copy_until_datetime(dt, self.mem, r)
+            r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
         logging.debug("Creating Investment_At_Datetime of {} took {}".format(self, datetime.datetime.now()-start))
         return r
 
@@ -4506,7 +4531,7 @@ class Investment:
         else:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=self.copy()
-            invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
+            invfake.op=self.op.ObjectManager_copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
             (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
             return invfake.op_actual.invertido(type)
                 

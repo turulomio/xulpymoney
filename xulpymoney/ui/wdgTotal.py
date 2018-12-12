@@ -4,7 +4,7 @@ from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
-from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.libxulpymoneytypes import eQColor, eOperationType
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
 from xulpymoney.ui.canvaschart import VCTemporalSeries
@@ -873,7 +873,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if inv.product.type.id==type.id:
                     #gains
                     for o in inv.op_historica.arr:
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
+                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (eOperationType.SharesSale, eOperationType.TransferFunds):
                             gains=gains+o.consolidado_bruto().local()
                     #dividends
                     setdiv=DividendHeterogeneusManager(self.mem)
