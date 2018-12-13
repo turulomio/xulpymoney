@@ -45,7 +45,7 @@ class Percentage:
         elif o.__class__==Percentage:
             return o.value
         else:
-            print (o.__class__)
+            logging.debug(o.__class__)
             return None
         
     def __repr__(self):
@@ -1067,11 +1067,11 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 changed.append(p_xlsx)
 
         #Sumary
-        print("{} Products changed".format(len(changed)))
+        logging.debug("{} Products changed".format(len(changed)))
         for p in changed:
             print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             p.save()
-        print("{} Products added".format(len(added)))
+        logging.debug("{} Products added".format(len(added)))
         for p in added:
             print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
@@ -1977,8 +1977,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
     def calcular(self):
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
-        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)       
-        print(self.investment, self.investment.product)
+        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         if self.investment.product.high_low==False:
             for o in self.arr:                
                 if o.shares>=0:#Compra
@@ -4319,13 +4318,11 @@ class Investment:
     ## @param dt Datetime 
     ## @return Investment
     def Investment_At_Datetime(self, dt):
-        start=datetime.datetime.now()
         r=self.copy()
         r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
         (r.op_actual,  r.op_historica)=r.op.calcular()
         if r.product.high_low==True:
             r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
-        logging.debug("Creating Investment_At_Datetime of {} took {}".format(self, datetime.datetime.now()-start))
         return r
 
     def copy(self ):
@@ -4507,7 +4504,7 @@ class Investment:
         return QMessageBox.Yes
         
     ## Función que calcula el balance de la inversión
-    def balance(self, fecha=None, type=1):
+    def balance(self, fecha=None, type=eMoneyCurrency.Product):
 #        acciones=self.shares(fecha)
 #        currency=self.resultsCurrency(type)
 #        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
@@ -4519,9 +4516,8 @@ class Investment:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 logging.debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
-                return Money(self.mem, 0, self.product.currency)
-            return self.Investment_At_Datetime(self.mem.localzone.now()).op_actual.balance(quote, type)
-
+                return Money(self.mem, 0, self.resultsCurrency(type) )
+            return self.Investment_At_Datetime(day_end_from_date(fecha, self.mem.localzone)).op_actual.balance(quote, type)
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual

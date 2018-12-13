@@ -192,14 +192,13 @@ def sync_data(con_source, con_target, progress=None):
 
         if output!="{}: ".format(row['name']):
             products=products+1
-            print(output)
+            logging.debug(output)
             
         if progress!=None:#If there's a progress bar
             progress.setValue(cur_target.rownumber)
             progress.setMaximum(cur_target.rowcount)
             QCoreApplication.processEvents()
     con_target.commit()
-    print("")
     
     if progress!=None:
         s=QCoreApplication.translate("Core", """From {} desynchronized products added:

@@ -58,7 +58,6 @@ class wdgProductSelector(QWidget):
     def setSelected(self, product):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
         self.selected=product
-        print (self.selected)
         if self.selected==None:
             self.txt.setText(self.tr("Not selected"))
             self.cmdProduct.setEnabled(False)     

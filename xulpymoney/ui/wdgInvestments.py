@@ -1,5 +1,7 @@
+import datetime
+import logging
 from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate
-from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox
+from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox, day_end_from_date
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments
@@ -27,7 +29,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         else:
             self.tblInvestments.setSaveSettings(True)
             self.tblInvestments.setColumnHidden(8, False)
-            
+
         self.investments.myqtablewidget(self.tblInvestments)
         invested=self.investments.invested()
         pendiente=self.investments.pendiente()
