@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOpportunitiesAdd(object):
     def setupUi(self, wdgOpportunitiesAdd):
         wdgOpportunitiesAdd.setObjectName("wdgOpportunitiesAdd")
-        wdgOpportunitiesAdd.resize(959, 206)
+        wdgOpportunitiesAdd.resize(959, 260)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOpportunitiesAdd.setWindowIcon(icon)
@@ -49,13 +49,27 @@ class Ui_wdgOpportunitiesAdd(object):
         self.label_2 = QtWidgets.QLabel(wdgOpportunitiesAdd)
         self.label_2.setObjectName("label_2")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_2)
-        self.txtPrice = myQLineEdit(wdgOpportunitiesAdd)
-        self.txtPrice.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.txtPrice.setObjectName("txtPrice")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.txtPrice)
+        self.txtEntry = myQLineEdit(wdgOpportunitiesAdd)
+        self.txtEntry.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.txtEntry.setObjectName("txtEntry")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.txtEntry)
         self.label_5 = QtWidgets.QLabel(wdgOpportunitiesAdd)
         self.label_5.setObjectName("label_5")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_5)
+        self.label = QtWidgets.QLabel(wdgOpportunitiesAdd)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label)
+        self.label_3 = QtWidgets.QLabel(wdgOpportunitiesAdd)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.txtStoploss = myQLineEdit(wdgOpportunitiesAdd)
+        self.txtStoploss.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.txtStoploss.setObjectName("txtStoploss")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.txtStoploss)
+        self.txtTarget = myQLineEdit(wdgOpportunitiesAdd)
+        self.txtTarget.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.txtTarget.setObjectName("txtTarget")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.txtTarget)
         self.verticalLayout.addLayout(self.formLayout)
         self.buttonbox = QtWidgets.QDialogButtonBox(wdgOpportunitiesAdd)
         self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
@@ -66,13 +80,20 @@ class Ui_wdgOpportunitiesAdd(object):
 
         self.retranslateUi(wdgOpportunitiesAdd)
         QtCore.QMetaObject.connectSlotsByName(wdgOpportunitiesAdd)
+        wdgOpportunitiesAdd.setTabOrder(self.txtEntry, self.txtTarget)
+        wdgOpportunitiesAdd.setTabOrder(self.txtTarget, self.txtStoploss)
+        wdgOpportunitiesAdd.setTabOrder(self.txtStoploss, self.deDate)
 
     def retranslateUi(self, wdgOpportunitiesAdd):
         _translate = QtCore.QCoreApplication.translate
         self.deDate.setDisplayFormat(_translate("wdgOpportunitiesAdd", "yyyy/MM/dd"))
         self.label_2.setText(_translate("wdgOpportunitiesAdd", "Opportunity date"))
-        self.txtPrice.setText(_translate("wdgOpportunitiesAdd", "0"))
-        self.label_5.setText(_translate("wdgOpportunitiesAdd", "Price"))
+        self.txtEntry.setText(_translate("wdgOpportunitiesAdd", "0"))
+        self.label_5.setText(_translate("wdgOpportunitiesAdd", "Entry"))
+        self.label.setText(_translate("wdgOpportunitiesAdd", "Target"))
+        self.label_3.setText(_translate("wdgOpportunitiesAdd", "Stop loss"))
+        self.txtStoploss.setText(_translate("wdgOpportunitiesAdd", "0"))
+        self.txtTarget.setText(_translate("wdgOpportunitiesAdd", "0"))
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
