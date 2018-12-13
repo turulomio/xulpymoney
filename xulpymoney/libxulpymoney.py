@@ -3133,7 +3133,7 @@ class InvestmentOperationCurrent:
                 diff=(penultimate.quote-self.valor_accion)*abs(self.shares)*self.investment.product.leveraged.multiplier
                 init_balance=self.valor_accion*abs(self.shares)*self.investment.product.leveraged.multiplier
                 value=init_balance-diff
-        elif self.investment.product.high_low==False:
+        else:
             value=self.shares*penultimate.quote
 
         money=Money(self.mem, value, self.investment.product.currency)
