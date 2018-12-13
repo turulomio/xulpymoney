@@ -1,16 +1,18 @@
 import datetime
 from decimal import Decimal
-from xulpymoney.libxulpymoney import Percentage, qmessagebox, qdate, qleft, qempty
+from xulpymoney.libxulpymoney import Percentage, qmessagebox, qdate, qleft, qempty, qright
+from xulpymoney.libxulpymoneyfunctions import relation_gains_risk
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.libxulpymoneytypes import eQColor
-from PyQt5.QtWidgets import QTableWidgetItem,   QApplication
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtCore import QObject
 
 ## Class that register a purchase opportunity
 class Opportunity:
     ## Constructor with the following attributes combination
     ## 1. Opportunity(mem). Crete a Opportunity object with all attributes set to None
     ## 1. Opportunity(mem, row). Create an Opportunity from a db row, generated in a database query
-    ## 2. Opportunity(mem, date, removed, executed, entry, products_id, id). Create a Opportunity passing all attributes
+    ## 2. Opportunity(mem, date, removed, executed, entry, target, stoploss, products_id, id). Create a Opportunity passing all attributes
     ## @param mem MemXulpymoney object
     ## @param row Dictionary of a database query cursor
     ## @param date datetime.date object with the date of the Opportunity
@@ -21,12 +23,14 @@ class Opportunity:
     ## @param id Integer that sets the id of an Opportunity. If id=None it's not in the database. id is set in the save method
     def __init__(self, *args):
         def init__db_row( row):
-            init__create(row['date'], row['removed'], row['executed'], row['entry'], row['products_id'], row['id'])
-        def init__create(date, removed, executed, entry, products_id, id):
+            init__create(row['date'], row['removed'], row['executed'], row['entry'], row['target'], row['stoploss'], row['products_id'], row['id'])
+        def init__create(date, removed, executed, entry, target, stoploss, products_id, id):
             self.date=date
             self.removed=removed
             self.executed=executed
             self.entry=entry
+            self.stoploss=stoploss
+            self.target=target
             if products_id!=None:
                 self.product=self.mem.data.products.find_by_id(products_id)
                 self.product.needStatus(1)
@@ -35,10 +39,10 @@ class Opportunity:
             self.id=id
         self.mem=args[0]
         if len(args)==1:
-            init__create(None, None, None, None, None, None)
+            init__create(None, None, None, Decimal('0'), Decimal('0'), Decimal('0'), None, None)
         if len(args)==2:
             init__db_row(args[1])
-        if len(args)==7:
+        if len(args)==9:
             init__create(*args[1:])
 
     ## In Spanish is said "Está vigente"
@@ -60,14 +64,17 @@ class Opportunity:
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into opportunities(date, removed, executed, entry, products_id) values (%s, %s, %s, %s, %s) returning id", 
-            (self.date,  self.removed, self.executed, self.entry, self.product.id))
+            cur.execute("insert into opportunities(date, removed, executed, entry, target, stoploss, products_id) values (%s, %s, %s, %s, %s, %s, %s) returning id", 
+            (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.product.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update opportunities set date=%s, removed=%s, executed=%s, entry=%s, products_id=%s where id=%s", (self.date,  self.removed, self.executed, self.entry, self.product.id, self.id))
+            cur.execute("update opportunities set date=%s, removed=%s, executed=%s, entry=%s, target=%s, stoploss=%s, products_id=%s where id=%s", (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.product.id, self.id))
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
+        
+    def relation_gains_risk(self):
+        return relation_gains_risk(self.target, self.entry, self.stoploss)
         
     def remove(self):
         cur=self.mem.con.cursor()
@@ -78,10 +85,10 @@ class Opportunity:
     def percentage_from_current_price(self):
         return Percentage(self.entry-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
 
-
 ## Manage Opportunities
-class OpportunityManager(ObjectManager_With_IdDate):
+class OpportunityManager(ObjectManager_With_IdDate, QObject):
     def __init__(self, mem):
+        QObject.__init__(self)
         ObjectManager_With_IdDate.__init__(self)
         self.mem=mem
 
@@ -109,7 +116,7 @@ class OpportunityManager(ObjectManager_With_IdDate):
         try:
             self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
         except:            
-            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))
 
     ## Returns a datetime.date object with the date of the first opportunity in the database
     def date_of_the_first_database_oppportunity(self):
@@ -123,14 +130,17 @@ class OpportunityManager(ObjectManager_With_IdDate):
             return r[0]
 
     def myqtablewidget(self, table):
-        table.setColumnCount(7)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Removed")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Product")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Current price")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Opportunity entry")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","% from current")))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Executed")))
+        table.setColumnCount(10)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Removed")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Product")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Current price")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Entry")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Target")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("Stop loss")))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("Gains/Risk")))
+        table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% from current")))
+        table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("Executed")))
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
@@ -140,14 +150,17 @@ class OpportunityManager(ObjectManager_With_IdDate):
             table.setItem(i, 2, qleft(p.product.name))
             table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem())
             table.setItem(i, 4, p.product.currency.qtablewidgetitem(p.entry))
+            table.setItem(i, 5, p.product.currency.qtablewidgetitem(p.target))
+            table.setItem(i, 6, p.product.currency.qtablewidgetitem(p.stoploss))
+            table.setItem(i, 7, qright(p.relation_gains_risk()))
             if p.is_in_force():
-                table.setItem(i, 5, p.percentage_from_current_price().qtablewidgetitem())
+                table.setItem(i, 8, p.percentage_from_current_price().qtablewidgetitem())
             else:
-                table.setItem(i, 5, qempty())
+                table.setItem(i, 8, qempty())
             if p.is_executed():
-                table.setItem(i, 6, qdate(p.executed))
+                table.setItem(i, 9, qdate(p.executed))
             else:
-                table.setItem(i, 6, qempty())
+                table.setItem(i, 9, qempty())
                 
             #Color
             if p.is_executed():

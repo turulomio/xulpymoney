@@ -308,11 +308,11 @@ def list2string(lista):
                 resultado=resultado+ "'" + str(l) + "', "
             return resultado[:-2]
             
-def string2list(s):
+def string2list_of_integers(s, separator=", "):
     """Convers a string of integer separated by comma, into a list of integer"""
     arr=[]
     if s!="":
-        arrs=s.split(",")
+        arrs=s.split(separator)
         for a in arrs:
             arr.append(int(a))
     return arr
@@ -515,15 +515,24 @@ def bool2string(b):
         return "VERDADERO"
     return "FALSO"
     
-def none2decimal0(s):
-    if s==None:
+## Function that converts a None value into a Decimal('0')
+## @param dec Should be a Decimal value or None
+## @return Decimal
+def none2decimal0(dec):
+    if dec==None:
         return Decimal('0')
-    return s
+    return dec
 
-
-## Usado en el sistema de estrategia cero
-def relacion_beneficio_riesgo(objetivo, entrada,  stoploss):
-    return Decimal(abs(objetivo-entrada)/abs(entrada-stoploss))
+## Relation between gains and risk. Should be over 2 to be a good investment
+## @param target Decimal with investment price target
+## @param entry Decimal with investment entry price
+## @param stoploss Decimal with investment stoploss price
+## @return Decimal or None if relation can't be calculated
+def relation_gains_risk(target, entry,  stoploss):
+    try:
+        return Decimal(abs(target-entry)/abs(entry-stoploss))
+    except:
+        return None
 
 
 def qbool(bool):
