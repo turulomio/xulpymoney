@@ -20,7 +20,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
 from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 from PyQt5.QtChart import QChart
@@ -3202,7 +3202,7 @@ class Comment:
         """Returns (code,args)"""
         string=string
         try:
-            number=string2list(string)
+            number=string2list_of_integers(string)
             if len(number)==1:
                 code=number[0]
                 args=[]
@@ -8400,7 +8400,7 @@ class MemXulpymoney:
         self.taxcapitalappreciation=Decimal(self.settingsdb.value("mem/taxcapitalappreciation", "0.19"))
         self.taxcapitalappreciationbelow=Decimal(self.settingsdb.value("mem/taxcapitalappreciationbelow", "0.5"))
         self.gainsyear=str2bool(self.settingsdb.value("mem/gainsyear", "False"))
-        self.favorites=string2list(self.settingsdb.value("mem/favorites", ""))
+        self.favorites=string2list_of_integers(self.settingsdb.value("mem/favorites", ""))
         self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
         
         logging.info("Loading db data took {}".format(datetime.datetime.now()-inicio))

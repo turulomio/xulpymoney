@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>959</width>
-    <height>206</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -75,7 +75,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="myQLineEdit" name="txtPrice">
+        <widget class="myQLineEdit" name="txtEntry">
          <property name="text">
           <string>0</string>
          </property>
@@ -87,7 +87,41 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Price</string>
+          <string>Entry</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Target</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Stop loss</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="myQLineEdit" name="txtStoploss">
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="myQLineEdit" name="txtTarget">
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -120,6 +154,12 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>txtEntry</tabstop>
+  <tabstop>txtTarget</tabstop>
+  <tabstop>txtStoploss</tabstop>
+  <tabstop>deDate</tabstop>
+ </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
