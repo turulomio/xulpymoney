@@ -1,7 +1,5 @@
-import datetime
-import logging
 from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate
-from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox, day_end_from_date
+from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments

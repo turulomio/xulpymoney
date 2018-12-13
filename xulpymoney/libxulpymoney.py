@@ -323,9 +323,11 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
     ## @param dt Aware datetime
     ## @return InvestmentManager
     def InvestmentManager_At_Datetime(self, dt):
+        start=datetime.datetime.now()
         result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         for inv in self.arr:
             result.append(inv.Investment_At_Datetime(dt))
+        logging.debug("InvestmentManager_At_Datetime took {}".format(datetime.datetime.now()-start))
         return result
 
 
@@ -3709,6 +3711,9 @@ class DBData:
         #change status to 1 to self.investments products
         pros=self.investments.ProductManager_with_investments_distinct_products()
         pros.needStatus(1, progress=True)
+        
+        logging.debug("Borrar")
+        borrar=self.investments.InvestmentManager_At_Datetime(day_end_from_date(datetime.date(2017, 12, 31), self.mem.localzone))
         
         logging.info("DBData loaded: {}".format(datetime.datetime.now()-inicio))
 
