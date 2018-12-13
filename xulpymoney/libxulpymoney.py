@@ -6291,7 +6291,7 @@ class QuoteManager(ObjectManager):
             else:
                 malos.append(q)
                 
-        logging.debug ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
+        logging.debug ("Quotes: {} inserted, {} ignored, {} modified, {} errors".format(insertados.length(), ignored.length(), modificados.length(), malos.length()))
         return (insertados, ignored, modificados, malos)
 
     def addTo(self, settoadd):
