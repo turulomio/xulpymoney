@@ -124,6 +124,13 @@ class HlContract(QObject):
     ## Save this HlContract. If self.id==None inserts else updates.
     ## Database stores product amounts y product currency amount
     def save(self):
+        # Use current _ao before changing them to delete at the end of the process
+        old_guarantee_ao=self.guarantee_ao
+        old_adjustment_ao=self.adjustment_ao
+        old_interest_ao=self.interest_ao
+        old_commission_ao=self.commission_ao
+
+        # Save
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
             cur.execute("insert into high_low_contract(datetime, investments_id, guarantee, adjustment, commission, interest, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s) returning id", 
@@ -160,19 +167,19 @@ class HlContract(QObject):
         cur.execute("update high_low_contract set guarantee_ao=%s, adjustment_ao=%s, interest_ao=%s, commission_ao=%s where id=%s", 
                 (self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
         cur.close()
-
+        
         #Delete old AO. This made me change foreign key to NO ACTION.NO ACTION allows the check to be deferred until later in the transaction
         if self.guarantee_ao!=None:
-            AO=AccountOperation(self.mem, self.guarantee_ao)
+            AO=AccountOperation(self.mem, old_guarantee_ao)
             AO.borrar()
         if self.adjustment_ao!=None:
-            AO=AccountOperation(self.mem, self.adjustment_ao)
+            AO=AccountOperation(self.mem, old_adjustment_ao)
             AO.borrar()
         if self.interest_ao!=None:
-            AO=AccountOperation(self.mem, self.interest_ao)
+            AO=AccountOperation(self.mem, old_interest_ao)
             AO.borrar()
         if self.commission_ao!=None:
-            AO=AccountOperation(self.mem, self.commission_ao)
+            AO=AccountOperation(self.mem, old_commission_ao)
             AO.borrar()
         
         self.investment.hlcontractmanager.order_by_datetime()
