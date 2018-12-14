@@ -38,6 +38,7 @@ class eOperationType:
     TransferFunds=8
     TransferSharesOrigin=9
     TransferSharesDestiny=10
+    Guarantee=11
     
 class eTickerPosition(IntEnum):
     """It's the number to access to a python list,  not to postgresql. In postgres it will be +1"""
