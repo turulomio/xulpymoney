@@ -126,46 +126,56 @@ class HlContract(QObject):
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-        
-            cur.execute("insert into high_low_contract(datetime, investments_id, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao, currency_conversion) values (%s, %s, %s,%s,%s,%s, %s, %s, %s, %s, %s) returning id", 
-                (self.datetime, self.investment.id,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.currency_conversion))
+            cur.execute("insert into high_low_contract(datetime, investments_id, guarantee, adjustment, commission, interest, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s) returning id", 
+                (self.datetime, self.investment.id,  self.guarantee, self.adjustment, self.commission, self.interest, self.currency_conversion))
             self.id=cur.fetchone()[0]
             self.investment.hlcontractmanager.append(self)
-            self.investment.hlcontractmanager.order_by_datetime()
-            
-            
-            
-            comment=Comment(self.mem).setEncoded10007(self)
-            if self.guarantee!=0:
-                concepto=self.mem.conceptos.find_by_id(eConcept.HlGuaranteeReturned) if self.guarantee>0 else self.mem.conceptos.find_by_id(eConcept.HlGuaranteePaid)
-                guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getGuarantee(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-            if self.adjustment!=0:
-                concepto=self.mem.conceptos.find_by_id(eConcept.HlAdjustmentIincome) if self.adjustment>0 else self.mem.conceptos.find_by_id(eConcept.HlAdjustmentExpense)
-                adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getAdjustment(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
-                adjustment_AO.save()
-                self.adjustment_ao=adjustment_AO.id
         else:
-            cur.execute("update high_low_contract set datetime=%s, guarantee=%s, adjustment=%s, commission=%s, interest=%s, guarantee_ao=%s, adjustment_ao=%s, interest_ao=%s, commission_ao=%s,currency_conversion=%s where id=%s", 
-                (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.currency_conversion, self.id))
-            self.investment.hlcontractmanager.order_by_datetime()
-            
-            
-            comment=Comment(self.mem).setEncoded10007(self)
-            if self.guarantee_ao!=None:
-                guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.mGuarantee(eMoneyCurrency.Account).amount
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-            if self.adjustment_ao!=None:
-                guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.mGuarantee(eMoneyCurrency.Account).amount
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-        cur.close()
-   
+            cur.execute("update high_low_contract set datetime=%s, guarantee=%s, adjustment=%s, commission=%s, interest=%s, currency_conversion=%s where id=%s", 
+                (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.currency_conversion, self.id))
 
+        # Creates new AO
+        comment=Comment(self.mem).setEncoded10007(self)
+        if self.guarantee!=0:
+            concepto=self.mem.conceptos.find_by_id(eConcept.HlGuaranteeReturned) if self.guarantee>0 else self.mem.conceptos.find_by_id(eConcept.HlGuaranteePaid)
+            guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mGuarantee(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
+            guarantee_AO.save()
+            self.guarantee_ao=guarantee_AO.id
+        if self.adjustment!=0:
+            concepto=self.mem.conceptos.find_by_id(eConcept.HlAdjustmentIincome) if self.adjustment>0 else self.mem.conceptos.find_by_id(eConcept.HlAdjustmentExpense)
+            adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mAdjustment(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
+            adjustment_AO.save()
+            self.adjustment_ao=adjustment_AO.id
+        if self.interest!=0:
+            concepto=self.mem.conceptos.find_by_id(eConcept.HlInterestPaid) if self.adjustment>0 else self.mem.conceptos.find_by_id(eConcept.HlInterestReceived)
+            interest_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mInterest(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
+            interest_AO.save()
+            self.interest_ao=interest_AO.id
+        if self.commission>0:
+            concepto=self.mem.conceptos.find_by_id(eConcept.HlCommission)
+            commission_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mCommission(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
+            commission_AO.save()
+            self.commission_ao=commission_AO.id      
+
+        cur.execute("update high_low_contract set guarantee_ao=%s, adjustment_ao=%s, interest_ao=%s, commission_ao=%s where id=%s", 
+                (self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
+        cur.close()
+
+        #Delete old AO. This made me change foreign key to NO ACTION.NO ACTION allows the check to be deferred until later in the transaction
+        if self.guarantee_ao!=None:
+            AO=AccountOperation(self.mem, self.guarantee_ao)
+            AO.borrar()
+        if self.adjustment_ao!=None:
+            AO=AccountOperation(self.mem, self.adjustment_ao)
+            AO.borrar()
+        if self.interest_ao!=None:
+            AO=AccountOperation(self.mem, self.interest_ao)
+            AO.borrar()
+        if self.commission_ao!=None:
+            AO=AccountOperation(self.mem, self.commission_ao)
+            AO.borrar()
+        
+        self.investment.hlcontractmanager.order_by_datetime()
 
 class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
     def __init__(self, mem):
