@@ -27,7 +27,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         else:
             self.tblInvestments.setSaveSettings(True)
             self.tblInvestments.setColumnHidden(8, False)
-            
+
         self.investments.myqtablewidget(self.tblInvestments)
         invested=self.investments.invested()
         pendiente=self.investments.pendiente()

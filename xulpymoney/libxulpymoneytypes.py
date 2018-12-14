@@ -38,6 +38,7 @@ class eOperationType:
     TransferFunds=8
     TransferSharesOrigin=9
     TransferSharesDestiny=10
+    HlContract=11
     
 class eTickerPosition(IntEnum):
     """It's the number to access to a python list,  not to postgresql. In postgres it will be +1"""
@@ -52,6 +53,35 @@ class eTickerPosition(IntEnum):
     ## Returns the number of atributes
     def length():
         return len(eTickerPosition.__dict__)
+
+## System concepts tipified
+class eConcept:
+    OpenAccount=1
+    TransferOrigin=4
+    TransferDestiny=5
+    TaxesReturn=6
+    BuyShares=29
+    SellShares=35
+    TaxesPayment=37
+    BankCommissions=38
+    Dividends=39
+    CreditCardBilling=40
+    AddShares=43
+    AssistancePremium=50
+    CommissionCustody=59
+    DividendsSaleRights=62
+    BondsCouponRunPayment=63
+    BondsCouponRunIncome=65
+    BondsCoupon=66
+    CreditCardRefund=67
+    HlAdjustmentIincome=68
+    HlAdjustmentExpense=69
+    HlGuaranteePaid=70
+    HlGuaranteeReturned=71
+    HlCommission=72
+    HlInterestPaid=73
+    HlInterestReceived=74
+
 
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
 class eHistoricalChartAdjusts:

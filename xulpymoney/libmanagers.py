@@ -206,18 +206,33 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     def order_by_datetime(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
                 
-        
-    def subSet_from_datetime(self, dt, *initparams):
-        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro. Las operaciones del array son vinculos a objetos no copiadas como se hace con copy_from"""
+    ## Function that returns the same object manager, with a pointer to the of the objects that contains from the datetime given in the parameter.
+    ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
+    ## @param datetime. This function copies all object with datetime until this parameter
+    ## @param initparams. Parameters of the constructor of the ManagerObject class
+    def ObjectManager_from_datetime(self, dt, *initparams):
         result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         if dt==None:
             dt=self.mem.localzone.now()
         for a in self.arr:
             if a.datetime>=dt:
                 result.append(a)
+        return result         
+        
+    ## Function that returns the same object manager, with a pointer to the of the objects that contains from the datetime given in the parameter.
+    ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
+    ## @param datetime. This function copies all object with datetime until this parameter
+    ## @param initparams. Parameters of the constructor of the ManagerObject class
+    def ObjectManager_until_datetime(self, dt, *initparams):        
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        if dt==None:
+            dt=self.mem.localzone.now()
+        for a in self.arr:
+            if a.datetime<=dt:
+                result.append(a)
         return result
         
-    def copy_from_datetime(self, dt, *initparams):
+    def ObjectManager_copy_from_datetime(self, dt, *initparams):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro tambien copiadas."""
         result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         if dt==None:
@@ -228,10 +243,10 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
         return result
         
     ## Function that returns the same object manager, but with a copy of the objects that contains until the datetime given in the parameter.
-    ## For exemple the constuctor of InvemestOperationHomogeneous is InvemestOperationHomogeneous(mem,investment). so to use this function you need copy_until_datetime(dt,mem,investment)
+    ## For exemple the constuctor of InvemestOperationHomogeneous is InvemestOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_copy_until_datetime(dt,mem,investment)
     ## @param datetime. This function copies all object with datetime until this parameter
     ## @param initparams. Parameters of the constructor of the ManagerObject class
-    def copy_until_datetime(self, dt, *initparams):
+    def ObjectManager_copy_until_datetime(self, dt, *initparams):
         result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         if dt==None:
             dt=self.mem.localzone.now()

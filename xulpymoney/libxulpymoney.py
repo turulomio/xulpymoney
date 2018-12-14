@@ -21,8 +21,9 @@ from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
-from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
+from xulpymoney.libxulpymoneytypes import eConcept, eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
+
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
@@ -45,7 +46,7 @@ class Percentage:
         elif o.__class__==Percentage:
             return o.value
         else:
-            print (o.__class__)
+            logging.debug(o.__class__)
             return None
         
     def __repr__(self):
@@ -228,7 +229,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
-            table.setItem(i, 4, inv.product.result.basic.tpc_diario().qtablewidgetitem())
+            table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
             table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
@@ -318,7 +319,19 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         if average==None:
             return None
         return round(average, 2)
-            
+
+    ## Returns an InvestmentManager with operations with datetime before to parameter
+    ## @param dt Aware datetime
+    ## @return InvestmentManager
+    def InvestmentManager_At_Datetime(self, dt):
+        start=datetime.datetime.now()
+        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            result.append(inv.Investment_At_Datetime(dt))
+        logging.debug("InvestmentManager_At_Datetime took {}".format(datetime.datetime.now()-start))
+        return result
+
+
     ## Returns and InvestmentManager object with all investmentes with the same product passed as parameter
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
@@ -1057,11 +1070,11 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 changed.append(p_xlsx)
 
         #Sumary
-        print("{} Products changed".format(len(changed)))
+        logging.debug("{} Products changed".format(len(changed)))
         for p in changed:
             print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             p.save()
-        print("{} Products added".format(len(added)))
+        logging.debug("{} Products added".format(len(added)))
         for p in added:
             print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
             ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
@@ -1967,8 +1980,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
     def calcular(self):
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
-        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)       
-        print(self.investment, self.investment.product)
+        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         if self.investment.product.high_low==False:
             for o in self.arr:                
                 if o.shares>=0:#Compra
@@ -2153,7 +2165,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             tabla.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.balance(a.investment.product.result.basic.last, type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.pendiente(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8, a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.lastyear, type=2).qtablewidgetitem())
+            tabla.setItem(rownumber, 8, a.tpc_anual().qtablewidgetitem())
             tabla.setItem(rownumber, 9, a.tpc_tae(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             tabla.setItem(rownumber, 10, a.tpc_total(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -2273,22 +2285,22 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     break
 
-            elif io.shares>0 and self.shares()<0: #operacion de venta cuando estoy en positivo. Debo historizar
+            elif io.shares>0 and self.shares()<0: #operacion de compra cuando estoy en negativo. Debo historizar
                 if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
                     logging.debug("D")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     self.arr.remove(ioa)
                     break
                 if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
                     logging.debug("E")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.remove(ioa)
                     break
                 else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
                     logging.debug("F")
                     remaining=remaining+ioa.shares
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
                     break
 
             logging.debug("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
@@ -2353,10 +2365,9 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.penultimate( type)
         return resultado
         
-        
+    ## Función que calcula la diferencia de balance entre last y penultimate
+    ## Necesita haber cargado mq getbasic y operinversionesactual
     def gains_last_day(self, type=1):
-        """Función que calcula la diferencia de balance entre last y penultimate
-        Necesita haber cargado mq getbasic y operinversionesactual"""
         return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
 
     def gains_in_selling_point(self, type=1):
@@ -2397,6 +2408,18 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             if pendiente.isLETZero():
                 resultado=resultado+pendiente
         return resultado
+
+    ## We dont'use result basic tpc_diario due to HL can be sold or bought
+    def tpc_diario(self):
+        last=self.investment.product.result.basic.last.quote
+        penultimate=self.investment.product.result.basic.penultimate.quote
+        if last==None or penultimate==None:
+            return Percentage()
+            
+        if self.shares()>0:
+            return Percentage(last-penultimate, penultimate)
+        else:
+            return Percentage(-(last-penultimate), penultimate)
 
     def tpc_tae(self, last,  type=1):
         dias=self.average_age()
@@ -2444,7 +2467,6 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
 
         if quote==None:
             quote=self.investment.product.result.basic.last
-        quote_lastyear=self.investment.product.result.basic.lastyear
 
         tabla.applySettings()
         tabla.clearContents()
@@ -2454,12 +2476,12 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             
-            tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.shares)))
+            tabla.setItem(rownumber, 1, qright(a.shares))
             tabla.setItem(rownumber, 2, a.price(type).qtablewidgetitem())            
             tabla.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.tpc_anual(quote, quote_lastyear, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.tpc_anual().qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
@@ -2702,20 +2724,16 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Account" )))
         tabla.setHorizontalHeaderItem(2+diff, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
         tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
-        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Initial gross" )))
+        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Final gross" )))
+        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Gross gains" )))
         tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
         tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
         tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
         tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
-        #DATA    
-                
-                
+
         currency=self.investment.resultsCurrency(type)
-        
-        
         (sumbruto, sumneto)=(Money(self.mem, 0, currency), Money(self.mem, 0, currency))
         sumsaldosinicio=Money(self.mem, 0, currency)
         sumsaldosfinal=Money(self.mem, 0, currency)
@@ -2724,8 +2742,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         sumoperacionesnegativas=Money(self.mem, 0, currency)
         sumimpuestos=Money(self.mem, 0, currency)
         sumcomision=Money(self.mem, 0, currency)
- 
- 
+
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
@@ -2831,41 +2848,64 @@ class InvestmentOperationHistorical:
         return False
         
     def consolidado_bruto(self, type=1):
-        """Solo acciones"""
-        currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        return self.bruto_venta(type)-self.bruto_compra(type)
+        try:
+            return self.bruto_venta(type)-self.bruto_compra(type)
+        except:
+            return Money(self.mem, 0, self.investment.resultsCurrency(type))
         
     def consolidado_neto(self, type=1):
         currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)-self.taxes(type)
 
     def consolidado_neto_antes_impuestos(self, type=1):
         currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)
 
-    def bruto_compra(self, type=1):
-        currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        if type==1:
-            return Money(self.mem, -self.shares*self.valor_accion_compra, self.investment.product.currency)
+    def bruto_compra(self, type=eMoneyCurrency.Product):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
+            value=0
+        if self.investment.product.high_low==True:
+            value=abs(self.shares)*self.valor_accion_compra*self.investment.product.leveraged.multiplier
         else:
-            return Money(self.mem, -self.shares*self.valor_accion_compra, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
+            value=abs(self.shares)*self.valor_accion_compra
+            
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        else:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
         
     def bruto_venta(self, type=1):
-        currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
-            return Money(self.mem, 0, currency)
-        if type==1:
-            return Money(self.mem, -self.shares*self.valor_accion_venta, self.investment.product.currency)
+#        if self.tipooperacion.id in (9, 10):
+#            value=0
+#        if self.investment.product.high_low==True:
+#            value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
+#        else:
+#            value=self.shares*self.valor_accion_venta
+#            
+            
+            
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
+            value=0
+        elif self.investment.product.high_low==True:
+            if self.shares<0:# Sell after a primary bought
+                value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
+            else:# Bought after a primary sell
+                diff=(self.valor_accion_venta-self.valor_accion_compra)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion_compra*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
+        else: #HL False
+            value=abs(self.shares)*self.valor_accion_venta
+
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
         else:
-            return Money(self.mem, -self.shares*self.valor_accion_venta, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion_venta)
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
         
     def taxes(self, type=1):
         if type==1:
@@ -2952,17 +2992,20 @@ class InvestmentOperationCurrent:
         else:
             self.referenciaindice=quote
         return self.referenciaindice
-        
-    def invertido(self, type=1):
-        """Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
-        Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
-        """
-        if type==1:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
-        elif type==3:
-            return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
+    ## Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
+    ## Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
+    def invertido(self, type=eMoneyCurrency.Product):
+        if self.investment.product.high_low==True:
+            value=abs(self.shares*self.valor_accion*self.investment.product.leveraged.multiplier)
+        else:
+            value=self.shares*self.valor_accion
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
     
     def price(self, type=1):
         if type==1:
@@ -3039,69 +3082,82 @@ class InvestmentOperationCurrent:
         elif type==2:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def balance(self,  lastquote, type=1):
+    def balance(self,  lastquote, type=eMoneyCurrency.Product):
         """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote
                 type si da el resultado en la currency del account o en el de la inversion"""
-        currency=self.investment.resultsCurrency(type)
-        if self.shares==0 or lastquote.quote==None:#Empty xulpy
-            return Money(self.mem, 0, currency)
+        if lastquote.quote==None:#Empty xulpy
+            value=0
+        elif self.investment.product.high_low==True:
+            if self.shares>0:# Bought
+                value=self.shares*lastquote.quote*self.investment.product.leveraged.multiplier
+            else:
+                diff=(lastquote.quote-self.valor_accion)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
+        else: #HL False
+            value=self.shares*lastquote.quote
+            
+        money=Money(self.mem, value, self.investment.product.currency)
 
-        if type==1:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime)
-        elif type==3:
-            return Money(self.mem, abs(self.shares*lastquote.quote), self.investment.product.currency).convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert(self.investment.account.currency, lastquote.datetime)
+        elif type==eMoneyCurrency.User:
+            return money.convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
         if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
             return True
         return False
-        
+
+    ## Función que calcula el balance  pendiente de la operacion de inversion actual
+    ## Necesita haber cargado mq getbasic y operinversionesactual 
+    ## lasquote es un objeto Quote
     def pendiente(self, lastquote,  type=1):
-        """Función que calcula el balance  pendiente de la operacion de inversion actual
-                Necesita haber cargado mq getbasic y operinversionesactual
-                lasquote es un objeto Quote
-                """
         return self.balance(lastquote, type)-self.invertido(type)
+            
 
-    def penultimate(self, type=1):
-        """
-            Función que calcula elbalance en el penultimate ida
-        """
-        
-        currency=self.investment.resultsCurrency(type)
+    ## Función que calcula elbalance en el penultimate ida
+    def penultimate(self, type=eMoneyCurrency.Product):        
         penultimate=self.investment.product.result.basic.penultimate
-        if self.shares==0 or penultimate.quote==None:#Empty xulpy
+        if penultimate.quote==None:#Empty xulpy
             logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.investment.name))
-            return Money(self.mem, 0, currency)
-
-        if type==1:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency)
-        elif type==2:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency).convert(self.investment.account.currency, penultimate.datetime)#Al ser balance actual usa el datetime actual
-        elif type==3:
-            return Money(self.mem, abs(self.shares*penultimate.quote), self.investment.product.currency).convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
-            
-    def tpc_anual(self,  last,  lastyear, type=1):        
-        """
-            last is a Money object with investment.product currency
-            type puede ser:
-                1 Da el tanto por  ciento en la currency de la inversi´on
-                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
-                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
-        """
-        mlast=self.investment.quote2money(last, type)
-        
-        if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
-            mlastyear=self.price(type)
+            value=0
+        elif self.investment.product.high_low==True:
+            if self.shares>0:# Bought
+                value=self.shares*penultimate.quote*self.investment.product.leveraged.multiplier
+            else:
+                diff=(penultimate.quote-self.valor_accion)*abs(self.shares)*self.investment.product.leveraged.multiplier
+                init_balance=self.valor_accion*abs(self.shares)*self.investment.product.leveraged.multiplier
+                value=init_balance-diff
         else:
-            mlastyear=self.investment.quote2money(lastyear, type)
+            value=self.shares*penultimate.quote
+
+        money=Money(self.mem, value, self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert(self.investment.account.currency, penultimate.datetime)#Al ser balance actual usa el datetime actual
+        elif type==eMoneyCurrency.User:
+            return money.convert(self.investment.account.currency, penultimate.datetime).local(penultimate.datetime)
             
-        return Percentage(mlast-mlastyear, mlastyear)
-    
+    def tpc_anual(self):        
+        last=self.investment.product.result.basic.last.quote
+        if self.datetime.year==datetime.date.today().year:
+            lastyear=self.valor_accion #Product value, self.price(type) not needed.
+        else:
+            lastyear=self.investment.product.result.basic.lastyear.quote
+        if last==None or lastyear==None:
+            return Percentage()
+
+        if self.shares>0:
+            return Percentage(last-lastyear, lastyear)
+        else:
+            return Percentage(-(last-lastyear), lastyear)
+
     def tpc_total(self,  last,  type=1):
         """
             last is a Quote object 
@@ -3449,17 +3505,14 @@ class AccountOperation:
         cur.close()
 
     def es_editable(self):
-        """opercuenta es un diccionario con el contenido de una opercuetna
-        7 facturación de tarjeta
-        29 y 35 compraventa productos de inversión
-        39 dividends
-        40 facturación de tarjeta
-        50 prima de asistencia
-        62 Vemta derechos de dividends
-        63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
-        if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65, 66):#div, factur tarj:
+        if self.concepto.id in (eConcept.BuyShares, eConcept.SellShares, 
+            eConcept.Dividends, eConcept.CreditCardBilling, eConcept.AssistancePremium,
+            eConcept.DividendsSaleRights, eConcept.BondsCouponRunPayment, eConcept.BondsCouponRunIncome, 
+            eConcept.BondsCoupon, eConcept.HlAdjustmentIincome,  eConcept.HlAdjustmentExpense, 
+            eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned, eConcept.HlCommission, 
+            eConcept.HlInterestPaid, eConcept.HlInterestReceived):
             return False
         if Comment(self.mem).getCode(self.comentario) in (10001, 10002, 10003):
             return False        
@@ -4128,7 +4181,7 @@ class Account:
     def __repr__(self):
         return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
 
-    def balance(self,fecha=None, type=3):
+    def balance(self,fecha=None, type=eMoneyCurrency.User):
         """Función que calcula el balance de una cuenta
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
@@ -4147,9 +4200,9 @@ class Account:
         cur.close()
         if res==None:
             return Money(self.mem, 0, self.resultsCurrency(type))
-        if type==2:
+        if type==eMoneyCurrency.Account:
             return Money(self.mem, res, self.currency)
-        elif type==3:
+        elif type==eMoneyCurrency.User:
             if fecha==None:
                 dt=self.mem.localzone.now()
             else:
@@ -4193,11 +4246,11 @@ class Account:
         oc_comision=None
         notfinished="Tranfer not fully finished"
         if comision>0:
-            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, notfinished, cuentaorigen, None)
+            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankComissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
             oc_comision.save()
-        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, notfinished, cuentaorigen, None)
+        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -importe, notfinished, cuentaorigen, None)
         oc_origen.save()
-        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, notfinished, cuentadestino, None)
+        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), importe, notfinished, cuentadestino, None)
         oc_destino.save()
         
         oc_origen.comentario=Comment(self.mem).setEncoded10001(oc_origen, oc_destino, oc_comision)
@@ -4258,6 +4311,18 @@ class Investment:
         self.selling_expiration=selling_expiration
         self.id=id
         return self
+
+    ## Replicates an investment with data at datetime
+    ## Loads self.op, self.op_actual, self.op_historica and self.hlcontractmanager
+    ## @param dt Datetime 
+    ## @return Investment
+    def Investment_At_Datetime(self, dt):
+        r=self.copy()
+        r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
+        (r.op_actual,  r.op_historica)=r.op.calcular()
+        if r.product.high_low==True:
+            r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
+        return r
 
     def copy(self ):
         return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
@@ -4437,14 +4502,12 @@ class Investment:
             return QMessageBox.No
         return QMessageBox.Yes
         
-    def balance(self, fecha=None, type=1):
-        """Función que calcula el balance de la inversión
-            Si el cur es None se calcula el actual 
-                Necesita haber cargado mq getbasic y operinversionesactual"""     
-        acciones=self.shares(fecha)
-        currency=self.resultsCurrency(type)
-        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-            return Money(self.mem, 0, currency)
+    ## Función que calcula el balance de la inversión
+    def balance(self, fecha=None, type=eMoneyCurrency.Product):
+#        acciones=self.shares(fecha)
+#        currency=self.resultsCurrency(type)
+#        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
+#            return Money(self.mem, 0, currency)
                 
         if fecha==None:
             return self.op_actual.balance(self.product.result.basic.last, type)
@@ -4452,8 +4515,8 @@ class Investment:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 logging.debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
-                return Money(self.mem, 0, self.product.currency)
-            return Money(self.mem, acciones*self.quote2money(quote, type).amount, currency)
+                return Money(self.mem, 0, self.resultsCurrency(type) )
+            return self.Investment_At_Datetime(day_end_from_date(fecha, self.mem.localzone)).op_actual.balance(quote, type)
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
@@ -4463,7 +4526,7 @@ class Investment:
         else:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=self.copy()
-            invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
+            invfake.op=self.op.ObjectManager_copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
             (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
             return invfake.op_actual.invertido(type)
                 
@@ -5066,6 +5129,7 @@ class OperationTypeManager(DictObjectManager_With_IdName_Selectable):
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), eOperationType.TransferFunds)) #Se contabilizan como ganancia
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), eOperationType.TransferSharesOrigin)) #No se contabiliza
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), eOperationType.TransferSharesDestiny)) #No se contabiliza     
+        self.append(OperationType().init__create( QApplication.translate("Core","HL investment guarantee"), eOperationType.HlContract)) #No se contabiliza     
 
 
     def qcombobox_basic(self, combo,  selected=None):
@@ -7849,248 +7913,6 @@ class ProductTypesManager(ObjectManager_With_IdName_Selectable):
                 r.append(t)
         return r
 
-## Class to manage CDF daily contracts.
-class HlContract(QObject):
-    def __init__(self, mem, investment):
-        QObject.__init__(self)
-        self.mem=mem
-        self.id=None
-        self.investment=investment
-        self.datetime=None
-        self.__guarantee=0
-        self.__adjustment=0
-        self.__commission=0
-        self.__interest=0
-        self.guarantee_ao=None#Integers to point operaccount
-        self.adjustment_ao=None
-        self.interest_ao=None
-        self.commission_ao=None
-
-    def __repr__(self):
-        return (self.tr("HLContract {} for {} at {}").format(self.id, self.investment.name,  self.datetime))
-
-    def init__db_row(self,  row):
-        self.id=row['id']
-        self.datetime=row['datetime']
-        self.setGuarantee(row['guarantee'])
-        self.setAdjustment(row['adjustment'])
-        self.setCommission(row['commission'])
-        self.setInterest(row['interest'])
-        self.guarantee_ao=row['guarantee_ao']#Integers to point operaccount
-        self.adjustment_ao=row['adjustment_ao']
-        self.interest_ao=row['interest_ao']
-        self.commission_ao=row['commission_ao']
-        return self
-        
-    def init__create(self, id, datetime, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao):
-        self.id=id
-        self.datetime=datetime
-        self.guarantee=guarantee
-        self.adjustment=adjustment
-        self.commission=commission
-        self.interest=interest
-        self.guarantee_ao=guarantee_ao
-        self.adjustment_ao=adjustment_ao
-        self.interest_ao=interest_ao
-        self.commission_ao=commission_ao
-        return self
-        
-    def init__from_accountoperation(self, accountoperation):
-        """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
-        IO returned is an object already created in investments_all()"""
-        cur=self.mem.con.cursor()
-        cur.execute("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
-        if cur.rowcount==0:
-            cur.close()
-            return None
-        row=cur.fetchone()
-        cur.close()
-        investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
-        return investment.op.find(row['id_operinversiones'])
-        
-    def getGuarantee(self, type):
-        if type==eMoneyCurrency.Product:
-            return Money(self.mem, self.__guarantee, self.investment.product.currency)
-        else:
-            return Money(self.mem, self.__guarantee, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-            
-    def getAdjustment(self, type):
-        if type==eMoneyCurrency.Product:
-            return Money(self.mem, self.__adjustment,  self.investment.product.currency)
-        else:
-            return Money(self.mem, self.__adjustment, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-            
-    def getCommission(self, type):
-        if type==eMoneyCurrency.Product:
-            return Money(self.mem, self.__commission,  self.investment.product.currency)
-        else:
-            return Money(self.mem, self.__commission, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-            
-    def getInterest(self, type):
-        if type==eMoneyCurrency.Product:
-            return Money(self.mem, self.__interest, self.investment.product.currency)
-        else:
-            return Money(self.mem, self.__interest, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-
-    def setGuarantee(self, value):
-        self.__guarantee=value
-    def setInterest(self, value):
-        self.__interest=value
-    def setCommission(self, value):
-        self.__commission=value
-    def setAdjustment(self, value):
-        self.__adjustment=value
-
-
-    ## Removes from database contract, and all operaccounts asociated
-    def delete_from_db(self):
-        cur=self.mem.con.cursor()
-        cur.execute("delete from high_low_contract where id=%s", (self.id, ))
-        cur.close()
-        if self.guarantee_ao!=None:
-            AO=AccountOperation(self.mem, self.guarantee_ao)
-            AO.borrar()
-        if self.adjustment_ao!=None:
-            AO=AccountOperation(self.mem, self.adjustment_ao)
-            AO.borrar()
-        if self.interest_ao!=None:
-            AO=AccountOperation(self.mem, self.interest_ao)
-            AO.borrar()
-        if self.commission_ao!=None:
-            AO=AccountOperation(self.mem, self.commission_ao)
-            AO.borrar()
-        
-
-    def find_by_mem(self, investment, id):
-        """
-            Searchs in mem (needed investments_all())
-            invesment is an Investment object
-            id is the invesmentoperation to find
-        """
-        for i in self.mem.data.investments:
-            if investment.id==i.id:
-                found=i.op.find(id)
-                if found!=None:
-                    return found
-        logging.warning ("Investment operation {} hasn't been found in mem".format(id))
-        return None
-
-    ## Save this HlContract. If self.id==None inserts else updates.
-    def save(self):
-        type=eMoneyCurrency.Product
-        comment=Comment(self.mem).setEncoded10007(self)
-        cur=self.mem.con.cursor()
-        if self.id==None:#insertar
-            if self.__guarantee!=0:
-                concepto=self.mem.conceptos.find_by_id(71) if self.__guarantee>0 else self.mem.conceptos.find_by_id(70)
-                guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getGuarantee(type).amount, comment, self.investment.account, None)
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-            if self.__adjustment!=0:
-                concepto=self.mem.conceptos.find_by_id(68) if self.__adjustment>0 else self.mem.conceptos.find_by_id(69)
-                adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.getAdjustment(type).amount, comment, self.investment.account, None)
-                adjustment_AO.save()
-                self.adjustment_ao=adjustment_AO.id
-        
-            cur.execute("insert into high_low_contract(datetime, investments_id, guarantee, adjustment, commission, interest, guarantee_ao, adjustment_ao, interest_ao, commission_ao) values (%s, %s, %s,%s,%s,%s, %s, %s, %s, %s) returning id", (self.datetime, self.investment.id,  self.getGuarantee(type).amount, self.getAdjustment(type).amount, self.getCommission(type).amount, self.getInterest(type).amount, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao))
-            self.id=cur.fetchone()[0]
-            self.investment.hlcontractmanager.append(self)
-            self.investment.hlcontractmanager.order_by_datetime()
-        else:
-            if self.guarantee_ao!=None:
-                guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.getGuarantee(type)
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-            if self.adjustment_ao!=None:
-                guarantee_AO=AccountOperation(self.mem, self.guarantee_ao)
-                guarantee_AO.importe=self.getGuarantee(type)
-                guarantee_AO.save()
-                self.guarantee_ao=guarantee_AO.id
-            cur.execute("update high_low_contract set datetime=%s, guarantee=%s, adjustment=%s, commission=%s, interest=%s,guarantee_ao=%s,adjustment_ao=%s,%interest_ao=%s, commission_ao=%s where id=%s", (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
-            self.investment.hlcontractmanager.order_by_datetime()
-        cur.close()
-   
-class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
-    def __init__(self, mem):
-        ObjectManager_With_IdDatetime_Selectable.__init__(self)        
-        self.mem=mem
-
-    ## Returns the sum of guarantees
-    def guarantees(self, type):
-        currency=self.investment.resultsCurrency(type)
-        r=Money(self.mem, 0, currency)
-        for o in self.arr:
-            r=r+o.getGuarantee(type)
-        return r        
-    ## Returns the sum of adjustments
-    def adjustments(self, type):
-        currency=self.investment.resultsCurrency(type)
-        r=Money(self.mem, 0, currency)
-        for o in self.arr:
-            r=r+o.getAdjustment(type)
-        return r        
-    ## Returns the sum of interest
-    def interests(self, type):
-        currency=self.investment.resultsCurrency(type)
-        r=Money(self.mem, 0, currency)
-        for o in self.arr:
-            r=r+o.getInterest(type)
-        return r        
-    ## Returns the sum of commissions
-    def commissions(self, type):
-        currency=self.investment.resultsCurrency(type)
-        r=Money(self.mem, 0, currency)
-        for o in self.arr:
-            r=r+o.getCommission(type)
-        return r
-        
-    ## Removes from array and from database
-    def delete_from_db(self, obj):
-        obj.delete_from_db()
-        ObjectManager_With_IdDatetime_Selectable.remove(self, obj)
-        
-class HlContractManagerHomogeneus(HlContractManagerHeterogeneus, QObject):
-    def __init__(self, mem, investment):
-        QObject.__init__(self)
-        HlContractManagerHeterogeneus.__init__(self, mem)
-        self.investment=investment
-
-    ## Function that acts like a constructor
-    ## @param sql, to get from high_low_contract table, for example: select * from high_low_contract order by datetime;
-    def init__from_db(self, sql):
-        self.clean()
-        cur=self.mem.con.cursor()
-        cur.execute(sql)
-        for row in cur:
-            hl=HlContract(self.mem, self.investment).init__db_row(row)
-            self.append(hl)
-        cur.close()
-        return self
-
-    ## @param table
-    ## @param type eMoneyCurrency 
-    def myqtablewidget(self, table, type):
-        table.setColumnCount(5)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date and time" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Adjustment" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Guarantee" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Interest" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Commission" )))
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(self.length()+1)
-        for i, o in enumerate(self.arr):
-            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone))
-            table.setItem(i, 1, o.getAdjustment(type).qtablewidgetitem())
-            table.setItem(i, 2, o.getGuarantee(type).qtablewidgetitem())
-            table.setItem(i, 3, o.getInterest(type).qtablewidgetitem())
-            table.setItem(i, 4, o.getCommission(type).qtablewidgetitem())
-        table.setItem(self.length(), 0, qleft(self.tr("TOTAL")))
-        table.setItem(self.length(), 1, self.adjustments(type).qtablewidgetitem())
-        table.setItem(self.length(), 2, self.guarantees(type).qtablewidgetitem())
-        table.setItem(self.length(), 3, self.interests(type).qtablewidgetitem())
-        table.setItem(self.length(), 4, self.commissions(type).qtablewidgetitem())
 
 class Language:
     def __init__(self, mem, id, name):
@@ -8691,4 +8513,5 @@ class AssetsReport(ODT_Standard, QObject):
         
         self.mem.frmMain.w.close()
         self.mem.frmMain.showMaximized()
-
+        
+from xulpymoney.hlcontracts import HlContractManagerHomogeneus

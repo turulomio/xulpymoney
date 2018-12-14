@@ -4,7 +4,7 @@ from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
-from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.libxulpymoneytypes import eQColor, eOperationType
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
 from xulpymoney.ui.canvaschart import VCTemporalSeries
@@ -625,7 +625,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}").format(self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                        if o.fecha_venta.year==self.wyData.year:
                             set.arr.append(o)
                             if o.consolidado_bruto().isGETZero():
                                 positive=positive+o.consolidado_bruto().local()
@@ -633,7 +633,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                 negative=negative+o.consolidado_bruto().local()
                     else:#Month
                         tabtitle=self.tr("Selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                        if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto().isGETZero():
                                 positive=positive+o.consolidado_bruto().local()
@@ -873,7 +873,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if inv.product.type.id==type.id:
                     #gains
                     for o in inv.op_historica.arr:
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
+                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (eOperationType.SharesSale, eOperationType.TransferFunds):
                             gains=gains+o.consolidado_bruto().local()
                     #dividends
                     setdiv=DividendHeterogeneusManager(self.mem)
