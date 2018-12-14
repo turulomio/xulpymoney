@@ -55,6 +55,24 @@ class eTickerPosition(IntEnum):
 
 ## System concepts tipified
 class eConcept:
+    OpenAccount=1
+    TransferOrigin=4
+    TransferDestiny=5
+    TaxesReturn=6
+    BuyShares=29
+    SellShares=35
+    TaxesPayment=37
+    BankCommissions=38
+    Dividends=39
+    CreditCardBilling=40
+    AddShares=43
+    AssistancePremium=50
+    CommissionCustody=59
+    DividendsSaleRights=62
+    BondsCouponRunPayment=63
+    BondsCouponRunIncome=65
+    BondsCoupon=66
+    CreditCardRefund=67
     HlAdjustmentIincome=68
     HlAdjustmentExpense=69
     HlGuaranteePaid=70

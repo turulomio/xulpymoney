@@ -21,7 +21,7 @@ from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
-from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
+from xulpymoney.libxulpymoneytypes import eConcept, eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
 from PyQt5.QtChart import QChart
@@ -3506,17 +3506,14 @@ class AccountOperation:
         cur.close()
 
     def es_editable(self):
-        """opercuenta es un diccionario con el contenido de una opercuetna
-        7 facturación de tarjeta
-        29 y 35 compraventa productos de inversión
-        39 dividends
-        40 facturación de tarjeta
-        50 prima de asistencia
-        62 Vemta derechos de dividends
-        63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
-        if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65, 66):#div, factur tarj:
+        if self.concepto.id in (eConcept.BuyShares, eConcept.SellShares, 
+            eConcept.Dividends, eConcept.CreditCardBilling, eConcept.AssistancePremium,
+            eConcept.DividendsSaleRights, eConcept.BondsCouponRunPayment, eConcept.BondsCouponRunIncome, 
+            eConcept.BondsCoupon, eConcept.HlAdjustmentIincome,  eConcept.HlAdjustmentExpense, 
+            eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned, eConcept.HlCommission, 
+            eConcept.HlInterestPaid, eConcept.HlInterestReceived):
             return False
         if Comment(self.mem).getCode(self.comentario) in (10001, 10002, 10003):
             return False        
@@ -4185,7 +4182,7 @@ class Account:
     def __repr__(self):
         return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
 
-    def balance(self,fecha=None, type=3):
+    def balance(self,fecha=None, type=eMoneyCurrency.User):
         """Función que calcula el balance de una cuenta
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
@@ -4204,9 +4201,9 @@ class Account:
         cur.close()
         if res==None:
             return Money(self.mem, 0, self.resultsCurrency(type))
-        if type==2:
+        if type==eMoneyCurrency.Account:
             return Money(self.mem, res, self.currency)
-        elif type==3:
+        elif type==eMoneyCurrency.User:
             if fecha==None:
                 dt=self.mem.localzone.now()
             else:
@@ -4250,11 +4247,11 @@ class Account:
         oc_comision=None
         notfinished="Tranfer not fully finished"
         if comision>0:
-            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, notfinished, cuentaorigen, None)
+            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankComissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
             oc_comision.save()
-        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, notfinished, cuentaorigen, None)
+        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -importe, notfinished, cuentaorigen, None)
         oc_origen.save()
-        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, notfinished, cuentadestino, None)
+        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), importe, notfinished, cuentadestino, None)
         oc_destino.save()
         
         oc_origen.comentario=Comment(self.mem).setEncoded10001(oc_origen, oc_destino, oc_comision)
