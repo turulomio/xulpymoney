@@ -2855,18 +2855,18 @@ class InvestmentOperationHistorical:
         
     def consolidado_neto(self, type=1):
         currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)-self.taxes(type)
 
     def consolidado_neto_antes_impuestos(self, type=1):
         currency=self.investment.resultsCurrency(type)
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)
 
     def bruto_compra(self, type=eMoneyCurrency.Product):
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             value=0
         if self.investment.product.high_low==True:
             value=abs(self.shares)*self.valor_accion_compra*self.investment.product.leveraged.multiplier
@@ -2889,7 +2889,7 @@ class InvestmentOperationHistorical:
 #            
             
             
-        if self.tipooperacion.id in (9, 10):
+        if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             value=0
         elif self.investment.product.high_low==True:
             if self.shares<0:# Sell after a primary bought
@@ -2900,8 +2900,7 @@ class InvestmentOperationHistorical:
                 value=init_balance-diff
         else: #HL False
             value=abs(self.shares)*self.valor_accion_venta
-            
-            
+
         money=Money(self.mem, value, self.investment.product.currency)
         if type==eMoneyCurrency.Product:
             return money
@@ -5130,6 +5129,7 @@ class OperationTypeManager(DictObjectManager_With_IdName_Selectable):
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), eOperationType.TransferFunds)) #Se contabilizan como ganancia
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), eOperationType.TransferSharesOrigin)) #No se contabiliza
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), eOperationType.TransferSharesDestiny)) #No se contabiliza     
+        self.append(OperationType().init__create( QApplication.translate("Core","HL investment guarantee"), eOperationType.HlContract)) #No se contabiliza     
 
 
     def qcombobox_basic(self, combo,  selected=None):
