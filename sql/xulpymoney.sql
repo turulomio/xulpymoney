@@ -1225,7 +1225,7 @@ ALTER TABLE ONLY public.estimations_eps
 --
 
 ALTER TABLE ONLY public.high_low_contract
-    ADD CONSTRAINT high_low_contract_fk_adjustment_ao FOREIGN KEY (adjustment_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
+    ADD CONSTRAINT high_low_contract_fk_adjustment_ao FOREIGN KEY (adjustment_ao) REFERENCES public.opercuentas(id_opercuentas);
 
 
 --
@@ -1233,7 +1233,7 @@ ALTER TABLE ONLY public.high_low_contract
 --
 
 ALTER TABLE ONLY public.high_low_contract
-    ADD CONSTRAINT high_low_contract_fk_comission_ao FOREIGN KEY (commission_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
+    ADD CONSTRAINT high_low_contract_fk_comission_ao FOREIGN KEY (commission_ao) REFERENCES public.opercuentas(id_opercuentas);
 
 
 --
@@ -1241,7 +1241,7 @@ ALTER TABLE ONLY public.high_low_contract
 --
 
 ALTER TABLE ONLY public.high_low_contract
-    ADD CONSTRAINT high_low_contract_fk_guarantee_ao FOREIGN KEY (guarantee_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
+    ADD CONSTRAINT high_low_contract_fk_guarantee_ao FOREIGN KEY (guarantee_ao) REFERENCES public.opercuentas(id_opercuentas);
 
 
 --
@@ -1249,7 +1249,7 @@ ALTER TABLE ONLY public.high_low_contract
 --
 
 ALTER TABLE ONLY public.high_low_contract
-    ADD CONSTRAINT high_low_contract_fk_interest_ao FOREIGN KEY (interest_ao) REFERENCES public.opercuentas(id_opercuentas) ON DELETE RESTRICT;
+    ADD CONSTRAINT high_low_contract_fk_interest_ao FOREIGN KEY (interest_ao) REFERENCES public.opercuentas(id_opercuentas);
 
 
 --
@@ -3371,7 +3371,7 @@ INSERT INTO public.products VALUES ('CEWE COLOR HOLDING AG', 'DE0005403901', 'EU
 INSERT INTO public.products VALUES ('CF INDUSTRIES HOLDINGS INC.', NULL, 'USD', 1, '', 78177, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#CF||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFAO', 'FR0000060501', 'EUR', 1, '|EURONEXT|', 78366, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000060501||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFCAL BANQUE', 'FR0000064560', 'EUR', 1, '|EURONEXT|', 78375, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000064560||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.products VALUES ('CFD IBEX35 ', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{^IBEX,NULL,INDEXBME:IB,NULL}', true);
+INSERT INTO public.products VALUES ('CFD IBEX35 ', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('CFE (D)', 'BE0003883031', 'EUR', 1, '|EURONEXT|', 78430, NULL, NULL, NULL, NULL, 100, 'c', 1, 11, 'EURONEXT#BE0003883031||be||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFI', 'FR0000037475', 'EUR', 1, '|EURONEXT|', 78431, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000037475||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CGG VERITAS', 'FR0000120164', 'EUR', 1, '|EURONEXT|', 78434, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000120164||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
@@ -8138,7 +8138,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201812110755');
+INSERT INTO public.globals VALUES (1, 'Version', '201812141037');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8147,11 +8147,11 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 81732');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 81732, 81737');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2009');
-INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '1');
+INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO public.globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO public.globals VALUES (8, 'wdgIndexRange/invertir', '5000');
 INSERT INTO public.globals VALUES (9, 'wdgIndexRange/minimo', '500');

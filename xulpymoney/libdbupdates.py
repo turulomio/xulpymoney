@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201812110755
+        self.lastcodeupdate=201812141037
         self.need_update()
 
     def get_database_version(self):
@@ -2466,6 +2466,19 @@ CREATE TABLE high_low_contract (
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812110755)
+        if self.dbversion<201812141037:
+            cur=self.mem.con.cursor()
+            cur.execute("ALTER TABLE high_low_contract DROP CONSTRAINT high_low_contract_fk_guarantee_ao")
+            cur.execute("ALTER TABLE high_low_contract DROP CONSTRAINT high_low_contract_fk_adjustment_ao")
+            cur.execute("ALTER TABLE high_low_contract DROP CONSTRAINT high_low_contract_fk_comission_ao")
+            cur.execute("ALTER TABLE high_low_contract DROP CONSTRAINT high_low_contract_fk_interest_ao")
+            cur.execute("ALTER TABLE high_low_contract ADD CONSTRAINT high_low_contract_fk_guarantee_ao FOREIGN KEY (guarantee_ao) REFERENCES opercuentas (id_opercuentas) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE NO ACTION")
+            cur.execute("ALTER TABLE high_low_contract ADD CONSTRAINT high_low_contract_fk_adjustment_ao FOREIGN KEY (adjustment_ao) REFERENCES opercuentas (id_opercuentas) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE NO ACTION")
+            cur.execute("ALTER TABLE high_low_contract ADD CONSTRAINT high_low_contract_fk_comission_ao FOREIGN KEY (commission_ao) REFERENCES opercuentas (id_opercuentas) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE NO ACTION")
+            cur.execute("ALTER TABLE high_low_contract ADD CONSTRAINT high_low_contract_fk_interest_ao FOREIGN KEY (interest_ao) REFERENCES opercuentas (id_opercuentas) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE NO ACTION")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201812141037)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
