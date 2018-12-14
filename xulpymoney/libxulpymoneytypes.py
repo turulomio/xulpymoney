@@ -53,6 +53,17 @@ class eTickerPosition(IntEnum):
     def length():
         return len(eTickerPosition.__dict__)
 
+## System concepts tipified
+class eConcept:
+    HlAdjustmentIincome=68
+    HlAdjustmentExpense=69
+    HlGuaranteePaid=70
+    HlGuaranteeReturned=71
+    HlCommission=72
+    HlInterestPaid=73
+    HlInterestReceived=74
+
+
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
 class eHistoricalChartAdjusts:
     ## Without splits nor dividens

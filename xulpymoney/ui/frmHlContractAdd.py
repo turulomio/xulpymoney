@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QDialog
 from decimal import Decimal
-from xulpymoney.libxulpymoney import HlContract
+from xulpymoney.hlcontracts import HlContract
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmHlContractAdd import Ui_frmHlContractAdd
 
 class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
@@ -24,10 +23,10 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
             self.wdgDT.set(self.mem, None, self.mem.localzone)
         else:#update
             self.wdgDT.set(self.mem, self.hlcontract.datetime, self.mem.localzone)
-            self.txtGuarantee.setText(self.hlcontract.getGuarantee(eMoneyCurrency.Product).amount)
-            self.txtAdjustment.setText(self.hlcontract.getAdjustment(eMoneyCurrency.Product).amount)
-            self.txtInterest.setText(self.hlcontract.getInterest(eMoneyCurrency.Product).amount)
-            self.txtCommission.setText(self.hlcontract.getCommission(eMoneyCurrency.Product).amount)
+            self.txtGuarantee.setText(self.hlcontract.guarantee)
+            self.txtAdjustment.setText(self.hlcontract.adjustment)
+            self.txtInterest.setText(self.hlcontract.interest)
+            self.txtCommission.setText(self.hlcontract.commission)
             self.cmd.setText(self.tr("Update High-Low contract"))
 
     def on_cmd_pressed(self):                        
@@ -36,16 +35,15 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
             return
         
         try:
-            self.hlcontract.setGuarantee(self.txtGuarantee.decimal())
-            self.hlcontract.setAdjustment(self.txtAdjustment.decimal())
-            self.hlcontract.setCommission(self.txtCommission.decimal())
-            self.hlcontract.setInterest(self.txtInterest.decimal())
+            self.hlcontract.guarantee=self.txtGuarantee.decimal()
+            self.hlcontract.adjustment=self.txtAdjustment.decimal()
+            self.hlcontract.commission=self.txtCommission.decimal()
+            self.hlcontract.interest=self.txtInterest.decimal()
             self.hlcontract.datetime=self.wdgDT.datetime()
         except:
             qmessagebox(self.tr("Data error. Please check them."))
             return
 
-        
         self.hlcontract.save()
         self.mem.con.commit()
         self.done(0)
