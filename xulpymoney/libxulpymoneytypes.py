@@ -56,6 +56,7 @@ class eTickerPosition(IntEnum):
 
 
 class eComment:
+    InvestmentOperation=10000
     HlContract=10007
 
 

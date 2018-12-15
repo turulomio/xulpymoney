@@ -3229,6 +3229,8 @@ class Comment(QObject):
     def encode(self, ecomment, *args):
         if ecomment==eComment.HlContract:
             return "{},{}".format(eComment.HlContract, args[0].id)        
+        elif ecomment==eComment.InvestmentOperation:
+            return "{},{}".format(eComment.InvestmentOperation, args[0].id)
         
     def validateLength(self, number, code, args):
         if number!=len(args):
@@ -3241,12 +3243,6 @@ class Comment(QObject):
         if dividend==None:
             logging.error("I coudn't find dividend {} for comment {}".format(id, code))
         return dividend
-        
-    def getInvestmentOperation(self, id, code):
-        operinversion=self.mem.data.investments.findInvestmentOperation(id)
-        if operinversion==None:
-            logging.error("I coudn't find operinversion {} for comment {}".format(id, code))
-        return operinversion
         
     def getAccountOperation(self, id, code):
         accountoperation=AccountOperation(self.mem,  id)
@@ -3265,12 +3261,6 @@ class Comment(QObject):
         if cco==None:
             logging.error("I couldn't find creditcard operation {} for comment {}".format(id, code))
         return cco
-
-    def setEncoded10000(self, operinvestment):
-        """
-            10000;investmentoperation.idSets the coded comment to save in db
-        """
-        return "10000,{}".format(operinvestment.id)
         
     def setEncoded10001(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
         """
@@ -3326,32 +3316,33 @@ class Comment(QObject):
         (code, args)=self.get(string)
         if code==None:
             return string
-        print(code, args)
-        if code==10000:#Operinversion comment
-            self.validateLength(1, code, args)
-            io=self.getInvestmentOperation(args[0], code)
+
+        if code==eComment.InvestmentOperation:
+            if not self.validateLength(1, code, args): return string
+            io=self.mem.data.investments.findInvestmentOperation(args[0])
+            if io==None: return string
             if io.investment.hasSameAccountCurrency():
-                return QApplication.translate("Core","{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(1), io.comission(1), io.taxes(1))
+                return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
             else:
-                return QApplication.translate("Core","{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(1), io.gross(2),  io.comission(1), io.comission(2),  io.taxes(1), io.taxes(2))
-                
+                return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
+
         elif code==10001:#Operaccount transfer origin
-            self.validateLength(3, code, args)
+            if not self.validateLength(3, code, args): return string
             aod=self.getAccountOperation(args[1], code)
             return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
             
         elif code==10002:#Operaccount transfer destiny
-            self.validateLength(3, code, args)
+            if not self.validateLength(3, code, args): return string
             aoo=self.getAccountOperation(args[0], code)
             return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
             
         elif code==10003:#Operaccount transfer origin comision
-            self.validateLength(3, code, args)
+            if not self.validateLength(3, code, args): return string
             aoo=self.getAccountOperation(args[0], code)
             aod=self.getAccountOperation(args[1], code)
             return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
         elif code==10004:#Comentario de cuenta asociada al dividendo
-            self.validateLength(1, code, args)
+            if not self.validateLength(1, code, args): return string
             dividend=self.getDividend(args[0], code)
             investment=self.mem.data.investments.find_by_id(dividend.investment.id)
             if investment.hasSameAccountCurrency():
@@ -3359,12 +3350,12 @@ class Comment(QObject):
             else:
                 return QApplication.translate("Core", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
         elif code==10005:#Facturaci´on de tarjeta diferida
-            self.validateLength(2, code, args)
+            if not self.validateLength(2, code, args): return string
             creditcard=self.getCreditCard(args[0], code)
             number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
             return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
         elif code==10006:#Devoluci´on de tarjeta
-            self.validateLength(1, code, args)
+            if not self.validateLength(1, code, args): return string
             cco=self.getCreditCardOperation(args[0], code)
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime,  self.mem.localzone.name), money)
@@ -4048,7 +4039,7 @@ class InvestmentOperation:
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
         se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
         que se puede actualizar en cualquier momento con esta función"""
-        self.comentario=Comment(self.mem).setEncoded10000(self)
+        self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
         #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como parámetro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
