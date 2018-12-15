@@ -54,6 +54,11 @@ class eTickerPosition(IntEnum):
     def length():
         return len(eTickerPosition.__dict__)
 
+
+class eComment:
+    HlContract=10007
+
+
 ## System concepts tipified
 class eConcept:
     OpenAccount=1

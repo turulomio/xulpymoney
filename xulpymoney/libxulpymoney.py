@@ -21,7 +21,7 @@ from decimal import Decimal, getcontext
 from xulpymoney.connection_pg import Connection
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
-from xulpymoney.libxulpymoneytypes import eConcept, eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
+from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
 from PyQt5.QtChart import QChart
@@ -356,6 +356,17 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             for o in inv.op.arr:
                 if o.id==id:
                     return o
+        return None
+        
+    ## Finds a HlContract in all investment of this manager
+    ## @param Integer with the id of the hlcontract to find
+    ## @return HlContract
+    def findHlContract(self, id):
+        for inv in self.arr:
+            if inv.product.high_low==True:
+                for o in inv.hlcontractmanager.arr:
+                    if o.id==id:
+                        return o
         return None
             
             
@@ -1558,7 +1569,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).setFancy(a.comentario)))
+            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
             tabla.setItem(rownumber, 5+diff, qleft(a.id))
             if self.selected.length()>0:
                 if a.id==self.selected.only().id:
@@ -1578,7 +1589,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))       
+            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).decode(o.comentario)))       
             table.setItem(i+1, 5, qleft(o.id))
             if self.selected.length()>0:
                 if o.id==self.selected.only().id:
@@ -3179,15 +3190,14 @@ class InvestmentOperationCurrent:
         
         
 
-class Comment:
-    """Class who controls all comments from opercuentas, operinversiones ..."""
+## Class who controls all comments from opercuentas, operinversiones ...
+class Comment(QObject):
     def __init__(self, mem):
+        QObject.__init__(self)
         self.mem=mem
 
+    ##Obtiene el codigo de un comentario
     def getCode(self, string):
-        """
-            Obtiene el codigo de un comentario
-        """
         (code, args)=self.get(string)
         return code        
 
@@ -3202,7 +3212,7 @@ class Comment:
         """Returns (code,args)"""
         string=string
         try:
-            number=string2list_of_integers(string)
+            number=string2list_of_integers(string, separator=",")
             if len(number)==1:
                 code=number[0]
                 args=[]
@@ -3212,6 +3222,13 @@ class Comment:
             return(code, args)
         except:
             return(None, None)
+            
+    ## Function to generate a encoded comment using distinct parameters
+    ## Encode parameters can be:
+    ## - eComment.HlContract, hlcontract
+    def encode(self, ecomment, *args):
+        if ecomment==eComment.HlContract:
+            return "{},{}".format(eComment.HlContract, args[0].id)        
         
     def validateLength(self, number, code, args):
         if number!=len(args):
@@ -3242,12 +3259,13 @@ class Comment:
         if creditcard==None:
             logging.error("I couldn't find creditcard {} for comment {}".format(id, code))
         return creditcard        
+
     def getCreditCardOperation(self, id, code):
         cco=CreditCardOperation(self.mem).init__db_query(id)
         if cco==None:
             logging.error("I couldn't find creditcard operation {} for comment {}".format(id, code))
         return cco
-        
+
     def setEncoded10000(self, operinvestment):
         """
             10000;investmentoperation.idSets the coded comment to save in db
@@ -3302,17 +3320,13 @@ class Comment:
             Usado en comentario que muestra la opertarjeta que quiero devolver.
         """
         return "10006,{}".format(opercreditcardtorefund.id)        
-    def setEncoded10007(self, hlcontract):
-        """
-            Usado en comentario que muestra el hlcontract que quiero devolver.
-        """
-        return "10007,{}".format(hlcontract.id)        
         
-    def setFancy(self, string):
+    def decode(self, string):
         """Sets the comment to show in app"""
         (code, args)=self.get(string)
         if code==None:
             return string
+        print(code, args)
         if code==10000:#Operinversion comment
             self.validateLength(1, code, args)
             io=self.getInvestmentOperation(args[0], code)
@@ -3325,10 +3339,12 @@ class Comment:
             self.validateLength(3, code, args)
             aod=self.getAccountOperation(args[1], code)
             return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
+            
         elif code==10002:#Operaccount transfer destiny
             self.validateLength(3, code, args)
             aoo=self.getAccountOperation(args[0], code)
             return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
+            
         elif code==10003:#Operaccount transfer origin comision
             self.validateLength(3, code, args)
             aoo=self.getAccountOperation(args[0], code)
@@ -3352,6 +3368,13 @@ class Comment:
             cco=self.getCreditCardOperation(args[0], code)
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime,  self.mem.localzone.name), money)
+
+        elif code==eComment.HlContract:
+            if not self.validateLength(1, code, args): return string
+            hlcontract=self.mem.data.investments.findHlContract(args[0])            
+            return self.tr("Daily contract of {} ({})").format(hlcontract.investment.name, hlcontract.investment.account.name) if hlcontract!=None else string
+
+
 ## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket
 class Concept:
     ## Constructor with the following attributes combination
@@ -5106,7 +5129,7 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable):
             tabla.setItem(rownumber, 1, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4, qleft(Comment(self.mem).setFancy(a.comentario)))
+            tabla.setItem(rownumber, 4, qleft(Comment(self.mem).decode(a.comentario)))
             if self.selected: #If selected is not necesary is None by default
                 if self.selected.length()>0:
                     for sel in self.selected.arr:
