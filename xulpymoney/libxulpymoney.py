@@ -1988,7 +1988,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         self.investment=investment
 
 
-    def calcular(self):
+    def calcular(self, test_suite=False):
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
@@ -2014,7 +2014,8 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                     sioa.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
                 else:
                     sioa.historizar_high_low(o, sioh)
-            sioa.get_valor_benchmark(self.mem.data.benchmark)
+            if test_suite==False:
+                sioa.get_valor_benchmark(self.mem.data.benchmark)
             return (sioa, sioh)
 
     def myqtablewidget(self, tabla, type=1):
