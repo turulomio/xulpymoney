@@ -3,7 +3,7 @@ from decimal import Decimal
 from xulpymoney.libxulpymoney import AccountOperation, Comment, Money
 from xulpymoney.libxulpymoneyfunctions import qdatetime, qleft
 from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
-from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eConcept
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eConcept, eComment
 from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import QObject
 ## Class to manage CDF daily contracts.
@@ -142,7 +142,7 @@ class HlContract(QObject):
                 (self.datetime,  self.guarantee, self.adjustment, self.commission, self.interest, self.currency_conversion, self.id))
 
         # Creates new AO
-        comment=Comment(self.mem).setEncoded10007(self)
+        comment=Comment(self.mem).encode(eComment.HlContract, self)
         if self.guarantee!=0:
             concepto=self.mem.conceptos.find_by_id(eConcept.HlGuaranteeReturned) if self.guarantee>0 else self.mem.conceptos.find_by_id(eConcept.HlGuaranteePaid)
             guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mGuarantee(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
@@ -162,26 +162,26 @@ class HlContract(QObject):
             concepto=self.mem.conceptos.find_by_id(eConcept.HlCommission)
             commission_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mCommission(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             commission_AO.save()
-            self.commission_ao=commission_AO.id      
+            self.commission_ao=commission_AO.id
 
         cur.execute("update high_low_contract set guarantee_ao=%s, adjustment_ao=%s, interest_ao=%s, commission_ao=%s where id=%s", 
                 (self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
         cur.close()
-        
+
         #Delete old AO. This made me change foreign key to NO ACTION.NO ACTION allows the check to be deferred until later in the transaction
-        if self.guarantee_ao!=None:
+        if old_guarantee_ao!=None:
             AO=AccountOperation(self.mem, old_guarantee_ao)
             AO.borrar()
-        if self.adjustment_ao!=None:
+        if old_adjustment_ao!=None:
             AO=AccountOperation(self.mem, old_adjustment_ao)
             AO.borrar()
-        if self.interest_ao!=None:
+        if old_interest_ao!=None:
             AO=AccountOperation(self.mem, old_interest_ao)
             AO.borrar()
-        if self.commission_ao!=None:
+        if old_commission_ao!=None:
             AO=AccountOperation(self.mem, old_commission_ao)
             AO.borrar()
-        
+
         self.investment.hlcontractmanager.order_by_datetime()
 
 class HlContractManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
