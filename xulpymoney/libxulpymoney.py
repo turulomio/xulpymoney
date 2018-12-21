@@ -4107,15 +4107,19 @@ class InvestmentOperation:
         logging.debug ("Investment operation {} hasn't been found in mem".format(id))
         return None
 
+    ## Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
+    ## se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
+    ## que se puede actualizar en cualquier momento con esta función
     def actualizar_cuentaoperacion_asociada(self):
-        """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
-        se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
-        que se puede actualizar en cualquier momento con esta función"""
-        self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
         #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como parámetro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
+        
+        if self.investment.product.high_low==True:
+            return
+        
+        self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
             importe=-self.gross(type=2)-self.comission(type=2)
