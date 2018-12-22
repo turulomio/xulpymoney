@@ -2265,6 +2265,8 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             logging.critical ("Error en historizar. diff {}. Inicio {}. Fin {}. {}".format(inicio-self.shares()-abs(io.shares),  inicio,   self.shares(), io))
                 
     ## @param io es una Investmentoperacion de venta o de compra, que queremos historizar
+    
+    ## ESTA FUNCION SOLO FUNCIONA CUANDO SE VAN QUITANDO DE IOA DE UNO EN UNO
     def historizar_high_low(self, io,  sioh):
         self.order_by_datetime()
         
@@ -2273,46 +2275,11 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         comisiones=Decimal('0')
         impuestos=Decimal('0')
         remaining=io.shares
-        while True:#No se usa for porque se van insertando en self.arr en el bucle
-            ioa=self.arr[0]
-            logging.debug ("Inicio bucle historizado quedando {} con  ioa con {}, ".format(remaining, ioa.shares))
-            if io.shares<0 and self.shares()>0: #operacion de venta cuando estoy en positivo. Debo historizar
-                if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    logging.debug("A")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
-                    self.arr.remove(ioa)
-                    break
-                if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    logging.debug("B")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.remove(ioa)
-                    break
-                else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
-                    logging.debug("C")
-                    remaining=remaining+ioa.shares
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
-                    self.arr.remove(ioa)                   
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
-                    break
-
-            elif io.shares>0 and self.shares()<0: #operacion de compra cuando estoy en negativo. Debo historizar
-                if abs(ioa.shares)>abs(remaining):# IOA tiene mas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    logging.debug("D")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-remaining, 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
-                    self.arr.remove(ioa)
-                    break
-                if abs(ioa.shares)==abs(remaining):# IOA tiene las mismas acciones. Se historiza todo io, se borra ioa y se crea otra ioa con resto
-                    logging.debug("E")
-                    sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, remaining, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.remove(ioa)
-                    break
-                else:#IOA no tiene suficientes acciones.Las acciones de ioa se historizan todas el actual y se restan acciones venta
-                    logging.debug("F")
-                    remaining=remaining+ioa.shares
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))     
-                    break
+        
+        if self.shares()+io.shares==Decimal('0'):
+            ioa=self.first()
+            self.clean()
+            sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, io.shares, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
 
             logging.debug("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
         logging.debug("Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
