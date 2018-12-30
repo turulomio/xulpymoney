@@ -2266,7 +2266,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
                 
     ## @param io es una Investmentoperacion de venta o de compra, que queremos historizar
     
-    ## ESTA FUNCION SOLO FUNCIONA CUANDO SE VAN QUITANDO DE IOA DE UNO EN UNO
+    ## ESTA FUNCION SOLO FUNCIONA CUANDO SE VAN QUITANDO DE IOA DE UNO EN UNO. DESGLOSAR CUANDO SEA NECESARIO EN LA OPERATIVA
     def historizar_high_low(self, io,  sioh):
         self.order_by_datetime()
         
@@ -4357,12 +4357,13 @@ class Investment:
         self.selling_expiration=row['selling_expiration']
         return self
 
-
+    ## Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes.
     def es_borrable(self):
-        """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         if self.op.length()>0:
             return False
         if self.setDividends_from_operations().length()>0:
+            return False
+        if OrderManager(self.mem).number_of_investment_orders(self)>0:
             return False
         return True
         
@@ -5263,8 +5264,13 @@ class OrderManager(ObjectManager_With_Id_Selectable):
         self.arr=sorted(self.arr, key=lambda o:o.expiration)
     def order_by_execution(self):
         self.arr=sorted(self.arr, key=lambda o:o.executed)
-        
-        
+
+    ## Returns the number of order of the investment parameter
+    ## This function is used, for example, to determinate if an investment can be delete
+    ## @param investment Investment Object
+    ## @return int Number of orders of an investment
+    def number_of_investment_orders(self, investment):
+        return self.mem.con.cursor_one_field("select count(*) from orders where investments_id=%s", (investment.id, ))
         
     def order_by_percentage_from_current_price(self):
         try:

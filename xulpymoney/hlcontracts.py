@@ -158,7 +158,7 @@ class HlContract(QObject):
             interest_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mInterest(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             interest_AO.save()
             self.interest_ao=interest_AO.id
-        if self.commission>0:
+        if self.commission!=0:
             concepto=self.mem.conceptos.find_by_id(eConcept.HlCommission)
             commission_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mCommission(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             commission_AO.save()
