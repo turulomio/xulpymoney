@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1052</width>
-    <height>825</height>
+    <height>974</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>965</width>
-                <height>796</height>
+                <width>985</width>
+                <height>904</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -558,15 +558,9 @@
                      </layout>
                     </item>
                     <item>
-                     <widget class="QLabel" name="lblAutoupdate">
-                      <property name="font">
-                       <font>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
+                     <widget class="QCheckBox" name="chkHL">
                       <property name="text">
-                       <string/>
+                       <string>Allow short and long contracts</string>
                       </property>
                      </widget>
                     </item>
@@ -580,6 +574,19 @@
                        </widget>
                       </item>
                      </layout>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lblAutoupdate">
+                      <property name="font">
+                       <font>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="cmdSave">

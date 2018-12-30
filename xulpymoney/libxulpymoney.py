@@ -6236,25 +6236,6 @@ class Product:
             return True
         return False
 
-    def has_basic_data(self):
-        """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, lastyear, thisyearestimation_dps)"""
-        self.needStatus(1)
-        (last, penultimate, lastyear, estimation)=(False, False, False, False)
-        if self.result.basic.last: 
-            if self.result.basic.last.quote:
-                last=True
-        if self.result.basic.penultimate: 
-            if self.result.basic.penultimate.quote:
-                penultimate=True
-        if self.result.basic.lastyear: 
-            if self.result.basic.lastyear.quote:
-                lastyear=True
-        if self.dps:
-           if self.dps.estimation!=None:
-                estimation=True
-        return (last, penultimate, lastyear, estimation)
-        
-        
     def is_deletable(self):
         if self.is_system():
             return False
