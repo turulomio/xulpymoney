@@ -3376,7 +3376,7 @@ class Concept:
             cur.execute("update conceptos set concepto=%s, id_tiposoperaciones=%s, editable=%s where id_conceptos=%s", (self.name, self.tipooperacion.id, self.editable, self.id))
         cur.close()
                             
-    def es_borrable(self):
+    def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         if self.uses()>0 and self.editable==True:
             return False
@@ -3393,7 +3393,7 @@ class Concept:
         return opercuentas+opertarjetas
 
     def borrar(self):
-        if self.es_borrable():
+        if self.is_deletable():
             cur=self.mem.con.cursor()        
             cur.execute("delete from conceptos where id_conceptos=%s", (self.id, ))
             cur.close()
@@ -4116,17 +4116,17 @@ class Bank:
                 resultado=resultado+i.balance().local()
         return resultado
         
-    def es_borrable(self):
+    def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         #Recorre balance cuentas
         for c  in self.mem.data.accounts.arr:
             if c.eb.id==self.id:
-                if c.es_borrable()==self.id:
+                if c.is_deletable()==self.id:
                     return False
         return True
         
     def delete(self):
-        """Función que borra. You must use es_borrable before"""
+        """Función que borra. You must use is_deletable before"""
         cur=self.mem.con.cursor()
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
@@ -4203,7 +4203,7 @@ class Account:
             cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.active, self.currency.id, self.id))
         cur.close()
 
-    def es_borrable(self):
+    def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         cur=self.mem.con.cursor()
         cur.execute("select count(*) from tarjetas where id_cuentas=%s", (self.id, ))
@@ -4222,7 +4222,7 @@ class Account:
         return True
         
     def borrar(self, cur):
-        if self.es_borrable()==True:
+        if self.is_deletable()==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
@@ -4358,12 +4358,12 @@ class Investment:
         return self
 
     ## Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes.
-    def es_borrable(self):
+    def is_deletable(self):
         if self.op.length()>0:
             return False
         if self.setDividends_from_operations().length()>0:
             return False
-        if OrderManager(self.mem).number_of_investment_orders(self)>0:
+        if OrderManager(self.mem).number_of_investment_orders(self)>0:# Check if has orders
             return False
         return True
         

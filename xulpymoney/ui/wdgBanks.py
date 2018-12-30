@@ -182,7 +182,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
     def on_actionBankDelete_triggered(self):
         if self.banks.selected.qmessagebox_inactive():
             return        
-        if self.banks.selected.es_borrable()==False:
+        if self.banks.selected.is_deletable()==False:
             qmessagebox(self.tr("This bank has dependent accounts and it can't be deleted"))
         else:
             self.mem.data.banks.delete(self.banks.selected)

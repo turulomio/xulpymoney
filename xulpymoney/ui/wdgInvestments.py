@@ -194,7 +194,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.actionSameProduct.setEnabled(False)
                 self.actionSameProductFIFO.setEnabled(False)
             self.actionProductPrice.setEnabled(True)
-            if self.selInvestment.es_borrable()==True:
+            if self.selInvestment.is_deletable()==True:
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
