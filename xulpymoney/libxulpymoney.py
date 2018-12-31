@@ -2476,108 +2476,99 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         tabla.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
         tabla.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
 
-class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Selectable):       
-    """Clase es un array ordenado de objetos newInvestmentOperation"""
+class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
         ObjectManager_With_Id_Selectable.__init__(self)
         self.mem=mem
 
-        
     def consolidado_bruto(self,  year=None,  month=None):
-        type=3
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_bruto(type)
+                resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_bruto(type)
+                        resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_bruto(type)
+                        resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
         return resultado        
         
     def consolidado_neto(self,  year=None,  month=None):
-        type=3
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto(type)
+                resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_neto(type)
+                        resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_neto(type)
+                        resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
         return resultado
         
     def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        type=3
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto_antes_impuestos(type)
+                resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_neto_antes_impuestos(type)
+                        resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_neto_antes_impuestos(type)
+                        resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
         return resultado
 
     def gross_purchases(self):
         """Bruto de todas las compras de la historicas"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.bruto_compra(3)
+            r=r+a.bruto_compra(eMoneyCurrency.User)
         return r
 
     def gross_sales(self):
         """Bruto de todas las compras de la historicas"""
-        r=Money(self.mem, 0,  self.mem.localcurrency)
+        r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.bruto_venta(3)
+            r=r+a.bruto_venta(eMoneyCurrency.User)
         return r
         
     def taxes(self):
-        r=Money(self.mem,  0,  self.mem.localcurrency)
+        r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.taxes(3)
+            r=r+a.taxes(eMoneyCurrency.User)
         return r
         
     def tpc_total_neto(self):
         return Percentage(self.consolidado_neto(), self.gross_purchases())
-        
+
+    ## eMoneyCurrency.User because is heterogeneous
     def comissions(self):
-        r=Money(self.mem, 0,  self.mem.localcurrency)
+        r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.comission(3)
+            r=r+a.comission(eMoneyCurrency.User)
         return r
 
     def gross_positive_operations(self):
-        """Resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            if a.bruto().local().isGETZero():
-                r=r+a.bruto(3)
+            if a.bruto(eMoneyCurrency.User).isGETZero():
+                r=r+a.bruto(eMoneyCurrency.User)
         return r
     
     def gross_negative_operations(self):
-        """Resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            if a.bruto().local().isLTZero():
-                r=r+a.bruto(3)
+            if a.bruto(eMoneyCurrency.User).isLTZero():
+                r=r+a.bruto(eMoneyCurrency.User)
         return r
-        
-        
+
     def myqtablewidget(self, tabla):
-        """Usa self.mem.localcurrency como moneda"""
-            
-        tabla.setColumnCount(13)
+        tabla.setColumnCount(14)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years" )))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product" )))
@@ -2586,15 +2577,13 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
         tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
         tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Gross gains" )))
         tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
         tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
-        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "Net gains" )))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(13, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
 
-
-        type=3
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
@@ -2605,16 +2594,15 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.investment.account.name))
             tabla.setItem(rownumber, 4,QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, 5,qright(a.shares))
-            tabla.setItem(rownumber, 6,a.bruto_compra(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 7,a.bruto_venta(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8,a.consolidado_bruto(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 9,a.comission(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 10,a.taxes(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 11,a.consolidado_neto(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6,a.bruto_compra(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 7,a.bruto_venta(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 8,a.consolidado_bruto(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 9,a.comission(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 10,a.taxes(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 11,a.consolidado_neto(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 12,a.tpc_tae_neto().qtablewidgetitem())
             tabla.setItem(rownumber, 13,a.tpc_total_neto().qtablewidgetitem())
 
-        
         tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
         tabla.setItem(self.length(), 6,self.gross_purchases().qtablewidgetitem())    
         tabla.setItem(self.length(), 7,self.gross_sales().qtablewidgetitem())    
@@ -2625,20 +2613,28 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         tabla.setItem(self.length(), 13,self.tpc_total_neto().qtablewidgetitem())
         tabla.setCurrentCell(self.length(), 5)       
     
-
     def order_by_fechaventa(self):
         """Sort by selling date"""
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
 
-        
-
-        
 class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoricalHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationHistoricalHeterogeneusManager.__init__(self, mem)
         self.investment=investment
-                
-    def consolidado_bruto(self,  year=None,  month=None, type=1):
+        
+    def taxes(self, type=eMoneyCurrency.Product):
+        r=Money(self.mem,  0,  self.investment.resultsCurrency(type))
+        for a in self.arr:
+            r=r+a.taxes(type)
+        return r
+
+    def comissions(self, type=eMoneyCurrency.Product):
+        r=Money(self.mem, 0,  self.investment.resultsCurrency(type))
+        for a in self.arr:
+            r=r+a.comission(type)
+        return r
+
+    def consolidado_bruto(self,  year=None,  month=None, type=eMoneyCurrency.Product):
         resultado=Money(self.mem, 0, self.investment.resultsCurrency(type))
         for o in self.arr:        
             if year==None:#calculo historico
@@ -2652,18 +2648,18 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                         resultado=resultado+o.consolidado_bruto(type)
         return resultado
         
-    def consolidado_neto(self,  year=None,  month=None):
-        resultado=Money(self.mem, 0, self.investment.product.currency)
+    def consolidado_neto(self,  year=None,  month=None, type=eMoneyCurrency.Product):
+        resultado=Money(self.mem, 0, self.investment.resultsCurrency(type))
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto()
+                resultado=resultado+o.consolidado_neto(type)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_neto()
+                        resultado=resultado+o.consolidado_neto(type)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_neto()
+                        resultado=resultado+o.consolidado_neto(type)
         return resultado
         
     def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
@@ -2680,15 +2676,34 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
         
-    def bruto_compra(self):
-        resultado=Money(self.mem, 0, self.investment.product.currency)
+    def bruto_compra(self, type=eMoneyCurrency.Product):
+        resultado=Money(self.mem,  0,  self.investment.resultsCurrency(type))
         for o in self.arr:
-            resultado=resultado+o.bruto_compra()
+            resultado=resultado+o.bruto_compra(type)
         return resultado
+
+    def bruto_venta(self, type=eMoneyCurrency.Product):
+        resultado=Money(self.mem,  0,  self.investment.resultsCurrency(type))
+        for o in self.arr:
+            resultado=resultado+o.bruto_venta(type)
+        return resultado
+
     def tpc_total_neto(self):
         return Percentage(self.consolidado_neto(), self.bruto_compra())
 
-    def myqtablewidget(self, tabla, show_accounts=False, type=1):
+    def gross_purchases(self, type=eMoneyCurrency.Product):
+        r=Money(self.mem,  0,  self.investment.resultsCurrency(type))
+        for a in self.arr:
+            r=r+a.bruto_compra(type)
+        return r
+
+    def gross_sales(self, type=eMoneyCurrency.Product):
+        r=Money(self.mem,  0,  self.investment.resultsCurrency(type))
+        for a in self.arr:
+            r=r+a.bruto_venta(type)
+        return r
+
+    def myqtablewidget(self, tabla, show_accounts=False, type=eMoneyCurrency.Product):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         diff=0
         if show_accounts==True:
@@ -2707,80 +2722,40 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Gross gains" )))
         tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
         tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
-        tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Net gains" )))
         tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
-
-        currency=self.investment.resultsCurrency(type)
-        (sumbruto, sumneto)=(Money(self.mem, 0, currency), Money(self.mem, 0, currency))
-        sumsaldosinicio=Money(self.mem, 0, currency)
-        sumsaldosfinal=Money(self.mem, 0, currency)
-        
-        sumoperacionespositivas=Money(self.mem, 0, currency)
-        sumoperacionesnegativas=Money(self.mem, 0, currency)
-        sumimpuestos=Money(self.mem, 0, currency)
-        sumcomision=Money(self.mem, 0, currency)
 
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):
-            saldoinicio=a.bruto_compra(type)
-            saldofinal=a.bruto_venta(type)
-            bruto=a.consolidado_bruto(type)
-            neto=a.consolidado_neto(type)
-            
-            sumbruto=sumbruto+bruto
-            sumneto=sumneto+neto
-            sumsaldosinicio=sumsaldosinicio+saldoinicio
-            sumsaldosfinal=sumsaldosfinal+saldofinal
-    
-            #Calculo de operaciones positivas y negativas
-            if bruto.isGETZero():
-                sumoperacionespositivas=sumoperacionespositivas+bruto 
-            else:
-                sumoperacionesnegativas=sumoperacionesnegativas+bruto
-    
+        for rownumber, a in enumerate(self.arr):    
             tabla.setItem(rownumber, 0,qdate(a.fecha_venta))
-            
-            tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
-            
-            
+            tabla.setItem(rownumber, 1, qright(round(a.years(), 2)))
             if show_accounts==True:
-                tabla.setItem(rownumber, 2,QTableWidgetItem(a.investment.name))
-                tabla.setItem(rownumber, 3,QTableWidgetItem(a.investment.account.name))
-                
-            tabla.setItem(rownumber, 2+diff,QTableWidgetItem(a.tipooperacion.name))
-            
-            tabla.setItem(rownumber, 3+diff,qright(a.shares))
-            
-            tabla.setItem(rownumber, 4+diff,saldoinicio.qtablewidgetitem())
-            
-            tabla.setItem(rownumber, 5+diff,saldofinal.qtablewidgetitem())
-            
-            tabla.setItem(rownumber, 6+diff,bruto.qtablewidgetitem())
-            
-            sumimpuestos=sumimpuestos+a.taxes(type)
-            sumcomision=sumcomision+a.comission(type)
+                tabla.setItem(rownumber, 2, qleft(a.investment.name))
+                tabla.setItem(rownumber, 3, qleft(a.investment.account.name))
+            tabla.setItem(rownumber, 2+diff, qleft(a.tipooperacion.name))
+            tabla.setItem(rownumber, 3+diff, qright(a.shares))
+            tabla.setItem(rownumber, 4+diff, a.bruto_compra(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 5+diff, a.bruto_venta(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6+diff, a.consolidado_bruto(type).qtablewidgetitem())
             tabla.setItem(rownumber, 7+diff,a.comission(type).qtablewidgetitem())
             tabla.setItem(rownumber, 8+diff,a.taxes(type).qtablewidgetitem())
-            
-            tabla.setItem(rownumber, 9+diff,neto.qtablewidgetitem())
-            
+            tabla.setItem(rownumber, 9+diff, a.consolidado_neto(type).qtablewidgetitem())
             tabla.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
-            
             tabla.setItem(rownumber, 11+diff, a.tpc_total_neto().qtablewidgetitem())
+
         if self.length()>0:
-            tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
-            tabla.setItem(self.length(), 4+diff,sumsaldosinicio.qtablewidgetitem())
-            tabla.setItem(self.length(), 5+diff,sumsaldosfinal.qtablewidgetitem())
-            tabla.setItem(self.length(), 6+diff,sumbruto.qtablewidgetitem())  
-            tabla.setItem(self.length(), 7+diff,sumcomision.qtablewidgetitem())    
-            tabla.setItem(self.length(), 8+diff,sumimpuestos.qtablewidgetitem())    
-            tabla.setItem(self.length(), 9+diff,sumneto.qtablewidgetitem())
-            tabla.setItem(self.length(), 11+diff,self.tpc_total_neto().qtablewidgetitem())
-            tabla.setCurrentCell(self.length(), 4+diff)       
-        return (sumbruto, sumcomision, sumimpuestos, sumneto)
+            tabla.setItem(self.length(), 2, qleft("TOTAL"))
+            tabla.setItem(self.length(), 4+diff, self.gross_purchases(type).qtablewidgetitem())
+            tabla.setItem(self.length(), 5+diff, self.gross_sales(type).qtablewidgetitem())
+            tabla.setItem(self.length(), 6+diff, self.consolidado_bruto(type=type).qtablewidgetitem())  
+            tabla.setItem(self.length(), 7+diff, self.comissions(type).qtablewidgetitem())    
+            tabla.setItem(self.length(), 8+diff, self.taxes(type).qtablewidgetitem())    
+            tabla.setItem(self.length(), 9+diff, self.consolidado_neto(type=type).qtablewidgetitem())
+            tabla.setItem(self.length(), 11+diff, self.tpc_total_neto().qtablewidgetitem())
+            tabla.setCurrentCell(self.length(), 4+diff)
     
 class InvestmentOperationHistorical:
     def __init__(self, mem):
