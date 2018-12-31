@@ -4,7 +4,7 @@ from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
-from xulpymoney.libxulpymoneytypes import eQColor, eOperationType
+from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
 from xulpymoney.ui.canvaschart import VCTemporalSeries
@@ -105,7 +105,8 @@ class TotalMonth:
         """
         if self.no_loses_value==None:
             self.no_loses_value=Assets(self.mem).invested(self.last_day())+self.total_accounts()
-        return self.no_loses_value        
+        return self.no_loses_value
+
 class TotalYear:
     """Set of 12 totalmonths in the same year"""
     def __init__(self, mem, year):
@@ -873,8 +874,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if inv.product.type.id==type.id:
                     #gains
                     for o in inv.op_historica.arr:
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (eOperationType.SharesSale, eOperationType.TransferFunds):
-                            gains=gains+o.consolidado_bruto().local()
+                        if o.fecha_venta.year==self.wyData.year:
+                            gains=gains+o.consolidado_bruto(eMoneyCurrency.User)
                     #dividends
                     setdiv=DividendHeterogeneusManager(self.mem)
                     setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))

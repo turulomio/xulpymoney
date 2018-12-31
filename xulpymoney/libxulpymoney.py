@@ -2825,19 +2825,16 @@ class InvestmentOperationHistorical:
             return True
         return False
         
-    def consolidado_bruto(self, type=1):
-        try:
-            return self.bruto_venta(type)-self.bruto_compra(type)
-        except:
-            return Money(self.mem, 0, self.investment.resultsCurrency(type))
+    def consolidado_bruto(self, type=eMoneyCurrency.Product):
+        return self.bruto_venta(type)-self.bruto_compra(type)
         
-    def consolidado_neto(self, type=1):
+    def consolidado_neto(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
         return self.consolidado_bruto(type)-self.comission(type)-self.taxes(type)
 
-    def consolidado_neto_antes_impuestos(self, type=1):
+    def consolidado_neto_antes_impuestos(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
@@ -2852,21 +2849,15 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_compra
             
         money=Money(self.mem, value, self.investment.product.currency)
+        dt=day_end_from_date(self.fecha_inicio, self.mem.localzone)
         if type==eMoneyCurrency.Product:
             return money
-        else:
+        elif type==eMoneyCurrency.Account:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
-        
-    def bruto_venta(self, type=1):
-#        if self.tipooperacion.id in (9, 10):
-#            value=0
-#        if self.investment.product.high_low==True:
-#            value=abs(self.shares)*self.valor_accion_venta*self.investment.product.leveraged.multiplier
-#        else:
-#            value=self.shares*self.valor_accion_venta
-#            
-            
-            
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra).local(dt)
+    
+    def bruto_venta(self, type=eMoneyCurrency.Product):
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             value=0
         elif self.investment.product.high_low==True:
@@ -2880,24 +2871,34 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_venta
 
         money=Money(self.mem, value, self.investment.product.currency)
+        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
         if type==eMoneyCurrency.Product:
             return money
-        else:
-            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_compra)
-        
-    def taxes(self, type=1):
-        if type==1:
-            return Money(self.mem, self.impuestos, self.investment.account.currency).convert_from_factor(self.investment.product.currency, 1/self.currency_conversion_venta)
-        else:
-            return Money(self.mem, self.impuestos, self.investment.account.currency)        
+        elif type==eMoneyCurrency.Account:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta)
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta).local(dt)
+
+    def taxes(self, type=eMoneyCurrency.Product):
+        money=Money(self.mem, self.impuestos, self.investment.product.currency)
+        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta)
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta).local(dt)
     
-    def comission(self, type=1):
-        if type==1:
-            return Money(self.mem, self.comision, self.investment.account.currency).convert_from_factor(self.investment.product.currency, 1/self.currency_conversion_venta)
-        else:
-            return Money(self.mem, self.comision, self.investment.account.currency)
-        
-        
+    def comission(self, type=eMoneyCurrency.Product):
+        money=Money(self.mem, self.comision, self.investment.product.currency)
+        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta)
+        elif type==eMoneyCurrency.User:
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta).local(dt)
+
     def days(self):
         return (self.fecha_venta-self.fecha_inicio).days
         
