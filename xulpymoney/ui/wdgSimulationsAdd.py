@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
-from xulpymoney.libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin
+from xulpymoney.libxulpymoney import Assets,  Simulation, DBAdmin
+from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
@@ -35,7 +36,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.mem.con.commit()
 
         #Crea nueva conexión
-        self.con_sim=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
+        self.con_sim=ConnectionQt().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
         self.con_sim.connect()        
         admin=DBAdmin(self.con_sim)
         admin.xulpymoney_basic_schema()

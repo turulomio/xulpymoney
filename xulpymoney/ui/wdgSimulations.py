@@ -4,7 +4,8 @@ from xulpymoney.ui.wdgSimulationsAdd import wdgSimulationsAdd
 import xulpymoney.libdbupdates
 import xulpymoney.ui.frmMain
 from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
-from xulpymoney.libxulpymoney import Connection, DBAdmin, SimulationManager, MemXulpymoney
+from xulpymoney.libxulpymoney import DBAdmin, SimulationManager, MemXulpymoney
+from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.version import __versiondate__
 
@@ -55,7 +56,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         if reply == QMessageBox.Yes:
             self.simulations.delete(self.simulations.selected)
             
-            simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.mem.con.db)
+            simcon=ConnectionQt().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.mem.con.db)
             simcon.connect()
 
 
@@ -69,7 +70,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         if not self.mem.con.is_superuser():
             qmessagebox(self.tr("The role of the user is not an administrator"))
             return
-        simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulations.selected.simulated_db())
+        simcon=ConnectionQt().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulations.selected.simulated_db())
         simcon.connect()
         self.mem_sim=MemXulpymoney()
         self.mem_sim.con=simcon

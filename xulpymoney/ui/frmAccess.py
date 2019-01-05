@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmAccess import Ui_frmAccess
-from xulpymoney.libxulpymoney import Connection
+from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class frmAccess(QDialog, Ui_frmAccess):
@@ -18,7 +18,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.cmbLanguages.currentIndexChanged.connect(self.on_cmbLanguages_currentIndexChanged)
         self.setPixmap(QPixmap(":xulpymoney/coins.png"))
         self.setTitle(self.tr("Xulpymoney - Access"))
-        self.con=Connection()#Pointer to connection
+        self.con=ConnectionQt()#Pointer to connection
 
 
     def setPixmap(self, qpixmap):
