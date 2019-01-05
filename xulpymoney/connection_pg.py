@@ -73,6 +73,10 @@ class Connection:
     def connection_string(self):
         return "dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(self.db, self.port, self.user, self.server, self.password)
 
+    ## Returns an url of the type psql://
+    def url_string(self):
+        return "psql://{}@{}:{}/{}".format(self.user, self.server, self.port, self.db)
+
     def connect(self, connection_string=None):
         """Used in code to connect using last self.strcon"""
         if connection_string==None:
