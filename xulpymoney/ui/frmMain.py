@@ -51,7 +51,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.sqlvacio="select * from products where id=-999999"
         
         self.w=QWidget()       
-        self.statusBar.addWidget(QLabel(self.tr("postgres://{}@{}:{}/{}").format(self.mem.con.user, self.mem.con.server,  self.mem.con.port, self.mem.con.db)))
+        self.statusBar.addWidget(QLabel(self.mem.con.url_string()))
 
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
   
