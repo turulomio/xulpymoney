@@ -13,33 +13,15 @@ import logging
 from .connection_pg import Connection
 
 class AdminPG:
-    def __init__(self, connection):
+    def __init__(self, user, password, server, port):
         """connection is an object Connection to a database"""
-        self.con=connection
-        
-    def connection_template1(self):
-        cont=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
-        cont.connect()
-        return cont
-
-
-    def check_connection(self):
-        """It has database parameter, due to I connect to template to create database"""
-        try:
-            cont=self.connection_template1()
-            cont._con.set_isolation_level(0)#Si no no me dejaba
-            cont.disconnect()
-            return True
-        except:
-            logging.critical ("Conection to template1 failed")
-            return False
+        self.con=Connection().init__create(user, password, server, port, "postgres")
+        self.con.setAutocommit(True)
 
     def create_db(self, database):
         """It has database parameter, due to I connect to template to create database"""
-        cont=self.connection_template1()
-        cont._con.set_isolation_level(0)#Si no no me dejaba
-        if cont.is_superuser():
-            cur=cont.cursor()
+        if self.con.is_superuser():
+            cur=self.con.cursor()
             cur.execute("create database {0};".format(database))
         else:
             logging.critical ("You need to be superuser to create database")
@@ -48,18 +30,13 @@ class AdminPG:
         
     def db_exists(self, database):
         """Hace conexi´on automatica a template usando la con """
-        new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
-        new.connect()
-        new._con.set_isolation_level(0)#Si no no me dejaba            
-        cur=new.cursor()
+        cur=self.con.cursor()
         cur.execute("SELECT 1 AS result FROM pg_database WHERE datname=%s", (database, ))
         
         if cur.rowcount==1:
             cur.close()
-            new.disconnect
             return True
         cur.close()
-        new.disconnect()
         return False
 
     def drop_db(self, database):
@@ -70,17 +47,13 @@ class AdminPG:
             return True
         
         if self.con.is_superuser():
-            new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
-            new.connect()
-            new._con.set_isolation_level(0)#Si no no me dejaba            
             try:
-                cur=new.cursor()
+                cur=self.cursor()
                 cur.execute("drop database {0};".format(database))
             except:
                 logging.error ("Error in drop()")
             finally:
                 cur.close()
-                new.disconnect()
                 return False
             logging.info("Database droped")
             return True

@@ -40,6 +40,10 @@ class Connection:
         cur.close()
         return  s
 
+    def setAutocommit(self, b):
+        self._con.autocommit = b
+
+
     def cursor_one_row(self, sql, arr=[]):
         cur=self._con.cursor()
         cur.execute(sql, arr)
