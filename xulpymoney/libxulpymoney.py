@@ -9,7 +9,6 @@ from odf.text import P
 import datetime
 import time
 import logging
-import platform
 import pytz
 import pkg_resources
 import sys
@@ -18,7 +17,6 @@ import getpass
 import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
-from xulpymoney.admin_pg import AdminPG
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
@@ -3484,46 +3482,6 @@ class AccountOperation:
             cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
-class DBAdmin(AdminPG):
-    def __init__(self, connection):
-        AdminPG.__init__(self, connection)
-
-    def xulpymoney_basic_schema(self):
-#        try:
-            if platform.system()=="Windows":
-                self.load_script("sql/xulpymoney.sql")
-            else:
-                self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
-            cur= self.con.cursor()
-            cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(QApplication.translate("Core","Personal Management")))
-            cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(QApplication.translate("Core","Cash")))
-            cur.execute("insert into conceptos values(1,'{0}',2,false)".format(QApplication.translate("Core","Initiating bank account")))
-            cur.execute("insert into conceptos values(2,'{0}',2,true)".format(QApplication.translate("Core","Paysheet")))
-            cur.execute("insert into conceptos values(3,'{0}',1,true)".format(QApplication.translate("Core","Supermarket")))
-            cur.execute("insert into conceptos values(4,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Origin")))
-            cur.execute("insert into conceptos values(5,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Destination")))
-            cur.execute("insert into conceptos values(6,'{0}',2,false)".format(QApplication.translate("Core","Taxes. Returned")))
-            cur.execute("insert into conceptos values(7,'{0}',1,true)".format(QApplication.translate("Core","Gas")))
-            cur.execute("insert into conceptos values(8,'{0}',1,true)".format(QApplication.translate("Core","Restaurant")))  
-            cur.execute("insert into conceptos values(29,'{0}',4,false)".format(QApplication.translate("Core","Purchase investment product")))
-            cur.execute("insert into conceptos values(35,'{0}',5,false)".format(QApplication.translate("Core","Sale investment product")))
-            cur.execute("insert into conceptos values(37,'{0}',1,false)".format(QApplication.translate("Core","Taxes. Paid")))
-            cur.execute("insert into conceptos values(38,'{0}',1,false)".format(QApplication.translate("Core","Bank commissions")))
-            cur.execute("insert into conceptos values(39,'{0}',2,false)".format(QApplication.translate("Core","Dividends")))
-            cur.execute("insert into conceptos values(40,'{0}',7,false)".format(QApplication.translate("Core","Credit card billing")))
-            cur.execute("insert into conceptos values(43,'{0}',6,false)".format(QApplication.translate("Core","Added shares")))
-            cur.execute("insert into conceptos values(50,'{0}',2,false)".format(QApplication.translate("Core","Attendance bonus")))
-            cur.execute("insert into conceptos values(59,'{0}',1,false)".format(QApplication.translate("Core","Custody commission")))
-            cur.execute("insert into conceptos values(62,'{0}',2,false)".format(QApplication.translate("Core","Dividends. Sale of rights")))
-            cur.execute("insert into conceptos values(63,'{0}',1,false)".format(QApplication.translate("Core","Bonds. Running coupon payment")))
-            cur.execute("insert into conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
-            cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
-            cur.execute("insert into conceptos values(67,'{0}',2,false)".format(QApplication.translate("Core","Credit card refund")))          
-            cur.close()
-#            return True
-#        except:
-#            print ("Error creating xulpymoney basic schema")
-#            return False
 
         
 class DBData:

@@ -16,6 +16,7 @@ class AdminPG:
     def __init__(self, user, password, server, port):
         """connection is an object Connection to a database"""
         self.con=Connection().init__create(user, password, server, port, "postgres")
+        self.con.connect()
         self.con.setAutocommit(True)
 
     def create_db(self, database):
@@ -62,14 +63,12 @@ class AdminPG:
             return False
         
 
-    def load_script(self, file):
-        cur= self.con.cursor()
-        procedures  = open(file,'r').read() 
-        cur.execute(procedures)
         
-        self.con.commit()
-        cur.close()       
-        
+    ## Returns a Connection object to a database using Admin connection information
+    def connect_to_database(self, database):
+        con=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, database)
+        con.connect()
+        return con
         
     def copy(self, con_origin, sql,  table_destiny ):
         """Used to copy between tables, and sql to table_destiny, table origin and destiny must have the same structure"""

@@ -6,7 +6,6 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
-from xulpymoney.ui.frmAbout import frmAbout
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
 from xulpymoney.libxulpymoneytypes import eProductType
@@ -29,12 +28,10 @@ from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
 from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
 from xulpymoney.ui.frmTransfer import frmTransfer
 from xulpymoney.ui.frmSettings import frmSettings
-from xulpymoney.ui.frmHelp import frmHelp
 from xulpymoney.ui.wdgOrders import wdgOrders
 from xulpymoney.ui.wdgOpportunities import wdgOpportunities
 from xulpymoney.ui.wdgProducts import wdgProducts
 from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
-from xulpymoney.ui.wdgSimulations import wdgSimulations
 from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
 from stdnum.isin import is_valid
 
@@ -100,6 +97,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionAbout_triggered(self):
+        from xulpymoney.ui.frmAbout import frmAbout
         fr=frmAbout(self.mem, self, "frmabout")
         fr.open()
 
@@ -180,6 +178,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionHelp_triggered(self):
+        from xulpymoney.ui.frmHelp import frmHelp
         w=frmHelp(self.mem, self)
         w.exec_()
 
@@ -288,6 +287,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionSimulations_triggered(self):
+        from xulpymoney.ui.wdgSimulations import wdgSimulations
         d=QDialog(self)
         d.resize(self.mem.settings.value("wdgSimulations/qdialog", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Xulpymoney Simulations"))
