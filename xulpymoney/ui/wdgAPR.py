@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import  QWidget, QProgressDialog
 from xulpymoney.ui.Ui_wdgAPR import Ui_wdgAPR
 from xulpymoney.libxulpymoney import Assets, Money, Percentage
 from xulpymoney.libxulpymoneyfunctions import qcenter, none2decimal0,  qright
+from xulpymoney.libxulpymoneytypes import eConcept
 
 from decimal import Decimal
 import datetime
@@ -133,12 +134,12 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 3, (sbalance-sinvested).qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 4, Percentage(sbalance-sinvested, sinvested).qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 6, gd.qtablewidgetitem())
-            
-            taxes=none2decimal0(self.mem.con.cursor_one_row("select sum(importe) from opercuentas where id_conceptos in (6,37) and date_part('year',datetime)={}".format(i))[0])
+
+            taxes=none2decimal0(self.mem.con.cursor_one_field("select sum(importe) from opercuentas where id_conceptos in (%s, %s) and date_part('year',datetime)=%s", (int(eConcept.TaxesReturn), int(eConcept.TaxesPayment), i)))
             self.tblReport.setItem(i-anoinicio, 8, qright(taxes))
             sumtaxes=sumtaxes+taxes
-            
-            comissions=none2decimal0(self.mem.con.cursor_one_row("""
+
+            comissions=none2decimal0(self.mem.con.cursor_one_field("""
 select 
     sum(suma) 
 from (
@@ -147,16 +148,16 @@ from (
             from 
                 opercuentas 
             where 
-                id_conceptos in (38,59) and  
-                date_part('year',datetime)={0}
+                id_conceptos in (%s, %s) and  
+                date_part('year',datetime)=%s
             union 
             select 
                 -sum(comision) as suma 
             from 
                 operinversiones 
             where  
-                date_part('year',datetime)={0}
-        ) as uni""".format(i))[0])
+                date_part('year',datetime)=%s
+        ) as uni""", (int(eConcept.BankCommissions), int(eConcept.CommissionCustody), i,i)))
             self.tblReport.setItem(i-anoinicio, 9, qright(comissions))
             sumcomissions=sumcomissions+comissions
             
