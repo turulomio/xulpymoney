@@ -146,7 +146,7 @@ class Table2ODS(ODS_Write):
         for i in range(table.columnCount()):
             widths.append(table.columnWidth(i)*0.90)
         sheet.setColumnsWidth(widths)
-        
+
         #firstcontentletter and firstcontentnumber
         if table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
             coord=Coord("B1")
@@ -160,25 +160,28 @@ class Table2ODS(ODS_Write):
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(columnAdd(coord.letter, letter), "1", table.horizontalHeaderItem(letter).text(), "OrangeCenter")
+                sheet.add(Coord(coord.letter + "1").addColumn(letter), table.horizontalHeaderItem(letter).text(), "OrangeCenter")
+        logging.debug("HH Done")
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
                 try:#Caputuro cuando se numera sin items 1, 2, 3
-                    sheet.add("A", rowAdd(coord.number, number), table.verticalHeaderItem(number).text(), "YellowLeft")
+                    sheet.add(Coord("A" + coord.number).addRow(number), table.verticalHeaderItem(number).text(), "YellowLeft")
                 except:
                     pass
+        logging.debug("VH Done")
         #Items
         for number in range(table.rowCount()):
             for letter in range(table.columnCount()):
                 try:
                     o=self.itemtext2object(table.item(number, letter).text())
-                    sheet.add(coord.addColumn(letter).addRow(number),o, self.object2style(o))
+                    sheet.add(Coord(coord.string()).addColumn(letter).addRow(number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
+        logging.debug("Items done")
         sheet.setCursorPosition(coord.letter+ str(table.rowCount()+2))
         self.save()
-        
+
     def itemtext2object(self, t):
         """
             Convierte t en un Money, Percentage o lo deja como text
