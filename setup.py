@@ -167,6 +167,7 @@ entry_points={
             'xulpymoney_quefondos_client=xulpymoney.sources.quefondos_client:main',
             'xulpymoney_run_client=xulpymoney.sources.run_client:main',
             'xulpymoney_yahoo_client=xulpymoney.sources.yahoo_client:main',
+            'xulpymoney_reports_smm=xulpymoney.reports.smm:main',
         ],
         'gui_scripts':  [
             'xulpymoney=xulpymoney.xulpymoney:main',
