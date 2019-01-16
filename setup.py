@@ -229,7 +229,7 @@ setup(name='xulpymoney',
                         'compile': Compile, 
                         'procedure': Procedure,
                         'pyinstaller': PyInstaller,
-                     },
+                     }, 
     test_suite = 'xulpymoney.test',
     zip_safe=False,
     include_package_data=True
