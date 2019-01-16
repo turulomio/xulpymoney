@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
-    <height>497</height>
+    <width>824</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
     <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
+  <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -181,6 +181,37 @@
        </widget>
       </widget>
      </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Amount to invest in opportunity product currency</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtInvest">
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
    </item>
   </layout>
@@ -250,10 +281,10 @@
      <normaloff>:/xulpymoney/curiosity.png</normaloff>:/xulpymoney/curiosity.png</iconset>
    </property>
    <property name="text">
-    <string>Show Purchase graphic</string>
+    <string>Show opportunity graphic</string>
    </property>
    <property name="toolTip">
-    <string>Show Purchase graphic</string>
+    <string>Show opportunity graphic</string>
    </property>
   </action>
  </widget>
@@ -268,6 +299,11 @@
    <extends>QWidget</extends>
    <header location="global">wdgYear</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
   </customwidget>
  </customwidgets>
  <resources>

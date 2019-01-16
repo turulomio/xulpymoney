@@ -11,12 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOpportunities(object):
     def setupUi(self, wdgOpportunities):
         wdgOpportunities.setObjectName("wdgOpportunities")
-        wdgOpportunities.resize(656, 497)
+        wdgOpportunities.resize(824, 596)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOpportunities.setWindowIcon(icon)
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(wdgOpportunities)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(wdgOpportunities)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.lbl = QtWidgets.QLabel(wdgOpportunities)
@@ -84,7 +84,19 @@ class Ui_wdgOpportunities(object):
         icon5.addPixmap(QtGui.QPixmap(":/xulpymoney/editar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tab, icon5, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
-        self.horizontalLayout_4.addLayout(self.verticalLayout_2)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem4)
+        self.label = QtWidgets.QLabel(wdgOpportunities)
+        self.label.setObjectName("label")
+        self.horizontalLayout_4.addWidget(self.label)
+        self.txtInvest = myQLineEdit(wdgOpportunities)
+        self.txtInvest.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.txtInvest.setObjectName("txtInvest")
+        self.horizontalLayout_4.addWidget(self.txtInvest)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_5.addLayout(self.verticalLayout_2)
         self.actionOpportunityNew = QtWidgets.QAction(wdgOpportunities)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/xulpymoney/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -122,6 +134,7 @@ class Ui_wdgOpportunities(object):
         self.cmbMode.setItemText(2, _translate("wdgOpportunities", "Show executed opportunities"))
         self.cmbMode.setItemText(3, _translate("wdgOpportunities", "Show all"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("wdgOpportunities", "Opportunity annotations list"))
+        self.label.setText(_translate("wdgOpportunities", "Amount to invest in opportunity product currency"))
         self.actionOpportunityNew.setText(_translate("wdgOpportunities", "New purchase opportunity"))
         self.actionOpportunityNew.setToolTip(_translate("wdgOpportunities", "New purchase opportunity"))
         self.actionOpportunityDelete.setText(_translate("wdgOpportunities", "Delete purchase opportunity"))
@@ -132,9 +145,10 @@ class Ui_wdgOpportunities(object):
         self.actionExecute.setToolTip(_translate("wdgOpportunities", "Execute opportunity"))
         self.actionRemove.setText(_translate("wdgOpportunities", "Remove opportunity"))
         self.actionRemove.setToolTip(_translate("wdgOpportunities", "Remove opportunity"))
-        self.actionShowGraphic.setText(_translate("wdgOpportunities", "Show Purchase graphic"))
-        self.actionShowGraphic.setToolTip(_translate("wdgOpportunities", "Show Purchase graphic"))
+        self.actionShowGraphic.setText(_translate("wdgOpportunities", "Show opportunity graphic"))
+        self.actionShowGraphic.setToolTip(_translate("wdgOpportunities", "Show opportunity graphic"))
 
+from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

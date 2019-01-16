@@ -1,11 +1,11 @@
 import datetime
 from decimal import Decimal
-from xulpymoney.libxulpymoney import Percentage, qmessagebox, qdate, qleft, qempty, qright
+from xulpymoney.libxulpymoney import Percentage, qmessagebox, qdate, qleft, qempty, qright,  Money
 from xulpymoney.libxulpymoneyfunctions import relation_gains_risk
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.libxulpymoneytypes import eQColor
-from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QTableWidgetItem
 
 ## Class that register a purchase opportunity
 class Opportunity:
@@ -84,6 +84,26 @@ class Opportunity:
     ##Calculates percentage from current price to order entry
     def percentage_from_current_price(self):
         return Percentage(self.entry-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
+        
+    ## @param dInvested Decimal with the invested amount in product currency
+    ## @return Money with the gains in opportunity product currrency
+    def m_target_gains(self, dInvested):
+        try:
+            shares=dInvested/self.entry
+            value= (self.target-self.entry)*shares
+        except:
+            value= Decimal(0)
+        return Money(self.mem, value, self.product.currency)
+
+    ## @param dInvested Decimal with the invested amount in product currency
+    ## @return Money with the gains in opportunity product currrency
+    def m_stop_loss_losses(self, dInvested):
+        try:
+            shares=dInvested/self.entry
+            value= (self.stoploss-self.entry)*shares
+        except:
+            value= Decimal(0)
+        return Money(self.mem, value, self.product.currency)
 
 ## Manage Opportunities
 class OpportunityManager(ObjectManager_With_IdDate, QObject):
@@ -129,8 +149,10 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
         else:
             return r[0]
 
-    def myqtablewidget(self, table):
-        table.setColumnCount(10)
+    ## @param table
+    ## @invested Decimal with the amount to invest in product currency
+    def myqtablewidget(self, table, dInvested):
+        table.setColumnCount(12)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Removed")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Product")))
@@ -141,6 +163,8 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
         table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("Gains/Risk")))
         table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% from current")))
         table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("Executed")))
+        table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr("Target gains")))
+        table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr("Stop loss losses")))
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
@@ -161,6 +185,9 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
                 table.setItem(i, 9, qdate(p.executed))
             else:
                 table.setItem(i, 9, qempty())
+                
+            table.setItem(i, 10, p.m_target_gains(dInvested).qtablewidgetitem())
+            table.setItem(i, 11, p.m_stop_loss_losses(dInvested).qtablewidgetitem())
                 
             #Color
             if p.is_executed():

@@ -81,7 +81,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         elif self.cmbChartType.currentIndex()==1:#Candles            
             candle=self.view.appendCandlestickSeries(self.product.name, self.product.currency)#Candle series
             for ohcl in self.setohcl.arr:
-                if ohcl.datetime()>=selected_datetime-datetime.timedelta(days=1):#Added one day to show the purchase circle the first day
+                if ohcl.datetime()>=selected_datetime-datetime.timedelta(days=10):#Added one day to show the purchase circle the first day
                     self.view.appendCandlestickSeriesData(candle, ohcl)
             self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
@@ -521,3 +521,42 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
 #        new_selling_price.setPen(self._pen(Qt.DotLine, QColor(170, 85, 85)))
 #        self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_r2_sell.amount)
 #        self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),  m_r2_sell.amount)
+
+
+
+
+class wdgProductHistoricalOpportunity(wdgProductHistoricalChart):
+    def __init__(self,  parent=None):
+        wdgProductHistoricalChart.__init__(self, parent)
+    
+    def setOpportunity(self,  opportunity):
+        self.opportunity=opportunity
+        
+    def generate(self):
+        wdgProductHistoricalChart.generate(self)
+        if not hasattr(self, 'opportunity'):
+            logging.debug(self.tr("You need to use wdgProductHistoricalOpportunity.setOpportunity before wdgProductHistoricalOpportunity.generate"))
+            return
+            
+        if self.opportunity.entry!=None:
+            entry=self.view.appendTemporalSeries(self.tr("Entry"),  self.product.currency)
+            entry.setColor(QColor(85, 85, 170))
+            entry.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
+            self.view.appendTemporalSeriesData(entry, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.entry)
+            self.view.appendTemporalSeriesData(entry, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.entry)
+
+        if self.opportunity.target!=None:
+            target=self.view.appendTemporalSeries(self.tr("Target"),  self.product.currency)
+            target.setColor(QColor(85, 170, 85))
+            target.setPen(self._pen(Qt.DashLine, QColor(85, 170, 85)))
+            self.view.appendTemporalSeriesData(target, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.target)
+            self.view.appendTemporalSeriesData(target, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.target)
+
+        if self.opportunity.stoploss!=None:
+            stoploss=self.view.appendTemporalSeries(self.tr("Stop loss"),  self.product.currency)
+            stoploss.setColor(QColor(170, 85, 85))
+            stoploss.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
+            self.view.appendTemporalSeriesData(stoploss, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.stoploss)
+            self.view.appendTemporalSeriesData(stoploss, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.stoploss)
+
+                
