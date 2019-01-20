@@ -44,6 +44,13 @@ Dependencies
 
 Changelog
 =========
+0.6.0
+  * Added products.xlsx auto update
+  * Added long/short strategy investments (ALPHA)
+  * Added opportunities
+  * UI icons updated
+  * Improved merge products
+
 0.2.0
   * Fixed a lot of bugs
   * Now products update is made from products.xlsx on internet
