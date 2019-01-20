@@ -7796,7 +7796,9 @@ class SettingsDB:
         
     def id(self,  name):
         """Converts section and name to id of table globals"""
-        if name=="wdgIndexRange/spin":
+        if name=="Version of products.xlsx":
+            return 2
+        elif name=="wdgIndexRange/spin":
             return 7
         elif name=="wdgIndexRange/invertir":
             return 8
