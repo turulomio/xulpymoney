@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201812141325
+        self.lastcodeupdate=201901200612
         self.need_update()
 
     def get_database_version(self):
@@ -2479,13 +2479,20 @@ CREATE TABLE high_low_contract (
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812141037)
-
         if self.dbversion<201812141325:#Update user products high_low=false
             cur=self.mem.con.cursor()
             cur.execute("update conceptos set id_tiposoperaciones=11 where id_conceptos in (68,69,70,71)")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812141325)
+        if self.dbversion<201901200612:#Add global to control products.xlsx update. Added short field to opportunities
+            cur=self.mem.con.cursor()
+            cur.execute("INSERT INTO globals (id_globals,global, value) values (2, 'Version of products.xlsx', NULL)")
+            cur.execute("ALTER TABLE opportunities ADD COLUMN short BOOLEAN DEFAULT FALSE NOT NULL")
+            cur.execute("COMMENT ON COLUMN opportunities.short IS 'If true is a short investment strategy. If false is a long one'")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201901200612)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

@@ -600,11 +600,19 @@ CREATE TABLE public.opportunities (
     entry numeric(100,2) NOT NULL,
     products_id integer NOT NULL,
     target numeric(100,2),
-    stoploss numeric(100,2)
+    stoploss numeric(100,2),
+    short boolean DEFAULT false NOT NULL
 );
 
 
 ALTER TABLE public.opportunities OWNER TO postgres;
+
+--
+-- Name: COLUMN opportunities.short; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.opportunities.short IS 'If true is a short investment strategy. If false is a long one';
+
 
 --
 -- Name: orders_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -8139,7 +8147,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201812141325');
+INSERT INTO public.globals VALUES (1, 'Version', '201901200612');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8148,8 +8156,9 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 81732, 81737, 81738');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
+INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', NULL);
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
