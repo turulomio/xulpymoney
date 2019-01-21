@@ -3167,23 +3167,21 @@ class Comment(QObject):
     ## Function to generate a encoded comment using distinct parameters
     ## Encode parameters can be:
     ## - eComment.HlContract, hlcontract
+    ## - eComment.Dividend, dividend
     def encode(self, ecomment, *args):
         if ecomment==eComment.HlContract:
             return "{},{}".format(eComment.HlContract, args[0].id)        
         elif ecomment==eComment.InvestmentOperation:
             return "{},{}".format(eComment.InvestmentOperation, args[0].id)
-        
+        elif ecomment==eComment.Dividend:
+            return "10004,{}".format(eComment.Dividend, args[0].id)  
+   
     def validateLength(self, number, code, args):
         if number!=len(args):
             logging("Comment {} has not enough parameters".format(code))
             return False
         return True
-        
-    def getDividend(self, id, code):
-        dividend=Dividend(self.mem).init__db_query(id)
-        if dividend==None:
-            logging.error("I coudn't find dividend {} for comment {}".format(id, code))
-        return dividend
+
         
     def getAccountOperation(self, id, code):
         accountoperation=AccountOperation(self.mem,  id)
@@ -3233,11 +3231,6 @@ class Comment(QObject):
             operaccountorigincomission_id=operaccountorigincomission.id
         return "10003,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
                 
-    def setEncoded10004(self, dividend):
-        """
-            Usado en un dividendo para poner comentario a la cuenta asociada
-        """
-        return "10004,{}".format(dividend.id)        
                         
     def setEncoded10005(self, creditcard,  operaccount):
         """
@@ -3282,9 +3275,9 @@ class Comment(QObject):
             aoo=self.getAccountOperation(args[0], code)
             aod=self.getAccountOperation(args[1], code)
             return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
-        elif code==10004:#Comentario de cuenta asociada al dividendo
+        elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
             if not self.validateLength(1, code, args): return string
-            dividend=self.getDividend(args[0], code)
+            dividend=Dividend(self.mem).init__db_query(args[0])
             investment=self.mem.data.investments.find_by_id(dividend.investment.id)
             if investment.hasSameAccountCurrency():
                 return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))

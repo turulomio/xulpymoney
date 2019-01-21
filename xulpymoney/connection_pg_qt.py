@@ -38,17 +38,17 @@ class ConnectionQt(QObject,Connection):
     def cursor_one_row(self, sql, arr=[]):
         """Returns only one row"""
         self.restart_timeout()
-        super().cursor_one_row(sql, arr)
+        return super().cursor_one_row(sql, arr)
 
     def cursor_one_column(self, sql, arr=[]):
         """Returns un array with the results of the column"""
         self.restart_timeout()
-        super().cursor_one_column(sql, arr)
+        return super().cursor_one_column(sql, arr)
 
     def cursor_one_field(self, sql, arr=[]):
         """Returns only one field"""
         self.restart_timeout()
-        super().cursor_one_field(sql, arr)
+        return super().cursor_one_field(sql, arr)
 
         
     def connect(self, connection_string=None):
