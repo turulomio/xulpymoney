@@ -3174,7 +3174,7 @@ class Comment(QObject):
         elif ecomment==eComment.InvestmentOperation:
             return "{},{}".format(eComment.InvestmentOperation, args[0].id)
         elif ecomment==eComment.Dividend:
-            return "10004,{}".format(eComment.Dividend, args[0].id)  
+            return "{},{}".format(eComment.Dividend, args[0].id)  
    
     def validateLength(self, number, code, args):
         if number!=len(args):
@@ -3714,12 +3714,12 @@ class Dividend:
             self.opercuenta.save()
             cur.execute("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
             self.id=cur.fetchone()[0]
-            self.opercuenta.comentario=Comment(self.mem).setEncoded10004(self)
+            self.opercuenta.comentario=Comment(self.mem).encode(eComment.Dividend, self)
             self.opercuenta.save()
         else:
             self.opercuenta.datetime=self.datetime
             self.opercuenta.importe=self.neto
-            self.opercuenta.comentario=Comment(self.mem).setEncoded10004(self)
+            self.opercuenta.comentario=Comment(self.mem).encode(eComment.Dividend, self)
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
