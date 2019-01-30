@@ -1252,72 +1252,72 @@ Do you want to activate it?</source>
 <context encoding="UTF-8">
     <name>frmAbout</name>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="338"/>
+        <location filename="../ui/Ui_frmAbout.py" line="342"/>
         <source>Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="358"/>
+        <location filename="../ui/Ui_frmAbout.py" line="366"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="350"/>
+        <location filename="../ui/Ui_frmAbout.py" line="354"/>
         <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="352"/>
+        <location filename="../ui/Ui_frmAbout.py" line="356"/>
         <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="378"/>
+        <location filename="../ui/Ui_frmAbout.py" line="386"/>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="340"/>
+        <location filename="../ui/Ui_frmAbout.py" line="344"/>
         <source>Shares products number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="342"/>
+        <location filename="../ui/Ui_frmAbout.py" line="346"/>
         <source>Funds number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="344"/>
+        <location filename="../ui/Ui_frmAbout.py" line="348"/>
         <source>Indexes number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="346"/>
+        <location filename="../ui/Ui_frmAbout.py" line="350"/>
         <source>ETF  number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="348"/>
+        <location filename="../ui/Ui_frmAbout.py" line="352"/>
         <source>Warrants number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="354"/>
+        <location filename="../ui/Ui_frmAbout.py" line="362"/>
         <source>Obsolete products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="356"/>
+        <location filename="../ui/Ui_frmAbout.py" line="364"/>
         <source>Effective products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="359"/>
+        <location filename="../ui/Ui_frmAbout.py" line="367"/>
         <source>Products</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmAbout.py" line="319"/>
+        <location filename="../ui/Ui_frmAbout.py" line="323"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1340,53 +1340,63 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="377"/>
+        <location filename="../ui/Ui_frmAbout.py" line="385"/>
         <source>Software used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="360"/>
+        <location filename="../ui/Ui_frmAbout.py" line="368"/>
         <source>Xulpymoney is an Open Source application. It uses the following software</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="362"/>
+        <location filename="../ui/Ui_frmAbout.py" line="370"/>
         <source>Colorama</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="364"/>
+        <location filename="../ui/Ui_frmAbout.py" line="372"/>
         <source>OfficeGenerator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="366"/>
+        <location filename="../ui/Ui_frmAbout.py" line="374"/>
         <source>PyQt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="368"/>
+        <location filename="../ui/Ui_frmAbout.py" line="376"/>
         <source>PyQtCharts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="370"/>
+        <location filename="../ui/Ui_frmAbout.py" line="378"/>
         <source>Python</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmAbout.py" line="374"/>
-        <source>Versión</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="376"/>
+        <location filename="../ui/Ui_frmAbout.py" line="384"/>
         <source>Url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="372"/>
+        <location filename="../ui/Ui_frmAbout.py" line="380"/>
         <source>Python-stdnum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="358"/>
+        <source>CFD number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="360"/>
+        <source>Futures number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="382"/>
+        <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

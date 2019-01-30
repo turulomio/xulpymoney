@@ -323,7 +323,7 @@
     <message>
         <location filename="../libxulpymoney.py" line="3302"/>
         <source>Daily contract of {} ({})</source>
-        <translation type="unfinished">Contrato diario de {} ({})</translation>
+        <translation>Contrato diario de {} ({})</translation>
     </message>
 </context>
 <context>
@@ -1254,117 +1254,132 @@ Do you want to activate it?</source>
 <context encoding="UTF-8">
     <name>frmAbout</name>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="338"/>
+        <location filename="../ui/Ui_frmAbout.py" line="342"/>
         <source>Xulpymoney</source>
         <translation>Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="358"/>
+        <location filename="../ui/Ui_frmAbout.py" line="366"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="350"/>
+        <location filename="../ui/Ui_frmAbout.py" line="354"/>
         <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="352"/>
+        <location filename="../ui/Ui_frmAbout.py" line="356"/>
         <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="378"/>
+        <location filename="../ui/Ui_frmAbout.py" line="386"/>
         <source>License</source>
         <translation>Licencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="340"/>
+        <location filename="../ui/Ui_frmAbout.py" line="344"/>
         <source>Shares products number</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="342"/>
+        <location filename="../ui/Ui_frmAbout.py" line="346"/>
         <source>Funds number</source>
         <translation>Número de fondos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="344"/>
+        <location filename="../ui/Ui_frmAbout.py" line="348"/>
         <source>Indexes number</source>
         <translation>Número de índices</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="346"/>
+        <location filename="../ui/Ui_frmAbout.py" line="350"/>
         <source>ETF  number</source>
         <translation>Número de ETF</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="348"/>
+        <location filename="../ui/Ui_frmAbout.py" line="352"/>
         <source>Warrants number</source>
         <translation>Número de Warrants</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="354"/>
+        <location filename="../ui/Ui_frmAbout.py" line="362"/>
         <source>Obsolete products</source>
         <translation>Productos obsoletos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="356"/>
+        <location filename="../ui/Ui_frmAbout.py" line="364"/>
         <source>Effective products</source>
         <translation>Productos existentes</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="359"/>
+        <location filename="../ui/Ui_frmAbout.py" line="367"/>
         <source>Products</source>
         <translation>Productos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="377"/>
+        <location filename="../ui/Ui_frmAbout.py" line="385"/>
         <source>Software used</source>
         <translation>Software usado</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="360"/>
+        <location filename="../ui/Ui_frmAbout.py" line="368"/>
         <source>Xulpymoney is an Open Source application. It uses the following software</source>
         <translation>Xulpymoney es una aplicación de código abierto. Usa el siguiente software</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="362"/>
+        <location filename="../ui/Ui_frmAbout.py" line="370"/>
         <source>Colorama</source>
         <translation>Colorama</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="364"/>
+        <location filename="../ui/Ui_frmAbout.py" line="372"/>
         <source>OfficeGenerator</source>
         <translation>OfficeGenerator</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="366"/>
+        <location filename="../ui/Ui_frmAbout.py" line="374"/>
         <source>PyQt</source>
         <translation>PyQt</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="368"/>
+        <location filename="../ui/Ui_frmAbout.py" line="376"/>
         <source>PyQtCharts</source>
         <translation>PyQtCharts</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="370"/>
+        <location filename="../ui/Ui_frmAbout.py" line="378"/>
         <source>Python</source>
         <translation>Python</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="376"/>
+        <location filename="../ui/Ui_frmAbout.py" line="384"/>
         <source>Url</source>
         <translation>Url</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAbout.py" line="372"/>
+        <location filename="../ui/Ui_frmAbout.py" line="380"/>
         <source>Python-stdnum</source>
         <translation>Python-stdnum</translation>
     </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="358"/>
+        <source>CFD number</source>
+        <translation>Número de CFD</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="360"/>
+        <source>Futures number</source>
+        <translation>Número de Futuros</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAbout.py" line="382"/>
+        <source>Version</source>
+        <translation>Versión</translation>
+    </message>
     <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmAbout.py" line="319"/>
+        <location filename="../ui/Ui_frmAbout.py" line="323"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1384,11 +1399,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;Los avatares han sido extraídos de la página &lt;/span&gt;&lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmAbout.py" line="374"/>
-        <source>Versión</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4069,7 +4079,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmProductReport.py" line="993"/>
         <source>Splits and dividends hasn&apos;t been adjusted in this prices. They are database prices</source>
-        <translation type="unfinished"></translation>
+        <translation>Splits y dividenos no han sido ajustados en estos precios. Soy precios de base de datos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmProductReport.py" line="1024"/>
@@ -5063,12 +5073,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgCalculator.py" line="39"/>
         <source>Last price at {} in {} ({})</source>
-        <translation type="unfinished"></translation>
+        <translation>Último precio a {} en {} ({})</translation>
     </message>
     <message>
         <location filename="../ui/wdgCalculator.py" line="64"/>
         <source>Final price in {} ({})</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio final en {} ({})</translation>
     </message>
     <message>
         <location filename="../ui/wdgCalculator.py" line="66"/>
@@ -5078,7 +5088,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgCalculator.py" line="68"/>
         <source>Shares calculated with {} at {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Acciones calculadas con {} a {}</translation>
     </message>
 </context>
 <context>
@@ -6568,7 +6578,7 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/Ui_wdgOpportunities.py" line="137"/>
         <source>Amount to invest in opportunity product currency</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantidad a invertir en la divisa del producto de la oportunidad</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOpportunities.py" line="149"/>
@@ -7320,7 +7330,7 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/wdgProducts.py" line="60"/>
         <source>This product can&apos;t be removed, because is marked as not remavable</source>
-        <translation type="unfinished"></translation>
+        <translation>Este producto no puede ser borrado, porque está marcado como no borrable</translation>
     </message>
     <message>
         <location filename="../ui/wdgProducts.py" line="143"/>
@@ -7338,7 +7348,7 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/wdgProductsComparation.py" line="36"/>
         <source>You must select a product to compare with</source>
-        <translation type="unfinished"></translation>
+        <translation>Debe seleccionar un producto con el que comparar</translation>
     </message>
     <message>
         <location filename="../ui/wdgProductsComparation.py" line="43"/>
@@ -7421,18 +7431,19 @@ Do you want to execute this oportunity?</source>
     <message>
         <location filename="../ui/wdgProductsDataMove.py" line="41"/>
         <source>Moving data between products</source>
-        <translation type="unfinished"></translation>
+        <translation>Moviendo datos entre productos</translation>
     </message>
     <message>
         <location filename="../ui/wdgProductsDataMove.py" line="41"/>
         <source>This action can&apos;t be undone.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta acción no puede ser deshecha.
+Quieres continuar?</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="95"/>
         <source>Move data between products</source>
-        <translation type="unfinished"></translation>
+        <translation>Mueve datos entre productos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="96"/>
@@ -7443,12 +7454,12 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="99"/>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Origen</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="101"/>
         <source>Destiny</source>
-        <translation type="unfinished"></translation>
+        <translation>Destino</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="103"/>
@@ -7493,7 +7504,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="119"/>
         <source>DPS estimations</source>
-        <translation type="unfinished"></translation>
+        <translation>Estimaciones DPS</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="121"/>
@@ -7513,7 +7524,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
     <message>
         <location filename="../ui/Ui_wdgProductsDataMove.py" line="127"/>
         <source>Move data</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover los datos</translation>
     </message>
 </context>
 <context>

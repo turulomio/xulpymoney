@@ -104,7 +104,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabGLParchis">
         <attribute name="title">
@@ -178,6 +178,16 @@ p, li { white-space: pre-wrap; }
            <row>
             <property name="text">
              <string>Número de Deuda privada</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>CFD number</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Futures number</string>
             </property>
            </row>
            <row>
@@ -330,7 +340,7 @@ p, li { white-space: pre-wrap; }
            </row>
            <column>
             <property name="text">
-             <string>Versión</string>
+             <string>Version</string>
             </property>
            </column>
            <column>

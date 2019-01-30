@@ -6,6 +6,7 @@ import PyQt5.QtCore
 import PyQt5.QtChart
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.libxulpymoneyfunctions import qcenter, qempty, qright
+from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):
@@ -62,15 +63,23 @@ class frmAbout(QDialog, Ui_frmAbout):
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, columna , qcenter(tmp))
-            self.tblStatistics.setItem(7, columna , qempty())
-            cur.execute("select count(*) from products where obsolete=true and stockmarkets_id=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=%s and obsolete=false and stockmarkets_id=%s", (eProductType.CFD.value, bolsa.id,))
             tmp=cur.fetchone()[0]
+            total=total+tmp
+            self.tblStatistics.setItem(7, columna , qcenter(tmp))
+            cur.execute("select count(*) from products where type=%s and obsolete=false and stockmarkets_id=%s", (eProductType.Future.value, bolsa.id,))
+            tmp=cur.fetchone()[0]
+            total=total+tmp
             self.tblStatistics.setItem(8, columna , qcenter(tmp))
             self.tblStatistics.setItem(9, columna , qempty())
-            self.tblStatistics.setItem(10, columna , qcenter(total))
+            cur.execute("select count(*) from products where obsolete=true and stockmarkets_id=%s", (bolsa.id,))
+            tmp=cur.fetchone()[0]
+            self.tblStatistics.setItem(10, columna , qcenter(tmp))
+            self.tblStatistics.setItem(11, columna , qempty())
+            self.tblStatistics.setItem(12, columna , qcenter(total))
             self.tblStatistics.horizontalHeaderItem (columna).setIcon(bolsa.country.qicon())
             self.tblStatistics.horizontalHeaderItem (columna).setToolTip((bolsa.country.name))
-                
+
         def todos(cur):
             """Si pais es Null es para todos"""
             total=0
@@ -102,12 +111,20 @@ class frmAbout(QDialog, Ui_frmAbout):
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, 0 , qcenter(tmp))
-            self.tblStatistics.setItem(7, 0 , qempty())
-            cur.execute("select count(*) from products where obsolete=true ")
+            cur.execute("select count(*) from products where type=%s  and obsolete=false", (eProductType.CFD.value, ))
             tmp=cur.fetchone()[0]
+            total=total+tmp
+            self.tblStatistics.setItem(7, 0 , qcenter(tmp))
+            cur.execute("select count(*) from products where type=%s  and obsolete=false", (eProductType.Future.value, ))
+            tmp=cur.fetchone()[0]
+            total=total+tmp
             self.tblStatistics.setItem(8, 0 , qcenter(tmp))
             self.tblStatistics.setItem(9, 0 , qempty())
-            self.tblStatistics.setItem(10, 0 , qcenter(total))
+            cur.execute("select count(*) from products where obsolete=true ")
+            tmp=cur.fetchone()[0]
+            self.tblStatistics.setItem(10, 0 , qcenter(tmp))
+            self.tblStatistics.setItem(11, 0 , qempty())
+            self.tblStatistics.setItem(12, 0 , qcenter(total))
 
     
         cur = self.mem.con.cursor()
