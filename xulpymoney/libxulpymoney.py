@@ -241,6 +241,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             if inv.selling_expiration!=None:
                 if inv.selling_expiration<datetime.date.today():
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+
             if tpc_invertido.isValid() and tpc_venta.isValid():
                 if tpc_invertido.value_100()<=-Decimal(50):   
                     table.item(i, 7).setBackground(eQColor.Red)
@@ -4350,7 +4351,11 @@ class Investment:
         Necesita haber cargado mq getbasic y operinversionesactual"""
         if self.venta==0 or self.venta==None:
             return Percentage()
-        return Percentage(self.venta-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
+        if self.op_actual.shares()>0:
+            return Percentage(self.venta-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
+        else:#Long short products
+            return Percentage(-(self.venta-self.product.result.basic.last.quote), self.product.result.basic.last.quote)
+        
 
 
 class CreditCard:    
