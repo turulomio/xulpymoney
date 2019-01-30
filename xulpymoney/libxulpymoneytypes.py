@@ -25,6 +25,7 @@ class eProductType(IntEnum):
     Deposit=10
     Account=11
     CFD=12
+    Future=13
     
 ## Operation tipes
 class eOperationType:

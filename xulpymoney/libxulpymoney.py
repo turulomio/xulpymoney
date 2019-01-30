@@ -7697,6 +7697,7 @@ class ProductTypeManager(ObjectManager_With_IdName_Selectable):
         self.append(ProductType(eProductType.Deposit.value,QApplication.translate("Core","Deposit")))
         self.append(ProductType(eProductType.Account.value,QApplication.translate("Core","Accounts")))
         self.append(ProductType(eProductType.CFD.value,QApplication.translate("Core","CFD")))
+        self.append(ProductType(eProductType.Future.value,QApplication.translate("Core","Futures")))
 
     def investment_types(self):
         """Returns a ProductTypeManager without Indexes and Accounts"""
