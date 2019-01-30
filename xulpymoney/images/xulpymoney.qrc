@@ -73,6 +73,8 @@
     <file>toggle_log.png</file>
     <file>tools-wizard.png</file>
     <file>transfer.png</file>
+    <file>up.png</file>
+    <file>down.png</file>
     <file>visa2.png</file>
     <file>visa.png</file>
   </qresource>

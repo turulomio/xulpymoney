@@ -196,7 +196,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         self.accounts=cuentas
         self.products=products
         self.benchmark=benchmark  ##Objeto product
-            
+
     def load_from_db(self, sql,  progress=False):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
@@ -215,7 +215,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             inv.get_operinversiones()
             self.append(inv)
         cur.close()  
-            
+
     def myqtablewidget(self, table):
         """Esta tabla muestra los money con la moneda local"""
         table.setRowCount(self.length())
@@ -223,19 +223,24 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         table.clearContents()
         type=3
         for i, inv in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
+            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
+            if inv.op_actual.shares()>=0: #Long operation
+                table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
+            else:
+                table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))
+
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
             table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
-            
+
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             table.setItem(i, 7, tpc_invertido.qtablewidgetitem())
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
-            
+
             tpc_venta=inv.percentage_to_selling_point()
             table.setItem(i, 8, tpc_venta.qtablewidgetitem())
             if inv.selling_expiration!=None:
