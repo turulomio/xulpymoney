@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
-from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypesManager
+from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
 from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft
 from xulpymoney.ui.frmSelector import frmSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
@@ -109,7 +109,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             leverages.append(self.product.leveraged)
             leverages.qcombobox(self.cmbApalancado)
             
-            types=ProductTypesManager(mem)
+            types=ProductTypeManager(mem)
             types.append(self.product.type)
             types.qcombobox(self.cmbTipo)
         

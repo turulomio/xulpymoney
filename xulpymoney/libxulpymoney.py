@@ -7679,7 +7679,7 @@ class ProductType(Object_With_IdName):
         Object_With_IdName.__init__(self, *args)
 
 ## Set of product types
-class ProductTypesManager(ObjectManager_With_IdName_Selectable):
+class ProductTypeManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
@@ -7699,16 +7699,16 @@ class ProductTypesManager(ObjectManager_With_IdName_Selectable):
         self.append(ProductType(eProductType.CFD.value,QApplication.translate("Core","CFD")))
 
     def investment_types(self):
-        """Returns a ProductTypesManager without Indexes and Accounts"""
-        r=ProductTypesManager(self.mem)
+        """Returns a ProductTypeManager without Indexes and Accounts"""
+        r=ProductTypeManager(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Index, eProductType.Account):
                 r.append(t)
         return r
 
     def with_operation_comissions_types(self):
-        """Returns a ProductTypesManager with types which product operations  has comissions"""
-        r=ProductTypesManager(self.mem)
+        """Returns a ProductTypeManager with types which product operations  has comissions"""
+        r=ProductTypeManager(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):
                 r.append(t)
@@ -7935,7 +7935,7 @@ class MemXulpymoney:
         self.conceptos=ConceptManager(self)
         self.conceptos.load_from_db()
 
-        self.types=ProductTypesManager(self)
+        self.types=ProductTypeManager(self)
         self.types.load_all()
         
         self.stockmarkets=StockMarketManager(self)
