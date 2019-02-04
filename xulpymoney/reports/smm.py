@@ -8,6 +8,8 @@ from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.connection_pg import Connection
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoney import Product, Zone, StockMarket
+from officegenerator import ODS_Write, Coord
+
 
 try:
     t=gettext.translation('xulpymoney',pkg_resources.resource_filename("xulpymoney","locale"))
@@ -95,9 +97,8 @@ class RachaManager(ObjectManager):
             r=r+racha.length()
         return r
 
-
-    ## Se resta el primera de la siguiente racha que es el precio en el que ha cambiado el signo del cdf, con el primer precio de la racha, que fue cando cambie el signo del cdf
-    def diff(self,racha):
+    ## Diferencia del ohcl, es decir del producto
+    def diffProduct(self,racha):
         ind=self.arr.index(racha)
         if ind==self.length()-1:
             primera_fecha_racha_actual=racha.arr[0].date
@@ -108,7 +109,12 @@ class RachaManager(ObjectManager):
             primera_fecha_racha_siguiente=racha_siguiente.arr[0].date
         ohcl_primera_fecha_racha_actual=self.ohcldailymanager.find(primera_fecha_racha_actual).close
         ohcl_primera_fecha_racha_siguiente=self.ohcldailymanager.find(primera_fecha_racha_siguiente).close
-        value= ohcl_primera_fecha_racha_siguiente-ohcl_primera_fecha_racha_actual
+        return ohcl_primera_fecha_racha_siguiente-ohcl_primera_fecha_racha_actual
+
+    ## Se resta el primera de la siguiente racha que es el precio en el que ha cambiado el signo del cdf, con el primer precio de la racha, que fue cando cambie el signo del cdf
+    ## Se evalua si estoy a cortos o a largos
+    def diffRacha(self,racha):
+        value= self.diffProduct(racha)
         if racha.is_positive()==True and value>=0:
             return value
         elif racha.is_positive()==True and value<0:
@@ -122,7 +128,7 @@ class RachaManager(ObjectManager):
         r=0
         for racha in self.arr:
             if racha.arr[0].date.year==year:
-                r=r+self.diff(racha)
+                r=r+self.diffRacha(racha)
         return r
 
 
@@ -157,7 +163,11 @@ def main(parameters=None):
     mem.con.password=getpass.getpass()
     mem.con.connect()
 
-
+    strdate=str(datetime.date.today()).replace("-","")
+    doc=ODS_Write("{} Xulpymoney Report. SMM{}.ods".format(strdate,args.periods))
+    doc.setMetadata("Xulpymoney SMM Report",  "SMM report", "Xulpymoney-{}".format(__version__))
+    s1=doc.createSheet("MM5")
+    s1.add("A1",[["Fecha","Ibex35","MMS5","Diff","Diff racha", "Gains"]], "OrangeCenter")
     product=Product(mem)
     product.id=args.id
     #product.zone=Zone(mem,1,'Europe/Madrid', None)
@@ -170,9 +180,11 @@ def main(parameters=None):
     racham=RachaManager(product.result.ohclDaily)
     racha=Racha(product.result.ohclDaily)
     racham.append(racha)
-    for o in smmdm.arr:
-
-        print("{}   {}   {}   {}".format(o.date, product.result.ohclDaily.find(o.date).close, smmm.find_by_date(o.date).value, o.value))
+    for i, o in enumerate(smmdm.arr):
+        s1.add(Coord("A2").addRow(i), o.date, "WhiteDate")
+        s1.add(Coord("B2").addRow(i), product.result.ohclDaily.find(o.date).close, "WhiteDecimal2")
+        s1.add(Coord("C2").addRow(i), smmm.find_by_date(o.date).value, "WhiteDecimal2")
+        s1.add(Coord("D2").addRow(i), o.value, "WhiteDecimal2")
 
         if racha.length()==0:
             racha.append(o)
@@ -188,10 +200,23 @@ def main(parameters=None):
             racha=Racha(product.result.ohclDaily)
             racha.append(o)
             racham.append(racha)
+    s1.setCursorPosition(Coord("A1").addRow(smmdm.length()))
+    s1.setSplitPosition(Coord("A2"))
 
-    for racha in racham.arr:
-        print(racha, racham.diff(racha))
-        
+
+    s2=doc.createSheet("Rachas")
+    s2.add("A1",[["Desde","Hasta","Días","Diff Product", "Gains Product"]], "OrangeCenter")
+
+    for i, racha in enumerate(racham.arr):
+        s2.add(Coord("A2").addRow(i), racha.arr[0].date, "WhiteDate")
+        s2.add(Coord("B2").addRow(i), racha.arr[racha.length()-1].date, "WhiteDate")
+        s2.add(Coord("C2").addRow(i), (racha.arr[racha.length()-1].date-racha.arr[0].date).days, "WhiteInteger")
+        s2.add(Coord("D2").addRow(i), racham.diffProduct(racha), "WhiteDecimal2")
+        s2.add(Coord("E2").addRow(i), racham.diffRacha(racha), "WhiteDecimal2")
+        sentido="LARGOS" if racha.is_positive() else "CORTOS"
+        s2.add(Coord("F2").addRow(i), sentido, "WhiteDecimal2")
+
+
     for year in range(datetime.date.today().year-10,datetime.date.today().year+1):
          print("{}: {}".format(year,racham.suma_diffs_year(year)))
 
@@ -201,5 +226,4 @@ def main(parameters=None):
     print ("Hay {} diffs en rachas".format(racham.suma_contenido_rachas()))
     mem.con.disconnect()
 
-    ultima=racham.arr[racham.length()-1]
-    ultima.print()
+    doc.save()
