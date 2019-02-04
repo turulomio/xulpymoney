@@ -3174,83 +3174,38 @@ class Comment(QObject):
     ## Encode parameters can be:
     ## - eComment.HlContract, hlcontract
     ## - eComment.Dividend, dividend
+    ## - eComment.AccountTransferOrigin operaccountorigin, operaccountdestiny, operaccountorigincomission
+    ## - eComment.AccountTransferOriginCommission operaccountorigin, operaccountdestiny, operaccountorigincomission
+    ## - eComment.AccountTransferDestiny operaccountorigin, operaccountdestiny, operaccountorigincomission
+    ## - eComment.CreditCardBilling creditcard, operaccount
+    ## - eComment.CreditCardRefund opercreditcardtorefund
     def encode(self, ecomment, *args):
         if ecomment==eComment.HlContract:
             return "{},{}".format(eComment.HlContract, args[0].id)        
         elif ecomment==eComment.InvestmentOperation:
             return "{},{}".format(eComment.InvestmentOperation, args[0].id)
         elif ecomment==eComment.Dividend:
-            return "{},{}".format(eComment.Dividend, args[0].id)  
-   
+            return "{},{}".format(eComment.Dividend, args[0].id)        
+        elif ecomment==eComment.AccountTransferOrigin:
+            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferOrigin, args[0].id, args[1].id, operaccountorigincomission_id)
+        elif ecomment==eComment.AccountTransferOriginCommission:
+            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferOriginCommission, args[0].id, args[1].id, operaccountorigincomission_id)
+        elif ecomment==eComment.AccountTransferDestiny:
+            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferDestiny, args[0].id, args[1].id, operaccountorigincomission_id)
+        elif ecomment==eComment.CreditCardBilling:
+            return "{},{},{}".format(eComment.CreditCardBilling, args[0].id, args[1].id)      
+        elif ecomment==eComment.CreditCardRefund:
+            return "{},{}".format(eComment.CreditCardRefund, args[0].id)        
+    
     def validateLength(self, number, code, args):
         if number!=len(args):
             logging("Comment {} has not enough parameters".format(code))
             return False
         return True
 
-        
-    def getAccountOperation(self, id, code):
-        accountoperation=AccountOperation(self.mem,  id)
-        if accountoperation==None:
-            logging.error("I couldn't find accountoperation {} for comment {}".format(id, code))
-        return accountoperation
-        
-    def getCreditCard(self, id, code):
-        creditcard=self.mem.data.creditcards.find_by_id(id)
-        if creditcard==None:
-            logging.error("I couldn't find creditcard {} for comment {}".format(id, code))
-        return creditcard        
-
-    def getCreditCardOperation(self, id, code):
-        cco=CreditCardOperation(self.mem).init__db_query(id)
-        if cco==None:
-            logging.error("I couldn't find creditcard operation {} for comment {}".format(id, code))
-        return cco
-        
-    def setEncoded10001(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
-        """
-            Usado en una transferencia entre cuentas, es la opercuenta de origen
-        """
-        if operaccountorigincomission==None:
-            operaccountorigincomission_id=-1
-        else:
-            operaccountorigincomission_id=operaccountorigincomission.id
-        return "10001,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
-        
-    def setEncoded10002(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
-        """
-            Usado en una transferencia entre cuentas, es la opercuenta de destino
-        """
-        if operaccountorigincomission==None:
-            operaccountorigincomission_id=-1
-        else:
-            operaccountorigincomission_id=operaccountorigincomission.id
-        return "10002,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
-        
-    def setEncoded10003(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
-        """
-            Usado en una transferencia entre cuentas, es la opercuenta de la comisi´on en origen
-        """
-        if operaccountorigincomission==None:
-            operaccountorigincomission_id=-1
-        else:
-            operaccountorigincomission_id=operaccountorigincomission.id
-        return "10003,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
-                
-                        
-    def setEncoded10005(self, creditcard,  operaccount):
-        """
-            Usado en en comentario que muestra la opercuenta cuando se ha realizado un pago de facturaci´on de tarjeta
-            
-            De la opercuenta se puede sacar el n´umero de pagos incluidos.
-        """
-        return "10005,{},{}".format(creditcard.id, operaccount.id)        
-    def setEncoded10006(self, opercreditcardtorefund):
-        """
-            Usado en comentario que muestra la opertarjeta que quiero devolver.
-        """
-        return "10006,{}".format(opercreditcardtorefund.id)        
-        
     def decode(self, string):
         """Sets the comment to show in app"""
         (code, args)=self.get(string)
@@ -3266,21 +3221,22 @@ class Comment(QObject):
             else:
                 return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
 
-        elif code==10001:#Operaccount transfer origin
+        elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
             if not self.validateLength(3, code, args): return string
-            aod=self.getAccountOperation(args[1], code)
+            aod=AccountOperation(self.mem, args[1])
             return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
             
-        elif code==10002:#Operaccount transfer destiny
+        elif code==eComment.AccountTransferDestiny:#Operaccount transfer destiny
             if not self.validateLength(3, code, args): return string
-            aoo=self.getAccountOperation(args[0], code)
+            aoo=AccountOperation(self.mem, args[0])
             return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
             
-        elif code==10003:#Operaccount transfer origin comision
+        elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin comision
             if not self.validateLength(3, code, args): return string
-            aoo=self.getAccountOperation(args[0], code)
-            aod=self.getAccountOperation(args[1], code)
+            aoo=AccountOperation(self.mem, args[0])
+            aod=AccountOperation(self.mem, args[1])
             return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
+
         elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
             if not self.validateLength(1, code, args): return string
             dividend=Dividend(self.mem).init__db_query(args[0])
@@ -3289,14 +3245,16 @@ class Comment(QObject):
                 return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
             else:
                 return QApplication.translate("Core", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
-        elif code==10005:#Facturaci´on de tarjeta diferida
+
+        elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
             if not self.validateLength(2, code, args): return string
-            creditcard=self.getCreditCard(args[0], code)
+            creditcard=self.mem.data.creditcards.find_by_id(args[0])
             number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
             return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
-        elif code==10006:#Devoluci´on de tarjeta
+
+        elif code==eComment.CreditCardRefund:#Devoluci´on de tarjeta
             if not self.validateLength(1, code, args): return string
-            cco=self.getCreditCardOperation(args[0], code)
+            cco=CreditCardOperation(self.mem).init__db_query(args[0])
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
             return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime,  self.mem.localzone.name), money)
 
@@ -3468,7 +3426,7 @@ class AccountOperation:
             eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned, eConcept.HlCommission, 
             eConcept.HlInterestPaid, eConcept.HlInterestReceived):
             return False
-        if Comment(self.mem).getCode(self.comentario) in (10001, 10002, 10003):
+        if Comment(self.mem).getCode(self.comentario) in (eComment.AccountTransferOrigin, eComment.AccountTransferDestiny, eComment.AccountTransferOriginCommission):
             return False        
         return True
         
@@ -4073,12 +4031,12 @@ class Account:
         oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), importe, notfinished, cuentadestino, None)
         oc_destino.save()
         
-        oc_origen.comentario=Comment(self.mem).setEncoded10001(oc_origen, oc_destino, oc_comision)
+        oc_origen.comentario=Comment(self.mem).encode(eComment.AccountTransferOrigin, oc_origen, oc_destino, oc_comision)
         oc_origen.save()
-        oc_destino.comentario=Comment(self.mem).setEncoded10002(oc_origen, oc_destino, oc_comision)
+        oc_destino.comentario=Comment(self.mem).encode(eComment.AccountTransferDestiny, oc_origen, oc_destino, oc_comision)
         oc_destino.save()
         if oc_comision!=None:
-            oc_comision.comentario=Comment(self.mem).setEncoded10003(oc_origen, oc_destino, oc_comision)
+            oc_comision.comentario=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
             oc_comision.save()
 
     def qmessagebox_inactive(self):

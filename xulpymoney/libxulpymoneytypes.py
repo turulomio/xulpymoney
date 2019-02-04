@@ -60,6 +60,11 @@ class eComment:
     InvestmentOperation=10000
     Dividend=10004
     HlContract=10007
+    AccountTransferOrigin=10001
+    AccountTransferDestiny=10002
+    AccountTransferOriginCommission=10003
+    CreditCardBilling=10005
+    CreditCardRefund=10007
 
 
 ## System concepts tipified

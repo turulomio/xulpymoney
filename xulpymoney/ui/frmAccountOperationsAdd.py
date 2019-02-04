@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmAccountOperationsAdd import Ui_frmAccountOperationsAdd
 from xulpymoney.libxulpymoney import  AccountOperation,  Comment, CreditCardOperation
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eComment
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
@@ -193,7 +194,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 refund.tipooperacion=concepto.tipooperacion
                 refund.pagado=False
                 refund.importe=importe
-                refund.comentario=Comment(self.mem).setEncoded10006(self.original)
+                refund.comentario=Comment(self.mem).encode(eComment.CreditCardRefund, self.original)
                 refund.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
                 self.CreditCardOperationChanged.emit(refund)

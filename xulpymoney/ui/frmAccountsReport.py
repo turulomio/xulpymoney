@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
 from xulpymoney.libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager,  CreditCardOperation
 from xulpymoney.libxulpymoneyfunctions import b2c,  c2b
+from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
@@ -322,7 +323,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.actionOperationDelete.setEnabled(False)
                 self.actionOperationEdit.setEnabled(False)   
                 #Una transferencia bien formada no es editable solo con transfer delete.
-                if Comment(self.mem).getCode(self.accountoperations.selected.only().comentario) in (10001, 10002, 10003):#Account transfers
+                if Comment(self.mem).getCode(self.accountoperations.selected.only().comentario) in (eComment.AccountTransferOrigin, eComment.AccountTransferDestiny, eComment.AccountTransferOriginCommission):
                     self.actionTransferDelete.setEnabled(True)
                 else:
                     self.actionTransferDelete.setEnabled(False)
@@ -438,11 +439,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.lblPago.setText(self.mem.localcurrency.string(self.creditcardoperations.selected.balance()))
  
     def on_cmdPago_released(self):
-#        comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())v
         c=AccountOperation(self.mem, self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), "Transaction in progress", self.account, None)
         c.save()
         
-        c.comentario=Comment(self.mem).setEncoded10005(self.creditcards.selected, c)
+        c.comentario=Comment(self.mem).encode(eComment.CreditCardBilling, self.creditcards.selected, c)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
