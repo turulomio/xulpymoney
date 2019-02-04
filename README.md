@@ -29,6 +29,18 @@ If you want to create a Desktop shortcut you can write in console
 
 `xulpymoney_shortcuts`
 
+How to launch Xulpymoney
+========================
+Xulpymoney uses PostgreSQL database as its backend. So you need to create a database and load its schema. Just type:
+
+`xulpymoney_init`
+
+Once database has been created, just log into Xulpymoney after typing:
+
+`xulpymoney`
+
+Warning: Remember Xulpymoney it's still in beta status
+
 Dependencies
 ============
 * https://www.python.org/, as the main programming language.
