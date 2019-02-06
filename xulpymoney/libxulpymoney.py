@@ -3804,7 +3804,7 @@ class InvestmentOperation:
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
         
-        if self.investment.product.high_low==True:
+        if self.investment.product.high_low==True: #Because it uses adjustment information
             return
         
         self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
@@ -7809,6 +7809,7 @@ class MemSources:
         self.stockmarkets.load_all()
         
         
+        
 class MemXulpymoney:
     def __init__(self):                
         self.dir_tmp=dirs_create()
@@ -7832,6 +7833,7 @@ class MemXulpymoney:
         
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
+        self.url_wiki="https://github.com/turulomio/xulpymoney/wiki"
 
     def init__script(self, title, tickers=False, sql=False):
         """

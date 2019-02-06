@@ -188,9 +188,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionHelp_triggered(self):
-        from xulpymoney.ui.frmHelp import frmHelp
-        w=frmHelp(self.mem, self)
-        w.exec_()
+        try: ## Remove when qwebwenginewidgets work again
+            from xulpymoney.ui.frmHelp import frmHelp
+
+            w=frmHelp(self.mem, self)
+            w.exec_()
+        except:
+            QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
 
     @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
