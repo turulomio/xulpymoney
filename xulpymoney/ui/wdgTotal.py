@@ -28,81 +28,85 @@ class TotalMonth:
         self.gains_value=None
         self.total_accounts_value=None
         self.total_investments_value=None
+        self.total_investments_high_low_value=None
         self.total_zerorisk_value=None
         self.total_bonds_value=None
-        
+
     def i_d_g_e(self):
         return self.incomes()+self.dividends()+self.gains()+self.expenses()
-        
+
     def d_g(self):
         """Dividends+gains"""
         return self.gains()+self.dividends()
 
-        
     def expenses(self):
         if self.expenses_value==None:
             self.expenses_value=Assets(self.mem).saldo_por_tipo_operacion( self.year,self.month, 1)#La facturación de tarjeta dentro esta por el union
         return self.expenses_value
-        
+
     def dividends(self):
         if self.dividends_value==None:
             self.dividends_value=Assets(self.mem).dividends_neto(  self.year, self.month)
         return self.dividends_value
-        
+
     def incomes(self):
         if self.incomes_value==None:
             self.incomes_value=Assets(self.mem).saldo_por_tipo_operacion(  self.year,self.month,2)-self.dividends()
         return self.incomes_value
-        
+
     def gains(self):
         if self.gains_value==None:
             self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments, self.year, self.month)
         return self.gains_value
-        
+
     def funds_revaluation(self):
         if self.funds_revaluation_value==None:
             self.funds_revaluation_value=self.mem.data.investments_active().revaluation_monthly(2, self.year, self.month)#2 if type funds
         return self.funds_revaluation_value
-        
+
     def name(self):
         return "{}-{}".format(self.year, self.month)
-        
+
     def last_day(self):
         date=datetime.date(self.year, self.month, 1)
         if date.month == 12:
             return date.replace(day=31)
         return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
-            
+
     def first_day(self):
         return datetime.date(self.year, self.month, self.day)
-        
+
     def total(self):
         """Total assests in the month"""
         return self.total_accounts()+self.total_investments()
-        
+
     def total_accounts(self):
         if self.total_accounts_value==None:
             self.total_accounts_value=Assets(self.mem).saldo_todas_cuentas( self.last_day())
         return self.total_accounts_value
-        
+
     def total_investments(self):
         if self.total_investments_value==None:
             self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments,  self.last_day())
         return self.total_investments_value
-        
+
+    def total_investments_high_low(self):
+        if self.total_investments_high_low_value==None:
+            self.total_investments_high_low_value=Assets(self.mem).saldo_todas_inversiones_high_low(self.mem.data.investments,  self.last_day())
+        return self.total_investments_high_low_value
+
+
     def total_zerorisk(self): 
         if self.total_zerorisk_value==None:
             self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments, self.last_day())
         return self.total_zerorisk_value
-        
+
     def total_bonds(self):
         if self.total_bonds_value==None:
             self.total_bonds_value=Assets(self.mem).saldo_todas_inversiones_bonds(self.last_day())
         return self.total_bonds_value
 
     def total_no_losses(self):
-        """
-        """
         if self.no_loses_value==None:
             self.no_loses_value=Assets(self.mem).invested(self.last_day())+self.total_accounts()
         return self.no_loses_value
@@ -115,30 +119,29 @@ class TotalYear:
         self.arr=[]
         self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(self.year-1, 12, 31))
         self.generate()
-        
+
     def generate(self):
         for i in range(1, 13):
             self.arr.append(TotalMonth(self.mem, self.year, i))
-        
+
     def find(self, year, month):
         for m in self.arr:
             if m.year==year and m.month==month:
                 return m
         return None
-        
+
     def expenses(self):
         result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.expenses()
         return result
-        
+
     def i_d_g_e(self):
         return self.incomes()+self.dividends()+self.gains()+self.expenses()
-        
+
     def funds_revaluation(self):
         return self.mem.data.investments_active().revaluation_annual(2, self.year)#2 if type funds
-        
-        
+
     def incomes(self):
         result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
@@ -156,11 +159,11 @@ class TotalYear:
         for m in self.arr:
             result=result+m.dividends()
         return result
-        
+
     def d_g(self):
         """Dividends+gains"""
         return self.gains()+self.dividends()
-        
+
     def difference_with_previous_month(self, totalmonth):
         """Calculates difference between totalmonth and the total with previous month"""
         if totalmonth.month==1:
@@ -169,21 +172,15 @@ class TotalYear:
             previous=self.find(self.year, totalmonth.month-1)
             totalprevious=previous.total()
         return totalmonth.total()-totalprevious
-        
 
     def difference_with_previous_year(self):
         """Calculates difference between totalmonth of december and the total last year"""
         return self.find(self.year, 12).total()-self.total_last_year
-        
+
     def assets_percentage_in_month(self, month):
         """Calculates the percentage of the assets in this month from total last year"""
-#        if self.total_last_year==Decimal(0):
-#            return None
         m=self.find(self.year, month)
-#        return 100*((m.total()-self.total_last_year)/self.total_last_year).amount
         return Percentage(m.total()-self.total_last_year, self.total_last_year)
-
-
 
 class TotalGraphic:
     """Set of totalmonths to generate a graphic"""
@@ -193,45 +190,41 @@ class TotalGraphic:
         self.startmonth=startmonth
         self.arr=[]
         self.generate()
-        
+
     def generate(self):
         date=self.previousmonth_lastday()
         while datetime.date.today()>=date:
             self.arr.append(TotalMonth(self.mem, date.year, date.month))
             date=self.nextmonth_firstday(date)#Only gets year  and month, so  I can use first day
-        
+
     def find(self, year, month):
         for m in self.arr:
             if m.year==year and m.month==month:
                 return m
         return None
-        
+
     def length(self):
         return len(self.arr)
-        
+
     def previousmonth_lastday(self, date=None):
         """If date is None, it users start year and start month"""
         if date==None:
             date=datetime.date(self.startyear, self.startmonth, 1)
         return datetime.date(date.year, date.month, 1)-datetime.timedelta(days=1)
-        
+
     def nextmonth_firstday(self, date=None):
         """If date is None, date is today"""
         if date==None:
             date=datetime.date.today()
-            
+
         if date.month==12:
             month=1
             year=date.year+1
         else:
             month=date.month+1
             year=date.year
-            
+
         return datetime.date(year, month, 1)
-
-        
-        
-
 
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
@@ -998,9 +991,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.on_actionShowDividends_triggered()
         elif row==3: #Expenses
             self.on_actionShowExpenses_triggered()
+        elif row==7: #Investments
+            totalmonth=self.setData.arr[column]
+            qmessagebox(self.tr("High Low Investments aren't sumarized here, due to they have daily adjustments in accounts.") + "\n\n" + self.tr("Their balance at the end of {}-{} is {}").format(totalmonth.year, totalmonth.month, totalmonth.total_investments_high_low()))
         else:
             qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
-        
+
     def on_table_customContextMenuRequested(self,  pos):
         menu=QMenu()
         menu.addAction(self.actionShowComissions)

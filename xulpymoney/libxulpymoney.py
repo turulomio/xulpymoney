@@ -4621,16 +4621,26 @@ class Assets:
         """Versión que se calcula en cliente muy optimizada"""
         return self.saldo_todas_cuentas(datetime)+self.saldo_todas_inversiones(setinversiones, datetime)
 
-        
-    def saldo_todas_inversiones(self, setinversiones,   fecha):
-        """Versión que se calcula en cliente muy optimizada"""
+    ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
+    ##
+    ## Esta función se calcula en cliente
+    def saldo_todas_inversiones(self, setinversiones, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:
             if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
 
-        
+    ## This method gets all High-Low investments balance
+    ##
+    ## Esta función se calcula en cliente
+    def saldo_todas_inversiones_high_low(self, setinversiones, fecha):
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for i in setinversiones.arr:
+            if i.product.high_low==True:
+                resultado=resultado+i.balance(fecha, type=3)
+        return resultado
+
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
