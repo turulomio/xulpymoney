@@ -4626,7 +4626,7 @@ class Assets:
         """Versión que se calcula en cliente muy optimizada"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:
-            if i.product.high_low=False:#Due to there is a daily adjustments in accounts
+            if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
 
