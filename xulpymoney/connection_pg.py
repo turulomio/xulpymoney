@@ -9,8 +9,8 @@
 ## @encode
 
 import datetime
-import psycopg2
-import psycopg2.extras
+from psycopg2 import OperationalError
+from psycopg2.extras import DictConnection
 
 class Connection:
     def __init__(self):
@@ -20,7 +20,6 @@ class Connection:
         self.port=None
         self.db=None
         self._con=None
-        self._active=False
         self.init=None
 
     def init__create(self, user, password, server, port, db):
@@ -94,19 +93,19 @@ class Connection:
         else:
             s=connection_string
         try:
-            self._con=psycopg2.extras.DictConnection(s)
-        except psycopg2.Error as e:
-            print (e.pgcode, e.pgerror)
-            return
+            self._con=DictConnection(s)
+        except OperationalError as e:
+            print('Unable to connect: {}'.format(e))
         self.init=datetime.datetime.now()
-        self._active=True
 
     def disconnect(self):
-        self._active=False
         self._con.close()
 
+    ##Returns if connection is active
     def is_active(self):
-        return self._active
+        if self._con==None:
+            return False
+        return True
 
     def is_superuser(self):
         """Checks if the user has superuser role"""
@@ -118,3 +117,67 @@ class Connection:
                 res=True
         cur.close()
         return res
+        
+        
+    ## Function to get password user PGPASSWORD environment or ask in console for it
+    def get_password(self,  gettext_module=None, gettex_locale=None):
+        try:
+            import gettext
+            t=gettext.translation(gettext_module,  gettex_locale)
+            _=t.gettext
+        except:
+            _=str
+        
+        from os import environ
+        from getpass import getpass
+        try:
+            self.password=environ['PGPASSWORD']
+        except:
+            print(_("Write the password for {}").format(self.url_string()))
+            self.password=getpass()
+        return self.password
+        
+## Function that adds an argparse argument group with connection parameters
+## @param parser Argparse object
+## @param gettext_module Gettext module
+## @param gettex_locale Locale path
+def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_locale=None): 
+    try:
+        import gettext
+        t=gettext.translation(gettext_module,  gettex_locale)
+        _=t.gettext
+    except:
+        _=str
+
+    group_db=parser.add_argument_group(_("Postgres database connection parameters"))
+    group_db.add_argument('--user', help=_('Postgresql user'), default='postgres')
+    group_db.add_argument('--port', help=_('Postgresql server port'), default=5432)
+    group_db.add_argument('--server', help=_('Postgresql server address'), default='127.0.0.1')
+    group_db.add_argument('--db', help=_('Postgresql database'), default='postgres')
+
+## Function that generate the start of a scritp just with connection arguments
+def script_with_connection_arguments(name="",  description="", epilog="", version="", gettext_module=None, gettext_locale=None): 
+    import argparse
+    parser=argparse.ArgumentParser(prog=name, description=description, epilog=epilog, formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--version', action='version', version=version)
+    argparse_connection_arguments_group(parser, gettext_module, gettext_locale)
+
+    global args
+    args=parser.parse_args()
+
+    con=Connection()
+
+    con.user=args.user
+    con.server=args.server
+    con.port=args.port
+    con.db=args.db
+    
+    con.get_password(gettext_module, gettext_locale)
+    con.connect()
+    return con
+
+
+if __name__ == "__main__":
+    con=script_with_connection_arguments("connection_pg_demo", "This is a connection script demo",  "Developed by Mariano Muñoz", "",  None, None)
+    print("Is connection active?",  con.is_active())
+    
