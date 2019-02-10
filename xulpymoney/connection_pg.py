@@ -141,7 +141,7 @@ class Connection:
 ## @param parser Argparse object
 ## @param gettext_module Gettext module
 ## @param gettex_locale Locale path
-def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_locale=None): 
+def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_locale=None,  default_user="postgres", default_port=5432, default_server="127.0.0.1",  default_db="postgres"): 
     try:
         import gettext
         t=gettext.translation(gettext_module,  gettex_locale)
@@ -150,11 +150,11 @@ def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_loc
         _=str
 
     group_db=parser.add_argument_group(_("Postgres database connection parameters"))
-    group_db.add_argument('--user', help=_('Postgresql user'), default='postgres')
-    group_db.add_argument('--port', help=_('Postgresql server port'), default=5432)
-    group_db.add_argument('--server', help=_('Postgresql server address'), default='127.0.0.1')
-    group_db.add_argument('--db', help=_('Postgresql database'), default='postgres')
-
+    group_db.add_argument('--user', help=_('Postgresql user'), default=default_user)
+    group_db.add_argument('--port', help=_('Postgresql server port'), default=default_port)
+    group_db.add_argument('--server', help=_('Postgresql server address'), default=default_server)
+    group_db.add_argument('--db', help=_('Postgresql database'), default=default_db)
+    
 ## Function that generate the start of a scritp just with connection arguments
 def script_with_connection_arguments(name="",  description="", epilog="", version="", gettext_module=None, gettext_locale=None): 
     import argparse
