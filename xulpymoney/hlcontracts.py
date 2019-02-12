@@ -18,6 +18,11 @@ class HlContract(QObject):
     def __repr__(self):
         return (self.tr("HLContract {} for {} at {}").format(self.id, self.investment.name,  self.datetime))
 
+
+    ## Creates a copy of the current object. It's not a pointer to the object
+    def copy(self):
+        return HlContract(self.mem, self.investment).init__create(self.id, self.datetime, self.guarantee, self.adjustment, self.commission, self.interest, self.guarantee_ao, self.adjustment_ao, self.commission_ao, self.interest_ao, self.currency_conversion)
+
     def init__db_row(self,  row):
         return self.init__create(row['id'], row['datetime'], row['guarantee'], row['adjustment'], row['commission'], row['interest'], row['guarantee_ao'], row['adjustment_ao'], row['interest_ao'], row['commission_ao'], row['currency_conversion'])
         

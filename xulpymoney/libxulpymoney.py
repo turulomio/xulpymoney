@@ -481,9 +481,13 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 for o in inv.op.arr:
                     #En operations quito los traspasos, ya que fallaban calculos dobles pasadas y en realidad no hace falta porque son transpasos entre mismos productos
                     #En operations actual no hace falta porque se eliminan los transpasos origen de las operaciones actuales
-                    if o.tipooperacion.id not in (9, 10):
+                    if o.tipooperacion.id not in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
                         io=o.copy(investment=r)
-                        r.op.append(io)
+                        r.op.append(io)  
+                if inv.product.high_low==True:
+                    r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
+                    for o in inv.hlcontractmanager.arr:
+                        r.hlcontractmanager.append(o)
                     
         r.op.order_by_datetime()
         (r.op_actual,  r.op_historica)=r.op.calcular() 
@@ -520,8 +524,12 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id:
                 for o in inv.op_actual.arr:
                     r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
-        r.op.order_by_datetime()
-        (r.op_actual,  r.op_historica)=r.op.calcular()             
+                r.op.order_by_datetime()
+                (r.op_actual,  r.op_historica)=r.op.calcular()             
+                if inv.product.high_low==True and r.op.length()>0:#Copy hlcontracts from first operation datetime
+                    r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
+                    for o in inv.hlcontractmanager.ObjectManager_copy_from_datetime(r.op.first().datetime, self.mem, inv).arr:
+                        r.hlcontractmanager.append(o)
         return r
         
 
