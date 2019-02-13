@@ -2355,7 +2355,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual
     def gains_last_day(self, type=eMoneyCurrency.Product):
-        return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
+        return self.balance(type)-self.penultimate(type)
 
     def gains_in_selling_point(self, type=eMoneyCurrency.Product):
         """Gains in investment defined selling point"""
@@ -4270,13 +4270,8 @@ class Investment:
         
     ## Función que calcula el balance de la inversión
     def balance(self, fecha=None, type=eMoneyCurrency.Product):
-#        acciones=self.shares(fecha)
-#        currency=self.resultsCurrency(type)
-#        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-#            return Money(self.mem, 0, currency)
-                
         if fecha==None:
-            return self.op_actual.balance(self.product.result.basic.last, type)
+            return self.op_actual.balance(type)
         else:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
