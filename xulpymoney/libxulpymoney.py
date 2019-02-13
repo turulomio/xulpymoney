@@ -2093,7 +2093,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         """Average age of the current investment operations in days"""
         (sumbalance, sumbalanceage)=(Decimal(0), Decimal(0))
         for o in self.arr:
-            balance=o.balance(o.investment.product.result.basic.last).convert_from_factor(o.investment.account.currency, o.currency_conversion).local()
+            balance=o.balance(eMoneyCurrency.User).convert_from_factor(o.investment.account.currency, o.currency_conversion).local()
             sumbalance=sumbalance+balance.amount
             sumbalanceage=sumbalanceage+balance.amount*o.age()
         if sumbalance!=Decimal(0):
@@ -2331,24 +2331,21 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         """
         return self.average_price(type)*(1+percentage.value)
         
-    def invertido(self, type=1):
-        """Al ser homegeneo da el resultado en Money del producto"""
+    def invertido(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
             resultado=resultado+o.invertido(type)
         return resultado
         
-    def balance(self, quote, type=1):
-        """Al ser homegeneo da el resultado en Money del producto"""
+    def balance(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
-            resultado=resultado+o.balance(quote, type)
+            resultado=resultado+o.balance(type)
         return resultado        
 
-    def penultimate(self, type=1):
-        """Al ser homegeneo da el resultado en Money del producto"""
+    def penultimate(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
@@ -2357,10 +2354,10 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual
-    def gains_last_day(self, type=1):
+    def gains_last_day(self, type=eMoneyCurrency.Product):
         return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
 
-    def gains_in_selling_point(self, type=1):
+    def gains_in_selling_point(self, type=eMoneyCurrency.Product):
         """Gains in investment defined selling point"""
         if self.investment.venta!=None:
             return self.investment.selling_price(type)*self.investment.shares()-self.investment.invertido(None, type)
@@ -2374,27 +2371,27 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         """        
         return self.average_price(type)*percentage.value*self.shares()
 
-    def pendiente(self, lastquote, type=1):
+    def pendiente(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
-            resultado=resultado+o.pendiente(lastquote, type)
+            resultado=resultado+o.pendiente(type)
         return resultado
         
-    def pendiente_positivo(self, lastquote, type=1):
+    def pendiente_positivo(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
-            pendiente=o.pendiente(lastquote, type)
+            pendiente=o.pendiente(type)
             if pendiente.isGETZero():
                 resultado=resultado+pendiente
         return resultado
         
-    def pendiente_negativo(self, lastquote, type=1):
+    def pendiente_negativo(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
-            pendiente=o.pendiente(lastquote, type)
+            pendiente=o.pendiente(type)
             if pendiente.isLETZero():
                 resultado=resultado+pendiente
         return resultado
@@ -2411,23 +2408,16 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         else:
             return Percentage(-(last-penultimate), penultimate)
 
-    def tpc_tae(self, last,  type=1):
+    def tpc_tae(self, type=eMoneyCurrency.Product):
         dias=self.average_age()
         if dias==0:
             dias=1
-        return Percentage(self.tpc_total(last, type)*365, dias)
+        return Percentage(self.tpc_total(type)*365, dias)
 
-    def tpc_total(self, last, type=1):
-        """
-            last is a Money object with investment.product currency
-            type puede ser:
-                1 Da el tanto por  ciento en la currency de la inversi´on
-                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
-                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
-        """
-        return Percentage(self.pendiente(last, type), self.invertido(type))
+    def tpc_total(self, type=eMoneyCurrency.Product):
+        return Percentage(self.pendiente(type), self.invertido(type))
     
-    def myqtablewidget(self,  tabla,  quote=None, type=1):
+    def myqtablewidget(self,  tabla,  quote=None, type=eMoneyCurrency.Product):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -3048,10 +3038,11 @@ class InvestmentOperationCurrent:
         elif type==2:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def balance(self,  lastquote, type=eMoneyCurrency.Product):
-        """Función que calcula el balance actual de la operinversion actual
-                - lastquote: objeto Quote
-                type si da el resultado en la currency del account o en el de la inversion"""
+    ## Función que calcula el balance actual de la operinversion actual
+    ## @param type eMoneyCurrency si da el resultado en la currency del account o en el de la inversion
+    ## @return Money
+    def balance(self, type=eMoneyCurrency.Product):
+        lastquote=self.investment.product.result.basic.last
         if lastquote.quote==None:#Empty xulpy
             value=0
         elif self.investment.product.high_low==True:
@@ -3069,9 +3060,9 @@ class InvestmentOperationCurrent:
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
-            return money.convert(self.investment.account.currency, lastquote.datetime)
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==eMoneyCurrency.User:
-            return money.convert(self.investment.account.currency, lastquote.datetime).local(lastquote.datetime)
+            return money.convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
@@ -3082,8 +3073,8 @@ class InvestmentOperationCurrent:
     ## Función que calcula el balance  pendiente de la operacion de inversion actual
     ## Necesita haber cargado mq getbasic y operinversionesactual 
     ## lasquote es un objeto Quote
-    def pendiente(self, lastquote,  type=1):
-        return self.balance(lastquote, type)-self.invertido(type)
+    def pendiente(self, type=eMoneyCurrency.Product):
+        return self.balance(type)-self.invertido(type)
             
 
     ## Función que calcula elbalance en el penultimate ida
@@ -3124,26 +3115,14 @@ class InvestmentOperationCurrent:
         else:
             return Percentage(-(last-lastyear), lastyear)
 
-    def tpc_total(self,  last,  type=1):
-        """
-            last is a Quote object 
-            type puede ser:
-                1 Da el tanto por  ciento en la currency de la inversi´on
-                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
-                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
-        """
-        if last==None:#initiating xulpymoney
-            return Percentage()
-        return Percentage(self.pendiente(last, type), self.invertido(type))
-            
-        
-    def tpc_tae(self, last, type=1):
+    def tpc_total(self, type=eMoneyCurrency.Product):
+        return Percentage(self.pendiente(type), self.invertido(type))
+
+    def tpc_tae(self, type=eMoneyCurrency.Product):
         dias=self.age()
         if self.age()==0:
             dias=1
-        return Percentage(self.tpc_total(last, type)*365,  dias)
-        
-        
+        return Percentage(self.tpc_total(type)*365,  dias)
 
 ## Class who controls all comments from opercuentas, operinversiones ...
 class Comment(QObject):
