@@ -125,24 +125,24 @@ Return False, in other cases';
 
 
 --
--- Name: last_penultimate_lastyear(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- Name: last_penultimate_lastyear(integer, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) RETURNS record
+CREATE FUNCTION public.last_penultimate_lastyear(INOUT id integer, at_datetime timestamp with time zone, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) RETURNS record
     LANGUAGE plpgsql
     AS $$
 DECLARE
     ly timestamptz;
 BEGIN
-    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.last, last_penultimate_lastyear.last_datetime FROM quote(id,now()) quotes;
-    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.penultimate, last_penultimate_lastyear.penultimate_datetime FROM penultimate(id,now()::date) quotes;
-    ly:=make_timestamptz((EXTRACT(YEAR FROM  now())-1)::integer, 12, 31, 23, 59, 59.999999::double precision) ;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.last, last_penultimate_lastyear.last_datetime FROM quote(id, at_datetime) quotes;
+    SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.penultimate, last_penultimate_lastyear.penultimate_datetime FROM penultimate(id, at_datetime::date) quotes;
+    ly:=make_timestamptz((EXTRACT(YEAR FROM  at_datetime)-1)::integer, 12, 31, 23, 59, 59.999999::double precision) ;
     SELECT quotes.quote, quotes.datetime  INTO last_penultimate_lastyear.lastyear, last_penultimate_lastyear.lastyear_datetime FROM quote(id,ly) quotes;
 END;
 $$;
 
 
-ALTER FUNCTION public.last_penultimate_lastyear(INOUT id integer, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) OWNER TO postgres;
+ALTER FUNCTION public.last_penultimate_lastyear(INOUT id integer, at_datetime timestamp with time zone, OUT last_datetime timestamp with time zone, OUT last numeric, OUT penultimate_datetime timestamp with time zone, OUT penultimate numeric, OUT lastyear_datetime timestamp with time zone, OUT lastyear numeric) OWNER TO postgres;
 
 --
 -- Name: penultimate(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
@@ -4807,6 +4807,7 @@ INSERT INTO public.products VALUES ('FURMANITE CORP.', NULL, 'USD', 1, '', 79794
 INSERT INTO public.products VALUES ('FURNITURE BRANDS INTERNATIONAL INC.', NULL, 'USD', 1, '', 77676, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FBN||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FUSION-IO INC.', NULL, 'USD', 1, '', 79450, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FIO||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FUT.CLUBE PORTO', 'PTFCP0AM0008', 'EUR', 1, '|EURONEXT|', 75536, NULL, NULL, NULL, NULL, 100, 'c', 1, 9, 'EURONEXT#PTFCP0AM0008||pt||False', false, '{NULL,NULL,NULL,NULL}', false);
+INSERT INTO public.products VALUES ('FUTURO MINIIBEX', NULL, 'EUR', 13, '', 81739, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('F.VALENCIA GAR.ELECCION OPT.2', 'ES0138228038', 'EUR', 2, '|f_es_BMF|', 77143, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0138228038||es||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FXCM INC.', NULL, 'USD', 1, '', 80065, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FXCM||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('GAESCO EMERGENTFOND', 'ES0140628035', 'EUR', 2, '|f_es_BMF|', 79914, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0140628035||es||False', false, '{NULL,F0GBR04DOB,NULL,NULL}', false);
@@ -8147,7 +8148,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201901200612');
+INSERT INTO public.globals VALUES (1, 'Version', '201902140545');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8158,7 +8159,7 @@ INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5')
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', NULL);
+INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', '201812180834');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
