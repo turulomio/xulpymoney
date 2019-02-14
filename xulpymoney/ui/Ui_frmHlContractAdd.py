@@ -109,6 +109,10 @@ class Ui_frmHlContractAdd(object):
 
         self.retranslateUi(frmHlContractAdd)
         QtCore.QMetaObject.connectSlotsByName(frmHlContractAdd)
+        frmHlContractAdd.setTabOrder(self.txtAdjustment, self.txtGuarantee)
+        frmHlContractAdd.setTabOrder(self.txtGuarantee, self.txtInterest)
+        frmHlContractAdd.setTabOrder(self.txtInterest, self.txtCommission)
+        frmHlContractAdd.setTabOrder(self.txtCommission, self.cmd)
 
     def retranslateUi(self, frmHlContractAdd):
         _translate = QtCore.QCoreApplication.translate

@@ -231,6 +231,10 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>txtAdjustment</tabstop>
+  <tabstop>txtGuarantee</tabstop>
+  <tabstop>txtInterest</tabstop>
+  <tabstop>txtCommission</tabstop>
   <tabstop>cmd</tabstop>
  </tabstops>
  <resources>
