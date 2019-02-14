@@ -25,6 +25,7 @@ class Doxygen(Command):
         os.system("doxygen Doxyfile")
         os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
         os.chdir("..")
+
 class PyInstaller(Command):
     description = "We run pyinstaller in build to avoid doing a ./xulpymoney module imort. I had problems with i18n. Before running this command I must have done a install, removing old installations"
     user_options = []
