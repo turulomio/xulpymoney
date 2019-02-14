@@ -9,8 +9,10 @@ CREATE OR REPLACE FUNCTION public.investment_operations_current
     AS $$
 DECLARE 
     o record;
+    sum numeric;
 BEGIN
-    FOR o IN(SELECT * from operinversiones where id_inversiones= p_investment_id order by datetime)  
+    select sum(acciones) into sum from operinversiones where id_inversiones=p_investment_id;
+    FOR o IN(SELECT * from operinversiones where id_inversiones= p_investment_id order by datetime desc)  
     LOOP
         investment_id:= o.id_inversiones;
         datetime:=o.datetime;
