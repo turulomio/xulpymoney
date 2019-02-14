@@ -233,10 +233,10 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
-            table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
-            table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
+            table.setItem(i, 5, inv.op_actual.balance(type).qtablewidgetitem())
+            table.setItem(i, 6, inv.op_actual.pendiente(type).qtablewidgetitem())
 
-            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
+            tpc_invertido=inv.op_actual.tpc_total(type)
             table.setItem(i, 7, tpc_invertido.qtablewidgetitem())
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
@@ -268,10 +268,10 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 table.setItem(i, 2, qright(inv.op_actual.last().shares))
                 table.setItem(i, 3, qright(inv.op_actual.shares()))
                 table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
-                table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
-                lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
+                table.setItem(i, 5, inv.op_actual.pendiente(type).qtablewidgetitem())
+                lasttpc=inv.op_actual.last().tpc_total(type=3)
                 table.setItem(i, 6, lasttpc.qtablewidgetitem())
-                table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
+                table.setItem(i, 7, inv.op_actual.tpc_total( type=3).qtablewidgetitem())
                 table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
                 if lasttpc<Percentage(percentage, 1):   
                     table.item(i, 6).setBackground(eQColor.Red)
@@ -409,7 +409,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.arr:
-            r=r+inv.invertido(type=3)
+            r=r+inv.op_actual.invertido(type=3)
         return r            
     
     def numberWithSameProduct(self, product):
@@ -426,13 +426,13 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.arr:
-            r=r+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+            r=r+inv.op_actual.pendiente(3)
         return r
     def pendiente_positivo(self):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.arr:
-            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+            pendiente=inv.op_actual.pendiente(3)
             if pendiente.isGETZero():
                 r=r+pendiente
         return r
@@ -440,7 +440,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.arr:
-            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+            pendiente=inv.op_actual.pendiente(3)
             if pendiente.isLETZero():
                 r=r+pendiente
         return r
@@ -741,7 +741,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
     def order_by_percentage_last_operation(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3),  reverse=True)
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().tpc_total(type=3),  reverse=True)
             return True
         except:
             return False
@@ -758,7 +758,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
     def order_by_percentage_sellingpoint(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.percentage_to_selling_point(),  reverse=False)##, -inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)),  reverse=False) #Ordenado por dos criterios
+            self.arr=sorted(self.arr, key=lambda inv: inv.percentage_to_selling_point(),  reverse=False)##, -inv.op_actual.tpc_total(type=3)),  reverse=False) #Ordenado por dos criterios
             return True
         except:
             return False
@@ -767,7 +767,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """Orders the Set using self.arr"""
             
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.tpc_total(inv.product.result.basic.last, type=3),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.tpc_total(type=3),  reverse=True) 
             return True
         except:
             return False
@@ -4079,12 +4079,15 @@ class Investment:
 
     ## Replicates an investment with data at datetime
     ## Loads self.op, self.op_actual, self.op_historica and self.hlcontractmanager
+    ##
+    ## We shouldn't make inserts or deletetes with this object. Only for querying because it's a copy    
     ## @param dt Datetime 
     ## @return Investment
     def Investment_At_Datetime(self, dt):
         r=self.copy()
         r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
         (r.op_actual,  r.op_historica)=r.op.calcular()
+        r.product=self.product.Product_At_Datetime(dt)
         if r.product.high_low==True:
             r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
         return r
@@ -4267,29 +4270,21 @@ class Investment:
                 return QMessageBox.Yes
             return QMessageBox.No
         return QMessageBox.Yes
-        
-    ## Función que calcula el balance de la inversión
-    def balance(self, fecha=None, type=eMoneyCurrency.Product):
-        if fecha==None:
-            return self.op_actual.balance(type)
-        else:
-            quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
-            if quote.datetime==None:
-                logging.debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
-                return Money(self.mem, 0, self.resultsCurrency(type) )
-            return self.Investment_At_Datetime(day_end_from_date(fecha, self.mem.localzone)).op_actual.balance(quote, type)
-        
-    ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
-    ## Necesita haber cargado mq getbasic y operinversionesactual
-    def invertido(self, date=None, type=1):
-        if date==None or date==datetime.date.today():#Current
-            return self.op_actual.invertido(type)
-        else:
-            # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
-            invfake=self.copy()
-            invfake.op=self.op.ObjectManager_copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
-            (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
-            return invfake.op_actual.invertido(type)
+#        
+#    ## Función que calcula el balance de la inversión
+#    def balance(self, date=None, type=eMoneyCurrency.Product):
+#        if date==None:
+#            return self.op_actual.balance(type)
+#        else:
+#            return self.Investment_At_Datetime(day_end_from_date(date, self.mem.localzone)).op_actual.balance(type)
+#        
+#    ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
+#    ## Necesita haber cargado mq getbasic y operinversionesactual
+#    def invertido(self, date=None, type=eMoneyCurrency.Product):
+#        if date==None or date==datetime.date.today():#Current
+#            return self.op_actual.invertido(type)
+#        else:
+#            return self.Investment_At_Datetime(day_end_from_date(date, self.mem.localzone)).op_actual.invertido(type)
                 
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
@@ -5872,7 +5867,7 @@ class Product:
     
     ## Returns a copy of the product
     def copy(self):
-        r=Product(self.mem).init__create(self.name, self.isin,  self.currency, self.type, self.agrupations, self.active, self.web, self.address, self.phone, self.mail, self.percentage, self.mode, self.leveraged, self.stockmarket, self.tickers, self.comment, self.obsolete, self.high_low, self.id)
+        r=Product(self.mem).init__create(self.name, self.isin,  self.currency, self.type, self.agrupations, self.web, self.address, self.phone, self.mail, self.percentage, self.mode, self.leveraged, self.stockmarket, self.tickers, self.comment, self.obsolete, self.high_low, self.id)
         return r
 
     ## Replicates an investment with data at datetime. Returns a new product of needstatus=1
@@ -5886,9 +5881,9 @@ class Product:
                 r.estimations_dps.append(o)
                 
         r.splits=self.splits.ObjectManager_copy_until_datetime(dt, self.mem, r)
-        self.result=QuotesResult(self.mem, self)
-        self.result.get_basic()
-        self.status=1
+        r.result=QuotesResult(self.mem, r)
+        r.result.get_basic(dt)
+        r.status=1
         return r
 
     def init__db_row(self, row):
@@ -5914,13 +5909,12 @@ class Product:
         return self
 
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, high_low, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, high_low, id=None):
         self.name=name
         self.isin=isin
         self.currency=currency
         self.type=type
         self.agrupations=agrupations
-        self.active=active
         self.id=id
         self.web=web
         self.address=address
@@ -7192,9 +7186,11 @@ class QuotesResult:
         self.mem=mem
         self.product=product
 
-    def get_basic(self):
+    def get_basic(self, dt=None):
+        if dt==None:
+            dt=self.mem.localzone.now()
         self.basic=QuoteBasicManager(self.mem, self.product)
-        self.basic.load_from_db()
+        self.basic.load_from_db(dt)
 
     def get_intraday(self, date):
         self.intradia=QuoteIntradayManager(self.mem)
@@ -7408,6 +7404,10 @@ class Split:
     def __repr__(self):
         return ("Instancia de Split: {0} ({1})".format( self.id, self.id))
         
+    ## Returns a copy of the split
+    def copy(self):
+        r=Split(self.mem).init__create(self.product, self.datetime, self.before, self.after, self.comment, self.id)
+        return r
     def init__create(self, product, datetime, before, after, comment, id=None):
         self.id=id
         self.product=product
@@ -8199,7 +8199,7 @@ class AssetsReport(ODT_Standard, QObject):
         data=[]
         self.mem.data.investments_active().order_by_percentage_sellingpoint()
         for inv in self.mem.data.investments_active().arr: 
-            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
+            pendiente=inv.op_actual.pendiente(type=3)
             arr=("{0} ({1})".format(inv.name, inv.account.name), inv.balance(), pendiente, inv.op_actual.tpc_total(inv.product.result.basic.last), inv.percentage_to_selling_point())
             data.append(arr)
 

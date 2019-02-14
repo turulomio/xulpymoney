@@ -248,7 +248,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             w=frmQuotesIBM(self.mem,  self.investment.product)
             w.exec_()   
             if w.result()==QDialog.Accepted:
-                self.investment.product.result.basic.load_from_db()
+                self.investment.product.result.basic.load_from_db(self.mem.localzone.now())
             else:
                 return
             
@@ -398,7 +398,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.mem.data.products.find_by_id(product.id)==None:
             print ("Cargando otro producto en mem")
             product.estimations_dps.load_from_db()
-            product.result.basic.load_from_db()
+            product.result.basic.load_from_db(self.mem.localzone.now())
             self.mem.data.products.append(product)        
 
         if self.tipo==1:        #insertar

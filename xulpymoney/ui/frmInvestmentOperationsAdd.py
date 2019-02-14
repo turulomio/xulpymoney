@@ -151,7 +151,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             w.chkCanBePurged.setCheckState(Qt.Unchecked)
             w.txtQuote.setFocus()
             w.exec_() 
-            self.mem.data.benchmark.result.basic.load_from_db()                
+            self.mem.data.benchmark.result.basic.load_from_db(self.mem.localzone.now())                
         self.done(0)
 
     def on_cmbTiposOperaciones_currentIndexChanged(self, index):
