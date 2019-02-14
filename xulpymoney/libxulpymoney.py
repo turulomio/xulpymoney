@@ -5869,7 +5869,28 @@ class Product:
 #        return not self.__eq__(other)
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
+    
+    ## Returns a copy of the product
+    def copy(self):
+        r=Product(self.mem).init__create(self.name, self.isin,  self.currency, self.type, self.agrupations, self.active, self.web, self.address, self.phone, self.mail, self.percentage, self.mode, self.leveraged, self.stockmarket, self.tickers, self.comment, self.obsolete, self.high_low, self.id)
+        return r
+
+    ## Replicates an investment with data at datetime. Returns a new product of needstatus=1
+    ## @param dt Datetime 
+    ## @return Investment
+    def Product_At_Datetime(self, dt):
+        r=self.copy()
+        r.estimations_dps=EstimationDPSManager(self.mem, r)
+        for o in self.estimations_dps.arr:
+            if o.year<=dt.year:
+                r.estimations_dps.append(o)
                 
+        r.splits=self.splits.ObjectManager_copy_until_datetime(dt, self.mem, r)
+        self.result=QuotesResult(self.mem, self)
+        self.result.get_basic()
+        self.status=1
+        return r
+
     def init__db_row(self, row):
         """row es una fila de un pgcursro de investmentes"""
         self.name=row['name'].upper()
@@ -6230,13 +6251,12 @@ class QuoteBasicManager:
         return self
        
     
-    def load_from_db(self):
-        """
-            Función que carga last, penultimate y lastdate 
-            To see if there is a good value, You must search for datetime!= None or quote!=None
-        """
+    ## Función que carga last, penultimate y lastdate 
+    ## To see if there is a good value, You must search for datetime!= None or quote!=None
+    ## @param at_datetime. Get last_penultimate_lastyear at this datetime
+    def load_from_db(self, at_datetime):
         cur=self.mem.con.cursor()
-        cur.execute("select * from last_penultimate_lastyear(%s)", (self.product.id, ))
+        cur.execute("select * from last_penultimate_lastyear(%s,%s)", (self.product.id, at_datetime))
         row=cur.fetchone()
         self.last=Quote(self.mem).init__create(self.product, row['last_datetime'], row['last'])
         self.penultimate=Quote(self.mem).init__create(self.product, row['penultimate_datetime'], row['penultimate'])
@@ -7176,17 +7196,6 @@ class QuotesResult:
         self.basic=QuoteBasicManager(self.mem, self.product)
         self.basic.load_from_db()
 
-#    ## Only once. If it's already in memory. It ignore it
-#    ## @param force Boolean that if it'sTrue load from database again even if dps is not null
-#    def load_dps_and_splits(self, force=False):
-#        if self.product.dps==None or force==True:
-#            self.product.dps=DPSManager(self.mem, self.product)
-#            self.product.dps.load_from_db()     
-#        if self.product.splits==None or force==True:
-#            self.product.splits=SplitManager(self.mem, self.product)
-#            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
-#        
-
     def get_intraday(self, date):
         self.intradia=QuoteIntradayManager(self.mem)
         self.intradia.load_from_db(date,  self.product)
@@ -7441,9 +7450,9 @@ class Split:
         else:
             return "Split"
 
-class SplitManager(ObjectManager_With_IdName_Selectable):
+class SplitManager(ObjectManager_With_IdDatetime_Selectable):
     def __init__(self, mem, product):
-        ObjectManager_With_IdName_Selectable.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
         self.product=product
         self.mem=mem
         
