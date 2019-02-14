@@ -6262,7 +6262,7 @@ class QuoteBasicManager:
             To see if there is a good value, You must search for datetime!= None or quote!=None
         """
         cur=self.mem.con.cursor()
-        cur.execute("select * from last_penultimate_lastyear(%s)", (self.product.id, ))
+        cur.execute("select * from last_penultimate_lastyear(%s, %s)", (self.product.id, self.mem.localzone.now() ))
         row=cur.fetchone()
         self.last=Quote(self.mem).init__create(self.product, row['last_datetime'], row['last'])
         self.penultimate=Quote(self.mem).init__create(self.product, row['penultimate_datetime'], row['penultimate'])
