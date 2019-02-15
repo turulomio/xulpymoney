@@ -10,40 +10,45 @@ def is_positive(number):
         return True
     return False
 
+def set_sign_of_other_number(number, number_to_change):
+    if is_positive(number):
+       return abs(number_to_change)
+    return -abs(number_to_change)
+
 def process(op):
     cur=[]
     hst=[]
 
-    print("Processing {}".format(op))
+    print("Processing {}. Su suma es {}".format(op, sum(op)))
 
     for position, io in enumerate(op):
-        if have_same_sign(sum(cur), io)==True:
+        if len(cur)==0 or have_same_sign(cur[0], io)==True:
             cur.append(io)
-        elif have_same_sign(sum(cur), io)==False:
+        elif have_same_sign(cur[0], io)==False:
             rest=io
-            while(rest!=0 and len(cur)!=0):
-                first=cur[0]
-                if have_same_sign(first, rest)==False:
-                    if abs(first)>abs(rest):
-                        hst.append(-rest)
-                        cur.pop(0)
-                        if rest+first!=0:
-                            cur.insert(0, rest+first)
+            while rest!=0:
+                if len(cur)>0:
+                    if abs(cur[0])>=abs(rest):
+                        hst.append(set_sign_of_other_number(io,rest))
+                        if rest+cur[0]!=0:
+                            cur.insert(0, rest+cur[0])
+                            cur.pop(1)
+                        else:
+                            cur.pop(0)
                         rest=0
+                        break
                     else: #Mayor el resto
-                        hst.append(-first)
-                        rest=rest+first
+                        hst.append(set_sign_of_other_number(io,cur[0]))
+                        rest=rest+cur[0]
+                        rest=set_sign_of_other_number(io,rest)
                         cur.pop(0)
-    #                print("     REST", rest, "Current", cur, "Historical", hst)
+#                        print("   REST>", rest, "Current", cur, "Historical", hst)
                 else:
                     cur.insert(0, rest)
                     break
-            if rest!=0:
-                cur.insert(0, rest)
         print("  + IO", io, "Current", cur, "Historical", hst)
+    print("La suma de Current es", sum(cur))
     print("")
-
-
 
 process([1,-1,-2,2,3,4,-7,-3,-4,7]) #Exacto
 process([1,-2,2,-3,4]) #Cambio signo
