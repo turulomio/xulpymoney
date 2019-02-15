@@ -678,5 +678,11 @@ def is_positive(number):
     if number>=0:
         return True
     return False
-    
+
+## Sets the sign of other number
+def set_sign_of_other_number(number, number_to_change):
+    if is_positive(number):
+       return abs(number_to_change)
+    return -abs(number_to_change)
+
 

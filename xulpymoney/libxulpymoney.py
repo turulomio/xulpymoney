@@ -18,7 +18,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, timeit, have_same_sign
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, timeit, have_same_sign, set_sign_of_other_number
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
@@ -2005,38 +2005,40 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             if shares>=0:
                 return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesPurchase)
             return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesSale)
-        ##
+        # ##################################
         sioc=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         for o in self.arr:
-            if have_same_sign(sioc.shares(), o.shares)==True:
+            if sioc.length()==0 or have_same_sign(sioc.shares(), o.shares)==True:
                 sioc.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-            elif have_same_sign(sioc.shares(), o.shares)==False:
+            elif have_same_sign(sioc.first().shares, o.shares)==False:
                 comisiones=Decimal('0')
                 impuestos=Decimal('0')                    
 #                comisiones=comisiones+io.comision+ioa.comision
 #                    impuestos=impuestos+io.impuestos+ioa.impuestos
                 rest=o.shares
-                while rest!=0 and sioc.length()!=0:
+                while rest!=0:
                     first_ioc=sioc.first()
-                    if have_same_sign(first_ioc.shares, rest)==False:
+                    if sioc.length()>0:
                         if abs(first_ioc.shares)>abs(rest):                   
                             sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -rest, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
-                            sioc.arr.pop(0)
                             if rest+first_ioc.shares!=0:
                                 sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest+first_ioc.shares , o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                                sioc.arr.pop(1)
+                            else:
+                                sioc.arr.pop(0)
                             rest=0
+                            break
                         else: #Mayor el resto                
                             sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -first_ioc.shares, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
                             rest=rest+first_ioc.shares
+                            rest=set_sign_of_other_number(o.shares, rest)
                             sioc.arr.pop(0)
         #                print("     REST", rest, "Current", cur, "Historical", hst)
                     else:
                         sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
                         break
-                if rest!=0:
-                    sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-
+                        
             if self.investment.id==69:
                 print("  + IO", o.shares, "Current", sioc.list_of_shares(), "Historical", sioh.list_of_shares())
         print("")
