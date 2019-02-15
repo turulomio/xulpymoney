@@ -2009,34 +2009,44 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         sioc=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         for o in self.arr:
-            if sioc.length()==0 or have_same_sign(sioc.shares(), o.shares)==True:
+            if sioc.length()==0 or have_same_sign(sioc.first().shares, o.shares)==True:
                 sioc.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
             elif have_same_sign(sioc.first().shares, o.shares)==False:
-                comisiones=Decimal('0')
-                impuestos=Decimal('0')                    
-#                comisiones=comisiones+io.comision+ioa.comision
-#                    impuestos=impuestos+io.impuestos+ioa.impuestos
                 rest=o.shares
+                common_ioc=sioc.first() #ESTO NO ESTA EN LA FUNCION CONCEPTO, CUANDO HAY RESTO Y SIOC.LENGTH=0 NECESITA LA IFNORMACION PARA METER
+                ciclos=0 #Se pone comisión en IOH en primer ciclo
                 while rest!=0:
-                    first_ioc=sioc.first()
+                    ciclos=ciclos+1
+                    comisiones=Decimal('0')
+                    impuestos=Decimal('0')
+                    if ciclos==1:#Para IOH
+                        comisiones=o.comision+common_ioc.comision
+                        impuestos=o.impuestos+common_ioc.impuestos
+                        
+                    
                     if sioc.length()>0:
-                        if abs(first_ioc.shares)>abs(rest):                   
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -rest, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
-                            if rest+first_ioc.shares!=0:
-                                sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest+first_ioc.shares , o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                        if abs(sioc.first().shares)>abs(rest): 
+                            number=set_sign_of_other_number(o.shares, rest)
+#CURRENT operinversion, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, show_in_ranges,  currency_conversion, id=None):                            
+#HISTORICA (operinversion, inversion, fecha_inicio, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
+
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion))
+                            if rest+sioc.first().shares!=0:
+                                sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(sioc.first(),sioc.first().tipooperacion, sioc.first().datetime, sioc.first().investment, rest+sioc.first().shares , sioc.first().impuestos, sioc.first().comision, sioc.first().valor_accion,  sioc.first().show_in_ranges, sioc.first().currency_conversion,  sioc.first().id))
                                 sioc.arr.pop(1)
                             else:
                                 sioc.arr.pop(0)
                             rest=0
                             break
                         else: #Mayor el resto                
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -first_ioc.shares, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
-                            rest=rest+first_ioc.shares
+                            number=set_sign_of_other_number(o.shares, sioc.first().shares)
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion))
+                            rest=rest+sioc.first().shares
                             rest=set_sign_of_other_number(o.shares, rest)
                             sioc.arr.pop(0)
         #                print("     REST", rest, "Current", cur, "Historical", hst)
                     else:
-                        sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                        sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(common_ioc, common_ioc.tipooperacion, common_ioc.datetime, common_ioc.investment, rest, common_ioc.impuestos, common_ioc.comision, common_ioc.valor_accion,  common_ioc.show_in_ranges, common_ioc.currency_conversion,  common_ioc.id))
                         break
                         
             if self.investment.id==69:
