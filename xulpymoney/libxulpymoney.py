@@ -18,7 +18,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, timeit, have_same_sign
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
@@ -1999,9 +1999,56 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         InvestmentOperationHeterogeneusManager.__init__(self, mem)
         self.investment=investment
 
+    @timeit
+    def get_current_and_historical_operations(self, test_suite=False):
+        def tipo_operacion(shares):
+            if shares>=0:
+                return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesPurchase)
+            return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesSale)
+        ##
+        sioc=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
+        sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
+        for o in self.arr:
+            if have_same_sign(sioc.shares(), o.shares)==True:
+                sioc.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+            elif have_same_sign(sioc.shares(), o.shares)==False:
+                comisiones=Decimal('0')
+                impuestos=Decimal('0')                    
+#                comisiones=comisiones+io.comision+ioa.comision
+#                    impuestos=impuestos+io.impuestos+ioa.impuestos
+                rest=o.shares
+                while rest!=0 and sioc.length()!=0:
+                    first_ioc=sioc.first()
+                    if have_same_sign(first_ioc.shares, rest)==False:
+                        if abs(first_ioc.shares)>abs(rest):                   
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -rest, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
+                            sioc.arr.pop(0)
+                            if rest+first_ioc.shares!=0:
+                                sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest+first_ioc.shares , o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                            rest=0
+                        else: #Mayor el resto                
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(first_ioc, first_ioc.investment, first_ioc.datetime.date(), o.tipooperacion, -first_ioc.shares, comisiones, impuestos, o.datetime.date(), first_ioc.valor_accion, o.valor_accion, first_ioc.currency_conversion, o.currency_conversion))
+                            rest=rest+first_ioc.shares
+                            sioc.arr.pop(0)
+        #                print("     REST", rest, "Current", cur, "Historical", hst)
+                    else:
+                        sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                        break
+                if rest!=0:
+                    sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, rest, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+
+            if self.investment.id==69:
+                print("  + IO", o.shares, "Current", sioc.list_of_shares(), "Historical", sioh.list_of_shares())
+        print("")
+        if test_suite==False:
+            sioc.get_valor_benchmark(self.mem.data.benchmark)
+        return (sioc, sioh)
+
 
     def calcular(self, test_suite=False):
         """Realiza los cálculos y devuelve dos arrays"""
+        return self.get_current_and_historical_operations()
+        
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         if self.investment.product.high_low==False:
@@ -2127,8 +2174,14 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         for o in self.arr:
             resultado=resultado+o.shares
         return resultado
-            
-    
+
+    ## Returns a list with operation shares. Usefull to debug io calculations
+    def list_of_shares(self):
+        r=[]
+        for o in self.arr:
+            r.append(o.shares)
+        return r
+
     def invertido(self):
         """Al ser heterogeneo da el resultado en Money local"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
@@ -2542,6 +2595,12 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
             r=r+a.bruto_compra(eMoneyCurrency.User)
         return r
 
+    ## Returns a list with operation shares. Usefull to debug io calculations
+    def list_of_shares(self):
+        r=[]
+        for o in self.arr:
+            r.append(o.shares)
+        return r
     def gross_sales(self):
         """Bruto de todas las compras de la historicas"""
         r=Money(self.mem, 0, self.mem.localcurrency)

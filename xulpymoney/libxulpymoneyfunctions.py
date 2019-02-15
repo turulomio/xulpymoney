@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplicati
 from decimal import Decimal
 from os import path, makedirs
 import datetime
+import time
 import functools
 import warnings
 import inspect
@@ -250,6 +251,23 @@ def dtaware2string(dt, zonename):
         else:
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
     return resultado
+    
+## allows you to measure the execution time of the method/function by just adding the @timeit decorator on the method.
+## @timeit
+def timeit(method):
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        if 'log_time' in kw:
+            name = kw.get('log_name', method.__name__.upper())
+            kw['log_time'][name] = int((te - ts) * 1000)
+        else:
+            print ('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
+        return result
+
+    return timed
 
 def deprecated(func):
      """This is a decorator which can be used to mark functions
@@ -643,3 +661,22 @@ def function_name(clas):
 #        w=frmInvestmentHlReport(mem, investment, parent)
 #        w.exec_()
 #    return w
+
+## Check if two numbers has the same sign
+## @param number1 First number used in check
+## @param number2 Second number used in check
+## @return bool True if they have the same sign
+def have_same_sign(number1, number2):
+    if (is_positive(number1)==True and is_positive(number2)==True) or (is_positive(number1)==False and is_positive(number2)==False):
+        return True
+    return False
+
+## Check if a number is positive
+## @param number Number used in check
+## @return bool True if number is positive, else False
+def is_positive(number):
+    if number>=0:
+        return True
+    return False
+    
+
