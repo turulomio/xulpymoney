@@ -127,7 +127,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.investment, acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
         self.sim_op.arr.append(d)
 
-        (self.sim_opactual, self.sim_ophistorica)=self.sim_op.calcular()
+        (self.sim_opactual, self.sim_ophistorica)=self.sim_op.get_current_and_historical_operations()
         #After
         self.sim_op.myqtablewidget(self.tblOperaciones)
         self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespues, quote=self.investment.product.result.basic.last)

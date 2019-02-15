@@ -407,7 +407,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
             self.investment.op=InvestmentOperationHomogeneusManager(self.mem, self.investment)
-            (self.investment.op_actual, self.investment.op_historica)=self.investment.op.calcular()
+            (self.investment.op_actual, self.investment.op_historica)=self.investment.op.get_current_and_historical_operations()
             self.mem.data.investments.append(self.investment)
             self.done(0)
         elif self.tipo==2:

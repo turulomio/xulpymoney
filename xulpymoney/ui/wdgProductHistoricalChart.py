@@ -422,7 +422,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
                                                                                             -10000
                                                                                         )
             inv.op.append(lastIO)
-            (inv.op_actual, inv.op_historica)=inv.op.calcular()
+            (inv.op_actual, inv.op_historica)=inv.op.get_current_and_historical_operations()
             new_purchase_price=self.view.appendTemporalSeries(self.tr("Purchase price {}: {}").format(index, m_purchase.string()),  self.product.currency)
             new_purchase_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Buy))
             new_purchase_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Buy))
@@ -462,7 +462,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
 #                                                                                        -9999
 #                                                                                    )
 #        inv.op.append(d2)
-#        (inv.op_actual, inv.op_historica)=inv.op.calcular()
+#        (inv.op_actual, inv.op_historica)=inv.op.get_current_and_historical_operations()
 #        new_purchase_price=self.view.appendTemporalSeries(self.tr("First reinvestment purchase: {}").format(m_r1_purchase.string()),  self.product.currency)
 #        new_purchase_price.setColor(QColor(85, 170, 127))
 #        new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
@@ -501,7 +501,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
 #                                                                                        -9998
 #                                                                                        )
 #        inv.op.append(d3)
-#        (inv.op_actual, inv.op_historica)=inv.op.calcular()
+#        (inv.op_actual, inv.op_historica)=inv.op.get_current_and_historical_operations()
 #        new_purchase_price=self.view.appendTemporalSeries(self.tr("Second reinvestment purchase: {}").format(m_r2_purchase),  self.product.currency)
 #        new_purchase_price.setColor(QColor(85, 170, 127))
 #        new_purchase_price.setPen(self._pen(Qt.DotLine, QColor(85, 170, 127)))

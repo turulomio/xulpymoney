@@ -490,7 +490,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                         r.hlcontractmanager.append(o)
                     
         r.op.order_by_datetime()
-        (r.op_actual,  r.op_historica)=r.op.calcular() 
+        (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations() 
         return r
 
 
@@ -525,7 +525,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 for o in inv.op_actual.arr:
                     r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
                 r.op.order_by_datetime()
-                (r.op_actual,  r.op_historica)=r.op.calcular()             
+                (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()             
                 if inv.product.high_low==True and r.op.length()>0:#Copy hlcontracts from first operation datetime
                     r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.ObjectManager_copy_from_datetime(r.op.first().datetime, self.mem, inv).arr:
@@ -694,8 +694,8 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             
         #Vuelvo a introducir el comentario de la opercuenta
         self.mem.con.commit()
-        (origen.op_actual,  origen.op_historica)=origen.op.calcular()   
-        (destino.op_actual,  destino.op_historica)=destino.op.calcular()   
+        (origen.op_actual,  origen.op_historica)=origen.op.get_current_and_historical_operations()   
+        (destino.op_actual,  destino.op_historica)=destino.op.get_current_and_historical_operations()   
         return True
         
     def traspaso_valores_deshacer(self, operinversionorigen):
@@ -1494,7 +1494,7 @@ class ReinvestModel:
                 r.op.append(InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), self.mem.localzone.now(), r,  int(amount/lastprice), Decimal(0), Decimal(0),  lastprice,  None, False, 1, -1))
                 lastprice=lastprice*(1-pricepercentage.value)
             r.op.order_by_datetime()
-            (r.op_actual,  r.op_historica)=r.op.calcular()           
+            (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()           
             self.investments.append(r)
         
     
@@ -1930,7 +1930,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         
         super(InvestmentOperationHeterogeneusManager, self).remove(io)
         
-        (io.investment.op_actual,  io.investment.op_historica)=io.investment.op.calcular()
+        (io.investment.op_actual,  io.investment.op_historica)=io.investment.op.get_current_and_historical_operations()
         io.investment.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversión.
 
         
@@ -2055,39 +2055,6 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         if test_suite==False:
             sioc.get_valor_benchmark(self.mem.data.benchmark)
         return (sioc, sioh)
-
-
-    def calcular(self, test_suite=False):
-        """Realiza los cálculos y devuelve dos arrays"""
-        return self.get_current_and_historical_operations()
-        
-        sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
-        sioa=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
-        if self.investment.product.high_low==False:
-            for o in self.arr:                
-                if o.shares>=0:#Compra
-                    sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-                else:#Venta
-                    if abs(o.shares)>sioa.shares():
-                        logging.critical("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
-                        sys.exit(0)
-                    sioa.historizar(o, sioh)
-            sioa.get_valor_benchmark(self.mem.data.benchmark)
-            return (sioa, sioh)
-        else: # Not High-Low product
-            for o in self.arr:
-                logging.debug("Añadiendo io con {} teniendo el sioa {}".format(o.shares, sioa.shares()))
-                if sioa.shares()==0:
-                    sioa.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-                elif sioa.shares()>0 and o.shares>0:
-                    sioa.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-                elif sioa.shares()<0 and o.shares<0:
-                    sioa.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.shares, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
-                else:
-                    sioa.historizar_high_low(o, sioh)
-            if test_suite==False:
-                sioa.get_valor_benchmark(self.mem.data.benchmark)
-            return (sioa, sioh)
 
     def myqtablewidget(self, tabla, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
@@ -2296,70 +2263,6 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             o.get_referencia_indice(indice)
         cur.close()
 
-    def historizar(self, io,  sioh):
-        """
-        io es una Investmentoperacion de venta
-        1 Pasa al set de inversion operacion historica tantas inversionoperacionesactual como acciones tenga
-       la inversion operacion de venta
-      2 Si no ha sido un número exacto y se ha partido la ioactual, añade la difrencia al setIOA y lo quitado a SIOH
-      
-        Las comisiones se cobran se evaluan (ya estan en io) para ioh cuando sale con Decimal('0'), esdecir
-        cuando acaba la venta
-        
-        """
-        self.order_by_datetime()
-        
-        inicio=self.shares()
-        
-        accionesventa=abs(io.shares)
-        comisiones=Decimal('0')
-        impuestos=Decimal('0')
-        while accionesventa!=Decimal('0'):
-            while True:###nO SE RECORRE EL ARRAY SE RECORRE Con I PORQUE HAY INSERCIONES Y BORRADOS daba problemas de no repetir al insertar
-                ioa=self.arr[0]
-                if ioa.shares-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
-                    comisiones=comisiones+io.comision+ioa.comision
-                    impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.shares-abs(accionesventa), 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
-                    self.arr.remove(ioa)
-                    accionesventa=Decimal('0')#Sale bucle
-                    break
-                elif ioa.shares-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
-                    comisiones=comisiones+ioa.comision
-                    impuestos=impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.shares, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    accionesventa=accionesventa-ioa.shares                    
-                    self.arr.remove(ioa)
-                elif ioa.shares-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
-                    comisiones=comisiones+io.comision+ioa.comision
-                    impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(),  io.tipooperacion, -ioa.shares, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.remove(ioa)                    
-                    accionesventa=Decimal('0')#Sale bucle                    
-                    break
-        if inicio-self.shares()-abs(io.shares)!=Decimal('0'):
-            logging.critical ("Error en historizar. diff {}. Inicio {}. Fin {}. {}".format(inicio-self.shares()-abs(io.shares),  inicio,   self.shares(), io))
-                
-    ## @param io es una Investmentoperacion de venta o de compra, que queremos historizar
-    
-    ## ESTA FUNCION SOLO FUNCIONA CUANDO SE VAN QUITANDO DE IOA DE UNO EN UNO. DESGLOSAR CUANDO SEA NECESARIO EN LA OPERATIVA
-    def historizar_high_low(self, io,  sioh):
-        self.order_by_datetime()
-        
-        logging.debug("Historizando io con {} en sioa con {}".format(io.shares, self.shares()))
-        
-        comisiones=Decimal('0')
-        impuestos=Decimal('0')
-        remaining=io.shares
-        
-        if self.shares()+io.shares==Decimal('0'):
-            ioa=self.first()
-            self.clean()
-            sioh.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, io.shares, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-
-            logging.debug("Bucle Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
-        logging.debug("Historizado acabado remaining con {} en sioa con {}".format(remaining, self.shares()))
 
 class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHeterogeneusManager):
     def __init__(self, mem, investment):
@@ -3926,7 +3829,7 @@ class InvestmentOperation:
         else:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s, currency_conversion=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.shares, self.impuestos, self.comision, self.valor_accion, self.comentario, self.investment.id, self.show_in_ranges,  self.currency_conversion,  self.id))
         if recalculate==True:
-            (self.investment.op_actual,  self.investment.op_historica)=self.investment.op.calcular()   
+            (self.investment.op_actual,  self.investment.op_historica)=self.investment.op.get_current_and_historical_operations()   
             self.actualizar_cuentaoperacion_asociada()
         if autocommit==True:
             self.mem.con.commit()
@@ -4176,7 +4079,7 @@ class Investment:
     def Investment_At_Datetime(self, dt):
         r=self.copy()
         r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
-        (r.op_actual,  r.op_historica)=r.op.calcular()
+        (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
         if r.product.high_low==True:
             r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
         return r
@@ -4291,7 +4194,7 @@ class Investment:
             cur.execute("select * from operinversiones where id_inversiones=%s and datetime::date<=%s order by datetime", (self.id, date))
         for row in cur:
             self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
-        (self.op_actual,  self.op_historica)=self.op.calcular()
+        (self.op_actual,  self.op_historica)=self.op.get_current_and_historical_operations()
         
         cur.close()
         if self.product.high_low==True:
@@ -4385,7 +4288,7 @@ class Investment:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=self.copy()
             invfake.op=self.op.ObjectManager_copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
-            (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
+            (invfake.op_actual,  invfake.op_historica)=invfake.op.get_current_and_historical_operations()
             return invfake.op_actual.invertido(type)
                 
     def percentage_to_selling_point(self):       

@@ -27,7 +27,7 @@ class TestXulpymoneyData(unittest.TestCase):
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesPurchase), datetime.datetime.now(), inv,  Decimal("0.1"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesPurchase), datetime.datetime.now(), inv,  Decimal("0.1"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesSale), datetime.datetime.now(), inv,  Decimal("-0.1"), 0, 0, 8000, "", True, 1, 1 ))
-        inv.op_actual, inv.op_historica = inv.op.calcular(test_suite=True)
+        inv.op_actual, inv.op_historica = inv.op.get_current_and_historical_operations(test_suite=True)
         self.assertEqual(Decimal("0.1"), inv.op_actual.shares())
         
         #Vendo -0.1 y -0.1 y Compro 0.1
@@ -35,7 +35,7 @@ class TestXulpymoneyData(unittest.TestCase):
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesSale), datetime.datetime.now(), inv,  Decimal("-0.1"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesSale), datetime.datetime.now(), inv,  Decimal("-0.1"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesPurchase), datetime.datetime.now(), inv,  Decimal("+0.1"), 0, 0, 8000, "", True, 1, 1 ))
-        inv.op_actual, inv.op_historica = inv.op.calcular(test_suite=True)
+        inv.op_actual, inv.op_historica = inv.op.get_current_and_historical_operations(test_suite=True)
         self.assertEqual(Decimal("-0.1"), inv.op_actual.shares())
         
         #Compro 0.3 y 0.2 y Vemdo 0.7
@@ -44,7 +44,7 @@ class TestXulpymoneyData(unittest.TestCase):
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesPurchase), datetime.datetime.now(), inv,  Decimal("0.2"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesSale), datetime.datetime.now(), inv,  Decimal("-0.7"), 0, 0, 8000, "", True, 1, 1 ))
         inv.op.append(InvestmentOperation(mem).init__create(tiposoperaciones.find_by_id(eOperationType.SharesPurchase), datetime.datetime.now(), inv,  Decimal("0.1"), 0, 0, 8000, "", True, 1, 1 ))
-        inv.op_actual, inv.op_historica = inv.op.calcular(test_suite=True)
+        inv.op_actual, inv.op_historica = inv.op.get_current_and_historical_operations(test_suite=True)
         self.assertEqual(Decimal("-0.1"), inv.op_actual.shares())
         self.assertEqual(1, inv.op_actual.length())
 
