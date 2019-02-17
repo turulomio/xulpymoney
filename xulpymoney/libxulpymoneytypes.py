@@ -1,6 +1,6 @@
 ## @namespace xulpymoney.libxulpymoneytypes
 ## @brief Package with all xulpymoney types.
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QApplication
 from enum import IntEnum
 
@@ -132,3 +132,41 @@ class eMoneyCurrency:
     Product=1
     Account=2
     User=3
+
+## Type definition to refer to long /short invesment type positions
+class eInvestmentTypePosition:
+    Long=1
+    Short=2
+
+    @classmethod
+    def qicon_boolean(self, boolean):
+        e=eInvestmentTypePosition.to_eInvestmentTypePosition(boolean)
+        return eInvestmentTypePosition.qicon(e)
+
+    @classmethod
+    def qicon(self, einvestmenttypeposition):
+        if einvestmenttypeposition==eInvestmentTypePosition.Long:
+            return QIcon(":/xulpymoney/up.png")
+        else:
+            return QIcon(":/xulpymoney/down.png")
+            
+
+    @classmethod
+    def qcombobox(self, combo, selected_eInvestmentTypePosition):
+        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Long), QApplication.translate("Core", "Long"), eInvestmentTypePosition.Long)
+        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Short), QApplication.translate("Core", "Short"), eInvestmentTypePosition.Short)
+        combo.setCurrentIndex(combo.findData(selected_eInvestmentTypePosition))
+
+    ## Return True if it's short. Due to postgres database has this definition
+    @classmethod
+    def to_boolean(self, einvestmenttypeposition):
+        if einvestmenttypeposition==1:
+            return False
+        return True
+
+    ## Returns Short if boolean is true
+    @classmethod
+    def to_eInvestmentTypePosition(self, boolean):
+        if boolean==True:
+            return eInvestmentTypePosition.Short
+        return eInvestmentTypePosition.Long

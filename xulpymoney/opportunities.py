@@ -3,7 +3,7 @@ from decimal import Decimal
 from xulpymoney.libxulpymoney import Percentage, qmessagebox, qdate, qleft, qempty, qright,  Money
 from xulpymoney.libxulpymoneyfunctions import relation_gains_risk
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
-from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.libxulpymoneytypes import eQColor, eInvestmentTypePosition
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QTableWidgetItem
 
@@ -23,8 +23,8 @@ class Opportunity:
     ## @param id Integer that sets the id of an Opportunity. If id=None it's not in the database. id is set in the save method
     def __init__(self, *args):
         def init__db_row( row):
-            init__create(row['date'], row['removed'], row['executed'], row['entry'], row['target'], row['stoploss'], row['products_id'], row['id'])
-        def init__create(date, removed, executed, entry, target, stoploss, products_id, id):
+            init__create(row['date'], row['removed'], row['executed'], row['entry'], row['target'], row['stoploss'], row['products_id'], row['short'], row['id'])
+        def init__create(date, removed, executed, entry, target, stoploss, products_id, short, id):
             self.date=date
             self.removed=removed
             self.executed=executed
@@ -36,6 +36,7 @@ class Opportunity:
                 self.product.needStatus(1)
             else:
                 self.product=None
+            self.short=short
             self.id=id
         self.mem=args[0]
         if len(args)==1:
@@ -64,11 +65,11 @@ class Opportunity:
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into opportunities(date, removed, executed, entry, target, stoploss, products_id) values (%s, %s, %s, %s, %s, %s, %s) returning id", 
-            (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.product.id))
+            cur.execute("insert into opportunities(date, removed, executed, entry, target, stoploss, short, products_id) values (%s, %s, %s, %s, %s, %s, %s, %s) returning id", 
+            (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.short, self.product.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update opportunities set date=%s, removed=%s, executed=%s, entry=%s, target=%s, stoploss=%s, products_id=%s where id=%s", (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.product.id, self.id))
+            cur.execute("update opportunities set date=%s, removed=%s, executed=%s, entry=%s, target=%s, stoploss=%s, products_id=%s, short=%s where id=%s", (self.date,  self.removed, self.executed, self.entry, self.target, self.stoploss, self.product.id, self.short, self.id))
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
@@ -91,6 +92,7 @@ class Opportunity:
         try:
             shares=dInvested/self.entry
             value= (self.target-self.entry)*shares
+            value=-value if self.short==True else value
         except:
             value= Decimal(0)
         return Money(self.mem, value, self.product.currency)
@@ -101,6 +103,7 @@ class Opportunity:
         try:
             shares=dInvested/self.entry
             value= (self.stoploss-self.entry)*shares
+            value=-value if self.short==True else value
         except:
             value= Decimal(0)
         return Money(self.mem, value, self.product.currency)
@@ -170,6 +173,7 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
             table.setItem(i, 0, qdate(p.date))
+            table.item(i, 0).setIcon(eInvestmentTypePosition.qicon_boolean(p.short))
             table.setItem(i, 1, qdate(p.removed))      
             table.setItem(i, 2, qleft(p.product.name))
             table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem())

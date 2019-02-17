@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOpportunitiesAdd(object):
     def setupUi(self, wdgOpportunitiesAdd):
         wdgOpportunitiesAdd.setObjectName("wdgOpportunitiesAdd")
-        wdgOpportunitiesAdd.resize(959, 260)
+        wdgOpportunitiesAdd.resize(820, 298)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOpportunitiesAdd.setWindowIcon(icon)
@@ -70,6 +70,18 @@ class Ui_wdgOpportunitiesAdd(object):
         self.txtTarget.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtTarget.setObjectName("txtTarget")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.txtTarget)
+        self.label_4 = QtWidgets.QLabel(wdgOpportunitiesAdd)
+        self.label_4.setObjectName("label_4")
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_4)
+        self.cmbInvestmentTypePosition = QtWidgets.QComboBox(wdgOpportunitiesAdd)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.cmbInvestmentTypePosition.sizePolicy().hasHeightForWidth())
+        self.cmbInvestmentTypePosition.setSizePolicy(sizePolicy)
+        self.cmbInvestmentTypePosition.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.cmbInvestmentTypePosition.setObjectName("cmbInvestmentTypePosition")
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.cmbInvestmentTypePosition)
         self.verticalLayout.addLayout(self.formLayout)
         self.buttonbox = QtWidgets.QDialogButtonBox(wdgOpportunitiesAdd)
         self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
@@ -94,6 +106,7 @@ class Ui_wdgOpportunitiesAdd(object):
         self.label_3.setText(_translate("wdgOpportunitiesAdd", "Stop loss"))
         self.txtStoploss.setText(_translate("wdgOpportunitiesAdd", "0"))
         self.txtTarget.setText(_translate("wdgOpportunitiesAdd", "0"))
+        self.label_4.setText(_translate("wdgOpportunitiesAdd", "Type of investment position"))
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector

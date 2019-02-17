@@ -18,7 +18,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, timeit, have_same_sign, set_sign_of_other_number
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
@@ -1992,14 +1992,11 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
                 return o
         return None
 
-
-
 class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationHeterogeneusManager.__init__(self, mem)
         self.investment=investment
 
-    @timeit
     def get_current_and_historical_operations(self, test_suite=False):
         def tipo_operacion(shares):
             if shares>=0:
@@ -2023,7 +2020,6 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                         comisiones=o.comision+common_ioc.comision
                         impuestos=o.impuestos+common_ioc.impuestos
                         
-                    
                     if sioc.length()>0:
                         if abs(sioc.first().shares)>abs(rest): 
                             number=set_sign_of_other_number(o.shares, rest)
@@ -2044,14 +2040,9 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                             rest=rest+sioc.first().shares
                             rest=set_sign_of_other_number(o.shares, rest)
                             sioc.arr.pop(0)
-        #                print("     REST", rest, "Current", cur, "Historical", hst)
                     else:
                         sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(common_ioc, common_ioc.tipooperacion, common_ioc.datetime, common_ioc.investment, rest, common_ioc.impuestos, common_ioc.comision, common_ioc.valor_accion,  common_ioc.show_in_ranges, common_ioc.currency_conversion,  common_ioc.id))
                         break
-                        
-            if self.investment.id==69:
-                print("  + IO", o.shares, "Current", sioc.list_of_shares(), "Historical", sioh.list_of_shares())
-        print("")
         if test_suite==False:
             sioc.get_valor_benchmark(self.mem.data.benchmark)
         return (sioc, sioh)

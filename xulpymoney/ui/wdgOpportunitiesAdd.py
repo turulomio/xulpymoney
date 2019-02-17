@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.opportunities import Opportunity
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eInvestmentTypePosition
 from xulpymoney.ui.Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
 
 class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
@@ -19,6 +20,7 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
             self.deDate.setDate(datetime.date.today())
             self.opportunity=Opportunity(self.mem)
             self.productSelector.setSelected(None)
+            eInvestmentTypePosition.qcombobox(self.cmdInvesmentTypePosition)
         else:
             self.lbl.setText("Edit opportunity")
             self.deDate.setDate(self.opportunity.date)
@@ -26,6 +28,7 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
             self.txtTarget.setText(self.opportunity.target)
             self.txtStoploss.setText(self.opportunity.stoploss)
             self.productSelector.setSelected(self.opportunity.product)
+            eInvestmentTypePosition.qcombobox(self.cmbInvestmentTypePosition, eInvestmentTypePosition.to_eInvestmentTypePosition(self.opportunity.short))
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
@@ -35,13 +38,13 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
         if self.productSelector.selected==None:
             qmessagebox(self.tr("You must select a product"))
             return
-            
+
         self.opportunity.date=self.deDate.date().toPyDate()
         self.opportunity.entry=self.txtEntry.decimal()
         self.opportunity.target=self.txtTarget.decimal()
         self.opportunity.stoploss=self.txtStoploss.decimal()
         self.opportunity.product=self.productSelector.selected
-        
+        self.opportunity.short=eInvestmentTypePosition.to_boolean(self.cmbInvestmentTypePosition.itemData(self.cmbInvestmentTypePosition.currentIndex()))
         self.opportunity.save()
         self.mem.con.commit()
         self.parent.accept()
