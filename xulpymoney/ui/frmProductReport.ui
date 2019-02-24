@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>985</width>
-                <height>904</height>
+                <width>983</width>
+                <height>901</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -1749,6 +1749,18 @@
    </property>
    <property name="toolTip">
     <string>Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value</string>
+   </property>
+  </action>
+  <action name="actionQuoteExport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/libreoffice_calc.png</normaloff>:/xulpymoney/libreoffice_calc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export quotes to Libreoffice ODS</string>
+   </property>
+   <property name="toolTip">
+    <string>Export quotes to Libreoffice ODS</string>
    </property>
   </action>
  </widget>
