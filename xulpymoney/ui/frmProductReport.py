@@ -6,7 +6,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox
+from xulpymoney.libxulpymoneytypes import eDtStrings
+from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.ui.frmSelector import frmSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
@@ -16,7 +18,7 @@ from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.frmDPSAdd import frmDPSAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
 from xulpymoney.ui.canvaschart import  VCTemporalSeries
-from officegenerator import ODS_Read
+from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
@@ -402,13 +404,32 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.product.needStatus(2, downgrade_to=0)
                 self.update_due_to_quotes_change()
         
+    @pyqtSlot()
+    def on_actionQuoteExport_triggered(self):
+        start=datetime.datetime.now()
+        filename_ods="{} Quotes of {}.ods".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename),  self.product.name)    
+        filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename_ods, self.tr("Libreoffice calc (*.ods)"))[0]
+        if filename:
+            ods=ODS_Write(filename)
+            ods.setMetadata(self.tr("Historical quotes of {}").format(self.product.name),  self.tr("Quotes export"), "Xulpymoney-{} ({})".format(__version__, __versiondate__))
+            s1=ods.createSheet(self.tr("Intraday"))
+            s1.add("A1", [["Date and time", "Close", "Open","High","Low"]], "OrangeCenter")
+            s1.setColumnsWidth([ColumnWidthODS.L])
+            for i, o in enumerate(self.product.result.ohclDaily.arr):
+                s1.add(Coord("A2").addRow(i), o.date, "WhiteDate")
+                s1.add(Coord("B2").addRow(i), ODSCurrency(o.close, self.product.currency.id), "WhiteEUR")
+                s1.add(Coord("C2").addRow(i), ODSCurrency(o.open, self.product.currency.id), "WhiteEUR")
+                s1.add(Coord("D2").addRow(i), ODSCurrency(o.high, self.product.currency.id), "WhiteEUR")
+                s1.add(Coord("E2").addRow(i), ODSCurrency(o.low, self.product.currency.id), "WhiteEUR")
+            s1.setCursorPosition(Coord("A1").addRow(self.product.result.ohclDaily.length()))
+            s1.setSplitPosition("A2")
+            ods.save()
+            qmessagebox(self.tr("Date export to {} took {}").format(filename, datetime.datetime.now()-start))
+ 
         
     @pyqtSlot()
     def on_actionQuoteImport_triggered(self):
         filename=QFileDialog.getOpenFileName(self, "", "", "LibreOffice Calc (*.ods)")[0]
-        
-        
-        
         got=0
         if filename!="":
             set=QuoteManager(self.mem)
@@ -597,6 +618,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionQuoteDeleteDays)        
         menu.addSeparator()
         menu.addAction(self.actionQuoteImport)
+        menu.addAction(self.actionQuoteExport)
         menu.exec_(self.tblDaily.mapToGlobal(pos))
         
     def on_tblMonthly_itemSelectionChanged(self):

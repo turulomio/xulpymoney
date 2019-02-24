@@ -48,7 +48,7 @@ class Ui_frmProductReport(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 985, 904))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 983, 901))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_31 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_31.setObjectName("horizontalLayout_31")
@@ -851,6 +851,9 @@ class Ui_frmProductReport(object):
         self.actionDPSImport = QtWidgets.QAction(frmProductReport)
         self.actionDPSImport.setIcon(icon13)
         self.actionDPSImport.setObjectName("actionDPSImport")
+        self.actionQuoteExport = QtWidgets.QAction(frmProductReport)
+        self.actionQuoteExport.setIcon(icon13)
+        self.actionQuoteExport.setObjectName("actionQuoteExport")
 
         self.retranslateUi(frmProductReport)
         self.tab.setCurrentIndex(0)
@@ -1091,6 +1094,8 @@ class Ui_frmProductReport(object):
         self.actionSplitEdit.setToolTip(_translate("frmProductReport", "Edit Split / Contrasplit"))
         self.actionDPSImport.setText(_translate("frmProductReport", "Import dividend per share from Libreoffice ODS"))
         self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
+        self.actionQuoteExport.setText(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
+        self.actionQuoteExport.setToolTip(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

@@ -3229,7 +3229,7 @@ class Comment(QObject):
             if not self.validateLength(1, code, args): return string
             cco=CreditCardOperation(self.mem).init__db_query(args[0])
             money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
-            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime,  self.mem.localzone.name), money)
+            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
 
         elif code==eComment.HlContract:
             if not self.validateLength(1, code, args): return string

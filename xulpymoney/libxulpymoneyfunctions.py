@@ -14,6 +14,7 @@ import logging
 import pytz
 import sys
 from xulpymoney.version import __version__, __versiondate__
+from xulpymoney.libxulpymoneytypes import eDtStrings
 
 ## Sets debug sustem, needs
 ## @param args It's the result of a argparse     args=parser.parse_args()        
@@ -234,22 +235,19 @@ def epochms2dtaware(n):
 
 ## Returns a formated string of a dtaware string formatting with a zone name
 ## @param dt datetime aware object
-## @param zonename String with a zone name like "Europe/Madrid"
 ## @return String
-def dtaware2string(dt, zonename):
+def dtaware2string(dt, type=eDtStrings.QTableWidgetItem):
     if dt==None:
         resultado="None"
-    else:    
-        
-        #print (dt,  dt.__class__,  dt.tzinfo, dt.tzname())
-        if dt.tzname()==None:
-            logging.critical("Datetime should have tzname")
-            sys.exit(178)   
-        dt=dtaware_changes_tz(dt,  zonename)
+    elif dt.tzname()==None:
+        resultado="Naive date and time"
+    elif type==eDtStrings.QTableWidgetItem:
         if dt.microsecond==4 :
             resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))
         else:
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
+    elif type==eDtStrings.Filename:
+            resultado="{}{}{} {}{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2))
     return resultado
     
 ## allows you to measure the execution time of the method/function by just adding the @timeit decorator on the method.
@@ -283,14 +281,13 @@ def deprecated(func):
          return func(*args, **kwargs)
      return new_func
  
+## dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
+## Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
 def qdatetime(dt, zone):
-    """
-        dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
-        Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
-    """
-    a=QTableWidgetItem(dtaware2string(dt, zone.name))
-    if dt==None:
+    newdt=dtaware_changes_tz(dt, zone.name)
+    if newdt==None:
         return qempty()
+    a=QTableWidgetItem(dtaware2string(newdt))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 
