@@ -95,6 +95,10 @@ class eConcept:
     HlInterestPaid=73
     HlInterestReceived=74
 
+## Types for dt strings. Used in dtaware2string function
+class eDtStrings:
+    QTableWidgetItem=1
+    Filename=2
 
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
 class eHistoricalChartAdjusts:
