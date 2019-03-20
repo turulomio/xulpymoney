@@ -3181,60 +3181,63 @@ class Comment(QObject):
 
     def decode(self, string):
         """Sets the comment to show in app"""
-        (code, args)=self.get(string)
-        if code==None:
-            return string
+        try:
+            (code, args)=self.get(string)
+            if code==None:
+                return string
 
-        if code==eComment.InvestmentOperation:
-            if not self.validateLength(1, code, args): return string
-            io=self.mem.data.investments.findInvestmentOperation(args[0])
-            if io==None: return string
-            if io.investment.hasSameAccountCurrency():
-                return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
-            else:
-                return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
+            if code==eComment.InvestmentOperation:
+                if not self.validateLength(1, code, args): return string
+                io=self.mem.data.investments.findInvestmentOperation(args[0])
+                if io==None: return string
+                if io.investment.hasSameAccountCurrency():
+                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
+                else:
+                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
 
-        elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
-            if not self.validateLength(3, code, args): return string
-            aod=AccountOperation(self.mem, args[1])
-            return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
-            
-        elif code==eComment.AccountTransferDestiny:#Operaccount transfer destiny
-            if not self.validateLength(3, code, args): return string
-            aoo=AccountOperation(self.mem, args[0])
-            return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
-            
-        elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin comision
-            if not self.validateLength(3, code, args): return string
-            aoo=AccountOperation(self.mem, args[0])
-            aod=AccountOperation(self.mem, args[1])
-            return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
+            elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
+                if not self.validateLength(3, code, args): return string
+                aod=AccountOperation(self.mem, args[1])
+                return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
 
-        elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
-            if not self.validateLength(1, code, args): return string
-            dividend=Dividend(self.mem).init__db_query(args[0])
-            investment=self.mem.data.investments.find_by_id(dividend.investment.id)
-            if investment.hasSameAccountCurrency():
-                return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
-            else:
-                return QApplication.translate("Core", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
+            elif code==eComment.AccountTransferDestiny:#Operaccount transfer destiny
+                if not self.validateLength(3, code, args): return string
+                aoo=AccountOperation(self.mem, args[0])
+                return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
 
-        elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
-            if not self.validateLength(2, code, args): return string
-            creditcard=self.mem.data.creditcards.find_by_id(args[0])
-            number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
-            return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
+            elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin comision
+                if not self.validateLength(3, code, args): return string
+                aoo=AccountOperation(self.mem, args[0])
+                aod=AccountOperation(self.mem, args[1])
+                return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
 
-        elif code==eComment.CreditCardRefund:#Devoluci´on de tarjeta
-            if not self.validateLength(1, code, args): return string
-            cco=CreditCardOperation(self.mem).init__db_query(args[0])
-            money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
-            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
+            elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
+                if not self.validateLength(1, code, args): return string
+                dividend=Dividend(self.mem).init__db_query(args[0])
+                investment=self.mem.data.investments.find_by_id(dividend.investment.id)
+                if investment.hasSameAccountCurrency():
+                    return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
+                else:
+                    return QApplication.translate("Core", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
 
-        elif code==eComment.HlContract:
-            if not self.validateLength(1, code, args): return string
-            hlcontract=self.mem.data.investments.findHlContract(args[0])            
-            return self.tr("Daily contract of {} ({})").format(hlcontract.investment.name, hlcontract.investment.account.name) if hlcontract!=None else string
+            elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
+                if not self.validateLength(2, code, args): return string
+                creditcard=self.mem.data.creditcards.find_by_id(args[0])
+                number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
+                return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
+
+            elif code==eComment.CreditCardRefund:#Devolución de tarjeta
+                if not self.validateLength(1, code, args): return string
+                cco=CreditCardOperation(self.mem).init__db_query(args[0])
+                money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
+                return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
+
+            elif code==eComment.HlContract:
+                if not self.validateLength(1, code, args): return string
+                hlcontract=self.mem.data.investments.findHlContract(args[0])            
+                return self.tr("Daily contract of {} ({})").format(hlcontract.investment.name, hlcontract.investment.account.name) if hlcontract!=None else string
+        except:
+            return self.tr("Error decoding comment {}").format(string)
 
 
 ## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket

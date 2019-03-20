@@ -64,7 +64,7 @@ class eComment:
     AccountTransferDestiny=10002
     AccountTransferOriginCommission=10003
     CreditCardBilling=10005
-    CreditCardRefund=10007
+    CreditCardRefund=10006# Estaba en 10007
 
 
 ## System concepts tipified
