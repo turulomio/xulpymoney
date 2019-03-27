@@ -336,13 +336,25 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         return result
 
 
-    ## Returns and InvestmentManager object with all investmentes with the same product passed as parameter
+    ## Returns an InvestmentManager object with all investmentes with the same product passed as parameter
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
     def InvestmentManager_with_investments_with_the_same_product(self, product):
         result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         for inv in self.arr:
             if inv.product.id==product.id:
+                result.append(inv)
+        return result
+
+    ## Returns an InvestmentManager object with all investmentes with the same product passed as parameter, that has zero current shares
+    ## 
+    ## This function is used in wdgCalculator to show investments unused
+    ## @param product Product to search in this InvestmentManager
+    ## @return InvestmentManager
+    def InvestmentManager_with_investments_with_the_same_product_with_zero_shares(self, product):
+        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            if inv.product.id==product.id and inv.op_actual.shares()==0:
                 result.append(inv)
         return result
 
@@ -5995,21 +6007,6 @@ class Product:
             self.result.get_all()
             logging.debug("Product {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=3
-        
-    def setinvestments(self):
-        """Returns a InvestmentManager object with all the investments of the product. Investments can be active or inactive"""
-        set=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark)
-        sql="""
-            SELECT * 
-            FROM 
-                inversiones 
-            WHERE
-                products_id={}
-            ORDER BY
-                inversion
-        """.format(self.id)
-        set.load_from_db(sql,  progress=False)
-        return set
 
     def hasSameLocalCurrency(self):
         """

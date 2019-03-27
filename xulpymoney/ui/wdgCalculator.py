@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from xulpymoney.ui.Ui_wdgCalculator import Ui_wdgCalculator
 from xulpymoney.libxulpymoney import Percentage, Money
@@ -14,7 +14,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.setupUi(self)
         
         self.mem=mem
-         
+
         self.table.settings(self.mem, "wdgCalculator")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
 
@@ -24,10 +24,10 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.lblAmount.setText(self.tr("Amount to invest in {} ({})").format(self.mem.localcurrency.id, self.mem.localcurrency.symbol))
 
     def setProduct(self,  product):
-        print("setproduct")
         self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(product.id))
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
         
+    ## Sets an investment programatically
     def setInvestment(self, investment):
         self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
@@ -66,8 +66,14 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
                 self.lblShares.setText(self.tr("Shares calculated"))
             else:
                 self.lblShares.setText(self.tr("Shares calculated with {} at {}").format(Money(self.mem, 1, self.mem.localcurrency).conversionFactorString(self.product.currency, self.mem.localzone.now()), self.mem.localzone.now()))
-            self.investments=self.product.setinvestments()
+            
+            #Fills self.cmbInvestments with all product investments or with zero shares product investments
+            if self.chkWithoutShares.checkState()==Qt.Checked:
+                self.investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product_with_zero_shares(self.product)
+            else:
+                self.investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product)
             self.investments.qcombobox(self.cmbInvestments, tipo=3, selected=None, obsolete_product=False, investments_active=None, accounts_active=None)
+ 
             self.mem.settings.setValue("wdgCalculator/product", self.product.id)
             
             self.cmbPrice_load()        
@@ -87,6 +93,11 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.cmdOrder.setEnabled(False)
         self.investments.selected=self.mem.data.investments.find_by_id(self.cmbInvestments.itemData(index))
 
+
+    ## This check filters investments showing ones with 0 currrent shares
+    def on_chkWithoutShares_stateChanged(self, state):
+        self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())
+        
     @pyqtSlot()
     def on_cmdOrder_released(self):
         d=QDialog(self)     
