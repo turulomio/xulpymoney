@@ -3,7 +3,7 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem
 from xulpymoney.libxulpymoney import Money
 from xulpymoney.libxulpymoneyfunctions import qright, qleft
-from officegenerator import ODS_Write,  columnAdd,  rowAdd, Currency, Percentage,  Coord
+from officegenerator import ODS_Write, Currency, Percentage,  Coord
 import datetime
 import logging
 from decimal import Decimal
