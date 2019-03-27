@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgCuriosities.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgCuriosities(object):
     def setupUi(self, wdgCuriosities):
@@ -48,5 +49,6 @@ class Ui_wdgCuriosities(object):
     def retranslateUi(self, wdgCuriosities):
         _translate = QtCore.QCoreApplication.translate
         self.lblApp.setText(_translate("wdgCuriosities", "Xulpymoney curiosities"))
+
 
 import xulpymoney.images.xulpymoney_rc

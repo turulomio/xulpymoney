@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmDPSAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmDPSAdd(object):
     def setupUi(self, frmDPSAdd):
@@ -63,6 +64,7 @@ class Ui_frmDPSAdd(object):
         self.label_2.setText(_translate("frmDPSAdd", "DPS gross"))
         self.txtGross.setText(_translate("frmDPSAdd", "0"))
         self.cmd.setText(_translate("frmDPSAdd", "Save DPS"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

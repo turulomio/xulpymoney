@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgYear.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgYear(object):
     def setupUi(self, wdgYear):
@@ -51,4 +52,5 @@ class Ui_wdgYear(object):
         self.cmdNext.setText(_translate("wdgYear", ">"))
         self.cmdCurrent.setToolTip(_translate("wdgYear", "Current year"))
         self.cmdCurrent.setText(_translate("wdgYear", "Current Year"))
+
 

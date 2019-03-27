@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmCreditCardsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmCreditCardsAdd(object):
     def setupUi(self, frmCreditCardsAdd):
@@ -100,6 +101,7 @@ class Ui_frmCreditCardsAdd(object):
         self.txtMaximum.setText(_translate("frmCreditCardsAdd", "0"))
         self.label_4.setText(_translate("frmCreditCardsAdd", "Credit card number"))
         self.cmd.setText(_translate("frmCreditCardsAdd", "Save"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

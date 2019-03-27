@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAuxiliarTables.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmAuxiliarTables(object):
     def setupUi(self, frmAuxiliarTables):
@@ -99,6 +100,7 @@ class Ui_frmAuxiliarTables(object):
         self.actionIncomesAdd.setToolTip(_translate("frmAuxiliarTables", "Add an income concept"))
         self.actionChangeName.setText(_translate("frmAuxiliarTables", "Change name"))
         self.actionChangeName.setToolTip(_translate("frmAuxiliarTables", "Change name"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

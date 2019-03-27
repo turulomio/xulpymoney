@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgCalculator.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgCalculator(object):
     def setupUi(self, wdgCalculator):
@@ -211,6 +212,7 @@ class Ui_wdgCalculator(object):
         item.setText(_translate("wdgCalculator", "Price"))
         item = self.table.horizontalHeaderItem(2)
         item.setText(_translate("wdgCalculator", "Gains"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import myQTableWidget

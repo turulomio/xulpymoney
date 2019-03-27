@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmSplit.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmSplit(object):
     def setupUi(self, frmSplit):
@@ -134,6 +135,7 @@ class Ui_frmSplit(object):
         self.label_3.setText(_translate("frmSplit", "Final Shares"))
         self.txtFinal.setText(_translate("frmSplit", "10"))
         self.label_4.setText(_translate("frmSplit", "Comment"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime

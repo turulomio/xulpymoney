@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgDividendsReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgDividendsReport(object):
     def setupUi(self, wdgDividendsReport):
@@ -138,6 +139,7 @@ class Ui_wdgDividendsReport(object):
         self.actionInvestmentReport.setToolTip(_translate("wdgDividendsReport", "Investment report"))
         self.actionProductReport.setText(_translate("wdgDividendsReport", "Product report"))
         self.actionProductReport.setToolTip(_translate("wdgDividendsReport", "Product report"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgBanks.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgBanks(object):
     def setupUi(self, wdgBanks):
@@ -184,6 +185,7 @@ class Ui_wdgBanks(object):
         self.actionBankEdit.setToolTip(_translate("wdgBanks", "Edit bank"))
         self.actionActive.setText(_translate("wdgBanks", "Is it active?"))
         self.actionActive.setToolTip(_translate("wdgBanks", "Is it active?"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

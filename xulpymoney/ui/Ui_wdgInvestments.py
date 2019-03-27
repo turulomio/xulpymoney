@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgInvestments.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgInvestments(object):
     def setupUi(self, wdgInvestments):
@@ -186,6 +187,7 @@ class Ui_wdgInvestments(object):
         self.actionSameProductFIFO.setToolTip(_translate("wdgInvestments", "Same product Investments merging operations"))
         self.actionProductUpdate.setText(_translate("wdgInvestments", "Update product"))
         self.actionProductUpdate.setToolTip(_translate("wdgInvestments", "Update product"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

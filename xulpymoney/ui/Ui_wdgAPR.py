@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgAPR.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgAPR(object):
     def setupUi(self, wdgAPR):
@@ -173,6 +174,7 @@ class Ui_wdgAPR(object):
         item = self.tblReport.horizontalHeaderItem(9)
         item.setText(_translate("wdgAPR", "Comissions"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("wdgAPR", "Invested report"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgYear import wdgYear

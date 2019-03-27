@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgProductsComparation.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgProductsComparation(object):
     def setupUi(self, wdgProductsComparation):
@@ -118,6 +119,7 @@ class Ui_wdgProductsComparation(object):
         self.deCompare.setDisplayFormat(_translate("wdgProductsComparation", "yyyy-MM-dd"))
         self.cmdComparationData.setToolTip(_translate("wdgProductsComparation", "Shows comparation data"))
         self.cmdComparation.setText(_translate("wdgProductsComparation", "Compare"))
+
 
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

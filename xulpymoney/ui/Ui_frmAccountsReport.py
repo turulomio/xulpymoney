@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAccountsReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmAccountsReport(object):
     def setupUi(self, frmAccountsReport):
@@ -480,6 +481,7 @@ class Ui_frmAccountsReport(object):
         self.actionCreditCardOperRefund.setToolTip(_translate("frmAccountsReport", "Credit card operation refund"))
         self.actionConceptReport.setText(_translate("frmAccountsReport", "Show concept historical report"))
         self.actionConceptReport.setToolTip(_translate("frmAccountsReport", "Show concept historical report"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgDatetime import wdgDatetime

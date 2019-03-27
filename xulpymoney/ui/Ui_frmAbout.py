@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAbout.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmAbout(object):
     def setupUi(self, frmAbout):
@@ -384,6 +385,7 @@ class Ui_frmAbout(object):
         item.setText(_translate("frmAbout", "Url"))
         self.tab.setTabText(self.tab.indexOf(self.tabSoftware), _translate("frmAbout", "Software used"))
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

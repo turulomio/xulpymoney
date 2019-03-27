@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmEstimationsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmEstimationsAdd(object):
     def setupUi(self, frmEstimationsAdd):
@@ -90,6 +91,7 @@ class Ui_frmEstimationsAdd(object):
         self.txtDPA.setText(_translate("frmEstimationsAdd", "0"))
         self.label_3.setText(_translate("frmEstimationsAdd", "Add a source"))
         self.cmd.setText(_translate("frmEstimationsAdd", "Save estimation"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

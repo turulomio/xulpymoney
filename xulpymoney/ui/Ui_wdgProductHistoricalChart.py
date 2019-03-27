@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgProductHistoricalChart.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgProductHistoricalChart(object):
     def setupUi(self, wdgProductHistoricalChart):
@@ -225,5 +226,6 @@ class Ui_wdgProductHistoricalChart(object):
         self.actionPurchaseGraphic.setToolTip(_translate("wdgProductHistoricalChart", "Show purchase graphic"))
         self.actionProductPriceLastRemove.setText(_translate("wdgProductHistoricalChart", "Remove last product price"))
         self.actionProductPriceLastRemove.setToolTip(_translate("wdgProductHistoricalChart", "Remove last product price"))
+
 
 import xulpymoney.images.xulpymoney_rc

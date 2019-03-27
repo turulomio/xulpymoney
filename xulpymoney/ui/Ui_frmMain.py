@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmMain.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmMain(object):
     def setupUi(self, frmMain):
@@ -695,5 +696,6 @@ class Ui_frmMain(object):
         self.actionProductsInvalidISIN.setToolTip(_translate("frmMain", "Products with invalid ISIN"))
         self.actionProductsComparation.setText(_translate("frmMain", "Pro&ducts comparation"))
         self.actionProductsComparation.setToolTip(_translate("frmMain", "Products comparation"))
+
 
 import xulpymoney.images.xulpymoney_rc

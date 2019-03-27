@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAccountOperationsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmAccountOperationsAdd(object):
     def setupUi(self, frmAccountOperationsAdd):
@@ -117,6 +118,7 @@ class Ui_frmAccountOperationsAdd(object):
         self.label_3.setText(_translate("frmAccountOperationsAdd", "Add an amount"))
         self.label_4.setText(_translate("frmAccountOperationsAdd", "Add a comment"))
         self.cmd.setText(_translate("frmAccountOperationsAdd", "Save"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime

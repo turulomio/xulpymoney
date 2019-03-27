@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgOrdersAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgOrdersAdd(object):
     def setupUi(self, wdgOrdersAdd):
@@ -115,6 +116,7 @@ class Ui_wdgOrdersAdd(object):
         self.txtPrice.setText(_translate("wdgOrdersAdd", "0"))
         self.label_6.setText(_translate("wdgOrdersAdd", "Amount"))
         self.txtAmount.setText(_translate("wdgOrdersAdd", "0"))
+
 
 from xulpymoney.ui.myqlineedit import myQLineEdit
 import xulpymoney.images.xulpymoney_rc

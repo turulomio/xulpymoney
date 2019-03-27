@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmProductReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmProductReport(object):
     def setupUi(self, frmProductReport):
@@ -1096,6 +1097,7 @@ class Ui_frmProductReport(object):
         self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
         self.actionQuoteExport.setText(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
         self.actionQuoteExport.setToolTip(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

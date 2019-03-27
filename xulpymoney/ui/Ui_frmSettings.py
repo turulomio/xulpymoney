@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmSettings.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmSettings(object):
     def setupUi(self, frmSettings):
@@ -193,5 +194,6 @@ class Ui_frmSettings(object):
         self.chkGainsYear.setText(_translate("frmSettings", "Capital gains over a year have a different tax"))
         self.label_7.setText(_translate("frmSettings", "Tax gain percentage below a year"))
         self.spnGainsPercentajeBelow.setSuffix(_translate("frmSettings", " %"))
+
 
 import xulpymoney.images.xulpymoney_rc

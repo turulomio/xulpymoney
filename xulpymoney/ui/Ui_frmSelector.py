@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmSelector.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_frmSelector(object):
     def setupUi(self, frmSelector):
@@ -98,5 +99,6 @@ class Ui_frmSelector(object):
         item = self.tbl.horizontalHeaderItem(1)
         item.setText(_translate("frmSelector", "Elements"))
         self.cmd.setText(_translate("frmSelector", "Accept selection"))
+
 
 import xulpymoney.images.xulpymoney_rc

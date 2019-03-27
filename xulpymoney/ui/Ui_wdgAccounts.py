@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgAccounts.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.dev1812231618
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_wdgAccounts(object):
     def setupUi(self, wdgAccounts):
@@ -114,6 +115,7 @@ class Ui_wdgAccounts(object):
         self.actionActive.setToolTip(_translate("wdgAccounts", "Is it active?"))
         self.actionTransfer.setText(_translate("wdgAccounts", "Transfer between accounts"))
         self.actionTransfer.setToolTip(_translate("wdgAccounts", "Transfer between accounts"))
+
 
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc
