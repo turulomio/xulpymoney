@@ -39,9 +39,12 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
 
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the benchmark highest and lowest price?"))
-        highest=self.mem.data.benchmark.result.ohclDaily.highest()
-        lowest=self.mem.data.benchmark.result.ohclDaily.lowest()
-        c.setText(self.tr("Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.".format(self.mem.data.benchmark.name,self.mem.data.benchmark.currency.string(highest.high), highest.date, self.mem.data.benchmark.currency.string(lowest.low), lowest.date)))
+        if self.mem.data.benchmark.result.ohclDaily.length()==0:
+            c.setText(self.tr("Current benchmarck hasn't data."))
+        else:            
+            highest=self.mem.data.benchmark.result.ohclDaily.highest()
+            lowest=self.mem.data.benchmark.result.ohclDaily.lowest()
+            c.setText(self.tr("Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.".format(self.mem.data.benchmark.name,self.mem.data.benchmark.currency.string(highest.high), highest.date, self.mem.data.benchmark.currency.string(lowest.low), lowest.date)))
         self.layout.addWidget(c)
 
         c=wdgCuriosity(self.mem)
