@@ -4098,7 +4098,9 @@ class Investment:
         cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id) values (%s, %s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id))    
-            self.id=cur.fetchone()[0]                
+            self.id=cur.fetchone()[0]      
+            if self.product.high_low==True:
+                self.hlcontractmanager=HlContractManagerHomogeneus(self.mem, self) ##Needs to initialice if it's an HL product
         else:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
