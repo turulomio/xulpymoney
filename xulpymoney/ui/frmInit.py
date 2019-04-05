@@ -5,7 +5,7 @@ from xulpymoney.ui.Ui_frmInit import Ui_frmInit
 from xulpymoney.libxulpymoney import MemXulpymoney
 from xulpymoney.admin_pg import AdminPG
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-#from xulpymoney.connection_pg import Connection
+from xulpymoney.libxulpymoneytypes import eOperationType
 
 class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
@@ -36,14 +36,7 @@ class frmInit(QDialog, Ui_frmInit):
             self.txtServer.setEnabled(False)
             self.txtUser.setEnabled(False)
             self.txtXulpymoney.setEnabled(False)
-            
-#            con=Connection()
-#            con.user=self.txtUser.text()
-#            con.db=self.txtXulpymoney.text()
-#            con.server=self.txtServer.text()
-#            con.port=self.txtPort.text()
-#            con.password=self.txtPass.text()
-#            self.mem.con=con            
+   
             self.admin=AdminPG(self.txtUser.text(), self.txtPass.text(),  self.txtServer.text(),  self.txtPort.text())
                         
             if self.admin.con.is_active()==False:
@@ -77,7 +70,7 @@ class frmInit(QDialog, Ui_frmInit):
             self.txtUser.setEnabled(True)
             self.txtXulpymoney.setEnabled(True)
 
-
+    ## In xulpymoney.sql there aren't concepts so we must add them after running it
     def xulpymoney_basic_schema(self):
             filename=pkg_resources.resource_filename("xulpymoney","sql/xulpymoney.sql")
             self.newdbcon.load_script(filename)
@@ -107,6 +100,13 @@ class frmInit(QDialog, Ui_frmInit):
             cur.execute("insert into public.conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
             cur.execute("insert into public.conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
             cur.execute("insert into public.conceptos values(67,'{0}',2,false)".format(QApplication.translate("Core","Credit card refund")))          
+            cur.execute("insert into public.conceptos values(68,%s,%s,false)",("HL adjustment income", eOperationType.Income))    
+            cur.execute("insert into public.conceptos values(69,%s,%s,false)",("HL adjustment expense", eOperationType.Expense))  
+            cur.execute("insert into public.conceptos values(70,%s,%s,false)",("HL Guarantee payment", eOperationType.Expense))  
+            cur.execute("insert into public.conceptos values(71,%s,%s,false)",("HL Guarantee return", eOperationType.Income))     
+            cur.execute("insert into public.conceptos values(72,%s,%s,false)",("HL Operation commission", eOperationType.Expense))     
+            cur.execute("insert into public.conceptos values(73,%s,%s,false)",("HL Paid interest", eOperationType.Expense))     
+            cur.execute("insert into public.conceptos values(74,%s,%s,false)",("HL Received interest", eOperationType.Income))   
             cur.close()
 #            return True
 #        except:
