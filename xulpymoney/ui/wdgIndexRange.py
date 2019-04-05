@@ -50,6 +50,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
          
         
         self.benchmark=self.mem.data.benchmark
+        
+        
         self.table.settings(self.mem, "wdgIndexRange")
         self.table.setVerticalHeaderHeight(None)#Must be after settings
                 

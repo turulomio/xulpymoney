@@ -190,7 +190,6 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionHelp_triggered(self):
         try: ## Remove when qwebwenginewidgets work again
             from xulpymoney.ui.frmHelp import frmHelp
-
             w=frmHelp(self.mem, self)
             w.exec_()
         except:
@@ -198,6 +197,10 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
+        if self.mem.data.benchmark.result.ohclDaily.length()==0:
+            qmessagebox(self.tr("There isn't any benchmark data yet."))
+            return
+        
         self.w.close()
         self.w=wdgIndexRange(self.mem, self)
                 
