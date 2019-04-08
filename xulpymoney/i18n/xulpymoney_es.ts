@@ -339,12 +339,12 @@
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="86"/>
+        <location filename="../libdbupdates.py" line="371"/>
         <source>Taxes. Returned</source>
         <translation>Impuestos. Devolución</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="91"/>
+        <location filename="../libdbupdates.py" line="376"/>
         <source>Taxes. Paid</source>
         <translation>Impuestos. Pago</translation>
     </message>
@@ -619,94 +619,9 @@
         <translation>Efectivo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="81"/>
-        <source>Initiating bank account</source>
-        <translation>Iniciando cuenta bancaria</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="84"/>
-        <source>Transfer. Origin</source>
-        <translation>Transferencia. Origen</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="85"/>
-        <source>Transfer. Destination</source>
-        <translation>Transferencia. Destino</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="89"/>
-        <source>Purchase investment product</source>
-        <translation>Compra de producto de inversión</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="90"/>
-        <source>Sale investment product</source>
-        <translation>Venta de producto de inversión</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="92"/>
-        <source>Bank commissions</source>
-        <translation>Comisiones bancarias</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="93"/>
-        <source>Dividends</source>
-        <translation>Dividendos</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="94"/>
+        <location filename="../libxulpymoney.py" line="4912"/>
         <source>Credit card billing</source>
         <translation>Facturación de tarjeta de crédito</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="95"/>
-        <source>Added shares</source>
-        <translation>Añadido de acciones</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="96"/>
-        <source>Attendance bonus</source>
-        <translation>Prima de asistencia</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="97"/>
-        <source>Custody commission</source>
-        <translation>Comisión de custodia</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="98"/>
-        <source>Dividends. Sale of rights</source>
-        <translation>Dividendos. Venta de derechos</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="99"/>
-        <source>Bonds. Running coupon payment</source>
-        <translation>Deuda. Pago de cupón corrido</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="100"/>
-        <source>Bonds. Running coupon collection</source>
-        <translation>Deuda. Cobro de cupón corrido</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="101"/>
-        <source>Bonds. Coupon collection</source>
-        <translation>Deuda. Cobro de cupón</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="82"/>
-        <source>Paysheet</source>
-        <translation>Nómina</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="83"/>
-        <source>Supermarket</source>
-        <translation>Supermercado</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="88"/>
-        <source>Restaurant</source>
-        <translation>Restaurante</translation>
     </message>
     <message>
         <location filename="../hardcoded_strings.py" line="23"/>

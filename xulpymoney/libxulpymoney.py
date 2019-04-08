@@ -3861,7 +3861,7 @@ class Bank:
 
     def init__db_row(self, row):
         self.id=row['id_entidadesbancarias']
-        self.name=row['entidadbancaria']
+        self.name=QCoreApplication.translate("Core", row['entidadbancaria'])
         self.active=row['active']
         return self
         
@@ -3930,7 +3930,7 @@ class Account:
         self.mem=args[0]
         if len(args)==3:
             self.id=args[1]['id_cuentas']
-            self.name=args[1]['cuenta']
+            self.name=QCoreApplication.translate("Core", args[1]['cuenta'])
             self.eb=args[2]
             self.active=args[1]['active']
             self.numero=args[1]['numerocuenta']
