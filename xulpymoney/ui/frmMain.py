@@ -301,6 +301,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgInvestmentsRanking(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
+        
+    @pyqtSlot()  
+    def on_actionShowBenchmark_triggered(self):
+        from xulpymoney.ui.frmProductReport import frmProductReport
+        self.w.close()
+        self.w=frmProductReport(self.mem, self.mem.data.benchmark)
+        self.layout.addWidget(self.w)
+        self.w.show()
     
     @pyqtSlot()  
     def on_actionSimulations_triggered(self):
