@@ -50,6 +50,13 @@ class Connection:
         cur.close()
         return row
 
+    def cursor_rows(self, sql, arr=[]):
+        cur=self._con.cursor()
+        cur.execute(sql, arr)
+        rows=cur.fetchall()
+        cur.close()
+        return rows
+
     def load_script(self, file):
         cur= self._con.cursor()
         procedures  = open(file,'r').read() 

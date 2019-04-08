@@ -140,16 +140,45 @@ Nueva versión:
 """.format(__version__))
 
 class Doc(Command):
-    description = "Update man pages and translations"
-    user_options = []
-
+    description = "Update translation librarys and hardcoded strings"
+    user_options = [
+      # The format is (long option, short option, description).
+      ( 'user', None, 'Database user'),
+      ( 'db', None, 'Database name'),
+      ( 'port', None, 'Database port'),
+      ( 'server', None, 'Database server'),
+  ]
     def initialize_options(self):
-        pass
+        self.user="postgres"
+        self.db="xulpymoney"
+        self.port="5432"
+        self.server="127.0.0.1"
 
     def finalize_options(self):
         pass
 
     def run(self):
+        from xulpymoney.connection_pg import Connection
+        con=Connection()
+
+        con.user=self.user
+        con.server=self.server
+        con.port=self.port
+        con.db=self.db
+
+        con.get_password("", "")
+        con.connect()
+        
+        rows=con.cursor_rows("select * from conceptos where id_conceptos < 100 order by id_conceptos")
+        f=open("xulpymoney/hardcoded_strings.py", "w")
+        f.write("from PyQt5.QtCore import QCoreApplication\n")
+        f.write("QCoreApplication.translate('Core','Personal Management')\n")
+        f.write("QCoreApplication.translate('Core','Cash')\n")
+        for row in rows:
+            f.write("QCoreApplication.translate('Core', '{}')\n".format(row["concepto"]))
+        f.close()
+        print("Is connection active?",  con.is_active())
+
         os.system("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         os.system("lrelease -qt5 xulpymoney.pro")
     ########################################################################

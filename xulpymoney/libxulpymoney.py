@@ -1710,7 +1710,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):
             table.setItem(i, diff+4, self.mem.localcurrency.qtablewidgetitem(d.comision))
             table.setItem(i, diff+5, self.mem.localcurrency.qtablewidgetitem(d.neto))
             table.setItem(i, diff+6, self.mem.localcurrency.qtablewidgetitem(d.dpa))
-        table.setItem(len(self.arr), diff+1, qleft(QApplication.translate("core","TOTAL")))
+        table.setItem(len(self.arr), diff+1, qleft(QApplication.translate("Core","TOTAL")))
         table.setItem(len(self.arr), diff+2, self.mem.localcurrency.qtablewidgetitem(sumbruto))
         table.setItem(len(self.arr), diff+3, self.mem.localcurrency.qtablewidgetitem(sumretencion))
         table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
@@ -1779,7 +1779,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
             table.setItem(i, 4, d.comission(type).qtablewidgetitem())
             table.setItem(i, 5, d.net(type).qtablewidgetitem())
             table.setItem(i, 6, d.dps(type).qtablewidgetitem())
-        table.setItem(self.length(), 1, qleft(QApplication.translate("core","TOTAL")))
+        table.setItem(self.length(), 1, qleft(QApplication.translate("Core","TOTAL")))
         table.setItem(self.length(), 2, sumbruto.qtablewidgetitem())
         table.setItem(self.length(), 3, sumretencion.qtablewidgetitem())
         table.setItem(self.length(), 4, sumcomision.qtablewidgetitem())
@@ -3236,13 +3236,13 @@ class Comment(QObject):
                 if not self.validateLength(2, code, args): return string
                 creditcard=self.mem.data.creditcards.find_by_id(args[0])
                 number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
-                return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
+                return QApplication.translate("Core","Billing {} movements of {}").format(number, creditcard.name)
 
             elif code==eComment.CreditCardRefund:#Devolución de tarjeta
                 if not self.validateLength(1, code, args): return string
                 cco=CreditCardOperation(self.mem).init__db_query(args[0])
                 money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
-                return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
+                return QApplication.translate("Core","Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
 
             elif code==eComment.HlContract:
                 if not self.validateLength(1, code, args): return string
@@ -3267,7 +3267,7 @@ class Concept:
     def __init__(self, *args):
         def init__create(name, tipooperacion, editable,  id):
             self.id=id
-            self.name=name
+            self.name=QCoreApplication.translate("Hardcoded", name)
             self.tipooperacion=tipooperacion
             self.editable=editable
 

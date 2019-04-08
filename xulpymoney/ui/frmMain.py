@@ -58,7 +58,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             self.actionDocumentsPurge.setEnabled(False)
-            
 
     ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
     def __checks_version_of_products_xlsx(self):

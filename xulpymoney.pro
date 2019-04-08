@@ -118,7 +118,8 @@ SOURCES         = \
                   xulpymoney/ui/wdgYearMonth.py \
                   xulpymoney/ui/Ui_wdgYearMonth.py \
                   xulpymoney/xulpymoney.py \
-                  xulpymoney/xulpymoney_init.py
+                  xulpymoney/xulpymoney_init.py \
+                  xulpymoney/hardcoded_strings.py
 
 FORMS           = \
                   xulpymoney/ui/frmAbout.ui \
@@ -133,7 +134,6 @@ FORMS           = \
                   xulpymoney/ui/frmHelp.ui \
                   xulpymoney/ui/frmHlContractAdd.ui \
                   xulpymoney/ui/frmInit.ui \
-                  xulpymoney/ui/frmInvestmentHlReport.ui \
                   xulpymoney/ui/frmInvestmentOperationsAdd.ui \
                   xulpymoney/ui/frmInvestmentReport.ui \
                   xulpymoney/ui/frmMain.ui \
