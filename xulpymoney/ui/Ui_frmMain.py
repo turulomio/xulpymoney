@@ -394,6 +394,11 @@ class Ui_frmMain(object):
         icon47.addPixmap(QtGui.QPixmap(":/xulpymoney/benchmark.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionShowBenchmark.setIcon(icon47)
         self.actionShowBenchmark.setObjectName("actionShowBenchmark")
+        self.actionInvestmentsZeroRisk = QtWidgets.QAction(frmMain)
+        icon48 = QtGui.QIcon()
+        icon48.addPixmap(QtGui.QPixmap(":/xulpymoney/zerorisk.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionInvestmentsZeroRisk.setIcon(icon48)
+        self.actionInvestmentsZeroRisk.setObjectName("actionInvestmentsZeroRisk")
         self.menuAyuda.addAction(self.actionAbout)
         self.menuAyuda.addSeparator()
         self.menuAyuda.addAction(self.actionCuriosities)
@@ -413,6 +418,7 @@ class Ui_frmMain(object):
         self.menuCuentas.addSeparator()
         self.menuCuentas.addAction(self.actionTransfer)
         self.menuInversiones.addAction(self.actionInvestments)
+        self.menuInversiones.addAction(self.actionInvestmentsZeroRisk)
         self.menuInversiones.addSeparator()
         self.menuInversiones.addAction(self.actionOrders)
         self.menuInversiones.addAction(self.actionPurchaseOpportunities)
@@ -706,6 +712,8 @@ class Ui_frmMain(object):
         self.actionProductsComparation.setToolTip(_translate("frmMain", "Products comparation"))
         self.actionShowBenchmark.setText(_translate("frmMain", "Show benchmark index"))
         self.actionShowBenchmark.setToolTip(_translate("frmMain", "Show benchmark index"))
+        self.actionInvestmentsZeroRisk.setText(_translate("frmMain", "Zero risk investment list"))
+        self.actionInvestmentsZeroRisk.setToolTip(_translate("frmMain", "Zero risk investment list"))
 
 
 import xulpymoney.images.xulpymoney_rc
