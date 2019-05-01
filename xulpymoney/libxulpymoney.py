@@ -336,6 +336,16 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         return result
 
 
+    ## Returns an InvestmentManager object with all investmentes with zero risk
+    ## @param product Product to search in this InvestmentManager
+    ## @return InvestmentManager
+    def InvestmentManager_with_investments_with_zero_risk(self):
+        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            if inv.product.percentage==0:
+                result.append(inv)
+        return result
+
     ## Returns an InvestmentManager object with all investmentes with the same product passed as parameter
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
@@ -357,6 +367,14 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id and inv.op_actual.shares()==0:
                 result.append(inv)
         return result
+
+    ## Returns the balance of al investments
+    def balance(self, date=None):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            r=r+inv.balance(date, eMoneyCurrency.User)
+        return r
 
     ## Change investments with a product_id to another product_id
     ## @param product_from. 
@@ -440,6 +458,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         for inv in self.arr:
             r=r+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
         return r
+
     def pendiente_positivo(self):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)

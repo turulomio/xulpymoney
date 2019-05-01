@@ -1,4 +1,4 @@
-from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate
+from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate, Assets
 from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
@@ -29,6 +29,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments.setColumnHidden(8, False)
 
         self.investments.myqtablewidget(self.tblInvestments)
+        self.lblTotal_update()
+    
+    ## Updates lblTotal
+    def lblTotal_update(self):
         invested=self.investments.invested()
         pendiente=self.investments.pendiente()
         if invested.isZero():
@@ -247,3 +251,39 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             )  
         else:
             self.on_actionInvestmentReport_triggered()
+
+## Class to show Zero Risk investments
+class wdgInvestmentsZeroRisk(wdgInvestments):
+    def __init__(self, mem, parent=None):
+        wdgInvestments.__init__(self, mem, parent)
+        self.lbl.setText(self.tr("Zero risk investment list"))    
+
+    ## Updates lblTotal, overrides supper method
+    def lblTotal_update(self):
+        investments=self.investments.balance()
+        accounts=self.mem.data.accounts_active().balance()
+        total=Assets(self.mem).saldo_total(self.mem.data.investments_active(), self.mem.localzone.now())
+        if self.chkInactivas.checkState()==Qt.Checked:
+            self.lblTotal.setText(self.tr("There aren't invested assets"))
+        else:
+            self.lblTotal.setText(self.tr("""Accounts balance: {0}
+Zero risk investments balance: {1}
+Zero risk assests balance: {2} ( {3} from your total assets {4} )""").format(
+                            accounts, 
+                            investments, 
+                            accounts+investments, 
+                            Percentage((accounts+investments).amount, total.amount), 
+                            total
+                        ))
+
+    ## Overrides supper method and selects investments with zero risk
+    @pyqtSlot(int) 
+    def on_chkInactivas_stateChanged(self, state):
+        if state==Qt.Unchecked:
+            self.investments=self.mem.data.investments_active().InvestmentManager_with_investments_with_zero_risk()
+            self.on_actionSortTPCVenta_triggered()
+        else:
+            self.investments=self.mem.data.investments_inactive().InvestmentManager_with_investments_with_zero_risk()
+            self.on_actionSortName_triggered()
+        self.tblInvestments.clearSelection()
+        self.selInvestment=None   

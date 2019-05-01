@@ -92,6 +92,7 @@
      <string>&amp;Investments</string>
     </property>
     <addaction name="actionInvestments"/>
+    <addaction name="actionInvestmentsZeroRisk"/>
     <addaction name="separator"/>
     <addaction name="actionOrders"/>
     <addaction name="actionPurchaseOpportunities"/>
@@ -1160,6 +1161,18 @@
    </property>
    <property name="toolTip">
     <string>Show benchmark index</string>
+   </property>
+  </action>
+  <action name="actionInvestmentsZeroRisk">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/zerorisk.png</normaloff>:/xulpymoney/zerorisk.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zero risk investment list</string>
+   </property>
+   <property name="toolTip">
+    <string>Zero risk investment list</string>
    </property>
   </action>
  </widget>

@@ -22,7 +22,6 @@ from xulpymoney.ui.wdgConcepts import wdgConcepts
 from xulpymoney.ui.wdgCalculator import wdgCalculator
 from xulpymoney.ui.wdgCuriosities import wdgCuriosities
 from xulpymoney.ui.wdgIndexRange import wdgIndexRange
-from xulpymoney.ui.wdgInvestments import wdgInvestments
 from xulpymoney.ui.wdgInvestmentsOperations import wdgInvestmentsOperations
 from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
 from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
@@ -209,8 +208,17 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionInvestments_triggered(self):
+        from xulpymoney.ui.wdgInvestments import wdgInvestments
         self.w.close()
         self.w=wdgInvestments(self.mem, self)               
+        self.layout.addWidget(self.w)
+        self.w.show()
+
+    @pyqtSlot()
+    def on_actionInvestmentsZeroRisk_triggered(self):
+        from xulpymoney.ui.wdgInvestments import wdgInvestmentsZeroRisk
+        self.w.close()
+        self.w=wdgInvestmentsZeroRisk(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
 
