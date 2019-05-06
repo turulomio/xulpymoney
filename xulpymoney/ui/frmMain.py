@@ -189,7 +189,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         try: ## Remove when qwebwenginewidgets work again
             from xulpymoney.ui.frmHelp import frmHelp
             w=frmHelp(self.mem, self)
-            w.exec_()
+            w.show()
         except:
             QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
 

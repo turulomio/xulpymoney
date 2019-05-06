@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>frmHelp</class>
  <widget class="QDialog" name="frmHelp">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,9 +18,6 @@
     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
   </property>
   <property name="sizeGripEnabled">
-   <bool>true</bool>
-  </property>
-  <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -97,9 +91,15 @@
      </item>
      <item>
       <widget class="QWebEngineView" name="webEngineView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="url">
         <url>
-         <string>https://sourceforge.net/p/xulpymoney/wiki/Languages/</string>
+         <string>https://github.com/turulomio/xulpymoney/wiki</string>
         </url>
        </property>
       </widget>

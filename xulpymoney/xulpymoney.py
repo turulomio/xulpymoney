@@ -23,6 +23,8 @@ def signal_handler(signal, frame):
 ######################
 
 def main():
+    from PyQt5 import QtWebEngineWidgets # To avoid error must be imported before QCoreApplication
+    dir(QtWebEngineWidgets)
     init(autoreset=True)
 
     global app
