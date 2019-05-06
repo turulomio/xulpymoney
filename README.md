@@ -11,9 +11,11 @@ Install in Linux
 ================
 If you use Gentoo, you can find the ebuild in https://github.com/turulomio/myportage/tree/master/app-office/xulpymoney
 
-If you use another distribution, you nee to install PyQtChart manually. PyQtChart is not in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
+If you use another distribution, you nee to install PyQtChart and PyQtWebEngine manually. They aren't in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
 
 `pip install PyQtChart`
+
+`pip install PyQtWebEngine`
 
 `pip install xulpymoney`
 
@@ -72,5 +74,5 @@ Changelog
   * Added missing files to MANIFEST.in
 
 0.1.0
-*  * Migration from Sourceforge
+  * Migration from Sourceforge
   * Changed code to python package
