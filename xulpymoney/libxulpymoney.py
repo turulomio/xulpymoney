@@ -1012,62 +1012,40 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             try:
                 p=Product(self.mem)
                 tickers=[None]*4
-                for cell in row:
-                    if cell.column=="A":
-                        p.id=cell.value
-                    elif cell.column=="B":
-                        p.name=cell.value
-                    elif cell.column=="C":
-                        p.high_low=str2bool(cell.value)
-                    elif cell.column=="D":
-                        p.isin=cell.value
-                    elif cell.column=="E":
-                        p.stockmarket=self.mem.stockmarkets.find_by_name(cell.value)
-                        if p.stockmarket==None:
-                            raise
-                    elif cell.column=="F":
-                        p.currency=self.mem.currencies.find_by_id(cell.value)
-                        if p.currency==None:
-                            raise
-                    elif cell.column=="G":
-                        p.type=self.mem.types.find_by_name(cell.value)
-                        if p.type==None:
-                            raise
-                    elif cell.column=="H":
-                        p.agrupations=self.mem.agrupations.clone_from_dbstring(cell.value)
-                        if p.agrupations==None:
-                            raise
-                    elif cell.column=="I":
-                        p.web=cell.value
-                    elif cell.column=="J":
-                        p.address=cell.value
-                    elif cell.column=="K":
-                        p.phone=cell.value
-                    elif cell.column=="L":
-                        p.mail=cell.value
-                    elif cell.column=="M":
-                        p.percentage=cell.value
-                    elif cell.column=="N":
-                        p.mode=self.mem.investmentsmodes.find_by_id(cell.value)
-                        if p.mode==None:
-                            raise
-                    elif cell.column=="O":
-                        p.leveraged=self.mem.leverages.find_by_name(cell.value)
-                        if p.leveraged==None:
-                            raise
-                    elif cell.column=="P":
-                        p.comment=cell.value
-                    elif cell.column=="Q":
-                        p.obsolete=str2bool(cell.value)
-                    elif cell.column=="R":
-                        tickers[0]=cell.value
-                    elif cell.column=="S":
-                        tickers[1]=cell.value
-                    elif cell.column=="T":
-                        tickers[2]=cell.value
-                    elif cell.column=="U":
-                        tickers[3]=cell.value
-                    p.tickers=tickers
+                p.id=row[0].value
+                p.name=row[1].value
+                p.high_low=str2bool(row[2].value)
+                p.isin=row[3].value
+                p.stockmarket=self.mem.stockmarkets.find_by_name(row[4].value)
+                if p.stockmarket==None:
+                    raise
+                p.currency=self.mem.currencies.find_by_id(row[5].value)
+                if p.currency==None:
+                    raise
+                p.type=self.mem.types.find_by_name(row[6].value)
+                if p.type==None:
+                    raise
+                p.agrupations=self.mem.agrupations.clone_from_dbstring(row[7].value)
+                if p.agrupations==None:
+                    raise
+                p.web=row[8].value
+                p.address=row[9].value
+                p.phone=row[10].value
+                p.mail=row[11].value
+                p.percentage=row[12].value
+                p.mode=self.mem.investmentsmodes.find_by_id(row[13].value)
+                if p.mode==None:
+                    raise
+                p.leveraged=self.mem.leverages.find_by_name(row[14].value)
+                if p.leveraged==None:
+                    raise
+                p.comment=row[15].value
+                p.obsolete=str2bool(row[16].value)
+                tickers[0]=row[17].value
+                tickers[1]=row[18].value
+                tickers[2]=row[19].value
+                tickers[3]=row[20].value
+                p.tickers=tickers
                 return p
             except:
                 print("Error creando ProductODS con Id: {}".format(p.id))
