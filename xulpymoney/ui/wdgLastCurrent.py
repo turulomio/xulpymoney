@@ -1,4 +1,3 @@
-import logging
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoney import Percentage
 from PyQt5.QtCore import QSize, pyqtSlot
