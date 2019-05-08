@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.1
--- Dumped by pg_dump version 11.1
+-- Dumped from database version 11.2
+-- Dumped by pg_dump version 11.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -78,6 +78,33 @@ $$;
 
 
 ALTER FUNCTION public.cuentas_saldo(fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: investment_operations_current(integer, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.investment_operations_current(p_investment_id integer, p_at_datetime timestamp with time zone) RETURNS TABLE(investment_id integer, datetime timestamp with time zone, shares numeric, operationtype_id integer, taxes numeric, commissions numeric, currency_conversion numeric)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE 
+    o record;
+BEGIN
+    FOR o IN(SELECT * from operinversiones where id_inversiones= p_investment_id order by datetime)  
+    LOOP
+        investment_id:= o.id_inversiones;
+        datetime:=o.datetime;
+        shares:=o.acciones;
+        operationtype_id:=o.id_tiposoperaciones;
+        taxes:=o.impuestos;
+        commissions:=o.comision;
+        currency_conversion:=o.currency_conversion;
+        RETURN NEXT;
+    END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION public.investment_operations_current(p_investment_id integer, p_at_datetime timestamp with time zone) OWNER TO postgres;
 
 --
 -- Name: is_price_variation_in_time(integer, double precision, timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
@@ -526,7 +553,6 @@ CREATE TABLE public.operinversiones (
     id_tiposoperaciones integer,
     id_inversiones integer,
     acciones numeric(100,6),
-    importe_borrar numeric(100,2),
     impuestos numeric(100,2),
     comision numeric(100,2),
     valor_accion numeric(100,6),
@@ -8148,7 +8174,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201902140545');
+INSERT INTO public.globals VALUES (1, 'Version', '201905081056');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8157,7 +8183,7 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384, 79244');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', '201812180834');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
