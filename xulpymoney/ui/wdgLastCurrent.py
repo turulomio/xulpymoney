@@ -1,5 +1,6 @@
 import logging
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoney import Percentage
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from xulpymoney.ui.Ui_wdgLastCurrent import Ui_wdgLastCurrent
@@ -18,11 +19,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
         self.on_cmbSameProduct_currentIndexChanged(int(self.mem.settingsdb.value("wdgLastCurrent/viewode", 0)))
-#        self.cmbSameProduct.setCurrentIndex(int(self.mem.settingsdb.value("wdgLastCurrent/viewmode",0)))
-#        self.cmbSameProduct.currentIndexChanged.emit(int(self.mem.settingsdb.value("wdgLastCurrent/viewode", 0)))
-
+        
     def tblInvestments_reload(self):
-        self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
+        self.investments.myqtablewidget_lastCurrent(self.tblInvestments, Percentage(self.spin.value(), 100))
 
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
@@ -146,7 +145,6 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     @pyqtSlot(int)
     def on_cmbSameProduct_currentIndexChanged(self, index):
         self.cmbSameProduct.setCurrentIndex(index)
-        logging.debug("Changing to {} {}".format(index,index.__class__))
         if index==0:
             self.investments=self.mem.data.investments_active()
             self.on_actionSortTPCLast_triggered()

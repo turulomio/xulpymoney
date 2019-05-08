@@ -253,10 +253,11 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
                     table.item(i, 8).setBackground(eQColor.Green)
 
+
+    ## Displays last current operation and shows in red background when operation has lost more than a percentage
+    ## @param table MyQTableWidget
+    ## @param percentage Percentage object
     def myqtablewidget_lastCurrent(self, table,  percentage):
-        """
-            Percentage is the colored percentage to show
-        """
         table.setRowCount(len(self.arr))
         table.applySettings()
         table.clearContents()
@@ -273,7 +274,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 table.setItem(i, 6, lasttpc.qtablewidgetitem())
                 table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
                 table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
-                if lasttpc<Percentage(percentage, 1):   
+                if lasttpc<percentage:
                     table.item(i, 6).setBackground(eQColor.Red)
             except:
                 logging.error("I couldn't show last of {}".format(inv.name))
