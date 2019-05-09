@@ -2514,12 +2514,6 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201902140545)
-        if self.dbversion<201905081056:
-            cur=self.mem.con.cursor()
-            cur.execute("ALTER TABLE operinversiones DROP COLUMN importe_borrar")
-            cur.close()
-            self.mem.con.commit()
-            self.set_database_version(201905081056)
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
