@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201905081056
+        self.lastcodeupdate=201902140545
         self.need_update()
 
     def get_database_version(self):
