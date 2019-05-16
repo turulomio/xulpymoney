@@ -94,6 +94,8 @@ class eConcept:
     HlCommission=72
     HlInterestPaid=73
     HlInterestReceived=74
+    RolloverPaid=75
+    RolloverReceiver=76
 
 ## Types for dt strings. Used in dtaware2string function
 class eDtStrings:

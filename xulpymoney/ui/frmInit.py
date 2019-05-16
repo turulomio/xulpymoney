@@ -108,6 +108,8 @@ class frmInit(QDialog, Ui_frmInit):
             cur.execute("insert into public.conceptos values(72,%s,%s,false)",("HL Operation commission", eOperationType.Expense))     
             cur.execute("insert into public.conceptos values(73,%s,%s,false)",("HL Paid interest", eOperationType.Expense))     
             cur.execute("insert into public.conceptos values(74,%s,%s,false)",("HL Received interest", eOperationType.Income))   
+            cur.execute("insert into public.conceptos values(75,%s,%s,false)",("Rollover Paid", eOperationType.Expense))   
+            cur.execute("insert into public.conceptos values(76,%s,%s,false)",("Rollover Received", eOperationType.Income))   
             cur.close()
 #            return True
 #        except:

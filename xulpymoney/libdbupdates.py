@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201902140545
+        self.lastcodeupdate=201905162140
         self.need_update()
 
     def get_database_version(self):
@@ -2514,7 +2514,13 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201902140545)
-            
+        if self.dbversion<201905162140:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into conceptos values(75,%s,%s,false)",(QApplication.translate("Core","Rollover Paid"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(76,%s,%s,false)",(QApplication.translate("Core","Rollover Received"), eOperationType.Income))     
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201905162140)
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

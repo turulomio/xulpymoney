@@ -1330,6 +1330,13 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
         if select!=None:
             combo.setCurrentIndex(combo.findData(select.id))
 
+    def load_futures_qcombobox(self, combo,  select=None):
+        for n in (eConcept.RolloverPaid, eConcept.RolloverReceived):
+            c=self.find_by_id(n)
+            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
+        if select!=None:
+            combo.setCurrentIndex(combo.findData(select.id))
+
     def considered_dividends_in_totals(self):
         """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
         return[39, 50, 62, 65, 66]

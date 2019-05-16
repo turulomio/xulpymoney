@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 11.2
--- Dumped by pg_dump version 11.2
+-- Dumped by pg_dump version 11.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,6 +12,7 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -3405,8 +3406,7 @@ INSERT INTO public.products VALUES ('CEWE COLOR HOLDING AG', 'DE0005403901', 'EU
 INSERT INTO public.products VALUES ('CF INDUSTRIES HOLDINGS INC.', NULL, 'USD', 1, '', 78177, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#CF||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFAO', 'FR0000060501', 'EUR', 1, '|EURONEXT|', 78366, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000060501||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFCAL BANQUE', 'FR0000064560', 'EUR', 1, '|EURONEXT|', 78375, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000064560||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.products VALUES ('CFD EUROSTOXX', NULL, 'EUR', 12, '', 81738, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
-INSERT INTO public.products VALUES ('CFD IBEX35 ', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('CFD IBEX35 ', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, true, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('CFE (D)', 'BE0003883031', 'EUR', 1, '|EURONEXT|', 78430, NULL, NULL, NULL, NULL, 100, 'c', 1, 11, 'EURONEXT#BE0003883031||be||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFI', 'FR0000037475', 'EUR', 1, '|EURONEXT|', 78431, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000037475||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CGG VERITAS', 'FR0000120164', 'EUR', 1, '|EURONEXT|', 78434, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000120164||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
@@ -4833,7 +4833,9 @@ INSERT INTO public.products VALUES ('FURMANITE CORP.', NULL, 'USD', 1, '', 79794
 INSERT INTO public.products VALUES ('FURNITURE BRANDS INTERNATIONAL INC.', NULL, 'USD', 1, '', 77676, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FBN||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FUSION-IO INC.', NULL, 'USD', 1, '', 79450, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FIO||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FUT.CLUBE PORTO', 'PTFCP0AM0008', 'EUR', 1, '|EURONEXT|', 75536, NULL, NULL, NULL, NULL, 100, 'c', 1, 9, 'EURONEXT#PTFCP0AM0008||pt||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.products VALUES ('FUTURO MINIIBEX', NULL, 'EUR', 13, '', 81739, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('FUTURO EURO STOXX', NULL, 'EUR', 13, '', 81738, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('FUTURO EURO STOXX VOLATILITY', NULL, 'EUR', 13, '', 81740, 'https://www.stoxx.com/index-details?symbol=V2TX', NULL, NULL, NULL, 100, 'p', 100, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('FUTURO IBEX PRIMER', NULL, 'EUR', 13, '', 81739, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('F.VALENCIA GAR.ELECCION OPT.2', 'ES0138228038', 'EUR', 2, '|f_es_BMF|', 77143, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0138228038||es||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FXCM INC.', NULL, 'USD', 1, '', 80065, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FXCM||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('GAESCO EMERGENTFOND', 'ES0140628035', 'EUR', 2, '|f_es_BMF|', 79914, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0140628035||es||False', false, '{NULL,F0GBR04DOB,NULL,NULL}', false);
@@ -8174,7 +8176,7 @@ INSERT INTO public.products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, 
 INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, 'DEUTSCHEBOERSE#DE0005111702||de||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.globals VALUES (1, 'Version', '201905081056');
+INSERT INTO public.globals VALUES (1, 'Version', '201905162140');
 INSERT INTO public.globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO public.globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO public.globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
@@ -8183,7 +8185,7 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384, 79244');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384, 79244, 81737, 81740');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', '201812180834');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
