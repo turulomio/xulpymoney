@@ -5035,6 +5035,7 @@ class LeverageManager(ObjectManager_With_IdName_Selectable):
         self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), eLeverageType.X4))
         self.append(Leverage(self.mem).init__create( 5,QApplication.translate("Core","Leverage x5"), eLeverageType.X5))
         self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Core","Leverage x10"), eLeverageType.X10))
+        self.append(Leverage(self.mem).init__create(100, QApplication.translate("Core", "Lverage x100"), eLeverageType.X100))
 
 class OrderManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
