@@ -25,6 +25,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         if dividend==None:#insertar
             if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)
+            elif self.investment.product.type.id in (eProductType.CFD,  eProductType.Future):
+                self.mem.conceptos.load_futures_qcombobox(self.cmb)
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb)
             self.dividend=Dividend(self.mem)
