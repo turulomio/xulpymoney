@@ -153,21 +153,29 @@ class HlContract(QObject):
             guarantee_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mGuarantee(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             guarantee_AO.save()
             self.guarantee_ao=guarantee_AO.id
+        else:
+            self.guarantee_ao=None#To reset guarantee_ao in database and avoid fk errors
         if self.adjustment!=0:
             concepto=self.mem.conceptos.find_by_id(eConcept.HlAdjustmentIincome) if self.adjustment>0 else self.mem.conceptos.find_by_id(eConcept.HlAdjustmentExpense)
             adjustment_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mAdjustment(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             adjustment_AO.save()
             self.adjustment_ao=adjustment_AO.id
+        else:
+            self.adjustment_ao=None#To reset guarantee_ao in database and avoid fk errors
         if self.interest!=0:
             concepto=self.mem.conceptos.find_by_id(eConcept.HlInterestPaid) if self.adjustment>0 else self.mem.conceptos.find_by_id(eConcept.HlInterestReceived)
             interest_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, self.mInterest(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             interest_AO.save()
             self.interest_ao=interest_AO.id
+        else:
+            self.interest_ao=None#To reset guarantee_ao in database and avoid fk errors
         if self.commission!=0:
             concepto=self.mem.conceptos.find_by_id(eConcept.HlCommission)
             commission_AO=AccountOperation(self.mem, self.datetime, concepto, concepto.tipooperacion, -self.mCommission(eMoneyCurrency.Account).amount, comment, self.investment.account, None)
             commission_AO.save()
             self.commission_ao=commission_AO.id
+        else:
+            self.commission_ao=None#To reset guarantee_ao in database and avoid fk errors
 
         cur.execute("update high_low_contract set guarantee_ao=%s, adjustment_ao=%s, interest_ao=%s, commission_ao=%s where id=%s", 
                 (self.guarantee_ao, self.adjustment_ao, self.interest_ao, self.commission_ao, self.id))
