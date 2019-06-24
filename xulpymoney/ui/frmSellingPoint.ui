@@ -60,7 +60,7 @@
           <item>
            <widget class="QRadioButton" name="radTPC">
             <property name="text">
-             <string>Select a &amp;gain percentage</string>
+             <string>Select a &amp;gain percentage from invested in account currency</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -82,7 +82,7 @@
              <double>1000.000000000000000</double>
             </property>
             <property name="singleStep">
-             <double>5.000000000000000</double>
+             <double>0.500000000000000</double>
             </property>
             <property name="value">
              <double>10.000000000000000</double>
@@ -96,7 +96,7 @@
           <item>
            <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Se&amp;lect a gain amount</string>
+             <string>Se&amp;lect a gain amount in the account currency</string>
             </property>
            </widget>
           </item>
@@ -119,6 +119,19 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="lblAmountSymbol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -126,7 +139,7 @@
           <item>
            <widget class="QRadioButton" name="radPrice">
             <property name="text">
-             <string>Selec&amp;t a price</string>
+             <string>Selec&amp;t a price in product currency</string>
             </property>
            </widget>
           </item>
@@ -143,6 +156,19 @@
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblPriceSymbol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>

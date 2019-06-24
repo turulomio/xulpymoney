@@ -2331,6 +2331,26 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.penultimate( type)
         return resultado
         
+    ## Calculates an investment selling price from a gains percentage using current operations
+    ## If emoneycurrency== Account, calcula el percentage del dinero invertido. Si tienen divisas distinntas el producto y la cuenta. Calcula el porcentage dela cuenta
+    ## @param percentage Percentage object to gain
+    ## @return Money object with the currency of the product. It's the product price to sell.
+    def selling_price_to_gain_percentage_of_invested(self, percentage, emoneycurrency):
+        invested=self.invertido(emoneycurrency)
+        invested_plus_gains=invested*(1+percentage.value)
+        return self.selling_price_to_gain_money(invested_plus_gains-invested)
+
+    ## Calculates an investment selling price to gain a money in the current investment
+    ## @param money Money object with a currency
+    ## @return Money object with the currency of the product. It's the product price to sell.
+    def selling_price_to_gain_money(self, money):
+        if money.currency==self.investment.account.currency:#money in account currency
+            gains=money+self.invertido(eMoneyCurrency.Account)
+            gains_product_currency=gains.convert(self.investment.product.currency)#Current conversion
+        else:#money in product currency
+            gains_product_currency=money+self.invertido(eMoneyCurrency.Product)
+        return Money(self.mem, gains_product_currency.amount/self.shares(), self.investment.product.currency)
+        
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual
     def gains_last_day(self, type=1):
