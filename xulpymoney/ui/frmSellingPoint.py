@@ -32,7 +32,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.table.settings(self.mem, "frmSellingPoint")
         self.tableSP.settings(self.mem, "frmSellingPoint")
         
-        self.cmbTPC.setCurrentText("{} %".format(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
+        self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
         
     def __calcular(self):           
         type=2
@@ -54,7 +54,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.puntoventa=Money(self.mem, 0, self.investment.account.currency)
         else:
             if self.radTPC.isChecked()==True:
-                tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
+                tpc=Decimal(self.spnGainsPercentage.value())
                 self.puntoventa=Money(self.mem, suminvertido.amount*(1+tpc/100)/sumacciones, self.investment.account.currency)
             elif self.radPrice.isChecked()==True:
                 if self.txtPrice.isValid():#Si hay un numero bien
@@ -95,8 +95,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def on_radGain_clicked(self):
         self.__calcular()
         
-    @pyqtSlot(str) 
-    def on_cmbTPC_currentIndexChanged(self, cur):
+    @pyqtSlot(float) 
+    def on_spnGainsPercentage_valueChanged(self, value):
         self.__calcular()
         
     def on_txtGanancia_textChanged(self):
@@ -122,6 +122,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
         #Save in settings the last selling percentage, if that's the case
         if self.radTPC.isChecked():
-            percentage=Decimal(self.cmbTPC.currentText().replace(" %", ""))
+            percentage=Decimal(self.spnGainsPercentage.value())
             self.mem.settingsdb.setValue("frmSellingPoint/lastgainpercentage", percentage)
         self.done(0)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmSellingPoint.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.1
+# Created by: PyQt5 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -43,16 +43,14 @@ class Ui_frmSellingPoint(object):
         self.radTPC.setChecked(True)
         self.radTPC.setObjectName("radTPC")
         self.horizontalLayout_2.addWidget(self.radTPC)
-        self.cmbTPC = QtWidgets.QComboBox(self.groupBox)
-        self.cmbTPC.setObjectName("cmbTPC")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.cmbTPC.addItem("")
-        self.horizontalLayout_2.addWidget(self.cmbTPC)
+        self.spnGainsPercentage = QtWidgets.QDoubleSpinBox(self.groupBox)
+        self.spnGainsPercentage.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.spnGainsPercentage.setProperty("showGroupSeparator", False)
+        self.spnGainsPercentage.setMaximum(1000.0)
+        self.spnGainsPercentage.setSingleStep(5.0)
+        self.spnGainsPercentage.setProperty("value", 10.0)
+        self.spnGainsPercentage.setObjectName("spnGainsPercentage")
+        self.horizontalLayout_2.addWidget(self.spnGainsPercentage)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -158,10 +156,8 @@ class Ui_frmSellingPoint(object):
         self.horizontalLayout_7.addLayout(self.verticalLayout_3)
 
         self.retranslateUi(frmSellingPoint)
-        self.cmbTPC.setCurrentIndex(2)
         self.tab.setCurrentIndex(0)
         self.txtGanancia.textEdited['QString'].connect(self.radGain.toggle)
-        self.cmbTPC.currentIndexChanged['QString'].connect(self.radTPC.toggle)
         QtCore.QMetaObject.connectSlotsByName(frmSellingPoint)
 
     def retranslateUi(self, frmSellingPoint):
@@ -170,13 +166,7 @@ class Ui_frmSellingPoint(object):
         self.lblTitulo.setText(_translate("frmSellingPoint", "Selling point calculation"))
         self.groupBox.setTitle(_translate("frmSellingPoint", "Select your gain"))
         self.radTPC.setText(_translate("frmSellingPoint", "Select a &gain percentage"))
-        self.cmbTPC.setItemText(0, _translate("frmSellingPoint", "2.5 %"))
-        self.cmbTPC.setItemText(1, _translate("frmSellingPoint", "5 %"))
-        self.cmbTPC.setItemText(2, _translate("frmSellingPoint", "7.5 %"))
-        self.cmbTPC.setItemText(3, _translate("frmSellingPoint", "10 %"))
-        self.cmbTPC.setItemText(4, _translate("frmSellingPoint", "15 %"))
-        self.cmbTPC.setItemText(5, _translate("frmSellingPoint", "20 %"))
-        self.cmbTPC.setItemText(6, _translate("frmSellingPoint", "25 %"))
+        self.spnGainsPercentage.setSuffix(_translate("frmSellingPoint", " %"))
         self.radGain.setText(_translate("frmSellingPoint", "Se&lect a gain amount"))
         self.txtGanancia.setToolTip(_translate("frmSellingPoint", "Select a gain amount"))
         self.txtGanancia.setText(_translate("frmSellingPoint", "1000"))
