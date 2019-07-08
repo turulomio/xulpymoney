@@ -74,7 +74,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardAdd_triggered(self):
         w=frmCreditCardsAdd(self.mem,  self.account,  None, self)
         w.exec_()
-        self.on_CreditCardChanged(w.creditcard)
+        if w.result()==QDialog.Accepted:
+            self.on_CreditCardChanged(w.creditcard)
 
     @pyqtSlot() 
     def on_actionCreditCardEdit_triggered(self):
