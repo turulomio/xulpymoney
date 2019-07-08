@@ -60,7 +60,7 @@
           <item>
            <widget class="QRadioButton" name="radTPC">
             <property name="text">
-             <string>Select a &amp;gain percentage</string>
+             <string>Select a &amp;gain percentage from invested in account currency</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -68,45 +68,25 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="cmbTPC">
-            <property name="currentIndex">
-             <number>2</number>
+           <widget class="QDoubleSpinBox" name="spnGainsPercentage">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <item>
-             <property name="text">
-              <string>2.5 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>5 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>7.5 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>10 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>15 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>20 %</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>25 %</string>
-             </property>
-            </item>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="maximum">
+             <double>1000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>10.000000000000000</double>
+            </property>
            </widget>
           </item>
          </layout>
@@ -116,7 +96,7 @@
           <item>
            <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Se&amp;lect a gain amount</string>
+             <string>Se&amp;lect a gain amount in the account currency</string>
             </property>
            </widget>
           </item>
@@ -139,6 +119,19 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="lblAmountSymbol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -146,7 +139,7 @@
           <item>
            <widget class="QRadioButton" name="radPrice">
             <property name="text">
-             <string>Selec&amp;t a price</string>
+             <string>Selec&amp;t a price in product currency</string>
             </property>
            </widget>
           </item>
@@ -163,6 +156,19 @@
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblPriceSymbol">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -343,22 +349,6 @@
     <hint type="destinationlabel">
      <x>76</x>
      <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmbTPC</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>radTPC</receiver>
-   <slot>toggle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>465</x>
-     <y>86</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>86</y>
     </hint>
    </hints>
   </connection>
