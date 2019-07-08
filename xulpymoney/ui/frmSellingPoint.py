@@ -75,11 +75,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                     self.puntoventa=Money(self.mem, 0, self.investment.account.currency)
                     self.cmd.setEnabled(False)
 
-#        #punto de venta tiene el currency de la acount luego hay que pasarlo al currency de la inversi´on_chkGainsTime_stateChanged
-#        if self.investment.hasSameAccountCurrency()==False:
-#            self.puntoventa=self.puntoventa.convert(self.investment.product.currency, self.mem.localzone.now())
-
-
         quote=Quote(self.mem).init__create(self.investment.product, self.mem.localzone.now(), self.puntoventa.amount)
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.puntoventa)))
         self.tab.setTabText(0, self.tr("Current state: {0}".format(quote.money())))
