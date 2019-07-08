@@ -56,6 +56,16 @@ Dependencies
 
 Changelog
 =========
+0.7.0
+  * Added several products to products.xlsx
+  * Fixed comments bugs
+  * Improved long/short investments
+  * Added short funcionality to opportunities.
+  * Selling point now work for long and short operations.
+  * Added more leveraged types
+  * Now you can add Rollovers in dividend dialog
+  * Added hardcoded translations
+
 0.6.0
   * Added products.xlsx auto update
   * Added long/short strategy investments (ALPHA)

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.2
--- Dumped by pg_dump version 11.3
+-- Dumped from database version 11.4
+-- Dumped by pg_dump version 11.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -3406,7 +3406,7 @@ INSERT INTO public.products VALUES ('CEWE COLOR HOLDING AG', 'DE0005403901', 'EU
 INSERT INTO public.products VALUES ('CF INDUSTRIES HOLDINGS INC.', NULL, 'USD', 1, '', 78177, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#CF||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFAO', 'FR0000060501', 'EUR', 1, '|EURONEXT|', 78366, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000060501||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFCAL BANQUE', 'FR0000064560', 'EUR', 1, '|EURONEXT|', 78375, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000064560||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
-INSERT INTO public.products VALUES ('CFD IBEX35 ', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, true, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('CFD FUTURO IBEX35', NULL, 'EUR', 12, '', 81737, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('CFE (D)', 'BE0003883031', 'EUR', 1, '|EURONEXT|', 78430, NULL, NULL, NULL, NULL, 100, 'c', 1, 11, 'EURONEXT#BE0003883031||be||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CFI', 'FR0000037475', 'EUR', 1, '|EURONEXT|', 78431, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000037475||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('CGG VERITAS', 'FR0000120164', 'EUR', 1, '|EURONEXT|', 78434, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0000120164||fr||False', false, '{NULL,NULL,NULL,NULL}', false);
@@ -3740,6 +3740,8 @@ INSERT INTO public.products VALUES ('DAVITA INC.', NULL, 'USD', 1, '', 79833, NU
 INSERT INTO public.products VALUES ('DAX XETRA', 'DE0008469008', 'EUR', 3, '', 78094, NULL, NULL, NULL, NULL, 100, 'c', 1, 5, '^GDAXI||de||False', false, '{^GDAXI,NULL,INDEXDB:DAX,NULL}', false);
 INSERT INTO public.products VALUES ('DB X-TRACKERS DAX UCITS ETF', 'LU0274211480', 'EUR', 4, '', 78524, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'MC#LU0274211480||es||False', false, '{DXDAX.MC,NULL,BME:DXDAX,NULL}', false);
 INSERT INTO public.products VALUES ('DB X-TRACKERS FTSE 100 ETF | FTSE 100, INDEX', 'LU0292097234', 'EUR', 4, '|e_de_DBXTRACKERS|', 81687, 'http://www.etf.db.com/', NULL, NULL, NULL, 100, 'c', 1, 5, NULL, false, '{DBXX.DE,NULL,ETR:DBXX,NULL}', false);
+INSERT INTO public.products VALUES ('DBPG X-TRACKERS SP500 2X LEVERAGED DAILY', 'LU0411078552', 'EUR', 4, '', 81742, NULL, NULL, NULL, NULL, 100, 'c', 2, 5, NULL, false, '{DBPG.DE,NULL,NULL,NULL}', false);
+INSERT INTO public.products VALUES ('DBPK X-TRACKERS SP500 2X INVERSE DAILY SWAP', 'LU0411078636', 'EUR', 4, '', 81743, NULL, NULL, NULL, NULL, 100, 'p', 2, 5, NULL, false, '{DBPK.DE,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('D.B.VALENCIA', 'ES06139809C2', 'EUR', 1, '|MERCADOCONTINUO|', 74821, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'MC#ES06139809C2||es||False', true, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('DCT INDUSTRIAL TRUST INC.', NULL, 'USD', 1, '', 77931, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#DCT||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('DDR CORP.', NULL, 'USD', 1, '', 79044, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#DDR||us||False', false, '{NULL,NULL,NULL,NULL}', false);
@@ -4835,7 +4837,8 @@ INSERT INTO public.products VALUES ('FUSION-IO INC.', NULL, 'USD', 1, '', 79450,
 INSERT INTO public.products VALUES ('FUT.CLUBE PORTO', 'PTFCP0AM0008', 'EUR', 1, '|EURONEXT|', 75536, NULL, NULL, NULL, NULL, 100, 'c', 1, 9, 'EURONEXT#PTFCP0AM0008||pt||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FUTURO EURO STOXX', NULL, 'EUR', 13, '', 81738, NULL, NULL, NULL, NULL, 100, 'p', 6, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('FUTURO EURO STOXX VOLATILITY', NULL, 'EUR', 13, '', 81740, 'https://www.stoxx.com/index-details?symbol=V2TX', NULL, NULL, NULL, 100, 'p', 100, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
-INSERT INTO public.products VALUES ('FUTURO IBEX PRIMER', NULL, 'EUR', 13, '', 81739, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('FUTURO IBEX35 MINI', NULL, 'EUR', 13, '', 81739, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, NULL, false, '{NULL,NULL,NULL,NULL}', true);
+INSERT INTO public.products VALUES ('FUTURO MINI SP500', NULL, 'USD', 13, '', 81744, NULL, NULL, NULL, NULL, 100, 'c', 50, 2, NULL, false, '{NULL,NULL,NULL,NULL}', true);
 INSERT INTO public.products VALUES ('F.VALENCIA GAR.ELECCION OPT.2', 'ES0138228038', 'EUR', 2, '|f_es_BMF|', 77143, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0138228038||es||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('FXCM INC.', NULL, 'USD', 1, '', 80065, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#FXCM||us||False', false, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('GAESCO EMERGENTFOND', 'ES0140628035', 'EUR', 2, '|f_es_BMF|', 79914, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0140628035||es||False', false, '{NULL,F0GBR04DOB,NULL,NULL}', false);
@@ -6878,6 +6881,7 @@ INSERT INTO public.products VALUES ('RENTA 4 EUROCASH', 'ES0173319031', 'EUR', 2
 INSERT INTO public.products VALUES ('RENTA 4 EUROPA ESTE', 'ES0128517036', 'EUR', 2, '|f_es_BMF|', 81431, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0128517036||es||False', true, '{NULL,NULL,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('RENTA 4 FONCUENTA AHORRO FI', 'ES0173222003 ', 'EUR', 2, '', 81721, NULL, NULL, NULL, NULL, 10, 'c', 1, 1, NULL, false, '{NULL,F00000YGE9,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('RENTA 4 FONDTESORO', 'ES0173372030', 'EUR', 2, '|f_es_BMF|', 81432, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0173372030||es||False', false, '{NULL,F0GBR04DK4,NULL,NULL}', false);
+INSERT INTO public.products VALUES ('Renta 4 Global Acciones', 'F1498', 'EUR', 8, '', 81741, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, NULL, false, '{NULL,NULL,NULL,N4390}', false);
 INSERT INTO public.products VALUES ('RENTA 4 GLOBAL', 'ES0173392038', 'EUR', 2, '|f_es_BMF|', 81433, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0173392038||es||False', false, '{NULL,F0GBR04DK8,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('RENTA 4 JAPON', 'ES0173356033', 'EUR', 2, '|f_es_BMF|', 81434, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0173356033||es||False', false, '{NULL,F0GBR04DKE,NULL,NULL}', false);
 INSERT INTO public.products VALUES ('RENTA 4 LATINOAMERICA', 'ES0173320039', 'EUR', 2, '|f_es_BMF|', 81435, NULL, NULL, NULL, NULL, 100, 'c', 1, 1, 'ES0173320039||es||False', false, '{NULL,F0GBR04DKG,NULL,NULL}', false);
@@ -8185,15 +8189,15 @@ INSERT INTO public.globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO public.globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO public.globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO public.globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 81735, 80840, 78384, 79244, 81737, 81740');
+INSERT INTO public.globals VALUES (18, 'mem/favorites', '81680, 74747, 81710, 81083, 81090, 81394, 81728, 81479, 81458, 81693, 79228, 81709, 79230, 81357, 74788, 76113, 78717, 77529, 80840, 78384, 79244, 81101, 81744');
 INSERT INTO public.globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO public.globals VALUES (2, 'Version of products.xlsx', '201812180834');
 INSERT INTO public.globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO public.globals VALUES (21, 'wdgAPR/cmbYear', '2009');
 INSERT INTO public.globals VALUES (22, 'wdgLastCurrent/viewode', '0');
 INSERT INTO public.globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO public.globals VALUES (8, 'wdgIndexRange/invertir', '5000');
-INSERT INTO public.globals VALUES (9, 'wdgIndexRange/minimo', '500');
+INSERT INTO public.globals VALUES (8, 'wdgIndexRange/invertir', '7500');
+INSERT INTO public.globals VALUES (9, 'wdgIndexRange/minimo', '501.45');
 DELETE FROM public.products WHERE id<=0;
 ALTER SEQUENCE public.seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE public.seq_entidadesbancarias START WITH 4 RESTART;
