@@ -2331,6 +2331,42 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.penultimate( type)
         return resultado
         
+    ## Calculates an investment selling price from a gains percentage using current operations
+    ## If emoneycurrency== Account, calcula el percentage del dinero invertido. Si tienen divisas distinntas el producto y la cuenta. Calcula el porcentage dela cuenta
+    ## @param percentage Percentage object to gain
+    ## @return Money object with the currency of the product. It's the product price to sell.
+    def selling_price_to_gain_percentage_of_invested(self, percentage, emoneycurrency):
+        invested=self.invertido(emoneycurrency)
+        invested_plus_gains=invested*(1+percentage.value)
+        return self.selling_price_to_gain_money(invested_plus_gains-invested)
+
+    ## Calculates an investment selling price to gain a money in the current investment
+    ## @param money Money object with a currency
+    ## @return Money object with the currency of the product. It's the product price to sell.
+    def selling_price_to_gain_money(self, money):
+        # Calculates leverage. Must be futures and CFD products to be used in calculations
+        if self.investment.product.type in [eProductType.CFD,  eProductType.Future]:
+            leverage=self.investment.product.leveraged.multiplier
+        else:
+            leverage=1
+        
+        #Calcultate gains in product currency
+        if money.currency==self.investment.account.currency:#money in account currency
+            balance_after_gains=money+self.invertido(eMoneyCurrency.Account)
+            balance_after_gains_product_currency=balance_after_gains.convert(self.investment.product.currency)#Current conversion
+        else:#money in product currency
+            balance_after_gains_product_currency=money+self.invertido(eMoneyCurrency.Product)
+            
+        #Calculate price from gains in product concurrency
+        if self.investment.op_actual.shares()>0:#Long position
+            return Money(self.mem, balance_after_gains_product_currency.amount/self.shares()/leverage, self.investment.product.currency)
+        else:#Short position
+            #(Average price - PF) · Shares·Leverage=Gains. Despejando
+            #Creo que esta mal por que el average price no cuenta lo que ha costado en divisa. En multidivisa
+            #print(self.average_price(eMoneyCurrency.Product).amount, abs(self.shares()),  leverage,  money.amount)
+            price=(self.average_price(eMoneyCurrency.Product).amount*abs(self.shares())*leverage-money.amount)/(abs(self.shares())*leverage)
+            return Money(self.mem, price, self.investment.product.currency)
+
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual
     def gains_last_day(self, type=1):
