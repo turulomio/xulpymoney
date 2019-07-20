@@ -186,12 +186,24 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionHelp_triggered(self):
+        def in_external():
+            QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
+
+        try:
+            user=os.environ['USER']
+        except:
+            user=None
+
         try: ## Remove when qwebwenginewidgets work again
             from xulpymoney.ui.frmHelp import frmHelp
-            w=frmHelp(self.mem, self)
-            w.show()
+
+            if user!=None and user=="root":
+                in_external()
+            else:
+                w=frmHelp(self.mem, self)
+                w.show()
         except:
-            QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
+            in_external()
 
     @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
