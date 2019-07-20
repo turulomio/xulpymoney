@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmSellingPoint.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -224,8 +225,6 @@ class Ui_frmSellingPoint(object):
         item.setText(_translate("frmSellingPoint", "Pending"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("frmSellingPoint", "Selling point state"))
         self.cmd.setText(_translate("frmSellingPoint", "Set the selling point"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

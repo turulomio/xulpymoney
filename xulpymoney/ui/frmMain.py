@@ -106,8 +106,8 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()
     def on_actionAbout_triggered(self):
         from xulpymoney.ui.frmAbout import frmAbout
-        fr=frmAbout(self.mem, self, "frmabout")
-        fr.open()
+        fr=frmAbout(self.mem)
+        fr.exec_()
 
     @pyqtSlot()  
     def on_actionBanks_triggered(self):

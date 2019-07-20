@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgSimulationsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -87,7 +88,5 @@ class Ui_wdgSimulationsAdd(object):
         self.lblTitulo.setText(_translate("wdgSimulationsAdd", "Create new simulation"))
         self.groupBox.setTitle(_translate("wdgSimulationsAdd", "Start date and time"))
         self.groupBox_2.setTitle(_translate("wdgSimulationsAdd", "End date and time"))
-
-
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

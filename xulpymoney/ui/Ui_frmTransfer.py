@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmTransfer.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -106,8 +107,6 @@ class Ui_frmTransfer(object):
         self.txtComision.setToolTip(_translate("frmTransfer", "Amount must be positive"))
         self.txtComision.setText(_translate("frmTransfer", "0"))
         self.cmd.setText(_translate("frmTransfer", "Transfer"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

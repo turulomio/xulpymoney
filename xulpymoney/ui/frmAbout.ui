@@ -21,6 +21,36 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Xulpymoney</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblVersion">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <spacer name="horizontalSpacer_2">
@@ -82,26 +112,6 @@
       </layout>
      </item>
      <item>
-      <widget class="QLabel" name="lblApp">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Xulpymoney</string>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
         <number>1</number>
@@ -144,153 +154,173 @@ p, li { white-space: pre-wrap; }
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="myQTableWidget" name="tblStatistics">
-           <row>
-            <property name="text">
-             <string>Shares products number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Funds number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Indexes number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>ETF  number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Warrants number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Número de Deuda pública</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Número de Deuda privada</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>CFD number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Futures number</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string/>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Obsolete products</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string/>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Effective products</string>
-            </property>
-           </row>
-           <column>
-            <property name="text">
-             <string>Total</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
-            </property>
-           </column>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="myQTableWidget" name="tblStatistics">
+             <row>
+              <property name="text">
+               <string>Shares products number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Funds number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Indexes number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>ETF  number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Warrants number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Número de Deuda pública</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Número de Deuda privada</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>CFD number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Futures number</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string/>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Obsolete products</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string/>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Effective products</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>Total</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblProductsVersion">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>

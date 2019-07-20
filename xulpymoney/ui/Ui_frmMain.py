@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmMain.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -714,6 +715,4 @@ class Ui_frmMain(object):
         self.actionShowBenchmark.setToolTip(_translate("frmMain", "Show benchmark index"))
         self.actionInvestmentsZeroRisk.setText(_translate("frmMain", "Zero risk investment list"))
         self.actionInvestmentsZeroRisk.setToolTip(_translate("frmMain", "Zero risk investment list"))
-
-
 import xulpymoney.images.xulpymoney_rc

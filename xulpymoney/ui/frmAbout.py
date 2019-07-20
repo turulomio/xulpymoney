@@ -8,9 +8,10 @@ from PyQt5.QtWidgets import QDialog
 from xulpymoney.libxulpymoneyfunctions import qcenter, qempty, qright
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
+from xulpymoney.version import __version__,  __versiondate__
 
 class frmAbout(QDialog, Ui_frmAbout):
-    def __init__(self, mem,  parent = None, name = None, modal = False):
+    def __init__(self, mem):
         """
         Constructor
         
@@ -19,12 +20,13 @@ class frmAbout(QDialog, Ui_frmAbout):
         @param modal Flag indicating a modal dialog. (boolean)
         """
         self.mem=mem
-        QDialog.__init__(self, parent)
-        if name:
-            self.setObjectName(name)
+        QDialog.__init__(self)
         self.setModal(True)
         self.setupUi(self)
         
+        self.lblVersion.setText("{} ({})".format(__version__, __versiondate__))
+        productsversion=int(self.mem.settingsdb.value("Version of products.xlsx", 0))
+        self.lblProductsVersion.setText("Products synchronization version is {}".format(productsversion))
         self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 
