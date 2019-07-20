@@ -50,10 +50,10 @@ class PyInstaller(Command):
         f.write("""import {0}
 import sys
 import os
-print(sys.path)
-# NO funciona con PyQt5-2.13 tuve que bajar a PyQt5-2.12.1, PyQtWebengine y Pyqtchart, con la versión 3.5. Bug de Pyinstaller. Probar más adelante. Comprobado el 20190720
+# NO funciona con PyQt5-2.13 tuve que bajar a PyQt5-2.12.1, PyQtWebengine y Pyqtchart, con la version 3.5. Bug de Pyinstaller. Probar mas adelante. Comprobado el 20190720
 if hasattr(sys,'frozen'): #CREO QUE CON ESTO SI FUNCIONARIA EN 2.13
     sys.path.append( sys._MEIPASS)
+print(sys.path)
 {0}.main()
 """.format(module))
         f.close()        
