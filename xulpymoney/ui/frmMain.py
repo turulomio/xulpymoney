@@ -5,9 +5,10 @@ from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
+import logging
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -57,15 +58,18 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             self.actionDocumentsPurge.setEnabled(False)
+        
+        self.__checks_version_of_products_xlsx()
 
     ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
     def __checks_version_of_products_xlsx(self):
         from xulpymoney.github import get_file_modification_dt
-        dbversion=self.mem.settingsdb.value("Version of products.xlsx",None)
+        dbversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), type=6)
         internetversion=get_file_modification_dt("turulomio","xulpymoney","products.xlsx")
-        if self.mem.settingsdb.value("Version of products.xlsx", None)==None or dbversion<internetversion:
+        if dbversion<internetversion:
+            logging.info(self.tr("Products list outdated, please upgrade it"))
             self.actionProductsUpdate.setText(self.tr("Update products from Internet (NEEDED)"))
-            self.actionRangeReport.setIcon(QIcon(":/xulpymoney/cloud_download_needed.png"))
+            self.actionProductsUpdate.setIcon(QIcon(":/xulpymoney/cloud_download_needed.png"))
 
 
     def actionsEnabled(self, bool):
@@ -106,8 +110,8 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()
     def on_actionAbout_triggered(self):
         from xulpymoney.ui.frmAbout import frmAbout
-        fr=frmAbout(self.mem, self, "frmabout")
-        fr.open()
+        fr=frmAbout(self.mem)
+        fr.exec_()
 
     @pyqtSlot()  
     def on_actionBanks_triggered(self):
@@ -186,12 +190,24 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionHelp_triggered(self):
+        def in_external():
+            QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
+
+        try:
+            user=os.environ['USER']
+        except:
+            user=None
+
         try: ## Remove when qwebwenginewidgets work again
             from xulpymoney.ui.frmHelp import frmHelp
-            w=frmHelp(self.mem, self)
-            w.show()
+
+            if user!=None and user=="root":
+                in_external()
+            else:
+                w=frmHelp(self.mem, self)
+                w.show()
         except:
-            QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
+            in_external()
 
     @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
@@ -848,6 +864,8 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsUpdate_triggered(self):
         p=ProductManager(self.mem)
         p.update_from_internet()
+        self.actionProductsUpdate.setText(self.tr("Update products from Internet"))
+        self.actionProductsUpdate.setIcon(QIcon(":/xulpymoney/cloud_download.png"))
 
         
     @pyqtSlot()  

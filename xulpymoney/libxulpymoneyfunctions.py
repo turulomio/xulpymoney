@@ -248,6 +248,8 @@ def dtaware2string(dt, type=eDtStrings.QTableWidgetItem):
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
     elif type==eDtStrings.Filename:
             resultado="{}{}{} {}{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2))
+    elif type==eDtStrings.String:
+        resultado="{}{}{}{}{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2))
     return resultado
     
 ## allows you to measure the execution time of the method/function by just adding the @timeit decorator on the method.
@@ -370,6 +372,10 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         micro=int(arrPunto[1][:-5])
         dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
         dat=dat+datetime.timedelta(microseconds=micro)
+        return dat
+    if type==6:#201907210725 ==> Naive
+        dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
+        print(s, dat)
         return dat
 
 ## Converts a tring 12:23 to a datetime.time object

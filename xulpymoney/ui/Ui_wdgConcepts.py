@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgConcepts.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -146,8 +147,6 @@ class Ui_wdgConcepts(object):
         self.tab.setTabText(self.tab.indexOf(self.tabIncomes), _translate("wdgConcepts", "Incomes"))
         self.actionHistoricalReport.setText(_translate("wdgConcepts", "Historical report"))
         self.actionHistoricalReport.setToolTip(_translate("wdgConcepts", "Historical report"))
-
-
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmQuotesIBM.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -82,8 +83,6 @@ class Ui_frmQuotesIBM(object):
         self.chkNone.setText(_translate("frmQuotesIBM", "Add a close session price"))
         self.label.setText(_translate("frmQuotesIBM", "Add a price"))
         self.chkCanBePurged.setText(_translate("frmQuotesIBM", "Can be purged?"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc

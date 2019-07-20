@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgOpportunities.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -148,8 +149,6 @@ class Ui_wdgOpportunities(object):
         self.actionRemove.setToolTip(_translate("wdgOpportunities", "Remove opportunity"))
         self.actionShowGraphic.setText(_translate("wdgOpportunities", "Show opportunity graphic"))
         self.actionShowGraphic.setToolTip(_translate("wdgOpportunities", "Show opportunity graphic"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgYear import wdgYear

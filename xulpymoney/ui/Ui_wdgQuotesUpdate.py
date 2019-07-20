@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgQuotesUpdate.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -83,6 +84,4 @@ class Ui_wdgQuotesUpdate(object):
         self.cmdAll.setText(_translate("wdgQuotesUpdate", "Update all products"))
         self.cmdError.setText(_translate("wdgQuotesUpdate", "Next error"))
         self.tab.setTabText(self.tab.indexOf(self.tab_4), _translate("wdgQuotesUpdate", "Update results"))
-
-
 import xulpymoney.images.xulpymoney_rc

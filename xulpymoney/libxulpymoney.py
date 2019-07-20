@@ -19,7 +19,7 @@ from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number
-from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
+from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
 from PyQt5.QtChart import QChart
@@ -1118,6 +1118,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         self.mem.con.commit()
         self.mem.languages.cambiar(oldlanguage)
         os.remove("product.xlsx")
+        
+        dt_string=dtaware2string(self.mem.localzone.now(), type=eDtStrings.String)
+        logging.info("Product list version set to {}".format(dt_string))
+        self.mem.settingsdb.setValue("Version of products.xlsx", dt_string)
         self.mem.data.load()
 
     def list_ISIN_XULPYMONEY(self):

@@ -99,8 +99,14 @@ class eConcept:
 
 ## Types for dt strings. Used in dtaware2string function
 class eDtStrings:
+    ## Parsed for ui
     QTableWidgetItem=1
+    
+    ## 20190909 0909
     Filename=2
+    
+    ## 201909090909
+    String=3
 
 ## Sets if a Historical Chart must adjust splits or dividends with splits or do nothing
 class eHistoricalChartAdjusts:

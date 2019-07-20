@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAbout.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -20,6 +21,21 @@ class Ui_frmAbout(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
+        self.lbl = QtWidgets.QLabel(frmAbout)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lbl.setFont(font)
+        self.lbl.setScaledContents(False)
+        self.lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl.setObjectName("lbl")
+        self.verticalLayout.addWidget(self.lbl)
+        self.lblVersion = QtWidgets.QLabel(frmAbout)
+        self.lblVersion.setText("")
+        self.lblVersion.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblVersion.setObjectName("lblVersion")
+        self.verticalLayout.addWidget(self.lblVersion)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -40,16 +56,6 @@ class Ui_frmAbout(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.lblApp = QtWidgets.QLabel(frmAbout)
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lblApp.setFont(font)
-        self.lblApp.setScaledContents(False)
-        self.lblApp.setAlignment(QtCore.Qt.AlignCenter)
-        self.lblApp.setObjectName("lblApp")
-        self.verticalLayout.addWidget(self.lblApp)
         self.tab = QtWidgets.QTabWidget(frmAbout)
         self.tab.setObjectName("tab")
         self.tabGLParchis = QtWidgets.QWidget()
@@ -64,6 +70,8 @@ class Ui_frmAbout(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tblStatistics = myQTableWidget(self.tab_2)
         self.tblStatistics.setObjectName("tblStatistics")
         self.tblStatistics.setColumnCount(16)
@@ -126,7 +134,17 @@ class Ui_frmAbout(object):
         self.tblStatistics.setHorizontalHeaderItem(14, item)
         item = QtWidgets.QTableWidgetItem()
         self.tblStatistics.setHorizontalHeaderItem(15, item)
-        self.horizontalLayout_2.addWidget(self.tblStatistics)
+        self.verticalLayout_4.addWidget(self.tblStatistics)
+        self.lblProductsVersion = QtWidgets.QLabel(self.tab_2)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.lblProductsVersion.setFont(font)
+        self.lblProductsVersion.setText("")
+        self.lblProductsVersion.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblProductsVersion.setObjectName("lblProductsVersion")
+        self.verticalLayout_4.addWidget(self.lblProductsVersion)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_4)
         self.tab.addTab(self.tab_2, "")
         self.tabSoftware = QtWidgets.QWidget()
         self.tabSoftware.setObjectName("tabSoftware")
@@ -320,7 +338,7 @@ class Ui_frmAbout(object):
     def retranslateUi(self, frmAbout):
         _translate = QtCore.QCoreApplication.translate
         frmAbout.setWindowTitle(_translate("frmAbout", "Xulpymoney"))
-        self.lblApp.setText(_translate("frmAbout", "Xulpymoney"))
+        self.lbl.setText(_translate("frmAbout", "Xulpymoney"))
         self.textEdit.setHtml(_translate("frmAbout", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -385,7 +403,5 @@ class Ui_frmAbout(object):
         item.setText(_translate("frmAbout", "Url"))
         self.tab.setTabText(self.tab.indexOf(self.tabSoftware), _translate("frmAbout", "Software used"))
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
-
-
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

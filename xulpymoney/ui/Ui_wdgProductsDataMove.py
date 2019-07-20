@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgProductsDataMove.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -126,7 +127,5 @@ class Ui_wdgProductsDataMove(object):
         self.cmdInterchange.setText(_translate("wdgProductsDataMove", "..."))
         self.chkInvestments.setText(_translate("wdgProductsDataMove", "Change personal investments with origin product to destiny product"))
         self.cmd.setText(_translate("wdgProductsDataMove", "Move data"))
-
-
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

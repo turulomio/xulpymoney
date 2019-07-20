@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgInvestmentsRanking.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -89,7 +90,5 @@ class Ui_wdgInvestmentsRanking(object):
         self.actionSameProductFIFO.setToolTip(_translate("wdgInvestmentsRanking", "Same product Investments merging operations"))
         self.actionProduct.setText(_translate("wdgInvestmentsRanking", "Product report"))
         self.actionProduct.setToolTip(_translate("wdgInvestmentsRanking", "Product report"))
-
-
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

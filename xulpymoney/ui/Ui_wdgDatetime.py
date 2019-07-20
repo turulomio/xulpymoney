@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgDatetime.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -70,5 +71,3 @@ class Ui_wdgDatetime(object):
         self.teMicroseconds.setToolTip(_translate("wdgDatetime", "Select microseconds"))
         self.cmdNow.setToolTip(_translate("wdgDatetime", "Set current time"))
         self.cmdNow.setText(_translate("wdgDatetime", "Now"))
-
-

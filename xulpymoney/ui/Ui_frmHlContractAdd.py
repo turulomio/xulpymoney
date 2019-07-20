@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmHlContractAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -127,8 +128,6 @@ class Ui_frmHlContractAdd(object):
         self.txtCommission.setText(_translate("frmHlContractAdd", "0"))
         self.lblGross.setText(_translate("frmHlContractAdd", "Interest amount"))
         self.lblLiquido.setText(_translate("frmHlContractAdd", "Commission amount"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 import xulpymoney.images.xulpymoney_rc
