@@ -35,16 +35,33 @@ class PyInstaller(Command):
 
     def finalize_options(self):
         pass
-
+    ## TODOS LOS ERRORES VINIERON POR TENER MAL EL __init__ LE PUSE _ALL__
+    ## TAMBIEN VINIERON PORQUE EL NOMBRE DEL SCRIPT AUXILIAR ERA EL MISMO QUE EL DEL PAQUETE
     def run(self):
         os.system("python setup.py uninstall")
         os.system("python setup.py install")
-        f=open("build/run.py","w")
-        f.write("import xulpymoney\n")
-        f.write("xulpymoney.main()\n")
-        f.close()
-        os.chdir("build")
-        os.system("""pyinstaller run.py -n xulpymoney-{} --onefile --windowed --icon ../xulpymoney/images/xulpymoney.ico --distpath ../dist""".format(__version__))
+        
+        self.entry_point("xulpymoney.xulpymoney","xulpymoney")
+        self.entry_point("xulpymoney.xulpymoney_init","xulpymoney_init")
+
+    def entry_point(self,module,name):
+        filename=module.replace(".","_")+".py"
+        f=open(filename,"w")
+        f.write("""import {0}
+import sys
+import os
+print(sys.path)
+# NO funciona con PyQt5-2.13 tuve que bajar a PyQt5-2.12.1, PyQtWebengine y Pyqtchart
+if hasattr(sys,'frozen'): #CREO QUE CON ESTO SI FUNCIONARIA EN 2.13
+    sys.path.append( sys._MEIPASS)
+{0}.main()
+""".format(module))
+        f.close()        
+        ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
+        os.system("pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --windowed --noconfirm --onefile --distpath ./dist  --clean {}".format(name,__version__,filename))
+
+
+
 
 class Compile(Command):
     description = "Compile ui and images"
