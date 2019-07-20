@@ -35,8 +35,10 @@ class PyInstaller(Command):
 
     def finalize_options(self):
         pass
+        
     ## TODOS LOS ERRORES VINIERON POR TENER MAL EL __init__ LE PUSE _ALL__
     ## TAMBIEN VINIERON PORQUE EL NOMBRE DEL SCRIPT AUXILIAR ERA EL MISMO QUE EL DEL PAQUETE
+    ## PKG_RESOURCES IS NOT SUPPORTED BY PYINSTALLER. I COPY QM to .
     def run(self):
         os.system("python setup.py uninstall")
         os.system("python setup.py install")
@@ -58,7 +60,12 @@ print(sys.path)
 """.format(module))
         f.close()        
         ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
-        os.system("pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --windowed --noconfirm --onefile --distpath ./dist  --clean {}".format(name,__version__,filename))
+        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --windowed  --noconfirm  --distpath ./dist  --clean {}  \
+            --add-data xulpymoney/i18n/xulpymoney_es.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_fr.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_ro.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_ru.qm;i18n \
+        """.format(name,__version__,filename))
 
 
 
