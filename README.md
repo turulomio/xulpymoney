@@ -21,7 +21,7 @@ If you use another distribution, you nee to install PyQtChart and PyQtWebEngine 
 
 Install in Windows
 ==================
-Install python. Add python to the path
+Install python from https://www.python.org/downloads/ and don't forget to add python to the path during installation.
 
 Open a CMD console
 
