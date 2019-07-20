@@ -7198,9 +7198,21 @@ class LanguageManager(ObjectManager_With_IdName_Selectable):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-    def cambiar(self, id):  
-        """language es un string"""
-        filename=pkg_resources.resource_filename("xulpymoney","i18n/xulpymoney_{}.qm".format(id))
+    ## @param id String
+    def cambiar(self, id):
+        def best_path():
+            for filename in [
+                pkg_resources.resource_filename("xulpymoney","i18n/xulpymoney_{}.qm".format(id)), #Used in pypi and Linux
+                "i18n/xulpymoney_{}.qm".format(id), #Used in pyinstaller --onedir, becaouse pkg_resources is not supported
+                pkg_resources.resource_filename("xulpymoney","../i18n/xulpymoney_{}.qm".format(id)), #Used in pyinstaller --onefile, becaouse pkg_resources is not supported
+            ]:
+                if filename!=None and os.path.exists(filename):
+                    print("FOUND", filename)
+                    return filename
+                else:
+                    print ("NOT FOUND",  filename)
+        ####################
+        filename=best_path()
         logging.debug(filename)
         self.mem.qtranslator.load(filename)
         logging.info("Language changed to {}".format(id))
