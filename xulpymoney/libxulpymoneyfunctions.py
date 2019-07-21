@@ -13,6 +13,7 @@ import inspect
 import logging
 import pkg_resources
 import pytz
+import socket
 import sys
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.libxulpymoneytypes import eDtStrings
@@ -376,7 +377,6 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         return dat
     if type==6:#201907210725 ==> Naive
         dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
-        print(s, dat)
         return dat
 
 ## Converts a tring 12:23 to a datetime.time object
@@ -700,6 +700,17 @@ def is_positive(number):
     if number>=0:
         return True
     return False
+
+## Checks if there is internet
+def is_there_internet():
+    try:
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        socket.create_connection(("www.google.com", 80))
+        return True
+    except OSError:
+        return False
+
 
 ## Sets the sign of other number
 def set_sign_of_other_number(number, number_to_change):

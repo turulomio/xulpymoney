@@ -17,7 +17,8 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number, package_filename
+from xulpymoney.github import get_file_modification_dtaware
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number, package_filename, is_there_internet
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
@@ -1005,6 +1006,15 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
         ods.save()
 
+    ## Returns products.xlsx modification datetime or None if it can't find it
+    def dtaware_internet_products_xlsx(self):
+        aware= get_file_modification_dtaware("turulomio","xulpymoney","products.xlsx")
+        if aware==None:
+            return aware
+        else:
+            return aware.replace(second=0)#Due to in database globals we only save minutes
+
+
     ## Function that downloads products.xlsx from github repository and compares sheet data with database products.arr
     ## If detects modifications or new products updates database.
     def update_from_internet(self):
@@ -1050,6 +1060,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             except:
                 print("Error creando ProductODS con Id: {}".format(p.id))
                 return None
+        #---------------------------------------------------
+        #Checks if there is Internet
+        if is_there_internet()==False:
+            return
         #Download file 
         from urllib.request import urlretrieve
         urlretrieve ("https://github.com/Turulomio/xulpymoney/blob/master/products.xlsx?raw=true", "product.xlsx")
@@ -1118,7 +1132,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         self.mem.languages.cambiar(oldlanguage)
         os.remove("product.xlsx")
         
-        dt_string=dtaware2string(self.mem.localzone.now(), type=eDtStrings.String)
+        dt_string=dtaware2string(self.dtaware_internet_products_xlsx(), type=eDtStrings.String)
         logging.info("Product list version set to {}".format(dt_string))
         self.mem.settingsdb.setValue("Version of products.xlsx", dt_string)
         self.mem.data.load()

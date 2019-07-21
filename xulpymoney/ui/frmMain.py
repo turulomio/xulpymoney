@@ -8,7 +8,7 @@ import os
 import logging
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -34,6 +34,7 @@ from xulpymoney.ui.wdgProducts import wdgProducts
 from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
 from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
 from stdnum.isin import is_valid
+from datetime import timezone
 
 from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
 
@@ -63,13 +64,15 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
     def __checks_version_of_products_xlsx(self):
-        from xulpymoney.github import get_file_modification_dt
         dbversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), type=6)
-        internetversion=get_file_modification_dt("turulomio","xulpymoney","products.xlsx")
-        if dbversion<internetversion:
+        dbversion=dbversion.replace(tzinfo=timezone.utc)
+        internetversion=self.mem.data.products.dtaware_internet_products_xlsx()
+        if internetversion!=None and dbversion<internetversion:
             logging.info(self.tr("Products list outdated, please upgrade it"))
             self.actionProductsUpdate.setText(self.tr("Update products from Internet (NEEDED)"))
             self.actionProductsUpdate.setIcon(QIcon(":/xulpymoney/cloud_download_needed.png"))
+        if is_there_internet()==False:
+            self.actionProductsUpdate.setEnabled(False)
 
 
     def actionsEnabled(self, bool):
