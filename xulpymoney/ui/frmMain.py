@@ -64,7 +64,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
     def __checks_version_of_products_xlsx(self):
-        dbversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), type=6)
+        dbversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", "190001010000"), type=6)
         dbversion=dbversion.replace(tzinfo=timezone.utc)
         internetversion=self.mem.data.products.dtaware_internet_products_xlsx()
         if internetversion!=None and dbversion<internetversion:

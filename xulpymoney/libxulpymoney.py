@@ -7783,10 +7783,13 @@ class SettingsDB:
         cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=%s", (self.id(name), ))
         if cur.rowcount==0:
+            cur.close()
             return default
         else:
             value=cur.fetchone()[0]
             cur.close()
+            if value==None:
+                return default
             return value
         
     def setValue(self, name, value):
