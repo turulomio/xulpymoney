@@ -541,7 +541,7 @@ def package_filename(module, url):
         pkg_resources.resource_filename(module,"../{}".format(url)), #Used in pyinstaller --onefile, becaouse pkg_resources is not supported
     ]:
         if filename!=None and path.exists(filename):
-            logging.info("FOUND", filename) #When debugging in windows, change logging for printt
+            logging.info("FOUND " +  filename) #When debugging in windows, change logging for printt
             return filename
         else:
             logging.debug("NOT FOUND",  filename)

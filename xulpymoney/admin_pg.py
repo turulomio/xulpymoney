@@ -70,18 +70,16 @@ class AdminPG:
         con.connect()
         return con
         
-    def copy(self, con_origin, sql,  table_destiny ):
-        """Used to copy between tables, and sql to table_destiny, table origin and destiny must have the same structure"""
-        if sql.__class__==bytes:
-            sql=sql.decode('UTF-8')
+    ## Used to copy between tables, and sql to table_destiny, table origin and destiny must have the same structure
+    def copy(self, con_origin, con_destiny, sql_origin,  table_destiny , schema="public."):
+        if sql_origin.__class__==bytes:
+            sql_origin=sql_origin.decode('UTF-8')
         f=io.StringIO()
         cur_origin=con_origin.cursor()
-        cur_origin.copy_expert("copy ({}) to stdout".format(sql), f)
+        cur_origin.copy_expert("copy ({}) to stdout".format(sql_origin), f)
         cur_origin.close()
         f.seek(0)
-        cur_destiny=self.con.cursor()
-        cur_destiny.copy_from(f, table_destiny)
+        cur_destiny=con_destiny.cursor()
+        cur_destiny.copy_from(f, schema + table_destiny)
         cur_destiny.close()
-        f.seek(0)
-        logging.debug (f.read())
         f.close()
