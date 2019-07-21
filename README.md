@@ -21,6 +21,11 @@ If you use another distribution, you nee to install PyQtChart and PyQtWebEngine 
 
 Install in Windows
 ==================
+
+You just download xulpymoney-X.X.X.exe and xulpymoney_init-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
+
+Install in Windows with Python
+==============================
 Install python from https://www.python.org/downloads/ and don't forget to add python to the path during installation.
 
 Open a CMD console
@@ -56,6 +61,13 @@ Dependencies
 
 Changelog
 =========
+0.8.0
+  * Pies showing different investments classifications now show Not Leveraged amounts
+  * Fixed problem showing help with root.
+  * Menu option to update products from internet is working fine now.
+  * Pyinstaller works again to package windows executables.
+  * xulpymoney_init now works on Windows. It's packaged in a different file.
+
 0.7.0
   * Added several products to products.xlsx
   * Fixed comments bugs
