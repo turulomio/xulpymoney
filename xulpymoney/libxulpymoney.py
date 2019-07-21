@@ -10,7 +10,6 @@ import datetime
 import time
 import logging
 import pytz
-import pkg_resources
 import sys
 import argparse
 import getpass
@@ -18,7 +17,7 @@ import os
 from decimal import Decimal, getcontext
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number
+from xulpymoney.libxulpymoneyfunctions import makedirs, qdatetime, dtaware, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, list2string, dirs_create, qempty,  deprecated, have_same_sign, set_sign_of_other_number, package_filename
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
@@ -7200,19 +7199,7 @@ class LanguageManager(ObjectManager_With_IdName_Selectable):
 
     ## @param id String
     def cambiar(self, id):
-        def best_path():
-            for filename in [
-                pkg_resources.resource_filename("xulpymoney","i18n/xulpymoney_{}.qm".format(id)), #Used in pypi and Linux
-                "i18n/xulpymoney_{}.qm".format(id), #Used in pyinstaller --onedir, becaouse pkg_resources is not supported
-                pkg_resources.resource_filename("xulpymoney","../i18n/xulpymoney_{}.qm".format(id)), #Used in pyinstaller --onefile, becaouse pkg_resources is not supported
-            ]:
-                if filename!=None and os.path.exists(filename):
-                    print("FOUND", filename)
-                    return filename
-                else:
-                    print ("NOT FOUND",  filename)
-        ####################
-        filename=best_path()
+        filename=package_filename("xulpymoney", "i18n/xulpymoney_{}.qm".format(id))
         logging.debug(filename)
         self.mem.qtranslator.load(filename)
         logging.info("Language changed to {}".format(id))

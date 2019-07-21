@@ -11,6 +11,7 @@ import functools
 import warnings
 import inspect
 import logging
+import pkg_resources
 import pytz
 import sys
 from xulpymoney.version import __version__, __versiondate__
@@ -527,6 +528,24 @@ def str2bool(s):
     if s=="True":
         return True
     return False    
+
+## Returns the path searching in a pkg_resource model and a url. Due to PYinstaller packager doesn't supportpkg_resource
+## filename is differet if we are in LInux, Windows --onefile or Windows --onedir
+## @param module String
+## @param url String
+## @return string with the filename
+def package_filename(module, url):
+    for filename in [
+        pkg_resources.resource_filename(module, url), #Used in pypi and Linux
+        url, #Used in pyinstaller --onedir, becaouse pkg_resources is not supported
+        pkg_resources.resource_filename(module,"../{}".format(url)), #Used in pyinstaller --onefile, becaouse pkg_resources is not supported
+    ]:
+        if filename!=None and path.exists(filename):
+            logging.info("FOUND", filename) #When debugging in windows, change logging for printt
+            return filename
+        else:
+            logging.debug("NOT FOUND",  filename)
+
 ## Converts boolean to  True or False string
 ## @param s String
 ## @return Boolean
