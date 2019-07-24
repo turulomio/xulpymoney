@@ -1,7 +1,7 @@
-from PyQt5.QtCore import pyqtSlot,  Qt
+from PyQt5.QtCore import pyqtSlot,  Qt, QObject
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
-from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
+from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
@@ -111,8 +111,8 @@ class TotalMonth:
             self.no_loses_value=Assets(self.mem).invested(self.last_day())+self.total_accounts()
         return self.no_loses_value
 
+## Set of 12 totalmonths in the same year
 class TotalYear:
-    """Set of 12 totalmonths in the same year"""
     def __init__(self, mem, year):
         self.mem=mem
         self.year=year
@@ -258,16 +258,30 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentIndex(0)
         self.tabData.setCurrentIndex(0)
         self.tabPlus.setCurrentIndex(0)
+        
+        self.pd= QProgressDialog("Loading data", None, 0,13    )
+        self.pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        self.pd.setModal(True)
+        self.pd.setWindowTitle(QApplication.translate("Core","Generating total report..."))
+        self.pd.forceShow()
+        self.progress_bar_update()
 
         self.load_data()
         self.load_targets()
         self.load_targets_with_funds_revaluation()
         self.load_invest_or_work()
         self.load_make_ends_meet()
+        self.progress_bar_update()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
 
+    ## One step forward
+    def progress_bar_update(self):
+        self.pd.setValue(self.pd.value()+1)
+        self.pd.update()
+        QApplication.processEvents()
 
+        
 
     def load_data(self):
         self.table.clearContents()
@@ -286,7 +300,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 self.table.setItem(7, i, m.total_investments().qtablewidgetitem())
                 self.table.setItem(8, i, m.total().qtablewidgetitem())
                 self.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
-                self.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())
+                self.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())            
+            self.progress_bar_update()
         self.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
         self.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
         self.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
