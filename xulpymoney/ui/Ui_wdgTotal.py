@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgTotal.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -699,8 +700,6 @@ class Ui_wdgTotal(object):
         self.actionShowTaxes.setToolTip(_translate("wdgTotal", "Show taxes"))
         self.actionGainsByProductType.setText(_translate("wdgTotal", "Gains by product type"))
         self.actionGainsByProductType.setToolTip(_translate("wdgTotal", "Gains by product type"))
-
-
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

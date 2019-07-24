@@ -59,7 +59,7 @@ class Connection:
 
     def load_script(self, file):
         cur= self._con.cursor()
-        procedures  = open(file,'r').read() 
+        procedures  = open(file,'r', encoding='utf-8').read() 
         cur.execute(procedures)
         cur.close()       
 

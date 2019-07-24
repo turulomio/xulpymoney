@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmDividendsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -169,8 +170,6 @@ class Ui_frmDividendsAdd(object):
         self.txtComision.setText(_translate("frmDividendsAdd", "0"))
         self.lblLiquido_7.setText(_translate("frmDividendsAdd", "Net amount"))
         self.txtNeto.setText(_translate("frmDividendsAdd", "0"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgCurrencyConversion import wdgCurrencyConversion
 from xulpymoney.ui.wdgDatetime import wdgDatetime

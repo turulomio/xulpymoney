@@ -35,16 +35,43 @@ class PyInstaller(Command):
 
     def finalize_options(self):
         pass
-
+        
+    ## TODOS LOS ERRORES VINIERON POR TENER MAL EL __init__ LE PUSE _ALL__
+    ## TAMBIEN VINIERON PORQUE EL NOMBRE DEL SCRIPT AUXILIAR ERA EL MISMO QUE EL DEL PAQUETE
+    ## PKG_RESOURCES IS NOT SUPPORTED BY PYINSTALLER. I COPY QM to .
+    ## --log-level DEBUG ALLOWS YOU TOO DEBUG PROBLEMS
     def run(self):
         os.system("python setup.py uninstall")
         os.system("python setup.py install")
-        f=open("build/run.py","w")
-        f.write("import xulpymoney\n")
-        f.write("xulpymoney.main()\n")
-        f.close()
-        os.chdir("build")
-        os.system("""pyinstaller run.py -n xulpymoney-{} --onefile --windowed --icon ../xulpymoney/images/xulpymoney.ico --distpath ../dist""".format(__version__))
+        
+        self.entry_point("xulpymoney.xulpymoney","xulpymoney")
+        self.entry_point("xulpymoney.xulpymoney_init","xulpymoney_init")
+
+    ## Makes a entry_point for this module, fuction should be main. It also executes pyinstaller
+    ## @param module strings with the module to import
+    ## @param name string with the name of the name of the file
+    def entry_point(self,module,name):
+        filename=module.replace(".","_")+".py"
+        f=open(filename,"w")
+        f.write("""import {0}
+import sys
+import os
+# NO funciona con PyQt5-2.13 tuve que bajar a PyQt5-2.12.1, PyQtWebengine y Pyqtchart, con la version 3.5. Bug de Pyinstaller. Probar mas adelante. Comprobado el 20190720
+if hasattr(sys,'frozen'): #CREO QUE CON ESTO SI FUNCIONARIA EN 2.13
+    sys.path.append( sys._MEIPASS)
+print(sys.path)
+{0}.main()
+""".format(module))
+        f.close()        
+        ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
+        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --windowed \
+            --noconfirm  --distpath ./dist  --clean {}  \
+            --add-data xulpymoney/i18n/xulpymoney_es.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_fr.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_ro.qm;i18n \
+            --add-data xulpymoney/i18n/xulpymoney_ru.qm;i18n \
+            --add-data xulpymoney/sql/xulpymoney.sql;sql \
+        """.format(name,__version__,filename))
 
 class Compile(Command):
     description = "Compile ui and images"

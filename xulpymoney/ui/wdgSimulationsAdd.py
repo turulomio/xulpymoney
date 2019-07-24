@@ -1,8 +1,8 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
-from xulpymoney.libxulpymoney import Assets,  Simulation, DBAdmin
-from xulpymoney.connection_pg_qt import ConnectionQt
+from xulpymoney.libxulpymoney import Assets,  Simulation
+from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
@@ -26,52 +26,33 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
             return
         
         type_id=self.cmbSimulationTypes.itemData(self.cmbSimulationTypes.currentIndex())
+        print(type_id)
         self.simulation=Simulation(self.mem, self.mem.con.db).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
         self.simulation.save()
         
-        
-        #Necesita solo roll superusuario y self.mem.con lo tiene
-        createadmin=DBAdmin(self.mem.con)
-        createadmin.create_db(self.simulation.simulated_db())
-        self.mem.con.commit()
+        newdb=XulpymoneyDatabase(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
+        if newdb.create()==False:
+            qmessagebox(self.tr("I couldn't create simulation"))
+            return
 
-        #Crea nueva conexión
-        self.con_sim=ConnectionQt().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
-        self.con_sim.connect()        
-        admin=DBAdmin(self.con_sim)
-        admin.xulpymoney_basic_schema()
-        self.con_sim.commit()
-        if self.simulation.type.id==1:#Copy between dates                    
-            already_banks=self.con_sim.cursor_one_column("select id_entidadesbancarias from entidadesbancarias order by id_entidadesbancarias")
-            mog=self.mem.con.mogrify("select * from entidadesbancarias where id_entidadesbancarias not in %s  order by id_entidadesbancarias", (tuple(already_banks), ))
-            admin.copy(self.mem.con, mog,  "entidadesbancarias")
-            
-            admin.copy(self.mem.con, "select * from cuentas  order by id_cuentas",  "cuentas")
-            
-            admin.copy(self.mem.con, "select * from tarjetas  order by id_tarjetas",  "tarjetas")
-
-            already_products=self.con_sim.cursor_one_column("select id from products order by id")#Rest personal products
-            mog=self.mem.con.mogrify("select * from products where id not in %s  order by id", (tuple(already_products), ))
-            admin.copy(self.mem.con, mog,  "products")
-            
-            admin.copy(self.mem.con, "select * from quotes ",  "quotes")
-            
-            admin.copy(self.mem.con, "select * from dps ",  "dps")
-            
-            admin.copy(self.mem.con, "select * from estimations_dps",  "estimations_dps")
-            
-            admin.copy(self.mem.con, "select * from estimations_eps ",  "estimations_eps")
-            
-            admin.copy(self.mem.con, "select * from inversiones order by id_inversiones",  "inversiones")
-            
-            admin.copy(self.mem.con, "select * from dividends order by id_dividends",  "dividends")
-            
-            already_conceptos=self.con_sim.cursor_one_column("select id_conceptos from conceptos order by id_conceptos")
-            mog=self.mem.con.mogrify("select * from conceptos where id_conceptos not in %s  order by id_conceptos ", (tuple(already_conceptos), ))
-            admin.copy(self.mem.con, mog,  "conceptos")
-            
-        self.con_sim.commit()
-        self.con_sim.disconnect()
+        if type_id==1:#Copy between dates 
+            print("Copying")
+            cur=newdb.newdbcon.cursor()#Deleting tables with register from empty creation
+            cur.execute("delete from public.products")
+            cur.execute("delete from public.conceptos")
+            cur.close()
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from entidadesbancarias where id_entidadesbancarias not in (3)",  "entidadesbancarias")#Due to 3 already is in schema
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from cuentas where id_cuentas not in (4)",  "cuentas")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from tarjetas",  "tarjetas")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from products",  "products")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from quotes",  "quotes")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from dps",  "dps")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from estimations_dps",  "estimations_dps")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from estimations_eps ",  "estimations_eps")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from inversiones",  "inversiones")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from conceptos",  "conceptos")
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from dividends",  "dividends")
+        newdb.newdbcon.commit()
         self.parent.accept()    
         
     @pyqtSlot()

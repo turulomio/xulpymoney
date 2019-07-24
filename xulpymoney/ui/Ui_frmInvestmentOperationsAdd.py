@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmInvestmentOperationsAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -113,8 +114,6 @@ class Ui_frmInvestmentOperationsAdd(object):
         self.txtAcciones.setText(_translate("frmInvestmentOperationsAdd", "0"))
         self.cmdComissionCalculator.setToolTip(_translate("frmInvestmentOperationsAdd", "Comission calculator"))
         self.cmd.setText(_translate("frmInvestmentOperationsAdd", "Save"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit

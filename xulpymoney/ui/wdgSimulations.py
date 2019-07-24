@@ -2,9 +2,10 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
 from xulpymoney.ui.wdgSimulationsAdd import wdgSimulationsAdd
 import xulpymoney.libdbupdates
+from xulpymoney.admin_pg import AdminPG
 import xulpymoney.ui.frmMain
 from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
-from xulpymoney.libxulpymoney import DBAdmin, SimulationManager, MemXulpymoney
+from xulpymoney.libxulpymoney import  SimulationManager, MemXulpymoney
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.version import __versiondate__
@@ -60,7 +61,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
             simcon.connect()
 
 
-            admin=DBAdmin(simcon)
+            admin=AdminPG(self.txtUser.text(), self.txtPass.text(),  self.txtServer.text(),  self.txtPort.text())
             admin.drop_db(self.simulations.selected.simulated_db())
             self.mem.con.commit()
             simcon.commit()            

@@ -11,7 +11,9 @@ import functools
 import warnings
 import inspect
 import logging
+import pkg_resources
 import pytz
+import socket
 import sys
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.libxulpymoneytypes import eDtStrings
@@ -248,6 +250,8 @@ def dtaware2string(dt, type=eDtStrings.QTableWidgetItem):
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
     elif type==eDtStrings.Filename:
             resultado="{}{}{} {}{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2))
+    elif type==eDtStrings.String:
+        resultado="{}{}{}{}{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2))
     return resultado
     
 ## allows you to measure the execution time of the method/function by just adding the @timeit decorator on the method.
@@ -370,6 +374,9 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         micro=int(arrPunto[1][:-5])
         dat=datetime.datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
         dat=dat+datetime.timedelta(microseconds=micro)
+        return dat
+    if type==6:#201907210725 ==> Naive
+        dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
 
 ## Converts a tring 12:23 to a datetime.time object
@@ -521,6 +528,24 @@ def str2bool(s):
     if s=="True":
         return True
     return False    
+
+## Returns the path searching in a pkg_resource model and a url. Due to PYinstaller packager doesn't supportpkg_resource
+## filename is differet if we are in LInux, Windows --onefile or Windows --onedir
+## @param module String
+## @param url String
+## @return string with the filename
+def package_filename(module, url):
+    for filename in [
+        pkg_resources.resource_filename(module, url), #Used in pypi and Linux
+        url, #Used in pyinstaller --onedir, becaouse pkg_resources is not supported
+        pkg_resources.resource_filename(module,"../{}".format(url)), #Used in pyinstaller --onefile, becaouse pkg_resources is not supported
+    ]:
+        if filename!=None and path.exists(filename):
+            logging.info("FOUND " +  filename) #When debugging in windows, change logging for printt
+            return filename
+        else:
+            logging.debug("NOT FOUND",  filename)
+
 ## Converts boolean to  True or False string
 ## @param s String
 ## @return Boolean
@@ -675,6 +700,17 @@ def is_positive(number):
     if number>=0:
         return True
     return False
+
+## Checks if there is internet
+def is_there_internet():
+    try:
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        socket.create_connection(("www.google.com", 80))
+        return True
+    except OSError:
+        return False
+
 
 ## Sets the sign of other number
 def set_sign_of_other_number(number, number_to_change):

@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgOpportunitiesAdd.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -108,8 +109,6 @@ class Ui_wdgOpportunitiesAdd(object):
         self.txtStoploss.setText(_translate("wdgOpportunitiesAdd", "0"))
         self.txtTarget.setText(_translate("wdgOpportunitiesAdd", "0"))
         self.label_4.setText(_translate("wdgOpportunitiesAdd", "Type of investment position"))
-
-
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

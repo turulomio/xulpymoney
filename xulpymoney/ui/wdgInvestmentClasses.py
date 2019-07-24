@@ -2,9 +2,10 @@ from xulpymoney.libxulpymoney import Assets, Money
 import math
 import datetime
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtChart import QChart
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from xulpymoney.ui.canvaschart import VCPie
-from PyQt5.QtChart import QChart
+from xulpymoney.libxulpymoneytypes import eLeverageType
 
 class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
     def __init__(self, mem,  parent=None):
@@ -124,7 +125,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                         total=total+i.balance().local()
                     else:
                         total=total+i.invertido().local()
-            if a.id==0:#Accounts
+            if a.id==eLeverageType.NotLeveraged:#Accounts
                 total=total+self.accounts
             if total.isGTZero():
                 self.viewApalancado.appendData(a.name.upper(), total.amount)
