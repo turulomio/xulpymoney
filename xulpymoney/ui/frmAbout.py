@@ -4,6 +4,8 @@ import platform
 import stdnum
 import PyQt5.QtCore
 import PyQt5.QtChart
+from psycopg2 import __version__ as psycopg2__version__
+from pytz import __version__ as pytz__version__
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.libxulpymoneyfunctions import qcenter, qempty, qright, string2datetime
 from xulpymoney.libxulpymoneytypes import eProductType
@@ -150,9 +152,18 @@ class frmAbout(QDialog, Ui_frmAbout):
 
     ##Function that fills tblSoftware with data 
     def load_tblSoftware(self):
-        self.tblSoftware.setItem(0, 0 , qright(colorama.__version__))
-        self.tblSoftware.setItem(1, 0 , qright(officegenerator.__version__))
-        self.tblSoftware.setItem(2, 0 , qright(PyQt5.QtCore.PYQT_VERSION_STR))
-        self.tblSoftware.setItem(3, 0 , qright(PyQt5.QtChart.PYQT_CHART_VERSION_STR))
-        self.tblSoftware.setItem(4, 0 , qright(platform.python_version()))
-        self.tblSoftware.setItem(5, 0, qright(stdnum.__version__))
+        #Postgres version
+        cur=self.mem.con.cursor()
+        postgres_version=self.mem.con.cursor_one_field("select version()")
+        cur.close()
+
+        # Ui
+        self.tblSoftware.setItem(0, 0, qright(colorama.__version__))
+        self.tblSoftware.setItem(1, 0, qright(officegenerator.__version__))
+        self.tblSoftware.setItem(2, 0, qright(postgres_version))
+        self.tblSoftware.setItem(3, 0, qright(psycopg2__version__))
+        self.tblSoftware.setItem(4, 0, qright(PyQt5.QtCore.PYQT_VERSION_STR))
+        self.tblSoftware.setItem(5, 0, qright(PyQt5.QtChart.PYQT_CHART_VERSION_STR))
+        self.tblSoftware.setItem(6, 0, qright(platform.python_version()))
+        self.tblSoftware.setItem(7, 0, qright(stdnum.__version__))
+        self.tblSoftware.setItem(8, 0, qright(pytz__version__))
