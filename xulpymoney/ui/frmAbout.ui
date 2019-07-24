@@ -332,12 +332,15 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Xulpymoney is an Open Source application. It uses the following software</string>
+            <string>Xulpymoney is an Open Source application. It uses the following software:</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="myQTableWidget" name="tblSoftware">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make click in the url to open link to the project main page&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <row>
             <property name="text">
              <string>Colorama</string>
