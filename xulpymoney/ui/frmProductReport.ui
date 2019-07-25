@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -80,7 +80,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>983</width>
-                <height>901</height>
+                <height>904</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -466,7 +466,7 @@
                          <bool>true</bool>
                         </attribute>
                         <attribute name="verticalHeaderVisible">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </attribute>
                         <row>
                          <property name="text">
@@ -962,7 +962,7 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>4</number>
+                 <number>0</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
@@ -1761,6 +1761,18 @@
    </property>
    <property name="toolTip">
     <string>Export quotes to Libreoffice ODS</string>
+   </property>
+  </action>
+  <action name="actionQuoteImportInvestingCom">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/investing_com.png</normaloff>:/xulpymoney/investing_com.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import csv from Investing.com</string>
+   </property>
+   <property name="toolTip">
+    <string>Import csv from Investing.com</string>
    </property>
   </action>
  </widget>
