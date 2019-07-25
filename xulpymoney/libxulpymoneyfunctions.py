@@ -345,6 +345,9 @@ def string2date(iso, type=1):
     if type==2: #DD/MM/YYYY
         d=iso.split("/")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
+    if type==3: #DD.MM.YYYY
+        d=iso.split(".")
+        return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
 
 ## Function to generate a datetime (aware or naive) from a string
 ## @param s String
@@ -378,6 +381,13 @@ def string2datetime(s, type, zone="Europe/Madrid"):
     if type==6:#201907210725 ==> Naive
         dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
+
+## Converts a string  to a decimal
+def string2decimal(s):
+    try:
+        return Decimal(s.replace(",", "."))
+    except:
+        return None
 
 ## Converts a tring 12:23 to a datetime.time object
 def string2time(s):
