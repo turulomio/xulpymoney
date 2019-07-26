@@ -1,7 +1,9 @@
-from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit
+from PyQt5.QtCore import Qt, QSize, pyqtSlot
+from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout
+from PyQt5.QtGui import QIcon
 from xulpymoney.libxulpymoney import Bank, Money, AccountManager, InvestmentManager
 from xulpymoney.libxulpymoneyfunctions import wdgBool, qmessagebox
+from xulpymoney.ui.canvaschart import VCPie
 from xulpymoney.ui.frmAccountsReport import frmAccountsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.Ui_wdgBanks import Ui_wdgBanks
@@ -11,21 +13,17 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        
-         
+
         self.banks=None#Set in on_chkActives_stateChanged
         self.investments=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
         self.accounts=AccountManager(self.mem, self.mem.data.banks)#Set
 
-
-        
         self.tblEB.settings(self.mem, "wdgBanks")
         self.tblAccounts.settings(self.mem, "wdgBanks")
         self.tblInvestments.settings(self.mem, "wdgBanks")
         
         self.on_chkActives_stateChanged(Qt.Checked)#Carga eb
 
-        
     def load_eb(self):
         self.banks.order_by_name()
         self.tblEB.clearContents()
@@ -55,8 +53,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             sumsaldos=sumsaldos+balance
         self.tblAccounts.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblAccounts.setItem(self.accounts.length(), 2, sumsaldos.qtablewidgetitem())  
-        
-                
+
     def load_inversiones(self):
         self.investments.order_by_name()
         self.tblInvestments.applySettings()
@@ -71,8 +68,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             sumsaldos=sumsaldos+balanc
         self.tblInvestments.setItem(self.investments.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblInvestments.setItem(self.investments.length(), 2, sumsaldos.qtablewidgetitem())
-        
-        
+
     def on_chkActives_stateChanged(self, state):
         self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
         self.load_eb()
@@ -150,6 +146,24 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             if i.row()<self.accounts.length():#Necesario porque tiene fila de total
                 self.accounts.selected=self.accounts.arr[i.row()]
         print ("Seleccionado: " +  str(self.accounts.selected))
+        
+    ## Displays a pie graph of banks
+    @pyqtSlot()
+    def on_cmdGraph_released(self):
+        d=QDialog(self)     
+        d.setWindowIcon(QIcon(":/xulpymoney/bank.png"))
+        d.resize(self.mem.settings.value("wdgBanks/qdialog_graph", QSize(800, 600)))
+        d.setWindowTitle(self.tr("Banks graph"))
+        view=VCPie()
+        view.clear(True)
+        view.setCurrency(self.mem.localcurrency)
+        for bank in self.mem.data.banks_active().arr:
+            view.appendData(bank.name, bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active()).amount)
+        view.display()
+        lay = QVBoxLayout(d)
+        lay.addWidget(view)
+        d.exec_()
+        self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
     def on_tblAccounts_customContextMenuRequested(self,  pos):
         if self.accounts.selected==None:
@@ -222,13 +236,4 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.banks.selected.active=not self.banks.selected.active
         self.banks.selected.save()
         self.mem.con.commit()   
-        
-        #Recoloca en los InvestmentManager
-        print (self.banks.selected)
-#        if self.banks.selected.active==True:#Está todavía en inactivas
-#            self.mem.data.banks_active().append(self.banks.selected)
-#            self.mem.data.banks_inactive().remove(self.banks.selected)
-#        else:#Está todavía en activas
-#            self.mem.data.banks_active().remove(self.banks.selected)
-#            self.mem.data.banks_inactive().append(self.banks.selected)
         self.on_chkActives_stateChanged(self.chkActives.checkState())
