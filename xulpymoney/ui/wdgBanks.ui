@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>826</width>
+    <width>1037</width>
     <height>591</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <iconset resource="../images/xulpymoney.qrc">
     <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout_8">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -35,7 +35,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
@@ -52,27 +52,59 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QCheckBox" name="chkActives">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Show only active entities</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QCheckBox" name="chkActives">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Show only active entities</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Show banks graph</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="cmdGraph">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../images/xulpymoney.qrc">
+                 <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_3">
