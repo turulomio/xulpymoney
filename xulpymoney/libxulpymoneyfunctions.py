@@ -383,11 +383,12 @@ def string2datetime(s, type, zone="Europe/Madrid"):
         return dat
 
 ## Converts a string  to a decimal
-def string2decimal(s):
-    try:
-        return Decimal(s.replace(",", "."))
-    except:
-        return None
+def string2decimal(s, type=1):
+    if type==1: #2.123,25
+        try:
+            return Decimal(s.replace(".","").replace(",", "."))
+        except:
+            return None
 
 ## Converts a tring 12:23 to a datetime.time object
 def string2time(s):
