@@ -14,7 +14,7 @@ class Ui_frmCreditCardsAdd(object):
     def setupUi(self, frmCreditCardsAdd):
         frmCreditCardsAdd.setObjectName("frmCreditCardsAdd")
         frmCreditCardsAdd.setWindowModality(QtCore.Qt.WindowModal)
-        frmCreditCardsAdd.resize(426, 225)
+        frmCreditCardsAdd.resize(426, 250)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/visa2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmCreditCardsAdd.setWindowIcon(icon)
@@ -73,7 +73,7 @@ class Ui_frmCreditCardsAdd(object):
         self.label_4 = QtWidgets.QLabel(frmCreditCardsAdd)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_4.addWidget(self.label_4)
-        self.txtNumber = QtWidgets.QLineEdit(frmCreditCardsAdd)
+        self.txtNumber = myQLineEditValidatingCreditCard(frmCreditCardsAdd)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -102,5 +102,5 @@ class Ui_frmCreditCardsAdd(object):
         self.txtMaximum.setText(_translate("frmCreditCardsAdd", "0"))
         self.label_4.setText(_translate("frmCreditCardsAdd", "Credit card number"))
         self.cmd.setText(_translate("frmCreditCardsAdd", "Save"))
-from xulpymoney.ui.myqlineedit import myQLineEdit
+from xulpymoney.ui.myqlineedit import myQLineEdit, myQLineEditValidatingCreditCard
 import xulpymoney.images.xulpymoney_rc

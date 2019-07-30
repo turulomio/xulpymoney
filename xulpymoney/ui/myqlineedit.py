@@ -101,6 +101,7 @@ class myQLineEditValidated(QLineEdit):
             self.setBackgroundRed(True)
             self.refused.emit()
 
+## QLineEdit that changes to red color if text is not a valid bank account
 class myQLineEditValidatingAccount(myQLineEditValidated):
     def __init__(self, parent):
         myQLineEditValidated.__init__(self, parent)
@@ -112,3 +113,26 @@ class myQLineEditValidatingAccount(myQLineEditValidated):
         except:
             return False
 
+## QLineEdit that changes to red color if text is not a valid credit card
+class myQLineEditValidatingCreditCard(myQLineEditValidated):
+    def __init__(self, parent):
+        myQLineEditValidated.__init__(self, parent)
+        
+    def isValid(self):
+        try:
+            return self.checkCreditCardNumber(self.text())
+        except:
+            return False
+            
+    def checkCreditCardNumber(self, cc_number=''):
+        sum_ = 0
+        parity = len(cc_number) % 2
+        for i, digit in enumerate([int(x) for x in cc_number]):
+            if i % 2 == parity:
+                digit *= 2
+                if digit > 9:
+                    digit -= 9
+            sum_ += digit
+        if sum_ % 10 == 0:
+            return True
+        return False
