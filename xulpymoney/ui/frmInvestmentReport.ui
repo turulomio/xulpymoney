@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>860</width>
-    <height>539</height>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>6</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -723,6 +723,20 @@
             </widget>
            </item>
           </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabChart">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Chart</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_20">
+         <item>
+          <layout class="QVBoxLayout" name="layChart"/>
          </item>
         </layout>
        </widget>

@@ -1,9 +1,10 @@
 import datetime
 import logging
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
+from xulpymoney.ui.canvaschart import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmSellingPoint import frmSellingPoint
@@ -82,6 +83,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             #Removes contract tab when it isn't neccessary
             if self.investment.product.high_low==False:
                 self.tab.removeTab(5)
+                
+            #Investment chart
+            self.wdgChart=InvestmentChart()
+            self.layChart.addWidget(self.wdgChart)
+            self.wdgChart.setInvestment(self.investment)
+            self.wdgChart.generate()
 
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
@@ -502,6 +509,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
 
+
+    def on_tab_currentChanged(self, index): 
+        if  index==6: #PAGOS
+            self.chart
+
     def on_tblOperations_itemSelectionChanged(self):
         self.op.selected=None
         try:
@@ -582,3 +594,65 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionContractDelete)       
         
         menu.exec_(self.tblHlContracts.mapToGlobal(pos))
+        
+class InvestmentChart(VCTemporalSeries):
+    def __init__(self):
+        VCTemporalSeries.__init__(self)
+        
+    def setInvestment(self, investment):
+        self.investment=investment
+        self.mem=self.investment.mem
+        if self.investment.op.length()>0:
+            self.from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
+
+#    def _pen(self, style, color):
+#        pen=QPen()
+#        pen.setStyle(style)
+#        pen.setColor(color)
+#        return pen
+
+
+    ## Just draw the chart with selected options. It creates and destroys objects
+    ##
+    ## self.setohcl is set calling this function
+    def generate(self):
+
+        self.chart.setTitle(self.tr("Investment chart"))
+        
+        #Invested
+        invested=self.appendTemporalSeries(self.tr("Invested"), self.investment.product.currency)#Line seies
+        invested.setColor(QColor(170, 85, 85))
+        if self.investment.op.length()>0:
+            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(invested,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.invertido().amount)
+            for op in self.investment.op.arr:
+                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
+                self.appendTemporalSeriesData(invested,  op.datetime, tmp_investment.invertido().amount)
+            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(invested,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.invertido().amount)
+        
+        #Gains
+        gains=self.appendTemporalSeries(self.tr("Gains"), self.investment.product.currency)#Line seies
+        gains.setColor(QColor(85, 170, 85))
+        if self.investment.op.length()>0:
+            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(gains,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.op_historica.consolidado_bruto().amount)
+            for op in self.investment.op.arr:
+                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
+                self.appendTemporalSeriesData(gains,  op.datetime, tmp_investment.op_historica.consolidado_bruto().amount)
+            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(gains,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.op_historica.consolidado_bruto().amount)
+
+        #Balance
+        balance=self.appendTemporalSeries(self.tr("Balance"), self.investment.product.currency)#Line seies
+        balance.setColor(QColor(85, 85, 170))
+        if self.investment.op.length()>0:
+            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(balance,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.balance().amount)
+            for op in self.investment.op.arr:
+                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
+                self.appendTemporalSeriesData(balance,  op.datetime, tmp_investment.balance().amount)
+            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
+            self.appendTemporalSeriesData(balance,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.balance().amount)
+        
+        self.display()
