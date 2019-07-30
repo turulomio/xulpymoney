@@ -98,7 +98,7 @@ class Ui_frmAccountsReport(object):
         self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setObjectName("label_3")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.txtNumero = QtWidgets.QLineEdit(self.groupBox)
+        self.txtNumero = myQLineEditValidatingAccount(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -482,6 +482,7 @@ class Ui_frmAccountsReport(object):
         self.actionCreditCardOperRefund.setToolTip(_translate("frmAccountsReport", "Credit card operation refund"))
         self.actionConceptReport.setText(_translate("frmAccountsReport", "Show concept historical report"))
         self.actionConceptReport.setToolTip(_translate("frmAccountsReport", "Show concept historical report"))
+from xulpymoney.ui.myqlineedit import myQLineEditValidatingAccount
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 from xulpymoney.ui.wdgYearMonth import wdgYearMonth

@@ -1,12 +1,12 @@
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QLineEdit, QWidget
 from decimal import Decimal
+from stdnum import iban
 
 class myQLineEdit(QLineEdit):
     doubleClicked=pyqtSignal()
     def __init__(self, parent):
         QWidget.__init__(self, parent)       
-#        self.setValidator(QDoubleValidator(self)) ##Failed to show point from numerical pad
         self.textChanged.connect(self.on_textChanged)
         self.setMaxLength(30)
         
@@ -73,3 +73,42 @@ class myQLineEdit(QLineEdit):
         print("MOUSEDOUBLECLICKEVENT")
         self.doubleClicked.emit()
         print("EMITEED")
+
+
+class myQLineEditValidated(QLineEdit):
+    validated=pyqtSignal()
+    refused=pyqtSignal()
+    def __init__(self, parent):
+        QWidget.__init__(self, parent)       
+        self.textChanged.connect(self.on_textChanged)
+
+    def setBackgroundRed(self, red):
+        if red==True:
+            css = """QLineEdit { background-color: rgb(255, 182, 182); }"""
+        else:
+            css=""
+        self.setStyleSheet(css)
+        
+    def isValid(self):
+        raise NotImplementedError()
+ 
+    @pyqtSlot(str)
+    def on_textChanged(self, text):
+        if self.isValid():        
+            self.setBackgroundRed(False)
+            self.validated.emit()
+        else:
+            self.setBackgroundRed(True)
+            self.refused.emit()
+
+class myQLineEditValidatingAccount(myQLineEditValidated):
+    def __init__(self, parent):
+        myQLineEditValidated.__init__(self, parent)
+        
+    def isValid(self):
+        try:
+            iban.validate(self.text())
+            return True
+        except:
+            return False
+
