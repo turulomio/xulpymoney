@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>426</width>
-    <height>225</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -112,7 +112,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtNumber">
+        <widget class="myQLineEditValidatingCreditCard" name="txtNumber">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -141,6 +141,11 @@
  <customwidgets>
   <customwidget>
    <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>myQLineEditValidatingCreditCard</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
   </customwidget>
