@@ -1,18 +1,69 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
-from PyQt5.QtGui import QPainter, QFont,  QColor
+from PyQt5.QtGui import QPainter, QFont,  QColor, QIcon
+from PyQt5.QtWidgets import QAction, QMenu, QFileDialog
 from xulpymoney.libxulpymoney import    Percentage
-from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms
-from xulpymoney.libxulpymoneytypes import  eOHCLDuration
+from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms, dtaware2string
+from xulpymoney.libxulpymoneytypes import  eOHCLDuration, eDtStrings
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
-class VCTemporalSeries(QChartView):
+class VCCommons(QChartView):
     def __init__(self):
         QChartView.__init__(self)
-        self.chart=QChart()
+        self._title=None
+        self._titleFontSize=14
+        self.actionSave=QAction(self.tr("Save as image"))
+        self.actionSave.setIcon(QIcon(":/xulpymoney/save.png"))
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+        self.actionSave.triggered.connect(self.on_actionSave_triggered)
+
+    def on_customContextMenuRequested(self, pos):
+        print(pos)
+        menu=QMenu()
+        menu.addAction(self.actionSave)
+        menu.exec_(self.mapToGlobal(pos))
+        
+    @pyqtSlot()
+    def on_actionSave_triggered(self):
+        filename="{} Chart.png".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename))    
+        filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename, self.tr("PNG Image (*.png)"))[0]
+        if filename:
+            self.save(filename)
+
+    ## Sets the title of the chart. If it's None, none title is shown.
+    def setTitle(self, title):
+        self._title=title
+
+    ## Returns the title of the chart
+    def title(self):
+        return self._title
+        
+    ## Sets the title font size. 14 by default.
+    def setTitleFontSize(self, titleFontSize):
+        self._titleFontSize=titleFontSize
+        
+    ## Function to use in display that sets the title
+    ## @param size Integer with the font size
+    def _display_set_title(self):
+        font=QFont()
+        font.setBold(True)
+        font.setPointSize(self._titleFontSize)
+        self.chart().setTitleFont(font)
+        self.chart().setTitle(self._title)
+
+    ## Save view to a file to generate an image file
+    def save(self, savefile):
+        pixmap=self.grab()
+        pixmap.save(savefile, quality=100)
+
+class VCTemporalSeries(VCCommons):
+    def __init__(self):
+        VCCommons.__init__(self)
+        self.__chart=QChart() #After setChart you must call it with chart()
         self._allowHideSeries=True
-        self.chart.setAnimationOptions(QChart.AllAnimations);
-        self.chart.layout().setContentsMargins(0,0,0,0);
+        self.chart().setAnimationOptions(QChart.AllAnimations);
+        self.chart().layout().setContentsMargins(0,0,0,0)
 
         #Axis cration
         self.axisX=QDateTimeAxis()
@@ -165,60 +216,46 @@ class VCTemporalSeries(QChartView):
         color.setAlphaF(alpha)
         pen.setColor(color)
         marker.setPen(pen)
-        
-        
-    def save(self, savefile):
-        """
-            Save view to a file to generate an image file
-        """
-        pixmap=self.grab()
-        pixmap.save(savefile, quality=100)
 
+    ## Used to display chart. You cannot use it twice. close the view widget and create another one
     def display(self):
-        self.setChart(self.chart)
+        if self.__chart!=None:
+            del self.__chart
+        self.__chart=QChart()
+        self.setChart(self.__chart)
+        self._display_set_title()
+
         self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
         self.setAxisFormat(self.axisY, self.miny, self.maxy, 0)
-        self.chart.addAxis(self.axisY, Qt.AlignLeft);
-        self.chart.addAxis(self.axisX, Qt.AlignBottom);
+        self.chart().addAxis(self.axisY, Qt.AlignLeft);
+        self.chart().addAxis(self.axisX, Qt.AlignBottom);
 
         for s in self.series:
-            self.chart.addSeries(s)
+            self.chart().addSeries(s)
             s.attachAxis(self.axisX)
             s.attachAxis(self.axisY)
         self.axisY.setRange(self.miny, self.maxy)
         
-        
         #Legend positions
-        if len(self.chart.legend().markers())>6:
-            self.chart.legend().setAlignment(Qt.AlignLeft)
+        if len(self.chart().legend().markers())>6:
+            self.chart().legend().setAlignment(Qt.AlignLeft)
         else:
-            self.chart.legend().setAlignment(Qt.AlignTop)
-        
-        
+            self.chart().legend().setAlignment(Qt.AlignTop)
+
         if self._allowHideSeries==True:
-            for marker in self.chart.legend().markers():
+            for marker in self.chart().legend().markers():
                 try:
                     marker.clicked.disconnect()
                 except:
                     pass
                 marker.clicked.connect(self.on_marker_clicked)
-        
-        
         self.repaint()
 
-class VCPie(QChartView):
+class VCPie(VCCommons):
     def __init__(self):
-        QChartView.__init__(self)
+        VCCommons.__init__(self)
         self.setRenderHint(QPainter.Antialiasing)
         self.clear()
-        
-        
-    def save(self, savefile):
-        """
-            Save view to a file to generate an image file
-        """
-        pixmap=self.grab()
-        pixmap.save(savefile, quality=100)
 
     def setCurrency(self, currency):
         """
@@ -232,6 +269,8 @@ class VCPie(QChartView):
         slice.setLabelVisible()
         
     def display(self):
+        self.setChart(self.__chart)
+        self._display_set_title()
         tooltip=""
         c=self.currency.string
         for slice in self.serie.slices():
@@ -240,24 +279,20 @@ class VCPie(QChartView):
             if slice.percentage()<0.005:
                 slice.setLabelVisible(False)
         tooltip=tooltip+"*** Total: {} ***".format(c(self.serie.sum())).upper()
-        self.setChart(self.chart)
-        self.chart.addSeries(self.serie)
+        self.chart().addSeries(self.serie)
         
         self.setToolTip(tooltip)
         self.repaint()
         
     def clear(self, animations=True):
-        self.chart=QChart()
-        self.chart.legend().hide()
-        font=QFont()
-        font.setBold(True)
-        font.setPointSize(12)
-        self.chart.setTitleFont(font)
-        self.chart.layout().setContentsMargins(0,0,0,0);
+        self.__chart=QChart()
+        self.setChart(self.__chart)
+        self.chart().legend().hide()
+        self.chart().layout().setContentsMargins(0,0,0,0);
         if animations==True:
-            self.chart.setAnimationOptions(QChart.AllAnimations);
+            self.chart().setAnimationOptions(QChart.AllAnimations);
         else:
-            self.chart.setAnimationOptions(QChart.NoAnimation)
+            self.chart().setAnimationOptions(QChart.NoAnimation)
         self.serie=QPieSeries()
         self.serie.setPieStartAngle(90)
         self.serie.setPieEndAngle(450)

@@ -63,9 +63,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if total.isGTZero():
                 self.viewTPC.appendData("{0}% variable".format(r*10), total.amount)
         if self.radCurrent.isChecked():
-            self.viewTPC.chart.setTitle(self.tr("Investment current balance by variable percentage"))
+            self.viewTPC.setTitle(self.tr("Investment current balance by variable percentage"))
         else:
-            self.viewTPC.chart.setTitle(self.tr("Invested balance by variable percentage"))
+            self.viewTPC.setTitle(self.tr("Invested balance by variable percentage"))
         self.viewTPC.display()
 
     def scriptPCI(self):
@@ -83,9 +83,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 total=total+self.accounts
             self.viewPCI.appendData(m.name.upper(), total.amount)
         if self.radCurrent.isChecked():    
-            self.viewPCI.chart.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
+            self.viewPCI.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
         else:
-            self.viewPCI.chart.setTitle(self.tr("Invested balance by Put / Call / Inline"))   
+            self.viewPCI.setTitle(self.tr("Invested balance by Put / Call / Inline"))   
         self.viewPCI.display()
 
     def scriptTipos(self):
@@ -108,9 +108,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 else:
                     self.viewTipo.appendData(t.name.upper(), total.amount)
         if self.radCurrent.isChecked():    
-            self.viewTipo.chart.setTitle(self.tr("Investment current balance by product type"))   
+            self.viewTipo.setTitle(self.tr("Investment current balance by product type"))   
         else:
-            self.viewTipo.chart.setTitle(self.tr("Invested balance by product type"))   
+            self.viewTipo.setTitle(self.tr("Invested balance by product type"))   
         self.viewTipo.display()
 
     def scriptApalancado(self):
@@ -130,9 +130,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if total.isGTZero():
                 self.viewApalancado.appendData(a.name.upper(), total.amount)
         if self.radCurrent.isChecked():    
-            self.viewApalancado.chart.setTitle(self.tr("Investment current balance by leverage"))
+            self.viewApalancado.setTitle(self.tr("Investment current balance by leverage"))
         else:
-            self.viewApalancado.chart.setTitle(self.tr("Invested balance by leverage"))
+            self.viewApalancado.setTitle(self.tr("Invested balance by leverage"))
         self.viewApalancado.display()
         
     def scriptCountry(self):
@@ -150,9 +150,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if total.isGTZero():
                 self.viewCountry.appendData(c.name.upper(), total.amount)
         if self.radCurrent.isChecked():    
-            self.viewCountry.chart.setTitle(self.tr("Investment current balance by country"))   
+            self.viewCountry.setTitle(self.tr("Investment current balance by country"))   
         else:
-            self.viewCountry.chart.setTitle(self.tr("Invested balance by country"))   
+            self.viewCountry.setTitle(self.tr("Invested balance by country"))   
         self.viewCountry.display()
 
     def scriptProduct(self):
@@ -171,7 +171,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewProduct.appendData(self.tr("Accounts"), self.accounts.amount, True)
         
         if self.radCurrent.isChecked():    
-            self.viewProduct.chart.setTitle(self.tr("Investment current balance by product"))
+            self.viewProduct.setTitle(self.tr("Investment current balance by product"))
         else:
-            self.viewProduct.chart.setTitle(self.tr("Invested balance by product"))        
+            self.viewProduct.setTitle(self.tr("Invested balance by product"))        
         self.viewProduct.display()

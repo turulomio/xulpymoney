@@ -25,13 +25,11 @@ from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Sel
 from PyQt5.QtChart import QChart
 getcontext().prec=20
 
-
 class Percentage:
     def __init__(self, numerator=None, denominator=None):
         self.value=None
         self.setValue(self.toDecimal(numerator),self.toDecimal(denominator))
-        
-        
+
     def toDecimal(self, o):
         if o==None:
             return o
@@ -88,14 +86,13 @@ class Percentage:
             self.value=Decimal(numerator/denominator)
         except:
             self.value=None
-        
-        
+
     def value_100(self):
         if self.value==None:
             return None
         else:
             return self.value*Decimal(100)
-        
+
     def string(self, rnd=2):
         if self.value==None:
             return "None %"
@@ -4167,20 +4164,16 @@ class Investment:
         if type==1:
             return Money(self.mem, self.venta, self.product.currency)
 
+    ## Returns a setDividens from the datetime of the first current operation
     def setDividends_from_current_operations(self):
-        """
-            Returns a setDividens from the datetime of the first currnt operation
-        """
         first=self.op_actual.first()
         set=DividendHomogeneusManager(self.mem, self)
         if first!=None:
             set.load_from_db("select * from dividends where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.id, first.datetime))
         return set
 
+    ## Returns a setDividens with all the dividends
     def setDividends_from_operations(self):
-        """
-            Returns a setDividens with all the dividends
-        """
         set=DividendHomogeneusManager(self.mem, self)
         set.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
         return set
@@ -8272,7 +8265,7 @@ class AssetsReport(ODT_Standard, QObject):
         self.mem.frmMain.layout.addWidget(self.mem.frmMain.w)
         self.mem.frmMain.w.show()
         self.mem.frmMain.w.tab.setCurrentIndex(0)
-        self.mem.frmMain.w.viewTPC.chart.setAnimationOptions(QChart.NoAnimation)
+        self.mem.frmMain.w.viewTPC.chart().setAnimationOptions(QChart.NoAnimation)
         self.mem.frmMain.w.update(animations=False)
         
         self.header(self.tr("Investments group by variable percentage"), 2)

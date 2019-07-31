@@ -4,6 +4,7 @@ from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
+from xulpymoney.ui.canvaschart import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmSellingPoint import frmSellingPoint
@@ -49,6 +50,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblHlContracts.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
+        self.viewChart=None
         
         if self.investment==None:
             self.tipo=1
@@ -75,9 +77,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.ise.setSelected(self.investment.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.investment.account.id))
-            self.update_tables()      
-            if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
-                self.cmbAccount.setEnabled(False)  
 
             #Removes contract tab when it isn't neccessary
             if self.investment.product.high_low==False:
@@ -85,9 +84,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
+        self.update_tables()
         
-        
-        
+        #CmbAccount está desabilitado si hay dividends o operinversiones
+        if self.op.length()!=0 or self.dividends.length()!=0:
+            self.cmbAccount.setEnabled(False)     
         QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
@@ -167,6 +168,15 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #Show contracts if it's a hig_low product
         if self.investment.product.high_low==True:
             self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
+            
+        #Repaints chart
+        if self.viewChart!=None:
+            self.layChart.removeWidget(self.viewChart)
+            self.viewChart.close()
+        self.viewChart=VCInvestment()
+        self.viewChart.setInvestment(self.investment)
+        self.viewChart.generate()
+        self.layChart.addWidget(self.viewChart)
 
     @pyqtSlot() 
     def on_actionDividendAdd_triggered(self):
@@ -174,7 +184,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         w.exec_()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
-        
     @pyqtSlot() 
     def on_actionDividendEdit_triggered(self):
         w=frmDividendsAdd(self.mem, self.investment, self.selDividend)
@@ -311,7 +320,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             m.setText(self.tr("Shares transfer couldn't be done."))
             m.exec_()          
             return
-        self.update_tables()       
+        self.update_tables()
 
     @pyqtSlot() 
     def on_cmdPuntoVenta_released(self):
@@ -498,8 +507,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionSharesTransfer)
         menu.addSeparator()
         menu.addAction(self.actionChangeBenchmarkPrice)
-        
-        
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
 
     def on_tblOperations_itemSelectionChanged(self):
@@ -582,3 +589,58 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionContractDelete)       
         
         menu.exec_(self.tblHlContracts.mapToGlobal(pos))
+        
+##View chart of an investment
+class VCInvestment(VCTemporalSeries):
+    def __init__(self):
+        VCTemporalSeries.__init__(self)
+        
+    def setInvestment(self, investment):
+        self.investment=investment
+        self.mem=self.investment.mem
+        if self.investment.op.length()>0:
+            self.from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
+
+    ## Just draw the chart with selected options. To update it just close this object and create another one
+    def generate(self):
+        if self.investment.op.length()>=0:
+            #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
+            datetimes=set()
+            datetimes.add(self.investment.op.first().datetime -datetime.timedelta(days=30))
+            for op in self.investment.op.arr:
+                datetimes.add(op.datetime)
+                datetimes.add(op.datetime.replace(hour=0, minute=0, second=0))
+            setdividends=self.investment.setDividends_from_operations()
+            for dividend in setdividends.arr:
+                datetimes.add(dividend.datetime)
+                datetimes.add(dividend.datetime.replace(hour=0, minute=0, second=0))
+            datetimes.add(self.mem.localzone.now())
+            datetimes.add(self.mem.localzone.now().replace(hour=0, minute=0, second=0))
+            datetimes_list=list(datetimes)
+            datetimes_list.sort()
+
+            #Draw lines
+            invested=self.appendTemporalSeries(self.tr("Invested amount"), self.investment.product.currency)
+            balance=self.appendTemporalSeries(self.tr("Investment balance"), self.investment.product.currency)
+            gains=self.appendTemporalSeries(self.tr("Net gains"), self.investment.product.currency)
+            dividends=self.appendTemporalSeries(self.tr("Net dividends"), self.investment.product.currency)
+            gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"), self.investment.product.currency)
+            for dt in datetimes_list:
+                #Calculate dividends in datetime
+                dividend_net=0
+                for dividend in setdividends.arr:
+                    if dividend.datetime<=dt:
+                        dividend_net=dividend_net+dividend.neto
+                #Append data of that datetime
+                tmp_investment=self.investment.Investment_At_Datetime(dt)
+                gains_net=tmp_investment.op_historica.consolidado_neto().amount
+                self.appendTemporalSeriesData(invested, dt, tmp_investment.invertido().amount)
+                self.appendTemporalSeriesData(gains_dividends, dt, gains_net+dividend_net)
+                self.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
+                self.appendTemporalSeriesData(dividends, dt, dividend_net)
+                self.appendTemporalSeriesData(gains, dt, gains_net)
+        self.setTitle(self.tr("Investment chart"))
+        self.display()
+        #Markers are generated in display so working with markers must be after it
+        self.chart().legend().markers(gains)[0].clicked.emit()
+        self.chart().legend().markers(dividends)[0].clicked.emit()

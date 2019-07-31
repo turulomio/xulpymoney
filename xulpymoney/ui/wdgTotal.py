@@ -468,7 +468,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.view=VCTemporalSeries()
         
         if animations==False:
-            self.view.chart.setAnimationOptions(QChart.NoAnimation)
+            self.view.chart().setAnimationOptions(QChart.NoAnimation)
                 #Series creation
         last=self.setGraphic.find(datetime.date.today().year, datetime.date.today().month)
         lsNoLoses=self.view.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
@@ -476,8 +476,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         lsZero=self.view.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
         lsBonds=self.view.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
         lsRisk=self.view.appendTemporalSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
-                
-        
+
         progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
         progress.setModal(True)
         progress.setWindowTitle(self.tr("Calculating data..."))
@@ -499,8 +498,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.tabGraphTotal.addWidget(self.view)
 
-            
-        
         logging.info("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
 
