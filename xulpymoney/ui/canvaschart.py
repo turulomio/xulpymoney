@@ -10,6 +10,7 @@ class VCCommons(QChartView):
     def __init__(self):
         QChartView.__init__(self)
         self._title=None
+        self._titleFontSize=14
         
     ## Sets the title of the chart. If it's None, none title is shown.
     def setTitle(self, title):
@@ -19,12 +20,16 @@ class VCCommons(QChartView):
     def title(self):
         return self._title
         
+    ## Sets the title font size. 14 by default.
+    def setTitleFontSize(self, titleFontSize):
+        self._titleFontSize=titleFontSize
+        
     ## Function to use in display that sets the title
     ## @param size Integer with the font size
-    def _display_set_title(self, size=12):
+    def _display_set_title(self):
         font=QFont()
         font.setBold(True)
-        font.setPointSize(size)
+        font.setPointSize(self._titleFontSize)
         self.chart().setTitleFont(font)
         self.chart().setTitle(self._title)
 
