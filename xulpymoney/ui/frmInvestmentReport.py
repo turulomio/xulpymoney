@@ -50,6 +50,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblHlContracts.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
+        self.viewChart=None
         
         if self.investment==None:
             self.tipo=1
@@ -76,25 +77,18 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.ise.setSelected(self.investment.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.investment.account.id))
-            self.update_tables()      
-            if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
-                self.cmbAccount.setEnabled(False)  
 
             #Removes contract tab when it isn't neccessary
             if self.investment.product.high_low==False:
                 self.tab.removeTab(5)
-                
-            #Investment chart
-            self.wdgChart=InvestmentChart()
-            self.layChart.addWidget(self.wdgChart)
-            self.wdgChart.setInvestment(self.investment)
-            self.wdgChart.generate()
 
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
+        self.update_tables()
         
-        
-        
+        #CmbAccount está desabilitado si hay dividends o operinversiones
+        if self.op.length()!=0 or self.dividends.length()!=0:
+            self.cmbAccount.setEnabled(False)     
         QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
@@ -174,6 +168,15 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #Show contracts if it's a hig_low product
         if self.investment.product.high_low==True:
             self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
+            
+        #Repaints chart
+        if self.viewChart!=None:
+            self.layChart.removeWidget(self.viewChart)
+            self.viewChart.close()
+        self.viewChart=VCInvestment()
+        self.viewChart.setInvestment(self.investment)
+        self.viewChart.generate()
+        self.layChart.addWidget(self.viewChart)
 
     @pyqtSlot() 
     def on_actionDividendAdd_triggered(self):
@@ -181,7 +184,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         w.exec_()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
-        
     @pyqtSlot() 
     def on_actionDividendEdit_triggered(self):
         w=frmDividendsAdd(self.mem, self.investment, self.selDividend)
@@ -318,7 +320,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             m.setText(self.tr("Shares transfer couldn't be done."))
             m.exec_()          
             return
-        self.update_tables()       
+        self.update_tables()
 
     @pyqtSlot() 
     def on_cmdPuntoVenta_released(self):
@@ -505,14 +507,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionSharesTransfer)
         menu.addSeparator()
         menu.addAction(self.actionChangeBenchmarkPrice)
-        
-        
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
-
-
-    def on_tab_currentChanged(self, index): 
-        if  index==6: #PAGOS
-            self.chart
 
     def on_tblOperations_itemSelectionChanged(self):
         self.op.selected=None
@@ -595,7 +590,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         menu.exec_(self.tblHlContracts.mapToGlobal(pos))
         
-class InvestmentChart(VCTemporalSeries):
+##View chart of an investment
+class VCInvestment(VCTemporalSeries):
     def __init__(self):
         VCTemporalSeries.__init__(self)
         
@@ -605,19 +601,8 @@ class InvestmentChart(VCTemporalSeries):
         if self.investment.op.length()>0:
             self.from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
 
-#    def _pen(self, style, color):
-#        pen=QPen()
-#        pen.setStyle(style)
-#        pen.setColor(color)
-#        return pen
-
-
-    ## Just draw the chart with selected options. It creates and destroys objects
-    ##
-    ## self.setohcl is set calling this function
+    ## Just draw the chart with selected options. To update it just close this object and create another one
     def generate(self):
-        self.chart().setTitle(self.tr("Investment chart"))
-        
         if self.investment.op.length()>=0:
             #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
             datetimes=set()
@@ -654,6 +639,7 @@ class InvestmentChart(VCTemporalSeries):
                 self.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
                 self.appendTemporalSeriesData(dividends, dt, dividend_net)
                 self.appendTemporalSeriesData(gains, dt, gains_net)
+        self.setTitle(self.tr("Investment chart"))
         self.display()
         #Markers are generated in display so working with markers must be after it
         self.chart().legend().markers(gains)[0].clicked.emit()

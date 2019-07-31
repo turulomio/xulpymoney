@@ -8265,7 +8265,7 @@ class AssetsReport(ODT_Standard, QObject):
         self.mem.frmMain.layout.addWidget(self.mem.frmMain.w)
         self.mem.frmMain.w.show()
         self.mem.frmMain.w.tab.setCurrentIndex(0)
-        self.mem.frmMain.w.viewTPC.chart.setAnimationOptions(QChart.NoAnimation)
+        self.mem.frmMain.w.viewTPC.chart().setAnimationOptions(QChart.NoAnimation)
         self.mem.frmMain.w.update(animations=False)
         
         self.header(self.tr("Investments group by variable percentage"), 2)

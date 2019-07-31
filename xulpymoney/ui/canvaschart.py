@@ -6,13 +6,40 @@ from xulpymoney.libxulpymoneytypes import  eOHCLDuration
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
-class VCTemporalSeries(QChartView):
+class VCCommons(QChartView):
     def __init__(self):
         QChartView.__init__(self)
-        self.__chart=QChart() #After setChart you must call it with chart
+        self._title=None
+        
+    ## Sets the title of the chart. If it's None, none title is shown.
+    def setTitle(self, title):
+        self._title=title
+
+    ## Returns the title of the chart
+    def title(self):
+        return self._title
+        
+    ## Function to use in display that sets the title
+    ## @param size Integer with the font size
+    def _display_set_title(self, size=12):
+        font=QFont()
+        font.setBold(True)
+        font.setPointSize(size)
+        self.chart().setTitleFont(font)
+        self.chart().setTitle(self._title)
+
+    ## Save view to a file to generate an image file
+    def save(self, savefile):
+        pixmap=self.grab()
+        pixmap.save(savefile, quality=100)
+
+class VCTemporalSeries(VCCommons):
+    def __init__(self):
+        VCCommons.__init__(self)
+        self.__chart=QChart() #After setChart you must call it with chart()
         self._allowHideSeries=True
         self.chart().setAnimationOptions(QChart.AllAnimations);
-        self.chart().layout().setContentsMargins(0,0,0,0);
+        self.chart().layout().setContentsMargins(0,0,0,0)
 
         #Axis cration
         self.axisX=QDateTimeAxis()
@@ -165,17 +192,15 @@ class VCTemporalSeries(QChartView):
         color.setAlphaF(alpha)
         pen.setColor(color)
         marker.setPen(pen)
-        
-        
-    def save(self, savefile):
-        """
-            Save view to a file to generate an image file
-        """
-        pixmap=self.grab()
-        pixmap.save(savefile, quality=100)
 
+    ## Used to display chart. You cannot use it twice. close the view widget and create another one
     def display(self):
+        if self.__chart!=None:
+            del self.__chart
+        self.__chart=QChart()
         self.setChart(self.__chart)
+        self._display_set_title()
+
         self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
         self.setAxisFormat(self.axisY, self.miny, self.maxy, 0)
         self.chart().addAxis(self.axisY, Qt.AlignLeft);
@@ -187,14 +212,12 @@ class VCTemporalSeries(QChartView):
             s.attachAxis(self.axisY)
         self.axisY.setRange(self.miny, self.maxy)
         
-        
         #Legend positions
         if len(self.chart().legend().markers())>6:
             self.chart().legend().setAlignment(Qt.AlignLeft)
         else:
             self.chart().legend().setAlignment(Qt.AlignTop)
-        
-        
+
         if self._allowHideSeries==True:
             for marker in self.chart().legend().markers():
                 try:
@@ -204,19 +227,11 @@ class VCTemporalSeries(QChartView):
                 marker.clicked.connect(self.on_marker_clicked)
         self.repaint()
 
-class VCPie(QChartView):
+class VCPie(VCCommons):
     def __init__(self):
-        QChartView.__init__(self)
+        VCCommons.__init__(self)
         self.setRenderHint(QPainter.Antialiasing)
         self.clear()
-        
-        
-    def save(self, savefile):
-        """
-            Save view to a file to generate an image file
-        """
-        pixmap=self.grab()
-        pixmap.save(savefile, quality=100)
 
     def setCurrency(self, currency):
         """
@@ -230,6 +245,8 @@ class VCPie(QChartView):
         slice.setLabelVisible()
         
     def display(self):
+        self.setChart(self.__chart)
+        self._display_set_title()
         tooltip=""
         c=self.currency.string
         for slice in self.serie.slices():
@@ -238,7 +255,6 @@ class VCPie(QChartView):
             if slice.percentage()<0.005:
                 slice.setLabelVisible(False)
         tooltip=tooltip+"*** Total: {} ***".format(c(self.serie.sum())).upper()
-        self.setChart(self.__chart)
         self.chart().addSeries(self.serie)
         
         self.setToolTip(tooltip)
@@ -248,10 +264,6 @@ class VCPie(QChartView):
         self.__chart=QChart()
         self.setChart(self.__chart)
         self.chart().legend().hide()
-        font=QFont()
-        font.setBold(True)
-        font.setPointSize(12)
-        self.chart().setTitleFont(font)
         self.chart().layout().setContentsMargins(0,0,0,0);
         if animations==True:
             self.chart().setAnimationOptions(QChart.AllAnimations);

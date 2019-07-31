@@ -38,7 +38,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         
     def load_gastos(self,  year,  month):
         self.viewExpenses.clear()
-        self.viewExpenses.chart.setTitle(self.tr("Concepts chart"))   
+        self.viewExpenses.setTitle(self.tr("Concepts chart"))   
         self.viewExpenses.setCurrency(self.mem.localcurrency)
         
         (self.expenseslist, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
@@ -67,7 +67,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
 
     def load_ingresos(self,  year,  month):
         self.viewIncomes.clear()
-        self.viewIncomes.chart.setTitle(self.tr("Concepts chart"))   
+        self.viewIncomes.setTitle(self.tr("Concepts chart"))   
         self.viewIncomes.setCurrency(self.mem.localcurrency)
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
         self.tblIncomes.applySettings()
