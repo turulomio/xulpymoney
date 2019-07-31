@@ -1,7 +1,7 @@
 import datetime
 import logging
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
 from xulpymoney.ui.canvaschart import VCTemporalSeries
@@ -616,43 +616,45 @@ class InvestmentChart(VCTemporalSeries):
     ##
     ## self.setohcl is set calling this function
     def generate(self):
+        self.chart().setTitle(self.tr("Investment chart"))
+        
+        if self.investment.op.length()>=0:
+            #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
+            datetimes=set()
+            datetimes.add(self.investment.op.first().datetime -datetime.timedelta(days=30))
+            for op in self.investment.op.arr:
+                datetimes.add(op.datetime)
+                datetimes.add(op.datetime.replace(hour=0, minute=0, second=0))
+            setdividends=self.investment.setDividends_from_operations()
+            for dividend in setdividends.arr:
+                datetimes.add(dividend.datetime)
+                datetimes.add(dividend.datetime.replace(hour=0, minute=0, second=0))
+            datetimes.add(self.mem.localzone.now())
+            datetimes.add(self.mem.localzone.now().replace(hour=0, minute=0, second=0))
+            datetimes_list=list(datetimes)
+            datetimes_list.sort()
 
-        self.chart.setTitle(self.tr("Investment chart"))
-        
-        #Invested
-        invested=self.appendTemporalSeries(self.tr("Invested"), self.investment.product.currency)#Line seies
-        invested.setColor(QColor(170, 85, 85))
-        if self.investment.op.length()>0:
-            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(invested,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.invertido().amount)
-            for op in self.investment.op.arr:
-                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
-                self.appendTemporalSeriesData(invested,  op.datetime, tmp_investment.invertido().amount)
-            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(invested,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.invertido().amount)
-        
-        #Gains
-        gains=self.appendTemporalSeries(self.tr("Gains"), self.investment.product.currency)#Line seies
-        gains.setColor(QColor(85, 170, 85))
-        if self.investment.op.length()>0:
-            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(gains,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.op_historica.consolidado_bruto().amount)
-            for op in self.investment.op.arr:
-                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
-                self.appendTemporalSeriesData(gains,  op.datetime, tmp_investment.op_historica.consolidado_bruto().amount)
-            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(gains,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.op_historica.consolidado_bruto().amount)
-
-        #Balance
-        balance=self.appendTemporalSeries(self.tr("Balance"), self.investment.product.currency)#Line seies
-        balance.setColor(QColor(85, 85, 170))
-        if self.investment.op.length()>0:
-            tmp_investment=self.investment.Investment_At_Datetime(self.investment.op.first().datetime-datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(balance,  self.investment.op.first().datetime-datetime.timedelta(days=30), tmp_investment.balance().amount)
-            for op in self.investment.op.arr:
-                tmp_investment=self.investment.Investment_At_Datetime(op.datetime)
-                self.appendTemporalSeriesData(balance,  op.datetime, tmp_investment.balance().amount)
-            tmp_investment=self.investment.Investment_At_Datetime(self.mem.localzone.now()+datetime.timedelta(days=30))
-            self.appendTemporalSeriesData(balance,  self.mem.localzone.now()+datetime.timedelta(days=30), self.investment.balance().amount)
-        
+            #Draw lines
+            invested=self.appendTemporalSeries(self.tr("Invested amount"), self.investment.product.currency)
+            balance=self.appendTemporalSeries(self.tr("Investment balance"), self.investment.product.currency)
+            gains=self.appendTemporalSeries(self.tr("Net gains"), self.investment.product.currency)
+            dividends=self.appendTemporalSeries(self.tr("Net dividends"), self.investment.product.currency)
+            gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"), self.investment.product.currency)
+            for dt in datetimes_list:
+                #Calculate dividends in datetime
+                dividend_net=0
+                for dividend in setdividends.arr:
+                    if dividend.datetime<=dt:
+                        dividend_net=dividend_net+dividend.neto
+                #Append data of that datetime
+                tmp_investment=self.investment.Investment_At_Datetime(dt)
+                gains_net=tmp_investment.op_historica.consolidado_neto().amount
+                self.appendTemporalSeriesData(invested, dt, tmp_investment.invertido().amount)
+                self.appendTemporalSeriesData(gains_dividends, dt, gains_net+dividend_net)
+                self.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
+                self.appendTemporalSeriesData(dividends, dt, dividend_net)
+                self.appendTemporalSeriesData(gains, dt, gains_net)
         self.display()
+        #Markers are generated in display so working with markers must be after it
+        self.chart().legend().markers(gains)[0].clicked.emit()
+        self.chart().legend().markers(dividends)[0].clicked.emit()
