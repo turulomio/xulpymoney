@@ -1,8 +1,9 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
-from PyQt5.QtGui import QPainter, QFont,  QColor
+from PyQt5.QtGui import QPainter, QFont,  QColor, QIcon
+from PyQt5.QtWidgets import QAction, QMenu, QFileDialog
 from xulpymoney.libxulpymoney import    Percentage
-from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms
-from xulpymoney.libxulpymoneytypes import  eOHCLDuration
+from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms, dtaware2string
+from xulpymoney.libxulpymoneytypes import  eOHCLDuration, eDtStrings
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
 
@@ -11,7 +12,25 @@ class VCCommons(QChartView):
         QChartView.__init__(self)
         self._title=None
         self._titleFontSize=14
+        self.actionSave=QAction(self.tr("Save as image"))
+        self.actionSave.setIcon(QIcon(":/xulpymoney/save.png"))
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+        self.actionSave.triggered.connect(self.on_actionSave_triggered)
+
+    def on_customContextMenuRequested(self, pos):
+        print(pos)
+        menu=QMenu()
+        menu.addAction(self.actionSave)
+        menu.exec_(self.mapToGlobal(pos))
         
+    @pyqtSlot()
+    def on_actionSave_triggered(self):
+        filename="{} Chart.png".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename))    
+        filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename, self.tr("PNG Image (*.png)"))[0]
+        if filename:
+            self.save(filename)
+
     ## Sets the title of the chart. If it's None, none title is shown.
     def setTitle(self, title):
         self._title=title
