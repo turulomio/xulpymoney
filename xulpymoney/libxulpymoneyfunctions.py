@@ -240,9 +240,18 @@ def epochms2dtaware(n):
 ## @return String
 def dtaware2string(dt, type=eDtStrings.QTableWidgetItem):
     if dt==None:
-        resultado="None"
+        return "None"
     elif dt.tzname()==None:
-        resultado="Naive date and time"
+        return "Naive date and time"
+    else:
+        return dtnaive2string(dt, type)
+
+## Returns a formated string of a dtaware string formatting with a zone name
+## @param dt datetime aware object
+## @return String
+def dtnaive2string(dt, type=eDtStrings.QTableWidgetItem):
+    if dt==None:
+        resultado="None"
     elif type==eDtStrings.QTableWidgetItem:
         if dt.microsecond==4 :
             resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))

@@ -2,7 +2,7 @@ from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor, QIcon
 from PyQt5.QtWidgets import QAction, QMenu, QFileDialog
 from xulpymoney.libxulpymoney import    Percentage
-from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms, dtaware2string
+from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms, dtnaive2string
 from xulpymoney.libxulpymoneytypes import  eOHCLDuration, eDtStrings
 import datetime
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QCandlestickSeries,  QCandlestickSet,  QScatterSeries
@@ -26,7 +26,7 @@ class VCCommons(QChartView):
         
     @pyqtSlot()
     def on_actionSave_triggered(self):
-        filename="{} Chart.png".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename))    
+        filename="{} Chart.png".format(dtnaive2string(datetime.datetime.now(), type=eDtStrings.Filename))    
         filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename, self.tr("PNG Image (*.png)"))[0]
         if filename:
             self.save(filename)
