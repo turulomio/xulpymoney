@@ -13,9 +13,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgProductHistoricalChart(object):
     def setupUi(self, wdgProductHistoricalChart):
         wdgProductHistoricalChart.setObjectName("wdgProductHistoricalChart")
-        wdgProductHistoricalChart.resize(1561, 89)
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(wdgProductHistoricalChart)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        wdgProductHistoricalChart.resize(1561, 492)
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(wdgProductHistoricalChart)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
@@ -107,7 +107,7 @@ class Ui_wdgProductHistoricalChart(object):
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout_2.addLayout(self.verticalLayout)
-        self.horizontalLayout_7.addLayout(self.verticalLayout_2)
+        self.horizontalLayout_8.addLayout(self.verticalLayout_2)
         self.actionProductReport = QtWidgets.QAction(wdgProductHistoricalChart)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/books.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
