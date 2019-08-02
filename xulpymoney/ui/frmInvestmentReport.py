@@ -52,8 +52,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         self.viewChart=None
         
-        if self.investment==None:
-            self.tipo=1
+        if self.investment==None:#ADD
             self.cmdInvestment.setText(self.tr("Add a new investment"))
             self.lblTitulo.setText(self.tr("New investment"))
             self.investment=None
@@ -63,8 +62,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.tabInvestmentCurrent.setEnabled(False)
             self.ise.setSelected(None)
             self.cmdPuntoVenta.setEnabled(False)
-        else:
-            self.tipo=2    
+        else:#UPDATE
             self.tab.setCurrentIndex(1)
             self.lblTitulo.setText(self.investment.name)
             self.txtInvestment.setText(self.investment.name)
@@ -81,14 +79,15 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             #Removes contract tab when it isn't neccessary
             if self.investment.product.high_low==False:
                 self.tab.removeTab(5)
+            
+            #CmbAccount está desabilitado si hay dividends o operinversiones
+            if self.investment.op.length()!=0 or self.dividends.length()!=0:
+                self.cmbAccount.setEnabled(False)
+    
+            self.update_tables()
 
         self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
-        self.update_tables()
-        
-        #CmbAccount está desabilitado si hay dividends o operinversiones
-        if self.op.length()!=0 or self.dividends.length()!=0:
-            self.cmbAccount.setEnabled(False)     
         QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
@@ -410,7 +409,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             product.result.basic.load_from_db()
             self.mem.data.products.append(product)        
 
-        if self.tipo==1:        #insertar
+        if self.investment==None: #insertar
             self.investment=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active().find_by_id(id_cuentas), product, expiration, True)      
             self.investment.save()
             self.mem.con.commit()    
@@ -419,7 +418,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             (self.investment.op_actual, self.investment.op_historica)=self.investment.op.get_current_and_historical_operations()
             self.mem.data.investments.append(self.investment)
             self.done(0)
-        elif self.tipo==2:
+        else:#UPDATE
             self.investment.name=inversion
             self.investment.venta=venta
             self.investment.product=product
