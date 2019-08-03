@@ -51,6 +51,8 @@ class PyInstaller(Command):
     ## @param module strings with the module to import
     ## @param name string with the name of the name of the file
     def entry_point(self,module,name):
+        from stdnum import __file__
+        iban_dat=os.path.dirname(__file__)+"/iban.dat" #Due to package resources in pyinstaller doesn't work fine 
         filename=module.replace(".","_")+".py"
         f=open(filename,"w")
         f.write("""import {0}
@@ -71,7 +73,8 @@ print(sys.path)
             --add-data xulpymoney/i18n/xulpymoney_ro.qm;i18n \
             --add-data xulpymoney/i18n/xulpymoney_ru.qm;i18n \
             --add-data xulpymoney/sql/xulpymoney.sql;sql \
-        """.format(name,__version__,filename))
+            --add-data "{};stdnum" \
+        """.format(name,__version__,filename, iban_dat))
 
 class Compile(Command):
     description = "Compile ui and images"
