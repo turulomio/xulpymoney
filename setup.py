@@ -161,6 +161,7 @@ Nueva versión:
   * git push
   * Hacer un nuevo tag en GitHub
   * python setup.py sdist upload -r pypi
+  * python setup.py uninstall
   * Crea un nuevo ebuild de Gentoo con la nueva versión
   * Subelo al repositorio del portage
   * Change to windows. Enter in an Administrator console.

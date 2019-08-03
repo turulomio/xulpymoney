@@ -61,6 +61,14 @@ Dependencies
 
 Changelog
 =========
+0.9.0
+  * Improved "About" menu action.
+  * Importing from Investing.com CSV is working.
+  * Added pie graph to banks.
+  * Bank accounts and credit cards numbers are now validated.
+  * Added investment chart.
+  * Added an gains percentage selector in charts when necessary.
+
 0.8.0
   * Pies showing different investments classifications now show Not Leveraged amounts
   * Fixed problem showing help with root.
