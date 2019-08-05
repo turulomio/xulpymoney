@@ -582,6 +582,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.actionContractEdit.setEnabled(False)
             self.actionContractDelete.setEnabled(False)
             
+
         menu=QMenu()
         menu.addAction(self.actionContractAdd)
         menu.addAction(self.actionContractEdit)
@@ -602,7 +603,7 @@ class VCInvestment(VCTemporalSeries):
 
     ## Just draw the chart with selected options. To update it just close this object and create another one
     def generate(self):
-        if self.investment.op.length()>=0:
+        if self.investment.op.length()>0:
             #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
             datetimes=set()
             datetimes.add(self.investment.op.first().datetime -datetime.timedelta(days=30))
@@ -638,8 +639,8 @@ class VCInvestment(VCTemporalSeries):
                 self.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
                 self.appendTemporalSeriesData(dividends, dt, dividend_net)
                 self.appendTemporalSeriesData(gains, dt, gains_net)
-        self.setTitle(self.tr("Investment chart"))
-        self.display()
-        #Markers are generated in display so working with markers must be after it
-        self.chart().legend().markers(gains)[0].clicked.emit()
-        self.chart().legend().markers(dividends)[0].clicked.emit()
+            self.setTitle(self.tr("Investment chart"))
+            self.display()
+            #Markers are generated in display so working with markers must be after it
+            self.chart().legend().markers(gains)[0].clicked.emit()
+            self.chart().legend().markers(dividends)[0].clicked.emit()
