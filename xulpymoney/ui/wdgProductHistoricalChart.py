@@ -77,11 +77,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             ls=self.view.appendTemporalSeries(self.product.name.upper(), self.product.currency)#Line seies
             for ohcl in self.setohcl.arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, day_start(ohcl.datetime(), self.mem.localzone), ohcl.close) #Added day_start to show the purchase circle the first day
+                    self.view.appendTemporalSeriesData(ls, ohcl.datetime(), ohcl.close) #Added day_start to show the purchase circle the first day
         elif self.cmbChartType.currentIndex()==1:#Candles            
             candle=self.view.appendCandlestickSeries(self.product.name, self.product.currency)#Candle series
             for ohcl in self.setohcl.arr:
-                if ohcl.datetime()>=selected_datetime-datetime.timedelta(days=10):#Added one day to show the purchase circle the first day
+                if ohcl.datetime()>=selected_datetime:
                     self.view.appendCandlestickSeriesData(candle, ohcl)
             self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
@@ -134,7 +134,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                         (op.tipooperacion.id==eOperationType.TransferFunds and op.shares<0)
                     ) and op.datetime>=selected_datetime:
                     self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
-            
+
             #Average price
             if self.investment.op_actual.length()>0:
                 m_selling_price=self.investment.selling_price()
@@ -143,11 +143,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     selling_price=self.view.appendTemporalSeries(self.tr("Selling price at {} to gain {}".format(m_selling_price,  self.investment.op_actual.gains_in_selling_point())),  self.product.currency)
                     selling_price.setColor(QColor(170, 85, 85))
                     self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, m_selling_price.amount)
-                    self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now(), m_selling_price.amount)
+                    self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now()+datetime.timedelta(days=1), m_selling_price.amount)
                 average_price=self.view.appendTemporalSeries(self.tr("Average price at {}".format(m_average_price)),  self.product.currency)
                 average_price.setColor(QColor(85, 170, 127))
                 self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
-                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now(), m_average_price.amount)
+                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now() + datetime.timedelta(days=1), m_average_price.amount)
 
 
     ## This code generates an Horizontal Layout with an spin Gains, it's not shown by default, but it will be usefull in several subclases
