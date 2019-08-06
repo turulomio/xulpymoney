@@ -1,6 +1,6 @@
-import datetime
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtWidgets import QWidget, QDialogButtonBox
+from datetime import date
 from xulpymoney.libxulpymoney import Order
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.Ui_wdgOrdersAdd import Ui_wdgOrdersAdd
@@ -12,12 +12,11 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.mem=mem
         self.order=order
         self.parent=parent
-        self.investment=investment
 
         if order==None:
+            self.deDate.setDate(date.today())
             self.lbl.setText("Add new order")
-            self.deDate.setDate(datetime.date.today())
-            self.deExpiration.setDate(datetime.date.today())
+            self.deExpiration.setDate(date.today())
         else:
             self.lbl.setText("Edit order")
             self.deDate.setDate(self.order.date)
@@ -25,14 +24,14 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             self.txtShares.setText(self.order.shares)
             self.txtAmount.setText(self.order.amount)
             self.txtPrice.setText(self.order.price)
-            
-        self.mem.data.investments.qcombobox(self.cmbInvestments, 2, selected=None, obsolete_product=False, investments_active=None,  accounts_active=True)
-        if self.investment!=None:
-            self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(self.investment.id))
-        else:
-            self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(-1))
-            
         
+        product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
+        self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
+#        if self.investment==None:
+#            self.mem.data.investments.qcombobox(self.cmbInvestments, 2, selected=None, obsolete_product=False, investments_active=None,  accounts_active=True)
+#        else:
+#            self.mem.data.investments.qcombobox(self.cmbInvestments, 2, selected=investment, obsolete_product=False, investments_active=None,  accounts_active=True)
+
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         self.date=self.deDate.date()
@@ -64,3 +63,32 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
     @pyqtSlot()
     def on_buttonbox_rejected(self):
         self.parent.reject()
+            
+    @pyqtSlot(int)  
+    def on_cmbProducts_currentIndexChanged(self, index):
+        """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
+        product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
+        if product!=None:
+            #Fills self.cmbInvestments with all product investments or with zero shares product investments
+            if self.chkWithoutShares.checkState()==Qt.Checked:
+                self.investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product_with_zero_shares(product)
+            else:
+                self.investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(product)
+            self.investments.qcombobox(self.cmbInvestments, tipo=3, selected=None, obsolete_product=False, investments_active=None, accounts_active=None)
+ 
+            self.mem.settings.setValue("wdgCalculator/product", product.id)
+    
+    @pyqtSlot(int)  
+    def on_cmbInvestments_currentIndexChanged(self, index):
+        """To invoke this function you must call self.cmbInvestments.setCurrentIndex()"""
+        if index>=0:#Only enabled if some investment is selected
+            self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(True)
+        else:
+            self.buttonbox.button(QDialogButtonBox.Cancel).setEnabled(True)
+        self.investments.selected=self.mem.data.investments.find_by_id(self.cmbInvestments.itemData(index))
+
+
+    ## This check filters investments showing ones with 0 currrent shares
+    def on_chkWithoutShares_stateChanged(self, state):
+        self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())
+        
