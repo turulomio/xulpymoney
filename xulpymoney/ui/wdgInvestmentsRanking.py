@@ -169,3 +169,15 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
                 self.selCurrentOperations=self.listCurrentOperations[i.row()][0]
         except:
             pass
+        
+    def on_radYear_toggled(self, toggle):
+        if toggle==True:
+            self.wym.hide()
+            self.wy.show()
+        else:
+            self.wym.show()
+            self.wy.hide()
+        self.load()
+
+    def on_wym_mychanged(self):
+        self.load()         

@@ -31,6 +31,84 @@
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Options</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QRadioButton" name="radYear">
+                <property name="text">
+                 <string>Evaluate investment operations from selected year</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="wdgYear" name="wy" native="true"/>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QRadioButton" name="radAll">
+                <property name="text">
+                 <string>Evaluate all investments</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QTabWidget" name="tab">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
@@ -44,7 +122,7 @@
           <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>With same product merging current operations</string>
+         <string>Merging current operations of the same product</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -71,7 +149,7 @@
           <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>With same product merging operations</string>
+         <string>Merging all operations of the same product</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -136,6 +214,12 @@
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgYear</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYear</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
