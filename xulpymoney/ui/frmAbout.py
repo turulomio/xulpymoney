@@ -15,21 +15,28 @@ from xulpymoney.version import __version__,  __versiondate__
 
 class frmAbout(QDialog, Ui_frmAbout):
     def __init__(self, mem):
-        """
-        Constructor
-        
-        @param parent The parent widget of this dialog. (QWidget)
-        @param name The name of this dialog. (QString)
-        @param modal Flag indicating a modal dialog. (boolean)
-        """
         self.mem=mem
         QDialog.__init__(self)
         self.setModal(True)
         self.setupUi(self)
         
+        s="<html><body>"
+        s=s + self.tr("""Web page is in <a href="http://github.com/turulomio/xulpymoney/">http://github.com/turulomio/xulpymoney/</a>""")
+        s=s + "<p>"
+        s=s + self.tr("This program has been developed by Mariano Mu\xf1oz") + "<p>"
+        s=s + self.tr("It has been translated to the following languages:")
+        s=s + "<ul>"
+        s=s + "<li>English</li>"
+        s=s + "<li>Espa\xf1ol</li>"
+        s=s + "</ul>"
+        s=s + "<p>"
+        s=s + self.tr("""Avatars are from <a href="http://www.nobleavatar.com/">http://www.nobleavatar.com/</a>""")
+        s=s + "</body></html>"
+        
+        self.textEdit.setHtml(s)
         self.lblVersion.setText("{} ({})".format(__version__, __versiondate__))
         productsversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), type=6)
-        self.lblProductsVersion.setText("Last products synchronization was at {}".format(productsversion))
+        self.lblProductsVersion.setText(self.tr("Last products synchronization was at {}").format(productsversion))
         self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 

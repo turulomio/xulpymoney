@@ -564,7 +564,7 @@ def package_filename(module, url):
             logging.info("FOUND " +  filename) #When debugging in windows, change logging for printt
             return filename
         else:
-            logging.debug("NOT FOUND",  filename)
+            logging.debug("NOT FOUND" + filename)
 
 ## Converts boolean to  True or False string
 ## @param s String

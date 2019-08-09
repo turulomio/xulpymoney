@@ -29,8 +29,8 @@ def main():
 
     global app
     app = QApplication(sys.argv)
-    app.setOrganizationName("Mariano Muñoz ©")
-    app.setOrganizationDomain("turulomio.users.sourceforge.net")
+    app.setOrganizationName("Xulpymoney")
+    app.setOrganizationDomain("Xulpymoney")
     app.setApplicationName("Xulpymoney")
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -38,7 +38,8 @@ def main():
     parser=argparse.ArgumentParser(
             prog='xulpymoney', 
             description=app.translate("Core",'Personal accounting system'),  
-            epilog=app.translate("Core","If you like this app, please vote for it in Sourceforge (https://sourceforge.net/projects/xulpymoney/reviews/).")+"\n" +app.translate("Core","Developed by Mariano Muñoz 2015-{}".format(__versiondate__.year)),
+            epilog=app.translate("Core","If you like this app, please give me a star in GitHub (https://github.com/turulomio/xulpymoney).")+"\n" +
+                app.translate("Core","Developed by Mariano Mu\xf1oz 2015-{} \xa9".format(__versiondate__.year)),
             formatter_class=argparse.RawTextHelpFormatter
         )
     addCommonToArgParse(parser)
