@@ -1,7 +1,8 @@
 from csv import reader
 from logging import debug
+from datetime import date
 from xulpymoney.libxulpymoney import QuoteManager, Quote, OHCLDaily
-from xulpymoney.libxulpymoneyfunctions import string2date, string2decimal, string2datetime
+from xulpymoney.libxulpymoneyfunctions import string2date, string2decimal, string2datetime, dtaware, string2time
 from xulpymoney.libxulpymoneytypes import eTickerPosition
 
 class InvestingCom(QuoteManager):
@@ -13,7 +14,7 @@ class InvestingCom(QuoteManager):
         if product==None: #Several products
             if self.columns==8:
                 self.append_from_default()
-            elif self.columns==17:
+            elif self.columns==39:
                 self.append_from_portfolio()
             else:
                 debug("The number of columns doesn't match: {}".format(self.columns))
@@ -44,32 +45,26 @@ class InvestingCom(QuoteManager):
                 line_count = 0
                 for row in csv_reader:
                     if line_count >0:#Ignores headers line
-                        if row[2].find(":")!=-1:#It's a date
+                        if row[2].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)
-#                                quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-#                                quote.datetime=string2datetime(row[16], type=7)
-#                                quote.quote=string2decimal(row[3])
-#                                print(quote)
-#                                #self.append(quote)
-#                                ohcl=OHCLDaily(self.mem)
-#                                ohcl.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-#                                ohcl.date=string2date(row[7], type=4)
-#                                ohcl.close=string2decimal(row[3])
-#                                ohcl.open=string2decimal(row[8])
-#                                ohcl.high=string2decimal(row[10])
-#                                ohcl.low=string2decimal(row[11])
-#                                for quote in ohcl.generate_4_quotes():
-#                                    self.append(quote)
+                                quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                                date_=string2date(row[7], type=4)
+                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes,quote.product.stockmarket.zone.name)#Without 4 microseconds becaouse is not a ohcl
+                                quote.quote=string2decimal(row[2])
+                                print(quote)
+                                self.append(quote)
                             except:
                                 debug("Error parsing "+ str(row))
                         else: #It's an hour
                             quote=Quote(self.mem)
                             quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                            time_=string2time(row[7], type=2)
+                            quote.datetime=dtaware(date.today(), time_,quote.product.stockmarket.zone.name)
                             quote.datetime=string2datetime(row[16], type=7)
                             quote.quote=string2decimal(row[3])
                             print(quote)
-                            #self.append(quote)
+                            self.append(quote)
                     line_count += 1
             print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
         
@@ -90,14 +85,14 @@ class InvestingCom(QuoteManager):
     ## 14 Vol.  
     ## 15 Fecha próx. resultados    
     ## 16  Hora Cap. mercado    Ingresos    Vol. promedio (3m)  BPA PER Beta    Dividendo   Rendimiento 5 minutos   15 minutos  30 minutos  1 hora  5 horas Diario  Semanal Mensual Diario  Semanal Mensual Anual   1 año   3 años
-    ## It has 17 columns
+    ## It has 39 columns
     def append_from_portfolio(self):
             with open(self.filename) as csv_file:
                 csv_reader = reader(csv_file, delimiter=',')
                 line_count = 0
                 for row in csv_reader:
                     if line_count >0:#Ignores headers line
-                        if row[16].find(":")!=-1:#It's a date
+                        if row[16].find(":")==-1:#It's a date
                             try:
                                 ohcl=OHCLDaily(self.mem)
                                 ohcl.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
@@ -116,10 +111,9 @@ class InvestingCom(QuoteManager):
                             quote.datetime=string2datetime(row[16], type=7)
                             quote.quote=string2decimal(row[3])
                             print(quote)
-                            #self.append(quote)
+                            self.append(quote)
                     line_count += 1
-            print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
-            
+            print("Added {} quotes from {} CSV lines".format(self.length(), line_count))      
     ## Imports data from a CSV file with this struct. It has 6 columns
     ## "Fecha","Último","Apertura","Máximo","Mínimo","Vol.","% var."
     ## "22.07.2019","10,074","10,060","10,148","9,987","10,36M","-0,08%"

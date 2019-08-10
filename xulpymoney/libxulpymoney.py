@@ -850,7 +850,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             if p.tickers[etickerposition]==None:
                 continue
             if p.tickers[etickerposition].upper()==ticker.upper():
-                print(p)
                 return p
         return None                
         

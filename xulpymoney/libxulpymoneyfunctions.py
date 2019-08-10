@@ -409,9 +409,13 @@ def string2decimal(s, type=1):
             return None
 
 ## Converts a tring 12:23 to a datetime.time object
-def string2time(s):
-    a=s.split(":")
-    return datetime.time(int(a[0]), int(a[1]))
+def string2time(s, type=1):
+    if type==1:#12:12
+        a=s.split(":")
+        return datetime.time(int(a[0]), int(a[1]))
+    elif type==2:#12:12:12
+        a=s.split(":")
+        return datetime.time(int(a[0]), int(a[1]), int(a[2]))
 
 ## Bytes 2 string
 def b2s(b, code='UTF-8'):
