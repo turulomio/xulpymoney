@@ -998,9 +998,9 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         products.load_from_db("select * from products order by id")
         ods=ODS_Write(filename)
         s1=ods.createSheet("Products")
-        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE    ',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS']], "OrangeCenter")
+        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE    ',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS', 'TINVESTING']], "OrangeCenter")
         for row, p in enumerate(products.arr):
-            s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3] ]])
+            s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3], p.tickers[4] ]])
         ods.save()
 
     ## Returns products.xlsx modification datetime or None if it can't find it
@@ -1018,7 +1018,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         def product_xlsx(row):
             try:
                 p=Product(self.mem)
-                tickers=[None]*4
+                tickers=[None]*5
                 p.id=row[0].value
                 p.name=row[1].value
                 p.high_low=str2bool(row[2].value)
@@ -1052,6 +1052,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 tickers[1]=row[18].value
                 tickers[2]=row[19].value
                 tickers[3]=row[20].value
+                tickers[4]=row[21].value
                 p.tickers=tickers
                 return p
             except:
@@ -1108,7 +1109,8 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                         p_db.tickers[0]!=p_xlsx.tickers[0] or
                         p_db.tickers[1]!=p_xlsx.tickers[1] or
                         p_db.tickers[2]!=p_xlsx.tickers[2] or
-                        p_db.tickers[3]!=p_xlsx.tickers[3]
+                        p_db.tickers[3]!=p_xlsx.tickers[3] or
+                        p_db.tickers[4]!=p_xlsx.tickers[4]
                     ):
                 changed.append(p_xlsx)
 
