@@ -47,6 +47,7 @@ class eTickerPosition(IntEnum):
     Morningstar=1
     Google=2
     QueFondos=3
+    InvestingCom=4
     
     def postgresql(etickerposition):
         return etickerposition.value+1

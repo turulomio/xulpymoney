@@ -357,6 +357,9 @@ def string2date(iso, type=1):
     if type==3: #DD.MM.YYYY
         d=iso.split(".")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
+    if type==4: #DD/MM
+        d=iso.split("/")
+        return datetime.date(datetime.date.today().year, int(d[1]),  int(d[0]))
 
 ## Function to generate a datetime (aware or naive) from a string
 ## @param s String

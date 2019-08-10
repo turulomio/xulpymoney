@@ -841,6 +841,17 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 continue
             if p.isin.upper()==isin.upper():
                 return p
+        return None             
+        
+    def find_by_ticker(self, ticker, etickerposition):
+        if ticker==None:
+            return None
+        for p in self.arr:
+            if p.tickers[etickerposition]==None:
+                continue
+            if p.tickers[etickerposition].upper()==ticker.upper():
+                print(p)
+                return p
         return None                
         
     @deprecated
