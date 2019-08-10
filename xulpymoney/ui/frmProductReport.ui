@@ -1786,10 +1786,10 @@
      <normaloff>:/xulpymoney/investing_com.png</normaloff>:/xulpymoney/investing_com.png</iconset>
    </property>
    <property name="text">
-    <string>Import csv from Investing.com</string>
+    <string>Import historical csv from Investing.com</string>
    </property>
    <property name="toolTip">
-    <string>Import csv from Investing.com</string>
+    <string>Import historical csv from Investing.com</string>
    </property>
   </action>
  </widget>

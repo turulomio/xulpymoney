@@ -708,7 +708,13 @@ class frmMain(QMainWindow, Ui_frmMain):
                 arrInt.append(p.id)
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()     
+        self.w.show()
+
+    @pyqtSlot()  
+    def on_actionQuoteImportInvestingComIntraday_triggered(self):
+        self.w.close()
+        qmessagebox("done")
+        self.on_actionInvestments_triggered()
                 
     @pyqtSlot()  
     def on_actionSP500_triggered(self):

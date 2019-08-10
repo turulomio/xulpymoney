@@ -1110,7 +1110,7 @@ class Ui_frmProductReport(object):
         self.actionDPSImport.setToolTip(_translate("frmProductReport", "Needs a file with first sheet with two columns. Date/Datetime in ISO Format  and value"))
         self.actionQuoteExport.setText(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
         self.actionQuoteExport.setToolTip(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
-        self.actionQuoteImportInvestingCom.setText(_translate("frmProductReport", "Import csv from Investing.com"))
-        self.actionQuoteImportInvestingCom.setToolTip(_translate("frmProductReport", "Import csv from Investing.com"))
+        self.actionQuoteImportInvestingCom.setText(_translate("frmProductReport", "Import historical csv from Investing.com"))
+        self.actionQuoteImportInvestingCom.setToolTip(_translate("frmProductReport", "Import historical csv from Investing.com"))
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc
