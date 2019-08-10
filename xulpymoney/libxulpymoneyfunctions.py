@@ -393,6 +393,12 @@ def string2datetime(s, type, zone="Europe/Madrid"):
     if type==6:#201907210725 ==> Naive
         dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
+    if type==7:#01:02:03 ==> Aware
+        tod=datetime.date.today()
+        a=s.split(":")
+        dat=datetime.datetime(tod.year, tod.month, tod.day, int(a[0]), int(a[1]), int(a[2]))
+        z=pytz.timezone(zone)
+        return z.localize(dat)
 
 ## Converts a string  to a decimal
 def string2decimal(s, type=1):

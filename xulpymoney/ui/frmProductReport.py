@@ -4,10 +4,10 @@ import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
-from csv import reader
+from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
-from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager, OHCLDaily
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, string2date, string2decimal
+from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.ui.frmSelector import frmSelector
@@ -447,33 +447,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 
-    ## Imports data from a CSV file with this struct
-    ## "Fecha","Último","Apertura","Máximo","Mínimo","Vol.","% var."
-    ## "22.07.2019","10,074","10,060","10,148","9,987","10,36M","-0,08%"
     @pyqtSlot()
     def on_actionQuoteImportInvestingCom_triggered(self):
         filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
         if filename!="":
-            set=QuoteManager(self.mem)
-            with open(filename) as csv_file:
-                csv_reader = reader(csv_file, delimiter=',')
-                line_count = 0
-                for row in csv_reader:
-                    if line_count >0:#Ignores headers line
-                        try:
-                            ohcl=OHCLDaily(self.mem)
-                            ohcl.product=self.product
-                            ohcl.date=string2date(row[0], type=3)
-                            ohcl.close=string2decimal(row[1])
-                            ohcl.open=string2decimal(row[2])
-                            ohcl.high=string2decimal(row[3])
-                            ohcl.low=string2decimal(row[4])
-                            for quote in ohcl.generate_4_quotes():
-                                set.append(quote)
-                        except:
-                            logging.debug("Error parsing", row)
-                    line_count += 1
-            print("Added {} quotes from {} CSV lines".format(set.length(), line_count))
+            set=InvestingCom(self.mem, filename, self.product)
             set.save()
             self.mem.con.commit()
             self.product.needStatus(2, downgrade_to=0)

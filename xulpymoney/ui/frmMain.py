@@ -6,11 +6,11 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 import os
 import logging
-from csv import reader
+from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
-from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager, QuoteManager, OHCLDaily
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet, string2date, string2decimal
-from xulpymoney.libxulpymoneytypes import eProductType, eTickerPosition
+from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
+from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.myqlineedit import myQLineEdit
@@ -711,49 +711,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-    ## 0 Nombre	
-    ## 1 Símbolo	
-    ## 2 Mercado	
-    ## 3 Último
-    ## 4	Compra	
-    ## 5 Venta	
-    ## 6 Horario ampliado	
-    ## 7 Horario ampliado (%)	
-    ## 8 Apertura	
-    ## 9 Anterior	
-    ## 10 Máximo	
-    ## 11 Mínimo	
-    ## 12 Var.	
-    ## 13 % var.	
-    ## 14 Vol.	
-    ## 15 Fecha próx. resultados	
-    ## 16  Hora	Cap. mercado	Ingresos	Vol. promedio (3m)	BPA	PER	Beta	Dividendo	Rendimiento	5 minutos	15 minutos	30 minutos	1 hora	5 horas	Diario	Semanal	Mensual	Diario	Semanal	Mensual	Anual	1 año	3 años
     @pyqtSlot()  
     def on_actionQuoteImportInvestingComIntraday_triggered(self):
         self.w.close()
         filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
         if filename!="":
-            set=QuoteManager(self.mem)
-            with open(filename) as csv_file:
-                csv_reader = reader(csv_file, delimiter=',')
-                line_count = 0
-                for row in csv_reader:
-                    if line_count >0:#Ignores headers line
-                        if len(row[16])!=8:#Fecha implica cierre
-                            try:
-                                ohcl=OHCLDaily(self.mem)
-                                ohcl.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-                                ohcl.date=string2date(row[16], type=4)
-                                ohcl.close=string2decimal(row[3])
-                                ohcl.open=string2decimal(row[8])
-                                ohcl.high=string2decimal(row[10])
-                                ohcl.low=string2decimal(row[11])
-                                for quote in ohcl.generate_4_quotes():
-                                    set.append(quote)
-                            except:
-                                logging.debug("Error parsing "+ str(row))
-                    line_count += 1
-            print("Added {} quotes from {} CSV lines".format(set.length(), line_count))
+            set=InvestingCom(self.mem, filename)
             set.save()
             self.mem.con.commit()
             self.mem.data.load()
