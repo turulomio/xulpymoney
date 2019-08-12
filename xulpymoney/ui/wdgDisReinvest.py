@@ -38,11 +38,19 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tblInvestmentsHistoricas.settings(self.mem, "wdgDisReinvest")
         self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
         
+        self.tblOps.settings(self.mem, "wdgDisReinvest")
+        self.tblCurrentOps.settings(self.mem, "wdgDisReinvest")
+        self.tblHistoricalOps.settings(self.mem, "wdgDisReinvest")
+        
+        
         if self.investment.op_actual.length()==0:
             qmessagebox(self.tr("There aren't shares for this investment"))
             return
             
         self.investment.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
+        
+        
+        self.investment.op.myqtablewidget(self.tblOps)
         self.on_radRe_clicked()
 
     def shares(self):
@@ -93,10 +101,10 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         at=Quote(self.mem).init__create(self.investment.product, datetime.datetime.now(), self.txtValorAccion.decimal())
         
-        self.tabAB.setTabText(0, self.tr("After at {}").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
-        self.tabAB.setTabText(1, self.tr("After at {}").format(self.investment.product.currency.string(at.quote)))
-        self.tabAB.setTabText(2, self.tr("Before at {}").format(self.investment.product.currency.string(at.quote)))
-        self.tabAB.setTabText(3, self.tr("Before at {}").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
+#        self.tabAB.setTabText(0, self.tr("After at {}").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
+#        self.tabAB.setTabText(1, self.tr("After at {}").format(self.investment.product.currency.string(at.quote)))
+#        self.tabAB.setTabText(2, self.tr("Before at {}").format(self.investment.product.currency.string(at.quote)))
+#        self.tabAB.setTabText(3, self.tr("Before at {}").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
             qmessagebox(self.tr("Simulation value must be positive"))
@@ -128,6 +136,15 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_op.arr.append(d)
 
         (self.sim_opactual, self.sim_ophistorica)=self.sim_op.get_current_and_historical_operations()
+        
+        #NEW
+        if self.cmbPrices.currentIndex()==0:#Before
+            self.investment.op.myqtablewidget(self.tblOps)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps)
+            self.investment.op_actual.myqtablewidget(self.tblHistoricalOps)
+        
+        
+        
         #After
         self.sim_op.myqtablewidget(self.tblOperaciones)
         self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespues, quote=self.investment.product.result.basic.last)
@@ -192,3 +209,26 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             tpcprice= averageprice*Decimal(1+tpc/100)
             table.setItem(i, 1, tpcprice.qtablewidgetitem())
             table.setItem(i, 2, ((tpcprice-averageprice)*shares).qtablewidgetitem())
+
+    def cmbPrices_reload(self):
+        self.cmbPrices.blockSignals(True)
+        self.cmbPrices.clear()
+        self.cmbPrices.addItem(self.tr("Before simulation: current price ({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: current price ({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: simulation price ({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 2.5 %({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 5.0 %({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 7.5 %({})"))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 10.0 %({})"))
+        self.cmbPrices.blockSignals(False)
+        self.cmbPrices.setCurrentIndex(0)
+
+    @pyqtSlot(int) 
+    def on_cmbFechasPago_currentIndexChanged(self, index):
+        if index==0:
+            self.price=self.investment.product.result.basic.last.quote
+        elif index==1:
+            self.price=self.txtValorAccion.decimal()
+        print(index)
+
+        
