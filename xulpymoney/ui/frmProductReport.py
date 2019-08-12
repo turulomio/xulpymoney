@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDi
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, question_delete_file
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.ui.frmSelector import frmSelector
@@ -454,6 +454,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             set=InvestingCom(self.mem, filename, self.product)
             set.save()
             self.mem.con.commit()
+            question_delete_file(filename)
             self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 

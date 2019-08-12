@@ -9,7 +9,7 @@ import logging
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet, question_delete_file
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -719,6 +719,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             set=InvestingCom(self.mem, filename)
             set.save()
             self.mem.con.commit()
+            question_delete_file(filename)
             self.mem.data.load()
             self.on_actionInvestments_triggered()
                 

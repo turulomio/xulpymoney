@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt,  QCoreApplication, QLocale
 from PyQt5.QtGui import QIcon,  QColor
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
 from decimal import Decimal
-from os import path, makedirs
+from os import path, makedirs, remove
 import datetime
 import time
 import functools
@@ -751,4 +751,20 @@ def set_sign_of_other_number(number, number_to_change):
        return abs(number_to_change)
     return -abs(number_to_change)
 
-
+## Asks a a question to delete a file
+## Returns True or False if file has been deleted
+def question_delete_file(filename):
+    reply = QMessageBox.question(
+                    None, 
+                    QApplication.translate("Core", 'File deletion question'), 
+                    QApplication.translate("Core", "Do you want to delete this file:\n'{}'?").format(filename), 
+                    QMessageBox.Yes, 
+                    QMessageBox.No
+                )
+    if reply==QMessageBox.Yes:
+        remove(filename)
+        if path.exists(filename)==False:
+            return True
+    return False
+        
+        
