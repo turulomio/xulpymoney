@@ -224,6 +224,7 @@
      <addaction name="actionWarrantsObsolete"/>
     </widget>
     <addaction name="actionProductsUpdate"/>
+    <addaction name="actionQuoteImportInvestingComIntraday"/>
     <addaction name="separator"/>
     <addaction name="actionShowBenchmark"/>
     <addaction name="separator"/>
@@ -1173,6 +1174,18 @@
    </property>
    <property name="toolTip">
     <string>Zero risk investment list</string>
+   </property>
+  </action>
+  <action name="actionQuoteImportInvestingComIntraday">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/investing_com.png</normaloff>:/xulpymoney/investing_com.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import intraday csv from Investing.com</string>
+   </property>
+   <property name="toolTip">
+    <string>Import intraday csv from Investing.com</string>
    </property>
   </action>
  </widget>

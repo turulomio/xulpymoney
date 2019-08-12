@@ -3,12 +3,13 @@
 
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 import os
 import logging
+from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet, question_delete_file
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -708,7 +709,19 @@ class frmMain(QMainWindow, Ui_frmMain):
                 arrInt.append(p.id)
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()     
+        self.w.show()
+
+    @pyqtSlot()  
+    def on_actionQuoteImportInvestingComIntraday_triggered(self):
+        self.w.close()
+        filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
+        if filename!="":
+            set=InvestingCom(self.mem, filename)
+            set.save()
+            self.mem.con.commit()
+            question_delete_file(filename)
+            self.mem.data.load()
+            self.on_actionInvestments_triggered()
                 
     @pyqtSlot()  
     def on_actionSP500_triggered(self):

@@ -223,6 +223,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addSeparator()
         menu.addAction(self.actionProductPrice)
         menu.addAction(self.actionProductPriceLastRemove)
+        menu.addAction(self.mem.frmMain.actionQuoteImportInvestingComIntraday)
         menu.addAction(self.actionProductUpdate)
         menu.addSeparator()
         menu.addAction(self.actionActive)

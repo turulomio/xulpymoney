@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt,  QCoreApplication, QLocale
 from PyQt5.QtGui import QIcon,  QColor
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
 from decimal import Decimal
-from os import path, makedirs
+from os import path, makedirs, remove
 import datetime
 import time
 import functools
@@ -357,6 +357,9 @@ def string2date(iso, type=1):
     if type==3: #DD.MM.YYYY
         d=iso.split(".")
         return datetime.date(int(d[2]), int(d[1]),  int(d[0]))
+    if type==4: #DD/MM
+        d=iso.split("/")
+        return datetime.date(datetime.date.today().year, int(d[1]),  int(d[0]))
 
 ## Function to generate a datetime (aware or naive) from a string
 ## @param s String
@@ -390,6 +393,12 @@ def string2datetime(s, type, zone="Europe/Madrid"):
     if type==6:#201907210725 ==> Naive
         dat=datetime.datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
+    if type==7:#01:02:03 ==> Aware
+        tod=datetime.date.today()
+        a=s.split(":")
+        dat=datetime.datetime(tod.year, tod.month, tod.day, int(a[0]), int(a[1]), int(a[2]))
+        z=pytz.timezone(zone)
+        return z.localize(dat)
 
 ## Converts a string  to a decimal
 def string2decimal(s, type=1):
@@ -400,9 +409,13 @@ def string2decimal(s, type=1):
             return None
 
 ## Converts a tring 12:23 to a datetime.time object
-def string2time(s):
-    a=s.split(":")
-    return datetime.time(int(a[0]), int(a[1]))
+def string2time(s, type=1):
+    if type==1:#12:12
+        a=s.split(":")
+        return datetime.time(int(a[0]), int(a[1]))
+    elif type==2:#12:12:12
+        a=s.split(":")
+        return datetime.time(int(a[0]), int(a[1]), int(a[2]))
 
 ## Bytes 2 string
 def b2s(b, code='UTF-8'):
@@ -738,4 +751,20 @@ def set_sign_of_other_number(number, number_to_change):
        return abs(number_to_change)
     return -abs(number_to_change)
 
-
+## Asks a a question to delete a file
+## Returns True or False if file has been deleted
+def question_delete_file(filename):
+    reply = QMessageBox.question(
+                    None, 
+                    QApplication.translate("Core", 'File deletion question'), 
+                    QApplication.translate("Core", "Do you want to delete this file:\n'{}'?").format(filename), 
+                    QMessageBox.Yes, 
+                    QMessageBox.No
+                )
+    if reply==QMessageBox.Yes:
+        remove(filename)
+        if path.exists(filename)==False:
+            return True
+    return False
+        
+        
