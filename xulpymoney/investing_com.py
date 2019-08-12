@@ -13,12 +13,15 @@ class InvestingCom(QuoteManager):
         self.columns=self.get_number_of_csv_columns()
         if product==None: #Several products
             if self.columns==8:
+                print("append_from_default")
                 self.append_from_default()
             elif self.columns==39:
+                print("append_from_portfolio")
                 self.append_from_portfolio()
             else:
                 debug("The number of columns doesn't match: {}".format(self.columns))
         else:
+            print("append_from_historical")
             self.append_from_historical()
 
     def get_number_of_csv_columns(self):
@@ -48,12 +51,12 @@ class InvestingCom(QuoteManager):
                         product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
                         if product==None:
                             continue
-                        if row[2].find(":")==-1:#It's a date
+                        if row[7].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
                                 date_=string2date(row[7], type=4)
-                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes,quote.product.stockmarket.zone.name)#Without 4 microseconds becaouse is not a ohcl
+                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes,self.mem.localzone.name)#Without 4 microseconds becaouse is not a ohcl
                                 quote.quote=string2decimal(row[2])
                                 self.append(quote)
                             except:
@@ -63,7 +66,7 @@ class InvestingCom(QuoteManager):
                                 quote=Quote(self.mem)
                                 quote.product=product
                                 time_=string2time(row[7], type=2)
-                                quote.datetime=dtaware(date.today(), time_,quote.product.stockmarket.zone.name)
+                                quote.datetime=dtaware(date.today(), time_, self.mem.localzone.name)
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
                             except:
