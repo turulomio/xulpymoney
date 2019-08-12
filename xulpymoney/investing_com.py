@@ -104,15 +104,12 @@ class InvestingCom(QuoteManager):
                             continue
                         if row[16].find(":")==-1:#It's a date
                             try:
-                                ohcl=OHCLDaily(self.mem)
-                                ohcl.product=product
-                                ohcl.date=string2date(row[16], type=4)
-                                ohcl.close=string2decimal(row[3])
-                                ohcl.open=string2decimal(row[8])
-                                ohcl.high=string2decimal(row[10])
-                                ohcl.low=string2decimal(row[11])
-                                for quote in ohcl.generate_4_quotes():
-                                    self.append(quote)
+                                quote=Quote(self.mem)
+                                quote.product=product
+                                date_=string2date(row[16], type=4)
+                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes, quote.product.stockmarket.zone.name)#Without 4 microseconds becaouse is not a ohcl
+                                quote.quote=string2decimal(row[3])
+                                self.append(quote)
                             except:
                                 debug("Error parsing "+ str(row))
                         else: #It's an hour
@@ -125,7 +122,6 @@ class InvestingCom(QuoteManager):
                             except:
                                 debug("Error parsing " + str(row))
                     line_count += 1
-                self.print()
             print("Added {} quotes from {} CSV lines".format(self.length(), line_count))      
 
     ## Imports data from a CSV file with this struct. It has 6 columns
@@ -148,6 +144,6 @@ class InvestingCom(QuoteManager):
                             for quote in ohcl.generate_4_quotes():
                                 self.append(quote)
                         except:
-                            debug("Error parsing", row)
+                            debug("Error parsing" + str(row))
                     line_count += 1
             print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
