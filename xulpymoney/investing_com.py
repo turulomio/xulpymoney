@@ -45,26 +45,30 @@ class InvestingCom(QuoteManager):
                 line_count = 0
                 for row in csv_reader:
                     if line_count >0:#Ignores headers line
+                        product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                        if product==None:
+                            continue
                         if row[2].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)
-                                quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                                quote.product=product
                                 date_=string2date(row[7], type=4)
                                 quote.datetime=dtaware(date_,quote.product.stockmarket.closes,quote.product.stockmarket.zone.name)#Without 4 microseconds becaouse is not a ohcl
                                 quote.quote=string2decimal(row[2])
-                                print(quote)
                                 self.append(quote)
                             except:
                                 debug("Error parsing "+ str(row))
                         else: #It's an hour
-                            quote=Quote(self.mem)
-                            quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-                            time_=string2time(row[7], type=2)
-                            quote.datetime=dtaware(date.today(), time_,quote.product.stockmarket.zone.name)
-                            quote.datetime=string2datetime(row[16], type=7)
-                            quote.quote=string2decimal(row[3])
-                            print(quote)
-                            self.append(quote)
+                            try:
+                                quote=Quote(self.mem)
+                                quote.product=product
+                                time_=string2time(row[7], type=2)
+                                quote.datetime=dtaware(date.today(), time_,quote.product.stockmarket.zone.name)
+                                quote.quote=string2decimal(row[3])
+                                self.append(quote)
+                            except:
+                                debug("Error parsing "+ str(row))
+
                     line_count += 1
             print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
         
@@ -92,10 +96,13 @@ class InvestingCom(QuoteManager):
                 line_count = 0
                 for row in csv_reader:
                     if line_count >0:#Ignores headers line
+                        product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                        if product==None:
+                            continue
                         if row[16].find(":")==-1:#It's a date
                             try:
                                 ohcl=OHCLDaily(self.mem)
-                                ohcl.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
+                                ohcl.product=product
                                 ohcl.date=string2date(row[16], type=4)
                                 ohcl.close=string2decimal(row[3])
                                 ohcl.open=string2decimal(row[8])
@@ -106,14 +113,18 @@ class InvestingCom(QuoteManager):
                             except:
                                 debug("Error parsing "+ str(row))
                         else: #It's an hour
-                            quote=Quote(self.mem)
-                            quote.product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-                            quote.datetime=string2datetime(row[16], type=7)
-                            quote.quote=string2decimal(row[3])
-                            print(quote)
-                            self.append(quote)
+                            try:
+                                quote=Quote(self.mem)
+                                quote.product=product
+                                quote.datetime=string2datetime(row[16], type=7)
+                                quote.quote=string2decimal(row[3])
+                                self.append(quote)
+                            except:
+                                debug("Error parsing " + str(row))
                     line_count += 1
+                self.print()
             print("Added {} quotes from {} CSV lines".format(self.length(), line_count))      
+
     ## Imports data from a CSV file with this struct. It has 6 columns
     ## "Fecha","Último","Apertura","Máximo","Mínimo","Vol.","% var."
     ## "22.07.2019","10,074","10,060","10,148","9,987","10,36M","-0,08%"
