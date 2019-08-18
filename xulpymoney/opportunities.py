@@ -40,7 +40,7 @@ class Opportunity:
             self.id=id
         self.mem=args[0]
         if len(args)==1:
-            init__create(None, None, None, Decimal('0'), Decimal('0'), Decimal('0'), None, None)
+            init__create(None, None, None, Decimal('0'), Decimal('0'), Decimal('0'), None, None, None)
         if len(args)==2:
             init__db_row(args[1])
         if len(args)==9:

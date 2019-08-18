@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOpportunitiesAdd(object):
     def setupUi(self, wdgOpportunitiesAdd):
         wdgOpportunitiesAdd.setObjectName("wdgOpportunitiesAdd")
-        wdgOpportunitiesAdd.resize(820, 298)
+        wdgOpportunitiesAdd.resize(820, 406)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOpportunitiesAdd.setWindowIcon(icon)
@@ -32,6 +32,14 @@ class Ui_wdgOpportunitiesAdd(object):
         self.lbl.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl.setObjectName("lbl")
         self.verticalLayout.addWidget(self.lbl)
+        self.lblPixmap = QtWidgets.QLabel(wdgOpportunitiesAdd)
+        self.lblPixmap.setMaximumSize(QtCore.QSize(64, 64))
+        self.lblPixmap.setText("")
+        self.lblPixmap.setPixmap(QtGui.QPixmap(":/xulpymoney/opportunity.png"))
+        self.lblPixmap.setScaledContents(True)
+        self.lblPixmap.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblPixmap.setObjectName("lblPixmap")
+        self.verticalLayout.addWidget(self.lblPixmap, 0, QtCore.Qt.AlignHCenter)
         self.productSelector = wdgProductSelector(wdgOpportunitiesAdd)
         self.productSelector.setObjectName("productSelector")
         self.verticalLayout.addWidget(self.productSelector)
