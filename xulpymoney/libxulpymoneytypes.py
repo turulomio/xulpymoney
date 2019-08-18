@@ -167,7 +167,7 @@ class eInvestmentTypePosition:
             
 
     @classmethod
-    def qcombobox(self, combo, selected_eInvestmentTypePosition):
+    def qcombobox(self, combo, selected_eInvestmentTypePosition=None):
         combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Long), QApplication.translate("Core", "Long"), eInvestmentTypePosition.Long)
         combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Short), QApplication.translate("Core", "Short"), eInvestmentTypePosition.Short)
         combo.setCurrentIndex(combo.findData(selected_eInvestmentTypePosition))

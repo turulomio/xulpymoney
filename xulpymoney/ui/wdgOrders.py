@@ -1,6 +1,6 @@
-import datetime
 from PyQt5.QtCore import pyqtSlot, QSize
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
+from datetime import date
 from xulpymoney.libxulpymoney import OrderManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
@@ -19,7 +19,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.tblSellingPoints.settings(self.mem, "wdgOrders")
         self.mem.data.investments_active().myqtablewidget_sellingpoints(self.tblSellingPoints)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
-        self.wdgYear.initiate(self.orders.date_first_db_order().year,  datetime.date.today().year, datetime.date.today().year)
+        self.wdgYear.initiate(self.orders.date_first_db_order().year,  date.today().year, date.today().year)
         
         
     @pyqtSlot()  

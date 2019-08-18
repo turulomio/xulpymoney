@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgOrdersAdd(object):
     def setupUi(self, wdgOrdersAdd):
         wdgOrdersAdd.setObjectName("wdgOrdersAdd")
-        wdgOrdersAdd.resize(957, 382)
+        wdgOrdersAdd.resize(826, 455)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/bank.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         wdgOrdersAdd.setWindowIcon(icon)
@@ -31,6 +31,14 @@ class Ui_wdgOrdersAdd(object):
         self.lbl.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl.setObjectName("lbl")
         self.verticalLayout.addWidget(self.lbl)
+        self.lblPixmap = QtWidgets.QLabel(wdgOrdersAdd)
+        self.lblPixmap.setMaximumSize(QtCore.QSize(64, 64))
+        self.lblPixmap.setText("")
+        self.lblPixmap.setPixmap(QtGui.QPixmap(":/xulpymoney/order.png"))
+        self.lblPixmap.setScaledContents(True)
+        self.lblPixmap.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblPixmap.setObjectName("lblPixmap")
+        self.verticalLayout.addWidget(self.lblPixmap, 0, QtCore.Qt.AlignHCenter)
         self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
         self.label_7 = QtWidgets.QLabel(wdgOrdersAdd)

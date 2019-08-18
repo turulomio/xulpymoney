@@ -1,6 +1,6 @@
-import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
+from datetime import date
 from xulpymoney.opportunities import Opportunity
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eInvestmentTypePosition
@@ -17,10 +17,10 @@ class wdgOpportunitiesAdd(QWidget, Ui_wdgOpportunitiesAdd):
         self.productSelector.setupUi(self.mem, None)
         if opportunity==None:
             self.lbl.setText("Add new opportunity")
-            self.deDate.setDate(datetime.date.today())
+            self.deDate.setDate(date.today())
             self.opportunity=Opportunity(self.mem)
             self.productSelector.setSelected(None)
-            eInvestmentTypePosition.qcombobox(self.cmdInvesmentTypePosition)
+            eInvestmentTypePosition.qcombobox(self.cmbInvestmentTypePosition)
         else:
             self.lbl.setText("Edit opportunity")
             self.deDate.setDate(self.opportunity.date)
