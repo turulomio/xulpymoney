@@ -344,789 +344,218 @@
       </layout>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabAB">
-       <property name="tabPosition">
-        <enum>QTabWidget::West</enum>
-       </property>
+      <widget class="QTabWidget" name="tabOps">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
-       <widget class="QWidget" name="tab_10">
+       <widget class="QWidget" name="tab_13">
         <attribute name="title">
-         <string>New</string>
+         <string>Investment operations</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_29">
+        <layout class="QHBoxLayout" name="horizontalLayout_24">
          <item>
-          <widget class="QTabWidget" name="tblHistoricalOps">
-           <property name="currentIndex">
-            <number>2</number>
+          <widget class="myQTableWidget" name="tblOps">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
            </property>
-           <widget class="QWidget" name="tab_13">
-            <attribute name="title">
-             <string>Investment operations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_24">
-             <item>
-              <widget class="myQTableWidget" name="tblOps">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Id</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Operation type</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Comission</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Taxes</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="Situac_3">
-            <attribute name="title">
-             <string>Investment current state</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_26">
-             <item>
-              <widget class="myQTableWidget" name="tblCurrentOps">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Pending</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Annual</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% APR</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Benchmark</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_14">
-            <attribute name="title">
-             <string>Historical operations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_27">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsHistoricas_2">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="editTriggers">
-                <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Years</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Investment</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Operation type</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Initial balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Final balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Gross</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Comissions</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Taxes</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Net</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Id</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Operation type</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Shares</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Price</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Comission</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Taxes</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_5">
+       <widget class="QWidget" name="Situac_3">
         <attribute name="title">
-         <string>After</string>
+         <string>Investment current state</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_18">
+        <layout class="QHBoxLayout" name="horizontalLayout_26">
          <item>
-          <widget class="QTabWidget" name="tabOpAcHi">
-           <property name="currentIndex">
-            <number>3</number>
+          <widget class="myQTableWidget" name="tblCurrentOps">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
            </property>
-           <widget class="QWidget" name="tab_9">
-            <attribute name="title">
-             <string>Investment operations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <item>
-              <widget class="myQTableWidget" name="tblOperaciones">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Id</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Operation type</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Comission</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Taxes</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="Situac_2">
-            <attribute name="title">
-             <string>Investment current state</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_15">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsActualDespues">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Pending</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Annual</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% APR</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Benchmark</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_8">
-            <attribute name="title">
-             <string>Historical operations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_16">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsHistoricas">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="editTriggers">
-                <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Years</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Investment</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Operation type</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Initial balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Final balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Gross</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Comissions</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Taxes</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Net</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_2">
-            <attribute name="title">
-             <string>Gains estimations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="myQTableWidget" name="tblGainsAfter">
-               <property name="editTriggers">
-                <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::SingleSelection</enum>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>% Gains</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Gains</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Shares</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Price</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Pending</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Annual</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% APR</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Total</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Benchmark</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_11">
+       <widget class="QWidget" name="tab_14">
         <attribute name="title">
-         <string>After at</string>
+         <string>Historical operations</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_25">
+        <layout class="QHBoxLayout" name="horizontalLayout_27">
          <item>
-          <widget class="QTabWidget" name="tabResultados_3">
-           <property name="currentIndex">
-            <number>0</number>
+          <widget class="myQTableWidget" name="tblHistoricalOps">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
            </property>
-           <widget class="QWidget" name="tab_12">
-            <attribute name="title">
-             <string>Investment situation</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_23">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsActualDespuesAt">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Pending</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Year to Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% APR</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Benchmark</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_3">
-        <attribute name="title">
-         <string>Before at</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_22">
-         <item>
-          <widget class="QTabWidget" name="tabResultados_2">
-           <property name="currentIndex">
-            <number>0</number>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
            </property>
-           <widget class="QWidget" name="tab_7">
-            <attribute name="title">
-             <string>Investment situation</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_20">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsActualAntesAt">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Pending</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Year to Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% APR</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Benchmark</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_6">
-        <attribute name="title">
-         <string>Before</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_19">
-         <item>
-          <widget class="QTabWidget" name="tabResultados">
-           <property name="currentIndex">
-            <number>0</number>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
            </property>
-           <widget class="QWidget" name="tab_4">
-            <attribute name="title">
-             <string>Investment situation</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="myQTableWidget" name="tblInvestmentsActualAntes">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::NoSelection</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Shares</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Balance</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Pending</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Year to Date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% APR</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>% Total</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Benchmark</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab">
-            <attribute name="title">
-             <string>Gains estimations</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="myQTableWidget" name="tblGainsBefore">
-               <property name="editTriggers">
-                <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::SingleSelection</enum>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>% Gains</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Gains</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Years</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Investment</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Operation type</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Initial balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Final balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Gross</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Comissions</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Taxes</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Net</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Total</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
