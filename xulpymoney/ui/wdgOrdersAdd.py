@@ -25,12 +25,14 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             self.deExpiration.setDate(self.order.expiration)
             self.txtShares.setText(self.order.shares)
             self.txtPrice.setText(self.order.price)
-            if investment==None:
-                product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
-                self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
-            else:
-                self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, investment.product)
-                self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
+        
+        #Can be None or distinct of None with order None or distint of None
+        if investment==None:
+            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
+            self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
+        else:
+            self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, investment.product)
+            self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):

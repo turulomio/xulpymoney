@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgCalculator(object):
     def setupUi(self, wdgCalculator):
         wdgCalculator.setObjectName("wdgCalculator")
-        wdgCalculator.resize(851, 852)
+        wdgCalculator.resize(1066, 852)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(wdgCalculator)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -56,6 +56,7 @@ class Ui_wdgCalculator(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cmbProducts.sizePolicy().hasHeightForWidth())
         self.cmbProducts.setSizePolicy(sizePolicy)
+        self.cmbProducts.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.cmbProducts.setObjectName("cmbProducts")
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.cmbProducts)
         self.label = QtWidgets.QLabel(self.groupBox)
@@ -113,6 +114,7 @@ class Ui_wdgCalculator(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cmbInvestments.sizePolicy().hasHeightForWidth())
         self.cmbInvestments.setSizePolicy(sizePolicy)
+        self.cmbInvestments.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.cmbInvestments.setObjectName("cmbInvestments")
         self.horizontalLayout_6.addWidget(self.cmbInvestments)
         self.chkWithoutShares = QtWidgets.QCheckBox(self.groupBox)
