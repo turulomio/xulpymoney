@@ -28,7 +28,6 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
 
         self.tblOps.settings(self.mem, "wdgDisReinvest")
         self.tblCurrentOps.settings(self.mem, "wdgDisReinvest")
-        self.tblHistoricalOps.settings(self.mem, "wdgDisReinvest")
         
         if self.investment.op_actual.length()==0:
             qmessagebox(self.tr("There aren't shares for this investment"))
@@ -121,7 +120,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         wc=wdgProductHistoricalReinvestChart()
         wc.setProduct(self.investment.product, self.investment)
-        wc.setReinvest( self.investment_simulated.sim_op, self.investment_simulated.sim_opactual)
+        wc.setReinvest( self.investment_simulated.op, self.investment_simulated.op_actual)
         
         lay.addWidget(wc)
         wc.generate()
@@ -150,34 +149,50 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if self.cmbPrices.currentIndex()>=0:
             index=self.cmbPrices.currentIndex()
         else:
-            index=2
+            index=9
         
         #quotes
         quote_current=self.investment.product.result.basic.last
         quote_simulation=Quote(self.mem).init__create(self.investment.product, datetime.now(), self.txtValorAccion.decimal())
-        money_0=self.investment_simulated.op_actual.average_price()
-        quote_0=Quote(self.mem).init__create(self.investment.product, datetime.now(), money_0.amount)
-        money_2_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(2.5, 100))
-        quote_2_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), money_2_5.amount)
-        money_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(5, 100))
-        quote_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), money_5.amount)
-        money_7_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(7.5, 100))
-        quote_7_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), money_7_5.amount)
-        money_10=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(10, 100))
-        quote_10=Quote(self.mem).init__create(self.investment.product, datetime.now(), money_10.amount)
+        moneybefore_0=self.investment.op_actual.average_price()
+        quotebefore_0=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneybefore_0.amount)
+        moneybefore_2_5=self.investment.op_actual.average_price_after_a_gains_percentage(Percentage(2.5, 100))
+        quotebefore_2_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneybefore_2_5.amount)
+        moneybefore_5=self.investment.op_actual.average_price_after_a_gains_percentage(Percentage(5, 100))
+        quotebefore_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneybefore_5.amount)
+        moneybefore_7_5=self.investment.op_actual.average_price_after_a_gains_percentage(Percentage(7.5, 100))
+        quotebefore_7_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneybefore_7_5.amount)
+        moneybefore_10=self.investment.op_actual.average_price_after_a_gains_percentage(Percentage(10, 100))
+        quotebefore_10=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneybefore_10.amount)
+        moneyafter_0=self.investment_simulated.op_actual.average_price()
+        quoteafter_0=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneyafter_0.amount)
+        moneyafter_2_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(2.5, 100))
+        quoteafter_2_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneyafter_2_5.amount)
+        moneyafter_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(5, 100))
+        quoteafter_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneyafter_5.amount)
+        moneyafter_7_5=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(7.5, 100))
+        quoteafter_7_5=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneyafter_7_5.amount)
+        moneyafter_10=self.investment_simulated.op_actual.average_price_after_a_gains_percentage(Percentage(10, 100))
+        quoteafter_10=Quote(self.mem).init__create(self.investment.product, datetime.now(), moneyafter_10.amount)
         
         #Combobox update
         self.cmbPrices.blockSignals(True)
         self.cmbPrices.clear()
         self.cmbPrices.addItem(self.tr("Before simulation: current price ({})").format(quote_current.money()))
         self.cmbPrices.addItem(self.tr("Before simulation: simulation price ({})").format(quote_simulation.money()))
+        self.cmbPrices.addItem(self.tr("Before simulation: selling price to gain 0 % ({})").format(moneybefore_0))
+        self.cmbPrices.addItem(self.tr("Before simulation: selling price to gain 2.5 % ({})").format(moneybefore_2_5))
+        self.cmbPrices.addItem(self.tr("Before simulation: selling price to gain 5.0 % ({})").format(moneybefore_5))
+        self.cmbPrices.addItem(self.tr("Before simulation: selling price to gain 7.5 % ({})").format(moneybefore_7_5))
+        self.cmbPrices.addItem(self.tr("Before simulation: selling price to gain 10.0 % ({})").format(moneybefore_10))
+        self.cmbPrices.insertSeparator(7);
         self.cmbPrices.addItem(self.tr("After simulation: current price ({})").format(quote_current.money()))
         self.cmbPrices.addItem(self.tr("After simulation: simulation price ({})").format(quote_simulation.money()))
-        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 0 %({})").format(money_0))
-        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 2.5 %({})").format(money_2_5))
-        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 5.0 %({})").format(money_5))
-        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 7.5 %({})").format(money_7_5))
-        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 10.0 %({})").format(money_10))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 0 % ({})").format(moneyafter_0))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 2.5 % ({})").format(moneyafter_2_5))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 5.0 % ({})").format(moneyafter_5))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 7.5 % ({})").format(moneyafter_7_5))
+        self.cmbPrices.addItem(self.tr("After simulation: selling price to gain 10.0 % ({})").format(moneyafter_10))
         self.cmbPrices.setCurrentIndex(index)
         self.cmbPrices.blockSignals(False)
 
@@ -185,39 +200,45 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if index==0:#Before current price
             self.investment.op.myqtablewidget(self.tblOps, quote_current)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quote_current)
-            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps, quote_current)
         elif index==1:# Before simulation simulation price
             self.investment.op.myqtablewidget(self.tblOps, quote_simulation)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quote_simulation)
-            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps, quote_simulation)
-        elif index==2:# After current price
+        elif index==2:# Before current price to gain 0
+            self.investment.op.myqtablewidget(self.tblOps, quotebefore_0)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_0)
+        elif index==3:# Before current price to gain 2.5%
+            self.investment.op.myqtablewidget(self.tblOps, quotebefore_2_5)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_2_5)
+        elif index==4:# Before current price to gain 5%
+            self.investment.op.myqtablewidget(self.tblOps, quotebefore_5)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_5)
+        elif index==5:# Before current price to gain 7.5%
+            self.investment.op.myqtablewidget(self.tblOps, quotebefore_7_5)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_7_5)
+        elif index==6:# Before current price to gain 10%
+            self.investment.op.myqtablewidget(self.tblOps, quotebefore_10)
+            self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_10)
+        elif index==8:# After current price
             self.investment_simulated.op.myqtablewidget(self.tblOps, quote_current)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_current)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_current)
-        elif index==3:# After current price
+        elif index==9:# After simulation price
             self.investment_simulated.op.myqtablewidget(self.tblOps, quote_simulation)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_simulation)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_simulation)
-        elif index==4:# After current price to gain 0
-            self.investment_simulated.op.myqtablewidget(self.tblOps, quote_0)
-            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_0)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_0)
-        elif index==5:# After current price to gain 2.5%
-            self.investment_simulated.op.myqtablewidget(self.tblOps, quote_2_5)
-            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_2_5)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_2_5)
-        elif index==6:# After current price to gain 5%
-            self.investment_simulated.op.myqtablewidget(self.tblOps, quote_5)
-            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_5)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_5)
-        elif index==7:# After current price to gain 7.5%
-            self.investment_simulated.op.myqtablewidget(self.tblOps, quote_7_5)
-            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_7_5)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_7_5)
-        elif index==8:# After current price to gain 10%
-            self.investment_simulated.op.myqtablewidget(self.tblOps, quote_10)
-            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_10)
-            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps, quote_10)
+        elif index==10:# After current price to gain 0
+            self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_0)
+            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_0)
+        elif index==11:# After current price to gain 2.5%
+            self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_2_5)
+            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_2_5)
+        elif index==12:# After current price to gain 5%
+            self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_5)
+            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_5)
+        elif index==13:# After current price to gain 7.5%
+            self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_7_5)
+            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_7_5)
+        elif index==14:# After current price to gain 10%
+            self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_10)
+            self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_10)
 
     @pyqtSlot(int) 
     def on_cmbPrices_currentIndexChanged(self, index):

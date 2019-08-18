@@ -346,7 +346,7 @@
      <item>
       <widget class="QTabWidget" name="tabOps">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_13">
         <attribute name="title">
@@ -473,87 +473,6 @@
            <column>
             <property name="text">
              <string>Benchmark</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_14">
-        <attribute name="title">
-         <string>Historical operations</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_27">
-         <item>
-          <widget class="myQTableWidget" name="tblHistoricalOps">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::NoSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Date</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Years</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Investment</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Operation type</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Initial balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Final balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Gross</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Comissions</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Taxes</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Net</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% Total</string>
             </property>
            </column>
           </widget>
