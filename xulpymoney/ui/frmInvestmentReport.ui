@@ -673,6 +673,20 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="tabChart">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Chart</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_20">
+         <item>
+          <layout class="QVBoxLayout" name="layChart"/>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="tabContracts">
         <attribute name="icon">
          <iconset resource="../images/xulpymoney.qrc">
@@ -723,20 +737,6 @@
             </widget>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabChart">
-        <attribute name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
-        </attribute>
-        <attribute name="title">
-         <string>Chart</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
-         <item>
-          <layout class="QVBoxLayout" name="layChart"/>
          </item>
         </layout>
        </widget>

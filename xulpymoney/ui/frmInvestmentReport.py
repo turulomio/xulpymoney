@@ -1,8 +1,8 @@
-import datetime
-import logging
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
+from datetime import date, timedelta
+from logging import debug
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
 from xulpymoney.ui.canvaschart import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
@@ -19,10 +19,6 @@ from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
     def __init__(self, mem, inversion=None,  parent=None):
-        """Accounts es un set cuentas
-        TIPOS DE ENTRADAS:        
-         1  Inserción de Opercuentas
-         2  Inversion=x"""
         QDialog.__init__(self, parent)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.hide()
@@ -78,7 +74,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
             #Removes contract tab when it isn't neccessary
             if self.investment.product.high_low==False:
-                self.tab.removeTab(5)
+                self.tab.removeTab(6)
             
             #CmbAccount está desabilitado si hay dividends o operinversiones
             if self.investment.op.length()!=0 or self.dividends.length()!=0:
@@ -167,15 +163,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #Show contracts if it's a hig_low product
         if self.investment.product.high_low==True:
             self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
-            
-        #Repaints chart
-        if self.viewChart!=None:
-            self.layChart.removeWidget(self.viewChart)
-            self.viewChart.close()
-        self.viewChart=VCInvestment()
-        self.viewChart.setInvestment(self.investment)
-        self.viewChart.generate()
-        self.layChart.addWidget(self.viewChart)
+
 
     @pyqtSlot() 
     def on_actionDividendAdd_triggered(self):
@@ -266,7 +254,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #if num shares after add is 0, changes expiration date to today-1
         if self.investment.shares()==0:
-            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.calExpiration.setSelectedDate(date.today()-timedelta(days=1))
             self.on_cmdInvestment_released()
             
         self.update_tables()    
@@ -279,7 +267,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #if num shares after add is 0, changes expiration date to today-1
         if self.investment.shares()==0:
-            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.calExpiration.setSelectedDate(date.today()-timedelta(days=1))
             self.on_cmdInvestment_released()
 
     @pyqtSlot() 
@@ -296,7 +284,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #if num shares after add is 0, changes expiration date to today-1
         if self.investment.shares()==0:
-            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.calExpiration.setSelectedDate(date.today()-timedelta(days=1))
             self.on_cmdInvestment_released()
         
         self.update_tables()                 
@@ -335,7 +323,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #if num shares after add is 0, changes expiration date to today-1
         if self.investment.shares()==0:
-            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.calExpiration.setSelectedDate(date.today()-timedelta(days=1))
             self.on_cmdInvestment_released()
         
         self.update_tables()
@@ -384,7 +372,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.cmdInvestment.setEnabled(True)
 
     def on_cmdToday_released(self):
-        self.calExpiration.setSelectedDate(datetime.date.today())
+        self.calExpiration.setSelectedDate(date.today())
 
     def on_cmdInvestment_released(self):
         if self.ise.selected==None:
@@ -572,7 +560,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.hlcontracts.selected=self.hlcontracts.arr[i.row()]
         except:
             self.hlcontracts.cleanSelection()
-        logging.debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.hlcontracts.selected))))
+        debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.hlcontracts.selected))))
 
     def on_tblHlContracts_customContextMenuRequested(self,  pos):
         if self.hlcontracts.selected:
@@ -590,6 +578,16 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         menu.exec_(self.tblHlContracts.mapToGlobal(pos))
         
+    def on_tab_currentChanged(self, index): 
+        if  index==5: #Repaints chart
+            if self.viewChart!=None:
+                self.layChart.removeWidget(self.viewChart)
+                self.viewChart.close()
+            self.viewChart=VCInvestment()
+            self.viewChart.setInvestment(self.investment)
+            self.viewChart.generate()
+            self.layChart.addWidget(self.viewChart)
+        
 ##View chart of an investment
 class VCInvestment(VCTemporalSeries):
     def __init__(self):
@@ -599,14 +597,14 @@ class VCInvestment(VCTemporalSeries):
         self.investment=investment
         self.mem=self.investment.mem
         if self.investment.op.length()>0:
-            self.from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
+            self.from_=self.investment.op.first().datetime-timedelta(days=30)
 
     ## Just draw the chart with selected options. To update it just close this object and create another one
     def generate(self):
         if self.investment.op.length()>0:
             #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
             datetimes=set()
-            datetimes.add(self.investment.op.first().datetime -datetime.timedelta(days=30))
+            datetimes.add(self.investment.op.first().datetime -timedelta(days=30))
             for op in self.investment.op.arr:
                 datetimes.add(op.datetime)
                 datetimes.add(op.datetime.replace(hour=0, minute=0, second=0))
@@ -644,3 +642,4 @@ class VCInvestment(VCTemporalSeries):
             #Markers are generated in display so working with markers must be after it
             self.chart().legend().markers(gains)[0].clicked.emit()
             self.chart().legend().markers(dividends)[0].clicked.emit()
+            self.chart().legend().markers(balance)[0].clicked.emit()
