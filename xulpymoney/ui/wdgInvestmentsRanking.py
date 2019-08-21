@@ -78,10 +78,11 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
             dividends=Money(self.mem, 0, self.mem.localcurrency)
 
             for inv in self.mem.data.investments.arr:
+                inv.needStatus(3)
                 if inv.product.id==product.id:
                     current=current+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
                     historical=historical+inv.op_historica.consolidado_bruto(type=3)
-                    dividends=dividends+inv.setDividends_from_operations().gross(type=3)
+                    dividends=dividends+inv.dividends.gross(type=3)
             sumcurrent=sumcurrent+current
             sumhistorical=sumhistorical+historical
             sumdividends=sumdividends+dividends
@@ -103,7 +104,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
 
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
-        inv=self.mem.data.investments.investment_merging_current_operations_with_same_product(self.selCurrentOperations)
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.selCurrentOperations)
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
 
@@ -116,7 +117,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
     def on_actionProduct_triggered(self):
         if self.tab.currentIndex()==0:
             product=self.selCurrentOperations
-            inv=self.mem.data.investments.investment_merging_current_operations_with_same_product(self.selCurrentOperations)
+            inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.selCurrentOperations)
         else:
             product=self.selOperations.product
             inv=self.selOperations

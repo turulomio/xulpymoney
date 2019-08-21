@@ -20,7 +20,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if allProduct==False:
             self.investment=inversion
         else:
-            self.investment=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(inversion.product)
+            self.investment=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(inversion.product)
 
         self.txtValorAccion.setText(self.investment.product.result.basic.last.quote)
         self.txtSimulacion.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))

@@ -492,7 +492,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         return r
         
 
-    def investment_merging_operations_with_same_product(self,  product):
+    def Investment_merging_operations_with_same_product(self,  product):
         """
             Returns and investment object, with all operations of the invesments with the same product. The merged investments are in the set
             The investment and the operations are copied objects.
@@ -521,36 +521,35 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                         io=o.copy(investment=r)
                         r.op.append(io)  
                 inv.needStatus(3)
-                r.dividends=DividendHomogeneusManager(self.mem, r)
                 for d in inv.dividends.arr:
                     r.dividends.append(d)
-                r.dividends.order_by_datetime()
                 if inv.product.high_low==True:
                     r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.arr:
                         r.hlcontractmanager.append(o)
                     
+        r.dividends.order_by_datetime()
         r.op.order_by_datetime()
         r.needStatus(2)#Creates  op_actual and historical
-            
+        r.status=3#With dividends loaded manually            
         return r
 
+#
+#    @deprecated
+#    def setDividends_merging_operation_dividends(self, product):
+#        name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
+#        bank=Bank(self.mem).init__create("Merging bank", True, -1)
+#        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
+#        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
+#        set=DividendHomogeneusManager(self.mem, r)
+#        for inv in self.arr:
+#            if inv.product.id==product.id:
+#                for d in inv.dividends.arr:
+#                    set.append(d)
+#        set.order_by_datetime()
+#        return set
 
-    @deprecated
-    def setDividends_merging_operation_dividends(self, product):
-        name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
-        bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
-        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
-        set=DividendHomogeneusManager(self.mem, r)
-        for inv in self.arr:
-            if inv.product.id==product.id:
-                for d in inv.setDividends_from_operations().arr:
-                    set.append(d)
-        set.order_by_datetime()
-        return set
-
-    def investment_merging_current_operations_with_same_product(self, product):
+    def Investment_merging_current_operations_with_same_product(self, product):
         """
             Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como parámetro
             Crea una inversi´on nueva cogiendo las  operaciones actuales, juntándolas , convirtiendolas en operaciones normales 
@@ -563,31 +562,23 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
         r.merge=1
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
+        r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op_actual.arr:
                     r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
-                r.op.order_by_datetime()
-                (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()             
                 if inv.product.high_low==True and r.op.length()>0:#Copy hlcontracts from first operation datetime
                     r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.ObjectManager_copy_from_datetime(r.op.first().datetime, self.mem, inv).arr:
-                        r.hlcontractmanager.append(o)
+                        r.hlcontractmanager.append(o)     
+                inv.needStatus(3)
+                for d in inv.DividendManager_of_current_operations().arr:
+                    r.dividends.append(d)
+        r.dividends.order_by_datetime()        
+        r.op.order_by_datetime() 
+        r.needStatus(2)#Creates op_actual and op_historica
+        r.status=3#With dividends loaded manually          
         return r
-        
-    @deprecated
-    def setDividends_merging_current_operation_dividends(self, product):
-        name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
-        bank=Bank(self.mem).init__create("Merging bank", True, -1)
-        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
-        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
-        set=DividendHomogeneusManager(self.mem, r)
-        for inv in self.arr:
-            if inv.product.id==product.id:
-                for d in inv.setDividends_from_current_operations().arr:
-                    set.append(d)
-        set.order_by_datetime()
-        return set
 
     def setinvestments_filter_by_type(self,  type_id):
         """
@@ -610,7 +601,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """
         invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.ProductManager_with_investments_distinct_products().arr:
-            i=self.investment_merging_operations_with_same_product(product)
+            i=self.Investment_merging_operations_with_same_product(product)
             invs.append(i) 
         return invs
 
@@ -625,7 +616,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         """
         invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.ProductManager_with_investments_distinct_products().arr:
-            i=self.investment_merging_current_operations_with_same_product(product)
+            i=self.Investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
         return invs
 
@@ -3733,6 +3724,8 @@ class Dividend:
         elif type==3:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
             
+    def copy(self ):
+        return Dividend(self.mem).init__create(self.investment, self.bruto, self.retencion, self.neto, self.dpa, self.datetime, self.comision, self.concepto, self.currency_conversion, self.opercuenta, self.id)
         
     def neto_antes_impuestos(self):
         return self.bruto-self.comision
@@ -4212,12 +4205,15 @@ class Investment:
 
     ## Replicates an investment with data at datetime
     ## Loads self.op, self.op_actual, self.op_historica and self.hlcontractmanager
+    ## Return and Investment with status 3 (dividends inside)
     ## @param dt Datetime 
     ## @return Investment
     def Investment_At_Datetime(self, dt):
+        self.needStatus(3)
         r=self.copy()
         r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
         (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
+        r.dividends=self.dividends.ObjectManager_copy_until_datetime(dt, self.mem, r)
         if r.product.high_low==True:
             r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
         return r
@@ -4241,22 +4237,14 @@ class Investment:
         if type==1:
             return Money(self.mem, self.venta, self.product.currency)
 
-    ## Returns a setDividens from the datetime of the first current operation
-    @deprecated
-    def setDividends_from_current_operations(self):
-        first=self.op_actual.first()
-        set=DividendHomogeneusManager(self.mem, self)
-        if first!=None:
-            set.load_from_db("select * from dividends where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.id, first.datetime))
-        return set
-
-    ## Returns a setDividens with all the dividends
-    @deprecated
-    def setDividends_from_operations(self):
-        set=DividendHomogeneusManager(self.mem, self)
-        set.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
-        return set
-
+    ## This function is in Investment because uses investment information
+    def DividendManager_of_current_operations(self):
+        self.needStatus(3)
+        if self.op_actual.length()==0:
+            return DividendHomogeneusManager(self.mem, self)
+        else:
+            return self.dividends.ObjectManager_from_datetime(self.op_actual.first().datetime, self.mem, self)
+        
     def __repr__(self):
         return ("Instancia de Investment: {0} ({1})".format( self.name, self.id))
         
@@ -4272,9 +4260,10 @@ class Investment:
 
     ## Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes.
     def is_deletable(self):
+        self.needStatus(3)
         if self.op.length()>0:
             return False
-        if self.setDividends_from_operations().length()>0:
+        if self.dividends.length()>0:
             return False
         if OrderManager(self.mem).number_of_investment_orders(self)>0:# Check if has orders
             return False

@@ -70,7 +70,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.tab.removeTab(6)
             
             #CmbAccount está desabilitado si hay dividends o operinversiones
-            if self.investment.op.length()!=0 or self.dividends.length()!=0:
+            if self.investment.op.length()!=0:
                 self.cmbAccount.setEnabled(False)
     
             self.update_tables()
@@ -321,15 +321,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.update_tables()
 
-        
-        
     def on_chkHistoricalDividends_stateChanged(self, state):
         self.tblDividends.clearSelection()
         self.tblDividendsAccountCurrency.clearSelection()
         self.investment.dividends.selected=None        
         if self.investment.merge==0:
             if state==Qt.Unchecked:   
-                self.dividends=self.investment.dividends.ObjectManager_from_datetime(self.investment.op_actual.first().datetime, self.mem, self.investment)
+                self.dividends=self.investment.DividendManager_of_current_operations()
             elif state==Qt.Checked:
                 self.dividends=self.investment.dividends
             else:
@@ -601,8 +599,8 @@ class VCInvestment(VCTemporalSeries):
             for op in self.investment.op.arr:
                 datetimes.add(op.datetime)
                 datetimes.add(op.datetime.replace(hour=0, minute=0, second=0))
-            setdividends=self.investment.setDividends_from_operations()
-            for dividend in setdividends.arr:
+            self.investment.needStatus(3)
+            for dividend in self.investment.dividends.arr:
                 datetimes.add(dividend.datetime)
                 datetimes.add(dividend.datetime.replace(hour=0, minute=0, second=0))
             datetimes.add(self.mem.localzone.now())
@@ -631,7 +629,7 @@ class VCInvestment(VCTemporalSeries):
                 self.setProgressDialogNumber(i+1)
                 #Calculate dividends in datetime
                 dividend_net=0
-                for dividend in setdividends.arr:
+                for dividend in self.investment.dividends.arr:
                     if dividend.datetime<=dt:
                         dividend_net=dividend_net+dividend.neto
                 #Append data of that datetime
