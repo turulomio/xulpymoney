@@ -511,6 +511,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         r.merge=2
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
+        r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op.arr:
@@ -519,16 +520,23 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                     if o.tipooperacion.id not in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
                         io=o.copy(investment=r)
                         r.op.append(io)  
+                inv.needStatus(3)
+                r.dividends=DividendHomogeneusManager(self.mem, r)
+                for d in inv.dividends.arr:
+                    r.dividends.append(d)
+                r.dividends.order_by_datetime()
                 if inv.product.high_low==True:
                     r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.arr:
                         r.hlcontractmanager.append(o)
                     
         r.op.order_by_datetime()
-        (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations() 
+        r.needStatus(2)#Creates  op_actual and historical
+            
         return r
 
 
+    @deprecated
     def setDividends_merging_operation_dividends(self, product):
         name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
@@ -567,7 +575,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                         r.hlcontractmanager.append(o)
         return r
         
-
+    @deprecated
     def setDividends_merging_current_operation_dividends(self, product):
         name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
@@ -4150,6 +4158,7 @@ class Investment:
         ## 2 Calculate ops_actual, ops_historical
         ## 3 Dividends
         self.status=0
+        self.dividends=None#Must be created due to in mergeing investments needs to add it manually
     
     ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
     ## @param statusneeded  Integer with the status needed 
