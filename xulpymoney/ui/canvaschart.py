@@ -1,6 +1,6 @@
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject
 from PyQt5.QtGui import QPainter, QFont,  QColor, QIcon
-from PyQt5.QtWidgets import QAction, QMenu, QFileDialog
+from PyQt5.QtWidgets import QAction, QMenu, QFileDialog, QProgressDialog, QApplication
 from xulpymoney.libxulpymoney import    Percentage
 from xulpymoney.libxulpymoneyfunctions import epochms2dtaware, dtaware2epochms, dtnaive2string
 from xulpymoney.libxulpymoneytypes import  eOHCLDuration, eDtStrings
@@ -10,8 +10,10 @@ from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTim
 class VCCommons(QChartView):
     def __init__(self):
         QChartView.__init__(self)
+
         self._title=None
         self._titleFontSize=14
+        self._progressDialogEnabled=False
         self.actionSave=QAction(self.tr("Save as image"))
         self.actionSave.setIcon(QIcon(":/xulpymoney/save.png"))
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -19,7 +21,6 @@ class VCCommons(QChartView):
         self.actionSave.triggered.connect(self.on_actionSave_triggered)
 
     def on_customContextMenuRequested(self, pos):
-        print(pos)
         menu=QMenu()
         menu.addAction(self.actionSave)
         menu.exec_(self.mapToGlobal(pos))
@@ -39,6 +40,33 @@ class VCCommons(QChartView):
     def title(self):
         return self._title
         
+    ## Sets if a progress bar must be shown loading the graph.
+    def setProgressDialogEnabled(self, show):
+        self._progressDialogEnabled=show
+
+    ## Returns if a progress bar must be shown loading the graph.
+    def progressDialogEnabled(self):
+        return self._progressDialogEnabled
+        
+    ##Set progress dialog attributes
+    ## Only will be shown if self.progressDialogEnabled()==True (By default)
+    ## if None leaves default
+    ## @param qicon Qicon object
+    def setProgressDialogAttributes(self, title, text, qicon, min=0, max=0):       
+        self.progressdialog=QProgressDialog()
+        self.progressdialog.setWindowIcon(qicon)
+        self.progressdialog.setModal(True)        
+        if title==None:
+            self.progressdialog.setWindowTitle(self.tr("Creating chart"))
+        else:
+            self.progressdialog.setWindowTitle(title)
+        if text==None:
+            self.progressdialog.setLabelText(self.tr("Creating chart"))
+        else:
+            self.progressdialog.setLabelText(text)
+        self.progressdialog.setMinimum(min)
+        self.progressdialog.setMaximum(max)
+        
     ## Sets the title font size. 14 by default.
     def setTitleFontSize(self, titleFontSize):
         self._titleFontSize=titleFontSize
@@ -51,6 +79,15 @@ class VCCommons(QChartView):
         font.setPointSize(self._titleFontSize)
         self.chart().setTitleFont(font)
         self.chart().setTitle(self._title)
+        
+
+    ##Updates progress dialog and set new number
+    def setProgressDialogNumber(self, number):
+        if self.progressDialogEnabled()==True:
+            self.progressdialog.forceShow()      
+            self.progressdialog.setValue(number)
+            self.progressdialog.update()
+            QApplication.processEvents()
 
     ## Save view to a file to generate an image file
     def save(self, savefile):

@@ -616,14 +616,26 @@ class VCInvestment(VCTemporalSeries):
             datetimes.add(self.mem.localzone.now().replace(hour=0, minute=0, second=0))
             datetimes_list=list(datetimes)
             datetimes_list.sort()
-
+            
+            #Progress dialog 
+            self.setProgressDialogEnabled(True)
+            self.setProgressDialogAttributes(
+                    None, 
+                    self.tr("Loading {} special datetimes").format(len(datetimes_list)), 
+                    QIcon(":xulpymoney/coins.png"), 
+                    0, 
+                    len(datetimes_list)
+            )
+            
             #Draw lines
             invested=self.appendTemporalSeries(self.tr("Invested amount"), self.investment.product.currency)
             balance=self.appendTemporalSeries(self.tr("Investment balance"), self.investment.product.currency)
             gains=self.appendTemporalSeries(self.tr("Net gains"), self.investment.product.currency)
             dividends=self.appendTemporalSeries(self.tr("Net dividends"), self.investment.product.currency)
             gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"), self.investment.product.currency)
-            for dt in datetimes_list:
+            for i, dt in enumerate(datetimes_list):
+                #Shows progress dialog
+                self.setProgressDialogNumber(i+1)
                 #Calculate dividends in datetime
                 dividend_net=0
                 for dividend in setdividends.arr:
