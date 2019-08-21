@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot,  Qt, QObject
+from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
@@ -749,12 +749,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.verticalHeader().setVisible(False)
         
         set=DividendHeterogeneusManager(self.mem)
-        if self.month==13:#Year
-            tabtitle=self.tr("Dividends of {0}").format(self.wyData.year)
-            set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0}".format (self.wyData.year))
-        else:#Month
-            tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-            set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
+        for inv in self.mem.data.investments.arr:
+            for dividend in inv.dividends.arr:
+                if self.month==13:
+                    tabtitle=self.tr("Dividends of {0}").format(self.wyData.year)
+                    if dividend.datetime.year==self.wyData.year:
+                        set.append(dividend)
+                else:# With mounth
+                    tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                    if dividend.datetime.year==self.wyData.year and dividend.datetime.month==self.month:
+                        set.append(dividend)
         set.order_by_datetime()
         set.myqtablewidget(table,  True)
         horizontalLayout.addWidget(table)
