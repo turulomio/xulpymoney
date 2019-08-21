@@ -4134,7 +4134,52 @@ class Investment:
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
         self.merge=0#Used for mergin investments. 0 normal investment, 1 merging current operations, 2 merging operations
-
+        ## Variable with the current product status
+        ## 0 No data
+        ## 1 Loaded ops
+        ## 2 Calculate ops_actual, ops_historical
+        ## 3 Dividends
+        self.status=0
+    
+    ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
+    ## @param statusneeded  Integer with the status needed 
+    ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing
+    def needStatus(self, statusneeded, downgrade_to=None):
+        if downgrade_to!=None:
+            self.status=downgrade_to
+        
+        if self.status==statusneeded:
+            return
+        #0
+        if self.status==0 and statusneeded==1: #MAIN
+            start=datetime.datetime.now()
+            cur=self.mem.con.cursor()
+            self.op=InvestmentOperationHomogeneusManager(self.mem, self)
+            cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+            for row in cur:
+                self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
+            cur.close()
+            self.status=1
+        elif self.status==0 and statusneeded==2:
+            self.needStatus(1)
+            self.needStatus(2)
+        elif self.status==0 and statusneeded==3:
+            self.needStatus(1)
+            self.needStatus(2)
+            self.needStatus(3)
+        elif self.status==1 and statusneeded==2: #MAIN
+            start=datetime.datetime.now()
+            (self.op_actual,  self.op_historica)=self.op.get_current_and_historical_operations()
+            self.status=2
+        elif self.status==1 and statusneeded==3:
+            self.needStatus(2)
+            self.needStatus(3)
+        elif self.status==2 and statusneeded==3:#MAIN
+            start=datetime.datetime.now()
+            self.dividends=DividendHomogeneusManager(self.mem, self)
+            self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
+            logging.debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
+            self.status=3
     def init__create(self, name, venta, cuenta, product, selling_expiration, active, id=None):
         self.name=name
         self.venta=venta
@@ -4177,6 +4222,7 @@ class Investment:
             return Money(self.mem, self.venta, self.product.currency)
 
     ## Returns a setDividens from the datetime of the first current operation
+    @deprecated
     def setDividends_from_current_operations(self):
         first=self.op_actual.first()
         set=DividendHomogeneusManager(self.mem, self)
@@ -4185,6 +4231,7 @@ class Investment:
         return set
 
     ## Returns a setDividens with all the dividends
+    @deprecated
     def setDividends_from_operations(self):
         set=DividendHomogeneusManager(self.mem, self)
         set.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
@@ -4254,6 +4301,7 @@ class Investment:
         elif type==3:
             return  Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime).local(quote.datetime)
     
+    @deprecated
     def get_operinversiones(self, date=None):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
         date is used to get invested balance in a particular date"""
