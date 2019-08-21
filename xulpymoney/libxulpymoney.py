@@ -197,19 +197,8 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
     def load_from_db(self, sql,  progress=False):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
-        if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database").format(cur.rowcount),None, 0,cur.rowcount)
-            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
-            pd.forceShow()
         for row in cur:
-            if progress==True:
-                pd.setValue(cur.rownumber)
-                pd.update()
-                QApplication.processEvents()
             inv=Investment(self.mem).init__db_row(row,  self.accounts.find_by_id(row['id_cuentas']), self.products.find_by_id(row['products_id']))
-            inv.get_operinversiones()
             self.append(inv)
         cur.close()  
 
@@ -440,6 +429,23 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             r=r+inv.invertido(type=3)
         return r            
     
+    ## Passes product.needStatus method to all products in arr
+    ## @param needstatus Status needed
+    ## @param progress Boolean. If true shows a progress bar
+    def needStatus(self, needstatus,  progress=False):
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading additional data to {0} investments from database").format(self.length()),None, 0,self.length())
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
+            pd.forceShow()
+        for i, inv in enumerate(self.arr):
+            if progress==True:
+                pd.setValue(i)
+                pd.update()
+                QApplication.processEvents()
+            inv.needStatus(needstatus)
+            
     def numberWithSameProduct(self, product):
         """
             Returns the number of investments with the same product in the array
@@ -3534,6 +3540,9 @@ class DBData:
 
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
+        self.investments.needStatus(2, progress=True)
+        
+        
         #change status to 1 to self.investments products
         pros=self.investments.ProductManager_with_investments_distinct_products()
         pros.needStatus(1, progress=True)
@@ -4134,6 +4143,7 @@ class Investment:
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
         self.merge=0#Used for mergin investments. 0 normal investment, 1 merging current operations, 2 merging operations
+
         ## Variable with the current product status
         ## 0 No data
         ## 1 Loaded ops
@@ -4180,6 +4190,7 @@ class Investment:
             self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
             logging.debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=3
+
     def init__create(self, name, venta, cuenta, product, selling_expiration, active, id=None):
         self.name=name
         self.venta=venta

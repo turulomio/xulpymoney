@@ -13,7 +13,7 @@ from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
 from xulpymoney.ui.frmHlContractAdd import frmHlContractAdd
 from xulpymoney.ui.frmSplit import frmSplit
-from xulpymoney.libxulpymoney import Investment, Money, Percentage, DividendHomogeneusManager, InvestmentOperationHomogeneusManager, days2string, HlContractManagerHomogeneus
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string, HlContractManagerHomogeneus
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
@@ -25,15 +25,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.setupUi(self)
         self.mem=mem
         self.investment=inversion
-        
-        self.selDividend=None#Dividend seleccionado
-        
-        #arrays asociados a tablas
-        self.op=None#Sera un SetInvestmentOperations
-         
         self.ise.setupUi(self.mem,  self.investment)
-        
-        self.dividends=DividendHomogeneusManager(self.mem, self.investment)
         
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
         self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
@@ -60,6 +52,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.cmdPuntoVenta.setEnabled(False)
         else:#UPDATE
             self.tab.setCurrentIndex(1)
+            self.investment.needStatus(3)
             self.lblTitulo.setText(self.investment.name)
             self.txtInvestment.setText(self.investment.name)
             self.txtVenta.setText(self.investment.venta)
@@ -91,7 +84,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment.account.currency==self.investment.product.currency:
             self.grpDividendsAccountCurrency.hide()
         else:
-            self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
+            self.investment.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
@@ -100,8 +93,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
                 self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
                 self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.product.currency.string(acciones*estimacion.estimation),  self.investment.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
-            self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.dividends.percentage_from_invested(type=1)))
-            self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.dividends.percentage_tae_from_invested(type=1)))
+            self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.investment.dividends.percentage_from_invested(type=1)))
+            self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.investment.dividends.percentage_tae_from_invested(type=1)))
             self.grpDividendsEstimation.show()
             self.grpDividendsEfectivos.show()
         else:
@@ -173,14 +166,14 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     @pyqtSlot() 
     def on_actionDividendEdit_triggered(self):
-        w=frmDividendsAdd(self.mem, self.investment, self.selDividend)
+        w=frmDividendsAdd(self.mem, self.investment, self.investment.dividends.selected)
         w.exec_()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
         
     @pyqtSlot() 
     def on_actionDividendRemove_triggered(self):
-        self.selDividend.borrar()
+        self.investment.dividends.selected.borrar()
         self.mem.con.commit()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
@@ -333,12 +326,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_chkHistoricalDividends_stateChanged(self, state):
         self.tblDividends.clearSelection()
         self.tblDividendsAccountCurrency.clearSelection()
-        self.selDividend=None        
+        self.investment.dividends.selected=None        
         if self.investment.merge==0:
             if state==Qt.Unchecked:   
-                self.dividends=self.investment.setDividends_from_current_operations()
+                self.dividends=self.investment.dividends.ObjectManager_from_datetime(self.investment.op_actual.first().datetime, self.mem, self.investment)
             elif state==Qt.Checked:
-                self.dividends=self.investment.setDividends_from_operations()
+                self.dividends=self.investment.dividends
             else:
                 self.dividends.clean()
         elif self.investment.merge==1:
@@ -515,7 +508,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
             return
 
-        if self.selDividend==None:
+        if self.investment.dividends.selected==None:
             self.actionDividendRemove.setEnabled(False)
             self.actionDividendEdit.setEnabled(False)
         else:
@@ -536,10 +529,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_tblDividends_itemSelectionChanged(self):
         try:
             for i in self.tblDividends.selectedItems():#itera por cada item no rowse.
-                self.selDividend=self.dividends.arr[i.row()]
+                self.investment.dividends.selected=self.dividends.arr[i.row()]
         except:
-            self.selDividend=None
-        print ("Dividend selected: " +  str(self.selDividend))        
+            self.investment.dividends.selected=None
+        print ("Dividend selected: " +  str(self.investment.dividends.selected))        
 
 
     def on_chkHistoricalContracts_stateChanged(self, state):
