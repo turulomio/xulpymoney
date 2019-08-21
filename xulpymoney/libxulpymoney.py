@@ -509,45 +509,32 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
-        r.merge=2
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         r.dividends=DividendHomogeneusManager(self.mem, r)
+        r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
+                inv.needStatus(3)
                 for o in inv.op.arr:
                     #En operations quito los traspasos, ya que fallaban calculos dobles pasadas y en realidad no hace falta porque son transpasos entre mismos productos
                     #En operations actual no hace falta porque se eliminan los transpasos origen de las operaciones actuales
                     if o.tipooperacion.id not in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
                         io=o.copy(investment=r)
                         r.op.append(io)  
-                inv.needStatus(3)
+
                 for d in inv.dividends.arr:
                     r.dividends.append(d)
+
                 if inv.product.high_low==True:
-                    r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.arr:
                         r.hlcontractmanager.append(o)
                     
         r.dividends.order_by_datetime()
         r.op.order_by_datetime()
-        r.needStatus(2)#Creates  op_actual and historical
+        (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
         r.status=3#With dividends loaded manually            
+        r.merged=True
         return r
-
-#
-#    @deprecated
-#    def setDividends_merging_operation_dividends(self, product):
-#        name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
-#        bank=Bank(self.mem).init__create("Merging bank", True, -1)
-#        account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
-#        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
-#        set=DividendHomogeneusManager(self.mem, r)
-#        for inv in self.arr:
-#            if inv.product.id==product.id:
-#                for d in inv.dividends.arr:
-#                    set.append(d)
-#        set.order_by_datetime()
-#        return set
 
     def Investment_merging_current_operations_with_same_product(self, product):
         """
@@ -560,7 +547,6 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
-        r.merge=1
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
@@ -576,8 +562,9 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                     r.dividends.append(d)
         r.dividends.order_by_datetime()        
         r.op.order_by_datetime() 
-        r.needStatus(2)#Creates op_actual and op_historica
-        r.status=3#With dividends loaded manually          
+        (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
+        r.status=3#With dividends loaded manually        
+        r.merged=True
         return r
 
     def setinvestments_filter_by_type(self,  type_id):
@@ -1490,82 +1477,6 @@ class AccountManager(ObjectManager_With_IdName_Selectable):
         for ac in self.arr:
             res=res+ac.balance(date,  type=3)
         return res
-
-
-class Report:
-    """Class to make studiies and reports"""
-    def __init__(self, mem):
-        self.mem=mem
-        
-    def ibex35_tpc_down_and_up(self, tpc):
-        id_product=79329
-        ibex=Product(self.mem).init__db(id_product)
-        ibex.result=QuotesResult(self.mem, ibex)
-        ibex.needStatus(2)
-        bajan=0
-        subenfinal=0
-        for ohcl in ibex.result.ohclDaily.arr:
-            if ohcl.low<=ohcl.open*Decimal(1-tpc/100):
-                bajan=bajan+1
-                if ohcl.close>=ohcl.open:
-                    subenfinal=subenfinal+1
-        print("""
-IBEX (Informe de d´ias que baja un {}% y luego sube
-    Numero registros: {}
-    N´umero bajan: {}
-    N´umero bajan y suben al final: {}
-    % Exito= {}
-""".format(tpc, ibex.result.ohclDaily.length(), bajan, subenfinal, subenfinal/bajan*100))
-        
-
-class ReinvestModel:
-    def __init__(self,  mem, amounts,  product, pricepercentage,  gainspercentage):
-        """
-            amounts is an array with all the amounts to invest
-            both percentages are Percentage objetcs
-        """
-        self.mem=mem
-        self.amounts=amounts
-        self.product=product
-        self.pricepercentage=pricepercentage
-        self.gainspercentage=gainspercentage
-        
-        self.investments=[]
-        for i in range(self.length()):
-            bank=Bank(self.mem).init__create("Reinvest model bank", True, -1)
-            account=Account(self.mem, "Reinvest model account",  bank, True, "", self.mem.localcurrency, -1)
-            r=Investment(self.mem).init__create(QApplication.translate("Core", "Reinvest model of {}".format(self.product.name)), None, account, self.product, None, True, -1)    
-            r.merge=1
-            r.op=InvestmentOperationHomogeneusManager(self.mem, r)
-            lastprice=self.product.result.basic.last.quote
-            for amount in self.amounts[0:i+1]: #Recorre las amounts del array        
-                r.op.append(InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), self.mem.localzone.now(), r,  int(amount/lastprice), Decimal(0), Decimal(0),  lastprice,  None, False, 1, -1))
-                lastprice=lastprice*(1-pricepercentage.value)
-            r.op.order_by_datetime()
-            (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()           
-            self.investments.append(r)
-        
-    
-    def length(self):
-        return len(self.amounts)
-        
-    def print(self):
-        """
-            Prints a console report
-        """
-        result=[]
-        for i, inv in enumerate(self.investments):
-            print("Reinvestment {} of {}".format(i, inv.name))
-            print("  + Invested amount: {}".format(inv.op_actual.invertido(type=1)))
-            print("  + Purchase price average  amount: {}".format(inv.op_actual.average_price(type=1)))
-            print("  + Current operations:")
-            for o in inv.op_actual.arr:
-                print("    - {}".format(o))
-            print("  + Selling price: {}".format(inv.op_actual.average_price(type=1)*(1+self.gainspercentage.value)))
-            result.append(1-Percentage(self.product.result.basic.last.quote-inv.op_actual.average_price(type=1).amount, self.product.result.basic.last.quote).value)
-        print("*** Purchase percentage: {} ***".format(result))
-            
-
 
 
 class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
@@ -4143,7 +4054,7 @@ class Investment:
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
-        self.merge=0#Used for mergin investments. 0 normal investment, 1 merging current operations, 2 merging operations
+        self.merged=False#If this investment is the result of merge several Investments
 
         ## Variable with the current product status
         ## 0 No data
