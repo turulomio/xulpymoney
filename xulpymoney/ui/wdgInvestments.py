@@ -100,14 +100,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
-        inv=self.mem.data.investments.investment_merging_current_operations_with_same_product(self.selInvestment.product)
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.selInvestment.product)
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
                     
     @pyqtSlot() 
     def on_actionSameProductFIFO_triggered(self):
-        inv=self.mem.data.investments.investment_merging_operations_with_same_product(self.selInvestment.product)
+        inv=self.mem.data.investments.Investment_merging_operations_with_same_product(self.selInvestment.product)
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())

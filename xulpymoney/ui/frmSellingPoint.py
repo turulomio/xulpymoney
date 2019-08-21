@@ -42,7 +42,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def __calcular(self):
         #Setting self.operinversiones variable
         if self.chkPonderanAll.checkState()==Qt.Checked:#Results are in self.mem.localcurrency
-            self.operinversiones=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(self.investment.product).op_actual
+            self.operinversiones=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(self.investment.product).op_actual
             self.operinversiones.myqtablewidget(self.table)
         else:#Results in account currency
             self.operinversiones=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
