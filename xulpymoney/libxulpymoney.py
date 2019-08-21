@@ -4677,25 +4677,44 @@ class Assets:
         El 63 es un gasto aunque también este registrado en dividends."""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.mem.data.investments.arr:
-            setdiv=DividendHomogeneusManager(self.mem, inv)
-            if mes==None:#Calcula en el año
-                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
-            else:
-                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
-            r=r+setdiv.net(type=3)
+            inv.needStatus(3)
+            for dividend in inv.dividends.arr:
+                if mes==None:
+                    if dividend.datetime.year==ano:
+                        r=r+dividend.net(type=3)
+                else:# WIth mounth
+                    if dividend.datetime.year==ano and dividend.datetime.month==mes:
+                        r=r+dividend.net(type=3)
         return r
+#                        r=r+dividend.net(type=3)
+#            setdiv=DividendHomogeneusManager(self.mem, inv)
+#            if mes==None:#Calcula en el año
+#                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
+#            else:
+#                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
+#            r=r+setdiv.net(type=3)
+#        return r
 
     def dividends_bruto(self,  ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.mem.data.investments.arr:
-            setdiv=DividendHomogeneusManager(self.mem, inv)
-            if mes==None:#Calcula en el año
-                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
-            else:
-                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
-            r=r+setdiv.gross(type=3)
+            inv.needStatus(3)
+            for dividend in inv.dividends.arr:
+                if mes==None:
+                    if dividend.datetime.year==ano:
+                        r=r+dividend.gross(type=3)
+                else:# WIth mounth
+                    if dividend.datetime.year==ano and dividend.datetime.month==mes:
+                        r=r+dividend.net(type=3)
         return r
+#            setdiv=DividendHomogeneusManager(self.mem, inv)
+#            if mes==None:#Calcula en el año
+#                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
+#            else:
+#                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
+#            r=r+setdiv.gross(type=3)
+#        return r
         
         
     def invested(self, date=None):
