@@ -4060,7 +4060,7 @@ class Investment:
         ## 0 No data
         ## 1 Loaded ops
         ## 2 Calculate ops_actual, ops_historical
-        ## 3 Dividends
+        ## 3 Dividends and hlcontracts(deprecated)
         self.status=0
         self.dividends=None#Must be created due to in mergeing investments needs to add it manually
     
@@ -4101,6 +4101,7 @@ class Investment:
             start=datetime.datetime.now()
             self.dividends=DividendHomogeneusManager(self.mem, self)
             self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
+            self.getHlContracts()
             logging.debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.datetime.now()-start, self.status, statusneeded))
             self.status=3
 

@@ -31,10 +31,10 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
         sumdividends=Money(self.mem, 0, self.mem.localcurrency)
         for i, inv in enumerate(set.arr):
+            inv.needStatus(3)
             gains_current=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
             gains_historical=inv.op_historica.consolidado_bruto(type=3)
-            dividends=self.mem.data.investments.setDividends_merging_operation_dividends(inv.product)
-            dividends_gross=dividends.gross(type=3)
+            dividends_gross=inv.dividends.gross(type=3)
             total=gains_current+gains_historical+dividends_gross
             sumcurrent=sumcurrent+gains_current
             sumhistorical=sumhistorical+gains_historical
@@ -78,7 +78,6 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
             dividends=Money(self.mem, 0, self.mem.localcurrency)
 
             for inv in self.mem.data.investments.arr:
-                inv.needStatus(3)
                 if inv.product.id==product.id:
                     current=current+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
                     historical=historical+inv.op_historica.consolidado_bruto(type=3)
