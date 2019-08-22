@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>813</width>
+    <width>1061</width>
     <height>607</height>
    </rect>
   </property>
@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
@@ -447,6 +447,12 @@
                 <layout class="QHBoxLayout" name="horizontalLayout_6">
                  <item>
                   <widget class="QGroupBox" name="grpOperTarjetas">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>2</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="title">
                     <string>Selected Credit Card delayed operations</string>
                    </property>
@@ -517,16 +523,10 @@
                    <item>
                     <widget class="QGroupBox" name="grpPago">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>400</width>
-                       <height>16777215</height>
-                      </size>
                      </property>
                      <property name="title">
                       <string>Selected operations delayed payment</string>
@@ -536,6 +536,12 @@
                        <layout class="QVBoxLayout" name="verticalLayout_8">
                         <item>
                          <widget class="QLabel" name="lblPago">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
                           <property name="font">
                            <font>
                             <pointsize>12</pointsize>
@@ -554,12 +560,25 @@
                         <item>
                          <layout class="QHBoxLayout" name="horizontalLayout_10">
                           <item>
-                           <widget class="wdgDatetime" name="wdgDtPago" native="true"/>
+                           <widget class="wdgDatetime" name="wdgDtPago" native="true">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </item>
                         <item>
                          <widget class="QPushButton" name="cmdPago">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
                           <property name="text">
                            <string>Pay</string>
                           </property>
