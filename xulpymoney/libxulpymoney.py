@@ -888,7 +888,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
     ## Passes product.needStatus method to all products in arr
     ## @param needstatus Status needed
     ## @param progress Boolean. If true shows a progress bar
-    def needStatus(self, needstatus,  progress=False):
+    def needStatus(self, needstatus,  downgrade_to=None, progress=False):
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading additional data to {0} products from database").format(self.length()),None, 0,self.length())
             pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -900,7 +900,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 pd.setValue(i)
                 pd.update()
                 QApplication.processEvents()
-            product.needStatus(needstatus)
+            product.needStatus(needstatus, downgrade_to)
 
     def order_by_datetime(self):
         """Orders the Set using self.arr"""
@@ -6150,6 +6150,16 @@ class QuoteManager(ObjectManager):
                 
         logging.debug ("Quotes: {} inserted, {} ignored, {} modified, {} errors".format(insertados.length(), ignored.length(), modificados.length(), malos.length()))
         return (insertados, ignored, modificados, malos)
+        
+    ## Return a product manager with added or updated quotes
+    ## Usefull to reload just
+    def change_products_status_after_save(self, added, updated, status, downgrade_to=None, progress=True):
+        products=ProductManager(self.mem)
+        for manager in [added, updated]:
+            for quote in manager.arr:
+                if quote.product not in products.arr:
+                    products.append(quote.product)
+        products.needStatus(status, downgrade_to=downgrade_to, progress=progress)
         
     ## You must call (wdg, *save()
     def wdgQuotesSaveResult(self, wdg, inserted, ignored, updated, wrong):

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget,  QApplication
 from PyQt5.QtCore import QRegExp,  Qt
 from PyQt5.QtGui import QTextCursor
+from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
 from xulpymoney.ui.Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
 from xulpymoney.libxulpymoney import ProductUpdate
 
@@ -20,17 +21,16 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QApplication.processEvents()
         ##### PROCESS #####
         self.quotes=self.update.run()
-        (insertados, ignored, modificados, malos)=self.quotes.save()
+        result=self.quotes.save()
         self.mem.con.commit()
         self.txtCR2Q.append(self.update.readResults())
-        self.txtCR2Q.append("Quotes added:")
-        for q in insertados.arr:
-            self.txtCR2Q.append(" - {}".format(q))
-        self.txtCR2Q.append("Quoted modified:")
-        for q in insertados.arr:
-            self.txtCR2Q.append(" - {}".format(q))
-        self.mem.data.load()
-        
+
+        #Shows results
+        d=frmQuotesSaveResult()
+        d.settings_and_exec_(self.mem, *result)
+        #Reloads changed data
+        self.quotes.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
+            
         self.mem.frmMain.setEnabled(True)
         QApplication.restoreOverrideCursor()
 

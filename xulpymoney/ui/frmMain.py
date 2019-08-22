@@ -725,7 +725,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             d.settings_and_exec_(self.mem, *result)
             #Deletes file
             question_delete_file(filename)
-            self.mem.data.load()
+            #Reloads changed data
+            set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             self.on_actionInvestments_triggered()
                 
     @pyqtSlot()  
