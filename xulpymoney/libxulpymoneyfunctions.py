@@ -767,4 +767,10 @@ def question_delete_file(filename):
             return True
     return False
         
+def setReadOnly(wdg, boolean):
+    if wdg.__class__.__name__=="QCheckBox":
+        wdg.blockSignals(boolean)
+        wdg.setAttribute(Qt.WA_TransparentForMouseEvents)
+        wdg.setFocusPolicy(Qt.NoFocus)
+    
         

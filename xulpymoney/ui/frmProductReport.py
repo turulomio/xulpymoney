@@ -1,15 +1,15 @@
-import datetime
-import logging
-import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
+from datetime import datetime, date, timedelta, time
+from logging import info, error
+from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
+from pytz import timezone
 from xulpymoney.investing_com import InvestingCom
-from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, question_delete_file
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, question_delete_file, setReadOnly
 from xulpymoney.libxulpymoneytypes import eDtStrings
-from xulpymoney.version import __version__, __versiondate__
+from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
@@ -19,7 +19,7 @@ from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.frmDPSAdd import frmDPSAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
 from xulpymoney.ui.canvaschart import  VCTemporalSeries
-from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
+from xulpymoney.version import __version__, __versiondate__
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
@@ -89,11 +89,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.txtMail.setReadOnly(True)
             self.txtTPC.setReadOnly(True)
             self.txtPhone.setReadOnly(True)
-            self.tblTickers.setEnabled(False)
+            self.tblTickers.blockSignals(True)
             self.txtComentario.setReadOnly(True)
             self.cmdAgrupations.setEnabled(False)
-            self.chkObsolete.setEnabled(False)
-            self.chkHL.setEnabled(False)
+            setReadOnly(self.chkObsolete, True)
+            setReadOnly(self.chkHL, True)
             self.cmdSave.setEnabled(False)
             
             bolsa=StockMarketManager(mem)
@@ -163,7 +163,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
             try:
                 tpc=Percentage(self.product.result.basic.last.quote-quote.quote, quote.quote)
-                days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
+                days=(datetime.now(timezone(self.mem.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, tpc.qtablewidgetitem())
                 self.tblTPC.setItem(row, 3,  (tpc*365/days).qtablewidgetitem())
                 if self.investment:
@@ -211,12 +211,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if len(self.product.result.ohclDaily.arr)!=0:
             now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
-            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.stockmarket.zone))
-            iniciomes=Quote(self.mem).init__from_query(self.product, dtaware(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.stockmarket.zone.name))
-            inicioano=Quote(self.mem).init__from_query(self.product, dtaware(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.stockmarket.zone.name))             
-            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.stockmarket.zone))          
-            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.stockmarket.zone))          
-            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockmarket.zone))             
+            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-timedelta(days=date.today().weekday()+1), self.product.stockmarket.zone))
+            iniciomes=Quote(self.mem).init__from_query(self.product, dtaware(date(now.year, now.month, 1), time(0, 0), self.product.stockmarket.zone.name))
+            inicioano=Quote(self.mem).init__from_query(self.product, dtaware(date(now.year, 1, 1), time(0, 0), self.product.stockmarket.zone.name))             
+            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=365), self.product.stockmarket.zone))          
+            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=30), self.product.stockmarket.zone))          
+            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=7), self.product.stockmarket.zone))             
             
             self.tblTPC.applySettings()
             self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone))   
@@ -245,13 +245,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_eps.myqtablewidget(self.tblEPS)            
             self.product.dps.myqtablewidget(self.tblDPSPaid)         
             self.product.splits.myqtablewidget(self.tblSplits)
-            inicio=datetime.datetime.now()
+            inicio=datetime.now()
             self.load_information()
-            logging.info("Datos informacion cargados: {}".format(datetime.datetime.now()-inicio))
+            info("Datos informacion cargados: {}".format(datetime.now()-inicio))
             self.load_graphics()
-            logging.info("Datos gráficos cargados: {}".format(datetime.datetime.now()-inicio))
+            info("Datos gráficos cargados: {}".format(datetime.now()-inicio))
             self.load_mensuales()
-            logging.info("Datos mensuales cargados: {}".format(datetime.datetime.now()-inicio))
+            info("Datos mensuales cargados: {}".format(datetime.now()-inicio))
             self.on_tabHistorical_currentChanged(self.tabHistorical.currentIndex())
 
 
@@ -290,7 +290,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             if self.product.result.intradia.length()>0:
                 self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
         except:
-            logging.error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
+            error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:
@@ -298,11 +298,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             return
 
         minyear=self.product.result.ohclMonthly.arr[0].year
-        rowcount=int(datetime.date.today().year-minyear+1)
+        rowcount=int(date.today().year-minyear+1)
         self.tblMensuales.applySettings()
         self.tblMensuales.setRowCount(rowcount)    
 
-        for i, year in enumerate(range(minyear,  datetime.date.today().year+1)):
+        for i, year in enumerate(range(minyear,  date.today().year+1)):
             self.tblMensuales.setItem(i, 0, qleft(year))
             for month in range(1, 13):
                 self.tblMensuales.setItem(i, month, self.product.result.ohclMonthly.percentage_by_year_month(year, month).qtablewidgetitem())
@@ -407,7 +407,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
     @pyqtSlot()
     def on_actionQuoteExport_triggered(self):
-        start=datetime.datetime.now()
+        start=datetime.now()
         filename_ods="{} Quotes of {}.ods".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename),  self.product.name)    
         filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename_ods, self.tr("Libreoffice calc (*.ods)"))[0]
         if filename:
@@ -425,7 +425,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             s1.setCursorPosition(Coord("A1").addRow(self.product.result.ohclDaily.length()))
             s1.setSplitPosition("A2")
             ods.save()
-            qmessagebox(self.tr("Date export to {} took {}").format(filename, datetime.datetime.now()-start))
+            qmessagebox(self.tr("Date export to {} took {}").format(filename, datetime.now()-start))
 
     @pyqtSlot()
     def on_actionQuoteImport_triggered(self):
