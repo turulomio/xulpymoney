@@ -190,6 +190,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtWeb.setText(self.product.web)
         self.txtMail.setText(self.product.mail)
         self.txtPhone.setText(self.product.phone)
+        self.spnDecimals.setValue(self.product.decimals)
 
         if self.product.has_autoupdate()==True:
             self.lblAutoupdate.setText('<img src=":/xulpymoney/transfer.png" width="16" height="16"/>  {}'.format(self.tr("Product prices are updated automatically")))

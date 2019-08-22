@@ -1048,13 +1048,14 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 p.leveraged=self.mem.leverages.find_by_name(row[14].value)
                 if p.leveraged==None:
                     raise
-                p.comment=row[15].value
-                p.obsolete=str2bool(row[16].value)
-                tickers[0]=row[17].value
-                tickers[1]=row[18].value
-                tickers[2]=row[19].value
-                tickers[3]=row[20].value
-                tickers[4]=row[21].value
+                p.decimals=row[15].value
+                p.comment=row[16].value
+                p.obsolete=str2bool(row[17].value)
+                tickers[0]=row[18].value
+                tickers[1]=row[19].value
+                tickers[2]=row[20].value
+                tickers[3]=row[21].value
+                tickers[4]=row[22].value
                 p.tickers=tickers
                 return p
             except:
@@ -1106,6 +1107,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                         p_db.percentage!=p_xlsx.percentage or
                         p_db.mode.id!=p_xlsx.mode.id or
                         p_db.leveraged.id!=p_xlsx.leveraged.id or
+                        p_db.decimals!=p_xlsx.decimals or
                         p_db.comment!=p_xlsx.comment or 
                         p_db.obsolete!=p_xlsx.obsolete or
                         p_db.tickers[0]!=p_xlsx.tickers[0] or
@@ -1119,11 +1121,11 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         #Sumary
         logging.debug("{} Products changed".format(len(changed)))
         for p in changed:
-            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name, p.decimals,   p.obsolete, p.tickers)
             p.save()
         logging.debug("{} Products added".format(len(added)))
         for p in added:
-            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.obsolete, p.tickers)
+            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.decimals, p.obsolete, p.tickers)
             ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
             cur=self.mem.con.cursor()
             cur.execute("insert into products (id,stockmarkets_id) values (%s,%s)",  (p.id, 1))
@@ -5871,6 +5873,7 @@ class Product:
         self.comment=None
         self.obsolete=None
         self.high_low=None#Allow short and long operations
+        self.decimals=None
         
         ## Variable with the current product status
         ## 0 No data
@@ -5936,10 +5939,11 @@ class Product:
         self.comment=row['comment']
         self.obsolete=row['obsolete']
         self.high_low=row['high_low']
+        self.decimals=row['decimals']
         return self
 
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, tickers, comment, obsolete, high_low, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, decimals, stockmarket, tickers, comment, obsolete, high_low, id=None):
         self.name=name
         self.isin=isin
         self.currency=currency
@@ -5954,6 +5958,7 @@ class Product:
         self.percentage=percentage
         self.mode=mode
         self.leveraged=leveraged        
+        self.decimals=decimals
         self.stockmarket=stockmarket
         self.tickers=tickers
         self.comment=comment
@@ -5981,10 +5986,10 @@ class Product:
             id=cur.fetchone()[0]
             if id>=0:
                 id=-1
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, decimals=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
         cur.close()
     
     
