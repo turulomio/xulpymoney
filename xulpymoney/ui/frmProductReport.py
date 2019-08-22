@@ -95,6 +95,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             setReadOnly(self.chkObsolete, True)
             setReadOnly(self.chkHL, True)
             self.cmdSave.setEnabled(False)
+            self.spnDecimals.setReadOnly(True)
             
             bolsa=StockMarketManager(mem)
             bolsa.append(self.product.stockmarket)

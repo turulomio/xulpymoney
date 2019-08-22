@@ -53,7 +53,6 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.order.date=self.deDate.date().toPyDate()
         self.order.expiration=self.deExpiration.date().toPyDate()
         self.order.shares=self.txtShares.decimal()
-        self.order.amount=round(self.txtPrice.decimal()*self.txtShares.decimal(), 2)
         self.order.price=self.txtPrice.decimal()
         self.order.investment=investment
 

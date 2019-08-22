@@ -4496,7 +4496,6 @@ class Order:
         self.id=None
         self.date=None
         self.expiration=None
-        self.amount=None
         self.price=None
         self.shares=None
         self.investment=None
@@ -4506,7 +4505,6 @@ class Order:
         self.id=row['id']
         self.date=row['date']
         self.expiration=row['expiration']
-        self.amount=row['amount']
         self.price=row['price']
         self.shares=row['shares']
         self.investment=self.mem.data.investments.find_by_id(row['investments_id'])
@@ -4528,14 +4526,17 @@ class Order:
         if self.executed!=None:
             return True
         return False
+        
+    def amount(self):
+        return Money(self.mem, self.shares*self.price, self.investment.product.currency)
 
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into orders(date, expiration, amount, shares, price,investments_id, executed) values (%s, %s, %s, %s, %s, %s, %s) returning id", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, self.executed))
+            cur.execute("insert into orders(date, expiration, shares, price,investments_id, executed) values (%s, %s, %s, %s, %s, %s) returning id", (self.date,  self.expiration, self.shares, self.price, self.investment.id, self.executed))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update orders set date=%s, expiration=%s, amount=%s, shares=%s, price=%s, investments_id=%s, executed=%s where id=%s", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, self.executed, self.id))
+            cur.execute("update orders set date=%s, expiration=%s, shares=%s, price=%s, investments_id=%s, executed=%s where id=%s", (self.date,  self.expiration, self.shares, self.price, self.investment.id, self.executed, self.id))
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
@@ -5148,7 +5149,7 @@ class OrderManager(ObjectManager_With_Id_Selectable):
             table.setItem(i, 3, qleft(p.investment.account.name))   
             table.setItem(i, 4, qright(p.shares))
             table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
-            table.setItem(i, 6, self.mem.localcurrency.qtablewidgetitem(p.amount))   
+            table.setItem(i, 6, p.amount().qtablewidgetitem())
             if p.is_in_force():
                 table.setItem(i, 7, p.percentage_from_current_price().qtablewidgetitem())
             else:
