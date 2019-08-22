@@ -47,3 +47,5 @@ class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
                 self.mem.data.investments.change_product_id(self.origin, self.destiny)
             self.mem.con.commit()
             self.reload()
+            
+

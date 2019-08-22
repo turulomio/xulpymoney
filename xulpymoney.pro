@@ -100,6 +100,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgSimulations.py \
                   xulpymoney/ui/wdgSimulationsAdd.py \
                   xulpymoney/ui/Ui_wdgSimulationsAdd.py \
+                  xulpymoney/ui/wdgQuotesSaveResult.py \
+                  xulpymoney/ui/Ui_wdgQuotesSaveResult.py \
                   xulpymoney/ui/wdgQuotesUpdate.py \
                   xulpymoney/ui/Ui_wdgQuotesUpdate.py \
                   xulpymoney/ui/wdgTwoCurrencyLineEdit.py \
@@ -170,6 +172,8 @@ FORMS           = \
                   xulpymoney/ui/wdgProducts.ui \
                   xulpymoney/ui/wdgProductsComparation.ui \
                   xulpymoney/ui/wdgProductsDataMove.ui \
+                  xulpymoney/ui/wdgQuotesUpdate.ui \
+                  xulpymoney/ui/wdgQuotesSaveResult.ui \
                   xulpymoney/ui/wdgSimulations.ui \
                   xulpymoney/ui/wdgSimulationsAdd.ui \
                   xulpymoney/ui/wdgTotal.ui \

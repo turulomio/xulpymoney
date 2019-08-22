@@ -22,3 +22,4 @@ build/
 dist/
 doc/html/
 xulpymoney.egg-info/
+*.e4p

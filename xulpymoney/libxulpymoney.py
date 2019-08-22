@@ -6150,6 +6150,10 @@ class QuoteManager(ObjectManager):
                 
         logging.debug ("Quotes: {} inserted, {} ignored, {} modified, {} errors".format(insertados.length(), ignored.length(), modificados.length(), malos.length()))
         return (insertados, ignored, modificados, malos)
+        
+    ## You must call (wdg, *save()
+    def wdgQuotesSaveResult(self, wdg, inserted, ignored, updated, wrong):
+        inserted.myqtablewidget(wdg.tblInserted)
 
     def addTo(self, settoadd):
         """Añade los quotes en array a un nuevo set paasado por parametro"""

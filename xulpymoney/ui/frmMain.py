@@ -717,8 +717,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
         if filename!="":
             set=InvestingCom(self.mem, filename)
-            set.save()
+            result=set.save()
             self.mem.con.commit()
+            #Display result
+            from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
+            d=frmQuotesSaveResult()
+            d.settings_and_exec_(self.mem, *result)
+            #Deletes file
             question_delete_file(filename)
             self.mem.data.load()
             self.on_actionInvestments_triggered()
