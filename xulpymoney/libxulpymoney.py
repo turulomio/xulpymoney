@@ -6166,6 +6166,7 @@ class QuoteManager(ObjectManager):
                 if quote.product not in products.arr:
                     products.append(quote.product)
         products.needStatus(status, downgrade_to=downgrade_to, progress=progress)
+        self.mem.data.benchmark.needStatus(2) #If it's in products it has been downgraded
         
     ## You must call (wdg, *save()
     def wdgQuotesSaveResult(self, wdg, inserted, ignored, updated, wrong):
