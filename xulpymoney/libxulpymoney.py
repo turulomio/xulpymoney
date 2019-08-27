@@ -6167,6 +6167,7 @@ class QuoteManager(ObjectManager):
                     products.append(quote.product)
         products.needStatus(status, downgrade_to=downgrade_to, progress=progress)
         self.mem.data.benchmark.needStatus(2) #If it's in products it has been downgraded
+        self.mem.data.currencies.needStatus(3) #If it's in products it has been downgraded
         
     ## You must call (wdg, *save()
     def wdgQuotesSaveResult(self, wdg, inserted, ignored, updated, wrong):
