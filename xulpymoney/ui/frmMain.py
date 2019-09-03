@@ -9,7 +9,7 @@ import logging
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet, question_delete_file
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -722,9 +722,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             #Display result
             from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
             d=frmQuotesSaveResult()
+            d.setFileToDelete(filename)
             d.settings_and_exec_(self.mem, *result)
-            #Deletes file
-            question_delete_file(filename)
             #Reloads changed data
             set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             self.on_actionInvestments_triggered()

@@ -7,7 +7,7 @@ from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord,
 from pytz import timezone
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, question_delete_file, setReadOnly
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, setReadOnly
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
@@ -454,9 +454,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
         if filename!="":
             set=InvestingCom(self.mem, filename, self.product)
-            set.save()
-            self.mem.con.commit()
-            question_delete_file(filename)
+            result=set.save()
+            #Display result
+            from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
+            d=frmQuotesSaveResult()
+            d.setFileToDelete(filename)
+            d.settings_and_exec_(self.mem, *result)
+            #Reloads changed data
+            set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             self.product.needStatus(2, downgrade_to=0)
             self.update_due_to_quotes_change()
 

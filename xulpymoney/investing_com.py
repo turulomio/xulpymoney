@@ -10,8 +10,9 @@ class InvestingCom(QuoteManager):
         QuoteManager.__init__(self, mem)
         self.mem=mem
         self.filename=filename
+        self.product=product
         self.columns=self.get_number_of_csv_columns()
-        if product==None: #Several products
+        if self.product==None: #Several products
             if self.columns==8:
                 print("append_from_default")
                 self.append_from_default()
@@ -34,13 +35,13 @@ class InvestingCom(QuoteManager):
         return columns
         
     ## Used by InvestingCom, to load indexes components, it has 8 columns
-    ## 0 Índice	
-    ## 1 Símbolo	
-    ## 2 Último	
-    ## 3 Máximo	
-    ## 4 Mínimo	
+    ## 0 Índice 
+    ## 1 Símbolo    
+    ## 2 Último 
+    ## 3 Máximo 
+    ## 4 Mínimo 
     ## 5 Var
-    ## 6 % Var.	
+    ## 6 % Var. 
     ## 7 Hora
     def append_from_default(self):
             with open(self.filename) as csv_file:

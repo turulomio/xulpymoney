@@ -6169,10 +6169,6 @@ class QuoteManager(ObjectManager):
         self.mem.data.benchmark.needStatus(2) #If it's in products it has been downgraded
         self.mem.data.currencies.needStatus(3) #If it's in products it has been downgraded
         
-    ## You must call (wdg, *save()
-    def wdgQuotesSaveResult(self, wdg, inserted, ignored, updated, wrong):
-        inserted.myqtablewidget(wdg.tblInserted)
-
     def addTo(self, settoadd):
         """Añade los quotes en array a un nuevo set paasado por parametro"""
         for q in self.arr:
