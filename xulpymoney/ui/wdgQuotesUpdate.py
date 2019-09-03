@@ -1,7 +1,6 @@
-from PyQt5.QtWidgets import QWidget,  QApplication
-from PyQt5.QtCore import QRegExp,  Qt
-from PyQt5.QtGui import QTextCursor
-from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
+from PyQt5.QtWidgets import QWidget,  QApplication, QHBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from xulpymoney.ui.Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
 from xulpymoney.libxulpymoney import ProductUpdate
 
@@ -13,6 +12,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.parent=parent
         self.update=ProductUpdate(self.mem)
         self.index=0
+        self.wdgquotessaveresult.hide()
+        self.txtCR2Q.hide()
 
     def run(self):
         self.mem.frmMain.setEnabled(False)
@@ -25,12 +26,23 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.mem.con.commit()
         self.txtCR2Q.append(self.update.readResults())
 
+        #Adds txtCR2Q to wdgQuotesSaveResult tab
+        self.tabTXT = QWidget()
+        self.horizontalLayout_31 = QHBoxLayout(self.tabTXT)
+        self.horizontalLayout_31.addWidget(self.txtCR2Q)
+        self.wdgquotessaveresult.tab.addTab(self.tabTXT, QIcon(":/xulpymoney/document-edit.png"), self.tr("Command output"))
+
         #Shows results
-        d=frmQuotesSaveResult()
-        d.settings_and_exec_(self.mem, *result)
+        self.wdgquotessaveresult.display(self.mem, *result)
         #Reloads changed data
         self.quotes.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             
+        self.wdgquotessaveresult.show()
+        self.txtCR2Q.show()
+        self.cmdUsed.hide()
+        self.cmdAll.hide()
+
+        #Restores
         self.mem.frmMain.setEnabled(True)
         QApplication.restoreOverrideCursor()
 
@@ -45,28 +57,4 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.update.setGlobalCommands(all=True)
         self.run()
         QApplication.restoreOverrideCursor()
-        
-    def on_cmdError_released(self):
-        self.txtCR2Q.setFocus()
-#        self.txtCR2Q.textCursor() = self.txtCR2Q.textCursor()
-        # Setup the desired format for matches
-#        format = QtGui.QTextCharFormat()
-#        format.setBackground(QtGui.QBrush(QtGui.QColor("red")))
-        # Setup the regex engine
-        regex = QRegExp( "ERROR")
-        # Process the displayed document
-        self.index = regex.indexIn(self.txtCR2Q.toPlainText(), self.index+1)
-        print(self.index,  self.txtCR2Q.textCursor().position())
-        if self.index != -1:
-            # Select the matched text and apply the desired format
-            self.txtCR2Q.textCursor().setPosition(self.index)
-            print(self.index,  self.txtCR2Q.textCursor().position())
-            print(self.txtCR2Q.textCursor().movePosition(QTextCursor.PreviousWord, QTextCursor.KeepAnchor, 1))
-#            cursor.movePosition(QtGui.QTextCursor.EndOfWord, 1)
-#            cursor.mergeCharFormat(format)
-            # Move to the next match
-#            pos = index + regex.matchedLength()
-#            index = regex.indexIn(self.toPlainText(), pos)
-        else:
-            self.txtCR2Q.textCursor().setPosition(self.index)
 
