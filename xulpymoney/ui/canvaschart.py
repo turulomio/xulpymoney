@@ -99,8 +99,6 @@ class VCTemporalSeries(VCCommons):
         VCCommons.__init__(self)
         self.__chart=QChart() #After setChart you must call it with chart()
         self._allowHideSeries=True
-        self.chart().setAnimationOptions(QChart.AllAnimations);
-        self.chart().layout().setContentsMargins(0,0,0,0)
 
         #Axis cration
         self.axisX=QDateTimeAxis()
@@ -260,6 +258,8 @@ class VCTemporalSeries(VCCommons):
             del self.__chart
         self.__chart=QChart()
         self.setChart(self.__chart)
+        self.chart().setAnimationOptions(QChart.AllAnimations);
+        self.chart().layout().setContentsMargins(0,0,0,0)
         self._display_set_title()
 
         self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)

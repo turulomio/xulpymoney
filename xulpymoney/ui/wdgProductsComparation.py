@@ -61,26 +61,25 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
             
             # BEGIN DISPLAY)
-            self.viewCompare.setChart(self.viewCompare.chart)
             self.viewCompare.setAxisFormat(self.viewCompare.axisX, self.viewCompare.minx, self.viewCompare.maxx, 1)
             self.viewCompare.setAxisFormat(self.viewCompare.axisY, min(self.comparation.product1Closes()), max(self.comparation.product1Closes()),  0)
             axis3=QValueAxis()
-            self.viewCompare.chart.addAxis(self.viewCompare.axisY, Qt.AlignLeft);
-            self.viewCompare.chart.addAxis(self.viewCompare.axisX, Qt.AlignBottom);
-            self.viewCompare.chart.addAxis(axis3, Qt.AlignRight)
+            self.viewCompare.chart().addAxis(self.viewCompare.axisY, Qt.AlignLeft);
+            self.viewCompare.chart().addAxis(self.viewCompare.axisX, Qt.AlignBottom);
+            self.viewCompare.chart().addAxis(axis3, Qt.AlignRight)
 
-            self.viewCompare.chart.addSeries(ls1)
+            self.viewCompare.chart().addSeries(ls1)
             ls1.attachAxis(self.viewCompare.axisX)
             ls1.attachAxis(self.viewCompare.axisY)
             self.viewCompare.axisY.setRange(min(self.comparation.product1Closes()), max(self.comparation.product1Closes()))
 
-            self.viewCompare.chart.addSeries(ls2)
+            self.viewCompare.chart().addSeries(ls2)
             ls2.attachAxis(self.viewCompare.axisX)
             ls2.attachAxis(axis3)
             axis3.setRange (min(self.comparation.product2Closes()), max(self.comparation.product2Closes()))
 
             if self.viewCompare._allowHideSeries==True:
-                for marker in self.viewCompare.chart.legend().markers():
+                for marker in self.viewCompare.chart().legend().markers():
                     try:
                         marker.clicked.disconnect()
                     except:
