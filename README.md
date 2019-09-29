@@ -61,6 +61,16 @@ Dependencies
 
 Changelog
 =========
+0.10.0
+  * In orders you can now select products and investments
+  * Improved spanish translation
+  * Added investing.com support
+  * Added more products
+  * Reinvest dialogs are improved
+  * Added investment chart
+  * Investment dividends are now loaded when necessary
+  * Improved dialog after saving quotes
+
 0.9.0
   * Improved "About" menu action.
   * Importing from Investing.com CSV is working.
