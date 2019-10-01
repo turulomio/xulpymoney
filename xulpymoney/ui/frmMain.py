@@ -353,14 +353,10 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionSyncProducts_triggered(self):
         self.w.hide()
         
-        source=frmAccess(self.mem,  self)
-        source.showLanguage(False)
+        source=frmAccess("xulpymoney", "frmSync", self.mem.frmAccess.settings, self)
+        source.setResources(":/xulpymoney/database.png", ":/xulpymoney/database.png")
+        source.setLanguagesVisible(False)
         source.setLabel(self.tr("Please login to the source xulpymoney database"))
-        source.txtPort.setText(self.mem.settings.value("frmMain/syncproducts_port", "5432"))
-        source.txtServer.setText(self.mem.settings.value("frmMain/syncproducts_server", "127.0.0.1"))
-        source.txtUser.setText(self.mem.settings.value("frmMain/syncproducts_user", "postgres"))
-        source.txtDB.setText(self.mem.settings.value("frmMain/syncproducts_db", ""))
-        source.txtPass.setFocus()
         source.exec_()
         if source.result()==QDialog.Rejected:             
             qmessagebox(self.tr("Error conecting to {} database in {} server").format(source.con.db, source.con.server))
@@ -373,11 +369,6 @@ class frmMain(QMainWindow, Ui_frmMain):
                 m.setText(self.tr("Databases can't be the same"))
                 m.exec_()   
                 return
-
-            self.mem.settings.setValue("frmMain/syncproducts_port", source.txtPort.text())
-            self.mem.settings.setValue("frmMain/syncproducts_server", source.txtServer.text())
-            self.mem.settings.setValue("frmMain/syncproducts_user", source.txtUser.text())
-            self.mem.settings.setValue("frmMain/syncproducts_db", source.txtDB.text())
                 
             pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
             pd.setModal(True)
