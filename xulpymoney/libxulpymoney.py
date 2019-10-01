@@ -285,7 +285,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         table.setRowCount(set.length())
         for i, inv in enumerate(set.arr):
             if inv.selling_expiration!=None:
-                table.setItem(i, 0, qdate(inv.op_actual.last().date()))
+                table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
                 table.setItem(i, 1, qdate(inv.selling_expiration))    
                 if inv.selling_expiration<date.today():
                     table.item(i, 1).setBackground(eQColor.Red)       
@@ -548,19 +548,19 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
+                inv.needStatus(3)
                 for o in inv.op_actual.arr:
                     r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
                 if inv.product.high_low==True and r.op.length()>0:#Copy hlcontracts from first operation datetime
                     r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
                     for o in inv.hlcontractmanager.ObjectManager_copy_from_datetime(r.op.first().datetime, self.mem, inv).arr:
-                        r.hlcontractmanager.append(o)     
-                inv.needStatus(3)
+                        r.hlcontractmanager.append(o)
                 for d in inv.DividendManager_of_current_operations().arr:
                     r.dividends.append(d)
-        r.dividends.order_by_datetime()        
+        r.dividends.order_by_datetime()
         r.op.order_by_datetime() 
         (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
-        r.status=3#With dividends loaded manually        
+        r.status=3#With dividends loaded manually
         r.merged=True
         return r
 
