@@ -4,8 +4,9 @@ from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
 
-from xulpymoney.libxulpymoneyfunctions import  dirs_create, b2s
+from xulpymoney.libxulpymoneyfunctions import  b2s
 from xulpymoney.libcounter import Counter
+from xulpymoney.mem import MemRunClient
 
 def appendSource(arr, name):
     counter=Counter(len(arr))
@@ -51,11 +52,11 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
     ###################################################################
 
 def main():
+    mem=MemRunClient()
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
     parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
     args=parser.parse_args()
 
-    dir_tmp=dirs_create()
     arrBolsaMadrid=[]
     arrMorningStar=[]
     arrQueFondos=[]
@@ -65,8 +66,8 @@ def main():
     global lock
     lock=multiprocessing.Lock()
     if args.filename==None:
-        filename="{}/clients.txt".format(dir_tmp)
-        output="{}/clients_result.txt".format(dir_tmp)
+        filename="{}/clients.txt".format(mem.dir_tmp)
+        output="{}/clients_result.txt".format(mem.dir_tmp)
     else:
         filename=args.filename
         output= "{}.clients_result.txt".format(filename)

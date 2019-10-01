@@ -5,9 +5,10 @@ from datetime import datetime, date, timedelta, time
 from logging import info, error
 from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
 from pytz import timezone
+from xulpymoney.datetime_functions import dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, dtaware, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, setReadOnly
+from xulpymoney.libxulpymoneyfunctions import c2b, day_end, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, setReadOnly
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
@@ -164,7 +165,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
             try:
                 tpc=Percentage(self.product.result.basic.last.quote-quote.quote, quote.quote)
-                days=(datetime.now(timezone(self.mem.localzone.name))-quote.datetime).days+1
+                days=(datetime.now(timezone(self.mem.localzone_name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, tpc.qtablewidgetitem())
                 self.tblTPC.setItem(row, 3,  (tpc*365/days).qtablewidgetitem())
                 if self.investment:

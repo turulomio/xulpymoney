@@ -5,7 +5,7 @@ import logging
 import sys
 from PyQt5.QtWidgets import QApplication
 from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
-from xulpymoney.libxulpymoney import MemSources
+from xulpymoney.mem import MemSources
 
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney, stockmarket):

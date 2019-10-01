@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmAccess.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,15 +14,12 @@ class Ui_frmAccess(object):
     def setupUi(self, frmAccess):
         frmAccess.setObjectName("frmAccess")
         frmAccess.setWindowModality(QtCore.Qt.WindowModal)
-        frmAccess.resize(340, 409)
+        frmAccess.resize(340, 439)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(frmAccess.sizePolicy().hasHeightForWidth())
         frmAccess.setSizePolicy(sizePolicy)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/kmplot.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        frmAccess.setWindowIcon(icon)
         frmAccess.setModal(True)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(frmAccess)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -41,7 +38,6 @@ class Ui_frmAccess(object):
         self.lblPixmap.setMinimumSize(QtCore.QSize(80, 80))
         self.lblPixmap.setMaximumSize(QtCore.QSize(80, 80))
         self.lblPixmap.setText("")
-        self.lblPixmap.setPixmap(QtGui.QPixmap(":/xulpymoney/keki.png"))
         self.lblPixmap.setScaledContents(True)
         self.lblPixmap.setAlignment(QtCore.Qt.AlignCenter)
         self.lblPixmap.setObjectName("lblPixmap")
@@ -169,4 +165,3 @@ class Ui_frmAccess(object):
         self.lblDatabase.setText(_translate("frmAccess", "Database"))
         self.lblUser.setText(_translate("frmAccess", "User"))
         self.lblPass.setText(_translate("frmAccess", "Password"))
-import xulpymoney.images.xulpymoney_rc

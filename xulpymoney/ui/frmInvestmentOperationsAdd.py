@@ -22,6 +22,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.lblType.setFixedWidth(200)
         self.lblShares.setFixedWidth(200)
 
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
         self.wdg2CComission.setLabel(self.tr("Comission"))
         self.wdg2CTaxes.setLabel(self.tr("Taxes"))
@@ -50,12 +51,12 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion.investment=self.investment
             self.lblTitulo.setText(self.tr("New operation of {}").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones)
-            self.wdgDT.set(self.mem)
+            self.wdgDT.set()
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
-            self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
+            self.wdgDT.set(self.operinversion.datetime, self.mem.localzone_name)
             self.wdg2CGross.setTextA(self.operinversion.net(type=1))
             self.wdg2CNet.setTextA(self.operinversion.gross(type=1))
             self.wdg2CTaxes.setTextA(self.operinversion.impuestos)
@@ -147,7 +148,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         if self.type==1  and id_tiposoperaciones==4:#Añadir y compra
             w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None, self)
             #Quita un minuto para que enganche con operación
-            w.wdgDT.set(self.mem, self.wdgDT.datetime()-datetime.timedelta(seconds=1), self.mem.localzone)
+            w.wdgDT.set(self.wdgDT.datetime()-datetime.timedelta(seconds=1), self.mem.localzone_name)
             w.chkCanBePurged.setCheckState(Qt.Unchecked)
             w.txtQuote.setFocus()
             w.exec_() 

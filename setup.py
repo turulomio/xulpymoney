@@ -85,8 +85,33 @@ class Compile(Command):
 
     def finalize_options(self):
         pass
+        
+    def download_from_github(self,user,repository,path_filename, destiny_directory):
+        cwd=os.getcwd()
+        os.system("touch '{}/{}'".format(destiny_directory,os.path.basename(path_filename)))
+        os.system("rm '{}/{}'".format(destiny_directory, os.path.basename(path_filename)))
+        os.chdir(destiny_directory)
+        comand="wget -q https://raw.githubusercontent.com/{}/{}/master/{}  --no-clobber".format(user,repository, path_filename)
+        os.system(comand)
+        print("Updating {} from https://github.com/turulomio/reusingcode/{}".format(os.path.basename(path_filename),path_filename))
+        os.chdir(cwd)
 
     def run(self):
+        self.download_from_github('turulomio','reusingcode','python/admin_pg.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/libmanagers.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/connection_pg.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/connection_pg_qt.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/frmAccess.ui', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/frmAccess.py', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/wdgDatetime.ui', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/wdgDatetime.py', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/wdgYearMonth.ui', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/wdgYearMonth.py', 'xulpymoney/ui')
+        self.download_from_github('turulomio','reusingcode','python/package_resources.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/translationlanguages.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
+        
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
             for filename in os.listdir("xulpymoney/ui/"):

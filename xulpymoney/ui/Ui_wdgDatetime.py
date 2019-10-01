@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgDatetime.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -73,6 +73,9 @@ class Ui_wdgDatetime(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cmbZone.sizePolicy().hasHeightForWidth())
         self.cmbZone.setSizePolicy(sizePolicy)
+        self.cmbZone.setEditable(True)
+        self.cmbZone.setInsertPolicy(QtWidgets.QComboBox.InsertAtBottom)
+        self.cmbZone.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.cmbZone.setObjectName("cmbZone")
         self.verticalLayout.addWidget(self.cmbZone)
         self.verticalLayout_2.addLayout(self.verticalLayout)

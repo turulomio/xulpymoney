@@ -1,8 +1,12 @@
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
+
+
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QWidget
 import datetime
-from xulpymoney.ui.Ui_wdgYearMonth import Ui_wdgYearMonth
-from xulpymoney.libxulpymoneyfunctions import function_name, qmessagebox
+from caloriestracker.ui.Ui_wdgYearMonth import Ui_wdgYearMonth
+from caloriestracker.libcaloriestrackerfunctions import function_name, qmessagebox
 
 class wdgYearMonth(QWidget, Ui_wdgYearMonth):
     changed=pyqtSignal()
@@ -13,6 +17,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         
     def initiate(self, firstyear,  lastyear, currentyear, currentmonth):
         """Debe ser la primera función después del constructor"""
+        self.blockSignals(True)
         if firstyear==None:
             self.setEnabled(False)
             print (function_name(self), "Firstyear is None")
@@ -24,13 +29,17 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         self.month=currentmonth
         for year in range(firstyear, lastyear+1):
             self.cmbYear.addItem(str(year), year)
+        self.blockSignals(False)
         self.set(currentyear, currentmonth)
         
     def set(self,  year , month):
+        self.blockSignals(True)
         self.year=year
         self.month=month
         self.cmbYear.setCurrentIndex(self.year-self.firstyear)
         self.cmbMonth.setCurrentIndex(self.month-1)
+        self.blockSignals(False)
+        self.changed.emit()
 
     @pyqtSlot(str)      
     def on_cmbYear_currentIndexChanged(self, text):

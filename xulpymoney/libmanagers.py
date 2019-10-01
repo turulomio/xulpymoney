@@ -1,4 +1,6 @@
 ## @brief Module with objects managers as list or as dictionary.
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 ##
 ## This file is from Xulpymoney project. Do not edit, It will be overriden.
 ##
@@ -269,6 +271,23 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
                 return a
         logging.debug("{} didn't find the name: {}".format(self.__class__, name))
         return None
+
+
+    ## Returns another object manager of the same class with the elements that contains a string in the name
+    ## @param s string to search
+    ## @casesensitive Boolean if it's a case sensitive search    
+    def ObjectManager_with_name_contains_string(self, s, casesensitive, *initparams):
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        if casesensitive==True:
+            for a in self.arr:
+                if s in a.name:
+                    result.append(a)
+            return result
+        else:
+            for a in self.arr:
+                if s.upper() in a.name.upper():
+                    result.append(a)
+            return result
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
@@ -286,14 +305,19 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         except:
             return False
 
-    def qcombobox(self, combo,  selected=None):
-        """Load set items in a comobo using id and name
-        Selected is and object
-        It sorts by name the arr""" 
+    ## @param selected it's an object
+    ## @param needtoselect Adds a foo item with value==None with the text select one
+    ## @param icons Boolean. If it's true uses o.qicon() method to add an icon to the item
+    def qcombobox(self, combo,  selected=None, needtoselect=False, icons=False):
         self.order_by_name()
         combo.clear()
+        if needtoselect==True:
+            combo.addItem(combo.tr("Select an option"), None)
         for a in self.arr:
-            combo.addItem(a.name, a.id)
+            if icons==True:
+                combo.addItem(a.qicon(), a.name, a.id)
+            else:
+                combo.addItem(a.name, a.id)
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
@@ -444,6 +468,42 @@ class ObjectManager_With_IdName_Selectable(ObjectManager_With_IdName, ManagerSel
     def __init__(self):
         ObjectManager_With_IdName.__init__(self)
         ManagerSelection.__init__(self)
+
+
+
+
+## THIS IS A NEW SERIE OF MANAGERS DATA VALUE
+class DV:
+    def __init__(self):
+        self.datetime=None
+        self.value=None
+
+    def __repr__(self):
+        return "DV {} = {}".format(self.date,self.value)
+
+class DVManager(ObjectManager):
+    def __init__(self):
+        ObjectManager.__init__(self)
+    def appendDV(self, datetime, value):
+        o=DV()
+        o.datetime=datetime
+        o.value=value
+        self.append(o)    ## Returns a date value manager with the simple movil average 3 of weight
+    
+    ## Returns a DVManager with the simple movil average of the array
+    def sma(self, period):
+        r=DVManager()
+        for i in range(period, self.length()):
+            sma=DV()
+            sma.value=0
+            sma.datetime=self.arr[i].datetime
+            for p in range(period):
+                sma.value=sma.value+self.arr[i-p].value
+            sma.value=sma.value/period
+            r.append(sma)
+        return r
+
+
 
 
 if __name__ == "__main__":

@@ -22,17 +22,18 @@ class frmSplit(QDialog, Ui_frmSplit):
         self.setModal(True)
         self.setupUi(self)
         
-        self.wdgDt.blockSignals(True)
-        self.wdgDt.show_microseconds(False)
+        self.wdgDT.blockSignals(True)
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
+        self.wdgDT.show_microseconds(False)
         self.wdgDt.grp.setTitle(self.tr("Select the day and time of split"))
         
         if self.split==None:
-            self.wdgDt.set(self.mem, datetime.datetime.now(), self.mem.localzone)
+            self.wdgDT.set(datetime.datetime.now(), self.mem.localzone_name)
             self.split=Split(self.mem)
             self.split.product=self.product
         else:
             self.split=split
-            self.wdgDt.set(self.mem, self.split.datetime, self.mem.localzone)
+            self.wdgDT.set(self.split.datetime, self.mem.localzone_name)
             self.txtInitial.setText(self.split.before)
             self.txtFinal.setText(self.split.after)
             self.txtComment.setText(self.split.comment)

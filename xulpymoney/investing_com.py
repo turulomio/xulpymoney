@@ -2,7 +2,8 @@ from csv import reader
 from logging import debug
 from datetime import date
 from xulpymoney.libxulpymoney import QuoteManager, Quote, OHCLDaily
-from xulpymoney.libxulpymoneyfunctions import string2date, string2decimal, string2datetime, dtaware, string2time
+from xulpymoney.libxulpymoneyfunctions import string2date, string2decimal, string2datetime, string2time
+from xulpymoney.datetime_functions import dtaware
 from xulpymoney.libxulpymoneytypes import eTickerPosition
 
 class InvestingCom(QuoteManager):
@@ -57,7 +58,7 @@ class InvestingCom(QuoteManager):
                                 quote=Quote(self.mem)
                                 quote.product=product
                                 date_=string2date(row[7], type=4)
-                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes,self.mem.localzone.name)#Without 4 microseconds becaouse is not a ohcl
+                                quote.datetime=dtaware(date_,quote.product.stockmarket.closes,self.mem.localzone_name)#Without 4 microseconds becaouse is not a ohcl
                                 quote.quote=string2decimal(row[2])
                                 self.append(quote)
                             except:
@@ -67,7 +68,7 @@ class InvestingCom(QuoteManager):
                                 quote=Quote(self.mem)
                                 quote.product=product
                                 time_=string2time(row[7], type=2)
-                                quote.datetime=dtaware(date.today(), time_, self.mem.localzone.name)
+                                quote.datetime=dtaware(date.today(), time_, self.mem.localzone_name)
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
                             except:

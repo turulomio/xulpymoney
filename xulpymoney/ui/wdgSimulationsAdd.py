@@ -14,8 +14,8 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.parent=parent
         self.simulation=None#Simulation to be created
         self.mem.simulationtypes.qcombobox(self.cmbSimulationTypes)
-        self.wdgStarting.set(self.mem, Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone)
-        self.wdgEnding.set(self.mem)
+        self.wdgStarting.set(Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone)
+        self.wdgEnding.set()
         self.simcon=None#Simulation connection
 
     @pyqtSlot()

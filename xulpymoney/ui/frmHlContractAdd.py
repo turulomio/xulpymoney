@@ -15,14 +15,15 @@ class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
         self.investment=investment
         self.hlcontract=hlcontract
 
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
         self.wdgDT.show_timezone(False)
         if self.hlcontract==None:#insert
             self.hlcontract=HlContract(self.mem, self.investment)
             self.cmd.setText(self.tr("Add new High-Low contract"))
-            self.wdgDT.set(self.mem, None, self.mem.localzone)
+            self.wdgDT.set(None, self.mem.localzone_name)
         else:#update
-            self.wdgDT.set(self.mem, self.hlcontract.datetime, self.mem.localzone)
+            self.wdgDT.set(self.hlcontract.datetime, self.mem.localzone_name)
             self.txtGuarantee.setText(self.hlcontract.guarantee)
             self.txtAdjustment.setText(self.hlcontract.adjustment)
             self.txtInterest.setText(self.hlcontract.interest)

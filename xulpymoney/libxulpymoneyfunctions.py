@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt,  QCoreApplication, QLocale
 from PyQt5.QtGui import QIcon,  QColor
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
 from decimal import Decimal
-from os import path, makedirs, remove
+from os import path, remove
 import datetime
 import time
 import functools
@@ -15,6 +15,7 @@ import pkg_resources
 import pytz
 import socket
 import sys
+from xulpymoney.datetime_functions import dtaware
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.libxulpymoneytypes import eDtStrings
 
@@ -531,29 +532,7 @@ def days2string(days):
         strdays=QApplication.translate("Core", "days")
     return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
 
-
-def dirs_create():
-    """
-        Returns xulpymoney_tmp_dir, ...
-    """
-    dir_tmp=path.expanduser("~/.xulpymoney/tmp/")
-    try:
-        makedirs(dir_tmp)
-    except:
-        pass
-    return dir_tmp
-
-## Function to create a datetime aware object
-## @param date datetime.date object
-## @param hour datetime.hour object
-## @param zonename String with datetime zone name. For example "Europe/Madrid"
-## @return datetime aware
-def dtaware(date, hour, zonename):
-    z=pytz.timezone(zonename)
-    a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
-    a=z.localize(a)
-    return a
-    
+   
 ## Converts strings True or False to boolean
 ## @param s String
 ## @return Boolean

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>409</height>
+    <height>439</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,10 +18,6 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -66,9 +62,6 @@
          </property>
          <property name="text">
           <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/keki.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -306,8 +299,6 @@
   <tabstop>txtDB</tabstop>
   <tabstop>txtUser</tabstop>
  </tabstops>
- <resources>
-  <include location="../images/xulpymoney.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -2,7 +2,8 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmQuotesIBM import Ui_frmQuotesIBM
 from xulpymoney.libxulpymoney import Quote
-from xulpymoney.libxulpymoneyfunctions import dtaware, dtaware_changes_tz, qmessagebox
+from xulpymoney.datetime_functions import dtaware
+from xulpymoney.libxulpymoneyfunctions import dtaware_changes_tz, qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
@@ -18,13 +19,14 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             if self.product.type.id in (eProductType.Fund, eProductType.PensionPlan):
                 self.chkNone.setCheckState(Qt.Checked)       
             else:
+                self.wdgDT.setLocalzone(self.mem.localzone_name)
                 if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
-                    today_closes=dtaware_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone.name)
+                    today_closes=dtaware_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone_name)
                     self.wdgDT.setCombine(self.mem,  today_closes.date(), today_closes.time(),  self.mem.localzone)
                 else:
-                    self.wdgDT.set(self.mem)
+                    self.wdgDT.set()
         else:#Update
-            self.wdgDT.set(self.mem, quote.datetime, self.mem.localzone)
+            self.wdgDT.set(quote.datetime, self.mem.localzone_name)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)
             self.wdgDT.setEnabled(False)
@@ -32,7 +34,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     def on_chkNone_stateChanged(self, state):
         if state==Qt.Checked:      
-            self.wdgDT.set(self.mem, dtaware(self.wdgDT.date(), self.product.stockmarket.closes, self.product.stockmarket.zone.name), self.product.stockmarket.zone)
+            self.wdgDT.set(dtaware(self.wdgDT.date(), self.product.stockmarket.closes, self.product.stockmarket.zone.name), self.product.stockmarket.zone.name)
             self.wdgDT.teTime.setEnabled(False)
             self.wdgDT.cmbZone.setEnabled(False)
             self.wdgDT.cmdNow.setEnabled(False)

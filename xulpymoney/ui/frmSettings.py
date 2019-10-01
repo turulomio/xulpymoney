@@ -22,7 +22,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem=mem
  
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
+        self.mem.frmAccess.languages.qcombobox(self.cmbLanguages,self.mem.frmAccess.languages.selected)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
         self.indexes=self.mem.data.products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.Index.value))
         self.indexes.order_by_name()
@@ -36,9 +36,8 @@ class frmSettings(QDialog, Ui_frmSettings):
 
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
-        self.mem.language=self.mem.languages.find_by_id(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
-        self.mem.settings.setValue("mem/language", self.mem.language.id)
-        self.mem.languages.cambiar(self.mem.language.id)
+        self.mem.frmAccess.languages.selected=self.mem.frmAccess.languages.find_by_id(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.mem.frmAccess.languages.cambiar(self.mem.frmAccess.languages.selected.id, "xulpymoney")
         self.retranslateUi(self)
 
     @pyqtSlot()
@@ -53,7 +52,8 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.gainsyear=c2b(self.chkGainsYear.checkState())
         self.mem.save_MemSettingsDB()
         
-        self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))       
+        self.mem.settings.setValue("access/language", self.mem.frmAccess.languages.selected.id)
+        self.mem.frmAccess.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()), "xulpymoney")  
         self.retranslateUi(self)
         
         self.accept()    

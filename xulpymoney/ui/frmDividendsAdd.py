@@ -18,6 +18,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         
         self.neto=0
         self.tpc=0
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
         self.wdgDT.show_timezone(False)
         self.lblGross.setText(self.tr("Gross in {}".format(self.investment.product.currency.symbol)))
@@ -32,14 +33,14 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend=Dividend(self.mem)
             self.dividend.investment=inversion
             self.cmd.setText(self.tr("Add new dividend"))
-            self.wdgDT.set(self.mem, None, self.mem.localzone)
+            self.wdgDT.set(None, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), None)
         else:#modificar 
             if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
-            self.wdgDT.set(self.mem, self.dividend.datetime, self.mem.localzone)
+            self.wdgDT.set(self.dividend.datetime, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
             self.txtBruto.setText(self.dividend.bruto)
             self.txtNeto.setText(self.dividend.neto)

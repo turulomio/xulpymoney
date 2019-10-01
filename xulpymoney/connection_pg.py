@@ -1,6 +1,6 @@
 ## @brief Package to manage postgresql connection functionss
-## THIS IS FROM XULPYMONEY PACKAGE IF YOU NEED THIS MODULE PLEASE SYNC IT FROM THERE, FOR EXAMPLE
-## TO SYNC USE CODE OF caloriestracker setup.py
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 from datetime import datetime
 from psycopg2 import OperationalError
@@ -59,9 +59,11 @@ class Connection:
 
     def load_script(self, file):
         cur= self._con.cursor()
-        procedures  = open(file,'r', encoding='utf-8').read() 
+        f  = open(file,'r', encoding='utf-8')
+        procedures=f.read() 
         cur.execute(procedures)
-        cur.close()       
+        cur.close()
+        f.close()
 
     def cursor_one_column(self, sql, arr=[]):
         """Returns un array with the results of the column"""

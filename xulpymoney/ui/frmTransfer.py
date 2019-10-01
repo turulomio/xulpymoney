@@ -16,7 +16,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         self.mem.data.accounts_active().qcombobox(self.cmbOrigen,  origen)
         self.mem.data.accounts_active().qcombobox(self.cmbDestino,  destino)
         self.wdgDT.show_microseconds(False)
-        self.wdgDT.set(self.mem)
+        self.wdgDT.set()
 
 
     def on_cmd_pressed(self):

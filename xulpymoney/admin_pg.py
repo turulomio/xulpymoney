@@ -1,6 +1,6 @@
 ## @brief Package to manage postgresql admin functionss
-## THIS IS FROM XULPYMONEY PACKAGE IF YOU NEED THIS MODULE PLEASE SYNC IT FROM THERE, FOR EXAMPLE
-
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 import io
 import logging
@@ -18,6 +18,7 @@ class AdminPG:
         if self.con.is_superuser():
             cur=self.con.cursor()
             cur.execute("create database {0};".format(database))
+            return True
         else:
             logging.critical ("You need to be superuser to create database")
             return False
@@ -27,22 +28,14 @@ class AdminPG:
         if self.db_exists(database)==True:
             print("Database exists")
             exit(1)
-            
         self.create_db(database)
-        newcon=Connection()
-        newcon.user=self.con.user
-        newcon.server=self.con.server
-        newcon.port=self.con.port
-        newcon.db=database
-        newcon.password=self.con.password
-        newcon.connect()
-        return newcon
-        
+        return self.connect_to_database(database)
+
     def db_exists(self, database):
         """Hace conexi´on automatica a template usando la con """
         cur=self.con.cursor()
         cur.execute("SELECT 1 AS result FROM pg_database WHERE datname=%s", (database, ))
-        
+
         if cur.rowcount==1:
             cur.close()
             return True

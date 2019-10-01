@@ -34,6 +34,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.mem.conceptos.load_opercuentas_qcombobox(self.cmbConcepts)
         self.mem.data.accounts_active().qcombobox(self.cmbAccounts)
         self.mem.data.creditcards_active().qcombobox(self.cmbCreditCards)
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
 
         if account==None and opercuenta==None and tarjeta==None and opertarjeta!=None and  refund==True:
@@ -44,7 +45,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbCreditCards.setEnabled(False)
             self.setWindowTitle(self.tr("Credit card operation refund"))
             self.lblTitulo.setText(self.tr("Credit card operation refund"))
-            self.wdgDT.set(self.mem)
+            self.wdgDT.set()
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(67))
             self.cmbConcepts.setEnabled(False)
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
@@ -56,7 +57,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.setWindowTitle(self.tr("Credit card operation update"))
             self.lblTitulo.setText(self.tr("Credit card operation update"))
             self.radCreditCards.setChecked(True)
-            self.wdgDT.set(self.mem, opertarjeta.datetime, self.mem.localzone)
+            self.wdgDT.set(opertarjeta.datetime, self.mem.localzone_name)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opertarjeta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
@@ -68,13 +69,13 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(tarjeta.id))
             self.setWindowTitle(self.tr("New credit card operation"))
             self.lblTitulo.setText(self.tr("New credit card operation"))
-            self.wdgDT.set(self.mem)
+            self.wdgDT.set()
         elif opercuenta!=None:
             self.original=opercuenta
             self.radAccounts.setChecked(True)
             self.setWindowTitle(self.tr("Account operation update"))
             self.lblTitulo.setText(self.tr("Account operation update"))
-            self.wdgDT.set(self.mem, opercuenta.datetime, self.mem.localzone)
+            self.wdgDT.set(opercuenta.datetime, self.mem.localzone_name)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opercuenta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opercuenta.account.id))
             self.txtImporte.setText(opercuenta.importe)
@@ -84,7 +85,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.radAccounts.setChecked(True)
             self.setWindowTitle(self.tr("New account operation"))
             self.lblTitulo.setText(self.tr("New account operation"))
-            self.wdgDT.set(self.mem)
+            self.wdgDT.set()
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(account.id))
 
 
@@ -133,7 +134,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
                 self.AccountOperationChanged.emit(final)
-                self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
+                self.wdgDT.set(self.wdgDT.datetime()+timedelta(seconds=1), self.mem.localzone_name)
                 return
             elif self.original.__class__==CreditCardOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
                 final=AccountOperation(self.mem)
@@ -184,7 +185,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.mem.con.commit()
                 self.CreditCardOperationChanged.emit(final)
-                self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
+                self.wdgDT.set(self.wdgDT.datetime()+timedelta(seconds=1), self.mem.localzone_name)
                 return
             elif self.refund==True:#Refun d         
                 refund=CreditCardOperation(self.mem)

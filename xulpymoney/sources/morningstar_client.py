@@ -4,7 +4,7 @@ from decimal import Decimal
 import sys
 import logging
 from PyQt5.QtWidgets import QApplication
-from xulpymoney.libxulpymoney import MemSources
+from xulpymoney.mem import MemSources
 from xulpymoney.libxulpymoneyfunctions import addDebugSystem, addCommonToArgParse
 
 class CurrentPriceTickerFund:

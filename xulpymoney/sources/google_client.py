@@ -4,7 +4,7 @@ from decimal import Decimal
 import sys
 import logging
 from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
-from xulpymoney.libxulpymoney import MemSources
+from xulpymoney.mem import MemSources
         
 class CurrentPriceTicker:
     def __init__(self,ticker, xulpymoney, stockmarket):

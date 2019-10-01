@@ -40,7 +40,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         if self.radDes.isChecked():#DESINVERSION
             perdida=Money(self.mem, self.txtSimulacion.decimal(),self.investment.product.currency)#Va disminuyendo con las distintas operaciones
-            q=Quote(self.mem).init__create(self.investment.product, datetime.now(timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
+            q=Quote(self.mem).init__create(self.investment.product, datetime.now(timezone(self.mem.localzone_name)), self.txtValorAccion.decimal())
             for rec in self.investment.op_actual.arr:
                 pendiente=rec.pendiente(q)
                 if (perdida+pendiente).isZero():
@@ -99,9 +99,9 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         #Creamos un nuevo operinversiones 
         id_operinversiones=self.investment_simulated.op.get_highest_io_id ()+1##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(5), datetime.now(timezone(self.mem.localzone.name)), self.investment, -acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(5), datetime.now(timezone(self.mem.localzone_name)), self.investment, -acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
         else:#REINVERSION
-            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), datetime.now(timezone(self.mem.localzone.name)), self.investment, acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), datetime.now(timezone(self.mem.localzone_name)), self.investment, acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
         self.investment_simulated.op.append(d)
         (self.investment_simulated.op_actual, self.investment_simulated.op_historica)=self.investment_simulated.op.get_current_and_historical_operations()
         

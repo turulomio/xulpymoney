@@ -7,7 +7,7 @@ import logging
 import sys
 
 import time
-from xulpymoney.libxulpymoney import MemSources
+from xulpymoney.mem import MemSources
 from xulpymoney.libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse
 
 
