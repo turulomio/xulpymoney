@@ -11,14 +11,12 @@
 ## access.setResources(":/calores.png","calores.png"
 ## access.exec_()
 
-from PyQt5.QtCore import pyqtSlot, QTranslator, QSettings
+from PyQt5.QtCore import pyqtSlot, QSettings
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QDialog, qApp, QMessageBox
+from PyQt5.QtWidgets import QDialog, QMessageBox
 from .Ui_frmAccess import Ui_frmAccess
 from .. connection_pg_qt import ConnectionQt
 from .. translationlanguages import TranslationLanguageManager
-from .. package_resources import package_filename
-from logging import info
 
 ##After execute it you can link to a singleton for example
 ##mem.settings=access.settings

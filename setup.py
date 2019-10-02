@@ -108,6 +108,7 @@ class Compile(Command):
         self.download_from_github('turulomio','reusingcode','python/wdgYearMonth.ui', 'xulpymoney/ui')
         self.download_from_github('turulomio','reusingcode','python/wdgYearMonth.py', 'xulpymoney/ui')
         self.download_from_github('turulomio','reusingcode','python/package_resources.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/qtablewidgetitems.py', 'xulpymoney/ui')
         self.download_from_github('turulomio','reusingcode','python/translationlanguages.py', 'xulpymoney')
         self.download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
         self.download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
