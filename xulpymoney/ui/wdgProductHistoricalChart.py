@@ -8,11 +8,11 @@ from xulpymoney.ui.Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalCh
 
 import datetime
 import logging
-from decimal import Decimal
+from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_start
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.canvaschart import   VCTemporalSeries
 from xulpymoney.libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
-from xulpymoney.libxulpymoneyfunctions import day_start_from_date, day_start, string2list_of_integers
+from xulpymoney.libxulpymoneyfunctions import string2list_of_integers
 from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration,  eOperationType
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 
@@ -68,7 +68,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.view.close()
             self.verticalLayout.removeWidget(self.view)
 
-        selected_datetime= day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
+        selected_datetime= dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.Splits)
         
         self.view=VCTemporalSeries()
@@ -110,13 +110,13 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             ls=self.view.appendTemporalSeries(self.product.name.upper() + " (No adjust)", self.product.currency)#Line seies
             for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.NoAdjusts).arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, day_start(ohcl.datetime(), self.mem.localzone), ohcl.close) 
+                    self.view.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
 
         if self.chkAdjustDividends.isChecked():#
             ls=self.view.appendTemporalSeries(self.product.name.upper() + (" (Dividend adjust)"), self.product.currency)#Line seies
             for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.SplitsAndDividends).arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, day_start(ohcl.datetime(), self.mem.localzone), ohcl.close) 
+                    self.view.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
 
         #INVESTMENT
         if self.investment!=None:
@@ -185,12 +185,12 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.display()
         
     def on_cmdFromRight_released(self):
-        self.dtFrom.setDate(day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)+datetime.timedelta(days=365))
+        self.dtFrom.setDate(dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)+datetime.timedelta(days=365))
         self.generate()
         self.display()        
         
     def on_cmdFromLeft_released(self):
-        self.dtFrom.setDate(day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=365))
+        self.dtFrom.setDate(dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=365))
         self.generate()
         self.display()        
         
@@ -419,7 +419,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         wdgProductHistoricalChart.generate(self)
         
         percentage=Percentage(self.spnGainsPercentage.value(), 100)
-        selected_datetime= day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)
+        selected_datetime= dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)
 
         inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, -1)
         inv.op=InvestmentOperationHomogeneusManager(self.mem, inv)
@@ -483,21 +483,21 @@ class wdgProductHistoricalOpportunity(wdgProductHistoricalChart):
             entry=self.view.appendTemporalSeries(self.tr("Entry"),  self.product.currency)
             entry.setColor(QColor(85, 85, 170))
             entry.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
-            self.view.appendTemporalSeriesData(entry, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.entry)
+            self.view.appendTemporalSeriesData(entry, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.entry)
             self.view.appendTemporalSeriesData(entry, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.entry)
 
         if self.opportunity.target!=None:
             target=self.view.appendTemporalSeries(self.tr("Target"),  self.product.currency)
             target.setColor(QColor(85, 170, 85))
             target.setPen(self._pen(Qt.DashLine, QColor(85, 170, 85)))
-            self.view.appendTemporalSeriesData(target, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.target)
+            self.view.appendTemporalSeriesData(target, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.target)
             self.view.appendTemporalSeriesData(target, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.target)
 
         if self.opportunity.stoploss!=None:
             stoploss=self.view.appendTemporalSeries(self.tr("Stop loss"),  self.product.currency)
             stoploss.setColor(QColor(170, 85, 85))
             stoploss.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
-            self.view.appendTemporalSeriesData(stoploss, day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone)-datetime.timedelta(days=10), self.opportunity.stoploss)
+            self.view.appendTemporalSeriesData(stoploss, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.stoploss)
             self.view.appendTemporalSeriesData(stoploss, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.stoploss)
 
                 

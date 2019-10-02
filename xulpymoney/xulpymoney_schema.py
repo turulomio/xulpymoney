@@ -2,7 +2,7 @@
 import logging
 from PyQt5.QtCore import QObject
 from xulpymoney.admin_pg import AdminPG
-from xulpymoney.libxulpymoneyfunctions import  package_filename
+from xulpymoney.package_resources import  package_filename
 from xulpymoney.libxulpymoneytypes import eOperationType
 
 ## Creates a new xulpymoney database and loads its schema

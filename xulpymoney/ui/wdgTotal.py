@@ -2,8 +2,10 @@ from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
-from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qcenter, qleft, qmessagebox,  day_end_from_date
+from xulpymoney.libxulpymoneyfunctions import  list2string, none2decimal0, qmessagebox
+from xulpymoney.ui.qtablewidgetitems import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
@@ -485,7 +487,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             if progress.wasCanceled():
                 break
             progress.setValue(progress.value()+1)
-            epoch=day_end_from_date(m.last_day(), self.mem.localzone)
+            epoch=dtaware_day_end_from_date(m.last_day(), self.mem.localzone_name)
             total=m.total().amount
             zero=m.total_zerorisk().amount
             bonds=m.total_bonds().amount

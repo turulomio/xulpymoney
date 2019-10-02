@@ -15,10 +15,13 @@ from pytz import timezone
 from sys import exit
 from xulpymoney.version import __version__
 from xulpymoney.github import get_file_modification_dtaware
-from xulpymoney.datetime_functions import dtaware
-from xulpymoney.libxulpymoneyfunctions import qdatetime, qright, qleft, qcenter, qdate, qbool, day_end_from_date, day_start_from_date, days2string, month_end, month_start, year_end, year_start, str2bool, function_name, string2date, string2datetime, string2list_of_integers, qmessagebox, qtime, dtaware2string, day_end, qempty,  deprecated, have_same_sign, set_sign_of_other_number, package_filename, is_there_internet
+from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware,dtaware2string
+from xulpymoney.decorators import deprecated
+from xulpymoney.libxulpymoneyfunctions import  str2bool, function_name, string2list_of_integers, qmessagebox, have_same_sign, set_sign_of_other_number, is_there_internet
+from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
+from xulpymoney.package_resources import package_filename
 
 getcontext().prec=20
 
@@ -212,7 +215,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             else:
                 table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))
 
-            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
+            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone_name))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
@@ -248,7 +251,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         for i, inv in enumerate(self.arr):
             try:
                 table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
-                table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
+                table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone_name))
                 table.setItem(i, 2, qright(inv.op_actual.last().shares))
                 table.setItem(i, 3, qright(inv.op_actual.shares()))
                 table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
@@ -1187,7 +1190,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
             table.item(i, 1).setIcon(p.stockmarket.country.qicon())
             table.setItem(i, 2, QTableWidgetItem(p.isin))   
-            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone))
+            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
             table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
@@ -1247,12 +1250,12 @@ class SimulationManager(ObjectManager_With_IdName_Selectable):
         table.applySettings()
         table.setRowCount(self.length())
         for i, a in enumerate(self.arr):
-            table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone_name))
             table.setItem(i, 1, qleft(a.type.name))
             table.item(i, 1).setIcon(a.type.qicon())
             table.setItem(i, 2, qleft(a.simulated_db()))
-            table.setItem(i, 3, qdatetime(a.starting, self.mem.localzone))
-            table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
+            table.setItem(i, 3, qdatetime(a.starting, self.mem.localzone_name))
+            table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone_name))
 
 
 class StockMarketManager(ObjectManager_With_IdName_Selectable):
@@ -1533,7 +1536,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
         balance=0
         for rownumber, a in enumerate(self.values_order_by_datetime()):
             balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if show_accounts==True:
                 tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
@@ -1555,7 +1558,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
         for i, o in enumerate(self.values_order_by_datetime()):
             importe=Money(self.mem, o.importe, account.currency)
             lastmonthbalance=lastmonthbalance+importe
-            table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
+            table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
@@ -1647,7 +1650,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):
             sumbruto=sumbruto+d.bruto
             sumretencion=sumretencion+d.retencion
             sumcomision=sumcomision+d.comision
-            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
             if show_investment==True:
                 table.setItem(i, diff, qleft(d.investment.name))
             table.setItem(i, diff+1, qleft(d.opercuenta.concepto.name))
@@ -1718,7 +1721,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
             sumbruto=sumbruto+d.gross(type)
             sumretencion=sumretencion+d.retention(type)
             sumcomision=sumcomision+d.comission(type)
-            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
             table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
             table.setItem(i, 2, d.gross(type).qtablewidgetitem())
             table.setItem(i, 3, d.retention(type).qtablewidgetitem())
@@ -1838,7 +1841,7 @@ class EstimationEPSManager(ObjectManager):
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone))), 2))
+            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone.name))), 2))
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, QTableWidgetItem(e.source))
             table.setItem(i, 5, qbool(e.manual)) 
@@ -1923,7 +1926,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         tabla.clearContents()  
         tabla.setRowCount(self.length())
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
         
@@ -2033,7 +2036,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         tabla.setRowCount(len(self.arr))
         
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
                 
@@ -2160,7 +2163,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):        
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             tabla.setItem(rownumber, 1, qleft(a.investment.name))
@@ -2415,7 +2418,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             
@@ -2795,7 +2798,7 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_compra
             
         money=Money(self.mem, value, self.investment.product.currency)
-        dt=day_end_from_date(self.fecha_inicio, self.mem.localzone)
+        dt=dtaware_day_end_from_date(self.fecha_inicio, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -2817,7 +2820,7 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_venta
 
         money=Money(self.mem, value, self.investment.product.currency)
-        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
+        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -2827,7 +2830,7 @@ class InvestmentOperationHistorical:
 
     def taxes(self, type=eMoneyCurrency.Product):
         money=Money(self.mem, self.impuestos, self.investment.product.currency)
-        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
+        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -2837,7 +2840,7 @@ class InvestmentOperationHistorical:
     
     def comission(self, type=eMoneyCurrency.Product):
         money=Money(self.mem, self.comision, self.investment.product.currency)
-        dt=day_end_from_date(self.fecha_venta, self.mem.localzone)
+        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -2945,8 +2948,8 @@ class InvestmentOperationCurrent:
         """
             Returns a money object with monthly reevaluation
         """
-        dt_last= month_end(year, month, self.mem.localzone)
-        dt_first=month_start(year, month, self.mem.localzone)
+        dt_last= dtaware_month_end(year, month, self.mem.localzone_name)
+        dt_first=dtaware_month_start(year, month, self.mem.localzone_name)
         if self.datetime>dt_first and self.datetime<dt_last:
             dt_first=self.datetime
         elif self.datetime>dt_last:
@@ -2967,8 +2970,8 @@ class InvestmentOperationCurrent:
         """
             Returns a money object with monthly reevaluation
         """
-        dt_last= year_end(year, self.mem.localzone)
-        dt_first=year_start(year, self.mem.localzone)
+        dt_last= dtaware_year_end(year, self.mem.localzone_name)
+        dt_first=dtaware_year_start(year, self.mem.localzone_name)
         if self.datetime>dt_first:
             dt_first=self.datetime
         first=Quote(self.mem).init__from_query( self.investment.product, dt_first).quote
@@ -3959,7 +3962,7 @@ class Account:
             if fecha==None:
                 dt=self.mem.localzone.now()
             else:
-                dt=day_end_from_date(fecha, self.mem.localzone)
+                dt=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
             return Money(self.mem, res, self.currency).convert(self.mem.localcurrency, dt)
 
     def save(self):
@@ -4263,7 +4266,7 @@ class Investment:
         if fecha==None:
             dat=self.mem.localzone.now()
         else:
-            dat=day_end_from_date(fecha, self.mem.localzone)
+            dat=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
         resultado=Decimal('0')
 
         for o in self.op.arr:
@@ -4312,11 +4315,11 @@ class Investment:
         if fecha==None:
             return self.op_actual.balance(self.product.result.basic.last, type)
         else:
-            quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
+            quote=Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(fecha, self.mem.localzone_name))
             if quote.datetime==None:
                 debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Money(self.mem, 0, self.resultsCurrency(type) )
-            return self.Investment_At_Datetime(day_end_from_date(fecha, self.mem.localzone)).op_actual.balance(quote, type)
+            return self.Investment_At_Datetime(dtaware_day_end_from_date(fecha, self.mem.localzone_name)).op_actual.balance(quote, type)
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
@@ -4326,7 +4329,7 @@ class Investment:
         else:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=self.copy()
-            invfake.op=self.op.ObjectManager_copy_until_datetime(day_end_from_date(date, self.mem.localzone), self.mem, invfake)
+            invfake.op=self.op.ObjectManager_copy_until_datetime(dtaware_day_end_from_date(date, self.mem.localzone_name), self.mem, invfake)
             (invfake.op_actual,  invfake.op_historica)=invfake.op.get_current_and_historical_operations()
             return invfake.op_actual.invertido(type)
                 
@@ -4922,7 +4925,7 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable):
         self.order_by_datetime()
         for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             tabla.setItem(rownumber, 1, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
@@ -5152,7 +5155,7 @@ class OrderManager(ObjectManager_With_Id_Selectable):
             else:
                 table.setItem(i, 7, qempty())
             if p.is_executed():
-                table.setItem(i, 8, qdatetime(p.executed, self.mem.localzone))
+                table.setItem(i, 8, qdatetime(p.executed, self.mem.localzone_name))
             else:
                 table.setItem(i, 8, qempty())
                 
@@ -5674,7 +5677,7 @@ class DPSManager(ObjectManager_With_IdDate):
         """
         r=price
         for dps in self.arr:
-            if datetime>day_end_from_date(dps.date, self.mem.localzone):
+            if datetime>dtaware_day_end_from_date(dps.date, self.mem.localzone_name):
                 r=r+dps.gross
         return r
         
@@ -6180,7 +6183,7 @@ class QuoteManager(ObjectManager):
         tabla.clearContents() 
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             tabla.setItem(rownumber, 1, qleft(a.product.name))
             tabla.item(rownumber, 1).setIcon(a.product.stockmarket.country.qicon())
             tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
@@ -6205,10 +6208,10 @@ class QuoteAllIntradayManager(ObjectManager):
         dt_end=None
         for row in cur:
             if dt_end==None:#Loads the first datetime
-                dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
+                dt_end=dt_day_end(row['datetime'])
             if row['datetime']>dt_end:#Cambio de QuoteIntradayManager
                 self.arr.append(QuoteIntradayManager(self.mem).init__create(self.product, dt_end.date(), intradayarr))
-                dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
+                dt_end=dt_day_end(row['datetime'])
                 #crea otro intradayarr
                 del intradayarr
                 intradayarr=[]
@@ -6314,7 +6317,7 @@ class QuoteIntradayManager(QuoteManager):
         self.product=product
         self.date=date
         cur=self.mem.con.cursor()
-        iniciodia=day_start_from_date(date, self.product.stockmarket.zone)
+        iniciodia=dtaware_day_start_from_date(date, self.product.stockmarket.zone.name)
         siguientedia=iniciodia+timedelta(days=1)
         cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in cur:
@@ -6439,7 +6442,7 @@ class QuoteIntradayManager(QuoteManager):
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
-        QuoteDayBefore=Quote(self.mem).init__from_query(self.product, day_start_from_date(self.date, self.mem.localzone))#day before as selected
+        QuoteDayBefore=Quote(self.mem).init__from_query(self.product, dtaware_day_start_from_date(self.date, self.mem.localzone_name))#day before as selected
 
         ##Construye tabla
         for i , q in enumerate(self.arr):
@@ -6737,9 +6740,9 @@ class Quote:
             a=s.split(" | ")
             self.product=Product(self.mem).init__db(int(a[2]))
             if a[3].find(".")!=-1:#With microseconds
-                self.datetime=string2datetime(a[3], type=5)
+                self.datetime=string2dtaware(a[3], type=5)
             else:#Without microsecond
-                self.datetime=string2datetime(a[3], type=1)
+                self.datetime=string2dtaware(a[3], type=1)
             self.quote=Decimal(a[4])
         except:
             return None
@@ -6792,8 +6795,8 @@ class OHCLDaily(OHCL):
 
     def generate_4_quotes(self):
         quotes=[]
-        datestart=dtaware(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone.name)
-        dateends=dtaware(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone.name)
+        datestart=dtaware(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone_name)
+        dateends=dtaware(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone_name)
         datetimefirst=datestart-timedelta(seconds=1)
         datetimelow=(datestart+(dateends-datestart)*1/3)
         datetimehigh=(datestart+(dateends-datestart)*2/3)
@@ -6816,7 +6819,7 @@ class OHCLDaily(OHCL):
         
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(self.date, self.product.stockmarket.zone)
+        return dtaware_day_end_from_date(self.date, self.product.stockmarket.zone.name)
         
     def print_time(self):
         return "{0}".format(self.date)
@@ -6868,7 +6871,7 @@ class OHCLMonthly(OHCL):
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
-        return day_end_from_date(date(self.year, self.month, 28), self.product.stockmarket.zone)
+        return dtaware_day_end_from_date(date(self.year, self.month, 28), self.product.stockmarket.zone.name)
         
         
     ## Removes all quotes of the selected month and year
@@ -6910,7 +6913,7 @@ class OHCLWeekly(OHCL):
         d = d - timedelta(d.weekday())
         dlt = timedelta(days = (self.week-1)*7)
         lastday= d + dlt + timedelta(days=6)
-        return day_end_from_date(lastday, self.product.stockmarket.zone)
+        return dtaware_day_end_from_date(lastday, self.product.stockmarket.zone.name)
         
     def print_time(self):
         return "{0}-{1}".format(self.year, self.week)
@@ -6943,7 +6946,7 @@ class OHCLYearly(OHCL):
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(date(self.year, 12, 31), self.product.stockmarket.zone)
+        return dtaware_day_end_from_date(date(self.year, 12, 31), self.product.stockmarket.zone.name)
     def print_time(self):
         return "{0}".format(int(self.year))
     
@@ -7523,7 +7526,7 @@ class SplitManager(ObjectManager_With_IdName_Selectable):
 
         table.setRowCount(len(self.arr))
         for i, o in enumerate(self.arr):
-            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone_name))
             table.setItem(i, 1, qright(o.before))
             table.setItem(i, 2, qright(o.after))
             table.setItem(i, 3, qleft(o.comment))

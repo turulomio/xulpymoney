@@ -3,7 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
 from datetime import date
 from xulpymoney.libxulpymoney import Money, Percentage
-from xulpymoney.libxulpymoneyfunctions import qmessagebox, qright
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.qtablewidgetitems import qright
 from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmProductReport import frmProductReport

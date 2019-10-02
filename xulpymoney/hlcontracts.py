@@ -1,11 +1,11 @@
-import logging
-from decimal import Decimal
-from xulpymoney.libxulpymoney import AccountOperation, Comment, Money
-from xulpymoney.libxulpymoneyfunctions import qdatetime, qleft
-from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
-from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eConcept, eComment
 from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import QObject
+from decimal import Decimal
+from logging import warning
+from xulpymoney.libxulpymoney import AccountOperation, Comment, Money
+from xulpymoney.ui.qtablewidgetitems import qdatetime, qleft
+from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eConcept, eComment
 ## Class to manage CDF daily contracts.
 
 class HlContract(QObject):
@@ -123,7 +123,7 @@ class HlContract(QObject):
                 found=i.op.find(id)
                 if found!=None:
                     return found
-        logging.warning ("Investment operation {} hasn't been found in mem".format(id))
+        warning ("Investment operation {} hasn't been found in mem".format(id))
         return None
 
     ## Save this HlContract. If self.id==None inserts else updates.
@@ -267,7 +267,7 @@ class HlContractManagerHomogeneus(HlContractManagerHeterogeneus, QObject):
         table.clearContents()
         table.setRowCount(self.length()+1)
         for i, o in enumerate(self.arr):
-            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone))
+            table.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone_name))
             table.setItem(i, 1, o.mAdjustment(type).qtablewidgetitem())
             table.setItem(i, 2, o.mGuarantee(type).qtablewidgetitem())
             table.setItem(i, 3, o.mInterest(type).qtablewidgetitem())

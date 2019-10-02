@@ -2,7 +2,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import  QWidget, QProgressDialog
 from xulpymoney.ui.Ui_wdgAPR import Ui_wdgAPR
 from xulpymoney.libxulpymoney import Assets, Money, Percentage
-from xulpymoney.libxulpymoneyfunctions import qcenter, none2decimal0,  qright
+from xulpymoney.libxulpymoneyfunctions import none2decimal0
+from xulpymoney.ui.qtablewidgetitems import qcenter, qright
 from xulpymoney.libxulpymoneytypes import eConcept
 
 from decimal import Decimal

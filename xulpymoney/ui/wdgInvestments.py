@@ -1,7 +1,8 @@
 from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate, Assets
-from xulpymoney.libxulpymoneyfunctions import days2string, qmessagebox
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
+from xulpymoney.datetime_functions import days2string
 from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM

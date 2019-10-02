@@ -2,8 +2,8 @@ from csv import reader
 from logging import debug
 from datetime import date
 from xulpymoney.libxulpymoney import QuoteManager, Quote, OHCLDaily
-from xulpymoney.libxulpymoneyfunctions import string2date, string2decimal, string2datetime, string2time
-from xulpymoney.datetime_functions import dtaware
+from xulpymoney.libxulpymoneyfunctions import string2decimal
+from xulpymoney.datetime_functions import dtaware, string2date, string2dtaware, string2time
 from xulpymoney.libxulpymoneytypes import eTickerPosition
 
 class InvestingCom(QuoteManager):
@@ -57,7 +57,7 @@ class InvestingCom(QuoteManager):
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
-                                date_=string2date(row[7], type=4)
+                                date_=string2date(row[7], "DD/MM")
                                 quote.datetime=dtaware(date_,quote.product.stockmarket.closes,self.mem.localzone_name)#Without 4 microseconds becaouse is not a ohcl
                                 quote.quote=string2decimal(row[2])
                                 self.append(quote)
@@ -67,7 +67,7 @@ class InvestingCom(QuoteManager):
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
-                                time_=string2time(row[7], type=2)
+                                time_=string2time(row[7], "HH:MM:SS")
                                 quote.datetime=dtaware(date.today(), time_, self.mem.localzone_name)
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
@@ -118,7 +118,7 @@ class InvestingCom(QuoteManager):
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
-                                quote.datetime=string2datetime(row[16], type=7)
+                                quote.datetime=string2dtaware(row[16], type=7)
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
                             except:

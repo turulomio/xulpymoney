@@ -6,10 +6,11 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 import os
 import logging
+from xulpymoney.datetime_functions import string2dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, string2datetime, is_there_internet
+from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -65,7 +66,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
     def __checks_version_of_products_xlsx(self):
-        dbversion=string2datetime(self.mem.settingsdb.value("Version of products.xlsx", "190001010000"), type=6)
+        dbversion=string2dtaware(self.mem.settingsdb.value("Version of products.xlsx", "190001010000"), type=6)
         dbversion=dbversion.replace(tzinfo=timezone.utc)
         internetversion=self.mem.data.products.dtaware_internet_products_xlsx()
         if internetversion!=None and dbversion<internetversion:

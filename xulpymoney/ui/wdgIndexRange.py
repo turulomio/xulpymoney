@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from xulpymoney.ui.Ui_wdgIndexRange import Ui_wdgIndexRange
 from xulpymoney.libxulpymoney import Assets, Percentage
-from xulpymoney.libxulpymoneyfunctions import qcenter
+from xulpymoney.ui.qtablewidgetitems import qcenter
 from xulpymoney.libxulpymoneytypes import eProductType,  eQColor
 from xulpymoney.ui.frmProductReport import frmProductReport
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM

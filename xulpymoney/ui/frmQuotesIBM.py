@@ -2,8 +2,8 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmQuotesIBM import Ui_frmQuotesIBM
 from xulpymoney.libxulpymoney import Quote
-from xulpymoney.datetime_functions import dtaware
-from xulpymoney.libxulpymoneyfunctions import dtaware_changes_tz, qmessagebox
+from xulpymoney.datetime_functions import dtnaive, dtaware, dtaware_changes_tz
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
@@ -22,7 +22,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
                 self.wdgDT.setLocalzone(self.mem.localzone_name)
                 if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
                     today_closes=dtaware_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone_name)
-                    self.wdgDT.setCombine(self.mem,  today_closes.date(), today_closes.time(),  self.mem.localzone)
+                    self.wdgDT.setCombine(self.mem,  dtnaive(today_closes.date(), today_closes.time()),  self.mem.localzone_name)
                 else:
                     self.wdgDT.set()
         else:#Update

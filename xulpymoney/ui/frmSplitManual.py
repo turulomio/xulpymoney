@@ -30,8 +30,8 @@ class frmSplitManual(QDialog, Ui_frmSplitManual):
         self.wdgDtEnd.show_microseconds(False)
         self.wdgDtStart.grp.setTitle(self.tr("Select the day and time of start"))
         self.wdgDtEnd.grp.setTitle(self.tr("Select the day and time of end"))
-        self.wdgDtStart.set(self.all.first().open().datetime, self.mem.localzone)
-        self.wdgDtEnd.set(datetime.datetime.now(), self.mem.localzone)
+        self.wdgDtStart.set(self.all.first().open().datetime, self.mem.localzone_name)
+        self.wdgDtEnd.set(datetime.datetime.now(), self.mem.localzone_name)
         self.wdgDtStart.changed.connect(self.on_wdgDtStart_changed)
         self.wdgDtEnd.changed.connect(self.on_wdgDtEnd_changed)
         self.split=None

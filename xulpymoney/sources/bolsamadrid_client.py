@@ -11,7 +11,7 @@ else:
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
-from xulpymoney.libxulpymoneyfunctions import string2date, string2datetime
+from xulpymoney.libxulpymoneyfunctions import string2date, string2dtaware
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class OHCL:
@@ -167,7 +167,7 @@ class CurrentPrice:
                 hour="17:38"
             else:
                 hour=a[8]
-            self.dtaware=string2datetime("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
+            self.dtaware=string2dtaware("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
             return self
         return None
 
@@ -192,7 +192,7 @@ class SetCurrentPrice:
         if self.productype==eProductType.PublicBond:
             for line in html.split("\n"):#Extracts datetime
                 if line.find("sh_titulo")!=-1:
-                    dt_aware=string2datetime(line.split(">")[1].split("<")[0], type=3,  zone="Europe/Madrid")
+                    dt_aware=string2dtaware(line.split(">")[1].split("<")[0], type=3,  zone="Europe/Madrid")
                     break
             for line in html.split("\n"):
                 if line.find('000.000')!=-1:

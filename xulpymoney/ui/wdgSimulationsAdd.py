@@ -14,7 +14,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.parent=parent
         self.simulation=None#Simulation to be created
         self.mem.simulationtypes.qcombobox(self.cmbSimulationTypes)
-        self.wdgStarting.set(Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone)
+        self.wdgStarting.set(Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone_name)
         self.wdgEnding.set()
         self.simcon=None#Simulation connection
 

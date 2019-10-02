@@ -6,7 +6,8 @@ from colorama import Fore, Style
 from datetime import datetime, date
 from decimal import Decimal
 from logging import info, basicConfig, DEBUG, INFO, CRITICAL, ERROR, WARNING
-from os import path, makedirs   
+from os import path, makedirs
+from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
@@ -95,6 +96,8 @@ class Mem(QObject):
             print(Style.BRIGHT+Fore.RED+"You pressed 'Ctrl+C', exiting...")
             exit(1)
 
+    def localzone_now(self):
+        return datetime.now(timezone(self.name))
 
 class MemRunClient(Mem):
     def __init__(self):

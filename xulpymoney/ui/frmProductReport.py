@@ -5,10 +5,11 @@ from datetime import datetime, date, timedelta, time
 from logging import info, error
 from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
 from pytz import timezone
-from xulpymoney.datetime_functions import dtaware
+from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, day_end, qcenter, qdatetime, qleft, dtaware2string, qmessagebox, setReadOnly
+from xulpymoney.libxulpymoneyfunctions import c2b, qmessagebox, setReadOnly
+from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
@@ -160,7 +161,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         def row_tblTPV(quote,  row):
             if quote==None:
                 return
-            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.mem.localzone))
+            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.mem.localzone_name))
             self.tblTPC.setItem(row, 1, self.product.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
@@ -214,15 +215,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if len(self.product.result.ohclDaily.arr)!=0:
             now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
-            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-timedelta(days=date.today().weekday()+1), self.product.stockmarket.zone))
+            iniciosemana=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=date.today().weekday()+1)))
             iniciomes=Quote(self.mem).init__from_query(self.product, dtaware(date(now.year, now.month, 1), time(0, 0), self.product.stockmarket.zone.name))
             inicioano=Quote(self.mem).init__from_query(self.product, dtaware(date(now.year, 1, 1), time(0, 0), self.product.stockmarket.zone.name))             
-            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=365), self.product.stockmarket.zone))          
-            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=30), self.product.stockmarket.zone))          
-            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-timedelta(days=7), self.product.stockmarket.zone))             
+            docemeses=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=365)))          
+            unmes=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=30)))          
+            unasemana=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=7)))             
             
             self.tblTPC.applySettings()
-            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone))   
+            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone_name))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
             
             row_tblTPV(penultimate, 2)
@@ -314,7 +315,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.investment,  None)
-        w.wdgDT.setCombine(self.mem, self.selDPS.date, self.product.stockmarket.closes, self.product.stockmarket.zone)
+        w.wdgDT.setCombine(self.mem, dtnaive(self.selDPS.date, self.product.stockmarket.closes),  self.product.stockmarket.zone.name)
         gross=self.selDPS.gross*self.investment.shares(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)

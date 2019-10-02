@@ -8,6 +8,7 @@
 from datetime import timedelta, datetime, date, time
 from pytz import timezone
 from logging import error
+from .decorators import deprecated
 
 ## Types for dt strings. Used in dtaware2string function
 class eDtStrings:
@@ -20,6 +21,17 @@ class eDtStrings:
     ## 201909090909
     String=3
 
+## Returns if a datetime is aware
+def is_aware(dt):
+    if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) is None:
+        return False
+    return True
+
+## Returns if a datetime is naive
+def is_naive(dt):
+    return not is_aware(dt)
+
+
 ## Function to create a datetime aware object
 ## @param date datetime.date object
 ## @param hour hour object
@@ -27,10 +39,17 @@ class eDtStrings:
 ## @return datetime aware
 def dtaware(date, hour, tz_name):
     z=timezone(tz_name)
-    a=datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
+    a=dtnaive(date, hour)
     a=z.localize(a)
     return a
-    
+
+## Function to create a datetime aware object
+## @param date datetime.date object
+## @param hour hour object
+## @return datetime naive
+def dtnaive(date, hour):
+    return datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
+
 ## Function that converts a number of days to a string showing years, months and days
 ## @param days Integer with the number of days
 ## @return String like " 0 years, 1 month and 3 days"
@@ -207,13 +226,18 @@ def string2dtaware(s, type, tz_name="Europe/Madrid"):
         dat=datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
         dat=dat+timedelta(microseconds=micro)
         return dat
+    if type==6:#201907210725 ==> Aware
+        dat=datetime.strptime( s, "%Y%m%d%H%M" )
+        z=timezone(tz_name)
+        return z.localize(dat)
     if type==7:#01:02:03 ==> Aware
         tod=date.today()
         a=s.split(":")
         dat=datetime(tod.year, tod.month, tod.day, int(a[0]), int(a[1]), int(a[2]))
         z=timezone(tz_name)
         return z.localize(dat)
-        
+
+@deprecated
 def string2dtnaive(s, type):
     if type==2:#20/11/2017 23:00 ==> Naive
         dat=datetime.strptime( s, "%d/%m/%Y %H:%M" )
@@ -221,6 +245,25 @@ def string2dtnaive(s, type):
     if type==6:#201907210725 ==> Naive
         dat=datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
+
+def string2dtnaive_new(s, format):
+    allowed=["%Y%m%d%H%M",]
+    if format in allowed:
+        if format=="%Y%m%d%H%M":
+            dat=datetime.strptime( s, format )
+            return dat
+    else:
+        error("I can't convert this format '{}'. I only support this {}".format(format, allowed))
+
+def string2dtaware_new(s, format, tz_name='UTC'):
+    allowed=["%Y%m%d%H%M",]
+    if format in allowed:
+        if format=="%Y%m%d%H%M":
+            return timezone(tz_name).localize(string2dtnaive_new(s,format))
+    else:
+        error("I can't convert this format '{}'. I only support this {}".format(format, allowed))
+
+
 
 ## epoch is the time from 1,1,1970 in UTC
 ## return now(timezone(self.name))

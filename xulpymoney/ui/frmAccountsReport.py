@@ -39,7 +39,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.tblCreditCardOpers.settings(self.mem, "frmAccountsReport")
         self.tblOpertarjetasHistoricas.settings(self.mem, "frmAccountsReport")
     
-        self.wdgDtPago.set(None, self.mem.localzone)
+        self.wdgDtPago.set(None, self.mem.localzone_name)
         
         self.mem.currencies.qcombobox(self.cmbCurrency)
         self.mem.data.banks_active().qcombobox(self.cmbEB)

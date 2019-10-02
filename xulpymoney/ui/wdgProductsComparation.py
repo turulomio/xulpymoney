@@ -4,8 +4,9 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from PyQt5.QtChart import QValueAxis
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoney import ProductComparation
-from xulpymoney.libxulpymoneyfunctions import qmessagebox,  day_end_from_date
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.canvaschart import  VCTemporalSeries
 
 class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
@@ -57,8 +58,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             closes1=self.comparation.product1Closes()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
-                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             
             # BEGIN DISPLAY)
             self.viewCompare.setAxisFormat(self.viewCompare.axisX, self.viewCompare.minx, self.viewCompare.maxx, 1)
@@ -100,8 +101,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             closes1=self.comparation.product1PercentageFromFirstProduct2Price()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
-                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution reducing leverage.
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
@@ -110,8 +111,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             closes1=self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
-                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==4:#Controlling inverse percentage evolution.
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
@@ -120,8 +121,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePrice()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
-                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==5:#Controlling inverse percentage evolution reducing leverage.
             ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
@@ -130,8 +131,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.appendTemporalSeriesData(ls1, day_end_from_date(date, self.mem.localzone) , closes1[i])
-                self.viewCompare.appendTemporalSeriesData(ls2, day_end_from_date(date, self.mem.localzone) , closes2[i])
+                self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
 
 

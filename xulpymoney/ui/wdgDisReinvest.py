@@ -74,7 +74,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.cmdOrder.setEnabled(False)
    
     def on_cmd_released(self):
-        self.investment_simulated=self.investment.Investment_At_Datetime(self.mem.localzone.now())       
+        self.investment_simulated=self.investment.Investment_At_Datetime(self.mem.localzone_name.now())       
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
             qmessagebox(self.tr("Simulation value must be positive"))
