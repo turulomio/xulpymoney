@@ -10,7 +10,8 @@ from xulpymoney.datetime_functions import string2dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
-from xulpymoney.libxulpymoneyfunctions import list2string, qmessagebox, sync_data, is_there_internet
+from xulpymoney.casts import list2string
+from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data, is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess

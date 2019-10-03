@@ -22,7 +22,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
                 self.wdgDT.setLocalzone(self.mem.localzone_name)
                 if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
                     today_closes=dtaware_changes_tz(self.product.stockmarket.today_closes(), self.mem.localzone_name)
-                    self.wdgDT.setCombine(self.mem,  dtnaive(today_closes.date(), today_closes.time()),  self.mem.localzone_name)
+                    self.wdgDT.set(dtnaive(today_closes.date(), today_closes.time()),  self.mem.localzone_name)
                 else:
                     self.wdgDT.set()
         else:#Update

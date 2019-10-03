@@ -4,7 +4,7 @@ from subprocess import  check_output,    DEVNULL
 from concurrent.futures import ProcessPoolExecutor,  as_completed
 from multiprocessing import cpu_count
 
-from xulpymoney.libxulpymoneyfunctions import  b2s
+from xulpymoney.casts import  b2s
 from xulpymoney.libcounter import Counter
 from xulpymoney.mem import MemRunClient
 

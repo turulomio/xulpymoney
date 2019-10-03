@@ -8,7 +8,8 @@ from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
-from xulpymoney.libxulpymoneyfunctions import c2b, qmessagebox, setReadOnly
+from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
+from xulpymoney.casts import  c2b
 from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport

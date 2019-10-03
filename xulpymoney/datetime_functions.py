@@ -43,6 +43,13 @@ def dtaware(date, hour, tz_name):
     a=z.localize(a)
     return a
 
+def dtaware_now(tzname='UTC'):
+    return timezone(tzname).localize(dtnaive_now())
+
+def dtnaive_now():
+    return datetime.now()
+
+
 ## Function to create a datetime aware object
 ## @param date datetime.date object
 ## @param hour hour object

@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
-from xulpymoney.libxulpymoneyfunctions import b2c, c2b
+from xulpymoney.casts import b2c, c2b
 from xulpymoney.libxulpymoneytypes import eProductType
 from decimal import Decimal
 from xulpymoney.ui.Ui_frmSettings import Ui_frmSettings

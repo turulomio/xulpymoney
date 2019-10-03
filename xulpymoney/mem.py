@@ -14,7 +14,7 @@ from xulpymoney.connection_pg import argparse_connection_arguments_group
 from xulpymoney.connection_pg_qt import Connection
 from xulpymoney.datetime_functions import string2date
 from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, StockMarketManager, SettingsDB, LanguageManager, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
-from xulpymoney.libxulpymoneyfunctions import  list2string, str2bool, string2list_of_integers
+from xulpymoney.casts import  list2string, str2bool, string2list_of_integers
 from xulpymoney.package_resources import package_filename
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.translationlanguages import TranslationLanguageManager

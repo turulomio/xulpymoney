@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
 from xulpymoney.libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager,  CreditCardOperation
-from xulpymoney.libxulpymoneyfunctions import b2c,  c2b
+from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd

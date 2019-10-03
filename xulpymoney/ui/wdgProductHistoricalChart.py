@@ -12,7 +12,7 @@ from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_st
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.canvaschart import   VCTemporalSeries
 from xulpymoney.libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
-from xulpymoney.libxulpymoneyfunctions import string2list_of_integers
+from xulpymoney.casts import string2list_of_integers
 from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOHCLDuration,  eOperationType
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 

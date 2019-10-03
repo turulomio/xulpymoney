@@ -112,6 +112,8 @@ class Compile(Command):
         self.download_from_github('turulomio','reusingcode','python/translationlanguages.py', 'xulpymoney')
         self.download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
         self.download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
+        self.download_from_github('turulomio','reusingcode','python/casts.py', 'xulpymoney')
+        
         
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:

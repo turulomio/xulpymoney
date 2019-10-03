@@ -11,7 +11,7 @@ else:
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
-from xulpymoney.libxulpymoneyfunctions import string2date, string2dtaware
+from xulpymoney.datetime_functions import string2date, string2dtaware
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class OHCL:
