@@ -34,7 +34,7 @@ class OHCL:
             line=line[:-5]#Removes end
             line=line.replace(".", "")#Elimina ceros de miles
             l=line.split("</td><td>")#Arr
-            self.date=string2date(l[0], type=2)
+            self.date=string2date(l[0], "DD/MM/YYYY")
             if productype==eProductType.Share:
                 self.close=Decimal(l[1].replace(",","."))
                 self.open=Decimal(l[2].replace(",","."))

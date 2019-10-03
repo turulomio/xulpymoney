@@ -108,7 +108,7 @@ class InvestingCom(QuoteManager):
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
-                                date_=string2date(row[16], type=4)
+                                date_=string2date(row[16], "DD/MM")
                                 quote.datetime=dtaware(date_,quote.product.stockmarket.closes, quote.product.stockmarket.zone.name)#Without 4 microseconds becaouse is not a ohcl
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
@@ -138,7 +138,7 @@ class InvestingCom(QuoteManager):
                         try:
                             ohcl=OHCLDaily(self.mem)
                             ohcl.product=self.product
-                            ohcl.date=string2date(row[0], type=3)
+                            ohcl.date=string2date(row[0], "DD.MM.YYYY")
                             ohcl.close=string2decimal(row[1])
                             ohcl.open=string2decimal(row[2])
                             ohcl.high=string2decimal(row[3])
