@@ -1,6 +1,11 @@
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
+
+
 from datetime import datetime, timezone
 from urllib.request import urlopen
 from json import loads
+from os import system, path, chdir, getcwd
 
 ## Get Github file modification datetime
 ## https://api.github.com/repos/turulomio/xulpymoney/commits?path=products.xlsx
@@ -15,6 +20,18 @@ def get_file_modification_dtaware(user,project,path):
         return dtnaive.replace(tzinfo=timezone.utc)
     except:
         None
+
+
+def download_from_github(user,repository,path_filename, destiny_directory):
+    cwd=getcwd()
+    system("touch '{}/{}'".format(destiny_directory,path.basename(path_filename)))
+    system("rm '{}/{}'".format(destiny_directory, path.basename(path_filename)))
+    chdir(destiny_directory)
+    comand="wget -q https://raw.githubusercontent.com/{}/{}/master/{}  --no-clobber".format(user,repository, path_filename)
+    system(comand)
+    print("Updating {} from https://github.com/turulomio/reusingcode/{}".format(path.basename(path_filename),path_filename))
+    chdir(cwd)
+
 
 if __name__ == '__main__':
     print(get_file_modification_dtaware("turulomio","xulpymoney","products.xlsx"))

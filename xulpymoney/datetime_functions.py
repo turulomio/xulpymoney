@@ -8,7 +8,7 @@
 from datetime import timedelta, datetime, date, time
 from pytz import timezone
 from logging import error
-from .decorators import deprecated
+from .decorators import deprecated #To use main remove dot from decorators
 
 ## Types for dt strings. Used in dtaware2string function
 class eDtStrings:
@@ -212,6 +212,7 @@ def string2date(iso, format="YYYY-MM-DD"):
 ## @param type Integer
 ## @param tz_name Name of the tz_name. By default "Europe Madrid" only in type 3and 4
 ## @return Datetime
+@deprecated
 def string2dtaware(s, type, tz_name="Europe/Madrid"):
     if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
         s=s[:-3]+s[-2:]
@@ -254,23 +255,49 @@ def string2dtnaive(s, type):
         return dat
 
 def string2dtnaive_new(s, format):
-    allowed=["%Y%m%d%H%M",]
+    allowed=["%Y%m%d%H%M","%Y-%m-%d %H:%M:%S","%d/%m/%Y %H:%M","%d %m %H:%M %Y","%Y-%m-%d %H:%M:%S.","%H:%M:%S"]
     if format in allowed:
         if format=="%Y%m%d%H%M":
             dat=datetime.strptime( s, format )
             return dat
+        if format=="%Y-%m-%d %H:%M:%S":#2017-11-20 23:00:00
+            return datetime.strptime( s, format )
+        if format=="%d/%m/%Y %H:%M":#20/11/2017 23:00
+            return datetime.strptime( s, format )
+        if format=="%d %m %H:%M %Y":#27 1 16:54 2017. 1 es el mes convertido con month2int
+            return datetime.strptime( s, format)
+        if format=="%Y-%m-%d %H:%M:%S.":#2017-11-20 23:00:00.000000  ==>  microsecond. Notice the point in format
+            arrPunto=s.split(".")
+            s=arrPunto[0]
+            micro=int(arrPunto[1])
+            dt=datetime.strptime( s, "%Y-%m-%d %H:%M:%S" )
+            dt=dt+timedelta(microseconds=micro)
+            return dt
+        if format=="%H:%M:%S": 
+            tod=date.today()
+            a=s.split(":")
+            return datetime(tod.year, tod.month, tod.day, int(a[0]), int(a[1]), int(a[2]))
     else:
         error("I can't convert this format '{}'. I only support this {}".format(format, allowed))
 
 def string2dtaware_new(s, format, tz_name='UTC'):
-    allowed=["%Y%m%d%H%M",]
+    allowed=["%Y-%m-%d %H:%M:%S%z","%Y-%m-%d %H:%M:%S.%z"]
     if format in allowed:
-        if format=="%Y%m%d%H%M":
-            return timezone(tz_name).localize(string2dtnaive_new(s,format))
+        if format=="%Y-%m-%d %H:%M:%S%z":#2017-11-20 23:00:00+00:00
+            s=s[:-3]+s[-2:]
+            dt=datetime.strptime( s, format )
+            return dtaware_changes_tz(dt, tz_name)
+        if format=="%Y-%m-%d %H:%M:%S.%z":#2017-11-20 23:00:00.000000+00:00  ==>  microsecond. Notice the point in format
+            s=s[:-3]+s[-2:]#quita el :
+            arrPunto=s.split(".")
+            s=arrPunto[0]+s[-5:]
+            micro=int(arrPunto[1][:-5])
+            dt=datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
+            dt=dt+timedelta(microseconds=micro)
+            return dtaware_changes_tz(dt, tz_name)
     else:
-        error("I can't convert this format '{}'. I only support this {}".format(format, allowed))
-
-
+        dt=string2dtnaive_new(s,format)
+        return timezone(tz_name).localize(string2dtnaive_new(s,format))
 
 ## epoch is the time from 1,1,1970 in UTC
 ## return now(timezone(self.name))
@@ -351,4 +378,23 @@ if __name__ == "__main__":
     print("time2string")
     print("  - This is the current hour '{}' with format HH:MM".format(time2string(now.time(), "HH:MM")))
     print("  - This is the current hour '{}' with format HH:MM:SS".format(time2string(now.time(), "HH:MM:SS")))
-    
+
+    print("string2dtnaive and string2dtaware")
+    a="201910022209"
+    format="%Y%m%d%H%M"
+    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    a="2019-10-03 2:22:09"
+    format="%Y-%m-%d %H:%M:%S"
+    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    a="2019-10-03 2:22:09+05:00"
+    format="%Y-%m-%d %H:%M:%S%z"
+    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware_new(a,format),string2dtaware_new(a,format,"Europe/Madrid")))
+    a="2019-10-03 2:22:09.267+05:00"
+    format="%Y-%m-%d %H:%M:%S.%z"
+    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware_new(a,format),string2dtaware_new(a,format,"Europe/Madrid")))
+    a="2019-10-03 2:22:09"
+    format="%Y-%m-%d %H:%M:%S"
+    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    a="2019-10-03 2:22:09.267"
+    format="%Y-%m-%d %H:%M:%S."
+    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))

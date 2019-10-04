@@ -62,9 +62,13 @@ def bool2string(b):
 ## @param dec Should be a Decimal value or None
 ## @return Decimal
 def none2decimal0(dec):
-    if dec==None:
-        return Decimal('0')
-    return dec
+    return none2alt(dec,Decimal('0'))
+
+## If a value is None, returns an alternative
+def none2alt(value, alternative):
+    if value==None:
+        return alternative
+    return value
 
 ## Bytes 2 string
 def b2s(b, code='UTF-8'):
