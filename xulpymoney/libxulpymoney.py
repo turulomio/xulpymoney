@@ -6741,9 +6741,9 @@ class Quote:
             a=s.split(" | ")
             self.product=Product(self.mem).init__db(int(a[2]))
             if a[3].find(".")!=-1:#With microseconds
-                self.datetime=string2dtaware(a[3], type=5)
+                self.datetime=string2dtaware(a[3], "%Y-%m-%d %H:%M:%S.%z")
             else:#Without microsecond
-                self.datetime=string2dtaware(a[3], type=1)
+                self.datetime=string2dtaware(a[3], "%Y-%m-%d %H:%M:%S%z")
             self.quote=Decimal(a[4])
         except:
             return None

@@ -118,7 +118,7 @@ class InvestingCom(QuoteManager):
                             try:
                                 quote=Quote(self.mem)
                                 quote.product=product
-                                quote.datetime=string2dtaware(row[16], type=7)
+                                quote.datetime=string2dtaware(row[16],"%H:%M:%S")
                                 quote.quote=string2decimal(row[3])
                                 self.append(quote)
                             except:

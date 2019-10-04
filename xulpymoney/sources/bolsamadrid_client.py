@@ -167,7 +167,7 @@ class CurrentPrice:
                 hour="17:38"
             else:
                 hour=a[8]
-            self.dtaware=string2dtaware("{} {}".format(a[7], hour), type=3, zone="Europe/Madrid")
+            self.dtaware=string2dtaware("{} {}".format(a[7], hour), "%d/%m/%Y %H:%M",  "Europe/Madrid")
             return self
         return None
 
@@ -192,7 +192,7 @@ class SetCurrentPrice:
         if self.productype==eProductType.PublicBond:
             for line in html.split("\n"):#Extracts datetime
                 if line.find("sh_titulo")!=-1:
-                    dt_aware=string2dtaware(line.split(">")[1].split("<")[0], type=3,  zone="Europe/Madrid")
+                    dt_aware=string2dtaware(line.split(">")[1].split("<")[0], "%d/%m/%Y %H:%M", "Europe/Madrid")
                     break
             for line in html.split("\n"):
                 if line.find('000.000')!=-1:

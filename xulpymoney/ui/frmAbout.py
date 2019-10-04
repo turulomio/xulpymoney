@@ -9,7 +9,7 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
 from xulpymoney.ui.qtablewidgetitems import qcenter, qempty, qright, qleft
-from xulpymoney.datetime_functions import string2dtaware
+from xulpymoney.datetime_functions import string2dtnaive
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
 from xulpymoney.version import __version__,  __versiondate__
@@ -36,7 +36,7 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.textEdit.setHtml(s)
         self.lblVersion.setText("{} ({})".format(__version__, __versiondate__))
-        productsversion=string2dtaware(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), type=6)
+        productsversion=string2dtnaive(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), "%Y%m%d%H%M")
         self.lblProductsVersion.setText(self.tr("Last products synchronization was at {}").format(productsversion))
         self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")

@@ -213,7 +213,7 @@ def string2date(iso, format="YYYY-MM-DD"):
 ## @param tz_name Name of the tz_name. By default "Europe Madrid" only in type 3and 4
 ## @return Datetime
 @deprecated
-def string2dtaware(s, type, tz_name="Europe/Madrid"):
+def string2dtaware_old(s, type, tz_name="Europe/Madrid"):
     if type==1:#2017-11-20 23:00:00+00:00  ==> Aware
         s=s[:-3]+s[-2:]
         dat=datetime.strptime( s, "%Y-%m-%d %H:%M:%S%z" )
@@ -246,7 +246,7 @@ def string2dtaware(s, type, tz_name="Europe/Madrid"):
         return z.localize(dat)
 
 @deprecated
-def string2dtnaive(s, type):
+def string2dtnaive_old(s, type):
     if type==2:#20/11/2017 23:00 ==> Naive
         dat=datetime.strptime( s, "%d/%m/%Y %H:%M" )
         return dat
@@ -254,7 +254,7 @@ def string2dtnaive(s, type):
         dat=datetime.strptime( s, "%Y%m%d%H%M" )
         return dat
 
-def string2dtnaive_new(s, format):
+def string2dtnaive(s, format):
     allowed=["%Y%m%d%H%M","%Y-%m-%d %H:%M:%S","%d/%m/%Y %H:%M","%d %m %H:%M %Y","%Y-%m-%d %H:%M:%S.","%H:%M:%S"]
     if format in allowed:
         if format=="%Y%m%d%H%M":
@@ -280,7 +280,7 @@ def string2dtnaive_new(s, format):
     else:
         error("I can't convert this format '{}'. I only support this {}".format(format, allowed))
 
-def string2dtaware_new(s, format, tz_name='UTC'):
+def string2dtaware(s, format, tz_name='UTC'):
     allowed=["%Y-%m-%d %H:%M:%S%z","%Y-%m-%d %H:%M:%S.%z"]
     if format in allowed:
         if format=="%Y-%m-%d %H:%M:%S%z":#2017-11-20 23:00:00+00:00
@@ -296,8 +296,7 @@ def string2dtaware_new(s, format, tz_name='UTC'):
             dt=dt+timedelta(microseconds=micro)
             return dtaware_changes_tz(dt, tz_name)
     else:
-        dt=string2dtnaive_new(s,format)
-        return timezone(tz_name).localize(string2dtnaive_new(s,format))
+        return timezone(tz_name).localize(string2dtnaive(s,format))
 
 ## epoch is the time from 1,1,1970 in UTC
 ## return now(timezone(self.name))
@@ -382,19 +381,19 @@ if __name__ == "__main__":
     print("string2dtnaive and string2dtaware")
     a="201910022209"
     format="%Y%m%d%H%M"
-    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    print("  - {}: {} and {}".format(a,string2dtnaive(a,format),string2dtaware(a,format)))
     a="2019-10-03 2:22:09"
     format="%Y-%m-%d %H:%M:%S"
-    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    print("  - {}: {} and {}".format(a,string2dtnaive(a,format),string2dtaware(a,format)))
     a="2019-10-03 2:22:09+05:00"
     format="%Y-%m-%d %H:%M:%S%z"
-    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware_new(a,format),string2dtaware_new(a,format,"Europe/Madrid")))
+    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware(a,format),string2dtaware(a,format,"Europe/Madrid")))
     a="2019-10-03 2:22:09.267+05:00"
     format="%Y-%m-%d %H:%M:%S.%z"
-    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware_new(a,format),string2dtaware_new(a,format,"Europe/Madrid")))
+    print("  - {}: UTC: {}. Madrid: {}".format(a,string2dtaware(a,format),string2dtaware(a,format,"Europe/Madrid")))
     a="2019-10-03 2:22:09"
     format="%Y-%m-%d %H:%M:%S"
-    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    print("  - {}: {} and {}".format(a,string2dtnaive(a,format),string2dtaware(a,format)))
     a="2019-10-03 2:22:09.267"
     format="%Y-%m-%d %H:%M:%S."
-    print("  - {}: {} and {}".format(a,string2dtnaive_new(a,format),string2dtaware_new(a,format)))
+    print("  - {}: {} and {}".format(a,string2dtnaive(a,format),string2dtaware(a,format)))
