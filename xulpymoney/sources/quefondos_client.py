@@ -3,8 +3,6 @@ from urllib.request import urlopen
 from decimal import Decimal
 import logging
 import sys
-from PyQt5.QtWidgets import QApplication
-from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
 from xulpymoney.mem import MemSources
 
 class CurrentPriceTicker:
@@ -40,14 +38,13 @@ class CurrentPriceTicker:
         print ("ERROR | ERROR PARSING")
 
 def main():
-    app = QApplication(sys.argv)
+    mem=MemSources()
     parser=argparse.ArgumentParser()
+    mem.addCommonToArgParse(parser)
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
     parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)
-    addCommonToArgParse(parser)
     args=parser.parse_args()        
-    addDebugSystem(args)
-    mem=MemSources()
+    mem.addDebugSystem(args)
     stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
     logging.info(stockmarket)
     s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1], stockmarket)

@@ -1,5 +1,4 @@
 import argparse
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from decimal import Decimal
@@ -8,7 +7,6 @@ import sys
 
 import time
 from xulpymoney.mem import MemSources
-from xulpymoney.libxulpymoneyfunctions import  addDebugSystem,  addCommonToArgParse
 
 
 
@@ -101,15 +99,14 @@ class CurrentPriceTicker:
             sys.exit(0)
     
 def main():
-    app = QApplication(sys.argv)
+    mem=MemSources(coreapplication=False)
     parser=argparse.ArgumentParser()
+    mem.addCommonToArgParse(parser)
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
     parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)
-    addCommonToArgParse(parser)
     args=parser.parse_args()        
-    addDebugSystem(args)
+    mem.addDebugSystem(args)
 
-    mem=MemSources()
     stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
     logging.info(stockmarket)
     if args.TICKER_XULPYMONEY:

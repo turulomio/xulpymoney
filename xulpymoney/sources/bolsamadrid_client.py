@@ -8,11 +8,11 @@ if platform.system()=="Windows":
     sys.path.append("images/")
 else:
     sys.path.append("/usr/lib/xulpymoney")
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl,  QEventLoop
 from PyQt5.QtWebEngineWidgets import QWebEngineView,  QWebEngineProfile
 from xulpymoney.datetime_functions import string2date, string2dtaware
 from xulpymoney.libxulpymoneytypes import eProductType
+from xulpymoney.mem import MemSources
 
 class OHCL:
     def __init__(self,isin, xulpymoney):
@@ -287,9 +287,10 @@ class SetCurrentPrice:
             print (cp)
 
 def main():
-    global app
-    app = QApplication(sys.argv)
+    global mem
+    mem=MemSources(coreapplication=False)
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
+    mem.addCommonToArgParse(parser)
     group1=parser.add_mutually_exclusive_group(required=True)
     group1.add_argument('--ISIN', help='ISIN code',action="append", metavar="X")
     group1.add_argument('--ISIN_XULPYMONEY', help='Pass ISIN and XULPYMONEY code',action="append", nargs=2, metavar="X")
@@ -299,7 +300,9 @@ def main():
     group2.add_argument('--index', help="Index search", action='store_true', default=False) 
     group2.add_argument('--etf', help="ETF search", action='store_true', default=False) 
     group2.add_argument('--publicbond', help="Public bond search", action='store_true', default=False) 
-    args=parser.parse_args()
+
+    args=parser.parse_args() 
+    mem.addDebugSystem(args.debug)
 
     #Array ISIN and XULPYMONEY. If no xulpymoney it creates a list of None values
     ISIN=[]

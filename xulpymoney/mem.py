@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication
 from argparse import ArgumentParser, RawTextHelpFormatter
 from colorama import Fore, Style
-from datetime import datetime, date
+from datetime import datetime
 from decimal import Decimal
 from logging import info, basicConfig, DEBUG, INFO, CRITICAL, ERROR, WARNING
 from os import path, makedirs
@@ -11,8 +11,6 @@ from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.connection_pg_qt import Connection
-from xulpymoney.datetime_functions import string2date
 from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, StockMarketManager, SettingsDB, LanguageManager, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
 from xulpymoney.casts import  list2string, str2bool, string2list_of_integers
 from xulpymoney.package_resources import package_filename
@@ -140,24 +138,13 @@ class MemInit(Mem):
         return args
 
 class MemSources(Mem):
-    def __init__(self):
-        Mem.__init__(self)
-        self.settings=QSettings()
-#        self.data=DBData(self)
-#        
-#        
-
-        
-        
-
-    def __del__(self):
-        self.settings.sync()
-
-    def run(self, args=None):
-        self.args=self.parse_arguments(args)
-        self.addDebugSystem(self.args.debug) #Must be before QCoreApplication
-        
-        self.app=QCoreApplication(argv)
+    def __init__(self, coreapplication=True):
+        Mem.__init__(self)      
+        if coreapplication==True:
+            self.app=QCoreApplication(argv)
+        else:
+            self.app=QApplication(argv)
+            
         self.app.setOrganizationName("xulpymoney")
         self.app.setOrganizationDomain("xulpymoney")
         self.app.setApplicationName("xulpymoney")
@@ -165,57 +152,17 @@ class MemSources(Mem):
         self.settings=QSettings()
         self.localzone=self.settings.value("mem/localzone", "Europe/Madrid")
         self.load_translation()
+        self.settings=QSettings()
         
-        self.con=self.connection()
-        if self.con.is_active()==False:
-            exit(1)
-        
-#        database_update(self.con)
-        
-        self.load_db_data(False)
-        
-        self.user=self.data.users.find_by_id(1)
-                
+
+    def __del__(self):
+        self.settings.sync()
+
     def load_translation(self):
         self.languages=TranslationLanguageManager()
         self.languages.load_all()
         self.languages.selected=self.languages.find_by_id(self.settings.value("frmAccess/language", "en"))
         self.languages.cambiar(self.languages.selected.id, "xulpymoney")
-
-    def connection(self):
-        con=Connection()
-        con.user=self.args.user
-        con.server=self.args.server
-        con.port=self.args.port
-        con.db=self.args.db
-        con.get_password()
-        con.connect()
-        return con
-
-    def parse_arguments(self, args):
-        self.parser=ArgumentParser(prog='xulpymoney_console', description=self.tr('Report of calories'), epilog=self.epilog(), formatter_class=RawTextHelpFormatter)
-        self. addCommonToArgParse(self.parser)
-        argparse_connection_arguments_group(self.parser, default_db="xulpymoney")
-        group = self.parser.add_argument_group("Find parameters")
-        group.add_argument('--date', help=self.tr('Date to show'), action="store", default=str(date.today()))
-        group.add_argument('--users_id', help=self.tr('User id'), action="store", default=1)
-        group.add_argument('--find', help=self.tr('Find data'), action="store", default=None)
-        group.add_argument('--add_company', help=self.tr("Adds a company"), action="store_true", default=False)
-        group.add_argument('--add_product', help=self.tr("Adds a product"), action="store_true", default=False)
-        group.add_argument('--add_meal', help=self.tr("Adds a company"), action="store_true", default=False)
-        group.add_argument('--add_biometrics', help=self.tr("Adds biometrics"), action="store_true", default=False)
-        group.add_argument('--contribution_dump', help=self.tr("Generate a dump to collaborate updating companies and products"), action="store_true", default=False)
-        group.add_argument('--parse_contribution_dump', help=self.tr("Parses a dump and generates sql for the package and other for the collaborator"), action="store", default=None)
-        group.add_argument('--update_after_contribution',  help=self.tr("Converts data from personal database to system after collaboration"),  action="store", default=None)
-        group.add_argument('--elaborated', help=self.tr("Show elaborated product"), action="store", default=None)
-
-        args=self.parser.parse_args(args)
-        #Changing types of args
-        args.date=string2date(args.date)
-        args.users_id=int(args.users_id)
-        if args.elaborated!=None:
-            args.elaborated=int(args.elaborated)
-        return args
 
 class MemXulpymoney(Mem):
     def __init__(self):        

@@ -3,9 +3,7 @@ from urllib.request import urlopen
 from decimal import Decimal
 import sys
 import logging
-from PyQt5.QtWidgets import QApplication
 from xulpymoney.mem import MemSources
-from xulpymoney.libxulpymoneyfunctions import addDebugSystem, addCommonToArgParse
 
 class CurrentPriceTickerFund:
     def __init__(self,ticker, xulpymoney, stockmarket):
@@ -75,18 +73,17 @@ class CurrentPriceTickerETF(CurrentPriceTickerFund):
 #                return
         print ("ERROR | ERROR PARSING")
 def main():
-    app = QApplication(sys.argv)
+    mem=MemSources()
     parser=argparse.ArgumentParser()
+    mem.addCommonToArgParse(parser)
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE")
     parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)   
     group2=parser.add_mutually_exclusive_group(required=True)
     group2.add_argument('--fund', help="Fund search", action='store_true', default=False)
     group2.add_argument('--etf', help="ETF search", action='store_true', default=False) 
-    addCommonToArgParse(parser)
     args=parser.parse_args() 
-    addDebugSystem(args)
+    mem.addDebugSystem(args.debug)
 
-    mem=MemSources()
     stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
     logging.info(stockmarket)
 

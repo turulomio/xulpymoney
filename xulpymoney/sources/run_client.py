@@ -54,8 +54,10 @@ def appendSourceWithConcurrence(arr, name,  num_workers):
 def main():
     mem=MemRunClient()
     parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
+    mem.addCommonToArgParse(parser)
     parser.add_argument('--filename', help='Filename',action="store", metavar="X", default=None)
     args=parser.parse_args()
+    mem.addDebugSystem(args.debug)
 
     arrBolsaMadrid=[]
     arrMorningStar=[]

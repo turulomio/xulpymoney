@@ -3,7 +3,6 @@ from requests import get
 from decimal import Decimal
 import sys
 import logging
-from xulpymoney.libxulpymoneyfunctions import addCommonToArgParse, addDebugSystem
 from xulpymoney.mem import MemSources
         
 class CurrentPriceTicker:
@@ -38,14 +37,15 @@ class CurrentPriceTicker:
                 sys.exit(0)
             return
 def main():
-    parser=argparse.ArgumentParser()
+    mem=MemSources()
+    parser=argparse.ArgumentParser()    
+    mem.addCommonToArgParse(parser)
     parser.add_argument('--TICKER_XULPYMONEY', help='XULPYMONEY code', nargs=2, metavar="VALUE", required=True)
     parser.add_argument('--STOCKMARKET', help='Stock market id', metavar="ID", required=True)
-    addCommonToArgParse(parser)
-    args=parser.parse_args()        
-    addDebugSystem(args)
 
-    mem=MemSources()
+    args=parser.parse_args()        
+    mem.addDebugSystem(args)
+
     stockmarket=mem.stockmarkets.find_by_id(int(args.STOCKMARKET))
     logging.info(stockmarket)
     s=CurrentPriceTicker(args.TICKER_XULPYMONEY[0], args.TICKER_XULPYMONEY[1], stockmarket)

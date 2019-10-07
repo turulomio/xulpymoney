@@ -6796,8 +6796,8 @@ class OHCLDaily(OHCL):
 
     def generate_4_quotes(self):
         quotes=[]
-        datestart=dtaware(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone_name)
-        dateends=dtaware(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone_name)
+        datestart=dtaware(self.date,self.product.stockmarket.starts,self.product.stockmarket.zone.name)
+        dateends=dtaware(self.date,self.product.stockmarket.closes,self.product.stockmarket.zone.name)
         datetimefirst=datestart-timedelta(seconds=1)
         datetimelow=(datestart+(dateends-datestart)*1/3)
         datetimehigh=(datestart+(dateends-datestart)*2/3)
