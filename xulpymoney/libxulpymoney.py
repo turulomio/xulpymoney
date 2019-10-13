@@ -6731,7 +6731,8 @@ class Quote:
         cur.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
         row=cur.fetchone()
         cur.close()
-        return self.init__db_row(row, product)        
+        return self.init__db_row(row, product)
+
     def init__from_client_string(self, s):
         """
             Creates a Quote object from client scrapper line
@@ -6739,7 +6740,7 @@ class Quote:
         """
         try:
             a=s.split(" | ")
-            self.product=Product(self.mem).init__db(int(a[2]))
+            self.product=self.mem.data.products.find_by_id(int(a[2]))
             if a[3].find(".")!=-1:#With microseconds
                 self.datetime=string2dtaware(a[3], "%Y-%m-%d %H:%M:%S.%z")
             else:#Without microsecond
@@ -6784,7 +6785,7 @@ class OHCLDaily(OHCL):
         """
         a=s.split(" | ")
         try:
-            self.product=Product(self.mem).init__db(int(a[2]))
+            self.product=self.mem.data.products.find_by_id(int(a[2]))
             self.date=string2date(a[3])
             self.open=Decimal(a[4])
             self.high=Decimal(a[5])
