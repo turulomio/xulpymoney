@@ -2,30 +2,12 @@
 ## @brief Package with all xulpymoney auxiliar functions.
 from PyQt5.QtCore import Qt,  QCoreApplication
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import  QMessageBox, QApplication
+from PyQt5.QtWidgets import  QMessageBox
 from decimal import Decimal
-from os import path, remove
 import inspect
 import logging
 import sys
 from xulpymoney.decorators import deprecated
-
-## Function to conver hour strings with AM/PM to a iso string time
-## @param s Is a string for time with AMPM and returns a 24 hours time string with zfill. AM/PM can be upper or lower case
-## @param type Integer that can have this options 1: "5:35PM"
-## @return String with hour in iso mode: "17:35"
-def ampm2stringtime(s, type):
-    s=s.upper()
-    if type==1:#5:35PM > 17:35   ó 5:35AM > 05:35
-        s=s.replace("AM", "")
-        if s.find("PM"):
-            s=s.replace("PM", "")
-            points=s.split(":")
-            s=str(int(points[0])+12).zfill(2)+":"+points[1]
-        else:#AM
-            points=s.split(":")
-            s=str(int(points[0])).zfill(2)+":"+points[1]
-        return s
 
 @deprecated
 def qmessagebox(text):
@@ -223,21 +205,6 @@ def set_sign_of_other_number(number, number_to_change):
        return abs(number_to_change)
     return -abs(number_to_change)
 
-## Asks a a question to delete a file
-## Returns True or False if file has been deleted
-def question_delete_file(filename):
-    reply = QMessageBox.question(
-                    None, 
-                    QApplication.translate("Core", 'File deletion question'), 
-                    QApplication.translate("Core", "Do you want to delete this file:\n'{}'?").format(filename), 
-                    QMessageBox.Yes, 
-                    QMessageBox.No
-                )
-    if reply==QMessageBox.Yes:
-        remove(filename)
-        if path.exists(filename)==False:
-            return True
-    return False
         
 def setReadOnly(wdg, boolean):
     if wdg.__class__.__name__=="QCheckBox":
