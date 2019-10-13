@@ -2,13 +2,13 @@
 ## @brief Package with all xulpymoney auxiliar functions.
 from PyQt5.QtCore import Qt,  QCoreApplication
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout
+from PyQt5.QtWidgets import  QMessageBox, QApplication
 from decimal import Decimal
 from os import path, remove
 import inspect
 import logging
-import socket
 import sys
+from xulpymoney.decorators import deprecated
 
 ## Function to conver hour strings with AM/PM to a iso string time
 ## @param s Is a string for time with AMPM and returns a 24 hours time string with zfill. AM/PM can be upper or lower case
@@ -27,7 +27,7 @@ def ampm2stringtime(s, type):
             s=str(int(points[0])).zfill(2)+":"+points[1]
         return s
 
-
+@deprecated
 def qmessagebox(text):
     m=QMessageBox()
     m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -174,26 +174,6 @@ def relation_gains_risk(target, entry,  stoploss):
     except:
         return None
 
-    
-def wdgBool(bool):
-    """Center checkbox
-    Yo must use with table.setCellWidget(0,0,wdgBool)
-    Is disabled to be readonly"""
-    pWidget = QWidget()
-    pCheckBox = QCheckBox();
-    if bool:
-        pCheckBox.setCheckState(Qt.Checked);
-    else:
-        pCheckBox.setCheckState(Qt.Unchecked);
-    pLayout = QHBoxLayout(pWidget);
-    pLayout.addWidget(pCheckBox);
-    pLayout.setAlignment(Qt.AlignCenter);
-    pLayout.setContentsMargins(0,0,0,0);
-    pWidget.setLayout(pLayout);
-    pCheckBox.setEnabled(False)
-    return pWidget
-    
-        
 def web2utf8(cadena):
     cadena=cadena.replace('&#209;','Ñ')
     cadena=cadena.replace('&#241;','ñ')
@@ -235,15 +215,6 @@ def is_positive(number):
         return True
     return False
 
-## Checks if there is internet
-def is_there_internet():
-    try:
-        # connect to the host -- tells us if the host is actually
-        # reachable
-        socket.create_connection(("www.google.com", 80))
-        return True
-    except OSError:
-        return False
 
 
 ## Sets the sign of other number

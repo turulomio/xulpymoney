@@ -18,7 +18,8 @@ from xulpymoney.version import __version__
 from xulpymoney.github import get_file_modification_dtaware
 from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware,dtaware2string
 from xulpymoney.decorators import deprecated
-from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number, is_there_internet
+from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
+from xulpymoney.internet import is_there_internet
 from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode

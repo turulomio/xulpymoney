@@ -11,7 +11,8 @@ from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.casts import list2string
-from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data, is_there_internet
+from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
+from xulpymoney.internet import is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
