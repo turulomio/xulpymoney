@@ -5,7 +5,7 @@
 from datetime import datetime, timezone
 from urllib.request import urlopen
 from json import loads
-from os import system, path, chdir, getcwd
+from os import system, path, chdir, getcwd, remove
 
 ## Get Github file modification datetime
 ## https://api.github.com/repos/turulomio/xulpymoney/commits?path=products.xlsx
@@ -21,17 +21,26 @@ def get_file_modification_dtaware(user,project,path):
     except:
         None
 
+def delete_file_if_exists(filename):
+    if path.exists(filename):
+        remove(filename)
 
+## Downloads file to a destiny directory
 def download_from_github(user,repository,path_filename, destiny_directory):
-    cwd=getcwd()
-    system("touch '{}/{}'".format(destiny_directory,path.basename(path_filename)))
-    system("rm '{}/{}'".format(destiny_directory, path.basename(path_filename)))
-    chdir(destiny_directory)
-    comand="wget -q https://raw.githubusercontent.com/{}/{}/master/{}  --no-clobber".format(user,repository, path_filename)
-    system(comand)
-    print("Updating {} from https://github.com/turulomio/reusingcode/{}".format(path.basename(path_filename),path_filename))
-    chdir(cwd)
+    destiny_path='{}/{}'.format(destiny_directory,path.basename(path_filename))
+    download_from_github_to_path(user, repository, path_filename, destiny_directory)
+
+## Downloads file to a new file path
+def download_from_github_to_path(user,repository,path_filename, destiny_path):
+    response = urlopen("https://raw.githubusercontent.com/{}/{}/master/{}".format(user,repository, path_filename), timeout = 5)
+    content = response.read()
+    f = open(destiny_path, 'wb' )
+    f.write( content )
+    f.close()
+    print("Updating {} from https://github.com/turulomio/reusingcode/{}".format(destiny_path,path_filename))
 
 
 if __name__ == '__main__':
     print(get_file_modification_dtaware("turulomio","xulpymoney","products.xlsx"))
+    download_from_github("turulomio", "xulpymoney", "products.xlsx", "./")
+    download_from_github_to_path("turulomio", "xulpymoney", "products.xlsx", "productas.xlsx")

@@ -180,7 +180,8 @@ FORMS           = \
                   xulpymoney/ui/wdgYear.ui \
                   xulpymoney/ui/wdgYearMonth.ui
 
-TRANSLATIONS    = xulpymoney/i18n/xulpymoney_es.ts \
+TRANSLATIONS    = xulpymoney/i18n/xulpymoney_en.ts \
+                  xulpymoney/i18n/xulpymoney_es.ts \
                   xulpymoney/i18n/xulpymoney_fr.ts \
                   xulpymoney/i18n/xulpymoney_ru.ts \
                   xulpymoney/i18n/xulpymoney_ro.ts

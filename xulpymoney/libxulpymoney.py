@@ -4,7 +4,7 @@
 from PyQt5.QtCore import QObject, Qt,  QCoreApplication
 from PyQt5.QtChart import QChart
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
-from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication,   qApp,  QProgressDialog
+from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication, QProgressDialog
 from datetime import datetime, timedelta, date, time
 from decimal import Decimal, getcontext
 from logging import debug, info, critical, error
@@ -15,7 +15,7 @@ from pytz import timezone
 from sys import exit
 from xulpymoney.casts import  str2bool, string2list_of_integers
 from xulpymoney.version import __version__
-from xulpymoney.github import get_file_modification_dtaware
+from xulpymoney.github import get_file_modification_dtaware, download_from_github_to_path
 from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware,dtaware2string
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
@@ -23,7 +23,6 @@ from xulpymoney.internet import is_there_internet
 from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
-from xulpymoney.package_resources import package_filename
 
 getcontext().prec=20
 
@@ -1016,6 +1015,19 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             return aware.replace(second=0)#Due to in database globals we only save minutes
 
 
+    ## Used to find names using translations
+    def find_by_name_translations(self, manager, name, translationslanguagemanager,  module):
+        for language in translationslanguagemanager.arr:
+            translationslanguagemanager.cambiar(language.id, module)
+            for o in manager.arr:
+                #                print (name, ":",  language.id,  o.name, QApplication.translate("Core", o.name))
+                
+                if QApplication.translate("Core",o.name)==name:
+                    #print ("FOUND",  language.id,  o.name, QApplication.translate("Core",o.name))
+                    return o
+        return None
+
+
     ## Function that downloads products.xlsx from github repository and compares sheet data with database products.arr
     ## If detects modifications or new products updates database.
     def update_from_internet(self):
@@ -1027,13 +1039,15 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 p.name=row[1].value
                 p.high_low=str2bool(row[2].value)
                 p.isin=row[3].value
-                p.stockmarket=self.mem.stockmarkets.find_by_name(row[4].value)
+                #p.stockmarket=self.mem.stockmarkets.find_by_name(row[4].value)
+                p.stockmarket=self.find_by_name_translations(self.mem.stockmarkets, row[4].value, self.mem.frmAccess.languages, "xulpymoney")
                 if p.stockmarket==None:
                     raise
                 p.currency=self.mem.currencies.find_by_id(row[5].value)
                 if p.currency==None:
                     raise
-                p.type=self.mem.types.find_by_name(row[6].value)
+#                p.type=self.mem.types.find_by_name(row[6].value)
+                p.type=self.find_by_name_translations(self.mem.types, row[6].value, self.mem.frmAccess.languages, "xulpymoney")
                 if p.type==None:
                     raise
                 p.agrupations=self.mem.agrupations.clone_from_dbstring(row[7].value)
@@ -1047,7 +1061,8 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 p.mode=self.mem.investmentsmodes.find_by_id(row[13].value)
                 if p.mode==None:
                     raise
-                p.leveraged=self.mem.leverages.find_by_name(row[14].value)
+#                p.leveraged=self.mem.leverages.find_by_name(row[14].value)
+                p.leveraged=self.find_by_name_translations(self.mem.leverages, row[14].value, self.mem.frmAccess.languages, "xulpymoney")
                 if p.leveraged==None:
                     raise
                 p.decimals=row[15].value
@@ -1068,11 +1083,9 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         if is_there_internet()==False:
             return
         #Download file 
-        from urllib.request import urlretrieve
-        urlretrieve ("https://github.com/Turulomio/xulpymoney/blob/master/products.xlsx?raw=true", "product.xlsx")
+        download_from_github_to_path("turulomio", "xulpymoney",  "products.xlsx",  "product.xlsx")
         
-        oldlanguage=self.mem.language.id
-        self.mem.languages.cambiar("es")
+        oldlanguage=self.mem.frmAccess.languages.selected.id
         
         #Load database products
         products=ProductManager(self.mem)
@@ -1134,7 +1147,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             cur.close()
             p.save()
         self.mem.con.commit()
-        self.mem.languages.cambiar(oldlanguage)
+        self.mem.frmAccess.languages.cambiar(oldlanguage, "xulpymoney")
         remove("product.xlsx")
         
         dt_string=dtaware2string(self.dtaware_internet_products_xlsx(), type=eDtStrings.String)
@@ -7188,35 +7201,6 @@ class OHCLMonthlyManager(OHCLManager):
         else:
             return Percentage()
         
-    
-## Manages languages
-class LanguageManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem):
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem
-        
-    def load_all(self):
-        self.append(Language(self.mem, "en","English" ))
-        self.append(Language(self.mem, "es","Español" ))
-        self.append(Language(self.mem, "fr","Français" ))
-        self.append(Language(self.mem, "ro","Rom\xe2n" ))
-        self.append(Language(self.mem, "ru",'\u0420\u0443\u0441\u0441\u043a\u0438\u0439' ))
-
-    def qcombobox(self, combo, selected=None):
-        """Selected is the object"""
-        self.order_by_name()
-        for l in self.arr:
-            combo.addItem(self.mem.countries.find_by_id(l.id).qicon(), l.name, l.id)
-        if selected!=None:
-                combo.setCurrentIndex(combo.findData(selected.id))
-
-    ## @param id String
-    def cambiar(self, id):
-        filename=package_filename("xulpymoney", "i18n/xulpymoney_{}.qm".format(id))
-        debug(filename)
-        self.mem.qtranslator.load(filename)
-        info("Language changed to {}".format(id))
-        qApp.installTranslator(self.mem.qtranslator)
  
 ## Class that stores all kind of quotes asociated to a product
 class QuotesResult:
@@ -7727,12 +7711,6 @@ class ProductTypeManager(ObjectManager_With_IdName_Selectable):
             if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):
                 r.append(t)
         return r
-
-
-class Language:
-    def __init__(self, mem, id, name):
-        self.id=id
-        self.name=name
     
             
 class Maintenance:

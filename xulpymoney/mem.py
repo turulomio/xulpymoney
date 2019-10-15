@@ -11,7 +11,7 @@ from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, StockMarketManager, SettingsDB, LanguageManager, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
+from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, StockMarketManager, SettingsDB, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
 from xulpymoney.casts import  list2string, str2bool, string2list_of_integers
 from xulpymoney.package_resources import package_filename
 from xulpymoney.version import __version__, __versiondate__
@@ -46,8 +46,6 @@ class Mem(QObject):
     def load_data_in_code(self):
         self.countries=CountryManager(self)
         self.countries.load_all()
-        self.languages=LanguageManager(self)
-        self.languages.load_all()
         self.zones=ZoneManager(self)
         self.zones.load_all()        
         self.stockmarkets=StockMarketManager(self)
