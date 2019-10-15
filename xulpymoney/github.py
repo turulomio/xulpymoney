@@ -5,7 +5,7 @@
 from datetime import datetime, timezone
 from urllib.request import urlopen
 from json import loads
-from os import system, path, chdir, getcwd, remove
+from os import system, path, chdir, getcwd
 
 ## Get Github file modification datetime
 ## https://api.github.com/repos/turulomio/xulpymoney/commits?path=products.xlsx
@@ -21,14 +21,10 @@ def get_file_modification_dtaware(user,project,path):
     except:
         None
 
-def delete_file_if_exists(filename):
-    if path.exists(filename):
-        remove(filename)
-
 ## Downloads file to a destiny directory
 def download_from_github(user,repository,path_filename, destiny_directory):
     destiny_path='{}/{}'.format(destiny_directory,path.basename(path_filename))
-    download_from_github_to_path(user, repository, path_filename, destiny_directory)
+    download_from_github_to_path(user, repository, path_filename, destiny_path)
 
 ## Downloads file to a new file path
 def download_from_github_to_path(user,repository,path_filename, destiny_path):
