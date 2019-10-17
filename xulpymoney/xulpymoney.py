@@ -1,6 +1,6 @@
 ## @namespace xulpymoney.xulpymoney
 ## @brief Main Xulpymoney script.
-from PyQt5.QtWidgets import  QDialog
+from PyQt5.QtWidgets import  QDialog, qApp
 from xulpymoney.mem import MemXulpymoney
 from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.frmMain import frmMain
@@ -14,8 +14,11 @@ def main():
     mem.run()
     mem.frmAccess=frmAccess("xulpymoney","frmAccess")
     mem.frmAccess.setResources(":/xulpymoney/books.png", ":/xulpymoney/xulpymoney.png")
-    mem.frmAccess.setLabel(mem.tr("Please login to the Xulpymoney database"))
+    mem.frmAccess.setLabel(qApp.translate("Mem","Please login to the Xulpymoney database"))
     mem.frmAccess.exec_()
+    
+    a="Rollover Paid"
+    print(mem.trMem(a),  a, qApp.translate("Mem", a))
 
     if mem.frmAccess.result()==QDialog.Accepted:
         mem.con=mem.frmAccess.con

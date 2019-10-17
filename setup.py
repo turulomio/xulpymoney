@@ -226,11 +226,12 @@ class Doc(Command):
         
         rows=con.cursor_rows("select * from conceptos where id_conceptos < 100 order by id_conceptos")
         f=open("xulpymoney/hardcoded_strings.py", "w")
-        f.write("from PyQt5.QtCore import QCoreApplication\n")
-        f.write("QCoreApplication.translate('Core','Personal Management')\n")
-        f.write("QCoreApplication.translate('Core','Cash')\n")
+        f.write("from PyQt5.QtCore import QT_TRANSLATE_NOOP\n")
+        f.write("## To translate this strings you must use qApp.translate('Mem',string) o mem.trMem.\n")
+        f.write("QT_TRANSLATE_NOOP('Mem','Personal Management')\n")
+        f.write("QT_TRANSLATE_NOOP('Mem','Cash')\n")
         for row in rows:
-            f.write("QCoreApplication.translate('Core', '{}')\n".format(row["concepto"]))
+            f.write("QT_TRANSLATE_NOOP('Mem', '{}')\n".format(row["concepto"]))
         f.close()
         print("Is connection active?",  con.is_active())
 

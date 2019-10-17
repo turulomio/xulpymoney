@@ -6,9 +6,11 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 import os
 import logging
+from stdnum.isin import is_valid
 from xulpymoney.datetime_functions import string2dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
+from xulpymoney.libdbupdates import Update
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
@@ -32,14 +34,13 @@ from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
 from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
 from xulpymoney.ui.frmTransfer import frmTransfer
 from xulpymoney.ui.frmSettings import frmSettings
+from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
 from xulpymoney.ui.wdgOrders import wdgOrders
 from xulpymoney.ui.wdgOpportunities import wdgOpportunities
 from xulpymoney.ui.wdgProducts import wdgProducts
 from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
 from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
-from stdnum.isin import is_valid
 
-from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
 
 class frmMain(QMainWindow, Ui_frmMain):
     def __init__(self, mem, parent = 0,  flags = False):
@@ -49,6 +50,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
+        
+        
+        ##Update database
+        update=Update(self.mem)
+        if update.need_update()==True:
+            update.run()
+        
+        
         self.sqlvacio="select * from products where id=-999999"
         
         self.w=QWidget()       
@@ -158,7 +167,8 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionMemory_triggered(self):        
-        self.mem.data.load()
+        self.mem.settings.sync()
+        self.mem.load_db_data()
         
         
     @pyqtSlot()  
@@ -371,9 +381,9 @@ class frmMain(QMainWindow, Ui_frmMain):
                 m.exec_()   
                 return
                 
-            pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
+            pd= QProgressDialog(QApplication.translate("Mem","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
             pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
+            pd.setWindowTitle(QApplication.translate("Mem","Processing products..."))
             pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.forceShow()
             
@@ -612,16 +622,16 @@ class frmMain(QMainWindow, Ui_frmMain):
         curms.close()
                
         
-        pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all products"), QApplication.translate("Core","Cancel"), 0,len(products))
+        pd= QProgressDialog(QApplication.translate("Mem","Purging innecesary data from all products"), QApplication.translate("Mem","Cancel"), 0,len(products))
         pd.setModal(True)
-        pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all products"))
+        pd.setWindowTitle(QApplication.translate("Mem","Purging quotes from all products"))
         pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         pd.setMinimumDuration(0)          
         counter=0      
         
         for i, inv in enumerate(products):
             pd.setValue(i)
-            pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}").format(inv.name,  counter))
+            pd.setLabelText(QApplication.translate("Mem","Purging quotes from {0}.\nTotal purged in global process: {1}").format(inv.name,  counter))
             pd.update()
             QApplication.processEvents()
             if pd.wasCanceled():

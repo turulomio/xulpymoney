@@ -55,7 +55,8 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.settings.setValue("access/language", self.mem.frmAccess.languages.selected.id)
         self.mem.frmAccess.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()), "xulpymoney")  
         self.retranslateUi(self)
-        
+        self.mem.settings.sync()
+        self.mem.load_db_data()#To load hardcoded strings in the new language
         self.accept()    
         
     def on_chkGainsYear_stateChanged(self, state):

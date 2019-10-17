@@ -22,7 +22,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201908221326
+        self.lastcodeupdate=201910171028
         self.need_update()
 
     def get_database_version(self):
@@ -55,7 +55,7 @@ class Update:
         True needs to update
         False doesn't need to update"""
         if self.dbversion>self.lastcodeupdate:
-            qmessagebox(QApplication.translate("Core","Xulpymoney app is older than database. Please update it."))
+            qmessagebox(QApplication.translate("Mem","Xulpymoney app is older than database. Please update it."))
             sys.exit(3)
             return
 
@@ -66,7 +66,7 @@ class Update:
             if self.mem.con.is_superuser():
                 self.run()
             else:
-                qmessagebox(QApplication.translate("Core","Xulpymoney database needs to be updated. Please login with a superuser role."))
+                qmessagebox(QApplication.translate("Mem","Xulpymoney database needs to be updated. Please login with a superuser role."))
                 sys.exit(2)
 
     def run(self): 
@@ -368,12 +368,12 @@ class Update:
             #Comprueba si tiene los id_conceptos ocupados de impuestos 6 y 37
             cur.execute("select * from conceptos where id_conceptos=6")
             if cur.rowcount==0:
-                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (6, QApplication.translate("Core","Taxes. Returned"), 2,  False ))
+                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (6, QApplication.translate("Mem","Taxes. Returned"), 2,  False ))
             else:
                 cur.execute("update conceptos set editable=%s where id_conceptos=%s", ( False, 6 ))
             cur.execute("select * from conceptos where id_conceptos=37")
             if cur.rowcount==0:
-                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (37, QApplication.translate("Core","Taxes. Paid"), 1,  False ))
+                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (37, QApplication.translate("Mem","Taxes. Paid"), 1,  False ))
             else:
                 cur.execute("update conceptos set editable=%s where id_conceptos=%s", ( False, 37 ))
             cur.close()
@@ -556,7 +556,7 @@ class Update:
             self.set_database_version(201604170750)        
         if self.dbversion<201604220610:
             cur=self.mem.con.cursor()            
-            cur.execute("insert into conceptos values(67,'{}',2,false)".format(QApplication.translate("Core","Credit card refund")))     
+            cur.execute("insert into conceptos values(67,'{}',2,false)".format(QApplication.translate("Mem","Credit card refund")))     
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201604220610)        
@@ -2434,13 +2434,13 @@ CREATE TABLE high_low_contract (
             self.set_database_version(201812071303)
         if self.dbversion<201812071715:
             cur=self.mem.con.cursor()            
-            cur.execute("insert into conceptos values(68,%s,%s,false)",(QApplication.translate("Core","HL adjustment income"), eOperationType.Income))    
-            cur.execute("insert into conceptos values(69,%s,%s,false)",(QApplication.translate("Core","HL adjustment expense"), eOperationType.Expense))  
-            cur.execute("insert into conceptos values(70,%s,%s,false)",(QApplication.translate("Core","HL Guarantee payment"), eOperationType.Expense))  
-            cur.execute("insert into conceptos values(71,%s,%s,false)",(QApplication.translate("Core","HL Guarantee return"), eOperationType.Income))     
-            cur.execute("insert into conceptos values(72,%s,%s,false)",(QApplication.translate("Core","HL Operation commission"), eOperationType.Expense))     
-            cur.execute("insert into conceptos values(73,%s,%s,false)",(QApplication.translate("Core","HL Paid interest"), eOperationType.Expense))     
-            cur.execute("insert into conceptos values(74,%s,%s,false)",(QApplication.translate("Core","HL Received interest"), eOperationType.Income))     
+            cur.execute("insert into conceptos values(68,%s,%s,false)",(QApplication.translate("Mem","HL adjustment income"), eOperationType.Income))    
+            cur.execute("insert into conceptos values(69,%s,%s,false)",(QApplication.translate("Mem","HL adjustment expense"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(70,%s,%s,false)",(QApplication.translate("Mem","HL Guarantee payment"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(71,%s,%s,false)",(QApplication.translate("Mem","HL Guarantee return"), eOperationType.Income))     
+            cur.execute("insert into conceptos values(72,%s,%s,false)",(QApplication.translate("Mem","HL Operation commission"), eOperationType.Expense))     
+            cur.execute("insert into conceptos values(73,%s,%s,false)",(QApplication.translate("Mem","HL Paid interest"), eOperationType.Expense))     
+            cur.execute("insert into conceptos values(74,%s,%s,false)",(QApplication.translate("Mem","HL Received interest"), eOperationType.Income))     
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201812071715)     
@@ -2516,8 +2516,8 @@ $$;""")
             self.set_database_version(201902140545)
         if self.dbversion<201905162140:
             cur=self.mem.con.cursor()
-            cur.execute("insert into conceptos values(75,%s,%s,false)",(QApplication.translate("Core","Rollover Paid"), eOperationType.Expense))  
-            cur.execute("insert into conceptos values(76,%s,%s,false)",(QApplication.translate("Core","Rollover Received"), eOperationType.Income))     
+            cur.execute("insert into conceptos values(75,%s,%s,false)",(QApplication.translate("Mem","Rollover Paid"), eOperationType.Expense))  
+            cur.execute("insert into conceptos values(76,%s,%s,false)",(QApplication.translate("Mem","Rollover Received"), eOperationType.Income))     
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201905162140)
@@ -2534,6 +2534,56 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201908221326)
+        if self.dbversion<201910170934:
+            cur=self.mem.con.cursor()
+            cur.execute("update public.entidadesbancarias set entidadbancaria=%s where id_entidadesbancarias=%s", ("Personal Management", 3))
+            cur.execute("update public.cuentas set cuenta=%s where id_cuentas=%s",("Cash", 4))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Initiating bank account", 1))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Paysheet", 2))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Supermarket", 3))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Transfer. Origin", 4))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Transfer. Destination", 5))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Taxes. Returned", 6))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Gas", 7))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Restaurant", 8))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Purchase investment product", 29))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Sale investment product", 35))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Taxes. Paid", 37))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Bank commissions", 38))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Dividends", 39))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Credit card billing", 40))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Added shares", 43))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Attendance bonus", 50))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Custody commission", 59))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Dividends. Sale of rights", 62))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Bonds. Running coupon payment", 63))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Bonds. Running coupon collection", 65))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Bonds. Coupon collection", 66))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Credit card refund", 67))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL adjustment income", 68))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL adjustment expense", 69))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL Guarantee payment", 70))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL Guarantee return", 71))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL Operation commission", 72))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL Paid interest", 73))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("HL Received interest", 74))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Rollover Paid", 75))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Rollover Received", 76))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201910170934)
+        if self.dbversion<201910171028:
+            cur=self.mem.con.cursor()
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Supermarket", 2))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Restaurant", 3))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Leisure", 8))
+            cur.execute("update public.conceptos set concepto=%s where id_conceptos=%s",("Paysheet", 10))
+            cur.execute("update public.conceptos set editable=False where id_conceptos in (1,2,3,4,5,6,7,8,29,35,37,38,40,43,50,59,62,63,65,66)")
+            
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201910171028)
+
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  

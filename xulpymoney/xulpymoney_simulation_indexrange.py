@@ -67,7 +67,7 @@ if __name__ == '__main__':
     a=locale.system().name()
     if len(a)!=2:
         a=a[:-len(a)+2]
-    s= QApplication.translate("Core",  "Local language detected:{0}").format(a)
+    s= QApplication.translate("Mem",  "Local language detected:{0}").format(a)
     print (s)
     translator.load("/usr/lib/xulpymoney/xulpymoney_" + a + ".qm")
     app.installTranslator(translator);

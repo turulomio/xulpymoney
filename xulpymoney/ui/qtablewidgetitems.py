@@ -14,10 +14,10 @@ def qbool(bool):
     a.setFlags( Qt.ItemIsSelectable |  Qt.ItemIsEnabled )#Set no editable
     if bool:
         a.setCheckState(Qt.Checked);
-        a.setText(QApplication.translate("Core","True"))
+        a.setText(QApplication.translate("Mem","True"))
     else:
         a.setCheckState(Qt.Unchecked);
-        a.setText(QApplication.translate("Core","False"))
+        a.setText(QApplication.translate("Mem","False"))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
 

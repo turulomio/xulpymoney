@@ -265,7 +265,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.pd= QProgressDialog("Loading data", None, 0,13    )
         self.pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         self.pd.setModal(True)
-        self.pd.setWindowTitle(QApplication.translate("Core","Generating total report..."))
+        self.pd.setWindowTitle(QApplication.translate("Mem","Generating total report..."))
         self.pd.forceShow()
         self.progress_bar_update()
 

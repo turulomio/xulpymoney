@@ -19,6 +19,7 @@ from xulpymoney.translationlanguages import TranslationLanguageManager
 
 
 
+
 class Mem(QObject):
     def __init__(self):
         QObject.__init__(self)
@@ -28,9 +29,12 @@ class Mem(QObject):
         self.load_data_in_code()
         signal(SIGINT, self.signal_handler)
 
+    ## If you want to translate hardcoded string you can use mem.tr due to strings are into Mem Class
+    def trMem(self, s):
+        return QCoreApplication.translate("Mem", s)
+
     def epilog(self):
         return self.tr("If you like this app, please give me a star in GitHub (https://github.com/turulomio/xulpymoney).")+"\n" + self.tr("Developed by Mariano Mu\xf1oz 2015-{} \xa9".format(__versiondate__.year))
-        
 
     def dirs_create(self):
         """
@@ -209,6 +213,7 @@ class MemXulpymoney(Mem):
         icon = QIcon()
         icon.addPixmap(QPixmap(":/xulpymoney/admin.png"), QIcon.Normal, QIcon.Off)
         return icon
+
     def load_db_data(self, progress=True, load_data=True):
         """Esto debe ejecutarse una vez establecida la conexión"""
         inicio=datetime.now()
@@ -261,7 +266,7 @@ class MemXulpymoney(Mem):
         self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
         
         info("Loading db data took {}".format(datetime.now()-inicio))
-        
+
     def save_MemSettingsDB(self):
         self.settingsdb.setValue("mem/localcurrency", self.localcurrency.id)
         self.settingsdb.setValue("mem/localzone", self.localzone.name)
@@ -273,71 +278,3 @@ class MemXulpymoney(Mem):
         self.settingsdb.setValue("mem/benchmarkid", self.data.benchmark.id)
         self.settingsdb.setValue("mem/fillfromyear", self.fillfromyear)
         info ("Saved Database settings")
-        
-
-
-#class MemSources:
-#    def __init__(self):
-#        self.data=DBData(self)
-#        
-#        self.countries=CountryManager(self)
-#        self.countries.load_all()
-#        
-#        self.zones=ZoneManager(self)
-#        self.zones.load_all()
-#        #self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
-#        
-#        self.stockmarkets=StockMarketManager(self)
-#        self.stockmarkets.load_all()
-#        
-#        
-#        
-#class MemXulpymoney:
-#    def __init__(self):                
-
-#
-#    def init__script(self, title, tickers=False, sql=False):
-#        """
-#            Script arguments and autoconnect in mem.con, load_db_data
-#            
-#            type==1 #tickers
-#        """
-#        app = QCoreApplication(argv)
-#        app.setOrganizationName("Mariano Muñoz ©")
-#        app.setOrganizationDomain("turulomio.users.sourceforge.net")
-#        app.setApplicationName("Xulpymoney")
-#
-#        self.setQTranslator(QTranslator(app))
-#        self.languages.cambiar(self.language.id)
-#
-#        parser=ArgumentParser(title)
-#        parser.add_argument('--user', help='Postgresql user', default='postgres')
-#        parser.add_argument('--port', help='Postgresql server port', default=5432)
-#        parser.add_argument('--host', help='Postgresql server address', default='127.0.0.1')
-#        parser.add_argument('--db', help='Postgresql database', default='xulpymoney')
-#        if tickers:
-#            parser.add_argument('--tickers', help='Generate tickers', default=False, action='store_true')
-#        if sql:
-#            parser.add_argument('--sql', help='Generate update sql', default=False, action='store_true')
-#
-#        args=parser.parse_args()
-#        password=getpass.getpass()
-#        self.con=ConnectionQt().init__create(args.user,  password,  args.host, args.port, args.db)
-#        self.con.connect()
-#        if not self.con.is_active():
-#            critical(QCoreApplication.translate("Core", "Error connecting to database"))
-#            exit(255)        
-#        self.load_db_data(progress=False, load_data=False)
-#        return args
-#
-#
-#    def __del__(self):
-#        if self.con:#Cierre por reject en frmAccess
-#            self.con.disconnect()
-#            
-#    def setQTranslator(self, qtranslator):
-#        self.qtranslator=qtranslator
-#
-#        
-#
-

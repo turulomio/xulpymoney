@@ -126,10 +126,10 @@ class eOHCLDuration:
 
     @classmethod
     def qcombobox(self, combo, selected_eOHCLDuration):
-        combo.addItem(QApplication.translate("Core", "Day"), 1)
-        combo.addItem(QApplication.translate("Core", "Week"), 2)
-        combo.addItem(QApplication.translate("Core", "Month"), 3)
-        combo.addItem(QApplication.translate("Core", "Year"), 4)
+        combo.addItem(QApplication.translate("Mem", "Day"), 1)
+        combo.addItem(QApplication.translate("Mem", "Week"), 2)
+        combo.addItem(QApplication.translate("Mem", "Month"), 3)
+        combo.addItem(QApplication.translate("Mem", "Year"), 4)
         combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))
 
 class eLeverageType:
@@ -168,8 +168,8 @@ class eInvestmentTypePosition:
 
     @classmethod
     def qcombobox(self, combo, selected_eInvestmentTypePosition=None):
-        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Long), QApplication.translate("Core", "Long"), eInvestmentTypePosition.Long)
-        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Short), QApplication.translate("Core", "Short"), eInvestmentTypePosition.Short)
+        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Long), QApplication.translate("Mem", "Long"), eInvestmentTypePosition.Long)
+        combo.addItem(eInvestmentTypePosition.qicon(eInvestmentTypePosition.Short), QApplication.translate("Mem", "Short"), eInvestmentTypePosition.Short)
         combo.setCurrentIndex(combo.findData(selected_eInvestmentTypePosition))
 
     ## Return True if it's short. Due to postgres database has this definition

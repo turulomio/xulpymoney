@@ -66,18 +66,18 @@ def days2string(days):
     months=(days-years*365)//30
     days=int(days -years*365 -months*30)
     if years==1:
-        stryears=QApplication.translate("Core", "year")
+        stryears=QApplication.translate("Mem", "year")
     else:
-        stryears=QApplication.translate("Core", "years")
+        stryears=QApplication.translate("Mem", "years")
     if months==1:
-        strmonths=QApplication.translate("Core", "month")
+        strmonths=QApplication.translate("Mem", "month")
     else:
-        strmonths=QApplication.translate("Core", "months")
+        strmonths=QApplication.translate("Mem", "months")
     if days==1:
-        strdays=QApplication.translate("Core", "day")
+        strdays=QApplication.translate("Mem", "day")
     else:
-        strdays=QApplication.translate("Core", "days")
-    return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
+        strdays=QApplication.translate("Mem", "days")
+    return QApplication.translate("Mem", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
 
 ## Returns a date with the last date of the month
 ## @param year Year to search last day

@@ -134,7 +134,7 @@ def sync_data(con_source, con_target, progress=None):
     con_target.commit()
     
     if progress!=None:
-        s=QCoreApplication.translate("Core", """From {} desynchronized products added:
+        s=QCoreApplication.translate("Mem", """From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
     - {} dividend per share estimations
