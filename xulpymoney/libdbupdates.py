@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType, eOperationType
 import sys
+from xulpymoney.database_update import database_update
 
 class Update:
     """DB update system
@@ -21,14 +22,13 @@ class Update:
     """
     def __init__(self, mem):
         self.mem=mem
-        self.dbversion=self.get_database_version()
-        self.lastcodeupdate=201910171028
+        self.lastcodeupdate=201910180000
         self.need_update()
 
     def get_database_version(self):
         """REturns None or an Int"""
         cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=1;")
+        cur.execute("select value from globals where id=1;")
         if cur.rowcount==0:
             cur.close()
             return None
@@ -42,9 +42,9 @@ class Update:
         print("**** Updating database from {} to {}".format(self.dbversion, valor))
         cur=self.mem.con.cursor()
         if self.dbversion==None:
-            cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
+            cur.execute("insert into globals (id,global,value) values (%s,%s,%s);", (1,"Version", valor ))
         else:
-            cur.execute("update globals set global=%s, value=%s where id_globals=1;", ("Version", valor ))
+            cur.execute("update globals set global=%s, value=%s where id=1;", ("Version", valor ))
         cur.close()        
         self.dbversion=valor
         self.mem.con.commit()
@@ -54,6 +54,19 @@ class Update:
         None, returns a problem
         True needs to update
         False doesn't need to update"""
+        
+        ## id column exists in global old ssystem else new system (old system last step)
+        
+        cur=self.mem.con.cursor()
+        cur.execute("SELECT column_name FROM information_schema.columns WHERE table_name='globals' and column_name='id'")
+        cur.close()
+        if cur.rowcount==1:
+            print ("Database update new system")
+            database_update(self.mem.con, "xulpymoney")
+            return   
+        
+        
+        self.dbversion=self.get_database_version()
         if self.dbversion>self.lastcodeupdate:
             qmessagebox(QApplication.translate("Mem","Xulpymoney app is older than database. Please update it."))
             sys.exit(3)
@@ -63,15 +76,17 @@ class Update:
             return 
 
         if self.dbversion<self.lastcodeupdate:
+            print ("Database update old system")
             if self.mem.con.is_superuser():
                 self.run()
             else:
                 qmessagebox(QApplication.translate("Mem","Xulpymoney database needs to be updated. Please login with a superuser role."))
                 sys.exit(2)
 
-    def run(self): 
-        if self.dbversion==None:
+    def run(self):         
+        if self.dbversion==None:      
             self.set_database_version(200912310000)
+
         if self.dbversion<201001010000:
             self.set_database_version(201001010000)
         if self.dbversion<201412280840:
@@ -381,7 +396,7 @@ class Update:
             self.set_database_version(201510041406)        
         if self.dbversion<201601050843:
             cur=self.mem.con.cursor()
-            cur.execute("delete from globals where id_globals>=7")
+            cur.execute("delete from globals where id>=7")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201601050843)          
@@ -726,7 +741,7 @@ LANGUAGE plpgsql;""")
             
         if self.dbversion<201701140654:
             cur=self.mem.con.cursor()
-            cur.execute("delete from globals where id_globals=6")
+            cur.execute("delete from globals where id=6")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201701140654)      
@@ -2487,7 +2502,7 @@ CREATE TABLE high_low_contract (
             self.set_database_version(201812141325)
         if self.dbversion<201901200612:#Add global to control products.xlsx update. Added short field to opportunities
             cur=self.mem.con.cursor()
-            cur.execute("INSERT INTO globals (id_globals,global, value) values (2, 'Version of products.xlsx', NULL)")
+            cur.execute("INSERT INTO globals (id,global, value) values (2, 'Version of products.xlsx', NULL)")
             cur.execute("ALTER TABLE opportunities ADD COLUMN short BOOLEAN DEFAULT FALSE NOT NULL")
             cur.execute("COMMENT ON COLUMN opportunities.short IS 'If true is a short investment strategy. If false is a long one'")
             cur.close()
@@ -2583,6 +2598,14 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201910171028)
+        if self.dbversion<201910180000:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table public.globals rename column id to id")
+            cur.execute("update globals set global=%s, value=%s where id=1;", ("Version", 201910180000 ))
+            
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201910180000)
 
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS

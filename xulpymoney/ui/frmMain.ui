@@ -223,7 +223,6 @@
      <addaction name="separator"/>
      <addaction name="actionWarrantsObsolete"/>
     </widget>
-    <addaction name="actionProductsUpdate"/>
     <addaction name="actionQuoteImportInvestingComIntraday"/>
     <addaction name="separator"/>
     <addaction name="actionShowBenchmark"/>
@@ -329,7 +328,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionProductsUpdate"/>
    <addaction name="actionSettings"/>
    <addaction name="actionExit"/>
   </widget>
@@ -1114,18 +1112,6 @@
    </property>
    <property name="toolTip">
     <string>Purchase opportunities</string>
-   </property>
-  </action>
-  <action name="actionProductsUpdate">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/cloud_download.png</normaloff>:/xulpymoney/cloud_download.png</iconset>
-   </property>
-   <property name="text">
-    <string>Products &amp;update from Internet</string>
-   </property>
-   <property name="toolTip">
-    <string>Products update from Internet</string>
    </property>
   </action>
   <action name="actionProductsInvalidISIN">

@@ -28,8 +28,8 @@ def sync_data(con_source, con_target, progress=None):
     
     
     #Checks if database has same version
-    cur_source.execute("select value from globals where id_globals=1")
-    cur_target.execute("select value from globals where id_globals=1")
+    cur_source.execute("select value from globals where id=1")
+    cur_target.execute("select value from globals where id=1")
     
     if cur_source.fetchone()[0]!=cur_target.fetchone()[0]:
         logging.critical ("Databases has diferent versions, please update them")

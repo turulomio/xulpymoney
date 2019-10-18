@@ -10,7 +10,6 @@ from stdnum.isin import is_valid
 from xulpymoney.datetime_functions import string2dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
-from xulpymoney.libdbupdates import Update
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
@@ -52,10 +51,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         
         
-        ##Update database
-        update=Update(self.mem)
-        if update.need_update()==True:
-            update.run()
+
         
         
         self.sqlvacio="select * from products where id=-999999"

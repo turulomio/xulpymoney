@@ -22,7 +22,14 @@ def main():
 
     if mem.frmAccess.result()==QDialog.Accepted:
         mem.con=mem.frmAccess.con
-        mem.settings=mem.frmAccess.settings
+        mem.settings=mem.frmAccess.settings      
+      
+        ##Update database
+        from xulpymoney.libdbupdates import Update
+        update=Update(mem)
+        if update.need_update()==True:
+            update.run()
+
         mem.setLocalzone()#Needs settings in mem
 
         mem.frmMain = frmMain(mem)

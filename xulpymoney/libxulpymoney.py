@@ -7747,7 +7747,7 @@ class SettingsDB:
     def in_db(self, name):
         """Returns true if globals is saved in database"""
         cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=%s", (self.id(name), ))
+        cur.execute("select value from globals where id=%s", (self.id(name), ))
         num=cur.rowcount
         cur.close()
         if num==0:
@@ -7758,7 +7758,7 @@ class SettingsDB:
     def value(self, name, default):
         """Search in database if not use default"""            
         cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=%s", (self.id(name), ))
+        cur.execute("select value from globals where id=%s", (self.id(name), ))
         if cur.rowcount==0:
             cur.close()
             return default
@@ -7776,9 +7776,9 @@ class SettingsDB:
         """
         cur=self.mem.con.cursor()
         if self.in_db(name)==False:
-            cur.execute("insert into globals (id_globals, global,value) values(%s,%s,%s)", (self.id(name),  name, value))     
+            cur.execute("insert into globals (id, global,value) values(%s,%s,%s)", (self.id(name),  name, value))     
         else:
-            cur.execute("update globals set global=%s, value=%s where id_globals=%s", (name, value, self.id(name)))
+            cur.execute("update globals set global=%s, value=%s where id=%s", (name, value, self.id(name)))
         cur.close()
         self.mem.con.commit()
         

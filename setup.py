@@ -94,6 +94,7 @@ class Compile(Command):
         download_from_github('turulomio','reusingcode','python/libmanagers.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/connection_pg.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/connection_pg_qt.py', 'xulpymoney')
+        download_from_github('turulomio','reusingcode','python/database_update.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/internet.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/frmAccess.ui', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/frmAccess.py', 'xulpymoney/ui')
