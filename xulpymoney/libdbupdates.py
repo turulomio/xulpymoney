@@ -28,7 +28,7 @@ class Update:
     def get_database_version(self):
         """REturns None or an Int"""
         cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id=1;")
+        cur.execute("select value from globals where id_globals=1;")
         if cur.rowcount==0:
             cur.close()
             return None
@@ -42,9 +42,9 @@ class Update:
         print("**** Updating database from {} to {}".format(self.dbversion, valor))
         cur=self.mem.con.cursor()
         if self.dbversion==None:
-            cur.execute("insert into globals (id,global,value) values (%s,%s,%s);", (1,"Version", valor ))
+            cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
         else:
-            cur.execute("update globals set global=%s, value=%s where id=1;", ("Version", valor ))
+            cur.execute("update globals set global=%s, value=%s where id_globals=1;", ("Version", valor ))
         cur.close()        
         self.dbversion=valor
         self.mem.con.commit()
@@ -396,7 +396,7 @@ class Update:
             self.set_database_version(201510041406)        
         if self.dbversion<201601050843:
             cur=self.mem.con.cursor()
-            cur.execute("delete from globals where id>=7")
+            cur.execute("delete from globals where id_globals>=7")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201601050843)          
@@ -741,7 +741,7 @@ LANGUAGE plpgsql;""")
             
         if self.dbversion<201701140654:
             cur=self.mem.con.cursor()
-            cur.execute("delete from globals where id=6")
+            cur.execute("delete from globals where id_globals=6")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201701140654)      
@@ -2502,7 +2502,7 @@ CREATE TABLE high_low_contract (
             self.set_database_version(201812141325)
         if self.dbversion<201901200612:#Add global to control products.xlsx update. Added short field to opportunities
             cur=self.mem.con.cursor()
-            cur.execute("INSERT INTO globals (id,global, value) values (2, 'Version of products.xlsx', NULL)")
+            cur.execute("INSERT INTO globals (id_globals,global, value) values (2, 'Version of products.xlsx', NULL)")
             cur.execute("ALTER TABLE opportunities ADD COLUMN short BOOLEAN DEFAULT FALSE NOT NULL")
             cur.execute("COMMENT ON COLUMN opportunities.short IS 'If true is a short investment strategy. If false is a long one'")
             cur.close()
@@ -2600,12 +2600,13 @@ $$;""")
             self.set_database_version(201910171028)
         if self.dbversion<201910180000:
             cur=self.mem.con.cursor()
-            cur.execute("alter table public.globals rename column id to id")
+            cur.execute("alter table public.globals rename column id_globals to id")
             cur.execute("update globals set global=%s, value=%s where id=1;", ("Version", 201910180000 ))
             
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201910180000)
+            print ("Database update new system")
+            database_update(self.mem.con, "xulpymoney")
 
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
