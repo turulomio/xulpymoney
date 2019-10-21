@@ -123,6 +123,9 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             return
             
         if self.radAccounts.isChecked():#Producto final es un operaccount
+            if cuenta==None:
+                qmessagebox(self.tr("You need to select an account"))
+                return
             if self.original==None:#Producto nuevo
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
@@ -165,6 +168,9 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 return
 
         elif self.radCreditCards.isChecked():#Producto final es un opercreditcard
+            if tarjeta==None:
+                qmessagebox(self.tr("You need to select a credit card"))
+                return
             if tarjeta.pagodiferido==False:#Pago débito
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()

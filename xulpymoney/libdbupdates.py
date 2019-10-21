@@ -55,12 +55,12 @@ class Update:
         True needs to update
         False doesn't need to update"""
         
-        ## id column exists in global old ssystem else new system (old system last step)
+        ## id_globals column exists in globals table old ssystem. So column id in globals is for new system (See old system last step)
         
         cur=self.mem.con.cursor()
         cur.execute("SELECT column_name FROM information_schema.columns WHERE table_name='globals' and column_name='id'")
         cur.close()
-        if cur.rowcount==1:
+        if cur.rowcount==1: #Exists id column so is new system
             print ("Database update new system")
             database_update(self.mem.con, "xulpymoney")
             return   

@@ -8,20 +8,19 @@ from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication, QProg
 from datetime import datetime, timedelta, date, time
 from decimal import Decimal, getcontext
 from logging import debug, info, critical, error
-from officegenerator import ODT_Standard, ODS_Write, Coord,  OpenPyXL
+from officegenerator import ODT_Standard, ODS_Write, Coord
 from odf.text import P
-from os import makedirs, remove, system
+from os import makedirs,  system
 from pytz import timezone
 from sys import exit
-from xulpymoney.casts import  str2bool, string2list_of_integers
+from xulpymoney.casts import  string2list_of_integers
 from xulpymoney.version import __version__
-from xulpymoney.github import get_file_modification_dtaware, download_from_github_to_path
+from xulpymoney.github import get_file_modification_dtaware
 from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware,dtaware2string
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
-from xulpymoney.internet import is_there_internet
 from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
-from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency, eDtStrings
+from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
 getcontext().prec=20
@@ -1026,134 +1025,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                     #print ("FOUND",  language.id,  o.name, QApplication.translate("Mem",o.name))
                     return o
         return None
-
-
-    ## Function that downloads products.xlsx from github repository and compares sheet data with database products.arr
-    ## If detects modifications or new products updates database.
-    def update_from_internet(self):
-        def product_xlsx(row):
-            try:
-                p=Product(self.mem)
-                tickers=[None]*5
-                p.id=row[0].value
-                p.name=row[1].value
-                p.high_low=str2bool(row[2].value)
-                p.isin=row[3].value
-                #p.stockmarket=self.mem.stockmarkets.find_by_name(row[4].value)
-                p.stockmarket=self.find_by_name_translations(self.mem.stockmarkets, row[4].value, self.mem.frmAccess.languages, "xulpymoney")
-                if p.stockmarket==None:
-                    raise
-                p.currency=self.mem.currencies.find_by_id(row[5].value)
-                if p.currency==None:
-                    raise
-#                p.type=self.mem.types.find_by_name(row[6].value)
-                p.type=self.find_by_name_translations(self.mem.types, row[6].value, self.mem.frmAccess.languages, "xulpymoney")
-                if p.type==None:
-                    raise
-                p.agrupations=self.mem.agrupations.clone_from_dbstring(row[7].value)
-                if p.agrupations==None:
-                    raise
-                p.web=row[8].value
-                p.address=row[9].value
-                p.phone=row[10].value
-                p.mail=row[11].value
-                p.percentage=row[12].value
-                p.mode=self.mem.investmentsmodes.find_by_id(row[13].value)
-                if p.mode==None:
-                    raise
-#                p.leveraged=self.mem.leverages.find_by_name(row[14].value)
-                p.leveraged=self.find_by_name_translations(self.mem.leverages, row[14].value, self.mem.frmAccess.languages, "xulpymoney")
-                if p.leveraged==None:
-                    raise
-                p.decimals=row[15].value
-                p.comment=row[16].value
-                p.obsolete=str2bool(row[17].value)
-                tickers[0]=row[18].value
-                tickers[1]=row[19].value
-                tickers[2]=row[20].value
-                tickers[3]=row[21].value
-                tickers[4]=row[22].value
-                p.tickers=tickers
-                return p
-            except:
-                print("Error creando ProductODS con Id: {}".format(p.id))
-                return None
-        #---------------------------------------------------
-        #Checks if there is Internet
-        if is_there_internet()==False:
-            return
-        #Download file 
-        download_from_github_to_path("turulomio", "xulpymoney",  "products.xlsx",  "product.xlsx")
-        
-        oldlanguage=self.mem.frmAccess.languages.selected.id
-        
-        #Load database products
-        products=ProductManager(self.mem)
-        products.load_from_db("select * from products order by id")
-        
-        #Iterate ods and load in product object
-        xlsx=OpenPyXL("product.xlsx","product.xlsx")  
-        xlsx.setCurrentSheet(0)
-        # for each row
-        changed=[]
-        added=[]
-        for row in xlsx.ws_current.iter_rows():
-            p_xlsx=product_xlsx(row)
-            if p_xlsx==None:
-                continue
-
-            p_db=products.find_by_id(p_xlsx.id)       
-       
-            if p_db==None:
-                added.append(p_xlsx)
-            elif (  
-                        p_db.id!=p_xlsx.id or
-                        p_db.name!=p_xlsx.name or
-                        p_db.high_low!=p_xlsx.high_low or
-                        p_db.isin!=p_xlsx.isin or
-                        p_db.stockmarket.id!=p_xlsx.stockmarket.id or
-                        p_db.currency.id!=p_xlsx.currency.id or
-                        p_db.type.id!=p_xlsx.type.id or
-                        p_db.agrupations.dbstring()!=p_xlsx.agrupations.dbstring() or 
-                        p_db.web!=p_xlsx.web or
-                        p_db.address!=p_xlsx.address or
-                        p_db.phone!=p_xlsx.phone or
-                        p_db.mail!=p_xlsx.mail or
-                        p_db.percentage!=p_xlsx.percentage or
-                        p_db.mode.id!=p_xlsx.mode.id or
-                        p_db.leveraged.id!=p_xlsx.leveraged.id or
-                        p_db.decimals!=p_xlsx.decimals or
-                        p_db.comment!=p_xlsx.comment or 
-                        p_db.obsolete!=p_xlsx.obsolete or
-                        p_db.tickers[0]!=p_xlsx.tickers[0] or
-                        p_db.tickers[1]!=p_xlsx.tickers[1] or
-                        p_db.tickers[2]!=p_xlsx.tickers[2] or
-                        p_db.tickers[3]!=p_xlsx.tickers[3] or
-                        p_db.tickers[4]!=p_xlsx.tickers[4]
-                    ):
-                changed.append(p_xlsx)
-
-        #Sumary
-        debug("{} Products changed".format(len(changed)))
-        for p in changed:
-            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name, p.decimals,   p.obsolete, p.tickers)
-            p.save()
-        debug("{} Products added".format(len(added)))
-        for p in added:
-            print("  +", p,  p.currency.id ,  p.type.name, p.high_low, p.isin, p.agrupations.dbstring(), p.percentage, p.mode.name, p.leveraged.name,  p.decimals, p.obsolete, p.tickers)
-            ##Como tiene p.id del xlsx,save haría un update, hago un insert mínimo y luego vuelvo a grabar para que haga update
-            cur=self.mem.con.cursor()
-            cur.execute("insert into products (id,stockmarkets_id) values (%s,%s)",  (p.id, 1))
-            cur.close()
-            p.save()
-        self.mem.con.commit()
-        self.mem.frmAccess.languages.cambiar(oldlanguage, "xulpymoney")
-        remove("product.xlsx")
-        
-        dt_string=dtaware2string(self.dtaware_internet_products_xlsx(), type=eDtStrings.String)
-        info("Product list version set to {}".format(dt_string))
-        self.mem.settingsdb.setValue("Version of products.xlsx", dt_string)
-        self.mem.data.load()
 
     def list_ISIN_XULPYMONEY(self):
         """Returns a list with all products with 3 appends --ISIN_XULPYMONEY ISIN, ID"""
@@ -7784,7 +7655,9 @@ class SettingsDB:
         
     def id(self,  name):
         """Converts section and name to id of table globals"""
-        if name=="Version of products.xlsx":
+        if name=="Version":
+            return 1
+        elif name=="Version of products.xlsx":
             return 2
         elif name=="wdgIndexRange/spin":
             return 7

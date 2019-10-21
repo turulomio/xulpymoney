@@ -2,8 +2,7 @@
 import logging
 from PyQt5.QtCore import QObject
 from xulpymoney.admin_pg import AdminPG
-from xulpymoney.package_resources import  package_filename
-from xulpymoney.libxulpymoneytypes import eOperationType
+from xulpymoney.database_update import database_update
 
 ## Creates a new xulpymoney database and loads its schema
 
@@ -38,9 +37,8 @@ class XulpymoneyDatabase(AdminPG, QObject):
             
         self.newdbcon=self.connect_to_database(self.newdb)
         
-        if self.__load_schema()==False:
-            self.log_error(self.tr("Error processing SQL init scripts"))
-            return False
+        
+        database_update(self.newdbcon, "xulpymoney")
 
         self.newdbcon.commit()
         return True 

@@ -432,7 +432,7 @@ COMMENT ON TABLE public.estimations_eps IS 'Earnings per share';
 --
 
 CREATE TABLE public.globals (
-    id_globals integer NOT NULL,
+    id integer NOT NULL,
     global text,
     value text
 );
@@ -1077,7 +1077,7 @@ ALTER TABLE ONLY public.orders
 --
 
 ALTER TABLE ONLY public.globals
-    ADD CONSTRAINT pk_globals PRIMARY KEY (id_globals);
+    ADD CONSTRAINT pk_globals PRIMARY KEY (id);
 
 
 --
@@ -8174,7 +8174,7 @@ INSERT INTO public.products VALUES ('ZOOPLUS AG', 'DE0005111702', 'EUR', 1, '|DE
 INSERT INTO public.products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 1, 3, 'EURONEXT#FR0010298901||fr||False', false, '{NULL,NULL,NULL,NULL,NULL}', false, 2);
 INSERT INTO public.products VALUES ('ZUOAN FASHION LTD.', NULL, 'USD', 1, '', 78062, NULL, NULL, NULL, NULL, 100, 'c', 1, 2, 'NYSE#ZA||us||False', false, '{NULL,NULL,NULL,NULL,NULL}', false, 2);
 INSERT INTO public.globals VALUES (1, 'Version', '0');
-#DELETE FROM public.products WHERE id<=0;
+-- DELETE FROM public.products WHERE id<=0;
 ALTER SEQUENCE public.seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE public.seq_entidadesbancarias START WITH 100 RESTART;
 ALTER SEQUENCE public.seq_cuentas START WITH 100 RESTART;
@@ -8184,3 +8184,39 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_admin;
 SELECT public.create_role_if_not_exists('xulpymoney_user');
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_user;
+
+insert into public.entidadesbancarias values(3,'Personal Management', true);
+insert into public.cuentas values(4,'Cash',3,true,NULL,'EUR');
+insert into public.conceptos values(1,'Initiating bank account',2,false);
+insert into public.conceptos values(2,'Supermarket',1,false);
+insert into public.conceptos values(3,'Restaurant',1,false);
+insert into public.conceptos values(4,'Transfer. Origin',3,false);
+insert into public.conceptos values(5,'Transfer. Destination',3,false);
+insert into public.conceptos values(6,'Taxes. Returned',2,false);
+insert into public.conceptos values(7,'Gas',1,false);
+insert into public.conceptos values(8,'Leisure',1,false);
+insert into public.conceptos values(10,'Paysheet',2,false);
+insert into public.conceptos values(29,'Purchase investment product',4,false);
+insert into public.conceptos values(35,'Sale investment product',5,false);
+insert into public.conceptos values(37,'Taxes. Paid',1,false);
+insert into public.conceptos values(38,'Bank commissions',1,false);
+insert into public.conceptos values(39,'Dividends',2,false);
+insert into public.conceptos values(40,'Credit card billing',7,false);
+insert into public.conceptos values(43,'Added shares',6,false);
+insert into public.conceptos values(50,'Attendance bonus',2,false);
+insert into public.conceptos values(59,'Custody commission',1,false);
+insert into public.conceptos values(62,'Dividends. Sale of rights',2,false);
+insert into public.conceptos values(63,'Bonds. Running coupon payment',1,false);
+insert into public.conceptos values(65,'Bonds. Running coupon collection',2,false);
+insert into public.conceptos values(66,'Bonds. Coupon collection',2,false);
+insert into public.conceptos values(67,'Credit card refund',2,false);
+insert into public.conceptos values(68,'HL adjustment income',2,false);
+insert into public.conceptos values(69,'HL adjustment expense',1,false);
+insert into public.conceptos values(70,'HL Guarantee payment',1,false);
+insert into public.conceptos values(71,'HL Guarantee return',2,false);
+insert into public.conceptos values(72,'HL Operation commission',1,false);
+insert into public.conceptos values(73,'HL Paid interest',1,false);
+insert into public.conceptos values(74,'HL Received interest',2,false);
+insert into public.conceptos values(75,'Rollover Paid',1,false);
+insert into public.conceptos values(76,'Rollover Received',2,false);
+

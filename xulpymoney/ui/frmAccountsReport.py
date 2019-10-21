@@ -51,6 +51,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tab.setTabEnabled(2, False)
             self.chkActiva.setChecked(Qt.Checked)
             self.chkActiva.setEnabled(False)
+            self.tblOperaciones.setEnabled(False)
             self.cmdDatos.setText(self.tr("Add a new account"))
         else:               
             self.tab.setCurrentIndex(0)

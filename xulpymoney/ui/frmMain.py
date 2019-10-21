@@ -5,15 +5,12 @@ from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 import os
-import logging
 from stdnum.isin import is_valid
-from xulpymoney.datetime_functions import string2dtaware
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
-from xulpymoney.internet import is_there_internet
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
@@ -68,20 +65,6 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             self.actionDocumentsPurge.setEnabled(False)
         
-        self.__checks_version_of_products_xlsx()
-
-    ## Checks if products.xlsx version in Internet is older than db products.xlsx version in database
-    def __checks_version_of_products_xlsx(self):
-        dbversion=string2dtaware(self.mem.settingsdb.value("Version of products.xlsx", "190001010000"), "%Y%m%d%H%M", "UTC")
-        internetversion=self.mem.data.products.dtaware_internet_products_xlsx()
-        if internetversion!=None and dbversion<internetversion:
-            logging.info(self.tr("Products list outdated, please upgrade it"))
-            self.actionProductsUpdate.setText(self.tr("Update products from Internet (NEEDED)"))
-            self.actionProductsUpdate.setIcon(QIcon(":/xulpymoney/cloud_download_needed.png"))
-        if is_there_internet()==False:
-            self.actionProductsUpdate.setEnabled(False)
-
-
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)
@@ -878,15 +861,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
         self.w.show()
-        
-    @pyqtSlot()  
-    def on_actionProductsUpdate_triggered(self):
-        p=ProductManager(self.mem)
-        p.update_from_internet()
-        self.actionProductsUpdate.setText(self.tr("Update products from Internet"))
-        self.actionProductsUpdate.setIcon(QIcon(":/xulpymoney/cloud_download.png"))
 
-        
     @pyqtSlot()  
     def on_actionProductsWithoutISIN_triggered(self):
         self.w.close()

@@ -36,8 +36,8 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.textEdit.setHtml(s)
         self.lblVersion.setText("{} ({})".format(__version__, __versiondate__))
-        productsversion=string2dtnaive(self.mem.settingsdb.value("Version of products.xlsx", 190001010000), "%Y%m%d%H%M")
-        self.lblProductsVersion.setText(self.tr("Last products synchronization was at {}").format(productsversion))
+        productsversion=string2dtnaive(self.mem.settingsdb.value("Version", "197001010000"), "%Y%m%d%H%M")
+        self.lblProductsVersion.setText(self.tr("Database version: {}").format(productsversion))
         self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 
