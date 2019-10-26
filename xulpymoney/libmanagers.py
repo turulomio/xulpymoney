@@ -341,6 +341,30 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
 
+    ## Creates a libreoffice sheet from the ObjectManager
+    ##
+    ## This function needs the officegenerator package
+    ## @param sheetname String with the name of the libreoffice sheet
+    ## @param Officegenerator ODS_Write object
+    ## @param titles List of strings with the titles of the columns
+    ## @param order_by_name Boolean. True: orders by name. False: orders by id
+    ## @returns Officegenerator OdfSheet
+    def ods_sheet(self, ods, sheetname, titles=["Id", "Name"],  order_by_name=True):
+        from officegenerator import Coord
+        if order_by_name==True:
+            self.order_by_name()
+        else:
+            self.order_by_id()
+        s=ods.createSheet(sheetname)
+        s.setColumnsWidth([80, 240])
+        s.add("A1", [titles], "OrangeCenter")
+        for number, o in enumerate(self.arr):
+            s.add(Coord("A2").addRow(number), o.id, "WhiteRight")        
+            s.add(Coord("B2").addRow(number), o.name, "WhiteLeft")
+        s.setSplitPosition("A1")
+        s.setCursorPosition(Coord("B2").addRow(self.length()))
+        return s
+
 ## Objects has a field called id, whose string is the key of the item of dict
 ## It Can be a DictObjectManager without id
 ## It doesn't need to cfreate DictListObjectManager_With_IdName, because all funcions are used with ObjectManager_With_IdName

@@ -99,6 +99,7 @@ class Compile(Command):
         download_from_github('turulomio','reusingcode','python/frmAccess.ui', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/frmAccess.py', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/myqwidgets.py', 'xulpymoney/ui')
+        download_from_github('turulomio','reusingcode','python/myqcharts.py', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/wdgDatetime.ui', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/wdgDatetime.py', 'xulpymoney/ui')
         download_from_github('turulomio','reusingcode','python/wdgYearMonth.ui', 'xulpymoney/ui')
@@ -109,6 +110,8 @@ class Compile(Command):
         download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/casts.py', 'xulpymoney')
+        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
+        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
         
         
         futures=[]
