@@ -10,7 +10,7 @@ from xulpymoney.ui.qtablewidgetitems import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
-from xulpymoney.ui.canvaschart import VCTemporalSeries
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
 import datetime
 import logging

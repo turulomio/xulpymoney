@@ -125,7 +125,7 @@ class Compile(Command):
         for filename in os.listdir("xulpymoney/ui/"):
              if filename.startswith("Ui_"):
                  os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from canvaschart/from xulpymoney.ui.canvaschart/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqcharts/from xulpymoney.ui.myqcharts/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))

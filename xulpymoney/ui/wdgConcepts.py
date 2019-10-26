@@ -6,7 +6,7 @@ from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
 from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
-from xulpymoney.ui.canvaschart import VCPie
+from xulpymoney.ui.myqcharts import VCPie
 
 class wdgConcepts(QWidget, Ui_wdgConcepts):
     def __init__(self, mem,  parent=None):

@@ -4,7 +4,7 @@ import datetime
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtChart import QChart
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
-from xulpymoney.ui.canvaschart import VCPie
+from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.libxulpymoneytypes import eLeverageType
 
 class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):

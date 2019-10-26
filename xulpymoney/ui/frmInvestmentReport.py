@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLa
 from datetime import date, timedelta
 from logging import debug
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
-from xulpymoney.ui.canvaschart import VCTemporalSeries
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmSellingPoint import frmSellingPoint

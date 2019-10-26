@@ -7,7 +7,7 @@ from PyQt5.QtChart import QValueAxis
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoney import ProductComparation
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.ui.canvaschart import  VCTemporalSeries
+from xulpymoney.ui.myqcharts import  VCTemporalSeries
 
 class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
     def __init__(self, mem,  product1=None,  product2=None, parent = None, name = None):
