@@ -1,10 +1,15 @@
+## @brief myCharts class
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
+
+from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries
 from PyQt5.QtCore import  Qt,  pyqtSlot,  QObject, QPoint
 from PyQt5.QtGui import QPainter, QFont,  QIcon
 from PyQt5.QtWidgets import QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout
 from .. objects.percentage import Percentage
 from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2string, eDtStrings
 from datetime import timedelta, datetime
-from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries
+from decimal import Decimal
 
 class VCCommons(QChartView):
     def __init__(self):
@@ -169,13 +174,15 @@ class VCTemporalSeries(VCCommons):
             x is a datetime zone aware
         """
         x=dtaware2epochms(x)
+        x=float(x)
+        y=float(y)
         ls.append(x, y)
         
         if self.maxy==None:#Gives first maxy and miny
-            self.maxy=y
-            self.miny=y
-            self.maxx=x
-            self.minx=x
+            self.maxy=y*1.01
+            self.miny=y*0.99
+            self.maxx=x*1.01
+            self.minx=x*0.99
             
         if y>self.maxy:
             self.maxy=y
@@ -191,11 +198,11 @@ class VCTemporalSeries(VCCommons):
         ##Sets the place of the popup in the windows to avoid getout of the screen
         ##frmshow can be a frmShowCasilla or a frmShowFicha
         def placePopUp():
-            resultado=QPoint(event.x()+1, event.y())
-            if event.x()>self.width()-self.popup.width()-1:
-                resultado.setX(event.x()-self.popup.width()-1)
-            if event.y()>self.height()-self.popup.height():
-                resultado.setY(event.y()-self.popup.height())
+            resultado=QPoint(event.x()+15, event.y()+15)
+            if event.x()>self.width()-self.popup.width()-15:
+                resultado.setX(event.x()-self.popup.width()-15)
+            if event.y()>self.height()-self.popup.height()-15:
+                resultado.setY(event.y()-self.popup.height()-15)
             return resultado
         # ---------------------------------------
         QChartView.mouseMoveEvent(self, event)
@@ -364,4 +371,12 @@ class MyPopup(QDialog):
         self.labelXY.setText("X: {}, Y: {}".format(epochms2dtaware(self.xVal).date(), round(self.yVal, 2)))
         for i, serie in enumerate(self.vc.series):
             self.lblTitles[i].setText(serie.name())
-            self.lblValues[i].setText(self.tr("{} (Last: {})").format(round(self.vc.series_value(serie, self.xVal), 2), round(serie.pointsVector()[len(serie.pointsVector())-1].y(), 2)))
+            try:
+                value=round(self.vc.series_value(serie, self.xVal),2)
+            except:
+                value="---"
+            try:
+                last=round(serie.pointsVector()[len(serie.pointsVector())-1].y(),2)
+            except:
+                last="---"
+            self.lblValues[i].setText(self.tr("{} (Last: {})").format(value,last))

@@ -98,12 +98,11 @@ def qdatetime(dt, tz_name):
 
 
 def qnumber(n, digits=2):
-    n=round(n, 2)
-    a=qright(n)
     if n==None:
-        a.qempty()
-        a.setForeground(QColor(0, 0, 255))
-    elif n<0:
+        return qempty()
+    n=round(n, digits)
+    a=qright(n)
+    if n<0:
         a.setForeground(QColor(255, 0, 0))
     return a
 
