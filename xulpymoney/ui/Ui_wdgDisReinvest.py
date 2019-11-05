@@ -246,11 +246,26 @@ class Ui_wdgDisReinvest(object):
         self.tblCurrentOps.verticalHeader().setVisible(False)
         self.horizontalLayout_26.addWidget(self.tblCurrentOps)
         self.tabOps.addTab(self.Situac_3, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.tab)
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.tblHistoricalOps = myQTableWidget(self.tab)
+        self.tblHistoricalOps.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.tblHistoricalOps.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tblHistoricalOps.setAlternatingRowColors(True)
+        self.tblHistoricalOps.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        self.tblHistoricalOps.setObjectName("tblHistoricalOps")
+        self.tblHistoricalOps.setColumnCount(0)
+        self.tblHistoricalOps.setRowCount(0)
+        self.tblHistoricalOps.verticalHeader().setVisible(False)
+        self.horizontalLayout_9.addWidget(self.tblHistoricalOps)
+        self.tabOps.addTab(self.tab, "")
         self.verticalLayout_3.addWidget(self.tabOps)
         self.horizontalLayout_21.addLayout(self.verticalLayout_3)
 
         self.retranslateUi(wdgDisReinvest)
-        self.tabOps.setCurrentIndex(1)
+        self.tabOps.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(wdgDisReinvest)
 
     def retranslateUi(self, wdgDisReinvest):
@@ -304,6 +319,7 @@ class Ui_wdgDisReinvest(object):
         item = self.tblCurrentOps.horizontalHeaderItem(8)
         item.setText(_translate("wdgDisReinvest", "Benchmark"))
         self.tabOps.setTabText(self.tabOps.indexOf(self.Situac_3), _translate("wdgDisReinvest", "Investment current state"))
+        self.tabOps.setTabText(self.tabOps.indexOf(self.tab), _translate("wdgDisReinvest", "Investment historical operations"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

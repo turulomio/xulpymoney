@@ -28,7 +28,8 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
 
         self.tblOps.settings(self.mem, "wdgDisReinvest")
         self.tblCurrentOps.settings(self.mem, "wdgDisReinvest")
-        
+        self.tblHistoricalOps.settings(self.mem, "wdgDisReinvest")
+
         if self.investment.op_actual.length()==0:
             qmessagebox(self.tr("There aren't shares for this investment"))
             return
@@ -74,20 +75,20 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.cmdOrder.setEnabled(False)
    
     def on_cmd_released(self):
-        self.investment_simulated=self.investment.Investment_At_Datetime(self.mem.localzone_name.now())       
+        self.investment_simulated=self.investment.Investment_At_Datetime(self.mem.localzone.now())
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
             qmessagebox(self.tr("Simulation value must be positive"))
             return
-            
+
         valor_accion=self.txtValorAccion.decimal()
         impuestos=0
         comision=self.txtComision.decimal()
-        
+
         if valor_accion==0:
             qmessagebox(self.tr("Share price can't be 0"))
             return
-        
+
         acciones=self.shares()
         importe=valor_accion*acciones
         self.txtAcciones.setText(acciones)
@@ -200,45 +201,59 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if index==0:#Before current price
             self.investment.op.myqtablewidget(self.tblOps, quote_current)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quote_current)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==1:# Before simulation simulation price
             self.investment.op.myqtablewidget(self.tblOps, quote_simulation)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quote_simulation)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==2:# Before current price to gain 0
             self.investment.op.myqtablewidget(self.tblOps, quotebefore_0)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_0)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==3:# Before current price to gain 2.5%
             self.investment.op.myqtablewidget(self.tblOps, quotebefore_2_5)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_2_5)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==4:# Before current price to gain 5%
             self.investment.op.myqtablewidget(self.tblOps, quotebefore_5)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_5)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==5:# Before current price to gain 7.5%
             self.investment.op.myqtablewidget(self.tblOps, quotebefore_7_5)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_7_5)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==6:# Before current price to gain 10%
             self.investment.op.myqtablewidget(self.tblOps, quotebefore_10)
             self.investment.op_actual.myqtablewidget(self.tblCurrentOps, quotebefore_10)
+            self.investment.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==8:# After current price
             self.investment_simulated.op.myqtablewidget(self.tblOps, quote_current)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_current)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==9:# After simulation price
             self.investment_simulated.op.myqtablewidget(self.tblOps, quote_simulation)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quote_simulation)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==10:# After current price to gain 0
             self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_0)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_0)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==11:# After current price to gain 2.5%
             self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_2_5)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_2_5)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==12:# After current price to gain 5%
             self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_5)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_5)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==13:# After current price to gain 7.5%
             self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_7_5)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_7_5)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
         elif index==14:# After current price to gain 10%
             self.investment_simulated.op.myqtablewidget(self.tblOps, quoteafter_10)
             self.investment_simulated.op_actual.myqtablewidget(self.tblCurrentOps, quoteafter_10)
+            self.investment_simulated.op_historica.myqtablewidget(self.tblHistoricalOps)
 
     @pyqtSlot(int) 
     def on_cmbPrices_currentIndexChanged(self, index):
