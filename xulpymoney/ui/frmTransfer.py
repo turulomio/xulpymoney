@@ -5,7 +5,7 @@ from xulpymoney.libxulpymoney import  Account
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class frmTransfer(QDialog, Ui_frmTransfer):
-    def __init__(self, mem, origen=None, destino=None,   parent=None):
+    def __init__(self, mem, origen=None, destino=None, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
@@ -16,6 +16,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         self.mem.data.accounts_active().qcombobox(self.cmbOrigen,  origen)
         self.mem.data.accounts_active().qcombobox(self.cmbDestino,  destino)
         self.wdgDT.show_microseconds(False)
+        self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.set()
 
 

@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>963</width>
-                <height>942</height>
+                <width>973</width>
+                <height>895</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -438,7 +438,7 @@
                       <item>
                        <widget class="QLabel" name="label_7">
                         <property name="text">
-                         <string>Númber of decimals in quotes prices</string>
+                         <string>Number of decimals in quotes</string>
                         </property>
                        </widget>
                       </item>
