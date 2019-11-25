@@ -3,6 +3,7 @@ import logging
 from PyQt5.QtCore import QObject
 from xulpymoney.admin_pg import AdminPG
 from xulpymoney.database_update import database_update
+from xulpymoney.version import __versiondatetime__
 
 ## Creates a new xulpymoney database and loads its schema
 
@@ -38,7 +39,7 @@ class XulpymoneyDatabase(AdminPG, QObject):
         self.newdbcon=self.connect_to_database(self.newdb)
         
         
-        database_update(self.newdbcon, "xulpymoney")
+        database_update(self.newdbcon, "xulpymoney", __versiondatetime__, "Console")
 
         self.newdbcon.commit()
         return True 

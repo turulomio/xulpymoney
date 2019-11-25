@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eTickerPosition, eLeverageType, eProductType, eOperationType
 import sys
+from xulpymoney.version import __versiondatetime__
 from xulpymoney.database_update import database_update
 
 class Update:
@@ -62,7 +63,7 @@ class Update:
         cur.close()
         if cur.rowcount==1: #Exists id column so is new system
             print ("Database update new system")
-            database_update(self.mem.con, "xulpymoney")
+            database_update(self.mem.con, "xulpymoney", __versiondatetime__, "Console")
             return   
         
         
@@ -2606,7 +2607,7 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             print ("Database update new system")
-            database_update(self.mem.con, "xulpymoney")
+            database_update(self.mem.con, "xulpymoney", __versiondatetime__, "Console")
 
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS

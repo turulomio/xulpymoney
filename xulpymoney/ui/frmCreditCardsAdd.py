@@ -39,10 +39,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             self.creditcard.numero=self.txtNumber.text()
             self.creditcard.save()
             self.mem.con.commit()        
-            
-            if self.tipo==1:#insertar
-                self.mem.data.creditcards.append(self.creditcard)
-        
+            self.account.needStatus(1, downgrade_to=0)
             self.done(0)
         else:
             qmessagebox(self.tr("You have written and invalid number"))

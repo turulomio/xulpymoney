@@ -1365,6 +1365,25 @@ class AccountManager(ObjectManager_With_IdName_Selectable):
         for ac in self.arr:
             res=res+ac.balance(date,  type=3)
         return res
+        
+    ## Used to find a credit card in accounts
+    def find_creditcard_by_id(self, id):
+        for o in self.arr:
+            o.needStatus(1)#Loads all account credit cards
+            for cc in o.creditcards.arr:
+                if cc.id==id:
+                    return cc
+        return None
+        
+    ## Returns a CreditCardManager with all active credit cards 
+    def CreditCardManager_active(self):
+        r=CreditCardManager(self.mem)
+        for o in self.arr:
+            o.needStatus(1)#Loads all account credit cards
+            for cc in o.creditcards.arr:
+                if cc.active==True:
+                    r.append(cc)
+        return r
 
 
 class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
@@ -1390,7 +1409,7 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Mem","Paid with {0}. {1}").format(self.mem.data.creditcards.find_by_id(row['id_tarjetas']).name, row['comentario'] )
+                comentario=QApplication.translate("Mem","Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
             co=AccountOperation(self.mem, row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), fakeid)
             self.append(co)
             fakeid=fakeid+1
@@ -3105,7 +3124,7 @@ class Comment(QObject):
 
             elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
                 if not self.validateLength(2, code, args): return string
-                creditcard=self.mem.data.creditcards.find_by_id(args[0])
+                creditcard=self.mem.data.accounts.find_creditcard_by_id(args[0])
                 number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
                 return QApplication.translate("Mem","Billing {} movements of {}").format(number, creditcard.name)
 
@@ -3333,8 +3352,6 @@ class DBData:
         self.accounts=AccountManager(self.mem, self.banks)
         self.accounts.load_from_db("select * from cuentas")
 
-        self.creditcards=CreditCardManager(self.mem, self.accounts)
-        self.creditcards.load_from_db("select * from tarjetas")
 
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
@@ -3374,20 +3391,7 @@ class DBData:
             if b.active==False:
                 r.append(b)
         return r        
-        
-    def creditcards_active(self):        
-        r=CreditCardManager(self.mem, self.accounts)
-        for b in self.creditcards.arr:
-            if b.active==True:
-                r.append(b)
-        return r        
-        
-    def creditcards_inactive(self):        
-        r=CreditCardManager(self.mem, self.accounts)
-        for b in self.creditcards.arr:
-            if b.active==False:
-                r.append(b)
-        return r
+
             
     def investments_active(self):        
         r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
@@ -3423,14 +3427,6 @@ class DBData:
             return self.investments_active()
         else:
             return self.investments_inactive()
-
-    def creditcards_set(self, active):
-        """Function to point to list if is active or not"""
-        if active==True:
-            return self.creditcards_active()
-        else:
-            return self.creditcards_inactive()
-
         
 class Dividend:
     def __init__(self, mem):
@@ -3818,6 +3814,7 @@ class Account:
             self.numero=args[4]
             self.currency=args[5]
             self.id=args[6]
+        self.status=0
 
         
     def __repr__(self):
@@ -3902,6 +3899,23 @@ class Account:
         if oc_comision!=None:
             oc_comision.comentario=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
             oc_comision.save()
+    ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
+    ## @param statusneeded  Integer with the status needed 
+    ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing
+    ##
+    ## 0 Account
+    ## 1 Credit Cards
+    def needStatus(self, statusneeded, downgrade_to=None):
+        if downgrade_to!=None:
+            self.status=downgrade_to
+        
+        if self.status==statusneeded:
+            return
+
+        if self.status==0 and statusneeded==1: #MAIN
+            self.creditcards=CreditCardManager(self.mem)
+            self.creditcards.load_from_db(self.mem.con.mogrify("select * from tarjetas where id_cuentas=%s", (self.id, )))
+            self.status=1
 
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -4260,6 +4274,7 @@ class CreditCard:
                     
     def __repr__(self):
         return "CreditCard: {}".format(self.id)
+
     def delete(self):
         cur=self.mem.con.cursor()
         cur.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
@@ -4290,15 +4305,11 @@ class CreditCard:
         return False
         
     def save(self):
-        cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
-            self.id=cur.fetchone()[0]
+            self.id=self.mem.con.cursor_one_field("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
         else:
-            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
+            self.mem.con.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
 
-        cur.close()
-        
     def saldo_pendiente(self):
         """Es el balance solo de operaciones difreidas sin pagar"""
         cur=self.mem.con.cursor()
@@ -4350,7 +4361,7 @@ class CreditCardOperation:
         cur.execute("select * from opertarjetas where id_opertarjetas=%s", (id, ))
         for row in cur:
             concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
-            self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.creditcards.find_by_id(row['id_tarjetas']))
+            self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']))
         cur.close()
         return self
 
@@ -4716,48 +4727,56 @@ class Assets:
 
 
 class CreditCardManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem, cuentas):
+    def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
-        self.accounts=cuentas
-
             
+    def CreditCardManager_active(self):        
+        r=CreditCardManager(self.mem, self.accounts)
+        for b in self.arr:
+            if b.active==True:
+                r.append(b)
+        return r       
+
+    def CreditCardManager_inactive(self):        
+        r=CreditCardManager(self.mem, self.accounts)
+        for b in self.arr:
+            if b.active==False:
+                r.append(b)
+        return r        
+
     def delete(self, creditcard):
         """Deletes from db and removes object from array.
         creditcard is an object"""
         creditcard.delete()
         self.remove(creditcard)
+        self.cleanSelection()
 
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
-            t=CreditCard(self.mem).init__db_row(row, self.accounts.find_by_id(row['id_cuentas']))
+            t=CreditCard(self.mem).init__db_row(row, self.mem.data.accounts.find_by_id(row['id_cuentas']))
             self.append(t)
         cur.close()
         
-    def myqtablewidget(self, table):
+    ## @param table myQTableWidget
+    ## @param active Boolean to show active or inactive rows
+    def myqtablewidget(self, table, active):
         table.applySettings()
         table.setRowCount(self.length())        
         for i, t in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem(t.name))
-            table.setItem(i, 1, QTableWidgetItem(str(t.numero)))
+            table.setItem(i, 0, qleft(t.name))
+            table.setItem(i, 1, qright(t.numero))
             table.setItem(i, 2, qbool(t.active))
             table.setItem(i, 3, qbool(t.pagodiferido))
             table.setItem(i, 4, t.account.currency.qtablewidgetitem(t.saldomaximo ))
             table.setItem(i, 5, t.account.currency.qtablewidgetitem(t.saldo_pendiente()))
-            if self.selected!=None:
-                if t.id==self.selected.id:
-                    table.selectRow(i)
-            
-    def clone_of_account(self, cuenta):
-        """Devuelve un CreditCardManager con las tarjetas de una determinada cuenta"""
-        s=CreditCardManager(self.mem, self.accounts)
-        for t in self.arr:
-            if t.account==cuenta:
-                s.arr.append(t)
-        return s
+            if t.active!=active: #Hides active or inactive when necesary
+                table.hideRow(i)
+            else:
+                table.showRow(i)
 
     def qcombobox(self, combo,  selected=None):
         """Load set items in a comobo using id and name
@@ -4789,7 +4808,7 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem,  row['id_opercuentas']))
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']), AccountOperation(self.mem,  row['id_opercuentas']))
             self.append(co)
         cur.close()
         
