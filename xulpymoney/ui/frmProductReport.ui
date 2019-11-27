@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>973</width>
-                <height>895</height>
+                <width>963</width>
+                <height>942</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -493,7 +493,7 @@
                          <bool>true</bool>
                         </attribute>
                         <attribute name="verticalHeaderVisible">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </attribute>
                         <row>
                          <property name="text">
@@ -911,7 +911,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>Gains</string>
+                  <string>Estimated gains</string>
                  </property>
                 </column>
                 <item row="0" column="0">
@@ -953,6 +953,9 @@
                  </property>
                 </item>
                 <item row="0" column="4">
+                 <property name="text">
+                  <string/>
+                 </property>
                  <property name="background">
                   <brush brushstyle="BDiagPattern">
                    <color alpha="255">
