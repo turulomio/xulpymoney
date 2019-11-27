@@ -284,7 +284,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.viewIntraday=VCTemporalSeries()
             self.layIntraday.addWidget(self.viewIntraday)
             self.viewIntraday.chart().setTitle(self.tr("Intraday graph"))
-            ls=self.viewIntraday.appendTemporalSeries(self.product.name.upper(), self.product.currency)
+            ls=self.viewIntraday.appendTemporalSeries(self.product.name.upper())
             for quote in self.product.result.intradia.arr:
                 self.viewIntraday.appendTemporalSeriesData(ls, quote.datetime, quote.quote)
             self.viewIntraday.display()

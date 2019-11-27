@@ -604,11 +604,11 @@ class VCInvestment(VCTemporalSeries):
             )
             
             #Draw lines
-            invested=self.appendTemporalSeries(self.tr("Invested amount"), self.investment.product.currency)
-            balance=self.appendTemporalSeries(self.tr("Investment balance"), self.investment.product.currency)
-            gains=self.appendTemporalSeries(self.tr("Net gains"), self.investment.product.currency)
-            dividends=self.appendTemporalSeries(self.tr("Net dividends"), self.investment.product.currency)
-            gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"), self.investment.product.currency)
+            invested=self.appendTemporalSeries(self.tr("Invested amount"))
+            balance=self.appendTemporalSeries(self.tr("Investment balance"))
+            gains=self.appendTemporalSeries(self.tr("Net gains"))
+            dividends=self.appendTemporalSeries(self.tr("Net dividends"))
+            gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"))
             for i, dt in enumerate(datetimes_list):
                 #Shows progress dialog
                 self.setProgressDialogNumber(i+1)

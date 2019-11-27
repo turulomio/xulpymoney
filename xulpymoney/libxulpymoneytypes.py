@@ -117,20 +117,7 @@ class eHistoricalChartAdjusts:
     Splits=1
     ##With splits and dividends
     SplitsAndDividends=2#Dividends with splits.        
-    
-class eOHCLDuration:
-    Day=1
-    Week=2
-    Month=3
-    Year=4
 
-    @classmethod
-    def qcombobox(self, combo, selected_eOHCLDuration):
-        combo.addItem(QApplication.translate("Mem", "Day"), 1)
-        combo.addItem(QApplication.translate("Mem", "Week"), 2)
-        combo.addItem(QApplication.translate("Mem", "Month"), 3)
-        combo.addItem(QApplication.translate("Mem", "Year"), 4)
-        combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))
 
 class eLeverageType:
     Variable=-1

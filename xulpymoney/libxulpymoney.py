@@ -20,8 +20,9 @@ from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_f
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
 from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
-from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
+from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
+from xulpymoney.ui.myqcharts import eOHCLDuration
 
 
 getcontext().prec=20
