@@ -1,23 +1,27 @@
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
 from datetime import date,  timedelta
 from logging import debug
-from xulpymoney.libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libmanagers import ManagerSelectionMode
+from xulpymoney.libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, AccountOperationManager,  CreditCardOperationManager
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
+
+## I have a lot of problems updating tables with selected objects in credict cards
+## To solve I use only Ui events to select options
+## myqtablewidget will not select  inside it's code. If needed I'll put it inside actions
+##
+##  account=None Inserción de cuentas
+##  account=X. Modificación de cuentas cuando click en cmd y resto de trabajos
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, account,  parent=None):
-        """
-            selIdAccount=None Inserción de cuentas
-            selIdAccount=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
         QDialog.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
@@ -27,8 +31,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.wdgDtPago.setTitle(self.tr("Select payment time"))
         
         self.mem=mem
-         
-                
+
         self.account=account#Registro de account
         
         self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
@@ -70,20 +73,22 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
             self.wdgYM.initiate(anoinicio,  date.today().year, date.today().year, date.today().month)
             self.on_AccountOperationChanged(None)
-            self.on_CreditCardChanged(None)
+            self.on_tblCreditCards_itemSelectionChanged()
             self.wdgYM.changed.connect(self.on_wdgYM_changed)
 
     @pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
         w=frmCreditCardsAdd(self.mem,  self.account,  None, self)
         w.exec_()
-        self.on_CreditCardChanged(w.creditcard)
+
+        self.tblCreditCards.clear()
+        self.on_tblCreditCards_itemSelectionChanged()
 
     @pyqtSlot() 
     def on_actionCreditCardEdit_triggered(self):
         w=frmCreditCardsAdd(self.mem, self.account,  self.account.creditcards.selected, self)
         w.exec_()
-        self.on_CreditCardChanged(self.account.creditcards.selected)
+        self.on_tblCreditCards_itemSelectionChanged()# It's already selected
 
     @pyqtSlot() 
     def on_actionCreditCardActivate_triggered(self):
@@ -95,24 +100,22 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.account.creditcards.selected.active=not self.account.creditcards.selected.active
         self.account.creditcards.selected.save()
         self.mem.con.commit()
-        self.on_CreditCardChanged(None)
+        self.on_tblCreditCards_itemSelectionChanged()
                 
     @pyqtSlot() 
     def on_actionCreditCardDelete_triggered(self):
         if self.account.creditcards.selected.is_deletable()==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("I can't delete the credit card, because it has dependent registers"))
-            m.exec_()
+            qmessagebox(self.tr("I can't delete the credit card, because it has dependent registers"), ":/xulpymoney/coins.png")
         else:
-            self.account.creditcards.delete(self.account.creditcards.selected)
-            self.account.needStatus(1, downgrade_to=0)
+            self.account.creditcards.selected.delete()
             self.mem.con.commit()
-            self.on_CreditCardChanged(None)
+            self.tblCreditCards.clear()
+            self.account.needStatus(1, downgrade_to=0)
+            self.on_tblCreditCards_itemSelectionChanged()
 
     def on_chkCreditCards_stateChanged(self, state):
-        self.on_CreditCardChanged(None) 
+        self.tblCreditCards.clear()
+        self.on_tblCreditCards_itemSelectionChanged()
 
     def on_cmdDatos_released(self):
         id_entidadesbancarias=int(self.cmbEB.itemData(self.cmbEB.currentIndex()))
@@ -157,31 +160,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     ## Used to update credit card and operations without selection. If you need selection, use on_CreditCardOperationChanged 
     ##    o=None, significa que hay que actualizar las tarjetas sin seleccionar
     ##    o=CreditCard, significa que hay que actualizar las tarjetas seleccionandola 
- 
-    def on_CreditCardChanged(self, o):
-        print("A")
-        self.tabOpertarjetasDiferidas.setCurrentIndex(0)
-
-        if o==None:#No selected
-            print("b")
-            self.tblCreditCards.clearSelection()
-            self.account.creditcards.cleanSelection()
-            self.tabOpertarjetasDiferidas.setEnabled(False)
-            self.account.creditcards.myqtablewidget(self.tblCreditCards, not self.chkCreditCards.isChecked())
-            print("c")
-            self.tblCreditCardOpers.setRowCount(0)
-        else:
-            print("d")
-            self.account.creditcards.setSelected(o)
-            print("e")
-            self.tabOpertarjetasDiferidas.setEnabled(self.account.creditcards.selected.pagodiferido)
-            print("f")
-            self.account.creditcards.myqtablewidget(self.tblCreditCards, not self.chkCreditCards.isChecked())
-            if o!=None:
-                self.tblCreditCards.selectRow(self.account.creditcards.arr.index(o))
-            print("g")
-            self.on_CreditCardOperationChanged([])
-            print("h")
 
     def on_CreditCardOperationChanged(self,list):
         """ ES DISTINTA A CREDIRCARDCHANGED NO JUNTAR
@@ -261,7 +239,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o.borrar()
             self.creditcardoperations.arr.remove(o)
         self.mem.con.commit()
-        self.on_CreditCardChanged(self.account.creditcards.selected)
+        self.on_CreditCardOperationChanged(None)
         
     @pyqtSlot() 
     def on_actionCreditCardOperRefund_triggered(self):
@@ -384,13 +362,23 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
 
     def on_tblCreditCards_itemSelectionChanged(self):
+        self.account.creditcards.setSelectionMode(ManagerSelectionMode.Object)
         self.account.creditcards.cleanSelection()
         for i in self.tblCreditCards.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.account.creditcards.setSelected(self.account.creditcards.arr[i.row()])
         debug("CreditCard selection: {}".format(self.account.creditcards.selected))
-        self.on_CreditCardChanged(self.account.creditcards.selected)
 
+        if self.account.creditcards.selected==None:#No selected
+            self.tblCreditCards.clearSelection()
+            self.tabOpertarjetasDiferidas.setEnabled(False)
+            self.account.creditcards.myqtablewidget(self.tblCreditCards, not self.chkCreditCards.isChecked())
+            self.tblCreditCardOpers.setRowCount(0)
+        else:
+            self.tabOpertarjetasDiferidas.setEnabled(self.account.creditcards.selected.pagodiferido)
+            self.account.creditcards.myqtablewidget(self.tblCreditCards, not self.chkCreditCards.isChecked())
+            self.on_CreditCardOperationChanged([])
+            
     def on_tblCreditCardOpers_customContextMenuRequested(self,  pos):
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive() or self.account.creditcards.selected.qmessagebox_inactive():
             return
@@ -451,8 +439,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o.save()
         self.mem.con.commit()
         self.on_AccountOperationChanged(None)
-        self.on_CreditCardChanged(self.account.creditcards.selected)
-
+        self.on_tblCreditCards_itemSelectionChanged()
     
     def on_cmdDevolverPago_released(self):
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
@@ -462,7 +449,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem.con.commit()
         cur.close()     
         self.on_AccountOperationChanged(None)
-        self.on_CreditCardChanged(self.account.creditcards.selected)
+        self.on_tblCreditCards_itemSelectionChanged()
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
     @pyqtSlot(int) 

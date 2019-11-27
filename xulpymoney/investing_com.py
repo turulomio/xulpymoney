@@ -45,14 +45,12 @@ class InvestingCom(QuoteManager):
     ## 6 % Var. 
     ## 7 Hora
     def append_from_default(self):
-            with open(self.filename) as csv_file:
-                csv_reader = reader(csv_file, delimiter=',')
-                line_count = 0
-                for row in csv_reader:
-                    if line_count >0:#Ignores headers line
-                        product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-                        if product==None:
-                            continue
+        with open(self.filename) as csv_file:
+            csv_reader = reader(csv_file, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+                if line_count >0:#Ignores headers line
+                    for product in self.mem.data.products.find_all_by_ticker(row[1], eTickerPosition.InvestingCom):
                         if row[7].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)
@@ -73,9 +71,8 @@ class InvestingCom(QuoteManager):
                                 self.append(quote)
                             except:
                                 debug("Error parsing "+ str(row))
-
-                    line_count += 1
-            print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
+                line_count += 1
+        print("Added {} quotes from {} CSV lines".format(self.length(), line_count))
         
     ## 0 Nombre 
     ## 1 Símbolo    
@@ -96,14 +93,12 @@ class InvestingCom(QuoteManager):
     ## 16  Hora Cap. mercado    Ingresos    Vol. promedio (3m)  BPA PER Beta    Dividendo   Rendimiento 5 minutos   15 minutos  30 minutos  1 hora  5 horas Diario  Semanal Mensual Diario  Semanal Mensual Anual   1 año   3 años
     ## It has 39 columns
     def append_from_portfolio(self):
-            with open(self.filename) as csv_file:
-                csv_reader = reader(csv_file, delimiter=',')
-                line_count = 0
-                for row in csv_reader:
-                    if line_count >0:#Ignores headers line
-                        product=self.mem.data.products.find_by_ticker(row[1], eTickerPosition.InvestingCom)
-                        if product==None:
-                            continue
+        with open(self.filename) as csv_file:
+            csv_reader = reader(csv_file, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+                if line_count >0:#Ignores headers line
+                    for product in self.mem.data.products.find_all_by_ticker(row[1], eTickerPosition.InvestingCom):
                         if row[16].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)
@@ -123,8 +118,8 @@ class InvestingCom(QuoteManager):
                                 self.append(quote)
                             except:
                                 debug("Error parsing " + str(row))
-                    line_count += 1
-            print("Added {} quotes from {} CSV lines".format(self.length(), line_count))      
+                line_count += 1
+        print("Added {} quotes from {} CSV lines".format(self.length(), line_count))      
 
     ## Imports data from a CSV file with this struct. It has 6 columns
     ## "Fecha","Último","Apertura","Máximo","Mínimo","Vol.","% var."

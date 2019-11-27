@@ -23,6 +23,7 @@ from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, q
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts,  eOHCLDuration, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
 
+
 getcontext().prec=20
 
 class Percentage:
@@ -835,15 +836,17 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
                 return p
         return None             
         
-    def find_by_ticker(self, ticker, etickerposition):
+    ## This method looks inside the manager and return a list with all products with the ticker in the etickerposition
+    def find_all_by_ticker(self, ticker, etickerposition):
+        r=[]
         if ticker==None:
-            return None
+            return r
         for p in self.arr:
             if p.tickers[etickerposition]==None:
                 continue
             if p.tickers[etickerposition].upper()==ticker.upper():
-                return p
-        return None                
+                r.append(p)
+        return r          
         
     @deprecated
     def load_from_inversiones_query(self, sql, progress=True):
@@ -4276,19 +4279,11 @@ class CreditCard:
         return "CreditCard: {}".format(self.id)
 
     def delete(self):
-        cur=self.mem.con.cursor()
-        cur.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
-        cur.close()
+        self.mem.con.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
         
+    ## Devuelve False si no puede borrarse por haber dependientes.
     def is_deletable(self):
-        """
-            Devuelve False si no puede borrarse por haber dependientes.
-        """
-        res=0
-        cur=self.mem.con.cursor()
-        cur.execute("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
-        res=cur.fetchone()[0]
-        cur.close()
+        res=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
         if res==0:
             return True
         else:
@@ -4745,12 +4740,6 @@ class CreditCardManager(ObjectManager_With_IdName_Selectable):
                 r.append(b)
         return r        
 
-    def delete(self, creditcard):
-        """Deletes from db and removes object from array.
-        creditcard is an object"""
-        creditcard.delete()
-        self.remove(creditcard)
-        self.cleanSelection()
 
 
     def load_from_db(self, sql):
