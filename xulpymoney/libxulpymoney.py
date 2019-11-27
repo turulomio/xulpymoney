@@ -3355,7 +3355,6 @@ class DBData:
         self.accounts=AccountManager(self.mem, self.banks)
         self.accounts.load_from_db("select * from cuentas")
 
-
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
         self.investments.needStatus(2, progress=True)
@@ -3803,6 +3802,7 @@ class Account:
     ## @param id Integer that sets the id of an account. If id=None it's not in the database. id is set in the save method
     def __init__(self, *args):
         self.mem=args[0]
+        self.status=0
         if len(args)==3:
             self.id=args[1]['id_cuentas']
             self.name=QCoreApplication.translate("Mem", args[1]['cuenta'])
@@ -3817,7 +3817,6 @@ class Account:
             self.numero=args[4]
             self.currency=args[5]
             self.id=args[6]
-        self.status=0
 
         
     def __repr__(self):
@@ -4739,8 +4738,6 @@ class CreditCardManager(ObjectManager_With_IdName_Selectable):
             if b.active==False:
                 r.append(b)
         return r        
-
-
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()

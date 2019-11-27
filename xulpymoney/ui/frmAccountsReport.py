@@ -23,6 +23,9 @@ from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, account,  parent=None):
         QDialog.__init__(self, parent)
+        self.mem=mem
+        self.account=account#Registro de account
+        print(self.account, id(self.account))
         self.setupUi(self)
         self.showMaximized()
         self.cmdDatos.setEnabled(False)     
@@ -30,12 +33,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.wdgDtPago.show_timezone(False)
         self.wdgDtPago.setTitle(self.tr("Select payment time"))
         
-        self.mem=mem
-
-        self.account=account#Registro de account
         
         self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
-        self.account.creditcards=None#SetCreditCard. Selected will be a CreditCard
         self.creditcardoperations=CreditCardOperationManager(self.mem)#CreditCardOperationManager. Selected will be another CreditCardOperationManager
           
         self.tblOperaciones.settings(self.mem, "frmAccountsReport")
@@ -57,7 +56,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.chkActiva.setEnabled(False)
             self.tblOperaciones.setEnabled(False)
             self.cmdDatos.setText(self.tr("Add a new account"))
-        else:               
+        else:
+            self.account.needStatus(1)
+            print(self.account, self.account.status, id(self.account))
+            print(self.account.creditcards.length())
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.account.name)
             self.txtAccount.setText(self.account.name)
@@ -69,12 +71,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.chkActiva.setChecked(b2c(self.account.active))
             self.cmdDatos.setText(self.tr("Update account data"))
 
-            self.account.needStatus(1)
             anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
             self.wdgYM.initiate(anoinicio,  date.today().year, date.today().year, date.today().month)
-            self.on_AccountOperationChanged(None)
-            self.on_tblCreditCards_itemSelectionChanged()
             self.wdgYM.changed.connect(self.on_wdgYM_changed)
+            self.on_wdgYM_changed()
+            self.on_tblCreditCards_itemSelectionChanged()
 
     @pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
@@ -109,7 +110,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         else:
             self.account.creditcards.selected.delete()
             self.mem.con.commit()
-            self.tblCreditCards.clear()
+            self.tblCreditCards.clear()#Must be before needStatus (Crashed)
             self.account.needStatus(1, downgrade_to=0)
             self.on_tblCreditCards_itemSelectionChanged()
 
@@ -144,46 +145,21 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @pyqtSlot()
     def on_wdgYM_changed(self):
-        self.on_AccountOperationChanged(None)
-        
-    def on_AccountOperationChanged(self, o):
-        """
-            o=None, significa que hay que actualizarlo las opercuentas sin seleccionar
-            o=AccountOperation, significa que hay que actualizar opercuentas y seleccionarla
-        """
         lastMonthBalance=self.account.balance(date(self.wdgYM.year, self.wdgYM.month, 1)-timedelta(days=1), type=2)     
         self.accountoperations=AccountOperationManager(self.mem)           
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
-        if o!=None:
-            self.accountoperations.setSelected([o, ])
         self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones,  self.account,  lastMonthBalance)   
+
     ## Used to update credit card and operations without selection. If you need selection, use on_CreditCardOperationChanged 
     ##    o=None, significa que hay que actualizar las tarjetas sin seleccionar
     ##    o=CreditCard, significa que hay que actualizar las tarjetas seleccionandola 
 
-    def on_CreditCardOperationChanged(self,list):
-        """ ES DISTINTA A CREDIRCARDCHANGED NO JUNTAR
-            o=None, significa que hay que actualizar las tarjetas sin seleccionar
-            o=List, significa que hay que actualizar creditcardoperation, usando el id de la tarjeta seleccionada
-        """          
 
-        self.tabOpertarjetasDiferidas.setCurrentIndex(0)
-        self.tblCreditCardOpers.setRowCount(0)
-
-        self.tabOpertarjetasDiferidas.setEnabled(self.account.creditcards.selected.pagodiferido)
-        if self.account.creditcards.selected.pagodiferido==True:#Solo se muestran operaciones si es diferido
-            self.grpPago.setEnabled(True)
-            self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.account.creditcards.selected.id, ]))
-            if len(list)!=0:
-                self.creditcardoperations.selected=list 
-            self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
-        else:
-            self.grpPago.setEnabled(False)
 
     @pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account)
-        w.AccountOperationChanged.connect(self.on_AccountOperationChanged)
+        w.AccountOperationChanged.connect(self.on_wdgYM_changed)
         w.exec_()
 
     @pyqtSlot() 
@@ -204,25 +180,25 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             aoo.borrar()
             aod.borrar()
             self.mem.con.commit()
-            self.on_AccountOperationChanged(None)
+            self.on_wdgYM_changed()
         
     @pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account, self.accountoperations.selected.only())
-        w.AccountOperationChanged.connect(self.on_AccountOperationChanged)
+        w.AccountOperationChanged.connect(self.on_wdgYM_changed)
         w.exec_()
 
     @pyqtSlot() 
     def on_actionOperationDelete_triggered(self):
         self.accountoperations.selected.only().borrar() 
         self.mem.con.commit()         
-        self.on_AccountOperationChanged(None)
+        self.on_wdgYM_changed()
 
     @pyqtSlot() 
     def on_actionCreditCardOperAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account, None, self.account.creditcards.selected)
         w.CreditCardOperationChanged.connect(self.on_CreditCardOperationChanged)
-        w.AccountOperationChanged.connect(self.on_AccountOperationChanged)#Tarjetas en debito
+        w.AccountOperationChanged.connect(self.on_wdgYM_changed)#Tarjetas en debito
         w.exec_()
             
     @pyqtSlot() 
@@ -239,7 +215,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o.borrar()
             self.creditcardoperations.arr.remove(o)
         self.mem.con.commit()
-        self.on_CreditCardOperationChanged(None)
+        self.on_CreditCardOperationChanged()
         
     @pyqtSlot() 
     def on_actionCreditCardOperRefund_triggered(self):
@@ -253,7 +229,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         investmentoperation.investment.op.remove(investmentoperation)
         self.mem.con.commit()     
         print("Borrando investment ooperation",  investmentoperation)
-        self.on_AccountOperationChanged(None)
+        self.on_wdgYM_changed()
 
 
     @pyqtSlot() 
@@ -262,7 +238,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
         debug("Edit investmentoperation {}".format(self.accountoperations.selected.only()))
-        self.on_AccountOperationChanged(self.accountoperations.selected.only())
+        self.on_wdgYM_changed()
 
     @pyqtSlot()
     def on_actionConceptReport_triggered(self):
@@ -329,7 +305,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 id=int(self.tblOperaciones.item(i.row(), 5).text())#Id it's hidden in the fifth column
                 self.accountoperations.selected.append(self.accountoperations.find_by_id(id)) #AccountOperationManager is a DictManager
         print ("Seleccionado: " +  str(self.accountoperations.selected.dic))
-        
 
     def on_tblCreditCards_customContextMenuRequested(self,  pos):
         if self.account.qmessagebox_inactive():
@@ -377,7 +352,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         else:
             self.tabOpertarjetasDiferidas.setEnabled(self.account.creditcards.selected.pagodiferido)
             self.account.creditcards.myqtablewidget(self.tblCreditCards, not self.chkCreditCards.isChecked())
-            self.on_CreditCardOperationChanged([])
+            self.on_CreditCardOperationChanged()
             
     def on_tblCreditCardOpers_customContextMenuRequested(self,  pos):
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive() or self.account.creditcards.selected.qmessagebox_inactive():
@@ -423,7 +398,24 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
         #Calcula el balance
         self.lblPago.setText(self.mem.localcurrency.string(self.creditcardoperations.selected.balance()))
- 
+
+    def on_CreditCardOperationChanged(self):
+        """ ES DISTINTA A CREDIRCARDCHANGED NO JUNTAR
+            o=None, significa que hay que actualizar las tarjetas sin seleccionar
+            o=List, significa que hay que actualizar creditcardoperation, usando el id de la tarjeta seleccionada
+        """          
+
+        self.tabOpertarjetasDiferidas.setCurrentIndex(0)
+        self.tblCreditCardOpers.setRowCount(0)
+
+        self.tabOpertarjetasDiferidas.setEnabled(self.account.creditcards.selected.pagodiferido)
+        if self.account.creditcards.selected.pagodiferido==True:#Solo se muestran operaciones si es diferido
+            self.grpPago.setEnabled(True)
+            self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.account.creditcards.selected.id, ]))
+            self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
+        else:
+            self.grpPago.setEnabled(False)
+
     def on_cmdPago_released(self):
         c=AccountOperation(self.mem, self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), "Transaction in progress", self.account, None)
         c.save()
@@ -438,7 +430,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o.opercuenta=c
             o.save()
         self.mem.con.commit()
-        self.on_AccountOperationChanged(None)
+        self.on_wdgYM_changed()
         self.on_tblCreditCards_itemSelectionChanged()
     
     def on_cmdDevolverPago_released(self):
@@ -448,7 +440,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
         self.mem.con.commit()
         cur.close()     
-        self.on_AccountOperationChanged(None)
+        self.on_wdgYM_changed()
         self.on_tblCreditCards_itemSelectionChanged()
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         

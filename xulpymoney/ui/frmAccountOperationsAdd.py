@@ -108,7 +108,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         id_cuentas=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
         id_tarjetas=self.cmbCreditCards.itemData(self.cmbCreditCards.currentIndex())
         cuenta=self.mem.data.accounts_active().find_by_id(id_cuentas)
-        tarjeta=self.mem.data.accounts.find_by_creditcard_id(id_tarjetas)
+        tarjeta=self.mem.data.accounts.find_creditcard_by_id(id_tarjetas)
         
         if not importe:
             qmessagebox(self.tr("You must set the operation amount"))
