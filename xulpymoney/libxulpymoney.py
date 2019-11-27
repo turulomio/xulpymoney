@@ -4955,20 +4955,19 @@ class AgrupationManager(ObjectManager_With_IdName_Selectable):
 
 class LeverageManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
-        """Usa la variable mem.Agrupations"""
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
 
     def load_all(self):
-        self.append(Leverage(self.mem).init__create(-1,QApplication.translate("Mem","Variable leverage (Warrants)"), eLeverageType.Variable))
-        self.append(Leverage(self.mem).init__create(1 ,QApplication.translate("Mem","Not leveraged"), eLeverageType.NotLeveraged))
-        self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Mem","Leverage x2"), eLeverageType.X2))
-        self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Mem","Leverage x3"), eLeverageType.X3))
-        self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Mem","Leverage x4"), eLeverageType.X4))
-        self.append(Leverage(self.mem).init__create( 5,QApplication.translate("Mem","Leverage x5"), eLeverageType.X5))
-        self.append(Leverage(self.mem).init__create( 6,QApplication.translate("Mem","Leverage x10"), eLeverageType.X10))
-        self.append(Leverage(self.mem).init__create(50, QApplication.translate("Mem", "Leverage x50"), eLeverageType.X50))
-        self.append(Leverage(self.mem).init__create(100, QApplication.translate("Mem", "Leverage x100"), eLeverageType.X100))
+        self.append(Leverage(self.mem).init__create(eLeverageType.Variable,QApplication.translate("Mem","Variable leverage (Warrants)"), eLeverageType.Variable))
+        self.append(Leverage(self.mem).init__create(eLeverageType.NotLeveraged ,QApplication.translate("Mem","Not leveraged"), eLeverageType.NotLeveraged))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X2,QApplication.translate("Mem","Leverage x2"), eLeverageType.X2))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X3,QApplication.translate("Mem","Leverage x3"), eLeverageType.X3))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X4,QApplication.translate("Mem","Leverage x4"), eLeverageType.X4))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X5,QApplication.translate("Mem","Leverage x5"), eLeverageType.X5))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X10,QApplication.translate("Mem","Leverage x10"), eLeverageType.X10))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X50, QApplication.translate("Mem", "Leverage x50"), eLeverageType.X50))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X100, QApplication.translate("Mem", "Leverage x100"), eLeverageType.X100))
 
 class OrderManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
