@@ -1505,10 +1505,11 @@ class CurrencyManager(ObjectManager_With_IdName_Selectable):
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
-class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):
+class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Class that  groups dividends from a Xulpymoney Product"""
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
+        QObject.__init__(self)
         self.mem=mem
             
     def gross(self):
@@ -1580,45 +1581,60 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
         DividendHeterogeneusManager.__init__(self, mem)
         self.investment=investment
         
-    def gross(self, type=1):
-        """gross amount"""
-        r=Money(self.mem, 0, self.investment.resultsCurrency(type))
+    ## @param emoneycurrency eMoneyCurrency type
+    ## @param current If true only shows dividends from first current operation. If false show all dividends
+    def gross(self, emoneycurrency, current):
+        r=Money(self.mem, 0, self.investment.resultsCurrency(emoneycurrency))
         for d in self.arr:
-            r=r+d.gross(type)
+            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+                continue
+            else:
+                r=r+d.gross(emoneycurrency)
         return r
-    def net(self, type=1):
-        r=Money(self.mem, 0, self.investment.resultsCurrency(type))
+
+    ## @param emoneycurrency eMoneyCurrency type
+    ## @param current If true only shows dividends from first current operation. If false show all dividends
+    def net(self, emoneycurrency, current):
+        r=Money(self.mem, 0, self.investment.resultsCurrency(emoneycurrency))
         for d in self.arr:
-            r=r+d.net(type)
+            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+                continue
+            else:
+                r=r+d.net(emoneycurrency)
         return r
-        
-    def percentage_from_invested(self, type=1):
-        return Percentage(self.gross(type), self.investment.invertido(None, type))
-        
-    def percentage_tae_from_invested(self, type=1):
+
+    ## @param emoneycurrency eMoneyCurrency type
+    ## @param current If true only shows dividends from first current operation. If false show all dividends
+    def percentage_from_invested(self, emoneycurrency, current):
+        return Percentage(self.gross(emoneycurrency, current), self.investment.invertido(None, emoneycurrency))
+
+    ## @param emoneycurrency eMoneyCurrency type
+    ## @param current If true only shows dividends from first current operation. If false show all dividends
+    def percentage_tae_from_invested(self, emoneycurrency, current):
         try:
             dias=(date.today()-self.investment.op_actual.first().datetime.date()).days+1
-            return Percentage(self.percentage_from_invested(type)*365, dias )
+            return Percentage(self.percentage_from_invested(emoneycurrency, current)*365, dias )
         except:#No first
             return Percentage()
         
-    def myqtablewidget(self, table, type=1):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
-        Devuelve sumatorios"""
-
+    ## Method that fills a qtablewidget with dividend data
+    ## @param table QTableWidget
+    ## @param emoneycurrency eMoneyCurrency type
+    ## @param current If true only shows dividends from first current operation. If false show all dividends
+    def myqtablewidget(self, table, emoneycurrency, current=True):
         table.setColumnCount(7)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Concept" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Gross" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Withholding" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Comission" )))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Net" )))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "DPS" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Concept" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Withholding" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Comission" )))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Net" )))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("DPS" )))
         #DATA  
         table.applySettings()
         table.clearContents()
-        
-        currency=self.investment.resultsCurrency(type)
+
+        currency=self.investment.resultsCurrency(emoneycurrency)
 
         table.setRowCount(self.length()+1)
         sumneto=Money(self.mem, 0, currency)
@@ -1626,18 +1642,23 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
         sumretencion=Money(self.mem, 0, currency)
         sumcomision=Money(self.mem, 0, currency)
         for i, d in enumerate(self.arr):
-            sumneto=sumneto+d.net(type)
-            sumbruto=sumbruto+d.gross(type)
-            sumretencion=sumretencion+d.retention(type)
-            sumcomision=sumcomision+d.comission(type)
+            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+                table.hideRow(i)
+                continue
+            else:
+                table.showRow(i)
+            sumneto=sumneto+d.net(emoneycurrency)
+            sumbruto=sumbruto+d.gross(emoneycurrency)
+            sumretencion=sumretencion+d.retention(emoneycurrency)
+            sumcomision=sumcomision+d.comission(emoneycurrency)
             table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
             table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
-            table.setItem(i, 2, d.gross(type).qtablewidgetitem())
-            table.setItem(i, 3, d.retention(type).qtablewidgetitem())
-            table.setItem(i, 4, d.comission(type).qtablewidgetitem())
-            table.setItem(i, 5, d.net(type).qtablewidgetitem())
-            table.setItem(i, 6, d.dps(type).qtablewidgetitem())
-        table.setItem(self.length(), 1, qleft(QApplication.translate("Mem","TOTAL")))
+            table.setItem(i, 2, d.gross(emoneycurrency).qtablewidgetitem())
+            table.setItem(i, 3, d.retention(emoneycurrency).qtablewidgetitem())
+            table.setItem(i, 4, d.comission(emoneycurrency).qtablewidgetitem())
+            table.setItem(i, 5, d.net(emoneycurrency).qtablewidgetitem())
+            table.setItem(i, 6, d.dps(emoneycurrency).qtablewidgetitem())
+        table.setItem(self.length(), 1, qleft(self.tr("TOTAL")))
         table.setItem(self.length(), 2, sumbruto.qtablewidgetitem())
         table.setItem(self.length(), 3, sumretencion.qtablewidgetitem())
         table.setItem(self.length(), 4, sumcomision.qtablewidgetitem())

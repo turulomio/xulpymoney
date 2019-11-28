@@ -1,8 +1,11 @@
 from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QVBoxLayout
 from datetime import date, timedelta
 from logging import debug
+from xulpymoney.casts import c2b
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string, HlContractManagerHomogeneus
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
 from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
@@ -13,8 +16,7 @@ from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
 from xulpymoney.ui.frmHlContractAdd import frmHlContractAdd
 from xulpymoney.ui.frmSplit import frmSplit
-from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string, HlContractManagerHomogeneus
-from xulpymoney.libxulpymoneytypes import eMoneyCurrency
+from xulpymoney.ui.myqwidgets import qmessagebox
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -79,27 +81,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.showMaximized()
         QApplication.restoreOverrideCursor()
 
-    def load_tabDividends(self):        
-        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends)
-        if self.investment.account.currency==self.investment.product.currency:
-            self.grpDividendsAccountCurrency.hide()
-        else:
-            self.investment.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
-        if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
-            estimacion=self.investment.product.estimations_dps.currentYear()
-            if estimacion.estimation!=None:
-                acciones=self.investment.shares()
-                tpccalculado=Percentage(estimacion.estimation, self.investment.product.result.basic.last.quote)
-                self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
-                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
-                self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.product.currency.string(acciones*estimacion.estimation),  self.investment.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
-            self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.investment.dividends.percentage_from_invested(type=1)))
-            self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.investment.dividends.percentage_tae_from_invested(type=1)))
-            self.grpDividendsEstimation.show()
-            self.grpDividendsEfectivos.show()
-        else:
-            self.grpDividendsEstimation.hide()
-            self.grpDividendsEfectivos.hide()
+
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
@@ -167,6 +149,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_actionDividendRemove_triggered(self):
         self.investment.dividends.selected.borrar()
         self.mem.con.commit()
+        self.investment.needStatus(3, downgrade_to=2)
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
     @pyqtSlot() 
@@ -221,11 +204,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     @pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
         if self.investment.product.result.basic.last.quote==None:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Before adding a operation, you must add the current price of the product."))
-            m.exec_()    
+            qmessagebox(self.tr("Before adding a operation, you must add the current price of the product."), ":/xulpymoney/coins.png")
             w=frmQuotesIBM(self.mem,  self.investment.product)
             w.exec_()   
             if w.result()==QDialog.Accepted:
@@ -286,11 +265,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     @pyqtSlot() 
     def on_actionSharesTransferUndo_triggered(self):
         if self.mem.data.investments_active().traspaso_valores_deshacer(self.op.selected)==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Shares transfer couldn't be done."))
-            m.exec_()          
+            qmessagebox(self.tr("Shares transfer couldn't be done."), ":/xulpymoney/coins.png")
             return
         self.update_tables()
 
@@ -317,11 +292,26 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblDividends.clearSelection()
         self.tblDividendsAccountCurrency.clearSelection()
         self.investment.dividends.selected=None     
-        if state==Qt.Unchecked:   
-            self.dividends=self.investment.DividendManager_of_current_operations()
+        (sumneto, sumbruto, sumretencion, sumcomision)=self.investment.dividends.myqtablewidget(self.tblDividends, eMoneyCurrency.Product, current=not c2b(state))
+        if self.investment.account.currency==self.investment.product.currency:
+            self.grpDividendsAccountCurrency.hide()
         else:
-            self.dividends=self.investment.dividends
-        self.load_tabDividends()
+            self.investment.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
+        if state==Qt.Unchecked:
+            estimacion=self.investment.product.estimations_dps.currentYear()
+            if estimacion.estimation!=None:
+                acciones=self.investment.shares()
+                tpccalculado=Percentage(estimacion.estimation, self.investment.product.result.basic.last.quote)
+                self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
+                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
+                self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.product.currency.string(acciones*estimacion.estimation),  self.investment.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
+            self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.investment.dividends.percentage_from_invested(eMoneyCurrency.Product, current=True)))
+            self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.investment.dividends.percentage_tae_from_invested(eMoneyCurrency.Product, current=True)))
+            self.grpDividendsEstimation.show()
+            self.grpDividendsEfectivos.show()
+        else:
+            self.grpDividendsEstimation.hide()
+            self.grpDividendsEfectivos.hide()
 
     def on_cmdISE_released(self):
         if self.investment==None or self.investment.merged==False:
@@ -352,11 +342,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     def on_cmdInvestment_released(self):
         if self.ise.selected==None:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You must select a product to continue."))
-            m.exec_()     
+            qmessagebox(self.tr("You must select a product to continue."), ":/xulpymoney/coins.png")
             return
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
@@ -512,7 +498,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_tblDividends_itemSelectionChanged(self):
         try:
             for i in self.tblDividends.selectedItems():#itera por cada item no rowse.
-                self.investment.dividends.selected=self.dividends.arr[i.row()]
+                self.investment.dividends.selected=self.investment.dividends.arr[i.row()]
         except:
             self.investment.dividends.selected=None
         print ("Dividend selected: " +  str(self.investment.dividends.selected))        

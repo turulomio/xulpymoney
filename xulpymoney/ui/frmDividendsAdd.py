@@ -118,4 +118,5 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         
         self.dividend.save()
         self.mem.con.commit()
+        self.investment.needStatus(3, downgrade_to=2)
         self.done(0)
