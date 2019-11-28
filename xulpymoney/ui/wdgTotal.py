@@ -865,15 +865,18 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.settings(self.mem,"wdgTotal","tblGainsByProductType")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
-        
-        table.setColumnCount(3)
+        table.setColumnCount(5)
         
         table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Brut gains" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Brut dividends")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Gross gains" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross dividends")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "Net gains" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Net dividends")))
         table.applySettings()
         sum_gains=Money(self.mem)
         sum_dividens=Money(self.mem)
+        sum_netgains=Money(self.mem)
+        sum_netdividends=Money(self.mem)
         
         settypes=self.mem.types.investment_types()
         table.setRowCount(settypes.length()+1)
@@ -881,25 +884,36 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i, type in enumerate(settypes.arr):
             table.setItem(i, 0, qleft(type.name))    
             gains=Money(self.mem,  0,  self.mem.localcurrency)
+            netgains=Money(self.mem, 0, self.mem.localcurrency)
             dividends=Money(self.mem,  0,  self.mem.localcurrency)
+            netdividens=Money(self.mem,  0, self.mem.localcurrency)
             for inv in self.mem.data.investments.arr:
                 if inv.product.type.id==type.id:
                     #gains
                     for o in inv.op_historica.arr:
                         if o.fecha_venta.year==self.wyData.year:
                             gains=gains+o.consolidado_bruto(eMoneyCurrency.User)
+                            netgains=netgains+o.consolidado_neto(eMoneyCurrency.User)
                     #dividends
-                    setdiv=DividendHeterogeneusManager(self.mem)
-                    setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
-                    dividends=dividends+setdiv.gross().local()
+                    inv.needStatus(3)
+                    for d in inv.dividends.arr:
+                        if d.datetime.year==self.wyData.year:
+                            dividends=dividends+d.gross(eMoneyCurrency.User)
+                            netdividens=netdividens+d.net(eMoneyCurrency.User)
             table.setItem(i, 1, gains.qtablewidgetitem())
             table.setItem(i, 2, dividends.qtablewidgetitem())
+            table.setItem(i, 3, netgains.qtablewidgetitem())
+            table.setItem(i, 4, netdividens.qtablewidgetitem())
             sum_gains=sum_gains+gains
+            sum_netgains=sum_netgains+netgains
             sum_dividens=sum_dividens+dividends
+            sum_netdividends=sum_netdividends+netdividens
             
         table.setItem(i+1, 0, qleft(self.tr("Total")))
         table.setItem(i+1, 1, sum_gains.qtablewidgetitem())
         table.setItem(i+1, 2, sum_dividens.qtablewidgetitem())
+        table.setItem(i+1, 3, sum_netgains.qtablewidgetitem())
+        table.setItem(i+1, 4, sum_netdividends.qtablewidgetitem())
         
         label=QLabel(newtab)
         font = QFont()
@@ -908,7 +922,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         font.setWeight(75)
         label.setFont(font)
         label.setAlignment(Qt.AlignCenter)
-        label.setText(self.tr("Gains + Dividends: {} + {} = {}".format(sum_gains, sum_dividens, sum_gains+sum_dividens)))
+        label.setText(self.tr("Gross gains + Gross dividends: {} + {} = {}\nNet gains + Net dividens: {} + {} = {}".format(sum_gains, sum_dividens, sum_gains+sum_dividens, sum_netgains, sum_netdividends, sum_netgains+sum_netdividends)))
             
         vlayout.addWidget(table)
         vlayout.addWidget(label)

@@ -46,11 +46,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
-        
-        
 
-        
-        
         self.sqlvacio="select * from products where id=-999999"
         
         self.w=QWidget()       

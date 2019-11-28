@@ -1512,11 +1512,18 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
         QObject.__init__(self)
         self.mem=mem
             
-    def gross(self):
-        """gross amount in self.mem.localcurrency"""
+    ## Net amount in self.mem.localcurrency
+    def net(self):
         r=Money(self.mem, 0, self.mem.localcurrency)
         for d in self.arr:
-            r=r+d.gross().local()
+            r=r+d.net(eMoneyCurrency.User)
+        return r
+
+    ## Gross amount in self.mem.localcurrency
+    def gross(self):
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for d in self.arr:
+            r=r+d.gross(eMoneyCurrency.User)
         return r
 
     def load_from_db(self, sql):    

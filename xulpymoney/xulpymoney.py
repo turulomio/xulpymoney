@@ -16,9 +16,6 @@ def main():
     mem.frmAccess.setResources(":/xulpymoney/books.png", ":/xulpymoney/xulpymoney.png")
     mem.frmAccess.setLabel(qApp.translate("Mem","Please login to the Xulpymoney database"))
     mem.frmAccess.exec_()
-    
-    a="Rollover Paid"
-    print(mem.trMem(a),  a, qApp.translate("Mem", a))
 
     if mem.frmAccess.result()==QDialog.Accepted:
         mem.con=mem.frmAccess.con
