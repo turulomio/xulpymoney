@@ -11,8 +11,9 @@ from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, StockMarketManager, SettingsDB, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
+from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, SettingsDB, ProductModesManager, ProductTypeManager, ProductUpdate, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, AgrupationManager, LeverageManager
 from xulpymoney.casts import  list2string, str2bool, string2list_of_integers
+from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.package_resources import package_filename
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.translationlanguages import TranslationLanguageManager

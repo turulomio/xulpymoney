@@ -7,9 +7,10 @@ from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord,
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
-from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, StockMarketManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
+from xulpymoney.libxulpymoney import DPS, Percentage, Product, Quote, AgrupationManager, QuoteManager, QuoteAllIntradayManager, CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
+from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eDtStrings
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
