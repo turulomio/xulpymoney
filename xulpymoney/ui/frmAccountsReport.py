@@ -169,7 +169,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         """
             Ya está validado si es Comment coded 10001,10002,10003
         """
-        args=Comment(self.mem).getArgs(self.accountoperations.selected.only().comentario)#origin,destiny,comission
+        args=Comment(self.mem).getArgs(self.accountoperations.selected.only().comentario)#origin,destiny,commission
         aoo=AccountOperation(self.mem, args[0])
         aod=AccountOperation(self.mem, args[1])
 

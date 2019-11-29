@@ -795,21 +795,21 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
         
         table.setRowCount(4)
-        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Bank comissions" )))
+        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Bank commissions" )))
         table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Custody fees" )))
-        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation comissions" )))
+        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation commissions" )))
         table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Total" )))
         table.applySettings()
-        (sum_bank_comissions, sum_custody_fees, sum_investment_comissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
+        (sum_bank_commissions, sum_custody_fees, sum_investment_commissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
-            bank_comissions=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
+            bank_commissions=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
                                                                                                             from opercuentas 
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (38, self.wyData.year, column+1))[0])
-            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_comissions))    
-            sum_bank_comissions=sum_bank_comissions+bank_comissions
+            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions))    
+            sum_bank_commissions=sum_bank_commissions+bank_commissions
             
             custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
                                                                                                             from opercuentas 
@@ -819,23 +819,23 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(custody_fees))    
             sum_custody_fees=sum_custody_fees+custody_fees
             
-            investment_comissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
+            investment_commissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
                                                                                                             from operinversiones  
                                                                                                             where date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
-            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_comissions))    
-            sum_investment_comissions=sum_investment_comissions+investment_comissions
+            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_commissions))    
+            sum_investment_commissions=sum_investment_commissions+investment_commissions
             
-            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_comissions+custody_fees+investment_comissions))    
-        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions))    
+            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions+custody_fees+investment_commissions))    
+        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions))    
         table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
-        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_comissions))    
-        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions+sum_custody_fees+sum_investment_comissions))    
+        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_commissions))    
+        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions+sum_custody_fees+sum_investment_commissions))    
         vlayout.addWidget(table)
 
         #Number of operations
         num_operations=0
-        settypes=self.mem.types.with_operation_comissions_types()
+        settypes=self.mem.types.with_operation_commissions_types()
         for i, type in enumerate(settypes.arr):
             for inv in self.mem.data.investments.arr:
                 if inv.product.type.id==type.id:
@@ -851,7 +851,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             label.setFont(font)
             label.setAlignment(Qt.AlignCenter)
             cs=self.mem.localcurrency.string
-            label.setText(self.tr("Number of purchase and sale investment operations: {}. Comissions average: {}".format(int(num_operations), cs(sum_investment_comissions/num_operations))))
+            label.setText(self.tr("Number of purchase and sale investment operations: {}. Commissions average: {}".format(int(num_operations), cs(sum_investment_commissions/num_operations))))
             vlayout.addWidget(label)
             
         self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
@@ -1029,7 +1029,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             totalmonth=self.setData.arr[column]
             qmessagebox(self.tr("High Low Investments aren't sumarized here, due to they have daily adjustments in accounts.") + "\n\n" + self.tr("Their balance at the end of {}-{} is {}").format(totalmonth.year, totalmonth.month, totalmonth.total_investments_high_low()))
         else:
-            qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
+            qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see commission and tax reports"))
 
     def on_table_customContextMenuRequested(self,  pos):
         menu=QMenu()

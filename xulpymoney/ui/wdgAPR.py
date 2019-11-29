@@ -116,7 +116,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         anofinal=datetime.date.today().year
         sumgd=Money(self.mem, 0, self.mem.localcurrency)
         sumtaxes=Decimal(0)
-        sumcomissions=Decimal(0)
+        sumcommissions=Decimal(0)
         self.tblReport.applySettings()
         self.tblReport.setRowCount(anofinal-anoinicio+1+1)
         for i in range(anoinicio, anofinal+1):
@@ -140,7 +140,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 8, qright(taxes))
             sumtaxes=sumtaxes+taxes
 
-            comissions=none2decimal0(self.mem.con.cursor_one_field("""
+            commissions=none2decimal0(self.mem.con.cursor_one_field("""
 select 
     sum(suma) 
 from (
@@ -159,15 +159,15 @@ from (
             where  
                 date_part('year',datetime)=%s
         ) as uni""", (int(eConcept.BankCommissions), int(eConcept.CommissionCustody), i,i)))
-            self.tblReport.setItem(i-anoinicio, 9, qright(comissions))
-            sumcomissions=sumcomissions+comissions
+            self.tblReport.setItem(i-anoinicio, 9, qright(commissions))
+            sumcommissions=sumcommissions+commissions
             
             
 
         self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
         self.tblReport.setItem(anofinal-anoinicio+1, 6, sumgd.qtablewidgetitem())
         self.tblReport.setItem(anofinal-anoinicio+1, 8, qright(sumtaxes))
-        self.tblReport.setItem(anofinal-anoinicio+1, 9, qright(sumcomissions))
+        self.tblReport.setItem(anofinal-anoinicio+1, 9, qright(sumcommissions))
         
         lastyear=datetime.date(datetime.date.today().year, 12, 31)
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, lastyear)-Assets(self.mem).invested(lastyear)

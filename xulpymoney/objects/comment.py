@@ -41,9 +41,9 @@ class Comment(QObject):
     ## Encode parameters can be:
     ## - eComment.HlContract, hlcontract
     ## - eComment.Dividend, dividend
-    ## - eComment.AccountTransferOrigin operaccountorigin, operaccountdestiny, operaccountorigincomission
-    ## - eComment.AccountTransferOriginCommission operaccountorigin, operaccountdestiny, operaccountorigincomission
-    ## - eComment.AccountTransferDestiny operaccountorigin, operaccountdestiny, operaccountorigincomission
+    ## - eComment.AccountTransferOrigin operaccountorigin, operaccountdestiny, operaccountorigincommission
+    ## - eComment.AccountTransferOriginCommission operaccountorigin, operaccountdestiny, operaccountorigincommission
+    ## - eComment.AccountTransferDestiny operaccountorigin, operaccountdestiny, operaccountorigincommission
     ## - eComment.CreditCardBilling creditcard, operaccount
     ## - eComment.CreditCardRefund opercreditcardtorefund
     def encode(self, ecomment, *args):
@@ -54,14 +54,14 @@ class Comment(QObject):
         elif ecomment==eComment.Dividend:
             return "{},{}".format(eComment.Dividend, args[0].id)        
         elif ecomment==eComment.AccountTransferOrigin:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferOrigin, args[0].id, args[1].id, operaccountorigincomission_id)
+            operaccountorigincommission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferOrigin, args[0].id, args[1].id, operaccountorigincommission_id)
         elif ecomment==eComment.AccountTransferOriginCommission:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferOriginCommission, args[0].id, args[1].id, operaccountorigincomission_id)
+            operaccountorigincommission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferOriginCommission, args[0].id, args[1].id, operaccountorigincommission_id)
         elif ecomment==eComment.AccountTransferDestiny:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferDestiny, args[0].id, args[1].id, operaccountorigincomission_id)
+            operaccountorigincommission_id=-1 if args[2]==None else args[2].id
+            return "{},{},{},{}".format(eComment.AccountTransferDestiny, args[0].id, args[1].id, operaccountorigincommission_id)
         elif ecomment==eComment.CreditCardBilling:
             return "{},{},{}".format(eComment.CreditCardBilling, args[0].id, args[1].id)      
         elif ecomment==eComment.CreditCardRefund:
@@ -86,9 +86,9 @@ class Comment(QObject):
                 io=self.mem.data.investments.findInvestmentOperation(args[0])
                 if io==None: return string
                 if io.investment.hasSameAccountCurrency():
-                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
+                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.commission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
                 else:
-                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
+                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.commission(eMoneyCurrency.Product), io.commission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
 
             elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
                 if not self.validateLength(3, code, args): return string

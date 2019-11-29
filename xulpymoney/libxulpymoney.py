@@ -1472,12 +1472,12 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
             sumneto=sumneto+d.net(emoneycurrency)
             sumbruto=sumbruto+d.gross(emoneycurrency)
             sumretencion=sumretencion+d.retention(emoneycurrency)
-            sumcomision=sumcomision+d.comission(emoneycurrency)
+            sumcomision=sumcomision+d.commission(emoneycurrency)
             table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
             table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
             table.setItem(i, 2, d.gross(emoneycurrency).qtablewidgetitem())
             table.setItem(i, 3, d.retention(emoneycurrency).qtablewidgetitem())
-            table.setItem(i, 4, d.comission(emoneycurrency).qtablewidgetitem())
+            table.setItem(i, 4, d.commission(emoneycurrency).qtablewidgetitem())
             table.setItem(i, 5, d.net(emoneycurrency).qtablewidgetitem())
             table.setItem(i, 6, d.dps(emoneycurrency).qtablewidgetitem())
         table.setItem(self.length(), 1, qleft(self.tr("TOTAL")))
@@ -1694,7 +1694,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
             tabla.setItem(rownumber, 4, qright(a.shares))
             tabla.setItem(rownumber, 5, a.price().local().qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.gross().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 7, a.comission().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 7, a.commission().local().qtablewidgetitem())
             tabla.setItem(rownumber, 8, a.taxes().local().qtablewidgetitem())
             tabla.setItem(rownumber, 9, a.net().local().qtablewidgetitem())
 
@@ -1801,7 +1801,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             tabla.setItem(rownumber, 2, qright(a.shares))
             tabla.setItem(rownumber, 3, a.price(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.gross(type).qtablewidgetitem())            
-            tabla.setItem(rownumber, 5, a.comission(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 5, a.commission(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.taxes(type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.net(type).qtablewidgetitem())
             if self.investment.hasSameAccountCurrency()==False:
@@ -1966,7 +1966,13 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         for o in self.arr:
             o.get_referencia_indice(indice)
         cur.close()
-
+        
+    ## eMoneyCurrency.User because is heterogeneous
+    def commissions(self):
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for a in self.arr:
+            r=r+a.commission(eMoneyCurrency.User)
+        return r
 
 class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHeterogeneusManager):
     def __init__(self, mem, investment):
@@ -2256,6 +2262,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         for o in self.arr:
             r.append(o.shares)
         return r
+
     def gross_sales(self):
         """Bruto de todas las compras de la historicas"""
         r=Money(self.mem, 0, self.mem.localcurrency)
@@ -2273,10 +2280,10 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         return Percentage(self.consolidado_neto(), self.gross_purchases())
 
     ## eMoneyCurrency.User because is heterogeneous
-    def comissions(self):
+    def commissions(self):
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.comission(eMoneyCurrency.User)
+            r=r+a.commission(eMoneyCurrency.User)
         return r
 
     def gross_positive_operations(self):
@@ -2304,7 +2311,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "Initial balance" )))
         tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "Final balance" )))
         tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "Gross gains" )))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "Comissions" )))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "Commissions" )))
         tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
         tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Mem", "Net gains" )))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Mem", "% Net APR" )))
@@ -2323,7 +2330,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
             tabla.setItem(rownumber, 6,a.bruto_compra(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 7,a.bruto_venta(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 8,a.consolidado_bruto(eMoneyCurrency.User).qtablewidgetitem())
-            tabla.setItem(rownumber, 9,a.comission(eMoneyCurrency.User).qtablewidgetitem())
+            tabla.setItem(rownumber, 9,a.commission(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 10,a.taxes(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 11,a.consolidado_neto(eMoneyCurrency.User).qtablewidgetitem())
             tabla.setItem(rownumber, 12,a.tpc_tae_neto().qtablewidgetitem())
@@ -2333,7 +2340,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         tabla.setItem(self.length(), 6,self.gross_purchases().qtablewidgetitem())    
         tabla.setItem(self.length(), 7,self.gross_sales().qtablewidgetitem())    
         tabla.setItem(self.length(), 8,self.consolidado_bruto().qtablewidgetitem())    
-        tabla.setItem(self.length(), 9,self.comissions().qtablewidgetitem())    
+        tabla.setItem(self.length(), 9,self.commissions().qtablewidgetitem())    
         tabla.setItem(self.length(), 10,self.taxes().qtablewidgetitem())    
         tabla.setItem(self.length(), 11,self.consolidado_neto().qtablewidgetitem())
         tabla.setItem(self.length(), 13,self.tpc_total_neto().qtablewidgetitem())
@@ -2354,10 +2361,10 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             r=r+a.taxes(type)
         return r
 
-    def comissions(self, type=eMoneyCurrency.Product):
+    def commissions(self, type=eMoneyCurrency.Product):
         r=Money(self.mem, 0,  self.investment.resultsCurrency(type))
         for a in self.arr:
-            r=r+a.comission(type)
+            r=r+a.commission(type)
         return r
 
     def consolidado_bruto(self,  year=None,  month=None, type=eMoneyCurrency.Product):
@@ -2446,7 +2453,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem", "Initial gross" )))
         tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Mem", "Final gross" )))
         tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Mem", "Gross gains" )))
-        tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Mem", "Comissions" )))
+        tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Mem", "Commissions" )))
         tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
         tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Mem", "Net gains" )))
         tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Mem", "% Net APR" )))
@@ -2466,7 +2473,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             tabla.setItem(rownumber, 4+diff, a.bruto_compra(type).qtablewidgetitem())
             tabla.setItem(rownumber, 5+diff, a.bruto_venta(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6+diff, a.consolidado_bruto(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 7+diff,a.comission(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 7+diff,a.commission(type).qtablewidgetitem())
             tabla.setItem(rownumber, 8+diff,a.taxes(type).qtablewidgetitem())
             tabla.setItem(rownumber, 9+diff, a.consolidado_neto(type).qtablewidgetitem())
             tabla.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
@@ -2477,7 +2484,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             tabla.setItem(self.length(), 4+diff, self.gross_purchases(type).qtablewidgetitem())
             tabla.setItem(self.length(), 5+diff, self.gross_sales(type).qtablewidgetitem())
             tabla.setItem(self.length(), 6+diff, self.consolidado_bruto(type=type).qtablewidgetitem())  
-            tabla.setItem(self.length(), 7+diff, self.comissions(type).qtablewidgetitem())    
+            tabla.setItem(self.length(), 7+diff, self.commissions(type).qtablewidgetitem())    
             tabla.setItem(self.length(), 8+diff, self.taxes(type).qtablewidgetitem())    
             tabla.setItem(self.length(), 9+diff, self.consolidado_neto(type=type).qtablewidgetitem())
             tabla.setItem(self.length(), 11+diff, self.tpc_total_neto().qtablewidgetitem())
@@ -2533,13 +2540,13 @@ class InvestmentOperationHistorical:
         currency=self.investment.resultsCurrency(type)
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
-        return self.consolidado_bruto(type)-self.comission(type)-self.taxes(type)
+        return self.consolidado_bruto(type)-self.commission(type)-self.taxes(type)
 
     def consolidado_neto_antes_impuestos(self, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
             return Money(self.mem, 0, currency)
-        return self.consolidado_bruto(type)-self.comission(type)
+        return self.consolidado_bruto(type)-self.commission(type)
 
     def bruto_compra(self, type=eMoneyCurrency.Product):
         if self.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.TransferSharesDestiny):
@@ -2590,7 +2597,7 @@ class InvestmentOperationHistorical:
         elif type==eMoneyCurrency.User:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta).local(dt)
     
-    def comission(self, type=eMoneyCurrency.Product):
+    def commission(self, type=eMoneyCurrency.Product):
         money=Money(self.mem, self.comision, self.investment.product.currency)
         dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
@@ -2746,9 +2753,9 @@ class InvestmentOperationCurrent:
             
     def net(self, type=1):
         if self.shares>=Decimal(0):
-            return self.gross(type)+self.comission(type)+self.taxes(type)
+            return self.gross(type)+self.commission(type)+self.taxes(type)
         elif type==2:
-            return self.gross(type)-self.comission(type)-self.taxes(type)
+            return self.gross(type)-self.commission(type)-self.taxes(type)
             
     def taxes(self, type=1):
         if type==1:
@@ -2756,11 +2763,13 @@ class InvestmentOperationCurrent:
         elif type==2:
             return Money(self.mem, self.impuestos, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def comission(self, type=1):
+    def commission(self, type=1):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local()
             
     def balance(self,  lastquote, type=eMoneyCurrency.Product):
         """Función que calcula el balance actual de la operinversion actual
@@ -3147,7 +3156,7 @@ class Dividend:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-    def comission(self, type=1):
+    def commission(self, type=1):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         elif type==2:
@@ -3261,9 +3270,9 @@ class InvestmentOperation:
             
     def net(self, type=1):
         if self.shares>=Decimal(0):
-            return self.gross(type)+self.comission(type)+self.taxes(type)
+            return self.gross(type)+self.commission(type)+self.taxes(type)
         else:
-            return self.gross(type)-self.comission(type)-self.taxes(type)
+            return self.gross(type)-self.commission(type)-self.taxes(type)
             
     def taxes(self, type=1):
         if type==1:
@@ -3271,7 +3280,7 @@ class InvestmentOperation:
         else:
             return Money(self.mem, self.impuestos, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def comission(self, type=1):
+    def commission(self, type=1):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         else:
@@ -3306,18 +3315,18 @@ class InvestmentOperation:
         self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            importe=-self.gross(type=2)-self.comission(type=2)
+            importe=-self.gross(type=2)-self.commission(type=2)
             c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            importe=self.gross(type=2)-self.comission(type=2)-self.taxes(type=2)
+            importe=self.gross(type=2)-self.commission(type=2)-self.taxes(type=2)
             c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.investment.account, self,self.investment, None)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
-                importe=-self.comission(type=2)-self.taxes(type=2)
+                importe=-self.commission(type=2)-self.taxes(type=2)
                 c=AccountOperationOfInvestmentOperation(self.mem, self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.investment.account, self,self.investment, None)
                 c.save()
     
@@ -3521,7 +3530,7 @@ class Account:
         oc_comision=None
         notfinished="Tranfer not fully finished"
         if comision>0:
-            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankComissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
+            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankCommissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
             oc_comision.save()
         oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -importe, notfinished, cuentaorigen, None)
         oc_origen.save()
@@ -7115,8 +7124,8 @@ class ProductTypeManager(ObjectManager_With_IdName_Selectable):
                 r.append(t)
         return r
 
-    def with_operation_comissions_types(self):
-        """Returns a ProductTypeManager with types which product operations  has comissions"""
+    def with_operation_commissions_types(self):
+        """Returns a ProductTypeManager with types which product operations  has commissions"""
         r=ProductTypeManager(self.mem)
         for t in self.arr:
             if t.id not in (eProductType.Fund, eProductType.Index, eProductType.PensionPlan, eProductType.Deposit, eProductType.Account):

@@ -14,19 +14,20 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         adjustments.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlAdjustmentIincome, eConcept.HlAdjustmentExpense)))
         guarantees=AccountOperationManagerHeterogeneus(self.mem)
         guarantees.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned)))
-        comissions=AccountOperationManagerHeterogeneus(self.mem)
-        comissions.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s)", (eConcept.HlCommission, )))
+        commissions=AccountOperationManagerHeterogeneus(self.mem)
+        commissions.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s)", (eConcept.HlCommission, )))
         interest=AccountOperationManagerHeterogeneus(self.mem)
         interest.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlInterestPaid, eConcept.HlInterestReceived)))
-        
         iohhm=self.InvestmentOperationHistoricalHeterogeneusManager_derivatives()
         iochm=self.InvestmentOperationCurrentHeterogeneusManager_derivatives()
+
         print("Total ajustes", adjustments.balance())
         print("Total garantías", guarantees.balance())
-        print("Total comisiones", comissions.balance())
+        print("Total comisiones", commissions.balance())
         print("Total intereses",  interest.balance())
         print("Total operaciones históricas", iohhm.consolidado_bruto())
         print("Total operaciones actuales", iochm.pendiente())
+        print("Comisiones actuales e históricas: {} + {} = {} ".format(iochm.commissions(), iohhm.commissions(), iohhm.commissions()+iochm.commissions()))
         
     def InvestmentOperationHistoricalHeterogeneusManager_derivatives(self):
         r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)

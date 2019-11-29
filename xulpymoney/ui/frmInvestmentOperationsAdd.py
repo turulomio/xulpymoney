@@ -136,7 +136,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             m=QMessageBox()
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Share price, taxes and comission must be positive amounts"))
+            m.setText(self.tr("Share price, taxes and commission must be positive amounts"))
             m.exec_()    
             return
             
