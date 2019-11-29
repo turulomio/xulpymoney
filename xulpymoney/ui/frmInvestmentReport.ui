@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>6</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -684,59 +684,6 @@
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <item>
           <layout class="QVBoxLayout" name="layChart"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabContracts">
-        <attribute name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
-        </attribute>
-        <attribute name="title">
-         <string>Contracts</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_19">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_17">
-           <item>
-            <widget class="QCheckBox" name="chkHistoricalContracts">
-             <property name="text">
-              <string>Show historical High-Low daily contracts</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="grpHlContracts">
-             <property name="title">
-              <string>High-Low operations daily contracts</string>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_18">
-              <item>
-               <widget class="myQTableWidget" name="tblHlContracts">
-                <property name="contextMenuPolicy">
-                 <enum>Qt::CustomContextMenu</enum>
-                </property>
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="alternatingRowColors">
-                 <bool>true</bool>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::SingleSelection</enum>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <attribute name="verticalHeaderVisible">
-                 <bool>false</bool>
-                </attribute>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
          </item>
         </layout>
        </widget>

@@ -513,7 +513,6 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         r.dividends=DividendHomogeneusManager(self.mem, r)
-        r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 inv.needStatus(3)
@@ -556,10 +555,6 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 inv.needStatus(3)
                 for o in inv.op_actual.arr:
                     r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
-                if inv.product.high_low==True and r.op.length()>0:#Copy hlcontracts from first operation datetime
-                    r.hlcontractmanager=HlContractManagerHomogeneus(self.mem, r)
-                    for o in inv.hlcontractmanager.ObjectManager_copy_from_datetime(r.op.first().datetime, self.mem, inv).arr:
-                        r.hlcontractmanager.append(o)
                 for d in inv.DividendManager_of_current_operations().arr:
                     r.dividends.append(d)
         r.dividends.order_by_datetime()
@@ -1166,7 +1161,7 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
     def load_opercuentas_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
         for c in self.arr:
-            if c.tipooperacion.id in (1, 2, 3):
+            if c.tipooperacion.id in (1, 2, 3, 11):
                 if c.id not in (39, 50, 62, 63, 65, 66):
                     combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id  )
 
@@ -3278,9 +3273,7 @@ class AccountOperation:
         if self.concepto.id in (eConcept.BuyShares, eConcept.SellShares, 
             eConcept.Dividends, eConcept.CreditCardBilling, eConcept.AssistancePremium,
             eConcept.DividendsSaleRights, eConcept.BondsCouponRunPayment, eConcept.BondsCouponRunIncome, 
-            eConcept.BondsCoupon, eConcept.HlAdjustmentIincome,  eConcept.HlAdjustmentExpense, 
-            eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned, eConcept.HlCommission, 
-            eConcept.HlInterestPaid, eConcept.HlInterestReceived):
+            eConcept.BondsCoupon):
             return False
         if Comment(self.mem).getCode(self.comentario) in (eComment.AccountTransferOrigin, eComment.AccountTransferDestiny, eComment.AccountTransferOriginCommission):
             return False        
@@ -3939,7 +3932,7 @@ class Investment:
         ## 0 No data
         ## 1 Loaded ops
         ## 2 Calculate ops_actual, ops_historical
-        ## 3 Dividends and hlcontracts(deprecated)
+        ## 3 Dividends
         self.status=0
         self.dividends=None#Must be created due to in mergeing investments needs to add it manually
     
@@ -3980,7 +3973,6 @@ class Investment:
             start=datetime.now()
             self.dividends=DividendHomogeneusManager(self.mem, self)
             self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
-            self.getHlContracts()
             debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.now()-start, self.status, statusneeded))
             self.status=3
 
@@ -4018,8 +4010,6 @@ class Investment:
         if self.id==None:
             cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id) values (%s, %s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id))    
             self.id=cur.fetchone()[0]      
-            if self.product.high_low==True:
-                self.hlcontractmanager=HlContractManagerHomogeneus(self.mem, self) ##Needs to initialice if it's an HL product
         else:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
@@ -4116,13 +4106,6 @@ class Investment:
         (self.op_actual,  self.op_historica)=self.op.get_current_and_historical_operations()
         
         cur.close()
-        if self.product.high_low==True:
-            self.getHlContracts()
-    
-    ## Loads HLContractManager. 
-    def getHlContracts(self):
-        sql=self.mem.con.mogrify("select * from high_low_contract where investments_id=%s order by datetime;", (self.id, ))
-        self.hlcontractmanager=HlContractManagerHomogeneus(self.mem, self).init__from_db(sql)
 
     def dividend_bruto_estimado(self, year=None):
         """
@@ -7922,4 +7905,3 @@ class AssetsReport(ODT_Standard, QObject):
         self.mem.frmMain.w.close()
         self.mem.frmMain.showMaximized()
         
-from xulpymoney.hlcontracts import HlContractManagerHomogeneus

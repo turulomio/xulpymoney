@@ -130,4 +130,4 @@ class Ui_frmHlContractAdd(object):
         self.lblLiquido.setText(_translate("frmHlContractAdd", "Commission amount"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
-import xulpymoney.images.xulpymoney_rc
+import xulpymoney.images.xulpymoney.images.xulpymoney_rc

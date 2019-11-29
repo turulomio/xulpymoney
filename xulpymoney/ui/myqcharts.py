@@ -26,7 +26,6 @@ class eOHCLDuration:
         combo.addItem(QApplication.translate("Mem", "Year"), 4)
         combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))
 
-
 class VCCommons(QChartView):
     def __init__(self):
         QChartView.__init__(self)
@@ -137,7 +136,7 @@ class VCTemporalSeries(VCCommons):
         self.setRenderHint(QPainter.Antialiasing);
         
         self.series=[]
-        self.popup=MyPopup()
+        self.popup=MyPopup(self)
 
     def appendCandlestickSeries(self, name):
         ls=QCandlestickSeries()
@@ -416,7 +415,7 @@ class MyPopup(QDialog):
             if serie.isVisible():
                 self.lblValues[i].show()
                 self.lblTitles[i].show()
-            
+
                 self.lblTitles[i].setText(serie.name())
                 try:
                     value=round(self.vc.series_value(serie, self.xVal),2)
@@ -431,3 +430,5 @@ class MyPopup(QDialog):
                 self.lblValues[i].hide()
                 self.lblTitles[i].hide()
 
+    def mousePressEvent(self, event):
+        self.hide()

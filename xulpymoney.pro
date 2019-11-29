@@ -21,8 +21,6 @@ SOURCES         = \
                   xulpymoney/ui/frmEstimationsAdd.py \
                   xulpymoney/ui/Ui_frmEstimationsAdd.py \
                   xulpymoney/ui/frmHelp.py \
-                  xulpymoney/ui/Ui_frmHlContractAdd.py \
-                  xulpymoney/ui/frmHlContractAdd.py \
                   xulpymoney/ui/Ui_frmDPSAdd.py \
                   xulpymoney/ui/frmInit.py \
                   xulpymoney/ui/Ui_frmInit.py \
@@ -72,6 +70,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgCuriosity.py \
                   xulpymoney/ui/wdgDatetime.py \
                   xulpymoney/ui/Ui_wdgDatetime.py \
+                  xulpymoney/ui/wdgDerivativesReport.py \
+                  xulpymoney/ui/Ui_wdgDerivativesReport.py \
                   xulpymoney/ui/wdgDisReinvest.py \
                   xulpymoney/ui/Ui_wdgDisReinvest.py \
                   xulpymoney/ui/wdgDividendsReport.py \
@@ -134,7 +134,6 @@ FORMS           = \
                   xulpymoney/ui/frmDividendsAdd.ui \
                   xulpymoney/ui/frmEstimationsAdd.ui \
                   xulpymoney/ui/frmHelp.ui \
-                  xulpymoney/ui/frmHlContractAdd.ui \
                   xulpymoney/ui/frmInit.ui \
                   xulpymoney/ui/frmInvestmentOperationsAdd.ui \
                   xulpymoney/ui/frmInvestmentReport.ui \
@@ -156,6 +155,7 @@ FORMS           = \
                   xulpymoney/ui/wdgConceptsHistorical.ui \
                   xulpymoney/ui/wdgCuriosities.ui \
                   xulpymoney/ui/wdgDatetime.ui \
+                  xulpymoney/ui/wdgDerivatives.ui \
                   xulpymoney/ui/wdgDisReinvest.ui \
                   xulpymoney/ui/wdgDividendsReport.ui \
                   xulpymoney/ui/wdgIndexRange.ui \

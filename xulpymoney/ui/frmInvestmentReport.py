@@ -2,9 +2,8 @@ from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QVBoxLayout
 from datetime import date, timedelta
-from logging import debug
 from xulpymoney.casts import c2b
-from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string, HlContractManagerHomogeneus
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
 from xulpymoney.ui.myqcharts import VCTemporalSeries
@@ -14,7 +13,6 @@ from xulpymoney.ui.frmSellingPoint import frmSellingPoint
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
-from xulpymoney.ui.frmHlContractAdd import frmHlContractAdd
 from xulpymoney.ui.frmSplit import frmSplit
 from xulpymoney.ui.myqwidgets import qmessagebox
 
@@ -37,7 +35,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblOperationsAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistoricalAccountCurrency.settings(self.mem,  "frmInvestmentReport")
-        self.tblHlContracts.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         self.viewChart=None
@@ -151,26 +148,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.con.commit()
         self.investment.needStatus(3, downgrade_to=2)
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
-
-    @pyqtSlot() 
-    def on_actionContractAdd_triggered(self):
-        w=frmHlContractAdd(self.mem, self.investment,  None, self)
-        w.exec_()
-        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
-
-        
-    @pyqtSlot() 
-    def on_actionContractEdit_triggered(self):
-        w=frmHlContractAdd(self.mem, self.investment, self.hlcontracts.selected, self)
-        w.exec_()
-        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
-
-        
-    @pyqtSlot() 
-    def on_actionContractDelete_triggered(self):
-        self.investment.hlcontractmanager.delete_from_db(self.hlcontracts.selected)
-        self.mem.con.commit()
-        self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
 
     @pyqtSlot() 
     def on_actionChangeBenchmarkPrice_triggered(self):
@@ -504,41 +481,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         print ("Dividend selected: " +  str(self.investment.dividends.selected))        
 
 
-    def on_chkHistoricalContracts_stateChanged(self, state):
-        self.tblHlContracts.clearSelection()
-        if state==Qt.Unchecked:
-            if self.investment.op_actual.length()>0:
-                self.hlcontracts=self.investment.hlcontractmanager.ObjectManager_from_datetime (self.investment.op_actual.first().datetime, self.mem, self.investment)
-            else:
-                self.hlcontracts=HlContractManagerHomogeneus(self.mem, self.investment)
-        else:
-            self.hlcontracts=self.investment.hlcontractmanager
-            
-        self.hlcontracts.myqtablewidget(self.tblHlContracts, eMoneyCurrency.Product)
-
-    def on_tblHlContracts_itemSelectionChanged(self):
-        try:
-            for i in self.tblHlContracts.selectedItems():#itera por cada item no row.
-                self.hlcontracts.selected=self.hlcontracts.arr[i.row()]
-        except:
-            self.hlcontracts.cleanSelection()
-        debug(self.tr("Selected in tblHlContracts: {0}".format(str(self.hlcontracts.selected))))
-
-    def on_tblHlContracts_customContextMenuRequested(self,  pos):
-        if self.hlcontracts.selected:
-            self.actionContractEdit.setEnabled(True)
-            self.actionContractDelete.setEnabled(True)
-        else:
-            self.actionContractEdit.setEnabled(False)
-            self.actionContractDelete.setEnabled(False)
-            
-
-        menu=QMenu()
-        menu.addAction(self.actionContractAdd)
-        menu.addAction(self.actionContractEdit)
-        menu.addAction(self.actionContractDelete)       
-        
-        menu.exec_(self.tblHlContracts.mapToGlobal(pos))
         
     def on_tab_currentChanged(self, index): 
         if  index==5: #Repaints chart
