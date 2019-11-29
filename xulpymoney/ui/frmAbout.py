@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
-from xulpymoney.ui.qtablewidgetitems import qcenter, qempty, qright, qleft
+from xulpymoney.ui.qtablewidgetitems import qcenter, qempty, qright, qleft, qnumber
 from xulpymoney.datetime_functions import string2dtnaive
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
@@ -40,8 +40,10 @@ class frmAbout(QDialog, Ui_frmAbout):
         self.lblProductsVersion.setText(self.tr("Database version: {}").format(productsversion))
         self.tblSoftware.settings(self.mem, "frmAbout")
         self.tblStatistics.settings(self.mem, "frmAbout")
+        self.tblRegisters.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 
         self.load_tblSoftware()
+        self.load_tblRegisters()
         self.tblSoftware.itemClicked.connect(self.OpenLink)
         self.tblStatistics.applySettings()    
     
@@ -203,3 +205,15 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.tblSoftware.applySettings()
 
+
+    def load_tblRegisters(self):
+        rows=self.mem.con.cursor_one_column("SELECT tablename FROM pg_catalog.pg_tables where schemaname='public' order by tablename") 
+        self.tblRegisters.setColumnCount(2)
+        self.tblRegisters.setHorizontalHeaderItem(0, qcenter(self.tr("Table")))
+        self.tblRegisters.setHorizontalHeaderItem(1, qcenter(self.tr("Number of registers")))
+        self.tblRegisters.applySettings()
+        self.tblRegisters.clearContents()
+        self.tblRegisters.setRowCount(len(rows))
+        for i, row in enumerate(rows):
+            self.tblRegisters.setItem(i, 0, qleft(row))
+            self.tblRegisters.setItem(i, 1, qnumber(self.mem.con.cursor_one_field("select count(*) from "+ row), digits=0))

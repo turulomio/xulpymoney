@@ -182,6 +182,18 @@ class Ui_frmAbout(object):
         self.tblSoftware.setHorizontalHeaderItem(1, item)
         self.verticalLayout_3.addWidget(self.tblSoftware)
         self.tab.addTab(self.tabSoftware, "")
+        self.Database = QtWidgets.QWidget()
+        self.Database.setObjectName("Database")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Database)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.tblRegisters = myQTableWidget(self.Database)
+        self.tblRegisters.setObjectName("tblRegisters")
+        self.tblRegisters.setColumnCount(1)
+        self.tblRegisters.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tblRegisters.setHorizontalHeaderItem(0, item)
+        self.horizontalLayout_3.addWidget(self.tblRegisters)
+        self.tab.addTab(self.Database, "")
         self.tabLicense = QtWidgets.QWidget()
         self.tabLicense.setObjectName("tabLicense")
         self.vboxlayout = QtWidgets.QVBoxLayout(self.tabLicense)
@@ -191,7 +203,7 @@ class Ui_frmAbout(object):
         self.txtLicense.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:600;\">GNU GENERAL PUBLIC LICENSE</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Version 3, 29 June 2007 </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Copyright © 2007 Free Software Foundation, Inc. &lt;</span><a href=\"http://fsf.org/\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt; text-decoration: underline; color:#0057ae;\">http://fsf.org/</span></a><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">&gt;</span></p>\n"
@@ -397,6 +409,7 @@ class Ui_frmAbout(object):
         item = self.tblSoftware.horizontalHeaderItem(1)
         item.setText(_translate("frmAbout", "Url"))
         self.tab.setTabText(self.tab.indexOf(self.tabSoftware), _translate("frmAbout", "Software used"))
+        self.tab.setTabText(self.tab.indexOf(self.Database), _translate("frmAbout", "Database registers"))
         self.tab.setTabText(self.tab.indexOf(self.tabLicense), _translate("frmAbout", "License"))
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc
