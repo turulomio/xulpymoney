@@ -13,15 +13,16 @@ from odf.text import P
 from os import makedirs,  system
 from pytz import timezone
 from sys import exit
-from xulpymoney.casts import  string2list_of_integers
 from xulpymoney.version import __version__
 from xulpymoney.github import get_file_modification_dtaware
-from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware,dtaware2string
+from xulpymoney.datetime_functions import dtaware, dt_day_end, dtaware_day_end_from_date, dtaware_day_start_from_date, days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start, string2date, string2dtaware
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
 from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qcenter, qdate, qbool, qtime, qempty
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType, eTickerPosition,  eHistoricalChartAdjusts, eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
-from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
+from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  ObjectManager, ObjectManager_With_IdDate,  DictObjectManager_With_IdName_Selectable, ManagerSelectionMode
+from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationOfInvestmentOperation
+from xulpymoney.objects.comment import Comment
 from xulpymoney.ui.myqcharts import eOHCLDuration
 
 
@@ -127,46 +128,7 @@ class Percentage:
             return True
         return False
 
-## Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones
-class AccountOperationOfInvestmentOperation:
-    ## Constructor with the following attributes combination
-    ## 1. AccountOperationOfInvestmentOperation(mem). Create an account operation of an investment operation with all attributes to None
-    ## 2. AccountOperationOfInvestmentOperation(mem,  datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id). Create an account operation of an investment operation settings all attributes.1
-    ## @param mem MemXulpymoney object
-    ## @param datetime Datetime of the account operation
-    ## @param concepto Concept object
-    ## @param tipooperacion OperationType object
-    ## @param importe Decimal with the amount of the operation
-    ## @param comentario Account operation comment
-    ## @param account Account object
-    ## @param operinversion InvestmentOperation object that generates this account operation
-    ## @param id Integer that sets the id of an accoun operation. If id=None it's not in the database. id is set in the save method
-    def __init__(self, *args):
-        def init__create(datetime,  concepto, tipooperacion, importe, comentario, account, operinversion, inversion, id):
-            self.datetime=datetime
-            self.concepto=concepto
-            self.tipooperacion=tipooperacion
-            self.importe=importe
-            self.comentario=comentario
-            self.account=account
-            self.operinversion=operinversion
-            self.investment=inversion
-            self.id=id
-            
-        self.mem=args[0]
-        if len(args)==1:
-            init__create(None, None, None, None, None, None, None, None, None)
-        if len(args)==10:
-            init__create(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
 
-    def save(self):
-        cur=self.mem.con.cursor()
-        if self.id==None:
-            cur.execute("insert into opercuentasdeoperinversiones (datetime, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ( %s,%s,%s,%s,%s,%s,%s,%s) returning id_opercuentas", (self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.account.id, self.operinversion.id, self.investment.id))
-            self.id=cur.fetchone()[0]
-        else:
-            cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
-        cur.close()
 
 class SimulationTypeManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -1329,94 +1291,6 @@ class AccountManager(ObjectManager_With_IdName_Selectable):
                 if cc.active==True:
                     r.append(cc)
         return r
-
-
-class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
-    def __init__(self, mem):
-        DictObjectManager_With_IdDatetime_Selectable.__init__(self)
-        self.setSelectionMode(ManagerSelectionMode.Manager)
-        self.mem=mem
-
-    def load_from_db(self, sql):
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from opercuentas"
-        for row in cur:        
-            co=AccountOperation(self.mem,  row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts.find_by_id(row['id_cuentas']), row['id_opercuentas'])
-            self.append(co)
-        cur.close()
-
-    def load_from_db_with_creditcard(self, sql):
-        """Usado en unionall opercuentas y opertarjetas y se crea un campo id_tarjetas con el id de la tarjeta y -1 sino tiene es decir opercuentas"""
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from opercuentas"
-        fakeid=-999999999#AccountOperationManager is a DictObjectManager needs and id. tarjetasoperation is None, that's what i make a fake id
-        for row in cur:
-            if row['id_tarjetas']==-1:
-                comentario=row['comentario']
-            else:
-                comentario=QApplication.translate("Mem","Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
-            co=AccountOperation(self.mem, row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), fakeid)
-            self.append(co)
-            fakeid=fakeid+1
-        cur.close()
-
-    ## Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
-    ## show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)
-    def myqtablewidget(self, tabla, show_accounts=False):
-        ##HEADERS
-        diff=0
-        if show_accounts==True:
-            tabla.setColumnCount(7)
-            diff=1
-        else:
-            tabla.setColumnCount(6)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date" )))
-        if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Mem","Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate("Mem","Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Mem","Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Mem","Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem","Comment" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
-        ##DATA 
-        tabla.clearContents()
-        tabla.applySettings()
-        tabla.setRowCount(self.length())
-        tabla.setColumnHidden(5+diff, True)
-        balance=0
-        for rownumber, a in enumerate(self.values_order_by_datetime()):
-            balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
-            if show_accounts==True:
-                tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
-            tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
-            tabla.setItem(rownumber, 5+diff, qleft(a.id))
-            if self.selected.length()>0:
-                if a.id==self.selected.only().id:
-                    tabla.selectRow(rownumber+1)
-
-    def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(self.length()+1)
-        table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Mem", "Starting month balance")))
-        table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-        table.setColumnHidden(5, True)
-        for i, o in enumerate(self.values_order_by_datetime()):
-            importe=Money(self.mem, o.importe, account.currency)
-            lastmonthbalance=lastmonthbalance+importe
-            table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
-            table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
-            table.setItem(i+1, 2, importe.qtablewidgetitem())
-            table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).decode(o.comentario)))       
-            table.setItem(i+1, 5, qleft(o.id))
-            if self.selected.length()>0:
-                if o.id==self.selected.only().id:
-                    table.selectRow(i+1)
 
 class CurrencyManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -2985,136 +2859,6 @@ class InvestmentOperationCurrent:
         
         
 
-## Class who controls all comments from opercuentas, operinversiones ...
-class Comment(QObject):
-    def __init__(self, mem):
-        QObject.__init__(self)
-        self.mem=mem
-
-    ##Obtiene el codigo de un comentario
-    def getCode(self, string):
-        (code, args)=self.get(string)
-        return code        
-
-    def getArgs(self, string):
-        """
-            Obtiene los argumentos enteros de un comentario
-        """
-        (code, args)=self.get(string)
-        return args
-
-    def get(self, string):
-        """Returns (code,args)"""
-        string=string
-        try:
-            number=string2list_of_integers(string, separator=",")
-            if len(number)==1:
-                code=number[0]
-                args=[]
-            else:
-                code=number[0]
-                args=number[1:]
-            return(code, args)
-        except:
-            return(None, None)
-            
-    ## Function to generate a encoded comment using distinct parameters
-    ## Encode parameters can be:
-    ## - eComment.HlContract, hlcontract
-    ## - eComment.Dividend, dividend
-    ## - eComment.AccountTransferOrigin operaccountorigin, operaccountdestiny, operaccountorigincomission
-    ## - eComment.AccountTransferOriginCommission operaccountorigin, operaccountdestiny, operaccountorigincomission
-    ## - eComment.AccountTransferDestiny operaccountorigin, operaccountdestiny, operaccountorigincomission
-    ## - eComment.CreditCardBilling creditcard, operaccount
-    ## - eComment.CreditCardRefund opercreditcardtorefund
-    def encode(self, ecomment, *args):
-        if ecomment==eComment.HlContract:
-            return "{},{}".format(eComment.HlContract, args[0].id)        
-        elif ecomment==eComment.InvestmentOperation:
-            return "{},{}".format(eComment.InvestmentOperation, args[0].id)
-        elif ecomment==eComment.Dividend:
-            return "{},{}".format(eComment.Dividend, args[0].id)        
-        elif ecomment==eComment.AccountTransferOrigin:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferOrigin, args[0].id, args[1].id, operaccountorigincomission_id)
-        elif ecomment==eComment.AccountTransferOriginCommission:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferOriginCommission, args[0].id, args[1].id, operaccountorigincomission_id)
-        elif ecomment==eComment.AccountTransferDestiny:
-            operaccountorigincomission_id=-1 if args[2]==None else args[2].id
-            return "{},{},{},{}".format(eComment.AccountTransferDestiny, args[0].id, args[1].id, operaccountorigincomission_id)
-        elif ecomment==eComment.CreditCardBilling:
-            return "{},{},{}".format(eComment.CreditCardBilling, args[0].id, args[1].id)      
-        elif ecomment==eComment.CreditCardRefund:
-            return "{},{}".format(eComment.CreditCardRefund, args[0].id)        
-    
-    def validateLength(self, number, code, args):
-        if number!=len(args):
-            debug("Comment {} has not enough parameters".format(code))
-            return False
-        return True
-
-    def decode(self, string):
-        """Sets the comment to show in app"""
-        try:
-            (code, args)=self.get(string)
-            if code==None:
-                return string
-
-            if code==eComment.InvestmentOperation:
-                if not self.validateLength(1, code, args): return string
-                io=self.mem.data.investments.findInvestmentOperation(args[0])
-                if io==None: return string
-                if io.investment.hasSameAccountCurrency():
-                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
-                else:
-                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.comission(eMoneyCurrency.Product), io.comission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
-
-            elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
-                if not self.validateLength(3, code, args): return string
-                aod=AccountOperation(self.mem, args[1])
-                return QApplication.translate("Mem","Transfer to {}").format(aod.account.name)
-
-            elif code==eComment.AccountTransferDestiny:#Operaccount transfer destiny
-                if not self.validateLength(3, code, args): return string
-                aoo=AccountOperation(self.mem, args[0])
-                return QApplication.translate("Mem","Transfer received from {}").format(aoo.account.name)
-
-            elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin comision
-                if not self.validateLength(3, code, args): return string
-                aoo=AccountOperation(self.mem, args[0])
-                aod=AccountOperation(self.mem, args[1])
-                return QApplication.translate("Mem","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
-
-            elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
-                if not self.validateLength(1, code, args): return string
-                dividend=Dividend(self.mem).init__db_query(args[0])
-                investment=self.mem.data.investments.find_by_id(dividend.investment.id)
-                if investment.hasSameAccountCurrency():
-                    return QApplication.translate("Mem", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
-                else:
-                    return QApplication.translate("Mem", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
-
-            elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
-                if not self.validateLength(2, code, args): return string
-                creditcard=self.mem.data.accounts.find_creditcard_by_id(args[0])
-                number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
-                return QApplication.translate("Mem","Billing {} movements of {}").format(number, creditcard.name)
-
-            elif code==eComment.CreditCardRefund:#Devolución de tarjeta
-                if not self.validateLength(1, code, args): return string
-                cco=CreditCardOperation(self.mem).init__db_query(args[0])
-                money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
-                return QApplication.translate("Mem","Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
-
-            elif code==eComment.HlContract:
-                if not self.validateLength(1, code, args): return string
-                hlcontract=self.mem.data.investments.findHlContract(args[0])            
-                return self.tr("Daily contract of {} ({})").format(hlcontract.investment.name, hlcontract.investment.account.name) if hlcontract!=None else string
-        except:
-            return self.tr("Error decoding comment {}").format(string)
-
-
 ## Class to manage operation concepts for expenses, incomes... For example: Restuarant, Supermarket
 class Concept:
     ## Constructor with the following attributes combination
@@ -3210,84 +2954,6 @@ class Concept:
             suma=suma+i['suma']
         cur.close()
         return suma
-
-## Class to manage everything relationed with bank accounts operations
-class AccountOperation:
-    ## Constructor with the following attributes combination
-    ## 1. AccountOperation(mem). Create an account operation with all attributes to None
-    ## 2. AccountOperation(mem, id). Create an account operation searching data in the database for an id.
-    ## 3. AccountOperation(mem, row, concepto, tipooperacion, account). Create an account operation from a db row, generated in a database query
-    ## 4. AccountOperation(mem, datetime, concepto, tipooperacion, importe,  comentario, account, id):. Create account operation passing all attributes
-    ## @param mem MemXulpymoney object
-    ## @param row Dictionary of a database query cursor
-    ## @param concepto Concept object
-    ## @param tipooperacion OperationType object
-    ## @param account Account object
-    ## @param datetime Datetime of the account operation
-    ## @param importe Decimal with the amount of the operation
-    ## @param comentario Account operation comment
-    ## @param id Integer that sets the id of an accoun operation. If id=None it's not in the database. id is set in the save method
-    def __init__(self, *args):
-        def init__create(dt, concepto, tipooperacion, importe,  comentario, cuenta, id):
-            self.id=id
-            self.datetime=dt
-            self.concepto=concepto
-            self.tipooperacion=tipooperacion
-            self.importe=importe
-            self.comentario=comentario
-            self.account=cuenta
-            
-        def init__db_row(row, concepto,  tipooperacion, cuenta):
-            init__create(row['datetime'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
-
-        def init__db_query(id_opercuentas):
-            """Creates a AccountOperation querying database for an id_opercuentas"""
-            cur=self.mem.con.cursor()
-            cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
-            for row in cur:
-                concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
-                init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_by_id(row['id_cuentas']))
-            cur.close()
-
-        self.mem=args[0]
-        if  len(args)==1:
-            init__create(None, None, None, None, None, None, None)
-        if len(args)==2:
-            init__db_query(args[1])
-        if len(args)==5:
-            init__db_row(args[1], args[2], args[3], args[4])
-        if len(args)==8:
-            init__create(args[1], args[2], args[3], args[4], args[5], args[6], args[7])
-
-    def __repr__(self):
-        return "AccountOperation: {}".format(self.id)
-
-    def borrar(self):
-        cur=self.mem.con.cursor()
-        cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
-        cur.close()
-
-    def es_editable(self):
-        if self.concepto==None:
-            return False
-        if self.concepto.id in (eConcept.BuyShares, eConcept.SellShares, 
-            eConcept.Dividends, eConcept.CreditCardBilling, eConcept.AssistancePremium,
-            eConcept.DividendsSaleRights, eConcept.BondsCouponRunPayment, eConcept.BondsCouponRunIncome, 
-            eConcept.BondsCoupon):
-            return False
-        if Comment(self.mem).getCode(self.comentario) in (eComment.AccountTransferOrigin, eComment.AccountTransferDestiny, eComment.AccountTransferOriginCommission):
-            return False        
-        return True
-        
-    def save(self):
-        cur=self.mem.con.cursor()
-        if self.id==None:
-            cur.execute("insert into opercuentas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.account.id))
-            self.id=cur.fetchone()[0]
-        else:
-            cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
-        cur.close()
-
 
         
 class DBData:

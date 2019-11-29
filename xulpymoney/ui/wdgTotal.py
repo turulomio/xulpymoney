@@ -3,11 +3,12 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
-from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, AccountOperationManager, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
+from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0
 from xulpymoney.ui.qtablewidgetitems import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
+from xulpymoney.objects.accountoperation import AccountOperationManager
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
 from xulpymoney.ui.myqcharts import VCTemporalSeries

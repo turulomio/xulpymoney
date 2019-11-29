@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
 from xulpymoney.ui.myqtablewidget import myQTableWidget
-from xulpymoney.libxulpymoney import AccountOperationManager
+from xulpymoney.objects.accountoperation import AccountOperationManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.qtablewidgetitems import qcenter
 from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical

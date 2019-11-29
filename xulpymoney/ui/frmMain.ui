@@ -101,6 +101,7 @@
     <addaction name="separator"/>
     <addaction name="actionLastOperation"/>
     <addaction name="actionInvestmentsOperations"/>
+    <addaction name="actionDerivativesReport"/>
     <addaction name="separator"/>
     <addaction name="actionCalculator"/>
     <addaction name="separator"/>
@@ -283,6 +284,7 @@
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionLastOperation"/>
+   <addaction name="actionDerivativesReport"/>
    <addaction name="actionConcepts"/>
    <addaction name="actionDividendsReport"/>
    <addaction name="actionInvestmentsClasses"/>
@@ -1172,6 +1174,18 @@
    </property>
    <property name="toolTip">
     <string>Import intraday csv from Investing.com</string>
+   </property>
+  </action>
+  <action name="actionDerivativesReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Derivatives report</string>
+   </property>
+   <property name="toolTip">
+    <string>Derivatives report</string>
    </property>
   </action>
  </widget>

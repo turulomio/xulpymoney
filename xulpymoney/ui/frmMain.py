@@ -144,9 +144,16 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionMemory_triggered(self):        
         self.mem.settings.sync()
         self.mem.load_db_data()
-        
-        
-    @pyqtSlot()  
+
+    @pyqtSlot()
+    def on_actionDerivativesReport_triggered(self):
+        from xulpymoney.ui.wdgDerivativesReport import wdgDerivativesReport
+        self.w.close()
+        self.w=wdgDerivativesReport(self.mem, self)
+        self.layout.addWidget(self.w)
+        self.w.show()
+
+    @pyqtSlot()
     def on_actionDividendsReport_triggered(self):
         self.w.close()
         self.w=wdgDividendsReport(self.mem, self)

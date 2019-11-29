@@ -1,50 +1,47 @@
-from PyQt5.QtWidgets import QDialog
-from decimal import Decimal
-from xulpymoney.hlcontracts import HlContract
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.ui.Ui_frmHlContractAdd import Ui_frmHlContractAdd
+from PyQt5.QtWidgets import QWidget
+from xulpymoney.libxulpymoney import InvestmentOperationHistoricalHeterogeneusManager, InvestmentOperationCurrentHeterogeneusManager
+from xulpymoney.libxulpymoneytypes import eConcept, eProductType
+from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
+from xulpymoney.ui.Ui_wdgDerivativesReport import Ui_wdgDerivativesReport
 
-class frmHlContractAdd(QDialog, Ui_frmHlContractAdd):
+class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
     def __init__(self, mem, investment, hlcontract=None,  parent=None):
-        """
-        Si dividend es None se insertar
-        Si dividend es un objeto se modifica"""
-        QDialog.__init__(self, parent)
+        QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.investment=investment
-        self.hlcontract=hlcontract
-
-        self.wdgDT.setLocalzone(self.mem.localzone_name)
-        self.wdgDT.show_microseconds(False)
-        self.wdgDT.show_timezone(False)
-        if self.hlcontract==None:#insert
-            self.hlcontract=HlContract(self.mem, self.investment)
-            self.cmd.setText(self.tr("Add new High-Low contract"))
-            self.wdgDT.set(None, self.mem.localzone_name)
-        else:#update
-            self.wdgDT.set(self.hlcontract.datetime, self.mem.localzone_name)
-            self.txtGuarantee.setText(self.hlcontract.guarantee)
-            self.txtAdjustment.setText(self.hlcontract.adjustment)
-            self.txtInterest.setText(self.hlcontract.interest)
-            self.txtCommission.setText(self.hlcontract.commission)
-            self.cmd.setText(self.tr("Update High-Low contract"))
-
-    def on_cmd_pressed(self):                        
-        if self.txtCommission.decimal()<Decimal('0'):
-            qmessagebox(self.tr("Commissions can't be a negative amount"))
-            return
         
-        try:
-            self.hlcontract.guarantee=self.txtGuarantee.decimal()
-            self.hlcontract.adjustment=self.txtAdjustment.decimal()
-            self.hlcontract.commission=self.txtCommission.decimal()
-            self.hlcontract.interest=self.txtInterest.decimal()
-            self.hlcontract.datetime=self.wdgDT.datetime()
-        except:
-            qmessagebox(self.tr("Data error. Please check them."))
-            return
+        adjustments=AccountOperationManagerHeterogeneus(self.mem)
+        adjustments.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlAdjustmentIincome, eConcept.HlAdjustmentExpense)))
+        guarantees=AccountOperationManagerHeterogeneus(self.mem)
+        guarantees.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned)))
+        comissions=AccountOperationManagerHeterogeneus(self.mem)
+        comissions.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s)", (eConcept.HlCommission, )))
+        interest=AccountOperationManagerHeterogeneus(self.mem)
+        interest.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlInterestPaid, eConcept.HlInterestReceived)))
+        
+        iohhm=self.InvestmentOperationHistoricalHeterogeneusManager_derivatives()
+        iochm=self.InvestmentOperationCurrentHeterogeneusManager_derivatives()
+        print("Total ajustes", adjustments.balance())
+        print("Total garantías", guarantees.balance())
+        print("Total comisiones", comissions.balance())
+        print("Total intereses",  interest.balance())
+        print("Total operaciones históricas", iohhm.consolidado_bruto())
+        print("Total operaciones actuales", iochm.pendiente())
+        
+    def InvestmentOperationHistoricalHeterogeneusManager_derivatives(self):
+        r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
+        for o in self.mem.data.investments.arr:
+            if o.product.type.id in (eProductType.CFD, eProductType.Future):
+                o.needStatus(2)
+                for op in o.op_historica.arr:
+                    r.append(op)
+        return r
 
-        self.hlcontract.save()
-        self.mem.con.commit()
-        self.done(0)
+    def InvestmentOperationCurrentHeterogeneusManager_derivatives(self):
+        r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
+        for o in self.mem.data.investments.arr:
+            if o.product.type.id in (eProductType.CFD, eProductType.Future):
+                o.needStatus(2)
+                for op in o.op_actual.arr:
+                    r.append(op)
+        return r

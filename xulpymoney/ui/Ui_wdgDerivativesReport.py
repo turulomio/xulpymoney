@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'xulpymoney/ui/frmHlContractAdd.ui'
+# Form implementation generated from reading ui file 'xulpymoney/ui/wdgDerivativesReport.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.2
 #
@@ -10,20 +10,16 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_frmHlContractAdd(object):
-    def setupUi(self, frmHlContractAdd):
-        frmHlContractAdd.setObjectName("frmHlContractAdd")
-        frmHlContractAdd.setWindowModality(QtCore.Qt.WindowModal)
-        frmHlContractAdd.resize(450, 290)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/dividends.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        frmHlContractAdd.setWindowIcon(icon)
-        frmHlContractAdd.setModal(True)
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(frmHlContractAdd)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+class Ui_wdgDerivativesReport(object):
+    def setupUi(self, wdgDerivativesReport):
+        wdgDerivativesReport.setObjectName("wdgDerivativesReport")
+        wdgDerivativesReport.setProperty("modal", False)
+        wdgDerivativesReport.resize(450, 290)
+        self._2 = QtWidgets.QHBoxLayout(wdgDerivativesReport)
+        self._2.setObjectName("_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.lblTitulo = QtWidgets.QLabel(frmHlContractAdd)
+        self.lblTitulo = QtWidgets.QLabel(wdgDerivativesReport)
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -37,7 +33,7 @@ class Ui_frmHlContractAdd(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.wdgDT = wdgDatetime(frmHlContractAdd)
+        self.wdgDT = wdgDatetime(wdgDerivativesReport)
         self.wdgDT.setObjectName("wdgDT")
         self.horizontalLayout.addWidget(self.wdgDT)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -45,10 +41,10 @@ class Ui_frmHlContractAdd(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
-        self.label = QtWidgets.QLabel(frmHlContractAdd)
+        self.label = QtWidgets.QLabel(wdgDerivativesReport)
         self.label.setObjectName("label")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.txtGuarantee = myQLineEdit(frmHlContractAdd)
+        self.txtGuarantee = myQLineEdit(wdgDerivativesReport)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -57,10 +53,10 @@ class Ui_frmHlContractAdd(object):
         self.txtGuarantee.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtGuarantee.setObjectName("txtGuarantee")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.txtGuarantee)
-        self.lblLiquido_7 = QtWidgets.QLabel(frmHlContractAdd)
+        self.lblLiquido_7 = QtWidgets.QLabel(wdgDerivativesReport)
         self.lblLiquido_7.setObjectName("lblLiquido_7")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.lblLiquido_7)
-        self.txtAdjustment = myQLineEdit(frmHlContractAdd)
+        self.txtAdjustment = myQLineEdit(wdgDerivativesReport)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -69,7 +65,7 @@ class Ui_frmHlContractAdd(object):
         self.txtAdjustment.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtAdjustment.setObjectName("txtAdjustment")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.txtAdjustment)
-        self.txtInterest = myQLineEdit(frmHlContractAdd)
+        self.txtInterest = myQLineEdit(wdgDerivativesReport)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -78,7 +74,7 @@ class Ui_frmHlContractAdd(object):
         self.txtInterest.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtInterest.setObjectName("txtInterest")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.txtInterest)
-        self.txtCommission = myQLineEdit(frmHlContractAdd)
+        self.txtCommission = myQLineEdit(wdgDerivativesReport)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -87,10 +83,10 @@ class Ui_frmHlContractAdd(object):
         self.txtCommission.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtCommission.setObjectName("txtCommission")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.txtCommission)
-        self.lblGross = QtWidgets.QLabel(frmHlContractAdd)
+        self.lblGross = QtWidgets.QLabel(wdgDerivativesReport)
         self.lblGross.setObjectName("lblGross")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.lblGross)
-        self.lblLiquido = QtWidgets.QLabel(frmHlContractAdd)
+        self.lblLiquido = QtWidgets.QLabel(wdgDerivativesReport)
         self.lblLiquido.setObjectName("lblLiquido")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.lblLiquido)
         self.verticalLayout.addLayout(self.formLayout)
@@ -98,36 +94,35 @@ class Ui_frmHlContractAdd(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
-        self.cmd = QtWidgets.QPushButton(frmHlContractAdd)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/xulpymoney/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.cmd.setIcon(icon1)
+        self.cmd = QtWidgets.QPushButton(wdgDerivativesReport)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.cmd.setIcon(icon)
         self.cmd.setObjectName("cmd")
         self.horizontalLayout_2.addWidget(self.cmd)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem3)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout_3.addLayout(self.verticalLayout)
+        self._2.addLayout(self.verticalLayout)
 
-        self.retranslateUi(frmHlContractAdd)
-        QtCore.QMetaObject.connectSlotsByName(frmHlContractAdd)
-        frmHlContractAdd.setTabOrder(self.txtAdjustment, self.txtGuarantee)
-        frmHlContractAdd.setTabOrder(self.txtGuarantee, self.txtInterest)
-        frmHlContractAdd.setTabOrder(self.txtInterest, self.txtCommission)
-        frmHlContractAdd.setTabOrder(self.txtCommission, self.cmd)
+        self.retranslateUi(wdgDerivativesReport)
+        QtCore.QMetaObject.connectSlotsByName(wdgDerivativesReport)
+        wdgDerivativesReport.setTabOrder(self.txtAdjustment, self.txtGuarantee)
+        wdgDerivativesReport.setTabOrder(self.txtGuarantee, self.txtInterest)
+        wdgDerivativesReport.setTabOrder(self.txtInterest, self.txtCommission)
+        wdgDerivativesReport.setTabOrder(self.txtCommission, self.cmd)
 
-    def retranslateUi(self, frmHlContractAdd):
+    def retranslateUi(self, wdgDerivativesReport):
         _translate = QtCore.QCoreApplication.translate
-        frmHlContractAdd.setWindowTitle(_translate("frmHlContractAdd", "Daily high-low investment contract"))
-        self.lblTitulo.setText(_translate("frmHlContractAdd", "Daily high-low investment contract"))
-        self.label.setText(_translate("frmHlContractAdd", "Guarantee amount"))
-        self.txtGuarantee.setText(_translate("frmHlContractAdd", "0"))
-        self.lblLiquido_7.setText(_translate("frmHlContractAdd", "Adjustment amount"))
-        self.txtAdjustment.setText(_translate("frmHlContractAdd", "0"))
-        self.txtInterest.setText(_translate("frmHlContractAdd", "0"))
-        self.txtCommission.setText(_translate("frmHlContractAdd", "0"))
-        self.lblGross.setText(_translate("frmHlContractAdd", "Interest amount"))
-        self.lblLiquido.setText(_translate("frmHlContractAdd", "Commission amount"))
+        self.lblTitulo.setText(_translate("wdgDerivativesReport", "Daily high-low investment contract"))
+        self.label.setText(_translate("wdgDerivativesReport", "Guarantee amount"))
+        self.txtGuarantee.setText(_translate("wdgDerivativesReport", "0"))
+        self.lblLiquido_7.setText(_translate("wdgDerivativesReport", "Adjustment amount"))
+        self.txtAdjustment.setText(_translate("wdgDerivativesReport", "0"))
+        self.txtInterest.setText(_translate("wdgDerivativesReport", "0"))
+        self.txtCommission.setText(_translate("wdgDerivativesReport", "0"))
+        self.lblGross.setText(_translate("wdgDerivativesReport", "Interest amount"))
+        self.lblLiquido.setText(_translate("wdgDerivativesReport", "Commission amount"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgDatetime import wdgDatetime
-import xulpymoney.images.xulpymoney.images.xulpymoney_rc
+import xulpymoney.images.xulpymoney_rc

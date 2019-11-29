@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmHlContractAdd</class>
- <widget class="QDialog" name="frmHlContractAdd">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+ <class>wdgDerivativesReport</class>
+ <widget class="QWidget" name="wdgDerivativesReport">
+  <property name="modal" stdset="0">
+   <bool>false</bool>
   </property>
   <property name="geometry">
    <rect>
@@ -13,17 +13,7 @@
     <height>290</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Daily high-low investment contract</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="../images/xulpymoney.qrc">
-    <normaloff>:/xulpymoney/dividends.png</normaloff>:/xulpymoney/dividends.png</iconset>
-  </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QHBoxLayout" name="_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
