@@ -39,7 +39,7 @@ class eOperationType:
     TransferFunds=8
     TransferSharesOrigin=9
     TransferSharesDestiny=10
-    HlContract=11
+    DerivativeManagement=11
     
 class eTickerPosition(IntEnum):
     """It's the number to access to a python list,  not to postgresql. In postgres it will be +1"""
@@ -60,13 +60,11 @@ class eTickerPosition(IntEnum):
 class eComment:
     InvestmentOperation=10000
     Dividend=10004
-    HlContract=10007
     AccountTransferOrigin=10001
     AccountTransferDestiny=10002
     AccountTransferOriginCommission=10003
     CreditCardBilling=10005
-    CreditCardRefund=10006# Estaba en 10007
-
+    CreditCardRefund=10006
 
 ## System concepts tipified
 class eConcept:

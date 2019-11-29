@@ -39,7 +39,7 @@ class Comment(QObject):
             
     ## Function to generate a encoded comment using distinct parameters
     ## Encode parameters can be:
-    ## - eComment.HlContract, hlcontract
+    ## - eComment.DerivativeManagement, hlcontract
     ## - eComment.Dividend, dividend
     ## - eComment.AccountTransferOrigin operaccountorigin, operaccountdestiny, operaccountorigincommission
     ## - eComment.AccountTransferOriginCommission operaccountorigin, operaccountdestiny, operaccountorigincommission
@@ -47,8 +47,8 @@ class Comment(QObject):
     ## - eComment.CreditCardBilling creditcard, operaccount
     ## - eComment.CreditCardRefund opercreditcardtorefund
     def encode(self, ecomment, *args):
-        if ecomment==eComment.HlContract:
-            return "{},{}".format(eComment.HlContract, args[0].id)        
+        if ecomment==eComment.DerivativeManagement:
+            return "{},{}".format(eComment.DerivativeManagement, args[0].id)        
         elif ecomment==eComment.InvestmentOperation:
             return "{},{}".format(eComment.InvestmentOperation, args[0].id)
         elif ecomment==eComment.Dividend:
@@ -128,11 +128,6 @@ class Comment(QObject):
                 cco=CreditCardOperation(self.mem).init__db_query(args[0])
                 money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
                 return QApplication.translate("Mem","Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
-
-            elif code==eComment.HlContract:
-                if not self.validateLength(1, code, args): return string
-                hlcontract=self.mem.data.investments.findHlContract(args[0])            
-                return self.tr("Daily contract of {} ({})").format(hlcontract.investment.name, hlcontract.investment.account.name) if hlcontract!=None else string
         except:
             return self.tr("Error decoding comment {}").format(string)
 

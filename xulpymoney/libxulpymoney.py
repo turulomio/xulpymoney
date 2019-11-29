@@ -342,19 +342,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 if o.id==id:
                     return o
         return None
-        
-    ## Finds a HlContract in all investment of this manager
-    ## @param Integer with the id of the hlcontract to find
-    ## @return HlContract
-    def findHlContract(self, id):
-        for inv in self.arr:
-            if inv.product.high_low==True:
-                for o in inv.hlcontractmanager.arr:
-                    if o.id==id:
-                        return o
-        return None
-            
-            
+
     def revaluation_monthly(self, type_id,  year, month):
         """
             Used to get investments type_id revauation montyly
@@ -487,11 +475,7 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
 
                 for d in inv.dividends.arr:
                     r.dividends.append(d)
-
-                if inv.product.high_low==True:
-                    for o in inv.hlcontractmanager.arr:
-                        r.hlcontractmanager.append(o)
-                    
+                   
         r.dividends.order_by_datetime()
         r.op.order_by_datetime()
         (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
@@ -3672,8 +3656,6 @@ class Investment:
         r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
         (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
         r.dividends=self.dividends.ObjectManager_copy_until_datetime(dt, self.mem, r)
-        if r.product.high_low==True:
-            r.hlcontractmanager=self.hlcontractmanager.ObjectManager_until_datetime(dt, self.mem, r)
         return r
 
     def copy(self ):
@@ -4476,7 +4458,7 @@ class OperationTypeManager(DictObjectManager_With_IdName_Selectable):
         self.append(OperationType().init__create( QApplication.translate("Mem","Transfer of funds"), eOperationType.TransferFunds)) #Se contabilizan como ganancia
         self.append(OperationType().init__create( QApplication.translate("Mem","Transfer of shares. Origin"), eOperationType.TransferSharesOrigin)) #No se contabiliza
         self.append(OperationType().init__create( QApplication.translate("Mem","Transfer of shares. Destiny"), eOperationType.TransferSharesDestiny)) #No se contabiliza     
-        self.append(OperationType().init__create( QApplication.translate("Mem","HL investment guarantee"), eOperationType.HlContract)) #No se contabiliza     
+        self.append(OperationType().init__create( QApplication.translate("Mem","HL investment guarantee"), eOperationType.DerivativeManagement)) #No se contabiliza     
 
 
     def qcombobox_basic(self, combo,  selected=None):

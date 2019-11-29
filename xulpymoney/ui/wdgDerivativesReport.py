@@ -5,7 +5,7 @@ from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogen
 from xulpymoney.ui.Ui_wdgDerivativesReport import Ui_wdgDerivativesReport
 
 class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
-    def __init__(self, mem, investment, hlcontract=None,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
