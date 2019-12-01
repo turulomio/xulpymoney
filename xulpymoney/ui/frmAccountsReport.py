@@ -27,7 +27,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         QDialog.__init__(self, parent)
         self.mem=mem
         self.account=account#Registro de account
-        print(self.account, id(self.account))
         self.setupUi(self)
         self.showMaximized()
         self.cmdDatos.setEnabled(False)     
@@ -60,8 +59,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmdDatos.setText(self.tr("Add a new account"))
         else:
             self.account.needStatus(1)
-            print(self.account, self.account.status, id(self.account))
-            print(self.account.creditcards.length())
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.account.name)
             self.txtAccount.setText(self.account.name)

@@ -123,11 +123,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
             self.chkHistoricalDividends.setEnabled(True)
-        
-        #Show contracts if it's a hig_low product
-        if self.investment.product.high_low==True:
-            self.on_chkHistoricalContracts_stateChanged(self.chkHistoricalContracts.checkState())
-
 
     @pyqtSlot() 
     def on_actionDividendAdd_triggered(self):
