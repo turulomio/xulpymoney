@@ -16,19 +16,25 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         guarantees.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlGuaranteePaid, eConcept.HlGuaranteeReturned)))
         commissions=AccountOperationManagerHeterogeneus(self.mem)
         commissions.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s)", (eConcept.HlCommission, )))
+        rollover=AccountOperationManagerHeterogeneus(self.mem)
+        rollover.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s)", (eConcept.RolloverPaid, )))
         interest=AccountOperationManagerHeterogeneus(self.mem)
         interest.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_conceptos in (%s,%s)", (eConcept.HlInterestPaid, eConcept.HlInterestReceived)))
         iohhm=self.InvestmentOperationHistoricalHeterogeneusManager_derivatives()
         iochm=self.InvestmentOperationCurrentHeterogeneusManager_derivatives()
+        s=""
+        s=s+"Total ajustes {}\n".format(adjustments.balance())
+        s=s+"Total garantías: {}\n".format(guarantees.balance())
+        s=s+"Total comisiones: {}\n".format(commissions.balance())
+        s=s+"Total intereses: {}\n".format( interest.balance())
+        s=s+"Total operaciones históricas: {}\n".format(iohhm.consolidado_bruto())
+        s=s+"Total operaciones actuales: {}\n".format(iochm.pendiente())
+        s=s+"Total rollover pagado: {}\n".format(rollover.balance())
+        s=s+"Comisiones actuales e históricas: {} + {} = {}\n".format(iochm.commissions(), iohhm.commissions(), iohhm.commissions()+iochm.commissions())
+        s=s+"Resultado=OpHist+OpActu-Comisiones-Rollover= {} + {} + {} + {} = {}".format(iohhm.consolidado_bruto(), iochm.pendiente(), commissions.balance(), rollover.balance(), iohhm.consolidado_bruto()+iochm.pendiente()+commissions.balance()+rollover.balance())
+        self.textBrowser.setText(s)
 
-        print("Total ajustes", adjustments.balance())
-        print("Total garantías", guarantees.balance())
-        print("Total comisiones", commissions.balance())
-        print("Total intereses",  interest.balance())
-        print("Total operaciones históricas", iohhm.consolidado_bruto())
-        print("Total operaciones actuales", iochm.pendiente())
-        print("Comisiones actuales e históricas: {} + {} = {} ".format(iochm.commissions(), iohhm.commissions(), iohhm.commissions()+iochm.commissions()))
-        
+
     def InvestmentOperationHistoricalHeterogeneusManager_derivatives(self):
         r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
         for o in self.mem.data.investments.arr:

@@ -59,6 +59,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmdDatos.setText(self.tr("Add a new account"))
         else:
             self.account.needStatus(1)
+            print(self.account, self.account.status, id(self.account))
+            print(self.account.creditcards.length())
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.account.name)
             self.txtAccount.setText(self.account.name)
@@ -148,12 +150,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.accountoperations=AccountOperationManager(self.mem)           
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
         self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones,  self.account,  lastMonthBalance)   
-
-    ## Used to update credit card and operations without selection. If you need selection, use on_CreditCardOperationChanged 
-    ##    o=None, significa que hay que actualizar las tarjetas sin seleccionar
-    ##    o=CreditCard, significa que hay que actualizar las tarjetas seleccionandola 
-
-
 
     @pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
@@ -399,11 +395,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.lblPago.setText(self.mem.localcurrency.string(self.creditcardoperations.selected.balance()))
 
     def on_CreditCardOperationChanged(self):
-        """ ES DISTINTA A CREDIRCARDCHANGED NO JUNTAR
-            o=None, significa que hay que actualizar las tarjetas sin seleccionar
-            o=List, significa que hay que actualizar creditcardoperation, usando el id de la tarjeta seleccionada
-        """          
-
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)
         self.tblCreditCardOpers.setRowCount(0)
 
