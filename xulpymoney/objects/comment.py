@@ -47,9 +47,7 @@ class Comment(QObject):
     ## - eComment.CreditCardBilling creditcard, operaccount
     ## - eComment.CreditCardRefund opercreditcardtorefund
     def encode(self, ecomment, *args):
-        if ecomment==eComment.DerivativeManagement:
-            return "{},{}".format(eComment.DerivativeManagement, args[0].id)        
-        elif ecomment==eComment.InvestmentOperation:
+        if ecomment==eComment.InvestmentOperation:
             return "{},{}".format(eComment.InvestmentOperation, args[0].id)
         elif ecomment==eComment.Dividend:
             return "{},{}".format(eComment.Dividend, args[0].id)        
