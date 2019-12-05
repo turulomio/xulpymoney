@@ -35,7 +35,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
             inv.needStatus(3)
             gains_current=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
             gains_historical=inv.op_historica.consolidado_bruto(type=3)
-            dividends_gross=inv.dividends.gross(type=eMoneyCurrency.User, current=False)
+            dividends_gross=inv.dividends.gross(eMoneyCurrency.User, current=False)
             total=gains_current+gains_historical+dividends_gross
             sumcurrent=sumcurrent+gains_current
             sumhistorical=sumhistorical+gains_historical
@@ -82,7 +82,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
                 if inv.product.id==product.id:
                     current=current+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
                     historical=historical+inv.op_historica.consolidado_bruto(type=3)
-                    dividends=dividends+inv.dividends.gross(type=eMoneyCurrency.User, current=False)
+                    dividends=dividends+inv.dividends.gross(eMoneyCurrency.User, current=False)
             sumcurrent=sumcurrent+current
             sumhistorical=sumhistorical+historical
             sumdividends=sumdividends+dividends

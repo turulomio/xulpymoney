@@ -3118,6 +3118,7 @@ class Dividend:
             return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+
     def net(self, type=1):
         if type==1:
             return Money(self.mem, self.neto, self.investment.product.currency)
