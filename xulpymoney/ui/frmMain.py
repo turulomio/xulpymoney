@@ -465,6 +465,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
+
+    @pyqtSlot()  
+    def on_actionReportIssue_triggered(self):        
+            QDesktopServices.openUrl(QUrl("https://github.com/turulomio/xulpymoney/issues/new"))
+
     @pyqtSlot()  
     def on_actionSharesAll_triggered(self):
         self.w.close()

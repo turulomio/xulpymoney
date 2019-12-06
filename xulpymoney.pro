@@ -1,7 +1,6 @@
 SOURCES         = \
                   xulpymoney/libdbupdates.py \
                   xulpymoney/libxulpymoney.py \
-                  xulpymoney/ui/canvaschart.py \
                   xulpymoney/ui/frmAbout.py \
                   xulpymoney/ui/Ui_frmAbout.py \
                   xulpymoney/ui/frmAccess.py \
@@ -49,6 +48,7 @@ SOURCES         = \
                   xulpymoney/ui/frmTransfer.py \
                   xulpymoney/ui/Ui_frmTransfer.py \
                   xulpymoney/ui/wdgProductSelector.py \
+                  xulpymoney/ui/myqcharts.py \
                   xulpymoney/ui/myqlineedit.py \
                   xulpymoney/ui/myqtablewidget.py \
                   xulpymoney/ui/wdgCurrencyConversion.py \
@@ -155,7 +155,7 @@ FORMS           = \
                   xulpymoney/ui/wdgConceptsHistorical.ui \
                   xulpymoney/ui/wdgCuriosities.ui \
                   xulpymoney/ui/wdgDatetime.ui \
-                  xulpymoney/ui/wdgDerivatives.ui \
+                  xulpymoney/ui/wdgDerivativesReport.ui \
                   xulpymoney/ui/wdgDisReinvest.ui \
                   xulpymoney/ui/wdgDividendsReport.ui \
                   xulpymoney/ui/wdgIndexRange.ui \

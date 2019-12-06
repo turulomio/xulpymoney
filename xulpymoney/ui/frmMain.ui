@@ -57,6 +57,8 @@
     <addaction name="separator"/>
     <addaction name="actionCuriosities"/>
     <addaction name="separator"/>
+    <addaction name="actionReportIssue"/>
+    <addaction name="separator"/>
     <addaction name="actionHelp"/>
    </widget>
    <widget class="QMenu" name="menuBancos">
@@ -99,9 +101,7 @@
     <addaction name="separator"/>
     <addaction name="actionInvestmentsClasses"/>
     <addaction name="separator"/>
-    <addaction name="actionLastOperation"/>
     <addaction name="actionInvestmentsOperations"/>
-    <addaction name="actionDerivativesReport"/>
     <addaction name="separator"/>
     <addaction name="actionCalculator"/>
     <addaction name="separator"/>
@@ -248,12 +248,23 @@
     <addaction name="separator"/>
     <addaction name="actionSyncProducts"/>
    </widget>
+   <widget class="QMenu" name="menuStrategies">
+    <property name="title">
+     <string>&amp;Strategies</string>
+    </property>
+    <addaction name="actionIndexRange"/>
+    <addaction name="separator"/>
+    <addaction name="actionLastOperation"/>
+    <addaction name="separator"/>
+    <addaction name="actionDerivativesReport"/>
+   </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
    <addaction name="menuCuentas"/>
    <addaction name="menuInversiones"/>
-   <addaction name="menuInformes"/>
    <addaction name="menuProducts"/>
+   <addaction name="menuInformes"/>
+   <addaction name="menuStrategies"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QToolBar" name="tbMain">
@@ -281,17 +292,6 @@
    <addaction name="separator"/>
    <addaction name="actionOrders"/>
    <addaction name="actionPurchaseOpportunities"/>
-   <addaction name="separator"/>
-   <addaction name="actionIndexRange"/>
-   <addaction name="actionLastOperation"/>
-   <addaction name="actionDerivativesReport"/>
-   <addaction name="actionConcepts"/>
-   <addaction name="actionDividendsReport"/>
-   <addaction name="actionInvestmentsClasses"/>
-   <addaction name="actionTotalReport"/>
-   <addaction name="actionInvestmentRanking"/>
-   <addaction name="separator"/>
-   <addaction name="actionCalculator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="tbProducts">
@@ -310,6 +310,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionCalculator"/>
    <addaction name="actionShowBenchmark"/>
    <addaction name="actionFavorites"/>
    <addaction name="actionIndexesAll"/>
@@ -332,6 +333,36 @@
    </attribute>
    <addaction name="actionSettings"/>
    <addaction name="actionExit"/>
+  </widget>
+  <widget class="QToolBar" name="tbStrategies">
+   <property name="windowTitle">
+    <string>Strategies toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionIndexRange"/>
+   <addaction name="actionLastOperation"/>
+   <addaction name="actionDerivativesReport"/>
+  </widget>
+  <widget class="QToolBar" name="tbReports">
+   <property name="windowTitle">
+    <string>Reports toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionConcepts"/>
+   <addaction name="actionInvestmentsClasses"/>
+   <addaction name="actionDividendsReport"/>
+   <addaction name="actionTotalReport"/>
+   <addaction name="actionInvestmentRanking"/>
   </widget>
   <action name="actionExit">
    <property name="icon">
@@ -1186,6 +1217,18 @@
    </property>
    <property name="toolTip">
     <string>Derivatives report</string>
+   </property>
+  </action>
+  <action name="actionReportIssue">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Report an issue</string>
+   </property>
+   <property name="toolTip">
+    <string>Report an issue</string>
    </property>
   </action>
  </widget>
