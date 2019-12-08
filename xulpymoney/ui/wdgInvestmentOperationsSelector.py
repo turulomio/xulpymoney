@@ -7,21 +7,28 @@ class wdgInvestmentOperationsSelector(QWidget, Ui_wdgInvestmentOperationsSelecto
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
-    ## Manager must be a manager with objects with id
-    def setManager(self, mem, manager, list_selected_ids, tblname):
+    ## Manager must be a manager with objects
+    def setManager(self, mem, manager, objectname):
         self.mem=mem
-        self.tbl.settings(self.mem, tblname)
+        self.tbl.settings(self.mem, "{}_tbl".format(objectname))
         self.manager=manager
         self.manager.myqtablewidget(self.tbl)
+        
+    ## Checks item from position list
+    def setCheckedPositions(self, checked):
         for i in range(self.tbl.rowCount()):
             item=self.tbl.item(i, 0)
             if item!=None:
-                item.setCheckState(Qt.Checked)
+                if i in checked:
+                    item.setCheckState(Qt.Checked)
+                else:
+                    item.setCheckState(Qt.Unchecked)
         
     def setBoxTitle(self, title):
         pass
 
-    def getSelectedIds(self):
+    ## Objects must have id
+    def getCheckedIds(self):
         r=[]
         for i in range(self.tbl.rowCount()):
             item=self.tbl.item(i, 0)
@@ -37,3 +44,13 @@ class wdgInvestmentOperationsSelector(QWidget, Ui_wdgInvestmentOperationsSelecto
                         pass
         return r
 
+    ## Get selection position. It doesn
+    def getCheckedPositions(self):
+        r=[]
+        for i in range(self.tbl.rowCount()):
+            item=self.tbl.item(i, 0)
+            if item!=None:
+                if item.checkState()==Qt.Checked:
+                    if i < self.manager.length():
+                        r.append(i)
+        return r

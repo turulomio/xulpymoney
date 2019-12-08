@@ -34,8 +34,9 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         s=s+"Resultado=OpHist+OpActu-Comisiones-Rollover= {} + {} + {} + {} = {}".format(iohhm.consolidado_bruto(), iochm.pendiente(), commissions.balance(), rollover.balance(), iohhm.consolidado_bruto()+iochm.pendiente()+commissions.balance()+rollover.balance())
         self.textBrowser.setText(s)
         
-        self.wdgIOHSLong.setManager(self.mem, iohhm, [], "wdgIOHSLong")
-        print(self.wdgIOHSLong.getSelectedIds())
+        self.wdgIOHSLong.setManager(self.mem, iohhm, "wdgIOHSLong")
+        self.wdgIOHSLong.setCheckedPositions([46, 47])
+        print(self.wdgIOHSLong.getCheckedPositions())
 
 
     def InvestmentOperationHistoricalHeterogeneusManager_derivatives(self):
