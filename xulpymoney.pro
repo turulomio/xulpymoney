@@ -84,6 +84,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgInvestments.py \
                   xulpymoney/ui/wdgInvestmentsOperations.py \
                   xulpymoney/ui/Ui_wdgInvestmentsOperations.py \
+                  xulpymoney/ui/wdgInvestmentOperationsSelector.py \
+                  xulpymoney/ui/Ui_wdgInvestmentOperationsSelector.py \
                   xulpymoney/ui/wdgInvestmentsRanking.py \
                   xulpymoney/ui/Ui_wdgInvestmentsRanking.py \
                   xulpymoney/ui/wdgLastCurrent.py \
@@ -162,6 +164,7 @@ FORMS           = \
                   xulpymoney/ui/wdgInvestmentClasses.ui \
                   xulpymoney/ui/wdgInvestments.ui \
                   xulpymoney/ui/wdgInvestmentsOperations.ui \
+                  xulpymoney/ui/wdgInvestmentOperationsSelector.ui \
                   xulpymoney/ui/wdgInvestmentsRanking.ui \
                   xulpymoney/ui/wdgLastCurrent.ui \
                   xulpymoney/ui/wdgOpportunities.ui \

@@ -9,24 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>290</height>
+    <width>981</width>
+    <height>781</height>
    </rect>
   </property>
-  <layout class="QHBoxLayout" name="_2">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="lblTitulo">
+      <widget class="QLabel" name="lbl">
        <property name="font">
         <font>
-         <pointsize>13</pointsize>
+         <pointsize>14</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(0, 128, 0);</string>
        </property>
        <property name="text">
         <string>Derivatives report</string>
@@ -35,6 +32,12 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="wdgInvestmentOperationsSelector" name="wdgIOHSLong" native="true"/>
+     </item>
+     <item>
+      <widget class="wdgInvestmentOperationsSelector" name="wdgIOHSShort" native="true"/>
      </item>
      <item>
       <widget class="QTextBrowser" name="textBrowser">
@@ -47,6 +50,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>wdgInvestmentOperationsSelector</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgInvestmentOperationsSelector</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
