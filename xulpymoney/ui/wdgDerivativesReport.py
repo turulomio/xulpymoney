@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget
+from logging import debug
 from xulpymoney.libxulpymoney import InvestmentOperationHistoricalHeterogeneusManager, InvestmentOperationCurrentHeterogeneusManager
 from xulpymoney.libxulpymoneytypes import eConcept, eProductType
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
@@ -33,11 +34,14 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         s=s+"Comisiones actuales e históricas: {} + {} = {}\n".format(iochm.commissions(), iohhm.commissions(), iohhm.commissions()+iochm.commissions())
         s=s+"Resultado=OpHist+OpActu-Comisiones-Rollover= {} + {} + {} + {} = {}".format(iohhm.consolidado_bruto(), iochm.pendiente(), commissions.balance(), rollover.balance(), iohhm.consolidado_bruto()+iochm.pendiente()+commissions.balance()+rollover.balance())
         self.textBrowser.setText(s)
-        
+        self.wdgIOHSLong.blockSignals(True)
         self.wdgIOHSLong.setManager(self.mem, iohhm, "wdgIOHSLong")
-        self.wdgIOHSLong.setCheckedPositions([46, 47])
-        print(self.wdgIOHSLong.getCheckedPositions())
-
+        self.wdgIOHSLong.setSelectedString(self.mem.settingsdb.value("strategyLongShort/historicalLong", ""))
+        self.wdgIOHSLong.blockSignals(False)
+        
+    def on_wdgIOHSLong_itemChanged(self):
+        self.mem.settingsdb.setValue("strategyLongShort/historicalLong", self.wdgIOHSLong.getSelectedString())
+        debug("itemCheckStatusChanged {}".format(self.wdgIOHSLong.getSelectedString()))
 
     def InvestmentOperationHistoricalHeterogeneusManager_derivatives(self):
         r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)

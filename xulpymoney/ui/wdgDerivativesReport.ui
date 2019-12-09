@@ -34,10 +34,10 @@
       </widget>
      </item>
      <item>
-      <widget class="wdgInvestmentOperationsSelector" name="wdgIOHSLong" native="true"/>
+      <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSLong" native="true"/>
      </item>
      <item>
-      <widget class="wdgInvestmentOperationsSelector" name="wdgIOHSShort" native="true"/>
+      <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSShort" native="true"/>
      </item>
      <item>
       <widget class="QTextBrowser" name="textBrowser">
@@ -52,7 +52,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>wdgInvestmentOperationsSelector</class>
+   <class>wdgInvestmentOperationHistoricalSelector</class>
    <extends>QWidget</extends>
    <header location="global">wdgInvestmentOperationsSelector</header>
    <container>1</container>

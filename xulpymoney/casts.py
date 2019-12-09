@@ -18,7 +18,16 @@ def list2string(lista):
             for l in lista:
                 resultado=resultado+ "'" + str(l) + "', "
             return resultado[:-2]
-            
+
+## Reverse function of list2string where class is a str
+def string2list_of_strings(s):
+    arr=[]
+    if s!="":
+        arrs=s.split(", ")
+        for a in arrs:
+            arr.append(a[1:-1])
+    return arr
+
 def string2list_of_integers(s, separator=", "):
     """Convers a string of integer separated by comma, into a list of integer"""
     arr=[]

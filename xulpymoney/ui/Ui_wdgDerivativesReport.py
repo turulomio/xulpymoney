@@ -28,10 +28,10 @@ class Ui_wdgDerivativesReport(object):
         self.lbl.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl.setObjectName("lbl")
         self.verticalLayout.addWidget(self.lbl)
-        self.wdgIOHSLong = wdgInvestmentOperationsSelector(wdgDerivativesReport)
+        self.wdgIOHSLong = wdgInvestmentOperationHistoricalSelector(wdgDerivativesReport)
         self.wdgIOHSLong.setObjectName("wdgIOHSLong")
         self.verticalLayout.addWidget(self.wdgIOHSLong)
-        self.wdgIOHSShort = wdgInvestmentOperationsSelector(wdgDerivativesReport)
+        self.wdgIOHSShort = wdgInvestmentOperationHistoricalSelector(wdgDerivativesReport)
         self.wdgIOHSShort.setObjectName("wdgIOHSShort")
         self.verticalLayout.addWidget(self.wdgIOHSShort)
         self.textBrowser = QtWidgets.QTextBrowser(wdgDerivativesReport)
@@ -46,5 +46,5 @@ class Ui_wdgDerivativesReport(object):
     def retranslateUi(self, wdgDerivativesReport):
         _translate = QtCore.QCoreApplication.translate
         self.lbl.setText(_translate("wdgDerivativesReport", "Derivatives report"))
-from xulpymoney.ui.wdgInvestmentOperationsSelector import wdgInvestmentOperationsSelector
+from xulpymoney.ui.wdgInvestmentOperationsSelector import wdgInvestmentOperationHistoricalSelector
 import xulpymoney.images.xulpymoney_rc
