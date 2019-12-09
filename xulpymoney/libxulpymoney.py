@@ -1691,12 +1691,18 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         InvestmentOperationHeterogeneusManager.__init__(self, mem)
         self.investment=investment
 
+    ## InvestmentOperationHistorical hasn't id. They are generated dinamically with get_current_and_historical_operations from InvestmentOperations. 
+    ## Sometimes it's necessary to work with them so I set a ficticius id: investment_id#ioh_position
     def get_current_and_historical_operations(self, test_suite=False):
         def tipo_operacion(shares):
             if shares>=0:
                 return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesPurchase)
             return self.mem.tiposoperaciones.find_by_id(eOperationType.SharesSale)
+        def next_ioh_id():
+            next_ioh_id.number=next_ioh_id.number+1
+            return "{}#{}".format(self.investment.id, next_ioh_id.number)
         # ##################################
+        next_ioh_id.number=0#To use it in inline functions
         sioc=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
         sioh=InvestmentOperationHistoricalHomogeneusManager(self.mem, self.investment)
         for o in self.arr:
@@ -1720,7 +1726,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
 #CURRENT operinversion, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, show_in_ranges,  currency_conversion, id=None):                            
 #HISTORICA (operinversion, inversion, fecha_inicio, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
 
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion))
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
                             if rest+sioc.first().shares!=0:
                                 sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(sioc.first(),sioc.first().tipooperacion, sioc.first().datetime, sioc.first().investment, rest+sioc.first().shares , sioc.first().impuestos, sioc.first().comision, sioc.first().valor_accion,  sioc.first().show_in_ranges, sioc.first().currency_conversion,  sioc.first().id))
                                 sioc.arr.pop(1)
@@ -1730,7 +1736,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                             break
                         else: #Mayor el resto                
                             number=set_sign_of_other_number(o.shares, sioc.first().shares)
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion))
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
                             rest=rest+sioc.first().shares
                             rest=set_sign_of_other_number(o.shares, rest)
                             sioc.arr.pop(0)
