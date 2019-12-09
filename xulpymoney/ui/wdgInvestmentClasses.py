@@ -2,7 +2,6 @@ from xulpymoney.libxulpymoney import Assets, Money
 import math
 import datetime
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtChart import QChart
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.libxulpymoneytypes import eLeverageType
@@ -14,7 +13,6 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.mem=mem
         self.balances={}#Variable que cachea todos los balances
         self.hoy=datetime.date.today()
-        self.animations=True#Mostrar animaciones
 
         self.viewTPC=VCPie()
         self.layTPC.addWidget(self.viewTPC)     
@@ -32,11 +30,14 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy).local()
         self.tab.setCurrentIndex(2)
 
-    def update(self, animations=None):
-        """Update calcs and charts"""
-        if self.animations==None:
-            self.animations=QChart.AllAnimations
-        self.animations=animations
+    ## @param animations boolean True to show animations
+    def update(self, animations):
+        self.viewApalancado.setAnimations(animations)
+        self.viewCountry.setAnimations(animations)
+        self.viewPCI.setAnimations(animations)
+        self.viewProduct.setAnimations(animations)
+        self.viewTPC.setAnimations(animations)
+        self.viewTipo.setAnimations(animations)
         self.scriptTPC()
         self.scriptPCI()
         self.scriptTipos()
@@ -45,10 +46,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.scriptProduct()
 
     def on_radCurrent_toggled(self, checked):
-        self.update()
+        self.update(animations=True)
 
     def scriptTPC(self):
-        self.viewTPC.clear(self.animations)
+        self.viewTPC.clear()
         self.viewTPC.setCurrency(self.mem.localcurrency)
         for r in range(0, 11):
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -69,7 +70,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewTPC.display()
 
     def scriptPCI(self):
-        self.viewPCI.clear(self.animations)
+        self.viewPCI.clear()
         self.viewPCI.setCurrency(self.mem.localcurrency)
         for m in self.mem.investmentsmodes.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -89,7 +90,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewPCI.display()
 
     def scriptTipos(self):
-        self.viewTipo.clear(self.animations)
+        self.viewTipo.clear()
         self.viewTipo.setCurrency(self.mem.localcurrency)
         
         for t in self.mem.types.arr:
@@ -114,7 +115,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewTipo.display()
 
     def scriptApalancado(self):
-        self.viewApalancado.clear(self.animations)
+        self.viewApalancado.clear()
         self.viewApalancado.setCurrency(self.mem.localcurrency)
         
         for a in self.mem.leverages.arr:
@@ -136,7 +137,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewApalancado.display()
         
     def scriptCountry(self):
-        self.viewCountry.clear(self.animations)
+        self.viewCountry.clear()
         self.viewCountry.setCurrency(self.mem.localcurrency)
         
         for c in self.mem.countries.arr:
@@ -156,7 +157,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewCountry.display()
 
     def scriptProduct(self):
-        self.viewProduct.clear(self.animations)
+        self.viewProduct.clear()
         self.viewProduct.setCurrency(self.mem.localcurrency)
         
         invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()

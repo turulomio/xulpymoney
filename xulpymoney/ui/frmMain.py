@@ -8,7 +8,7 @@ import os
 from stdnum.isin import is_valid
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
-from xulpymoney.libxulpymoney import AssetsReport, Product, ProductManager
+from xulpymoney.libxulpymoney import Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
 from xulpymoney.libxulpymoneytypes import eProductType
@@ -67,6 +67,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
+        from xulpymoney.objects.assetsreport import AssetsReport
         file="AssetsReport.odt"
         doc=AssetsReport(self.mem, file)
         doc.generate()
@@ -166,7 +167,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgInvestmentClasses(self.mem, self)
         self.layout.addWidget(self.w)
-        self.w.update()
+        self.w.update(animations=True)
         self.w.show()
 
     @pyqtSlot()  

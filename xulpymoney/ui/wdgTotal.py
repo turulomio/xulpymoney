@@ -1,6 +1,5 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtChart import QChart
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
@@ -470,10 +469,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tabGraphTotal.removeWidget(self.view)
             self.view.close()
         self.view=VCTemporalSeries()
+        self.view.setAnimations(animations)
         
-        if animations==False:
-            self.view.chart().setAnimationOptions(QChart.NoAnimation)
-                #Series creation
+        #Series creation
         last=self.setGraphic.find(datetime.date.today().year, datetime.date.today().month)
         lsNoLoses=self.view.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
         lsMain=self.view.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
