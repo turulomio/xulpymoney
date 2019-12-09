@@ -50,7 +50,15 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.taxcapitalappreciation=Decimal(self.spnGainsPercentaje.value())/100
         self.mem.taxcapitalappreciationbelow=Decimal(self.spnGainsPercentajeBelow.value())/100
         self.mem.gainsyear=c2b(self.chkGainsYear.checkState())
-        self.mem.save_MemSettingsDB()
+
+        self.settingsdb.setValue("mem/localcurrency", self.mem.localcurrency.id)
+        self.settingsdb.setValue("mem/localzone", self.mem.localzone.name)
+        self.settingsdb.setValue("mem/dividendwithholding", Decimal(self.mem.dividendwithholding))
+        self.settingsdb.setValue("mem/taxcapitalappreciation", Decimal(self.mem.taxcapitalappreciation))
+        self.settingsdb.setValue("mem/taxcapitalappreciationbelow", Decimal(self.mem.taxcapitalappreciationbelow))
+        self.settingsdb.setValue("mem/gainsyear", self.mem.gainsyear)
+        self.settingsdb.setValue("mem/benchmarkid", self.mem.data.benchmark.id)
+        self.settingsdb.setValue("mem/fillfromyear", self.mem.fillfromyear)
         
         self.mem.settings.setValue("access/language", self.mem.frmAccess.languages.selected.id)
         self.mem.frmAccess.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()), "xulpymoney")  

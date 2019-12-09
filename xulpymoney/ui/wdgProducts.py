@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
+from xulpymoney.casts import  list2string
 from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.libxulpymoney import QuoteAllIntradayManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -36,7 +37,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         else:
             self.mem.favorites.append(self.products.selected[0].id)
         logging.debug("Favoritos: {}".format(self.mem.favorites))
-        self.mem.save_MemSettingsDB()
+        self.settingsdb.setValue("mem/favorites", list2string(self.mem.favorites))
         
         del self.arrInt
         self.arrInt=[]
