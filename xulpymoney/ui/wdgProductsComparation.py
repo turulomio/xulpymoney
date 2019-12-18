@@ -52,8 +52,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.viewCompare=VCTemporalSeries()
         if self.cmbCompareTypes.currentIndex()==0:#Not changed data
 
-            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1Closes()
             closes2=self.comparation.product2Closes()
@@ -95,8 +95,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
 
         elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
 
-            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2Price()
             closes2=self.comparation.product2Closes()
@@ -105,8 +105,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution reducing leverage.
-            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
@@ -115,8 +115,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==4:#Controlling inverse percentage evolution.
-            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePrice()
             closes2=self.comparation.product2Closes()
@@ -125,8 +125,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==5:#Controlling inverse percentage evolution reducing leverage.
-            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper(), self.comparation.product1.currency)#Line seies
-            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper(), self.comparation.product1.currency)#Line seies
+            ls1=self.viewCompare.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
