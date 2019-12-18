@@ -108,3 +108,19 @@ def b2c(booleano):
         return Qt.Unchecked     
 
 
+
+## String to linux shell
+#def string2shell(cadena):
+#    cadena=str(cadena)
+#    cadena=cadena.replace("'","\\'")
+#    return cadena
+
+## strint to latex
+def string2tex(cadena):
+    cadena=str(cadena)
+    cadena=cadena.replace('[','$ [ $')
+    cadena=cadena.replace(']','$ ] $')
+    cadena=cadena.replace('&','\&')
+    cadena=cadena.replace('²','$ ^2 $')
+    cadena=cadena.replace('#', '\#')
+    return cadena

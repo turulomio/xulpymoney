@@ -156,7 +156,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         d.resize(self.mem.settings.value("wdgBanks/qdialog_graph", QSize(800, 600)))
         d.setWindowTitle(self.tr("Banks graph"))
         view=VCPie()
-        view.clear(True)
+        view.clear()
         view.setCurrency(self.mem.localcurrency)
         for bank in self.mem.data.banks_active().arr:
             view.appendData(bank.name, bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active()).amount)
