@@ -23,7 +23,7 @@ def main():
       
         ##Update database
         from xulpymoney.libdbupdates import Update
-        update=Update(mem)
+        update=Update(mem, "Qt")
         if update.need_update()==True:
             update.run()
 

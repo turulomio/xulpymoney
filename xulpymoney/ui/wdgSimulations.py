@@ -78,7 +78,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.mem_sim.con=simcon
         
         ##Update database
-        update=xulpymoney.libdbupdates.Update(self.mem_sim)
+        update=xulpymoney.libdbupdates.Update(self.mem_sim, "Qt")
         if update.need_update()==True:
             update.run()
         

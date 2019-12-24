@@ -20,9 +20,12 @@ class Update:
     AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL
+    
+    @param mode Qt or Console
     """
-    def __init__(self, mem):
+    def __init__(self, mem, mode="Console"):
         self.mem=mem
+        self.mode=mode
         self.lastcodeupdate=201910180000
         self.need_update()
 
@@ -63,7 +66,7 @@ class Update:
         cur.close()
         if cur.rowcount==1: #Exists id column so is new system
             print ("Database update new system")
-            database_update(self.mem.con, "xulpymoney", __versiondatetime__, "Console")
+            database_update(self.mem.con, "xulpymoney", __versiondatetime__, self.mode)
             return   
         
         
@@ -2607,7 +2610,7 @@ $$;""")
             cur.close()
             self.mem.con.commit()
             print ("Database update new system")
-            database_update(self.mem.con, "xulpymoney", __versiondatetime__, "Console")
+            database_update(self.mem.con, "xulpymoney", __versiondatetime__,  self.mode)
 
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
