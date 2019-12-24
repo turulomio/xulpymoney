@@ -1389,7 +1389,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
     def gross(self, emoneycurrency, current):
         r=Money(self.mem, 0, self.investment.resultsCurrency(emoneycurrency))
         for d in self.arr:
-            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+            if current==True and self.investment.op_actual.length()>0  and d.datetime<self.investment.op_actual.first().datetime:
                 continue
             else:
                 r=r+d.gross(emoneycurrency)
@@ -1400,7 +1400,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
     def net(self, emoneycurrency, current):
         r=Money(self.mem, 0, self.investment.resultsCurrency(emoneycurrency))
         for d in self.arr:
-            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+            if current==True and self.investment.op_actual.length()>0 and d.datetime<self.investment.op_actual.first().datetime:
                 continue
             else:
                 r=r+d.net(emoneycurrency)
@@ -1445,7 +1445,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
         sumretencion=Money(self.mem, 0, currency)
         sumcomision=Money(self.mem, 0, currency)
         for i, d in enumerate(self.arr):
-            if current==True and d.datetime<self.investment.op_actual.first().datetime:
+            if current==True and self.investment.op_actual.length()>0 and d.datetime<self.investment.op_actual.first().datetime:
                 table.hideRow(i)
                 continue
             else:
