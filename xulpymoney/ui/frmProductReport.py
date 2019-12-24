@@ -16,7 +16,7 @@ from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
-from xulpymoney.libxulpymoneytypes import eDtStrings
+from xulpymoney.libxulpymoneytypes import eDtStrings, eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
@@ -321,12 +321,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.investment,  None)
-        w.wdgDT.setCombine(self.mem, dtnaive(self.selDPS.date, self.product.stockmarket.closes),  self.product.stockmarket.zone.name)
+        w.wdgDT.set(dtnaive(self.selDPS.paydate, self.product.stockmarket.closes),  self.product.stockmarket.zone.name)
         gross=self.selDPS.gross*self.investment.shares(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)
         w.txtRetencion.setText(gross*self.mem.taxcapitalappreciation)
-        w.cmb.setCurrentIndex(w.cmb.findData(39))
+        w.cmb.setCurrentIndex(w.cmb.findData(eConcept.Dividends))
         w.exec_()
 
     @pyqtSlot()
