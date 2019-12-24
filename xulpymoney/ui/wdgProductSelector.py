@@ -2,7 +2,8 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
 from xulpymoney.ui.myqtablewidget import myQTableWidget
-from xulpymoney.libxulpymoney import ProductManager, ManagerSelectionMode
+from xulpymoney.libmanagers import  ManagerSelectionMode
+from xulpymoney.objects.product import ProductManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 
 class wdgProductSelector(QWidget):

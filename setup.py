@@ -110,10 +110,9 @@ class Compile(Command):
         download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/casts.py', 'xulpymoney')
-        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
-        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
-        
-        
+#        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
+#        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
+
         futures=[]
         with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
             for filename in os.listdir("xulpymoney/ui/"):

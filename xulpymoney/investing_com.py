@@ -1,7 +1,8 @@
 from csv import reader
 from logging import debug
 from datetime import date
-from xulpymoney.libxulpymoney import QuoteManager, Quote, OHCLDaily
+from xulpymoney.objects.quote import QuoteManager, Quote
+from xulpymoney.objects.ohcl import  OHCLDaily
 from xulpymoney.casts import string2decimal
 from xulpymoney.datetime_functions import dtaware, string2date, string2dtaware, string2time
 from xulpymoney.libxulpymoneytypes import eTickerPosition

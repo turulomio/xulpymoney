@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget,  QApplication, QHBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from xulpymoney.ui.Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
-from xulpymoney.libxulpymoney import ProductUpdate
+from xulpymoney.objects.product import ProductUpdate
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):

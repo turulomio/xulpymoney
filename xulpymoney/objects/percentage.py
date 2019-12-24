@@ -1,12 +1,10 @@
-## @brief my Percentage object
-## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
-## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
-
-from logging import warning
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from decimal import Decimal
-from .currency import Currency
+from logging import debug
+from xulpymoney.objects.money import Money
 
-## Class to manage percentages in spreadsheets
 class Percentage:
     def __init__(self, numerator=None, denominator=None):
         self.value=None
@@ -15,7 +13,7 @@ class Percentage:
     def toDecimal(self, o):
         if o==None:
             return o
-        if o.__class__==Currency:
+        if o.__class__==Money:
             return o.amount
         elif o.__class__==Decimal:
             return o
@@ -24,17 +22,18 @@ class Percentage:
         elif o.__class__==Percentage:
             return o.value
         else:
-            warning (o.__class__)
+            debug(o.__class__)
             return None
-
+        
     def __repr__(self):
         return self.string()
-
+            
     def __neg__(self):
+        """Devuelve otro money con el amount con signo cambiado"""
         if self.value==None:
             return self
         return Percentage(-self.value, 1)
-
+        
     def __lt__(self, other):
         if self.value==None:
             value1=Decimal('-Infinity')
@@ -47,7 +46,7 @@ class Percentage:
         if value1<value2:
             return True
         return False
-
+        
     def __mul__(self, value):
         if self.value==None or value==None:
             r=None
@@ -61,7 +60,7 @@ class Percentage:
         except:
             r=None
         return Percentage(r, 1)
-
+        
     def setValue(self, numerator,  denominator):
         try:
             self.value=Decimal(numerator/denominator)
@@ -78,23 +77,29 @@ class Percentage:
         if self.value==None:
             return "None %"
         return "{} %".format(round(self.value_100(), rnd))
-
-    ## Returns if the percentage is valid. I mean it's value different of None
+        
+    def qtablewidgetitem(self, rnd=2):
+        a=QTableWidgetItem(self.string(rnd))
+        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+        if self.value==None:
+            a.setForeground(QColor(0, 0, 255))
+        elif self.value<0:
+            a.setForeground(QColor(255, 0, 0))
+        return a
+        
     def isValid(self):
         if self.value!=None:
             return True
         return False
-
+        
     def isGETZero(self):
         if self.value>=0:
             return True
         return False
-
     def isGTZero(self):
         if self.value>0:
             return True
         return False
-
     def isLTZero(self):
         if self.value<0:
             return True

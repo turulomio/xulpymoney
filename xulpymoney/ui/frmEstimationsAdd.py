@@ -1,5 +1,5 @@
 import datetime
-from xulpymoney.libxulpymoney import EstimationDPS, EstimationEPS
+from xulpymoney.objects.estimation import EstimationDPS, EstimationEPS
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmEstimationsAdd import Ui_frmEstimationsAdd
 

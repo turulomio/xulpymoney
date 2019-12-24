@@ -1,4 +1,4 @@
-from xulpymoney.libxulpymoney import DPS
+from xulpymoney.objects.dps import DPS
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmDPSAdd import Ui_frmDPSAdd
 

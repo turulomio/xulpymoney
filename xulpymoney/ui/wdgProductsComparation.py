@@ -5,7 +5,7 @@ from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from PyQt5.QtChart import QValueAxis
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
-from xulpymoney.libxulpymoney import ProductComparation
+from xulpymoney.objects.product import ProductComparation
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.myqcharts import  VCTemporalSeries
 

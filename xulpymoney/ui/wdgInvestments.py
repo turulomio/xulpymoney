@@ -1,4 +1,7 @@
-from xulpymoney.libxulpymoney import Percentage, Quote,  ProductUpdate, Assets
+from xulpymoney.libxulpymoney import  Assets
+from xulpymoney.objects.percentage import Percentage
+from xulpymoney.objects.product import ProductUpdate
+from xulpymoney.objects.quote import Quote
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
