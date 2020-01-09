@@ -87,6 +87,40 @@ class Compile(Command):
         pass
 
     def run(self):
+        futures=[]
+        with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
+            for filename in os.listdir("xulpymoney/ui/"):
+                if filename.endswith(".ui"):
+                    without_extension=filename[:-3]
+                    futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/{0}.ui -o xulpymoney/ui/Ui_{0}.py".format(without_extension)))
+            futures.append(executor.submit(os.system, "pyrcc5 xulpymoney/images/xulpymoney.qrc -o xulpymoney/images/xulpymoney_rc.py"))
+        # Overwriting xulpymoney_rc
+        for filename in os.listdir("xulpymoney/ui/"):
+             if filename.startswith("Ui_"):
+                 os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqcharts/from xulpymoney.ui.myqcharts/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgTwoCurrencyLineEdit/from xulpymoney.ui.wdgTwoCurrencyLineEdit/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgInvestmentOperationsSelector/from xulpymoney.ui.wdgInvestmentOperationsSelector/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgCurrencyConversion/from xulpymoney.ui.wdgCurrencyConversion/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgProductSelector/from xulpymoney.ui.wdgProductSelector/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgQuotesSaveResult/from xulpymoney.ui.wdgQuotesSaveResult/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgDatetime/from xulpymoney.ui.wdgDatetime/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgYear/from xulpymoney.ui.wdgYear/' xulpymoney/ui/{}".format(filename))
+
+class Reusing(Command):
+    description = "Download modules from https://github.com/turulomio/reusingcode/"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
         from sys import path
         path.append("xulpymoney")
         from github import download_from_github
@@ -112,29 +146,6 @@ class Compile(Command):
         download_from_github('turulomio','reusingcode','python/casts.py', 'xulpymoney')
 #        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
 #        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
-
-        futures=[]
-        with ProcessPoolExecutor(max_workers=cpu_count()+1) as executor:
-            for filename in os.listdir("xulpymoney/ui/"):
-                if filename.endswith(".ui"):
-                    without_extension=filename[:-3]
-                    futures.append(executor.submit(os.system, "pyuic5 xulpymoney/ui/{0}.ui -o xulpymoney/ui/Ui_{0}.py".format(without_extension)))
-            futures.append(executor.submit(os.system, "pyrcc5 xulpymoney/images/xulpymoney.qrc -o xulpymoney/images/xulpymoney_rc.py"))
-        # Overwriting xulpymoney_rc
-        for filename in os.listdir("xulpymoney/ui/"):
-             if filename.startswith("Ui_"):
-                 os.system("sed -i -e 's/xulpymoney_rc/xulpymoney.images.xulpymoney_rc/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from myqcharts/from xulpymoney.ui.myqcharts/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgTwoCurrencyLineEdit/from xulpymoney.ui.wdgTwoCurrencyLineEdit/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgInvestmentOperationsSelector/from xulpymoney.ui.wdgInvestmentOperationsSelector/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgCurrencyConversion/from xulpymoney.ui.wdgCurrencyConversion/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgProductSelector/from xulpymoney.ui.wdgProductSelector/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgQuotesSaveResult/from xulpymoney.ui.wdgQuotesSaveResult/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgDatetime/from xulpymoney.ui.wdgDatetime/' xulpymoney/ui/{}".format(filename))
-                 os.system("sed -i -e 's/from wdgYear/from xulpymoney.ui.wdgYear/' xulpymoney/ui/{}".format(filename))
 
 class Uninstall(Command):
     description = "Uninstall installed files with install"
@@ -320,6 +331,7 @@ setup(name='xulpymoney',
                         'compile': Compile, 
                         'procedure': Procedure,
                         'pyinstaller': PyInstaller,
+                        'reusing': Reusing,
                      }, 
     test_suite = 'xulpymoney.test',
     zip_safe=False,

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmMain.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.2
+# Created by: PyQt5 UI code generator 5.14.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -87,15 +87,15 @@ class Ui_frmMain(object):
         self.tbProducts.setIconSize(QtCore.QSize(26, 26))
         self.tbProducts.setObjectName("tbProducts")
         frmMain.addToolBar(QtCore.Qt.TopToolBarArea, self.tbProducts)
-        self.tbSettings = QtWidgets.QToolBar(frmMain)
-        self.tbSettings.setObjectName("tbSettings")
-        frmMain.addToolBar(QtCore.Qt.TopToolBarArea, self.tbSettings)
         self.tbStrategies = QtWidgets.QToolBar(frmMain)
         self.tbStrategies.setObjectName("tbStrategies")
         frmMain.addToolBar(QtCore.Qt.TopToolBarArea, self.tbStrategies)
         self.tbReports = QtWidgets.QToolBar(frmMain)
         self.tbReports.setObjectName("tbReports")
         frmMain.addToolBar(QtCore.Qt.TopToolBarArea, self.tbReports)
+        self.tbSettings = QtWidgets.QToolBar(frmMain)
+        self.tbSettings.setObjectName("tbSettings")
+        frmMain.addToolBar(QtCore.Qt.TopToolBarArea, self.tbSettings)
         self.actionExit = QtWidgets.QAction(frmMain)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/xulpymoney/exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -562,8 +562,6 @@ class Ui_frmMain(object):
         self.tbProducts.addSeparator()
         self.tbProducts.addAction(self.actionPriceUpdates)
         self.tbProducts.addAction(self.actionSyncProducts)
-        self.tbSettings.addAction(self.actionSettings)
-        self.tbSettings.addAction(self.actionExit)
         self.tbStrategies.addAction(self.actionIndexRange)
         self.tbStrategies.addAction(self.actionLastOperation)
         self.tbStrategies.addAction(self.actionDerivativesReport)
@@ -572,6 +570,8 @@ class Ui_frmMain(object):
         self.tbReports.addAction(self.actionDividendsReport)
         self.tbReports.addAction(self.actionTotalReport)
         self.tbReports.addAction(self.actionInvestmentRanking)
+        self.tbSettings.addAction(self.actionSettings)
+        self.tbSettings.addAction(self.actionExit)
 
         self.retranslateUi(frmMain)
         QtCore.QMetaObject.connectSlotsByName(frmMain)
@@ -597,9 +597,9 @@ class Ui_frmMain(object):
         self.menuStrategies.setTitle(_translate("frmMain", "&Strategies"))
         self.tbMain.setWindowTitle(_translate("frmMain", "Main toolbar"))
         self.tbProducts.setWindowTitle(_translate("frmMain", "Products toolbar"))
-        self.tbSettings.setWindowTitle(_translate("frmMain", "Settings toolbar"))
         self.tbStrategies.setWindowTitle(_translate("frmMain", "Strategies toolbar"))
         self.tbReports.setWindowTitle(_translate("frmMain", "Reports toolbar"))
+        self.tbSettings.setWindowTitle(_translate("frmMain", "Settings toolbar"))
         self.actionExit.setText(_translate("frmMain", "E&xit"))
         self.actionExit.setToolTip(_translate("frmMain", "Exit"))
         self.actionExit.setShortcut(_translate("frmMain", "Alt+Esc"))

@@ -37,7 +37,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         else:
             self.mem.favorites.append(self.products.selected[0].id)
         logging.debug("Favoritos: {}".format(self.mem.favorites))
-        self.settingsdb.setValue("mem/favorites", list2string(self.mem.favorites))
+        self.mem.settingsdb.setValue("mem/favorites", list2string(self.mem.favorites))
         
         del self.arrInt
         self.arrInt=[]
