@@ -124,3 +124,21 @@ def string2tex(cadena):
     cadena=cadena.replace('²','$ ^2 $')
     cadena=cadena.replace('#', '\#')
     return cadena
+
+## Converts a string to set inside an XML to a valid XML string
+def string2xml(s):
+    s=s.replace('"','&apos;' )
+    s=s.replace('<','&lt;' )
+    s=s.replace('>','&gt;' )
+    s=s.replace('&','&amp;' )
+    s=s.replace("'",'&apos;' )
+    return s
+
+## Converts a string to set inside an XML to a valid XML string
+def xml2string(s):
+    s=s.replace('&apos;','"')
+    s=s.replace('&lt;','<')
+    s=s.replace('&gt;','>')
+    s=s.replace('&amp;','&')
+    s=s.replace('&apos;',"'")
+    return s

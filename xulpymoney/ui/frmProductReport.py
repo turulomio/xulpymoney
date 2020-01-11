@@ -16,7 +16,7 @@ from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
-from xulpymoney.libxulpymoneytypes import eDtStrings, eConcept
+from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
@@ -418,7 +418,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot()
     def on_actionQuoteExport_triggered(self):
         start=datetime.now()
-        filename_ods="{} Quotes of {}.ods".format(dtaware2string(self.mem.localzone.now(), type=eDtStrings.Filename),  self.product.name)    
+        filename_ods="{} Quotes of {}.ods".format(dtaware2string(self.mem.localzone.now(), "%Y%m%d %H%M"),  self.product.name)    
         filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename_ods, self.tr("Libreoffice calc (*.ods)"))[0]
         if filename:
             ods=ODS_Write(filename)
