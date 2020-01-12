@@ -432,8 +432,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 s1.add(Coord("C2").addRow(i), ODSCurrency(o.open, self.product.currency.id), "WhiteEUR")
                 s1.add(Coord("D2").addRow(i), ODSCurrency(o.high, self.product.currency.id), "WhiteEUR")
                 s1.add(Coord("E2").addRow(i), ODSCurrency(o.low, self.product.currency.id), "WhiteEUR")
-            s1.setCursorPosition(Coord("A1").addRow(self.product.result.ohclDaily.length()))
-            s1.setSplitPosition("A2")
+            s1.freezeAndSelect("A2", Coord("A1").addRow(self.product.result.ohclDaily.length()), "A2")
             ods.save()
             qmessagebox(self.tr("Date export to {} took {}").format(filename, datetime.now()-start))
 
