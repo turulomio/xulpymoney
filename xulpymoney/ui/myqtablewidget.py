@@ -1,8 +1,11 @@
+## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
+## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
+
+
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem
-from xulpymoney.libxulpymoney import Money
-from xulpymoney.ui.qtablewidgetitems import qright, qleft
+from .qtablewidgetitems import qright, qleft
 from officegenerator import ODS_Write, Currency, Percentage,  Coord
 import datetime
 import logging
@@ -122,7 +125,7 @@ class myQTableWidget(QTableWidget):
                     
     ## Converts a objecct class to a qtablewidgetitem
     def object2qtablewidgetitem(self, o):
-        if o.__class__ in [int,  float, Decimal, Money]:
+        if o.__class__ in [int,  float, Decimal]:
             return qright(o)
         else:
             return qleft(o)
@@ -151,12 +154,15 @@ class Table2ODS(ODS_Write):
         if table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
             coord=Coord("B1")
         elif not table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
+            print("A2")
             coord=Coord("A2")
+            topleft=Coord("A2") if table.rowCount()<21 else Coord("A2").addRow(table.rowCount()-1-20)
+            sheet.freezeAndSelect(coord, Coord("A2").addRow(table.rowCount()-1), topleft)
         elif not table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
             coord=Coord("B2")
         elif table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
             coord=Coord("A1")
-        sheet.setSplitPosition(coord)
+
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
@@ -179,7 +185,6 @@ class Table2ODS(ODS_Write):
                 except:#Not a QTableWidgetItem or NOne
                     pass
         logging.debug("Items done")
-        sheet.setCursorPosition(coord.letter+ str(table.rowCount()+2))
         self.save()
 
     def itemtext2object(self, t):
