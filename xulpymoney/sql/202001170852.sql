@@ -1,0 +1,5 @@
+select;
+INSERT INTO public.products (name     , isin, currency, type, agrupations, id   , web , address, phone, mail, percentage, pci, leveraged, stockmarkets_id, comment, obsolete, tickers                      , high_low, decimals) VALUES 
+                            ('XAU / EUR', '', 'u'     , 6   , ''         , 81747, NULL, NULL   , NULL , NULL, 100       , 'p', 1        , 10             , NULL   , false   , '{NULL,NULL,NULL,NULL,XAU/EUR - Oro al contado Euro}', false    , 2);
+INSERT INTO public.products (name                                , isin,           currency, type, agrupations,   id   , web , address, phone, mail, percentage, pci, leveraged, stockmarkets_id, comment, obsolete, tickers                      , high_low, decimals) VALUES 
+                            ('WisdomTree Gold 2x Daily Leveraged', 'JE00B2NFTL95', 'EUR'     , 4   , ''         , 81748, NULL, NULL   , NULL , NULL, 100       , 'p', 2        , 6              , NULL   , false   , '{NULL,NULL,NULL,NULL,LBUL.MI}', false    , 2);
