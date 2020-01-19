@@ -1,10 +1,9 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
+from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
 from xulpymoney.libxulpymoney import Money, Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.ui.qtablewidgetitems import qright
 from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmProductReport import frmProductReport
@@ -43,7 +42,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.investmentes.arr));
-        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
+        rows=[]
         for i, inv in enumerate(self.investmentes.arr):
             if inv.product.estimations_dps.find(date.today().year)==None:
                 dpa=0
@@ -52,20 +51,31 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
             else:
                 dpa=inv.product.estimations_dps.currentYear().estimation
                 tpc=inv.product.estimations_dps.currentYear().percentage()
-                divestimado=inv.dividend_bruto_estimado().local()            
-            self.tblInvestments.setItem(i, 0,QTableWidgetItem(inv.name))
-            self.tblInvestments.setItem(i, 1, QTableWidgetItem(inv.account.eb.name))
-            self.tblInvestments.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote))
-            self.tblInvestments.setItem(i, 3, inv.product.currency.qtablewidgetitem(dpa))    
-            self.tblInvestments.setItem(i, 4, qright(inv.shares()))
-            sumdiv=sumdiv+divestimado
-            self.tblInvestments.setItem(i, 5, divestimado.qtablewidgetitem())
-            self.tblInvestments.setItem(i, 6, tpc.qtablewidgetitem())
-                
+                divestimado=inv.dividend_bruto_estimado().local()
+            row=[]
+            row.append(inv.name)
+            row.append(inv.account.eb.name)
+            row.append(inv.product.result.basic.last.quote)
+            row.append(dpa)
+            row.append(inv.shares())
+            row.append(divestimado)
+            row.append(tpc)
+            rows.append(row)
+               
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInvestments.item(i, 3).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( sumdiv))
+        self.tblInvestments.fillFromListOfRows(rows,  decimals=[0, 0, 6, 6, 6, 2, 2])
+        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.sum_of_estimated_dividends()))
+        
+    ## Reused in AssestsReport
+    def sum_of_estimated_dividends(self):
+        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
+        for i, inv in enumerate(self.investmentes.arr):
+            if inv.product.estimations_dps.find(date.today().year)!=None:
+                sumdiv=sumdiv+inv.dividend_bruto_estimado().local()
+        return sumdiv
+        
             
         
     @pyqtSlot() 

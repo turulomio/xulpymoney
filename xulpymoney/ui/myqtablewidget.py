@@ -5,7 +5,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem
-from .qtablewidgetitems import qright, qleft
+from .qtablewidgetitems import qright, qleft, qnumber
 from officegenerator import ODS_Write, Currency, Percentage,  Coord
 import datetime
 import logging
@@ -129,14 +129,51 @@ class myQTableWidget(QTableWidget):
             return qright(o)
         else:
             return qleft(o)
-    ## Converts self.data to an other list with officegenerator objects
-    def data2officegeneratordata(self, arr):
-        r=[]
-        for i,  row in enumerate(self.arr):
-            for j,  column in enumerate(row):
-                r.append(self.data[row][column])
-            
-            
+
+    ## Returns a list of strings with the horizontal headers
+    def listHorizontalHeaders(self):
+        header=[]
+        for i in range(self.horizontalHeader().count()):
+            header.append(self.horizontalHeaderItem(i).text())
+        return header
+
+    ## Returns a list of strings with the horizontal headers
+    def listVerticalHeaders(self):
+        header=[]
+        for i in range(self.verticalHeader().count()):
+            header.append(self.verticalHeaderItem(i).text())
+        return header
+
+    ## Returns a lisf of rows with the text of the 
+    def listText(self):
+        data=[]
+        for i in range(self.rowCount()):
+            row=[]
+            for column in range(self.columnCount()):
+                data.append(self.item(row,column).text())
+        return data
+
+    ## Fills table from a lr of rows
+    ## Allowed objects, int, float, text, Currency, Porcentage
+    ## @param lr is a list of rows (other list)
+    ## @param decimals Integer or List of the size of the columns with the number of decimals to show. Default decimal==2. If Integer all columns has the same number of decimals
+    def fillFromListOfRows(self,lr, decimals=2):
+        self.lr=lr
+        if decimals.__class__.__name__=="int":
+            decimals=[2]*len(self.lr)
+        for row in range(len(self.lr)):
+            for column in range(len(self.lr[row])):
+                o=self.lr[row][column]
+                if o.__class__.__name__ in ["int"]:
+                    self.setItem(row, column, qright(o))
+                elif o.__class__.__name__ in ["float","Decimal"]:
+                    self.setItem(row, column, qnumber(o,decimals[column]))
+                elif o.__class__.__name__ in ["Percentage","Money","Currency"]:
+                    self.setItem(row, column, o.qtablewidgetitem(decimals[column]))
+                else:
+                    self.setItem(row, column, qleft(o))
+
+
 class Table2ODS(ODS_Write):
     def __init__(self, mem, filename, table, title):
         ODS_Write.__init__(self, filename)
