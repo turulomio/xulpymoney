@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject
 from officegenerator import ODT
 from os import makedirs
+from xulpymoney.casts import lor_remove_columns, list_remove_positions
 from xulpymoney.datetime_functions import days2string
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoney import Assets, AnnualTarget, Money, Percentage
@@ -119,14 +120,11 @@ class AssetsReport(ODT, QObject):
         
         self.header(self.tr("Investments list"), 2)
         self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
-        data=[]
-        self.mem.data.investments_active().order_by_percentage_sellingpoint()
-        for inv in self.mem.data.investments_active().arr: 
-            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
-            arr=("{0} ({1})".format(inv.name, inv.account.name), inv.balance(), pendiente, inv.op_actual.tpc_total(inv.product.result.basic.last), inv.percentage_to_selling_point())
-            data.append(arr)
-
-        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], data, [13,  3, 3, 3, 3], 8)       
+        self.mem.frmMain.on_actionInvestments_triggered()
+        self.table( 
+            list_remove_positions(self.mem.frmMain.w.tblInvestments.listHorizontalHeaders(), [1, 2, 3, 4]), 
+            lor_remove_columns(self.mem.frmMain.w.tblInvestments.lr, [1, 2, 3, 4]), 
+            [13,  3, 3, 3, 3],  8)       
         
         suminvertido=self.mem.data.investments_active().invested()
         sumpendiente=self.mem.data.investments_active().pendiente()
@@ -195,7 +193,7 @@ class AssetsReport(ODT, QObject):
         self.pageBreak(True)
         
         #Dividend report
-        self.header(self.tr("Dividends report"), 1)
+        self.header(self.tr("Dividend estimations report"), 1)
         self.mem.frmMain.on_actionDividendsReport_triggered()
         self.table(self.mem.frmMain.w.tblInvestments.listHorizontalHeaders(), self.mem.frmMain.w.tblInvestments.lr, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(self.mem.frmMain.w.sum_of_estimated_dividends()))

@@ -1,6 +1,7 @@
 SOURCES         = \
                   xulpymoney/libdbupdates.py \
                   xulpymoney/libxulpymoney.py \
+                  xulpymoney/objects/assetsreport.py \
                   xulpymoney/ui/frmAbout.py \
                   xulpymoney/ui/Ui_frmAbout.py \
                   xulpymoney/ui/frmAccess.py \

@@ -45,13 +45,13 @@ def qempty():
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 
-def qcenter(string, digits=None):
+def qcenter(string):
     if string==None:
         return qempty()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
-    
+
 def qleft(string):
     if string==None:
         return qempty()
@@ -59,24 +59,11 @@ def qleft(string):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
 
-def qright(string, digits=2):
-    """When digits, limits the number to """
+def qright(string):
     if string==None:
         return qempty()
-    if string!=None:
-        try:
-            string=round(string, digits)
-        except:
-            pass
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-    try:#If is a number corized it
-        if string==None:
-            a.setForeground(QColor(0, 0, 255))
-        elif string<0:
-            a.setForeground(QColor(255, 0, 0))
-    except:
-        pass
     return a
     
 ## Creates a QTableWidgetItem with the date

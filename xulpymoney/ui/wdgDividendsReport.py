@@ -65,7 +65,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInvestments.item(i, 3).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-        self.tblInvestments.fillFromListOfRows(rows,  decimals=[0, 0, 6, 6, 6, 2, 2])
+        self.tblInvestments.fillWithListOfRows(rows,  decimals=[0, 0, 6, 6, 6, 2, 2])
         self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.sum_of_estimated_dividends()))
         
     ## Reused in AssestsReport

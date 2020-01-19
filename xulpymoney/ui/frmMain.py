@@ -4,12 +4,14 @@
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
-import os
+from os import environ, path
+from datetime import datetime
 from stdnum.isin import is_valid
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.objects.product import Product, ProductManager
 from xulpymoney.casts import list2string
+from xulpymoney.datetime_functions import dtnaive2string
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
@@ -68,17 +70,17 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
         from xulpymoney.objects.assetsreport import AssetsReport
-        file="AssetsReport.odt"
+        file="{} AssetsReport.odt".format(dtnaive2string(datetime.now(), "%Y%m%d %H%M"))
         doc=AssetsReport(self.mem, file)
         doc.generate()
         
         
         #Open file
-        if os.path.exists("/usr/bin/lowriter"):
+        if path.exists("/usr/bin/lowriter"):
             QProcess.startDetached("lowriter", [file, ] )
-        elif os.path.exists("/usr/bin/kfmclient"):
+        elif path.exists("/usr/bin/kfmclient"):
             QProcess.startDetached("kfmclient", ["openURL", file] )
-        elif os.path.exists("/usr/bin/gnome-open"):
+        elif path.exists("/usr/bin/gnome-open"):
             QProcess.startDetached( "gnome-open '" + file + "'" );
         else:         
             QDesktopServices.openUrl(QUrl("file://"+file));
@@ -192,7 +194,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             QDesktopServices.openUrl(QUrl(self.mem.url_wiki))
 
         try:
-            user=os.environ['USER']
+            user=environ['USER']
         except:
             user=None
 

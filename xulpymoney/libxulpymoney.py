@@ -11,7 +11,7 @@ from pytz import timezone
 from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date,  days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
-from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qdate, qbool, qempty
+from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qdate, qbool, qempty, qnumber
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType,  eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationOfInvestmentOperation
@@ -72,26 +72,26 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
         table.clearContents()
         type=3
         for i, inv in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
+            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
+            tpc_venta=inv.percentage_to_selling_point()
+            row=[
+                "{0} ({1})".format(inv.name, inv.account.name), 
+                inv.product.result.basic.last.datetime, 
+                inv.product.result.basic.last.quote, 
+                inv.op_actual.gains_last_day(type),
+                inv.op_actual.tpc_diario(), 
+                inv.balance(None,  type), 
+                inv.op_actual.pendiente(inv.product.result.basic.last, type), 
+                tpc_invertido, 
+                tpc_venta, 
+            ]
+            table.fillAppendingRow(i, row, decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], zonename=self.mem.localzone_name)
             if inv.op_actual.shares()>=0: #Long operation
                 table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
             else:
-                table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))
-
-            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone_name))
-            table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
-            table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
-            table.setItem(i, 4, inv.op_actual.tpc_diario().qtablewidgetitem())
-            table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
-            table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
-
-            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
-            table.setItem(i, 7, tpc_invertido.qtablewidgetitem())
+                table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))         
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
-
-            tpc_venta=inv.percentage_to_selling_point()
-            table.setItem(i, 8, tpc_venta.qtablewidgetitem())
             if inv.selling_expiration!=None:
                 if inv.selling_expiration<date.today():
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
@@ -101,7 +101,6 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                     table.item(i, 7).setBackground(eQColor.Red)
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
                     table.item(i, 8).setBackground(eQColor.Green)
-
 
     ## Displays last current operation and shows in red background when operation has lost more than a percentage
     ## @param table MyQTableWidget
@@ -1963,7 +1962,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):    
             tabla.setItem(rownumber, 0,qdate(a.fecha_venta))
-            tabla.setItem(rownumber, 1, qright(round(a.years(), 2)))
+            tabla.setItem(rownumber, 1, qnumber(round(a.years(), 2)))
             if show_accounts==True:
                 tabla.setItem(rownumber, 2, qleft(a.investment.name))
                 tabla.setItem(rownumber, 3, qleft(a.investment.account.name))
