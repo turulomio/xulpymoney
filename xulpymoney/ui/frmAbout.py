@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
-from xulpymoney.ui.qtablewidgetitems import qcenter, qempty, qright, qleft, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qempty, qright, qleft, qnumber
 from xulpymoney.datetime_functions import string2dtnaive
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout

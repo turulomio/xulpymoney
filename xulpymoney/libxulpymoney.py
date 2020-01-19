@@ -11,7 +11,7 @@ from pytz import timezone
 from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date,  days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
-from xulpymoney.ui.qtablewidgetitems import qdatetime, qright, qleft, qdate, qbool, qempty, qnumber
+from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qbool, qempty, qnumber
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType,  eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationOfInvestmentOperation

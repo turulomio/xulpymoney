@@ -15,7 +15,7 @@ from xulpymoney.objects.product import  Product
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
-from xulpymoney.ui.qtablewidgetitems import qcenter, qdatetime, qleft
+from xulpymoney.ui.myqtablewidget import qcenter, qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmSelector

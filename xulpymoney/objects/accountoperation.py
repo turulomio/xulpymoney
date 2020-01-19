@@ -4,7 +4,7 @@ from xulpymoney.libmanagers import DictObjectManager_With_IdDatetime_Selectable,
 
 from xulpymoney.objects.comment import Comment
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
-from xulpymoney.ui.qtablewidgetitems import qdatetime, qleft
+from xulpymoney.ui.myqtablewidget import qdatetime, qleft
 ## Class to manage everything relationed with bank accounts operations
 class AccountOperation:
     ## Constructor with the following attributes combination

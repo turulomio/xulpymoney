@@ -5,7 +5,7 @@ from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0
-from xulpymoney.ui.qtablewidgetitems import qcenter, qleft
+from xulpymoney.ui.myqtablewidget import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.objects.accountoperation import AccountOperationManager
 from xulpymoney.ui.myqtablewidget import myQTableWidget

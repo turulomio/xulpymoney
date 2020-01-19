@@ -3,7 +3,7 @@ from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.qtablewidgetitems import qcenter, qdate, qleft, qbool, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qdate, qleft, qbool, qnumber
 class EstimationDPS:
     """Dividends por acción"""
     def __init__(self, mem):

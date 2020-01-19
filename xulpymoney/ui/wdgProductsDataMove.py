@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem,  QMessageBox
 from xulpymoney.ui.Ui_wdgProductsDataMove import Ui_wdgProductsDataMove
-from xulpymoney.ui.qtablewidgetitems import qcenter, qright
+from xulpymoney.ui.myqtablewidget import qcenter, qright
 
 class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
     def __init__(self, mem,  origin, destiny, parent = None, name = None, modal = False):

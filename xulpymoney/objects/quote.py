@@ -9,7 +9,7 @@ from xulpymoney.libxulpymoneytypes import   eHistoricalChartAdjusts, eQColor
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLMonthlyManager, OHCLWeeklyManager, OHCLYearlyManager
-from xulpymoney.ui.qtablewidgetitems import  qdatetime, qleft, qtime
+from xulpymoney.ui.myqtablewidget import  qdatetime, qleft, qtime
 from xulpymoney.ui.myqcharts import eOHCLDuration
 ## Class that represents a Quote
 ## A quote can be a datetime duplicated

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import  QTableWidgetItem
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.objects.ohcl import OHCLDaily, OHCLDailyManager
-from xulpymoney.ui.qtablewidgetitems import qdate
+from xulpymoney.ui.myqtablewidget import qdate
 class DPS:
     """Dividend por acción pagados. Se usa para pintar gráficos sin dividends"""
     def __init__(self, mem,  product):

@@ -14,7 +14,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
-from xulpymoney.ui.qtablewidgetitems import qdate, qdatetime
+from xulpymoney.ui.myqtablewidget import qdate, qdatetime
 class Product:
     def __init__(self, mem):
         self.mem=mem

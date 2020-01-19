@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLin
 from PyQt5.QtGui import QIcon
 from xulpymoney.libxulpymoney import Bank, Money, AccountManager, InvestmentManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.ui.qtablewidgetitems import wdgBool
+from xulpymoney.ui.myqtablewidget import wdgBool
 from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.ui.frmAccountsReport import frmAccountsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport

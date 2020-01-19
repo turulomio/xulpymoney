@@ -4,7 +4,7 @@ from xulpymoney.libxulpymoney import Percentage, qmessagebox, Money
 from xulpymoney.libxulpymoneyfunctions import relation_gains_risk
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.libxulpymoneytypes import eQColor, eInvestmentTypePosition
-from xulpymoney.ui.qtablewidgetitems import qdate, qleft, qempty, qright
+from xulpymoney.ui.myqtablewidget import qdate, qleft, qempty, qright
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QTableWidgetItem
 
