@@ -161,7 +161,7 @@ class myQTableWidget(QTableWidget):
         if decimals.__class__.__name__=="int":
             decimals=[decimals]*len(lr[0])
         for row in range(len(lr)):
-            self.fillAppendingRow(lr[row], decimals, zonename)
+            self.fillAppendingRow(row, lr[row], decimals, zonename)
 
 
     ## If you don't want to add all rows at the same time you can fill appending row by row
