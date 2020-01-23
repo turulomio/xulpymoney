@@ -86,13 +86,9 @@ class eConcept:
     BondsCouponRunIncome=65
     BondsCoupon=66
     CreditCardRefund=67
-    HlAdjustmentIincome=68
-    HlAdjustmentExpense=69
-    HlGuaranteePaid=70
-    HlGuaranteeReturned=71
-    HlCommission=72
-    HlInterestPaid=73
-    HlInterestReceived=74
+    DerivativesAdjustment=68
+    DerivativesGuarantee=70
+    DerivativesCommission=72
     RolloverPaid=75
     RolloverReceived=76
 
