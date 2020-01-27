@@ -18,7 +18,7 @@ from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.myqtablewidget import qcenter, qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
-from xulpymoney.ui.frmSelector import frmSelector
+from xulpymoney.ui.frmSelector import frmManagerSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.frmSplit import frmSplit
@@ -591,6 +591,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     value=None
                 self.product.tickers[i]=value
             self.product.comment=self.txtComentario.text()                
+            self.product.decimals=self.spnDecimals.value()
             self.product.save()
             self.mem.con.commit()  
             self.mem.data.products.append(self.product)
@@ -619,10 +620,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             selected=AgrupationManager(self.mem)#Vacio
         else:
             selected=self.product.agrupations
-        f=frmSelector(self.mem, agr, selected)
-        f.lbl.setText(self.tr("Agrupation selection"))
+        f=frmManagerSelector(self)
+        f.manager.hideUpDown()
+        f.setManagers(self.mem, "frmProductReport", "frmSelectorAgrupations", agr, selected, self.mem)
+        f.setLabel(self.tr("Agrupation selection"))
         f.exec_()
-        f.selected.qcombobox(self.cmbAgrupations)
+        f.manager.selected.qcombobox(self.cmbAgrupations)
 
     def on_tblDaily_itemSelectionChanged(self):
         if self.product.result.ohclDaily.selected!=None:

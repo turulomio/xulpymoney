@@ -35,7 +35,6 @@ SOURCES         = \
                   xulpymoney/ui/frmQuotesIBM.py \
                   xulpymoney/ui/Ui_frmQuotesIBM.py \
                   xulpymoney/ui/frmSelector.py \
-                  xulpymoney/ui/Ui_frmSelector.py \
                   xulpymoney/ui/frmSellingPoint.py \
                   xulpymoney/ui/Ui_frmSellingPoint.py \
                   xulpymoney/ui/frmSettings.py \
@@ -143,7 +142,6 @@ FORMS           = \
                   xulpymoney/ui/frmMain.ui \
                   xulpymoney/ui/frmProductReport.ui \
                   xulpymoney/ui/frmQuotesIBM.ui \
-                  xulpymoney/ui/frmSelector.ui \
                   xulpymoney/ui/frmSellingPoint.ui \
                   xulpymoney/ui/frmSettings.ui \
                   xulpymoney/ui/frmSharesTransfer.ui \

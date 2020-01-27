@@ -4570,12 +4570,15 @@ class Agrupation:
             self.name=name
             self.type=type
             self.stockmarket=bolsa
-
+            
         self.mem=args[0]
         if len(args)==1:
             init__create(None, None, None, None)
         if len(args)==5:
             init__create(args[1], args[2], args[3], args[4])
+
+    def __str__(self):
+        return self.name
 
 ## Product type class
 class ProductType(Object_With_IdName):

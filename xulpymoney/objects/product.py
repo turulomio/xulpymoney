@@ -149,6 +149,7 @@ class Product:
             id=cur.fetchone()[0]
             if id>=0:
                 id=-1
+            print(self.decimals)
             cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
             self.id=id
         else:
