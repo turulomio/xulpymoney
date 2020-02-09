@@ -27,14 +27,20 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.investment=inversion
         self.ise.setupUi(self.mem,  self.investment)
         
-        self.tblDividends.settings(self.mem, "frmInvestmentReport")         
-        self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
-        self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
-        self.tblInvestmentCurrentAccountCurrency.settings(self.mem, "frmInvestmentReport")
-        self.tblOperations.settings(self.mem, "frmInvestmentReport")
-        self.tblOperationsAccountCurrency.settings(self.mem, "frmInvestmentReport")
-        self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
-        self.tblInvestmentHistoricalAccountCurrency.settings(self.mem,  "frmInvestmentReport")
+        self.mqtwDividends.settings(self.mem.settings, "frmInvestmentReport", "mqtwDividends")
+        self.mqtwDividends.table.customContextMenuRequested.connect(self.on_mqtwDividends_customContextMenuRequested)
+        self.mqtwDividends.table.itemSelectionChanged.connect(self.on_mqtwDividends_itemSelectionChanged)
+        self.mqtwDividendsAccountCurrency.settings(self.mem.settings, "frmInvestmentReport", "mqtwDividendsAccountCurrency")
+        self.mqtwInvestmentCurrent.settings(self.mem.settings, "frmInvestmentReport", "mqtwInvestmentCurrent")
+        self.mqtwInvestmentCurrent.table.customContextMenuRequested.connect(self.on_mqtwInvestmentCurrent_customContextMenuRequested)
+        self.mqtwInvestmentCurrent.table.itemSelectionChanged.connect(self.on_mqtwInvestmentCurrent_itemSelectionChanged)
+        self.mqtwInvestmentCurrentAccountCurrency.settings(self.mem.settings, "frmInvestmentReport", "mqtwInvestmentCurrentAccountCurrency")
+        self.mqtwOperations.settings(self.mem.settings, "frmInvestmentReport", "mqtwOperations")
+        self.mqtwOperations.table.customContextMenuRequested.connect(self.on_mqtwOperations_customContextMenuRequested)
+        self.mqtwOperations.table.itemSelectionChanged.connect(self.on_mqtwOperations_itemSelectionChanged)
+        self.mqtwOperationsAccountCurrency.settings(self.mem.settings, "frmInvestmentReport", "mqtwOperationsAccountCurrency")
+        self.mqtwInvestmentHistorical.settings(self.mem.settings, "frmInvestmentReport", "mqtwInvestmentHistorical")
+        self.mqtwInvestmentHistoricalAccountCurrency.settings(self.mem.settings,  "frmInvestmentReport", "mqtwInvestmentHistoricalAccountCurrency")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         self.viewChart=None
@@ -92,12 +98,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.op=self.investment.op
             
         self.op.selected=None
-        self.op.myqtablewidget(self.tblOperations)
+        self.op.myqtablewidget(self.mqtwOperations)
         
         if self.investment.product.currency==self.investment.account.currency:#Multidivisa
             self.grpOperationsAccountCurrency.hide()
         else:
-            self.op.myqtablewidget(self.tblOperationsAccountCurrency, type=2)
+            self.op.myqtablewidget(self.mqtwOperationsAccountCurrency, type=2)
 
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
@@ -106,8 +112,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.chkOperaciones.setEnabled(True)
         
-        self.investment.op_actual.myqtablewidget(self.tblInvestmentCurrent, self.investment.product.result.basic.last, type=1)
-        self.investment.op_historica.myqtablewidget(self.tblInvestmentHistorical,  type=1 )
+        self.investment.op_actual.myqtablewidget(self.mqtwInvestmentCurrent, self.investment.product.result.basic.last, type=1)
+        self.investment.op_historica.myqtablewidget(self.mqtwInvestmentHistorical,  type=1 )
         if self.investment.product.currency==self.investment.account.currency:#Multidivisa
             self.grpCurrentAccountCurrency.hide()
             self.grpHistoricalAccountCurrency.hide()
@@ -115,8 +121,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             m=Money(self.mem, 1, self.investment.account.currency)
             
             self.grpCurrentAccountCurrency.setTitle(self.tr("Current status in account currency ( {} = {} at {} )").format(m.string(6), m.convert(self.investment.product.currency, self.mem.localzone.now()).string(6), m.conversionDatetime(self.investment.product.currency, self.mem.localzone.now())))
-            self.investment.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.investment.product.result.basic.last,  type=2)
-            self.investment.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, type=2 )
+            self.investment.op_actual.myqtablewidget(self.mqtwInvestmentCurrentAccountCurrency, self.investment.product.result.basic.last,  type=2)
+            self.investment.op_historica.myqtablewidget(self.mqtwInvestmentHistoricalAccountCurrency, type=2 )
         
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days2string(self.investment.op_actual.average_age()))))
         
@@ -261,14 +267,14 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.update_tables()
 
     def on_chkHistoricalDividends_stateChanged(self, state):
-        self.tblDividends.clearSelection()
-        self.tblDividendsAccountCurrency.clearSelection()
+        self.mqtwDividends.table.clearSelection()
+        self.mqtwDividendsAccountCurrency.table.clearSelection()
         self.investment.dividends.selected=None     
-        (sumneto, sumbruto, sumretencion, sumcomision)=self.investment.dividends.myqtablewidget(self.tblDividends, eMoneyCurrency.Product, current=not c2b(state))
+        (sumneto, sumbruto, sumretencion, sumcomision)=self.investment.dividends.myqtablewidget(self.mqtwDividends, eMoneyCurrency.Product, current=not c2b(state))
         if self.investment.account.currency==self.investment.product.currency:
             self.grpDividendsAccountCurrency.hide()
         else:
-            self.investment.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
+            self.investment.dividends.myqtablewidget(self.mqtwDividendsAccountCurrency, type=2)
         if state==Qt.Unchecked:
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
@@ -349,7 +355,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)
         
-    def on_tblOperations_customContextMenuRequested(self,  pos):
+    def on_mqtwOperations_customContextMenuRequested(self,  pos):
         if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive()or self.investment.account.eb.qmessagebox_inactive():
             return
         
@@ -390,13 +396,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionRangeReport)
         menu.addSeparator()
         menu.addAction(self.actionSplit)
-        menu.exec_(self.tblOperations.mapToGlobal(pos))
+        menu.exec_(self.mqtwOperations.table.mapToGlobal(pos))
 
 
-    def on_tblInvestmentCurrent_itemSelectionChanged(self):
+    def on_mqtwInvestmentCurrent_itemSelectionChanged(self):
         self.investment.op_actual.selected=None
         try:
-            for i in self.tblInvestmentCurrent.selectedItems():#itera por cada item no row.
+            for i in self.mqtwInvestmentCurrent.table.selectedItems():#itera por cada item no row.
                 if i.row()<self.investment.op_actual.length():#Due to total file
                     self.investment.op_actual.selected=self.investment.op_actual.arr[i.row()]
         except:
@@ -404,7 +410,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         print (self.tr("Selected: {0}".format(str(self.investment.op_actual.selected))))
         
         
-    def on_tblInvestmentCurrent_customContextMenuRequested(self,  pos):
+    def on_mqtwInvestmentCurrent_customContextMenuRequested(self,  pos):
         
         if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
             return
@@ -428,12 +434,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionSharesTransfer)
         menu.addSeparator()
         menu.addAction(self.actionChangeBenchmarkPrice)
-        menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
+        menu.exec_(self.mqtwInvestmentCurrent.table.mapToGlobal(pos))
 
-    def on_tblOperations_itemSelectionChanged(self):
+    def on_mqtwOperations_itemSelectionChanged(self):
         self.op.selected=None
         try:
-            for i in self.tblOperations.selectedItems():#itera por cada item no row.
+            for i in self.mqtwOperations.table.selectedItems():#itera por cada item no row.
                 self.op.selected=self.op.arr[i.row()]
                 if self.op.selected.show_in_ranges==True:
                     self.actionRangeReport.setText(self.tr("Hide in range report"))
@@ -445,7 +451,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.op.selected=None
         print (self.tr("Selected: {0}".format(str(self.op.selected))))
 
-    def on_tblDividends_customContextMenuRequested(self,  pos):
+    def on_mqtwDividends_customContextMenuRequested(self,  pos):
         if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
             return
 
@@ -465,11 +471,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionDividendAdd)
         menu.addAction(self.actionDividendRemove)
         menu.addAction(self.actionDividendEdit)
-        menu.exec_(self.tblDividends.mapToGlobal(pos))
+        menu.exec_(self.mqtwDividends.table.mapToGlobal(pos))
 
-    def on_tblDividends_itemSelectionChanged(self):
+    def on_mqtwDividends_itemSelectionChanged(self):
         try:
-            for i in self.tblDividends.selectedItems():#itera por cada item no rowse.
+            for i in self.mqtwDividends.table.selectedItems():#itera por cada item no rowse.
                 self.investment.dividends.selected=self.investment.dividends.arr[i.row()]
         except:
             self.investment.dividends.selected=None

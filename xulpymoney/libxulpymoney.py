@@ -1060,48 +1060,48 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
     ## @param table QTableWidget
     ## @param emoneycurrency eMoneyCurrency type
     ## @param current If true only shows dividends from first current operation. If false show all dividends
-    def myqtablewidget(self, table, emoneycurrency, current=True):
-        table.setColumnCount(7)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Concept" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Withholding" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Comission" )))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Net" )))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("DPS" )))
+    def myqtablewidget(self, wdg, emoneycurrency, current=True):
+        wdg.table.setColumnCount(7)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Withholding" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Comission" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Net" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("DPS" )))
         #DATA  
-        table.applySettings()
-        table.clearContents()
+        wdg.applySettings()
+        wdg.table.clearContents()
 
         currency=self.investment.resultsCurrency(emoneycurrency)
 
-        table.setRowCount(self.length()+1)
+        wdg.table.setRowCount(self.length()+1)
         sumneto=Money(self.mem, 0, currency)
         sumbruto=Money(self.mem, 0, currency)
         sumretencion=Money(self.mem, 0, currency)
         sumcomision=Money(self.mem, 0, currency)
         for i, d in enumerate(self.arr):
             if current==True and self.investment.op_actual.length()>0 and d.datetime<self.investment.op_actual.first().datetime:
-                table.hideRow(i)
+                wdg.table.hideRow(i)
                 continue
             else:
-                table.showRow(i)
+                wdg.table.showRow(i)
             sumneto=sumneto+d.net(emoneycurrency)
             sumbruto=sumbruto+d.gross(emoneycurrency)
             sumretencion=sumretencion+d.retention(emoneycurrency)
             sumcomision=sumcomision+d.commission(emoneycurrency)
-            table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
-            table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
-            table.setItem(i, 2, d.gross(emoneycurrency).qtablewidgetitem())
-            table.setItem(i, 3, d.retention(emoneycurrency).qtablewidgetitem())
-            table.setItem(i, 4, d.commission(emoneycurrency).qtablewidgetitem())
-            table.setItem(i, 5, d.net(emoneycurrency).qtablewidgetitem())
-            table.setItem(i, 6, d.dps(emoneycurrency).qtablewidgetitem())
-        table.setItem(self.length(), 1, qleft(self.tr("TOTAL")))
-        table.setItem(self.length(), 2, sumbruto.qtablewidgetitem())
-        table.setItem(self.length(), 3, sumretencion.qtablewidgetitem())
-        table.setItem(self.length(), 4, sumcomision.qtablewidgetitem())
-        table.setItem(self.length(), 5, sumneto.qtablewidgetitem())
+            wdg.table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
+            wdg.table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
+            wdg.table.setItem(i, 2, d.gross(emoneycurrency).qtablewidgetitem())
+            wdg.table.setItem(i, 3, d.retention(emoneycurrency).qtablewidgetitem())
+            wdg.table.setItem(i, 4, d.commission(emoneycurrency).qtablewidgetitem())
+            wdg.table.setItem(i, 5, d.net(emoneycurrency).qtablewidgetitem())
+            wdg.table.setItem(i, 6, d.dps(emoneycurrency).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 1, qleft(self.tr("TOTAL")))
+        wdg.table.setItem(self.length(), 2, sumbruto.qtablewidgetitem())
+        wdg.table.setItem(self.length(), 3, sumretencion.qtablewidgetitem())
+        wdg.table.setItem(self.length(), 4, sumcomision.qtablewidgetitem())
+        wdg.table.setItem(self.length(), 5, sumneto.qtablewidgetitem())
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
         
@@ -1270,7 +1270,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             sioc.get_valor_benchmark(self.mem.data.benchmark)
         return (sioc, sioh)
 
-    def myqtablewidget(self, tabla, type=1):
+    def myqtablewidget(self, wdg, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_accounts, muestra el producto y la cuenta
         type muestra los money en la currency de la cuenta
@@ -1278,44 +1278,44 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
         
         self.order_by_datetime()
         if self.investment.hasSameAccountCurrency()==True:
-            tabla.setColumnCount(8)
+            wdg.table.setColumnCount(8)
         else:
-            tabla.setColumnCount(9)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Operation type" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Gross" )))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Comission" )))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "Total" )))
+            wdg.table.setColumnCount(9)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Operation type" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Gross" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Comission" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "Total" )))
         if self.investment.hasSameAccountCurrency()==False:
-            tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "Currency conversion" )))
+            wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "Currency conversion" )))
         
         #DATA 
-        tabla.applySettings()
-        tabla.clearContents()  
-        tabla.setRowCount(len(self.arr))
+        wdg.applySettings()
+        wdg.table.clearContents()  
+        wdg.table.setRowCount(len(self.arr))
         
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
-                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+                wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
                 
-            tabla.setItem(rownumber, 1, QTableWidgetItem(a.tipooperacion.name))
+            wdg.table.setItem(rownumber, 1, QTableWidgetItem(a.tipooperacion.name))
             if a.show_in_ranges==True:
-                tabla.item(rownumber, 1).setIcon(QIcon(":/xulpymoney/eye.png"))
+                wdg.table.item(rownumber, 1).setIcon(QIcon(":/xulpymoney/eye.png"))
             else:
-                tabla.item(rownumber, 1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
+                wdg.table.item(rownumber, 1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
             
-            tabla.setItem(rownumber, 2, qright(a.shares))
-            tabla.setItem(rownumber, 3, a.price(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 4, a.gross(type).qtablewidgetitem())            
-            tabla.setItem(rownumber, 5, a.commission(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.taxes(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 7, a.net(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 2, qright(a.shares))
+            wdg.table.setItem(rownumber, 3, a.price(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 4, a.gross(type).qtablewidgetitem())            
+            wdg.table.setItem(rownumber, 5, a.commission(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 6, a.taxes(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 7, a.net(type).qtablewidgetitem())
             if self.investment.hasSameAccountCurrency()==False:
-                tabla.setItem(rownumber, 8, qright(a.currency_conversion))
+                wdg.table.setItem(rownumber, 8, qright(a.currency_conversion))
 
 class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1651,7 +1651,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         """
         return Percentage(self.pendiente(last, type), self.invertido(type))
     
-    def myqtablewidget(self,  tabla,  quote=None, type=1):
+    def myqtablewidget(self,  wdg,  quote=None, type=1):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1663,54 +1663,54 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             - type. Si es Falsa muestra la moneda de la inversión si es verdadera con la currency de la cuentaº
         """
             
-        tabla.setColumnCount(10)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Invested" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Current balance" )))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Pending" )))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "% annual" )))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "% APR" )))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "% Total" )))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "Benchmark" )))
+        wdg.table.setColumnCount(10)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Invested" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Current balance" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Pending" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "% annual" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "% APR" )))
+        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "% Total" )))
+        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "Benchmark" )))
         #DATA
         if self.length()==0:
-            tabla.setRowCount(0)
+            wdg.table.setRowCount(0)
             return
 
         if quote==None:
             quote=self.investment.product.result.basic.last
 
-        tabla.applySettings()
-        tabla.clearContents()
-        tabla.setRowCount(self.length()+1)
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
-                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+                wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             
-            tabla.setItem(rownumber, 1, qright(a.shares))
-            tabla.setItem(rownumber, 2, a.price(type).qtablewidgetitem())            
-            tabla.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.tpc_anual().qtablewidgetitem())
-            tabla.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 1, qright(a.shares))
+            wdg.table.setItem(rownumber, 2, a.price(type).qtablewidgetitem())            
+            wdg.table.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 6, a.tpc_anual().qtablewidgetitem())
+            wdg.table.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
+                wdg.table.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
+                wdg.table.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
                 
-        tabla.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
-        tabla.setItem(self.length(), 1, qright(self.shares()))
-        tabla.setItem(self.length(), 2, self.average_price(type).qtablewidgetitem())
-        tabla.setItem(self.length(), 3, self.invertido(type).qtablewidgetitem())
-        tabla.setItem(self.length(), 4, self.balance(quote, type).qtablewidgetitem())
-        tabla.setItem(self.length(), 5, self.pendiente(quote, type).qtablewidgetitem())
-        tabla.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
-        tabla.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
+        wdg.table.setItem(self.length(), 1, qright(self.shares()))
+        wdg.table.setItem(self.length(), 2, self.average_price(type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 3, self.invertido(type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 4, self.balance(quote, type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 5, self.pendiente(quote, type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
+        wdg.table.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
 
 class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Selectable):
     def __init__(self, mem):
@@ -1946,59 +1946,59 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             r=r+a.bruto_venta(type)
         return r
 
-    def myqtablewidget(self, tabla, show_accounts=False, type=eMoneyCurrency.Product):
+    def myqtablewidget(self, wdg, show_accounts=False, type=eMoneyCurrency.Product):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         diff=0
         if show_accounts==True:
             diff=2
             
-        tabla.setColumnCount(12+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Years" )))
+        wdg.table.setColumnCount(12+diff)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Years" )))
         if show_accounts==True:
-            tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Product" )))
-            tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Account" )))
-        tabla.setHorizontalHeaderItem(2+diff, QTableWidgetItem(QApplication.translate("Mem", "Operation type" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem", "Initial gross" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Mem", "Final gross" )))
-        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Mem", "Gross gains" )))
-        tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Mem", "Commissions" )))
-        tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
-        tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Mem", "Net gains" )))
-        tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Mem", "% Net APR" )))
-        tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Mem", "% Net Total" )))
+            wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Product" )))
+            wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Account" )))
+        wdg.table.setHorizontalHeaderItem(2+diff, QTableWidgetItem(QApplication.translate("Mem", "Operation type" )))
+        wdg.table.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
+        wdg.table.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem", "Initial gross" )))
+        wdg.table.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Mem", "Final gross" )))
+        wdg.table.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Mem", "Gross gains" )))
+        wdg.table.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Mem", "Commissions" )))
+        wdg.table.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Mem", "Taxes" )))
+        wdg.table.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Mem", "Net gains" )))
+        wdg.table.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Mem", "% Net APR" )))
+        wdg.table.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Mem", "% Net Total" )))
 
-        tabla.applySettings()
-        tabla.clearContents()
-        tabla.setRowCount(self.length()+1)
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):    
-            tabla.setItem(rownumber, 0,qdate(a.fecha_venta))
-            tabla.setItem(rownumber, 1, qnumber(round(a.years(), 2)))
+            wdg.table.setItem(rownumber, 0,qdate(a.fecha_venta))
+            wdg.table.setItem(rownumber, 1, qnumber(round(a.years(), 2)))
             if show_accounts==True:
-                tabla.setItem(rownumber, 2, qleft(a.investment.name))
-                tabla.setItem(rownumber, 3, qleft(a.investment.account.name))
-            tabla.setItem(rownumber, 2+diff, qleft(a.tipooperacion.name))
-            tabla.setItem(rownumber, 3+diff, qright(a.shares))
-            tabla.setItem(rownumber, 4+diff, a.bruto_compra(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 5+diff, a.bruto_venta(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6+diff, a.consolidado_bruto(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 7+diff,a.commission(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8+diff,a.taxes(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 9+diff, a.consolidado_neto(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
-            tabla.setItem(rownumber, 11+diff, a.tpc_total_neto().qtablewidgetitem())
+                wdg.table.setItem(rownumber, 2, qleft(a.investment.name))
+                wdg.table.setItem(rownumber, 3, qleft(a.investment.account.name))
+            wdg.table.setItem(rownumber, 2+diff, qleft(a.tipooperacion.name))
+            wdg.table.setItem(rownumber, 3+diff, qright(a.shares))
+            wdg.table.setItem(rownumber, 4+diff, a.bruto_compra(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 5+diff, a.bruto_venta(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 6+diff, a.consolidado_bruto(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 7+diff,a.commission(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 8+diff,a.taxes(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 9+diff, a.consolidado_neto(type).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
+            wdg.table.setItem(rownumber, 11+diff, a.tpc_total_neto().qtablewidgetitem())
 
         if self.length()>0:
-            tabla.setItem(self.length(), 2, qleft("TOTAL"))
-            tabla.setItem(self.length(), 4+diff, self.gross_purchases(type).qtablewidgetitem())
-            tabla.setItem(self.length(), 5+diff, self.gross_sales(type).qtablewidgetitem())
-            tabla.setItem(self.length(), 6+diff, self.consolidado_bruto(type=type).qtablewidgetitem())  
-            tabla.setItem(self.length(), 7+diff, self.commissions(type).qtablewidgetitem())    
-            tabla.setItem(self.length(), 8+diff, self.taxes(type).qtablewidgetitem())    
-            tabla.setItem(self.length(), 9+diff, self.consolidado_neto(type=type).qtablewidgetitem())
-            tabla.setItem(self.length(), 11+diff, self.tpc_total_neto().qtablewidgetitem())
-            tabla.setCurrentCell(self.length(), 4+diff)
+            wdg.table.setItem(self.length(), 2, qleft("TOTAL"))
+            wdg.table.setItem(self.length(), 4+diff, self.gross_purchases(type).qtablewidgetitem())
+            wdg.table.setItem(self.length(), 5+diff, self.gross_sales(type).qtablewidgetitem())
+            wdg.table.setItem(self.length(), 6+diff, self.consolidado_bruto(type=type).qtablewidgetitem())  
+            wdg.table.setItem(self.length(), 7+diff, self.commissions(type).qtablewidgetitem())    
+            wdg.table.setItem(self.length(), 8+diff, self.taxes(type).qtablewidgetitem())    
+            wdg.table.setItem(self.length(), 9+diff, self.consolidado_neto(type=type).qtablewidgetitem())
+            wdg.table.setItem(self.length(), 11+diff, self.tpc_total_neto().qtablewidgetitem())
+            wdg.table.setCurrentCell(self.length(), 4+diff)
     
 class InvestmentOperationHistorical:
     def __init__(self, mem):
