@@ -40,71 +40,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQTableWidget" name="tblInvestments">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Investment</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Last datetime</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Last value</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Daily difference</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>% Intraday</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Balance</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Pending</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>% Invested</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>% Selling point</string>
-          </property>
-         </column>
-        </widget>
+        <widget class="myQTableWidget" name="mqtwInvestments" native="true"/>
        </item>
       </layout>
      </item>
@@ -311,8 +247,9 @@
  <customwidgets>
   <customwidget>
    <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
+   <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

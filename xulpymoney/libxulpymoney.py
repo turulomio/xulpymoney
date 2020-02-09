@@ -49,8 +49,9 @@ class SimulationTypeManager(ObjectManager_With_IdName_Selectable):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
-class InvestmentManager(ObjectManager_With_IdName_Selectable):
+class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     def __init__(self, mem, cuentas, products, benchmark):
+        QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
         self.accounts=cuentas
@@ -65,16 +66,13 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
             self.append(inv)
         cur.close()  
 
-    def myqtablewidget(self, table):
-        """Esta tabla muestra los money con la moneda local"""
-        table.setRowCount(self.length())
-        table.applySettings()
-        table.clearContents()
-        type=3
+    def myqtablewidget(self, wdg):
+        type=eMoneyCurrency.User
+        data=[]
         for i, inv in enumerate(self.arr):
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             tpc_venta=inv.percentage_to_selling_point()
-            row=[
+            data.append([
                 "{0} ({1})".format(inv.name, inv.account.name), 
                 inv.product.result.basic.last.datetime, 
                 inv.product.result.basic.last.quote, 
@@ -84,23 +82,37 @@ class InvestmentManager(ObjectManager_With_IdName_Selectable):
                 inv.op_actual.pendiente(inv.product.result.basic.last, type), 
                 tpc_invertido, 
                 tpc_venta, 
-            ]
-            table.fillAppendingRow(i, row, decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], zonename=self.mem.localzone_name)
+            ])
+        wdg.setData(
+            [self.tr("Investment"), self.tr("Last datetime"), self.tr("Last value"), 
+            self.tr("Daily difference"), self.tr("% Intraday"), self.tr("Balance"), 
+            self.tr("Pending"), self.tr("% Invested"), self.tr("% Selling point")
+            ], 
+            None, 
+            data,  
+            decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], 
+            zonename=self.mem.localzone_name, 
+        )   
+        
+        """Esta tabla muestra los money con la moneda local"""
+        for i, inv in enumerate(self.arr):
+            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
+            tpc_venta=inv.percentage_to_selling_point()
             if inv.op_actual.shares()>=0: #Long operation
-                table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
+                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
             else:
-                table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))         
+                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))         
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
-                table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
+                wdg.table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
             if inv.selling_expiration!=None:
                 if inv.selling_expiration<date.today():
-                    table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+                    wdg.table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
 
             if tpc_invertido.isValid() and tpc_venta.isValid():
                 if tpc_invertido.value_100()<=-Decimal(50):   
-                    table.item(i, 7).setBackground(eQColor.Red)
+                    wdg.table.item(i, 7).setBackground(eQColor.Red)
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
-                    table.item(i, 8).setBackground(eQColor.Green)
+                    wdg.table.item(i, 8).setBackground(eQColor.Green)
 
     ## Displays last current operation and shows in red background when operation has lost more than a percentage
     ## @param table MyQTableWidget
