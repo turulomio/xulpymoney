@@ -1,4 +1,4 @@
-
+from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem, QApplication, QProgressDialog
 from datetime import datetime, timedelta, date
@@ -15,8 +15,9 @@ from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
 from xulpymoney.ui.myqtablewidget import qdate, qdatetime
-class Product:
+class Product(QObject):
     def __init__(self, mem):
+        QObject.__init__(self)
         self.mem=mem
         self.name=None
         self.isin=None
@@ -289,6 +290,19 @@ class Product:
     def update(self):
         r=QuoteManager(self.mem)
         r.print()
+        
+    def mqtw_tickers(self, mqtw):
+        data=[]
+        data.append(["Yahoo", self.tickers[eTickerPosition.Yahoo]])
+        data.append(["Morningstar", self.tickers[eTickerPosition.Morningstar]])
+        data.append(["Google", self.tickers[eTickerPosition.Google]])
+        data.append(["Que Fondos", self.tickers[eTickerPosition.QueFondos]])
+        data.append(["Investing.com", self.tickers[eTickerPosition.InvestingCom]])
+        mqtw.setData(
+            [self.tr("Name"), self.tr("Value")], 
+            None, 
+            data
+        )
 
 
 ## Class to manage products

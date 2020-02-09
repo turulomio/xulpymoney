@@ -158,22 +158,22 @@ class EstimationDPSManager(ObjectManager):
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, wdg):
         """settings, must be thrown before, not in each reload"""
         self.sort()  
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(len(self.arr))
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
-            table.setItem(i, 0, qcenter(str(e.year)))
-            table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, e.percentage().qtablewidgetitem())
-            table.setItem(i, 3, qdate(e.date_estimation))
-            table.setItem(i, 4, qleft(e.source))
-            table.setItem(i, 5, qbool(e.manual))
+            wdg.table.setItem(i, 0, qcenter(str(e.year)))
+            wdg.table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
+            wdg.table.setItem(i, 2, e.percentage().qtablewidgetitem())
+            wdg.table.setItem(i, 3, qdate(e.date_estimation))
+            wdg.table.setItem(i, 4, qleft(e.source))
+            wdg.table.setItem(i, 5, qbool(e.manual))
 
-        table.setCurrentCell(len(self.arr)-1, 0)
-        table.setFocus()
+        wdg.table.setCurrentCell(len(self.arr)-1, 0)
+        wdg.table.setFocus()
 
 class EstimationEPSManager(ObjectManager):
     def __init__(self, mem,  product):
@@ -215,17 +215,17 @@ class EstimationEPSManager(ObjectManager):
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, wdg):
         self.sort()     
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(len(self.arr))
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
-            table.setItem(i, 0, qcenter(str(e.year)))
-            table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qnumber(e.PER(Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone.name)))))
-            table.setItem(i, 3, qdate(e.date_estimation))
-            table.setItem(i, 4, qleft(e.source))
-            table.setItem(i, 5, qbool(e.manual)) 
-        table.setCurrentCell(len(self.arr)-1, 0)
-        table.setFocus()
+            wdg.table.setItem(i, 0, qcenter(str(e.year)))
+            wdg.table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
+            wdg.table.setItem(i, 2, qnumber(e.PER(Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone.name)))))
+            wdg.table.setItem(i, 3, qdate(e.date_estimation))
+            wdg.table.setItem(i, 4, qleft(e.source))
+            wdg.table.setItem(i, 5, qbool(e.manual)) 
+        wdg.table.setCurrentCell(len(self.arr)-1, 0)
+        wdg.table.setFocus()

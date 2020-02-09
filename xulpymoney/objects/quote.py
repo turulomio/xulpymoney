@@ -567,38 +567,38 @@ class QuoteIntradayManager(QuoteManager):
         l=self.low().quote
         return Percentage(h-l, l)
 
-    def myqtablewidget(self, table): 
+    def myqtablewidget(self, mqtw): 
         
         if self.product.hasSameLocalCurrency():
-            table.setColumnCount(3)
+            mqtw.table.setColumnCount(3)
         else:
-            table.setColumnCount(5)
-            table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Price")))
-            table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Time")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Price")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(self.length())
+            mqtw.table.setColumnCount(5)
+            mqtw.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Price")))
+            mqtw.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
+        mqtw.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Time")))
+        mqtw.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Price")))
+        mqtw.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
+        mqtw.applySettings()
+        mqtw.table.clearContents()
+        mqtw.table.setRowCount(self.length())
         QuoteDayBefore=Quote(self.mem).init__from_query(self.product, dtaware_day_start_from_date(self.date, self.mem.localzone_name))#day before as selected
 
         ##Construye tabla
         for i , q in enumerate(self.arr):
-            table.setItem(i, 0, qtime(q.datetime))
-            table.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))
+            mqtw.table.setItem(i, 0, qtime(q.datetime))
+            mqtw.table.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))
             tpcq=Percentage(q.quote-QuoteDayBefore.quote, QuoteDayBefore.quote)
-            table.setItem(i, 2, tpcq.qtablewidgetitem())
+            mqtw.table.setItem(i, 2, tpcq.qtablewidgetitem())
             if self.product.hasSameLocalCurrency()==False:
                 moneybefore=QuoteDayBefore.money().convert(self.mem.localcurrency, q.datetime)
                 money=q.money().convert(self.mem.localcurrency, q.datetime)
-                table.setItem(i, 3, money.qtablewidgetitem(6))
+                mqtw.table.setItem(i, 3, money.qtablewidgetitem(6))
                 tpcq=Percentage(money-moneybefore, moneybefore)
-                table.setItem(i, 4, tpcq.qtablewidgetitem())
+                mqtw.table.setItem(i, 4, tpcq.qtablewidgetitem())
                 
             if q==self.high():
-                table.item(i, 1).setBackground(eQColor.Green)
+                mqtw.table.item(i, 1).setBackground(eQColor.Green)
             elif q==self.product.result.intradia.low():
-                table.item(i, 1).setBackground(eQColor.Red)             
-        table.setCurrentCell(self.length()-1, 0)
-        table.clearSelection()
+                mqtw.table.item(i, 1).setBackground(eQColor.Red)             
+        mqtw.table.setCurrentCell(self.length()-1, 0)
+        mqtw.table.clearSelection()

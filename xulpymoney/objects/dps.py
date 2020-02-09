@@ -66,20 +66,20 @@ class DPSManager(ObjectManager_With_IdDate, QObject):
         for o in self.arr:
             o.save()
 
-    def myqtablewidget(self, table):
-        table.setColumnCount(3)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Pay date")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross")))
+    def myqtablewidget(self, wdg):
+        wdg.table.setColumnCount(3)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Pay date")))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross")))
         self.order_by_date()   
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(self.length())
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(self.length())
         for i, e in enumerate(self.arr):
-            table.setItem(i, 0, qdate(e.date))
-            table.setItem(i, 1, qdate(e.paydate))
-            table.setItem(i, 2, self.product.currency.qtablewidgetitem(e.gross, 6))
-        table.setCurrentCell(self.length()-1, 0)
+            wdg.table.setItem(i, 0, qdate(e.date))
+            wdg.table.setItem(i, 1, qdate(e.paydate))
+            wdg.table.setItem(i, 2, self.product.currency.qtablewidgetitem(e.gross, 6))
+        wdg.table.setCurrentCell(self.length()-1, 0)
 
     def adjustPrice(self, datetime, price):
         """

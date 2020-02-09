@@ -15,7 +15,7 @@ from xulpymoney.objects.product import  Product
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
-from xulpymoney.ui.myqtablewidget import qcenter, qdatetime, qleft
+from xulpymoney.ui.myqtablewidget import qdatetime, qleft
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmManagerSelector
@@ -57,17 +57,34 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.tabGraphics.setCurrentIndex(1)
         self.tabHistorical.setCurrentIndex(4)
         
-        self.tblTPC.settings(self.mem, "frmProductReport")
-        self.tblDaily.settings(self.mem, "frmProductReport")    
-        self.tblWeekly.settings(self.mem, "frmProductReport")
-        self.tblMonthly.settings(self.mem, "frmProductReport")    
-        self.tblYearly.settings(self.mem, "frmProductReport")    
-        self.tblIntradia.settings(self.mem, "frmProductReport")    
-        self.tblMensuales.settings(self.mem, "frmProductReport")    
-        self.tblSplits.settings(self.mem, "frmProductReport")
-        self.tblDividendsEstimations.settings(self.mem, "frmProductReport")    
-        self.tblDPSPaid.settings(self.mem, "frmProductReport")
-        self.tblEPS.settings(self.mem, "frmProductReport")
+#        self.tblTPC.settings(self.mem.settings, "frmProductReport", "tblTPC")
+        self.mqtwTickers.settings(self.mem.settings, "frmProductReport", "mqtwTickers")
+        self.mqtwDaily.settings(self.mem.settings, "frmProductReport", "mqtwDaily")    
+        self.mqtwDaily.table.customContextMenuRequested.connect(self.on_mqtwDaily_customContextMenuRequested)
+        self.mqtwDaily.table.itemSelectionChanged.connect(self.on_mqtwDaily_itemSelectionChanged)
+        self.mqtwWeekly.settings(self.mem.settings, "frmProductReport", "mqtwWeekly")
+        self.mqtwMonthly.settings(self.mem.settings, "frmProductReport", "mqtwMonthly")    
+        self.mqtwMonthly.table.customContextMenuRequested.connect(self.on_mqtwMonthly_customContextMenuRequested)
+        self.mqtwMonthly.table.itemSelectionChanged.connect(self.on_mqtwMonthly_itemSelectionChanged)
+        self.mqtwYearly.settings(self.mem.settings, "frmProductReport", "mqtwYearly")    
+        self.mqtwYearly.table.customContextMenuRequested.connect(self.on_mqtwYearly_customContextMenuRequested)
+        self.mqtwYearly.table.itemSelectionChanged.connect(self.on_mqtwYearly_itemSelectionChanged)
+        self.mqtwIntradia.settings(self.mem.settings, "frmProductReport", "mqtwIntradia")    
+        self.mqtwIntradia.table.customContextMenuRequested.connect(self.on_mqtwIntradia_customContextMenuRequested)
+        self.mqtwIntradia.table.itemSelectionChanged.connect(self.on_mqtwIntradia_itemSelectionChanged)
+        self.mqtwMensuales.settings(self.mem.settings, "frmProductReport", "mqtwMensuales")    
+        self.mqtwSplits.settings(self.mem.settings, "frmProductReport", "mqtwMensuales")
+        self.mqtwSplits.table.customContextMenuRequested.connect(self.on_mqtwSplits_customContextMenuRequested)
+        self.mqtwSplits.table.itemSelectionChanged.connect(self.on_mqtwSplits_itemSelectionChanged)
+        self.mqtwDividendsEstimations.settings(self.mem.settings, "frmProductReport", "mqtwDividendsEstimations")    
+        self.mqtwDividendsEstimations.table.customContextMenuRequested.connect(self.on_mqtwDividendsEstimations_customContextMenuRequested)
+        self.mqtwDividendsEstimations.table.itemSelectionChanged.connect(self.on_mqtwDividendsEstimations_itemSelectionChanged)
+        self.mqtwDPSPaid.settings(self.mem.settings, "frmProductReport", "mqtwDPSPaid")
+        self.mqtwDPSPaid.table.customContextMenuRequested.connect(self.on_mqtwDPSPaid_customContextMenuRequested)
+        self.mqtwDPSPaid.table.itemSelectionChanged.connect(self.on_mqtwDPSPaid_itemSelectionChanged)
+        self.mqtwEPS.settings(self.mem.settings, "frmProductReport", "mqtwEPS")
+        self.mqtwEPS.table.customContextMenuRequested.connect(self.on_mqtwEPS_customContextMenuRequested)
+        self.mqtwEPS.table.itemSelectionChanged.connect(self.on_mqtwEPS_itemSelectionChanged)
 
 
         if self.product==None: #Insertar
@@ -97,7 +114,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.txtMail.setReadOnly(True)
             self.txtTPC.setReadOnly(True)
             self.txtPhone.setReadOnly(True)
-            self.tblTickers.blockSignals(True)
+            self.mqtwTickers.blockSignals(True)
             self.txtComentario.setReadOnly(True)
             self.cmdAgrupations.setEnabled(False)
             setReadOnly(self.chkObsolete, True)
@@ -137,34 +154,39 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         
     def on_tabHistorical_currentChanged(self, index):
-        def setTable(table, data):
-            table.setRowCount(len(data.arr))
-            table.applySettings()
-            table.clearContents()
-            if len(data.arr)==0:
-                return
-            for punt, d in enumerate(data.arr):
-                table.setItem(punt, 0, qcenter(d.print_time())) 
-                table.setItem(punt, 1, self.product.currency.qtablewidgetitem(d.close,6))
-                table.setItem(punt, 2, self.product.currency.qtablewidgetitem(d.open,6))
-                table.setItem(punt, 3, self.product.currency.qtablewidgetitem(d.high,6))
-                table.setItem(punt, 4, self.product.currency.qtablewidgetitem(d.low,6))
-                table.setItem(punt, 5, qcenter(str(d.datetime())))
-            table.setCurrentCell(len(data.arr)-1, 0)
-            table.setFocus()
-        ## load_historicas
-        if index==0:
-            setTable(self.tblDaily, self.product.result.ohclDailyBeforeSplits)
-        elif index==1:
-            setTable(self.tblWeekly, self.product.result.ohclWeekly)
-        elif index==2:
-            setTable(self.tblMonthly, self.product.result.ohclMonthly)
-        elif index==3:
-            setTable(self.tblYearly, self.product.result.ohclYearly)
+        def setTable(mqtw, manager):               
+            data=[]
+            for i, o in enumerate(manager.arr):
+                data.append([
+                    o.print_time(), 
+                    o.close,
+                    o.open, 
+                    o.high, 
+                    o.low, 
+                    o.datetime(),  
+                ])
+            mqtw.setData(
+                [self.tr("Date"), self.tr("Price"), self.tr("Open"), self.tr("Higher"), self.tr("Lower"), self.tr("Agrupation start")], 
+                None, 
+                data, 
+                decimals=2, 
+                zonename=self.mem.localzone_name
+            )
 
-        
+            mqtw.table.setCurrentCell(manager.length()-1, 0)
+            mqtw.table.setFocus()
+        ################## load_historicas
+        if index==0:
+            setTable(self.mqtwDaily, self.product.result.ohclDailyBeforeSplits)
+        elif index==1:
+            setTable(self.mqtwWeekly, self.product.result.ohclWeekly)
+        elif index==2:
+            setTable(self.mqtwMonthly, self.product.result.ohclMonthly)
+        elif index==3:
+            setTable(self.mqtwYearly, self.product.result.ohclYearly)
+
     def load_information(self):
-        def row_tblTPV(quote,  row):
+        def row_mqtwTPV(quote,  row):
             if quote==None:
                 return
             self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.mem.localzone_name))
@@ -189,11 +211,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtTPC.setText(str(self.product.percentage))
         self.txtName.setText(self.product.name)
         self.txtISIN.setText(self.product.isin)
-        for i, ticker in enumerate(self.product.tickers):
-            if ticker==None:
-                self.tblTickers.setItem(i, 0, qleft(""))
-            else:
-                self.tblTickers.setItem(i, 0, qleft(self.product.tickers[i]))
+        self.product.mqtw_tickers(self.mqtwTickers)
         self.txtComentario.setText(self.product.comment)
         self.txtAddress.setText(self.product.address)
         self.txtWeb.setText(self.product.web)
@@ -228,17 +246,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             unmes=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=30)))          
             unasemana=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=7)))             
             
-            self.tblTPC.applySettings()
             self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone_name))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
             
-            row_tblTPV(penultimate, 2)
-            row_tblTPV(iniciosemana, 3)## Para que sea el domingo
-            row_tblTPV(iniciomes, 4)
-            row_tblTPV(inicioano, 5)
-            row_tblTPV(unasemana, 7)
-            row_tblTPV(unmes, 8)
-            row_tblTPV(docemeses, 9)
+            row_mqtwTPV(penultimate, 2)
+            row_mqtwTPV(iniciosemana, 3)## Para que sea el domingo
+            row_mqtwTPV(iniciomes, 4)
+            row_mqtwTPV(inicioano, 5)
+            row_mqtwTPV(unasemana, 7)
+            row_mqtwTPV(unmes, 8)
+            row_mqtwTPV(docemeses, 9)
 
         
     def update_due_to_quotes_change(self):
@@ -251,10 +268,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_dps.load_from_db()#No cargada por defecto en product
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
 
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
-            self.product.estimations_eps.myqtablewidget(self.tblEPS)            
-            self.product.dps.myqtablewidget(self.tblDPSPaid)         
-            self.product.splits.myqtablewidget(self.tblSplits)
+            self.product.estimations_dps.myqtablewidget(self.mqtwDividendsEstimations)   
+            self.product.estimations_eps.myqtablewidget(self.mqtwEPS)            
+            self.product.dps.myqtablewidget(self.mqtwDPSPaid)         
+            self.product.splits.myqtablewidget(self.mqtwSplits)
             inicio=datetime.now()
             self.load_information()
             info("Datos informacion cargados: {}".format(datetime.now()-inicio))
@@ -294,9 +311,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.viewIntraday.appendTemporalSeriesData(ls, quote.datetime, quote.quote)
             self.viewIntraday.display()
 
-        #tblIntradia
+        #mqtwIntradia
         try:
-            self.product.result.intradia.myqtablewidget(self.tblIntradia)
+            self.product.result.intradia.myqtablewidget(self.mqtwIntradia)
             if self.product.result.intradia.length()>0:
                 self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
         except:
@@ -304,19 +321,19 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:
-            self.tblMensuales.clear()
+            self.mqtwMensuales.clear()
             return
 
         minyear=self.product.result.ohclMonthly.arr[0].year
         rowcount=int(date.today().year-minyear+1)
-        self.tblMensuales.applySettings()
-        self.tblMensuales.setRowCount(rowcount)    
+        self.mqtwMensuales.applySettings()
+        self.mqtwMensuales.table.setRowCount(rowcount)    
 
         for i, year in enumerate(range(minyear,  date.today().year+1)):
-            self.tblMensuales.setItem(i, 0, qleft(year))
+            self.mqtwMensuales.table.setItem(i, 0, qleft(year))
             for month in range(1, 13):
-                self.tblMensuales.setItem(i, month, self.product.result.ohclMonthly.percentage_by_year_month(year, month).qtablewidgetitem())
-            self.tblMensuales.setItem(i, 13, self.product.result.ohclYearly.percentage_by_year(year).qtablewidgetitem())
+                self.mqtwMensuales.table.setItem(i, month, self.product.result.ohclMonthly.percentage_by_year_month(year, month).qtablewidgetitem())
+            self.mqtwMensuales.table.setItem(i, 13, self.product.result.ohclYearly.percentage_by_year(year).qtablewidgetitem())
 
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
@@ -332,7 +349,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSlot()
     def on_actionDPSDelete_triggered(self):
         if self.selDPS!=None:
-            for i in self.tblDPSPaid.selectedItems():#itera por cada item no row.        
+            for i in self.mqtwDPSPaid.table.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     dps=self.product.dps.arr[i.row()]
                     dps.borrar()
@@ -346,7 +363,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def on_actionDPSNew_triggered(self):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
-        self.product.dps.myqtablewidget(self.tblDPSPaid)
+        self.product.dps.myqtablewidget(self.mqtwDPSPaid)
         self.product.needStatus(2, downgrade_to=1)
         self.update_due_to_quotes_change()
         
@@ -376,14 +393,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.mem.con.commit()
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
+            self.product.estimations_dps.myqtablewidget(self.mqtwDividendsEstimations)
             self.product.needStatus(2, downgrade_to=0)
         
     @pyqtSlot()
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "dps")
         d.exec_()
-        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
+        self.product.estimations_dps.myqtablewidget(self.mqtwDividendsEstimations)
 
     @pyqtSlot()
     def on_actionEstimationEPSDelete_triggered(self):
@@ -391,14 +408,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
             self.mem.con.commit()
-            self.product.estimations_eps.myqtablewidget(self.tblEPS)
+            self.product.estimations_eps.myqtablewidget(self.mqtwEPS)
             self.product.needStatus(2, downgrade_to=0)
         
     @pyqtSlot()
     def on_actionEstimationEPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "eps")
         d.exec_()
-        self.product.estimations_eps.myqtablewidget(self.tblEPS)
+        self.product.estimations_eps.myqtablewidget(self.mqtwEPS)
 
     @pyqtSlot()
     def on_actionPurgeDay_triggered(self):
@@ -585,8 +602,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.mode=self.mem.investmentsmodes.find_by_id(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
             self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
             self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
-            for i in range(self.tblTickers.rowCount()):
-                value=self.tblTickers.item(i, 0).text()
+            for i in range(self.mqtwTickers.table.rowCount()):
+                value=self.mqtwTickers.table.item(i, 0).text()
                 if value =="":
                     value=None
                 self.product.tickers[i]=value
@@ -627,16 +644,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         f.exec_()
         f.manager.selected.qcombobox(self.cmbAgrupations)
 
-    def on_tblDaily_itemSelectionChanged(self):
+    def on_mqtwDaily_itemSelectionChanged(self):
         if self.product.result.ohclDaily.selected!=None:
             del self.product.result.ohclDaily.selected
             self.product.result.ohclDaily.selected=[]
             
-        for i in self.tblDaily.selectedItems():#itera por cada item no row.
+        for i in self.mqtwDaily.table.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclDaily.selected.append(self.product.result.ohclDaily.arr[i.row()])
 
-    def on_tblDaily_customContextMenuRequested(self,  pos):
+    def on_mqtwDaily_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclDaily.selected)>0:
             self.actionQuoteDeleteDays.setEnabled(True)
         else:
@@ -648,18 +665,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionQuoteImport)
         menu.addAction(self.actionQuoteImportInvestingCom)
         menu.addAction(self.actionQuoteExport)
-        menu.exec_(self.tblDaily.mapToGlobal(pos))
+        menu.exec_(self.mqtwDaily.table.mapToGlobal(pos))
         
-    def on_tblMonthly_itemSelectionChanged(self):
+    def on_mqtwMonthly_itemSelectionChanged(self):
         if self.product.result.ohclMonthly.selected!=None:
             del self.product.result.ohclMonthly.selected
             self.product.result.ohclMonthly.selected=[]
             
-        for i in self.tblMonthly.selectedItems():#itera por cada item no row.
+        for i in self.mqtwMonthly.table.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclMonthly.selected.append(self.product.result.ohclMonthly.arr[i.row()])
 
-    def on_tblMonthly_customContextMenuRequested(self,  pos):
+    def on_mqtwMonthly_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclMonthly.selected)>0:
             self.actionQuoteDeleteMonths.setEnabled(True)
         else:
@@ -667,18 +684,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteMonths)        
-        menu.exec_(self.tblMonthly.mapToGlobal(pos))  
+        menu.exec_(self.mqtwMonthlytable.table.mapToGlobal(pos))  
         
-    def on_tblYearly_itemSelectionChanged(self):
+    def on_mqtwYearly_itemSelectionChanged(self):
         if self.product.result.ohclYearly.selected!=None:
             del self.product.result.ohclYearly.selected
             self.product.result.ohclYearly.selected=[]
             
-        for i in self.tblYearly.selectedItems():#itera por cada item no row.
+        for i in self.mqtwYearly.table.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclYearly.selected.append(self.product.result.ohclYearly.arr[i.row()])
 
-    def on_tblYearly_customContextMenuRequested(self,  pos):
+    def on_mqtwYearly_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclYearly.selected)>0:
             self.actionQuoteDeleteYears.setEnabled(True)
         else:
@@ -686,8 +703,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteYears)        
-        menu.exec_(self.tblYearly.mapToGlobal(pos))
-    def on_tblIntradia_customContextMenuRequested(self,  pos):
+        menu.exec_(self.mqtwYearly.table.mapToGlobal(pos))
+    def on_mqtwIntradia_customContextMenuRequested(self,  pos):
         if len (self.setSelIntraday)>0:
             self.actionQuoteDelete.setEnabled(True)
         else:
@@ -704,12 +721,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionQuoteDelete)        
         menu.addSeparator()
         menu.addAction(self.actionPurgeDay)
-        menu.exec_(self.tblIntradia.mapToGlobal(pos))
+        menu.exec_(self.mqtwIntradia.table.mapToGlobal(pos))
 
-    def on_tblIntradia_itemSelectionChanged(self):
+    def on_mqtwIntradia_itemSelectionChanged(self):
         sel=[]
         try:
-            for i in self.tblIntradia.selectedItems():#itera por cada item no row.
+            for i in self.mqtwIntradia.table.selectedItems():#itera por cada item no row.
                 if i.column()==0:
                     sel.append(self.product.result.intradia.arr[i.row()])
             self.setSelIntraday=set(sel)
@@ -717,15 +734,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.setSelIntraday=set([])
             
             
-    def on_tblDividendsEstimations_itemSelectionChanged(self):
+    def on_mqtwDividendsEstimations_itemSelectionChanged(self):
         try:
-            for i in self.tblDividendsEstimations.selectedItems():#itera por cada item no row.        
+            for i in self.mqtwDividendsEstimations.table.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     self.selEstimationDPS=self.product.estimations_dps.arr[i.row()]
         except:
             self.selEstimationDPS=None
             
-    def on_tblDividendsEstimations_customContextMenuRequested(self,  pos):
+    def on_mqtwDividendsEstimations_customContextMenuRequested(self,  pos):
         if self.selEstimationDPS==None:
             self.actionEstimationDPSDelete.setEnabled(False)
         else:
@@ -733,18 +750,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionEstimationDPSNew)
         menu.addAction(self.actionEstimationDPSDelete)    
-        menu.exec_(self.tblDividendsEstimations.mapToGlobal(pos))
+        menu.exec_(self.mqtwDividendsEstimations.table.mapToGlobal(pos))
             
             
-    def on_tblEPS_itemSelectionChanged(self):
+    def on_mqtwEPS_itemSelectionChanged(self):
         try:
-            for i in self.tblEPS.selectedItems():#itera por cada item no row.        
+            for i in self.mqtwEPS.table.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     self.selEstimationEPS=self.product.estimations_eps.arr[i.row()]
         except:
             self.selEstimationEPS=None
             
-    def on_tblSplits_customContextMenuRequested(self,  pos):
+    def on_mqtwSplits_customContextMenuRequested(self,  pos):
         if self.product.splits.selected==None:
             self.actionSplitEdit.setEnabled(False)
             self.actionSplitRemove.setEnabled(False)
@@ -755,17 +772,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionSplitNew)
         menu.addAction(self.actionSplitEdit)
         menu.addAction(self.actionSplitRemove)
-        menu.exec_(self.tblSplits.mapToGlobal(pos))
+        menu.exec_(self.mqtwSplits.table.mapToGlobal(pos))
             
-    def on_tblSplits_itemSelectionChanged(self):
+    def on_mqtwSplits_itemSelectionChanged(self):
         try:
-            for i in self.tblSplits.selectedItems():#itera por cada item no row.        
+            for i in self.mqtwSplits.table.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     self.product.splits.selected=self.product.splits.arr[i.row()]
         except:
             self.product.splits.selected=None
             
-    def on_tblEPS_customContextMenuRequested(self,  pos):
+    def on_mqtwEPS_customContextMenuRequested(self,  pos):
         if self.selEstimationEPS==None:
             self.actionEstimationEPSDelete.setEnabled(False)
         else:
@@ -773,19 +790,19 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionEstimationEPSNew)
         menu.addAction(self.actionEstimationEPSDelete)    
-        menu.exec_(self.tblEPS.mapToGlobal(pos))
+        menu.exec_(self.mqtwEPS.table.mapToGlobal(pos))
             
-    def on_tblDPSPaid_itemSelectionChanged(self):
+    def on_mqtwDPSPaid_itemSelectionChanged(self):
         self.selDPS=None
         try:
-            for i in self.tblDPSPaid.selectedItems():#itera por cada item no row.        
+            for i in self.mqtwDPSPaid.table.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     self.selDPS=self.product.dps.arr[i.row()]
         except:
             self.selDPS=None
         
             
-    def on_tblDPSPaid_customContextMenuRequested(self,  pos):
+    def on_mqtwDPSPaid_customContextMenuRequested(self,  pos):
         if self.selDPS==None:
             self.actionDPSDelete.setEnabled(False)
             self.actionDividendXuNew.setEnabled(False)
@@ -801,4 +818,4 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if self.investment!=None:
             menu.addSeparator()
             menu.addAction(self.actionDividendXuNew)
-        menu.exec_(self.tblDPSPaid.mapToGlobal(pos))
+        menu.exec_(self.mqtwDPSPaid.table.mapToGlobal(pos))
