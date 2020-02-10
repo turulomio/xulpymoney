@@ -1,12 +1,12 @@
+from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QTableWidgetItem, QApplication
-from xulpymoney.decorators import deprecated
-from xulpymoney.libmanagers import DictObjectManager_With_IdDatetime_Selectable, ManagerSelectionMode, ObjectManager_With_IdDatetime_Selectable
+from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdDatetime_Selectable
 
 from xulpymoney.objects.comment import Comment
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
 from xulpymoney.ui.myqtablewidget import qdatetime, qleft
 ## Class to manage everything relationed with bank accounts operations
-class AccountOperation:
+class AccountOperation(QObject):
     ## Constructor with the following attributes combination
     ## 1. AccountOperation(mem). Create an account operation with all attributes to None
     ## 2. AccountOperation(mem, id). Create an account operation searching data in the database for an id.
@@ -43,6 +43,7 @@ class AccountOperation:
                 init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_by_id(row['id_cuentas']))
             cur.close()
 
+        QObject.__init__(self)
         self.mem=args[0]
         if  len(args)==1:
             init__create(None, None, None, None, None, None, None)
@@ -84,10 +85,10 @@ class AccountOperation:
 
 
 ## I THINK WE MUST USE HOMOGENEUS ETEROGENEUS SYSTEM
-class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
-    @deprecated
+class AccountOperationManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     def __init__(self, mem):
-        DictObjectManager_With_IdDatetime_Selectable.__init__(self)
+        ObjectManager_With_IdDatetime_Selectable.__init__(self)
+        QObject.__init__(self)
         self.setSelectionMode(ManagerSelectionMode.Manager)
         self.mem=mem
 
@@ -152,31 +153,40 @@ class AccountOperationManager(DictObjectManager_With_IdDatetime_Selectable):
                 if a.id==self.selected.only().id:
                     tabla.selectRow(rownumber+1)
 
-    def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
+    def myqtablewidget_lastmonthbalance(self, wdg,    account, lastmonthbalance):
         
         from xulpymoney.libxulpymoney import Money
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(self.length()+1)
-        table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Mem", "Starting month balance")))
-        table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-        table.setColumnHidden(5, True)
-        for i, o in enumerate(self.values_order_by_datetime()):
+        wdg.table.setColumnCount(6)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(3,  QTableWidgetItem(self.tr("Balance" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Comment" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Id" )))
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(self.length()+1)
+        wdg.table.setItem(0, 1, QTableWidgetItem(self.tr( "Starting month balance")))
+        wdg.table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
+        wdg.table.setColumnHidden(5, True)
+        self.order_by_datetime()
+        for i, o in enumerate(self.arr):
             importe=Money(self.mem, o.importe, account.currency)
             lastmonthbalance=lastmonthbalance+importe
-            table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
-            table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
-            table.setItem(i+1, 2, importe.qtablewidgetitem())
-            table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).decode(o.comentario)))       
-            table.setItem(i+1, 5, qleft(o.id))
-            if self.selected.length()>0:
-                if o.id==self.selected.only().id:
-                    table.selectRow(i+1)
+            wdg.table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
+            wdg.table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
+            wdg.table.setItem(i+1, 2, importe.qtablewidgetitem())
+            wdg.table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
+            wdg.table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).decode(o.comentario)))       
+            wdg.table.setItem(i+1, 5, qleft(o.id))
+#            if self.selected.length()>0:
+#                if o.id==self.selected.only().id:
+#                    wdg.table.selectRow(i+1)
 
-class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable):
+class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable, QObject):
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
+        QObject.__init__(self)
         self.setSelectionMode(ManagerSelectionMode.Manager)
         self.mem=mem
     
@@ -208,7 +218,7 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Mem","Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
+                comentario=self.tr("Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
             co=AccountOperation(self.mem, row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), fakeid)
             self.append(co)
             fakeid=fakeid+1
@@ -224,13 +234,13 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
             diff=1
         else:
             tabla.setColumnCount(6)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
         if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Mem","Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate("Mem","Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Mem","Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Mem","Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem","Comment" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(self.tr("Account" )))
+        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(self.tr("Concept" )))
+        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(self.tr("Amount" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(self.tr("Balance" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(self.tr("Comment" )))
         tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
         ##DATA 
         tabla.clearContents()
@@ -267,7 +277,7 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length()+1)
-        table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Mem", "Starting month balance")))
+        table.setItem(0, 1, QTableWidgetItem(self.tr( "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
         table.setColumnHidden(5, True)
         for i, o in enumerate(self.values_order_by_datetime()):
@@ -285,7 +295,7 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
                     
                     
 ## Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones
-class AccountOperationOfInvestmentOperation:
+class AccountOperationOfInvestmentOperation(QObject):
     ## Constructor with the following attributes combination
     ## 1. AccountOperationOfInvestmentOperation(mem). Create an account operation of an investment operation with all attributes to None
     ## 2. AccountOperationOfInvestmentOperation(mem,  datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id). Create an account operation of an investment operation settings all attributes.1
@@ -309,7 +319,7 @@ class AccountOperationOfInvestmentOperation:
             self.operinversion=operinversion
             self.investment=inversion
             self.id=id
-            
+        QObject.__init__(self)
         self.mem=args[0]
         if len(args)==1:
             init__create(None, None, None, None, None, None, None, None, None)

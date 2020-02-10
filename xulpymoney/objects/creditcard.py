@@ -69,8 +69,9 @@ class CreditCard(QObject):
             result=Decimal(0)
         return result
 
-class CreditCardManager(ObjectManager_With_IdName_Selectable):
+class CreditCardManager(QObject, ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
+        QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem   
             
