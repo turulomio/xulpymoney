@@ -244,11 +244,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setEnabled(False)
             return
         
-        self.table.settings(self.mem, "wdgTotal")
-        self.tblTargets.settings(self.mem, "wdgTotal")
-        self.tblTargetsPlus.settings(self.mem, "wdgTotal")
-        self.tblInvestOrWork.settings(self.mem,  "wdgTotal")
-        self.tblMakeEndsMeet.settings(self.mem, "wdgTotal")
+        self.mqtw.settings(self.mem.settings, "wdgTotal", "mqtw")
+        self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
+        self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
+        self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
+        self.mqtwTargets.settings(self.mem.settings, "wdgTotal", "mqtwTargets")
+        self.mqtwTargetsPlus.settings(self.mem.settings, "wdgTotal", "mqtwTargetsPlus")
+        self.mqtwInvestOrWork.settings(self.mem.settings,  "wdgTotal", "mqtwInvestOrWork")
+        self.mqtwMakeEndsMeet.settings(self.mem.settings, "wdgTotal", "mqtwMakeEndsMeet")
         
         self.annualtarget=None#AnnualTarget Object
         
@@ -287,32 +290,39 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
 
     def load_data(self):
-        self.table.clearContents()
-        self.table.applySettings()
+        self.mqtw.table.setColumnCount(13)
+        self.mqtw.table.setRowCount(12)
+        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
+            self.mqtw.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        for i, s in enumerate([self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D+E"), "", self.tr("Accounts"), self.tr("Investments"), self.tr("Total"), self.tr("Monthly difference"), "", self.tr("% Year to date")]):
+            self.mqtw.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
+        self.mqtw.table.verticalHeader().show()
+        self.mqtw.table.clearContents()
+        self.mqtw.applySettings()
         inicio=datetime.datetime.now()     
         self.setData=TotalYear(self.mem, self.wyData.year)
         self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.setData.total_last_year)))
         for i, m in enumerate(self.setData.arr):
             if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
-                self.table.setItem(0, i, m.incomes().qtablewidgetitem())
-                self.table.setItem(1, i, m.gains().qtablewidgetitem())
-                self.table.setItem(2, i, m.dividends().qtablewidgetitem())
-                self.table.setItem(3, i, m.expenses().qtablewidgetitem())
-                self.table.setItem(4, i, m.i_d_g_e().qtablewidgetitem())
-                self.table.setItem(6, i, m.total_accounts().qtablewidgetitem())
-                self.table.setItem(7, i, m.total_investments().qtablewidgetitem())
-                self.table.setItem(8, i, m.total().qtablewidgetitem())
-                self.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
-                self.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())            
+                self.mqtw.table.setItem(0, i, m.incomes().qtablewidgetitem())
+                self.mqtw.table.setItem(1, i, m.gains().qtablewidgetitem())
+                self.mqtw.table.setItem(2, i, m.dividends().qtablewidgetitem())
+                self.mqtw.table.setItem(3, i, m.expenses().qtablewidgetitem())
+                self.mqtw.table.setItem(4, i, m.i_d_g_e().qtablewidgetitem())
+                self.mqtw.table.setItem(6, i, m.total_accounts().qtablewidgetitem())
+                self.mqtw.table.setItem(7, i, m.total_investments().qtablewidgetitem())
+                self.mqtw.table.setItem(8, i, m.total().qtablewidgetitem())
+                self.mqtw.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
+                self.mqtw.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())            
             self.progress_bar_update()
-        self.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
-        self.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
-        self.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
-        self.table.setItem(3, 12, self.setData.expenses().qtablewidgetitem())
-        self.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
-        self.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
-        self.table.setItem(11, 12, self.setData.assets_percentage_in_month(12).qtablewidgetitem())
-        self.table.setCurrentCell(6, datetime.date.today().month-1)
+        self.mqtw.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
+        self.mqtw.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
+        self.mqtw.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
+        self.mqtw.table.setItem(3, 12, self.setData.expenses().qtablewidgetitem())
+        self.mqtw.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
+        self.mqtw.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
+        self.mqtw.table.setItem(11, 12, self.setData.assets_percentage_in_month(12).qtablewidgetitem())
+        self.mqtw.table.setCurrentCell(6, datetime.date.today().month-1)
         s=""
         s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
         invested=Assets(self.mem).invested(datetime.date.today())
@@ -326,20 +336,27 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
         self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.annualtarget.lastyear_assests)))
         self.spinTarget.setValue(float(self.annualtarget.percentage))
-        self.tblTargets.clearContents()
-        self.tblTargets.applySettings()
+        self.mqtwTargets.table.setColumnCount(13)
+        self.mqtwTargets.table.setRowCount(5)
+        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
+            self.mqtwTargets.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        for i, s in enumerate([self.tr("Monthly target"), self.tr("Total gains"), "", self.tr("Accumulated target"), self.tr("Accumulated total gains")]):
+            self.mqtwTargets.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
+        self.mqtwTargets.table.verticalHeader().show()        
+        self.mqtwTargets.table.clearContents()
+        self.mqtwTargets.applySettings()
         inicio=datetime.datetime.now()     
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
-            self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount, self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.tblTargets.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.monthly_balance()*i))
-        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.annual_balance()))
-        self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
+            self.mqtwTargets.table.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.mqtwTargets.table.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount, self.annualtarget.monthly_balance()))
+            self.mqtwTargets.table.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
+            self.mqtwTargets.table.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.monthly_balance()*i))
+        self.mqtwTargets.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.mqtwTargets.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.annual_balance()))
+        self.mqtwTargets.table.setCurrentCell(2, datetime.date.today().month-1)   
                 
         s=""
         s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
@@ -350,9 +367,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         logging.info("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
         
-    def load_targets_with_funds_revaluation(self):
-        self.tblTargetsPlus.clearContents()
-        self.tblTargetsPlus.applySettings()
+    def load_targets_with_funds_revaluation(self):        
+        self.mqtwTargetsPlus.table.setColumnCount(13)
+        self.mqtwTargetsPlus.table.setRowCount(7)
+        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
+            self.mqtwTargetsPlus.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        for i, s in enumerate([self.tr("Monthly target"), self.tr("Total gains"), self.tr("Funds revaluation"), self.tr("Total"), "",  self.tr("Accumulated target"), self.tr("Accumulated total gains")]):
+            self.mqtwTargetsPlus.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
+        self.mqtwTargetsPlus.table.verticalHeader().show()       
+        self.mqtwTargetsPlus.table.clearContents()
+        self.mqtwTargetsPlus.applySettings()
         inicio=datetime.datetime.now()     
 
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
@@ -361,18 +385,18 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
             sumf=sumf+m.funds_revaluation()
-            self.tblTargetsPlus.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargetsPlus.setItem(1, i-1,m.d_g().qtablewidgetitem())
-            self.tblTargetsPlus.setItem(2, i-1, m.funds_revaluation().qtablewidgetitem())
-            self.tblTargetsPlus.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount+m.funds_revaluation().amount, self.annualtarget.monthly_balance()))
+            self.mqtwTargetsPlus.table.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.mqtwTargetsPlus.table.setItem(1, i-1,m.d_g().qtablewidgetitem())
+            self.mqtwTargetsPlus.table.setItem(2, i-1, m.funds_revaluation().qtablewidgetitem())
+            self.mqtwTargetsPlus.table.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount+m.funds_revaluation().amount, self.annualtarget.monthly_balance()))
             
-            self.tblTargetsPlus.setItem(5, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.tblTargetsPlus.setItem(6, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount, self.annualtarget.monthly_balance()*i))
-        self.tblTargetsPlus.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.tblTargetsPlus.setItem(1, 12, sumd_g.qtablewidgetitem())
-        self.tblTargetsPlus.setItem(2, 12, sumf.qtablewidgetitem())
-        self.tblTargetsPlus.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount,self.annualtarget.annual_balance()))
-        self.tblTargetsPlus.setCurrentCell(2, datetime.date.today().month-1)   
+            self.mqtwTargetsPlus.table.setItem(5, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
+            self.mqtwTargetsPlus.table.setItem(6, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount, self.annualtarget.monthly_balance()*i))
+        self.mqtwTargetsPlus.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.mqtwTargetsPlus.table.setItem(1, 12, sumd_g.qtablewidgetitem())
+        self.mqtwTargetsPlus.table.setItem(2, 12, sumf.qtablewidgetitem())
+        self.mqtwTargetsPlus.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount,self.annualtarget.annual_balance()))
+        self.mqtwTargetsPlus.table.setCurrentCell(2, datetime.date.today().month-1)   
                 
         s=""
         s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
@@ -400,20 +424,27 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 item.setBackground(eQColor.Green)
             return item            
         ##------------------------------------------------
-        inicio=datetime.datetime.now()    
-        self.tblInvestOrWork.clearContents()
-        self.tblInvestOrWork.applySettings()
+        inicio=datetime.datetime.now()            
+        self.mqtwInvestOrWork.table.setColumnCount(13)
+        self.mqtwInvestOrWork.table.setRowCount(6)
+        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
+            self.mqtwInvestOrWork.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        for i, s in enumerate([self.tr("Total gains"), self.tr("Expenses"), "",  self.tr("Total gains - Expenses"), "",  self.tr("Result")]):
+            self.mqtwInvestOrWork.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
+        self.mqtwInvestOrWork.table.verticalHeader().show()       
+        self.mqtwInvestOrWork.table.clearContents()
+        self.mqtwInvestOrWork.applySettings()
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
-            self.tblInvestOrWork.setItem(0, i-1, m.d_g().qtablewidgetitem())
-            self.tblInvestOrWork.setItem(1, i-1, m.expenses().qtablewidgetitem())
-            self.tblInvestOrWork.setItem(3, i-1, (m.d_g()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
-            self.tblInvestOrWork.setItem(5, i-1, qresult(m.d_g()+m.expenses()))
-        self.tblInvestOrWork.setItem(0, 12, self.setData.d_g().qtablewidgetitem())
-        self.tblInvestOrWork.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
-        self.tblInvestOrWork.setItem(3, 12, (self.setData.d_g()+self.setData.expenses()).qtablewidgetitem())
-        self.tblInvestOrWork.setItem(5, 12, qresult(self.setData.d_g()+self.setData.expenses()))
-        self.tblInvestOrWork.setCurrentCell(2, datetime.date.today().month-1)   
+            self.mqtwInvestOrWork.table.setItem(0, i-1, m.d_g().qtablewidgetitem())
+            self.mqtwInvestOrWork.table.setItem(1, i-1, m.expenses().qtablewidgetitem())
+            self.mqtwInvestOrWork.table.setItem(3, i-1, (m.d_g()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
+            self.mqtwInvestOrWork.table.setItem(5, i-1, qresult(m.d_g()+m.expenses()))
+        self.mqtwInvestOrWork.table.setItem(0, 12, self.setData.d_g().qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(3, 12, (self.setData.d_g()+self.setData.expenses()).qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(5, 12, qresult(self.setData.d_g()+self.setData.expenses()))
+        self.mqtwInvestOrWork.table.setCurrentCell(2, datetime.date.today().month-1)   
         
         s=""
         s=s+self.tr("This report shows if the user could retire due to its investments") +"\n\n"
@@ -439,19 +470,26 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             return item            
         ##------------------------------------------------
         inicio=datetime.datetime.now()    
-        self.tblMakeEndsMeet.clearContents()
-        self.tblMakeEndsMeet.applySettings()
+        self.mqtwMakeEndsMeet.table.setColumnCount(13)
+        self.mqtwMakeEndsMeet.table.setRowCount(6)
+        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
+            self.mqtwMakeEndsMeet.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        for i, s in enumerate([self.tr("Incomes"), self.tr("Expenses"), "",  self.tr("Incomes - Expenses"), "",  self.tr("Result")]):
+            self.mqtwMakeEndsMeet.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
+        self.mqtwMakeEndsMeet.table.verticalHeader().show()      
+        self.mqtwMakeEndsMeet.table.clearContents()
+        self.mqtwMakeEndsMeet.applySettings()
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
-            self.tblMakeEndsMeet.setItem(0, i-1, m.incomes().qtablewidgetitem())
-            self.tblMakeEndsMeet.setItem(1, i-1, m.expenses().qtablewidgetitem())
-            self.tblMakeEndsMeet.setItem(3, i-1, (m.incomes()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
-            self.tblMakeEndsMeet.setItem(5, i-1, qresult(m.incomes()+m.expenses()))
-        self.tblMakeEndsMeet.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
-        self.tblMakeEndsMeet.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
-        self.tblMakeEndsMeet.setItem(3, 12, (self.setData.incomes()+self.setData.expenses()).qtablewidgetitem())
-        self.tblMakeEndsMeet.setItem(5, 12, qresult(self.setData.incomes()+self.setData.expenses()))
-        self.tblMakeEndsMeet.setCurrentCell(2, datetime.date.today().month-1)   
+            self.mqtwMakeEndsMeet.table.setItem(0, i-1, m.incomes().qtablewidgetitem())
+            self.mqtwMakeEndsMeet.table.setItem(1, i-1, m.expenses().qtablewidgetitem())
+            self.mqtwMakeEndsMeet.table.setItem(3, i-1, (m.incomes()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
+            self.mqtwMakeEndsMeet.table.setItem(5, i-1, qresult(m.incomes()+m.expenses()))
+        self.mqtwMakeEndsMeet.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(3, 12, (self.setData.incomes()+self.setData.expenses()).qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(5, 12, qresult(self.setData.incomes()+self.setData.expenses()))
+        self.mqtwMakeEndsMeet.table.setCurrentCell(2, datetime.date.today().month-1)   
         
         s=""
         s=s+self.tr("This report shows if the user makes ends meet") +"\n\n"
@@ -551,7 +589,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                         id_tiposoperaciones={0} and 
                                                         date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year, list2string(self.mem.conceptos.considered_dividends_in_totals())))
         else:#Month
-            tabtitle=self.tr("Incomes of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+            tabtitle=self.tr("Incomes of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
                                                     from opercuentas 
                                                     where id_tiposoperaciones={0} and 
@@ -595,7 +633,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                             id_tiposoperaciones={0} and 
                                                             date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year))
         else:#Month
-            tabtitle=self.tr("Expenses of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+            tabtitle=self.tr("Expenses of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
                                                 from opercuentas 
                                                 where id_tiposoperaciones={0} and 
@@ -640,7 +678,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto().local()
                     else:#Month
-                        tabtitle=self.tr("Selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                        tabtitle=self.tr("Selling operations of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
                         if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto().isGETZero():
@@ -680,7 +718,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto()
                     else:#Month
-                        tabtitle=self.tr("Selling operations of {0} of {1} (Sold after a year)").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                        tabtitle=self.tr("Selling operations of {0} of {1} (Sold after a year)").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
                         if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8)  and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
@@ -719,7 +757,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto()
                     else:#Month
-                        tabtitle=self.tr("Selling operations of {0} of {1} (Sold before a year)").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                        tabtitle=self.tr("Selling operations of {0} of {1} (Sold before a year)").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
                         if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
@@ -758,7 +796,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     if dividend.datetime.year==self.wyData.year:
                         set.append(dividend)
                 else:# With mounth
-                    tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                    tabtitle=self.tr("Dividends of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
                     if dividend.datetime.year==self.wyData.year and dividend.datetime.month==self.month:
                         set.append(dividend)
         set.order_by_datetime()
@@ -1014,7 +1052,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setCurrentIndex(0)
             self.tab.removeTab(index)
             
-    def on_table_cellDoubleClicked(self, row, column):
+    def on_mqtw_cellDoubleClicked(self, row, column):
         if row==0:#incomes
             self.on_actionShowIncomes_triggered()
         elif row==1:#Gains
@@ -1029,17 +1067,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         else:
             qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see commission and tax reports"))
 
-    def on_table_customContextMenuRequested(self,  pos):
+    def on_mqtw_customContextMenuRequested(self,  pos):
         menu=QMenu()
         menu.addAction(self.actionShowComissions)
         menu.addSeparator()
         menu.addAction(self.actionShowTaxes)
         menu.addSeparator()
         menu.addAction(self.actionGainsByProductType)
-        menu.exec_(self.table.mapToGlobal(pos))
+        menu.exec_(self.mqtw.table.mapToGlobal(pos))
 
-    def on_table_itemSelectionChanged(self):
+    def on_mqtw_itemSelectionChanged(self):
         self.month=None
-        for i in self.table.selectedItems():#itera por cada item no row.
+        for i in self.mqtw.table.selectedItems():#itera por cada item no row.
             self.month=i.column()+1
         print ("Selected month: {0}.".format(self.month))

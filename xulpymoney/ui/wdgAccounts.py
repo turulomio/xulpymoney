@@ -15,10 +15,10 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mqtwAccounts.table.cellDoubleClicked.connect(self.on_mqtwAccounts_cellDoubleClicked)
         self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
         self.mqtwAccounts.table.itemSelectionChanged.connect(self.on_mqtwAccounts_itemSelectionChanged)
+        self.mem.data.accounts.order_by_name()
         self.accounts=self.mem.data.accounts_active()
         self.update()
 
-        
     @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
         f=frmAccountsReport(self.mem, self.accounts.selected)

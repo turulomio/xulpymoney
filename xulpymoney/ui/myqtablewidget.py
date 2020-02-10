@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import Qt,  pyqtSlot, QObject
 from PyQt5.QtGui import QKeySequence, QColor, QIcon
-from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton
+from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
 from officegenerator import ODS_Write, Currency, Percentage,  Coord
 from logging import info, debug
@@ -19,6 +19,11 @@ class myQTableWidget(QWidget):
         self.lbl=QLabel()
         self.table=QTableWidget()
         self.table.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.table.verticalScrollBar().valueChanged.connect(self.on_table_verticalscrollbar_value_changed)
+        self.table.verticalHeader().hide()
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.lbl.setText(self.tr("Add a string to filter rows"))
         self.txtSearch=QLineEdit()
         self.txtSearch.textChanged.connect(self.on_txt_textChanged)
@@ -36,11 +41,15 @@ class myQTableWidget(QWidget):
         self.actionExport.setIcon(QIcon(":/reusingcode/libreoffice_calc.png"))
         self.actionExport.triggered.connect(self.on_actionExport_triggered)
         
+        self.actionSizeMinimum=QAction(self.tr("Minimum column size"))
+        self.actionSizeMinimum.triggered.connect(self.on_actionSizeMinimum_triggered)
+        self.actionSizeNeeded=QAction(self.tr("Needed column size"))
+        self.actionSizeNeeded.triggered.connect(self.on_actionSizeNeeded_triggered)
+        
         self.actionSearch=QAction(self.tr("Search in table"))
         self.actionSearch.setIcon(QIcon(":/reusingcode/search.png"))
         self.actionSearch.triggered.connect(self.on_actionSearch_triggered)
         self.actionSearch.setShortcut(Qt.CTRL + Qt.Key_F)
-        self.settingsSection=None
         self.table.setAlternatingRowColors(True)
         self._last_height=None
                 
@@ -60,11 +69,16 @@ class myQTableWidget(QWidget):
         if modifiers == Qt.ShiftModifier:
             for i in range(self.table.columnCount()):
                 self.table.setColumnWidth(i, newSize)
+            self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
+            debug("Saved {}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject))
         elif modifiers == Qt.ControlModifier:
-            self.table.resizeRowsToContents()
-            self.table.resizeColumnsToContents()
-        self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.objectName()), self.table.horizontalHeader().saveState() )
-        debug("Saved {}/{}_horizontalheader_state".format(self.settingsSection, self.table.objectName()))
+            self.on_actionSizeMinimum_triggered()
+    
+    @pyqtSlot(int)
+    def on_table_verticalscrollbar_value_changed(self, value):
+        if value % 8 ==1:
+            self.on_actionSizeNeeded_triggered()
+        
         
     def settings(self, settings, settingsSection,  objectname):
         self.settings=settings
@@ -78,7 +92,7 @@ class myQTableWidget(QWidget):
         """settings must be defined before"""
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.table.horizontalHeader().sectionResized.connect(self.sectionResized)
-        state=self.settings.value("{}/{}_horizontalheader_state".format(self.settingsSection, self.objectName()))
+        state=self.settings.value("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject))
         if state:
             self.table.horizontalHeader().restoreState(state)
         
@@ -88,11 +102,12 @@ class myQTableWidget(QWidget):
         self.table.setRowCount(0)
         self.table.clearContents()
 
-    def verticalScrollbarAction(self,  action):
-        """Resizes columns if column width is less than table hint"""
-        for i in range(self.table.columnCount()):
-            if self.table.sizeHintForColumn(i)>self.table.columnWidth(i):
-                self.table.setColumnWidth(i, self.table.sizeHintForColumn(i))
+    
+    ## Resizes columns if column width is less than table hint
+    #def verticalScrollbarAction(self,  action):
+    def wheelEvent(self, event):
+        self.on_actionSizeNeeded_triggered()
+        event.accept()
 
     @pyqtSlot()
     def keyPressEvent(self, event):
@@ -225,18 +240,31 @@ class myQTableWidget(QWidget):
             self.cmdCloseSearch.show()
         else:
             self.cmdCloseSearch.hide()
-            
+
     def on_actionExport_triggered(self):
         filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), "table.ods", self.tr("Libreoffice calc (*.ods)"))[0]
         if filename:
             Table2ODS(filename, self, "My table")
-            
+
+    def on_actionSizeMinimum_triggered(self):
+        self.table.resizeRowsToContents()
+        self.table.resizeColumnsToContents()
+        self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
+        debug("Saved {}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject))
+
+    def on_actionSizeNeeded_triggered(self):
+        for i in range(self.table.columnCount()):
+            if self.table.sizeHintForColumn(i)>self.table.columnWidth(i):
+                self.table.setColumnWidth(i, self.table.sizeHintForColumn(i))
+        self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
+        debug("Saved {}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject))
+
     def on_actionSearch_triggered(self):
         self.lbl.show()
         self.txtSearch.show()
         self.cmdCloseSearch.show()
         self.txtSearch.setFocus()
-            
+
     ## Returns a qmenu to be used in other qmenus
     def qmenu(self, title="Table options"):
         menu=QMenu(self.parent)
@@ -249,7 +277,12 @@ class myQTableWidget(QWidget):
         order.setTitle(self.tr("Order by"))
         for action in self.actionListOrderBy:
             order.addAction(action)
-        menu.addMenu(order)     
+        menu.addMenu(order)    
+        size=QMenu(menu)
+        size.setTitle(self.tr("Columns size"))
+        size.addAction(self.actionSizeMinimum)
+        size.addAction(self.actionSizeNeeded)
+        menu.addMenu(size)
         return menu
         
     def on_txt_textChanged(self, text):
