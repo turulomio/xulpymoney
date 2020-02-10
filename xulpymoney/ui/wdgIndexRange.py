@@ -52,8 +52,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.benchmark=self.mem.data.benchmark
         
         
-        self.table.settings(self.mem, "wdgIndexRange")
-        self.table.setVerticalHeaderHeight(None)#Must be after settings
+        self.mqtw.settings(self.mem.settings, "wdgIndexRange", "mqtw")
+        self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
+        self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
+        self.mqtw.setVerticalHeaderHeight(None)#Must be after settings
                 
         self.spin.setValue(float(self.mem.settingsdb.value("wdgIndexRange/spin", "2")))
         self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
@@ -132,21 +134,24 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), datetime.date.today()).amount# +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today()).amount
         rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())
         
-        #Iterates all ranges and prints table
-        self.table.applySettings()
-        self.table.clearContents()
-        self.table.setRowCount(len(ranges))
+        self.mqtw.table.setColumnCount(2)
+        for i, s in enumerate([self.tr("Range"),  self.tr("Investments")]):
+            self.mqtw.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
+        #Iterates all ranges and prints mqtw
+        self.mqtw.applySettings()
+        self.mqtw.table.clearContents()
+        self.mqtw.table.setRowCount(len(ranges))
         colorized=0
         for i, r in enumerate(ranges):###De mayor a menor
             top=r*(1+Decimal(self.spin.value()/100))
             bottom=r
-            self.table.setItem(i, 0,qcenter("{}-{}".format(int(bottom), int(top))))
-            self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
+            self.mqtw.table.setItem(i, 0,qcenter("{}-{}".format(int(bottom), int(top))))
+            self.mqtw.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
             if bottom<self.cmbBenchmarkCurrent_price():
                 if self.cmbBenchmarkCurrent_price()<=top: ##Colorize current price
-                    self.table.item(i, 0).setBackground(eQColor.Red)
+                    self.mqtw.table.item(i, 0).setBackground(eQColor.Red)
                 if colorized<=rangescovered:
-                    self.table.item(i, 1).setBackground(eQColor.Green)
+                    self.mqtw.table.item(i, 1).setBackground(eQColor.Green)
                     colorized=colorized+1
 
         #Prints label
@@ -177,7 +182,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.cmbBenchmarkCurrent_load()
         self.load_data()
 
-    def on_table_customContextMenuRequested(self,  pos):
+    def on_mqtw_customContextMenuRequested(self,  pos):
         if self.range!=None:
             self.actionBottom.setText(self.range.textBottom())
             self.actionTop.setText(self.range.textTop())
@@ -186,11 +191,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             menu.addAction(self.actionTop)
             menu.addAction(self.actionMiddle)   
             menu.addAction(self.actionBottom)
-            menu.exec_(self.table.mapToGlobal(pos))
+            menu.exec_(self.mqtw.table.mapToGlobal(pos))
 
-    def on_table_itemSelectionChanged(self):
+    def on_mqtw_itemSelectionChanged(self):
         try:
-            for i in self.table.selectedItems():#itera por cada item no row.
+            for i in self.mqtw.table.selectedItems():#itera por cada item no row.
                 if i.column()==0:
                     self.range=Range(self.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]), self.cmbBenchmarkCurrent_price())
         except:
