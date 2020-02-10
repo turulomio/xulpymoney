@@ -4,7 +4,8 @@ from datetime import date,  timedelta
 from logging import debug
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libmanagers import ManagerSelectionMode
-from xulpymoney.libxulpymoney import Account, Assets, InvestmentOperation, CreditCardOperationManager
+from xulpymoney.objects.account import Account
+from xulpymoney.libxulpymoney import Assets, InvestmentOperation, CreditCardOperationManager
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationManager
 from xulpymoney.objects.comment import Comment

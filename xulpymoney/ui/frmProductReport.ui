@@ -866,7 +866,7 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>3</number>
+                 <number>5</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
@@ -968,86 +968,6 @@
                    <layout class="QVBoxLayout" name="verticalLayout_15">
                     <item>
                      <widget class="myQTableWidget" name="mqtwMensuales" native="true"/>
-                    </item>
-                    <item>
-                     <widget class="QTableWidget" name="tblMensuales">
-                      <property name="toolTip">
-                       <string>Table has been calculted with the last price of the previous month and the last price of the corresponding month</string>
-                      </property>
-                      <attribute name="verticalHeaderVisible">
-                       <bool>false</bool>
-                      </attribute>
-                      <column>
-                       <property name="text">
-                        <string>Year</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>January</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>February</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>March</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>April</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>May</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>June</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>July</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>August</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>September</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>October</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>November</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>December</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>Total</string>
-                       </property>
-                      </column>
-                     </widget>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_19">

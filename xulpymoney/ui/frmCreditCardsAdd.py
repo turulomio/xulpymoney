@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmCreditCardsAdd import Ui_frmCreditCardsAdd
-from xulpymoney.libxulpymoney import CreditCard
+from xulpymoney.objects.creditcard import CreditCard
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 

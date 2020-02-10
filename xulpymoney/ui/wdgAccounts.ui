@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>579</width>
-    <height>318</height>
+    <width>758</width>
+    <height>532</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -40,49 +40,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQTableWidget" name="tblAccounts">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Account</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Bank</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Account number</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Balance</string>
-          </property>
-         </column>
-        </widget>
+        <widget class="myQTableWidget" name="mqtwAccounts" native="true"/>
        </item>
       </layout>
      </item>
@@ -172,8 +130,9 @@
  <customwidgets>
   <customwidget>
    <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
+   <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

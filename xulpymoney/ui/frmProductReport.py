@@ -15,7 +15,7 @@ from xulpymoney.objects.product import  Product
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
-from xulpymoney.ui.myqtablewidget import qdatetime, qleft
+from xulpymoney.ui.myqtablewidget import qdatetime
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmManagerSelector
@@ -320,20 +320,23 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
 
     def load_mensuales(self):
-        if len(self.product.result.ohclMonthly.arr)==0:
-            self.mqtwMensuales.clear()
-            return
-
+        data=[]
         minyear=self.product.result.ohclMonthly.arr[0].year
-        rowcount=int(date.today().year-minyear+1)
-        self.mqtwMensuales.applySettings()
-        self.mqtwMensuales.table.setRowCount(rowcount)    
-
         for i, year in enumerate(range(minyear,  date.today().year+1)):
-            self.mqtwMensuales.table.setItem(i, 0, qleft(year))
+            row=[]
+            row.append(year)
             for month in range(1, 13):
-                self.mqtwMensuales.table.setItem(i, month, self.product.result.ohclMonthly.percentage_by_year_month(year, month).qtablewidgetitem())
-            self.mqtwMensuales.table.setItem(i, 13, self.product.result.ohclYearly.percentage_by_year(year).qtablewidgetitem())
+                row.append(self.product.result.ohclMonthly.percentage_by_year_month(year, month))
+            row.append(self.product.result.ohclYearly.percentage_by_year(year))
+            data.append(row)
+            
+        self.mqtwMensuales.setData(
+            [self.tr("Year"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
+            None, 
+            data, 
+            decimals=2, 
+            zonename=self.mem.localzone_name
+        )
 
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):

@@ -11,9 +11,10 @@ from pytz import timezone
 from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date,  days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, qmessagebox, have_same_sign, set_sign_of_other_number
-from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qbool, qempty, qnumber
+from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qempty, qnumber
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType,  eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable
+from xulpymoney.objects.account import Account, AccountManager
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationOfInvestmentOperation
 from xulpymoney.objects.comment import Comment
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
@@ -868,46 +869,7 @@ class CountryManager(ObjectManager_With_IdName_Selectable):
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 
-class AccountManager(ObjectManager_With_IdName_Selectable):   
-    def __init__(self, mem,  setebs):
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem   
-        self.ebs=setebs
 
-    def load_from_db(self, sql):
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from cuentas"
-        for row in cur:
-            c=Account(self.mem, row, self.ebs.find_by_id(row['id_entidadesbancarias']))
-            c.balance()
-            self.append(c)
-        cur.close()
-        
-    def balance(self, date=None):
-        """Give the sum of all accounts balances in self.arr"""
-        res=Money(self.mem, 0, self.mem.localcurrency)
-        for ac in self.arr:
-            res=res+ac.balance(date,  type=3)
-        return res
-        
-    ## Used to find a credit card in accounts
-    def find_creditcard_by_id(self, id):
-        for o in self.arr:
-            o.needStatus(1)#Loads all account credit cards
-            for cc in o.creditcards.arr:
-                if cc.id==id:
-                    return cc
-        return None
-        
-    ## Returns a CreditCardManager with all active credit cards 
-    def CreditCardManager_active(self):
-        r=CreditCardManager(self.mem)
-        for o in self.arr:
-            o.needStatus(1)#Loads all account credit cards
-            for cc in o.creditcards.arr:
-                if cc.active==True:
-                    r.append(cc)
-        return r
 
 class CurrencyManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -2940,156 +2902,6 @@ class Bank:
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
 
-
-## Class to manage everything relationed with bank accounts
-class Account:
-    ## Constructor with the following attributes combination
-    ## 1. Account(mem, row, bank). Create an Account from a db row, generated in a database query
-    ## 2. Account(mem, name, bank, active, numero, currency, id). Create account passing all attributes
-    ## @param mem MemXulpymoney object
-    ## @param row Dictionary of a database query cursor
-    ## @param bank Bank object
-    ## @param name Account name
-    ## @param active Boolean that sets if the Account is active
-    ## @param numero String with the account number
-    ## @param currency Currency object that sets the currency of the Account
-    ## @param id Integer that sets the id of an account. If id=None it's not in the database. id is set in the save method
-    def __init__(self, *args):
-        self.mem=args[0]
-        self.status=0
-        if len(args)==3:
-            self.id=args[1]['id_cuentas']
-            self.name=QCoreApplication.translate("Mem", args[1]['cuenta'])
-            self.eb=args[2]
-            self.active=args[1]['active']
-            self.numero=args[1]['numerocuenta']
-            self.currency=self.mem.currencies.find_by_id(args[1]['currency'])            
-        if len(args)==7:
-            self.name=args[1]
-            self.eb=args[2]
-            self.active=args[3]
-            self.numero=args[4]
-            self.currency=args[5]
-            self.id=args[6]
-
-        
-    def __repr__(self):
-        return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
-
-    def balance(self,fecha=None, type=eMoneyCurrency.User):
-        """Función que calcula el balance de una cuenta
-        Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
-        Parámetros:
-            - pg_cursor cur Cursor de base de datos
-            - date fecha Fecha en la que calcular el balance
-        Devuelve:
-            - Decimal balance Valor del balance
-        type=2, account currency
-        type=3 localcurrency
-        """
-        cur=self.mem.con.cursor()
-        if fecha==None:
-            fecha=date.today()
-        cur.execute('select sum(importe) from opercuentas where id_cuentas='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
-        res=cur.fetchone()[0]
-        cur.close()
-        if res==None:
-            return Money(self.mem, 0, self.resultsCurrency(type))
-        if type==eMoneyCurrency.Account:
-            return Money(self.mem, res, self.currency)
-        elif type==eMoneyCurrency.User:
-            if fecha==None:
-                dt=self.mem.localzone.now()
-            else:
-                dt=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
-            return Money(self.mem, res, self.currency).convert(self.mem.localcurrency, dt)
-
-    def save(self):
-        cur=self.mem.con.cursor()
-        if self.id==None:
-            cur.execute("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.active, self.currency.id))
-            self.id=cur.fetchone()[0]
-        else:
-            cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.active, self.currency.id, self.id))
-        cur.close()
-
-    def is_deletable(self):
-        """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
-        cur=self.mem.con.cursor()
-        cur.execute("select count(*) from tarjetas where id_cuentas=%s", (self.id, ))
-        if cur.fetchone()[0]!=0:
-            cur.close()
-            return False
-        cur.execute("select count(*) from inversiones where id_cuentas=%s", (self.id, ))
-        if cur.fetchone()[0]!=0:
-            cur.close()
-            return False
-        cur.execute("select count(*) from opercuentas where id_cuentas=%s", (self.id, ))
-        if cur.fetchone()[0]!=0:
-            cur.close()
-            return False
-        cur.close()
-        return True
-        
-    def borrar(self, cur):
-        if self.is_deletable()==True:
-            cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
-
-    def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
-        """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
-        #Ojo los comentarios están dependientes.
-        oc_comision=None
-        notfinished="Tranfer not fully finished"
-        if comision>0:
-            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankCommissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
-            oc_comision.save()
-        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -importe, notfinished, cuentaorigen, None)
-        oc_origen.save()
-        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), importe, notfinished, cuentadestino, None)
-        oc_destino.save()
-        
-        oc_origen.comentario=Comment(self.mem).encode(eComment.AccountTransferOrigin, oc_origen, oc_destino, oc_comision)
-        oc_origen.save()
-        oc_destino.comentario=Comment(self.mem).encode(eComment.AccountTransferDestiny, oc_origen, oc_destino, oc_comision)
-        oc_destino.save()
-        if oc_comision!=None:
-            oc_comision.comentario=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
-            oc_comision.save()
-    ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
-    ## @param statusneeded  Integer with the status needed 
-    ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing
-    ##
-    ## 0 Account
-    ## 1 Credit Cards
-    def needStatus(self, statusneeded, downgrade_to=None):
-        if downgrade_to!=None:
-            self.status=downgrade_to
-        
-        if self.status==statusneeded:
-            return
-
-        if self.status==0 and statusneeded==1: #MAIN
-            self.creditcards=CreditCardManager(self.mem)
-            self.creditcards.load_from_db(self.mem.con.mogrify("select * from tarjetas where id_cuentas=%s", (self.id, )))
-            self.status=1
-
-    def qmessagebox_inactive(self):
-        if self.active==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(QApplication.translate("Mem", "The associated account is not active. You must activate it first"))
-            m.exec_()    
-            return True
-        return False
-
-    def resultsCurrency(self, type ):
-        if type==2:
-            return self.currency
-        elif type==3:
-            return self.mem.localcurrency
-        critical("Rare account result currency: {}".format(type))
-
 class Investment:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
     
@@ -3387,74 +3199,6 @@ class Investment:
         else:#Long short products
             return Percentage(-(self.venta-self.product.result.basic.last.quote), self.product.result.basic.last.quote)
         
-
-
-class CreditCard:    
-    def __init__(self, mem):
-        self.mem=mem
-        self.id=None
-        self.name=None
-        self.account=None
-        self.pagodiferido=None
-        self.saldomaximo=None
-        self.active=None
-        self.numero=None
-           
-    def init__create(self, name, cuenta, pagodiferido, saldomaximo, activa, numero, id=None):
-        """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
-        self.id=id
-        self.name=name
-        self.account=cuenta
-        self.pagodiferido=pagodiferido
-        self.saldomaximo=saldomaximo
-        self.active=activa
-        self.numero=numero
-        return self
-        
-    def init__db_row(self, row, cuenta):
-        """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
-        self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['active'], row['numero'], row['id_tarjetas'])
-        return self
-                    
-    def __repr__(self):
-        return "CreditCard: {}".format(self.id)
-
-    def delete(self):
-        self.mem.con.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
-        
-    ## Devuelve False si no puede borrarse por haber dependientes.
-    def is_deletable(self):
-        res=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
-        if res==0:
-            return True
-        else:
-            return False
-        
-    def qmessagebox_inactive(self):
-        if self.active==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(QApplication.translate("Mem", "The associated credit card is not active. You must activate it first"))
-            m.exec_()    
-            return True
-        return False
-        
-    def save(self):
-        if self.id==None:
-            self.id=self.mem.con.cursor_one_field("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
-        else:
-            self.mem.con.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
-
-    def saldo_pendiente(self):
-        """Es el balance solo de operaciones difreidas sin pagar"""
-        cur=self.mem.con.cursor()
-        cur.execute("select sum(importe) from opertarjetas where id_tarjetas=%s and pagado=false;", [self.id])
-        result=cur.fetchone()[0]
-        cur.close()
-        if result==None:
-            result=Decimal(0)
-        return result
 
 class CreditCardOperation:
     def __init__(self, mem):
@@ -3866,61 +3610,6 @@ class Assets:
         return resultado        
 
 
-class CreditCardManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem):
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem   
-            
-    def CreditCardManager_active(self):        
-        r=CreditCardManager(self.mem, self.accounts)
-        for b in self.arr:
-            if b.active==True:
-                r.append(b)
-        return r       
-
-    def CreditCardManager_inactive(self):        
-        r=CreditCardManager(self.mem, self.accounts)
-        for b in self.arr:
-            if b.active==False:
-                r.append(b)
-        return r        
-
-    def load_from_db(self, sql):
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from tarjetas")
-        for row in cur:
-            t=CreditCard(self.mem).init__db_row(row, self.mem.data.accounts.find_by_id(row['id_cuentas']))
-            self.append(t)
-        cur.close()
-        
-    ## @param table myQTableWidget
-    ## @param active Boolean to show active or inactive rows
-    def myqtablewidget(self, wdg, active):
-        wdg.table.applySettings()
-        wdg.table.setRowCount(self.length())        
-        for i, t in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qleft(t.name))
-            wdg.table.setItem(i, 1, qright(t.numero))
-            wdg.table.setItem(i, 2, qbool(t.active))
-            wdg.table.setItem(i, 3, qbool(t.pagodiferido))
-            wdg.table.setItem(i, 4, t.account.currency.qtablewidgetitem(t.saldomaximo ))
-            wdg.table.setItem(i, 5, t.account.currency.qtablewidgetitem(t.saldo_pendiente()))
-            if t.active!=active: #Hides active or inactive when necesary
-                wdg.table.hideRow(i)
-            else:
-                wdg.table.showRow(i)
-
-    def qcombobox(self, combo,  selected=None):
-        """Load set items in a comobo using id and name
-        Selected is and object
-        It sorts by name the arr""" 
-        self.order_by_name()
-        combo.clear()
-        for a in self.arr:
-            combo.addItem("{} ({})".format(a.name, a.numero), a.id)
-
-        if selected!=None:
-            combo.setCurrentIndex(combo.findData(selected.id))
 
 class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable):
     def __init__(self, mem):
