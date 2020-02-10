@@ -157,23 +157,7 @@
             </layout>
            </item>
            <item>
-            <widget class="myQTableWidget" name="tblOrders">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-            </widget>
+            <widget class="myQTableWidget" name="mqtwOrders" native="true"/>
            </item>
           </layout>
          </item>
@@ -189,23 +173,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="myQTableWidget" name="tblSellingPoints">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-          </widget>
+          <widget class="myQTableWidget" name="mqtwSellingPoints" native="true"/>
          </item>
         </layout>
        </widget>
@@ -289,14 +257,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>wdgYear</class>
    <extends>QWidget</extends>
    <header location="global">wdgYear</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

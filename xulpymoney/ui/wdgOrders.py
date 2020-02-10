@@ -15,9 +15,11 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mem=mem
         self.orders=None 
          
-        self.tblOrders.settings(self.mem, "wdgOrders")
-        self.tblSellingPoints.settings(self.mem, "wdgOrders")
-        self.mem.data.investments_active().myqtablewidget_sellingpoints(self.tblSellingPoints)
+        self.mqtwOrders.settings(self.mem.settings, "wdgOrders", "mqtwOrders")
+        self.mqtwOrders.table.customContextMenuRequested.connect(self.on_mqtwOrders_customContextMenuRequested)
+        self.mqtwOrders.table.itemSelectionChanged.connect(self.on_mqtwOrders_itemSelectionChanged)
+        self.mqtwSellingPoints.settings(self.mem.settings, "wdgOrders", "mqtwSellingPoints")
+        self.mem.data.investments_active().myqtablewidget_sellingpoints(self.mqtwSellingPoints)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.orders.date_first_db_order().year,  date.today().year, date.today().year)
         
@@ -166,9 +168,9 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.orders.order_by_date()
-        self.orders.myqtablewidget(self.tblOrders)
+        self.orders.myqtablewidget(self.mqtwOrders)
        
-    def on_tblOrders_customContextMenuRequested(self,  pos):
+    def on_mqtwOrders_customContextMenuRequested(self,  pos):
         if self.orders.selected==None:
             self.actionOrderDelete.setEnabled(False)
             self.actionOrderEdit.setEnabled(False)
@@ -198,11 +200,11 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         menu.addSeparator()
         menu.addAction(self.actionShowReinvest)
         menu.addAction(self.actionShowReinvestSameProduct)
-        menu.exec_(self.tblOrders.mapToGlobal(pos))
+        menu.exec_(self.mqtwOrders.table.mapToGlobal(pos))
 
-    def on_tblOrders_itemSelectionChanged(self):
+    def on_mqtwOrders_itemSelectionChanged(self):
         self.orders.selected=None
-        for i in self.tblOrders.selectedItems():
+        for i in self.mqtwOrders.table.selectedItems():
             if i.column()==0:#only once per row
                 self.orders.selected=self.orders.arr[i.row()]
                 

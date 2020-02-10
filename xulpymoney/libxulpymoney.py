@@ -141,7 +141,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             except:
                 error("I couldn't show last of {}".format(inv.name))
 
-    def myqtablewidget_sellingpoints(self, table):
+    def myqtablewidget_sellingpoints(self, wdg):
         """Crea un set y luego construye la tabla"""
         
         set=InvestmentManager(self.mem,  self.accounts, self.products, self.benchmark)
@@ -150,29 +150,29 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 set.append(inv)
         set.order_by_percentage_sellingpoint()
         
-        table.setColumnCount(7)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Expiration")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","Investment")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Account")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","Shares")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem","Price")))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem","% selling point")))
+        wdg.table.setColumnCount(7)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date")))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Expiration")))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","Investment")))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Account")))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","Shares")))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem","Price")))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem","% selling point")))
    
-        table.applySettings()
-        table.clearContents()
-        table.setRowCount(set.length())
+        wdg.applySettings()
+        wdg.table.clearContents()
+        wdg.table.setRowCount(set.length())
         for i, inv in enumerate(set.arr):
             if inv.selling_expiration!=None:
-                table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
-                table.setItem(i, 1, qdate(inv.selling_expiration))    
+                wdg.table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
+                wdg.table.setItem(i, 1, qdate(inv.selling_expiration))    
                 if inv.selling_expiration<date.today():
-                    table.item(i, 1).setBackground(eQColor.Red)       
-                table.setItem(i, 2, qleft(inv.name))
-                table.setItem(i, 3, qleft(inv.account.name))   
-                table.setItem(i, 4, qright(inv.shares()))
-                table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
-                table.setItem(i, 6, inv.percentage_to_selling_point().qtablewidgetitem())
+                    wdg.table.item(i, 1).setBackground(eQColor.Red)       
+                wdg.table.setItem(i, 2, qleft(inv.name))
+                wdg.table.setItem(i, 3, qleft(inv.account.name))   
+                wdg.table.setItem(i, 4, qright(inv.shares()))
+                wdg.table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
+                wdg.table.setItem(i, 6, inv.percentage_to_selling_point().qtablewidgetitem())
 
 
     def average_age(self):
