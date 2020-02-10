@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QProgressDialog
 from datetime import date, timedelta, datetime
@@ -124,10 +125,11 @@ class Quote:
             return None
         return self
 
-class QuoteManager(ObjectManager):
+class QuoteManager(ObjectManager, QObject):
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar, puede haber varios productos"""
     def __init__(self, mem):
         ObjectManager.__init__(self)
+        QObject.__init__(self)
         self.mem=mem
     
     def save(self):
@@ -173,19 +175,19 @@ class QuoteManager(ObjectManager):
         for q in self.arr:
             settoadd.append(q)
         
-    def myqtablewidget(self, tabla):
-        tabla.setColumnCount(3)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date and time" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Product" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","Price" )))        
-        tabla.applySettings()
-        tabla.clearContents() 
-        tabla.setRowCount(len(self.arr))
+    def myqtablewidget(self, wdg):
+        wdg.table.setColumnCount(3)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date and time" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Product" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Price" )))        
+        wdg.applySettings()
+        wdg.table.clearContents() 
+        wdg.table.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
-            tabla.setItem(rownumber, 1, qleft(a.product.name))
-            tabla.item(rownumber, 1).setIcon(a.product.stockmarket.country.qicon())
-            tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            wdg.table.setItem(rownumber, 1, qleft(a.product.name))
+            wdg.table.item(rownumber, 1).setIcon(a.product.stockmarket.country.qicon())
+            wdg.table.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
                 
 ## Class that stores all kind of quotes asociated to a product
 class QuotesResult:
@@ -196,17 +198,6 @@ class QuotesResult:
     def get_basic(self):
         self.basic=QuoteBasicManager(self.mem, self.product)
         self.basic.load_from_db()
-
-#    ## Only once. If it's already in memory. It ignore it
-#    ## @param force Boolean that if it'sTrue load from database again even if dps is not null
-#    def load_dps_and_splits(self, force=False):
-#        if self.product.dps==None or force==True:
-#            self.product.dps=DPSManager(self.mem, self.product)
-#            self.product.dps.load_from_db()     
-#        if self.product.splits==None or force==True:
-#            self.product.splits=SplitManager(self.mem, self.product)
-#            self.product.splits.init__from_db("select * from splits where products_id={} order by datetime".format(self.product.id))
-#        
 
     def get_intraday(self, date):
         self.intradia=QuoteIntradayManager(self.mem)
