@@ -157,23 +157,7 @@
             </layout>
            </item>
            <item>
-            <widget class="myQTableWidget" name="tblOpportunities">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-            </widget>
+            <widget class="myQTableWidget" name="mqtwOpportunities" native="true"/>
            </item>
           </layout>
          </item>
@@ -290,11 +274,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>wdgYear</class>
    <extends>QWidget</extends>
    <header location="global">wdgYear</header>
@@ -304,6 +283,12 @@
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

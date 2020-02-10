@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from xulpymoney.ui.Ui_wdgOpportunities import Ui_wdgOpportunities
-from xulpymoney.opportunities import OpportunityManager
+from xulpymoney.objects.opportunity import OpportunityManager
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalOpportunity
 from xulpymoney.ui.wdgCalculator import wdgCalculator
@@ -16,7 +16,9 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         self.opportunities=None 
          
         self.txtInvest.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.tblOpportunities.settings(self.mem, "wdgOpportunities")
+        self.mqtwOpportunities.settings(self.mem.settings, "wdgOpportunities", "mqtwOpportunities")
+        self.mqtwOpportunities.table.customContextMenuRequested.connect(self.on_mqtwOpportunities_customContextMenuRequested)
+        self.mqtwOpportunities.table.itemSelectionChanged.connect(self.on_mqtwOpportunities_itemSelectionChanged)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.opportunities.date_of_the_first_database_oppportunity().year,  datetime.date.today().year, datetime.date.today().year)
         
@@ -156,9 +158,9 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.opportunities.order_by_date()
-        self.opportunities.myqtablewidget(self.tblOpportunities, self.txtInvest.decimal())
+        self.opportunities.myqtablewidget(self.mqtwOpportunities, self.txtInvest.decimal())
        
-    def on_tblOpportunities_customContextMenuRequested(self,  pos):
+    def on_mqtwOpportunities_customContextMenuRequested(self,  pos):
         if self.opportunities.selected==None:
             self.actionOpportunityDelete.setEnabled(False)
             self.actionOpportunityEdit.setEnabled(False)
@@ -188,11 +190,11 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         menu.addAction(self.actionRemove)        
         menu.addSeparator()
         menu.addAction(self.actionShowGraphic)
-        menu.exec_(self.tblOpportunities.mapToGlobal(pos))
+        menu.exec_(self.mqtwOpportunities.table.mapToGlobal(pos))
 
-    def on_tblOpportunities_itemSelectionChanged(self):
+    def on_mqtwOpportunities_itemSelectionChanged(self):
         self.opportunities.selected=None
-        for i in self.tblOpportunities.selectedItems():
+        for i in self.mqtwOpportunities.table.selectedItems():
             if i.column()==0:#only once per row
                 self.opportunities.selected=self.opportunities.arr[i.row()]
                 

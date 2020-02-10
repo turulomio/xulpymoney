@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot, QSize
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from datetime import date
-from xulpymoney.libxulpymoney import OrderManager
+from xulpymoney.objects.order import OrderManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
