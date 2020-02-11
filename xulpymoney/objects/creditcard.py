@@ -102,14 +102,15 @@ class CreditCardManager(QObject, ObjectManager_With_IdName_Selectable):
     def myqtablewidget(self, wdg, active):
         data=[]
         for i, o in enumerate(self.arr):
-            data.append([
-                o.name, 
-                o.numero, 
-                o.active, 
-                o.pagodiferido, 
-                o.saldomaximo, 
-                o.saldo_pendiente()
-            ])
+#            if o.active==active:
+                data.append([
+                    o.name, 
+                    o.numero, 
+                    o.active, 
+                    o.pagodiferido, 
+                    o.saldomaximo, 
+                    o.saldo_pendiente()
+                ])
         wdg.setData(
             [self.tr("Credit card"), self.tr("Number"), self.tr("Active"), self.tr("Delayed payment"), self.tr("Maximum balance"), self.tr("Balance")], 
             None, 
