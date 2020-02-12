@@ -1,4 +1,3 @@
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoney import Percentage
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
@@ -14,19 +13,28 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.investments=None
-        self.tblInvestments.settings(self.mem, "wdgLastCurrent")
-        self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
-        self.on_cmbSameProduct_currentIndexChanged(int(self.mem.settingsdb.value("wdgLastCurrent/viewode", 0)))
+        self.mqtwInvestments.settings(self.mem.settings, "wdgLastCurrent", "mqtwInvestments")
+        self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
+        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
+        self.spin.blockSignals(True)
+        self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-33")))
+        self.spin.blockSignals(False)
+        self.cmbSameProduct.setCurrentIndex(int(self.mem.settingsdb.value("wdgLastCurrent/viewmode", 0)))
         
-    def tblInvestments_reload(self):
-        self.investments.myqtablewidget_lastCurrent(self.tblInvestments, Percentage(self.spin.value(), 100))
+    def mqtwInvestments_reload(self):
+        self.investments.myqtablewidget_lastCurrent(self.mqtwInvestments, Percentage(self.spin.value(), 100))
+
+    @pyqtSlot(int) 
+    def on_spin_valueChanged(self, value):
+        self.mem.settingsdb.setValue("wdgLastCurrent/spin", str(value))
+        self.mqtwInvestments_reload()
+        self.mem.settings.sync()
 
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.investments.selected, self)
         w.exec_()
-        self.tblInvestments_reload()
+        self.mqtwInvestments_reload()
         
     @pyqtSlot() 
     def on_actionCalculate_triggered(self):
@@ -69,41 +77,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def on_actionProduct_triggered(self):
         w=frmProductReport(self.mem, self.investments.selected.product, self.investments.selected, self)
         w.exec_()
-        self.tblInvestments_reload()
+        self.mqtwInvestments_reload()
       
-   
-    @pyqtSlot() 
-    def on_actionSortTPCVenta_triggered(self):
-        if self.investments.order_by_percentage_sellingpoint()==False:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        self.tblInvestments_reload()
-        
-    @pyqtSlot() 
-    def on_actionSortTPC_triggered(self):
-        if self.investments.order_by_percentage_invested()==False:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        self.tblInvestments_reload()
-        
-    @pyqtSlot() 
-    def on_actionSortHour_triggered(self):
-        if self.investments.order_by_datetime_last_operation()==False:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        self.tblInvestments_reload()
-        
-    @pyqtSlot() 
-    def on_actionSortName_triggered(self):            
-        if self.investments.order_by_name()==False:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        self.tblInvestments_reload()    
-
-    @pyqtSlot() 
-    def on_actionSortTPCLast_triggered(self):
-        if self.investments.order_by_percentage_last_operation()==False:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        self.tblInvestments_reload()    
-            
-
-    def on_tblInvestments_customContextMenuRequested(self,  pos):
+    def on_mqtwInvestments_customContextMenuRequested(self,  pos):
         if self.investments.selected==None:
             self.actionInvestmentReport.setEnabled(False)
             self.actionProduct.setEnabled(False)
@@ -123,35 +99,23 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         menu.addAction(self.actionInvestmentReport)        
         menu.addAction(self.actionProduct)
         menu.addSeparator()
-        ordenar=QMenu(self.tr("Order by"))
-        ordenar.addAction(self.actionSortName)
-        ordenar.addAction(self.actionSortHour)
-        ordenar.addAction(self.actionSortTPCLast)
-        ordenar.addAction(self.actionSortTPC)
-        ordenar.addAction(self.actionSortTPCVenta)
-        menu.addMenu(ordenar)        
-        menu.exec_(self.tblInvestments.mapToGlobal(pos))
+        menu.addMenu(self.mqtwInvestments.qmenu())
+        menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
-    def on_cmd_released(self):
-        self.tblInvestments_reload()
-        self.mem.settingsdb.setValue("wdgLastCurrent/spin", self.spin.value())
-
-    def on_tblInvestments_itemSelectionChanged(self):
+    def on_mqtwInvestments_itemSelectionChanged(self):
         self.investments.selected=None
-        for i in self.tblInvestments.selectedItems():#itera por cada item no row.
-            self.investments.selected=self.investments.arr[i.row()]
+        for i in self.mqtwInvestments.table.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                self.investments.selected=self.investments.arr[i.row()]
 
     @pyqtSlot(int)
     def on_cmbSameProduct_currentIndexChanged(self, index):
-        self.cmbSameProduct.setCurrentIndex(index)
         if index==0:
             self.investments=self.mem.data.investments_active()
-            self.on_actionSortTPCLast_triggered()
         elif index==1:
             self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
-            self.on_actionSortTPCLast_triggered()
         elif index==2:
             self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_operations()
-            self.on_actionSortTPCLast_triggered()
-            self.tblInvestments_reload()
-        self.mem.settingsdb.setValue("wdgLastCurrent/viewode", index)
+        self.investments.order_by_percentage_last_operation()
+        self.mqtwInvestments_reload()
+        self.mem.settingsdb.setValue("wdgLastCurrent/viewmode", index)

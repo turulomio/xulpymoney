@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>987</width>
     <height>524</height>
    </rect>
   </property>
@@ -75,22 +75,8 @@
          <property name="maximum">
           <number>100</number>
          </property>
-         <property name="singleStep">
-          <number>5</number>
-         </property>
          <property name="value">
-          <number>-25</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="cmd">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../images/xulpymoney.qrc">
-           <normaloff>:/xulpymoney/button_ok.png</normaloff>:/xulpymoney/button_ok.png</iconset>
+          <number>-33</number>
          </property>
         </widget>
        </item>
@@ -110,71 +96,7 @@
       </layout>
      </item>
      <item>
-      <widget class="myQTableWidget" name="tblInvestments">
-       <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
-       </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
-       </property>
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
-       </property>
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Investment</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Last operation</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Last shares</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Total shares</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Balance</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Pending</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Last</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Invested</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Selling point</string>
-        </property>
-       </column>
-      </widget>
+      <widget class="myQTableWidget" name="mqtwInvestments" native="true"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -200,6 +122,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="cmbSameProduct">
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
          <property name="sizeAdjustPolicy">
           <enum>QComboBox::AdjustToContents</enum>
          </property>
@@ -348,8 +273,9 @@
  <customwidgets>
   <customwidget>
    <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
+   <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

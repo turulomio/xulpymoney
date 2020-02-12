@@ -119,27 +119,35 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## Displays last current operation and shows in red background when operation has lost more than a percentage
     ## @param table MyQTableWidget
     ## @param percentage Percentage object
-    def myqtablewidget_lastCurrent(self, table,  percentage):
-        table.setRowCount(len(self.arr))
-        table.applySettings()
-        table.clearContents()
-        type=3
+    def myqtablewidget_lastCurrent(self, wdg,  percentage):
+        type=eMoneyCurrency.User
+        data=[]
         for i, inv in enumerate(self.arr):
-            try:
-                table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
-                table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone_name))
-                table.setItem(i, 2, qright(inv.op_actual.last().shares))
-                table.setItem(i, 3, qright(inv.op_actual.shares()))
-                table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
-                table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
-                lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
-                table.setItem(i, 6, lasttpc.qtablewidgetitem())
-                table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
-                table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
-                if lasttpc<percentage:
-                    table.item(i, 6).setBackground(eQColor.Red)
-            except:
-                error("I couldn't show last of {}".format(inv.name))
+            data.append([
+                "{0} ({1})".format(inv.name, inv.account.name), 
+                inv.op_actual.last().datetime, 
+                inv.op_actual.last().shares, 
+                inv.op_actual.shares(), 
+                inv.balance(None,  type), 
+                inv.op_actual.pendiente(inv.product.result.basic.last, type), 
+                inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3), 
+                inv.op_actual.tpc_total(inv.product.result.basic.last, type=3),
+                inv.percentage_to_selling_point(), 
+            ])
+        wdg.setData(
+            [self.tr("Investment"), self.tr("Last operation"), self.tr("Last shares"), 
+            self.tr("Total shares"), self.tr("Balance"), self.tr("Pending"), 
+            self.tr("% Last"),  self.tr("% Invested"), self.tr("% Selling point")
+            ], 
+            None, 
+            data,  
+            decimals=[0, 0, 6, 6, 2, 2, 2, 2, 2], 
+            zonename=self.mem.localzone_name, 
+        )   
+        for i, inv in enumerate(self.arr):
+            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
+            if lasttpc<percentage:
+                wdg.table.item(i, 6).setBackground(eQColor.Red)
 
     def myqtablewidget_sellingpoints(self, wdg):
         """Crea un set y luego construye la tabla"""

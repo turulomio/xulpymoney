@@ -78,7 +78,7 @@ class SettingsDB:
             return 20
         elif name=="wdgAPR/cmbYear":
             return 21
-        elif name=="wdgLastCurrent/viewode":
+        elif name=="wdgLastCurrent/viewmode":
             return 22
         elif name=="strategyLongShort/historicalLong":
             return 23
