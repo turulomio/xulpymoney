@@ -365,48 +365,6 @@
                     <item>
                      <widget class="myQTableWidget" name="mqtwCreditCardOperations" native="true"/>
                     </item>
-                    <item>
-                     <widget class="QTableWidget" name="tblCreditCardOpers">
-                      <property name="contextMenuPolicy">
-                       <enum>Qt::CustomContextMenu</enum>
-                      </property>
-                      <property name="editTriggers">
-                       <set>QAbstractItemView::NoEditTriggers</set>
-                      </property>
-                      <property name="alternatingRowColors">
-                       <bool>true</bool>
-                      </property>
-                      <property name="selectionMode">
-                       <enum>QAbstractItemView::MultiSelection</enum>
-                      </property>
-                      <property name="selectionBehavior">
-                       <enum>QAbstractItemView::SelectRows</enum>
-                      </property>
-                      <attribute name="verticalHeaderVisible">
-                       <bool>false</bool>
-                      </attribute>
-                      <column>
-                       <property name="text">
-                        <string>Date</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>Concept</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>Amount</string>
-                       </property>
-                      </column>
-                      <column>
-                       <property name="text">
-                        <string>Comment</string>
-                       </property>
-                      </column>
-                     </widget>
-                    </item>
                    </layout>
                   </widget>
                  </item>
