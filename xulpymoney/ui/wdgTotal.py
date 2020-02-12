@@ -656,11 +656,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_all():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            table.settings(self.mem, "wdgTotal","tblShowShellingOperations")
-            table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            table.setSelectionMode(QAbstractItemView.SingleSelection)
-            table.verticalHeader().setVisible(False)
+            wdg = myQTableWidget(newtab)
+            wdg.settings(self.mem.settings, "wdgTotal","tblShowShellingOperations")
             
             positive=Money(self.mem, 0, self.mem.localcurrency)
             negative=Money(self.mem, 0, self.mem.localcurrency)
@@ -686,8 +683,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto().local()
             set.order_by_fechaventa()
-            set.myqtablewidget(table)
-            horizontalLayout.addWidget(table)
+            set.myqtablewidget(wdg)
+            horizontalLayout.addWidget(wdg)
             lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(positive, negative))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
