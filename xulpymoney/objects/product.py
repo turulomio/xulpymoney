@@ -540,47 +540,47 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         cur.execute("update inversiones set products_id=%s where products_id=%s",(product_to.id,product_from.id))
         cur.close()
 
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, wdg):
         tachado = QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
         transfer=QIcon(":/xulpymoney/transfer.png")
-        table.setColumnCount(8)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Id")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Product")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","ISIN")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Last update")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","Price")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem","% Year to date")))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem","% Dividend")))
+        wdg.table.setColumnCount(8)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Id")))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Product")))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","ISIN")))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Last update")))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","Price")))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem","% Year to date")))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem","% Dividend")))
    
-        table.applySettings()
-        table.clearSelection()    
-        table.setFocus()
-        table.horizontalHeader().setStretchLastSection(False)   
-        table.clearContents()
-        table.setRowCount(self.length())
+        wdg.applySettings()
+        wdg.table.clearSelection()    
+        wdg.table.setFocus()
+        wdg.table.horizontalHeader().setStretchLastSection(False)   
+        wdg.table.clearContents()
+        wdg.table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem(str(p.id)))
-            table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
-            table.item(i, 1).setIcon(p.stockmarket.country.qicon())
-            table.setItem(i, 2, QTableWidgetItem(p.isin))   
-            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
-            table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
+            wdg.table.setItem(i, 0, QTableWidgetItem(str(p.id)))
+            wdg.table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
+            wdg.table.item(i, 1).setIcon(p.stockmarket.country.qicon())
+            wdg.table.setItem(i, 2, QTableWidgetItem(p.isin))   
+            wdg.table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
+            wdg.table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
-            table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
-            table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     
+            wdg.table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
+            wdg.table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     
             if p.estimations_dps.currentYear()==None:
-                table.setItem(i, 7, Percentage().qtablewidgetitem())
-                table.item(i, 7).setBackground( eQColor.Red)          
+                wdg.table.setItem(i, 7, Percentage().qtablewidgetitem())
+                wdg.table.item(i, 7).setBackground( eQColor.Red)          
             else:
-                table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
+                wdg.table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
                 
             if p.has_autoupdate()==True:#Active
-                table.item(i, 4).setIcon(transfer)
+                wdg.table.item(i, 4).setIcon(transfer)
             if p.obsolete==True:#Obsolete
-                for c in range(table.columnCount()):
-                    table.item(i, c).setFont(tachado)
+                for c in range(wdg.table.columnCount()):
+                    wdg.table.item(i, c).setFont(tachado)
 
 
 

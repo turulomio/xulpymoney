@@ -17,7 +17,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblInvestments.settings(self.mem, "wdgProducts")
+        self.mqtwInvestments.settings(self.mem.settings, "wdgProducts", "mqtwInvestments")
+        self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
+        self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
+        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.arrInt=arrInt#Lista de ids of products showed and used to show
         self.build_array_from_arrInt()
@@ -28,7 +31,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products.needStatus(needstatus=1, progress=True)
         self.products.order_by_upper_name()
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
-        self.products.myqtablewidget(self.tblInvestments)
+        self.products.myqtablewidget(self.mqtwInvestments)
 
     @pyqtSlot()
     def on_actionFavorites_triggered(self):      
@@ -105,38 +108,38 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     @pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
         if self.products.order_by_daily_tpc():
-            self.products.myqtablewidget(self.tblInvestments)        
+            self.products.myqtablewidget(self.mqtwInvestments)        
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
 
     @pyqtSlot()
     def on_actionSortTPCAnual_triggered(self):
         if self.products.order_by_annual_tpc():
-            self.products.myqtablewidget(self.tblInvestments)        
+            self.products.myqtablewidget(self.mqtwInvestments)        
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
 
     @pyqtSlot()
     def on_actionSortHour_triggered(self):
         self.products.order_by_datetime()
-        self.products.myqtablewidget(self.tblInvestments)        
+        self.products.myqtablewidget(self.mqtwInvestments)        
 
     @pyqtSlot()
     def on_actionSortName_triggered(self):
         self.products.order_by_upper_name()
-        self.products.myqtablewidget(self.tblInvestments)        
+        self.products.myqtablewidget(self.mqtwInvestments)        
 
     @pyqtSlot()
     def on_actionSortDividend_triggered(self):
         if self.products.order_by_dividend():
-            self.products.myqtablewidget(self.tblInvestments)        
+            self.products.myqtablewidget(self.mqtwInvestments)        
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
 
-    def on_tblInvestments_cellDoubleClicked(self, row, column):
+    def on_mqtwInvestments_cellDoubleClicked(self, row, column):
         self.on_actionProductReport_triggered()
 
     def on_cmd_pressed(self):
@@ -162,7 +165,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         self.build_array_from_arrInt()
 
-    def on_tblInvestments_customContextMenuRequested(self,  pos):
+    def on_mqtwInvestments_customContextMenuRequested(self,  pos):
         menu=QMenu()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurchaseGraphic)
@@ -196,6 +199,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         ordenar.addAction(self.actionSortTPCDiario)
         ordenar.addAction(self.actionSortTPCAnual)
         ordenar.addAction(self.actionSortDividend)
+        #menu.addMenu(self.mqtwInvestments.qmenu()) MUST ADD A SET DATA IN MYQTABLEWIDGET
         
         #Enabled disabled  
         if len(self.products.selected)==1:
@@ -222,7 +226,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionEstimationDPSNew.setEnabled(False)
             self.actionPurge.setEnabled(False)
             self.actionProductPriceLastRemove.setEnabled(False)
-        menu.exec_(self.tblInvestments.mapToGlobal(pos))
+        menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
     @pyqtSlot() 
     def on_actionMergeCodes_triggered(self):
@@ -236,9 +240,9 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d.exec_()
         self.build_array_from_arrInt()
     
-    def on_tblInvestments_itemSelectionChanged(self):
+    def on_mqtwInvestments_itemSelectionChanged(self):
         self.products.cleanSelection()
-        for i in self.tblInvestments.selectedItems():
+        for i in self.mqtwInvestments.table.selectedItems():
             if i.column()==0:#only once per row
                 self.products.selected.append(self.products.arr[i.row()])
         logging.debug(self.products.selected)

@@ -117,72 +117,7 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="tblInvestments">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
-       </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
-       </property>
-       <attribute name="horizontalHeaderStretchLastSection">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Code</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Product</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>ISIN</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Last update</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Price</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Daily</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Year to date</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% Dividend</string>
-        </property>
-       </column>
-      </widget>
+      <widget class="myQTableWidget" name="mqtwInvestments" native="true"/>
      </item>
      <item>
       <widget class="QLabel" name="lblFound">
@@ -387,13 +322,13 @@
  <customwidgets>
   <customwidget>
    <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
+   <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>txt</tabstop>
-  <tabstop>tblInvestments</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
