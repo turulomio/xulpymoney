@@ -19,98 +19,116 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.investments=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
         self.accounts=AccountManager(self.mem, self.mem.data.banks)#Set
 
-        self.tblEB.settings(self.mem, "wdgBanks")
-        self.tblAccounts.settings(self.mem, "wdgBanks")
-        self.tblInvestments.settings(self.mem, "wdgBanks")
-        
+        self.mqtwBanks.settings(self.mem.settings, "wdgBanks", "mqtwBanks")
+        self.mqtwBanks.table.customContextMenuRequested.connect(self.on_mqtwBanks_customContextMenuRequested)
+        self.mqtwBanks.table.itemSelectionChanged.connect(self.on_mqtwBanks_itemSelectionChanged)
+        self.mqtwAccounts.settings(self.mem.settings, "wdgBanks", "mqtwAccounts")
+        self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
+        self.mqtwAccounts.table.itemSelectionChanged.connect(self.on_mqtwAccounts_itemSelectionChanged)
+        self.mqtwInvestments.settings(self.mem.settings, "wdgBanks", "mqtwInvestments")
+        self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
+        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
+
         self.on_chkActives_stateChanged(Qt.Checked)#Carga eb
 
     def load_eb(self):
+        self.mqtwBanks.table.setColumnCount(3)
+        self.mqtwBanks.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Bank" )))
+        self.mqtwBanks.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Active" )))
+        self.mqtwBanks.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Balance" )))
         self.banks.order_by_name()
-        self.tblEB.clearContents()
-        self.tblEB.applySettings()
-        self.tblEB.setRowCount(self.banks.length()+1)
+        self.mqtwBanks.table.clearContents()
+        self.mqtwBanks.applySettings()
+        self.mqtwBanks.table.setRowCount(self.banks.length()+1)
         sumsaldos=Money(self.mem, 0, self.mem.localcurrency)
         for i,  e in enumerate(self.banks.arr):
-            self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
-            self.tblEB.setCellWidget(i, 1, wdgBool(e.active))
+            self.mqtwBanks.table.setItem(i, 0, QTableWidgetItem(e.name))
+            self.mqtwBanks.table.setCellWidget(i, 1, wdgBool(e.active))
             balanc=e.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
-            self.tblEB.setItem(i, 2, balanc.qtablewidgetitem())
+            self.mqtwBanks.table.setItem(i, 2, balanc.qtablewidgetitem())
             sumsaldos=sumsaldos+balanc    
-        self.tblEB.setItem(self.banks.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblEB.setItem(self.banks.length(), 2, sumsaldos.qtablewidgetitem())
-        
+        self.mqtwBanks.table.setItem(self.banks.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.mqtwBanks.table.setItem(self.banks.length(), 2, sumsaldos.qtablewidgetitem())
+
     def load_cuentas(self):
+        self.mqtwAccounts.table.setColumnCount(3)
+        self.mqtwAccounts.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Account" )))
+        self.mqtwAccounts.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Active" )))
+        self.mqtwAccounts.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Balance" )))
         self.accounts.order_by_name()
-        self.tblAccounts.applySettings()
-        self.tblAccounts.clearContents()
-        self.tblAccounts.setRowCount(self.accounts.length()+1);
+        self.mqtwAccounts.applySettings()
+        self.mqtwAccounts.table.clearContents()
+        self.mqtwAccounts.table.setRowCount(self.accounts.length()+1);
         sumsaldos=Money(self.mem, 0,  self.mem.localcurrency)
         for i,  c in enumerate(self.accounts.arr):
-            self.tblAccounts.setItem(i, 0, QTableWidgetItem(c.name))
-            self.tblAccounts.setCellWidget(i, 1, wdgBool(c.active))
+            self.mqtwAccounts.table.setItem(i, 0, QTableWidgetItem(c.name))
+            self.mqtwAccounts.table.setCellWidget(i, 1, wdgBool(c.active))
             balance=c.balance().local()
-            self.tblAccounts.setItem(i, 2, balance.qtablewidgetitem())
+            self.mqtwAccounts.table.setItem(i, 2, balance.qtablewidgetitem())
             sumsaldos=sumsaldos+balance
-        self.tblAccounts.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblAccounts.setItem(self.accounts.length(), 2, sumsaldos.qtablewidgetitem())  
+        self.mqtwAccounts.table.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.mqtwAccounts.table.setItem(self.accounts.length(), 2, sumsaldos.qtablewidgetitem())  
 
     def load_inversiones(self):
+        self.mqtwInvestments.table.setColumnCount(3)
+        self.mqtwInvestments.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Investment" )))
+        self.mqtwInvestments.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Active" )))
+        self.mqtwInvestments.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Balance" )))
         self.investments.order_by_name()
-        self.tblInvestments.applySettings()
-        self.tblInvestments.clearContents()
-        self.tblInvestments.setRowCount(self.investments.length()+1);
+        self.mqtwInvestments.applySettings()
+        self.mqtwInvestments.table.clearContents()
+        self.mqtwInvestments.table.setRowCount(self.investments.length()+1);
         sumsaldos=Money(self.mem,  0,  self.mem.localcurrency)
         for i, inv in enumerate(self.investments.arr):
-            self.tblInvestments.setItem(i, 0, QTableWidgetItem(inv.name))
-            self.tblInvestments.setCellWidget(i, 1, wdgBool(inv.active))
+            self.mqtwInvestments.table.setItem(i, 0, QTableWidgetItem(inv.name))
+            self.mqtwInvestments.table.setCellWidget(i, 1, wdgBool(inv.active))
             balanc=inv.balance().local()
-            self.tblInvestments.setItem(i, 2, balanc.qtablewidgetitem())
+            self.mqtwInvestments.table.setItem(i, 2, balanc.qtablewidgetitem())
             sumsaldos=sumsaldos+balanc
-        self.tblInvestments.setItem(self.investments.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblInvestments.setItem(self.investments.length(), 2, sumsaldos.qtablewidgetitem())
+        self.mqtwInvestments.table.setItem(self.investments.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.mqtwInvestments.table.setItem(self.investments.length(), 2, sumsaldos.qtablewidgetitem())
 
     def on_chkActives_stateChanged(self, state):
         self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
         self.load_eb()
-        self.tblEB.clearSelection()   
-        self.tblAccounts.setRowCount(0)
-        self.tblAccounts.clearContents()
-        self.tblInvestments.setRowCount(0);
-        self.tblInvestments.clearContents()
+        self.mqtwBanks.table.clearSelection()   
+        self.mqtwAccounts.table.setRowCount(0)
+        self.mqtwAccounts.table.clearContents()
+        self.mqtwInvestments.table.setRowCount(0);
+        self.mqtwInvestments.table.clearContents()
 
-    def on_tblEB_itemSelectionChanged(self):
+    def on_mqtwBanks_itemSelectionChanged(self):
         self.banks.selected=None
         self.investments.clean()
         self.accounts.clean()
-        
-        for i in self.tblEB.selectedItems():#itera por cada item no row.
+
+        for i in self.mqtwBanks.table.selectedItems():#itera por cada item no row.
             if i.row()<self.banks.length():#Necesario porque tiene fila de total
                 self.banks.selected=self.banks.arr[i.row()]
         print ("Seleccionado: " +  str(self.banks.selected))
-        
+
         if self.banks.selected==None:
-            self.tblEB.clearSelection()   
-            self.tblAccounts.setRowCount(0)
-            self.tblAccounts.clearContents()
-            self.tblInvestments.setRowCount(0);
-            self.tblInvestments.clearContents()
+            self.mqtwBanks.table.clearSelection()   
+            self.mqtwAccounts.table.setRowCount(0)
+            self.mqtwAccounts.table.clearContents()
+            self.mqtwInvestments.table.setRowCount(0);
+            self.mqtwInvestments.table.clearContents()
             return
-                   
+
         for i in self.mem.data.investments.arr:
             if i.account.eb.id==self.banks.selected.id:
                 if (self.chkActives.isChecked() and i.active==True) or (self.chkActives.isChecked()==False):
                     self.investments.append(i)
-        
+
         for v in self.mem.data.accounts.arr:
             if v.eb.id==self.banks.selected.id:
                 if (self.chkActives.isChecked() and v.active==True) or (self.chkActives.isChecked()==False):
                     self.accounts.append(v)
-        
+
         self.load_cuentas()
         self.load_inversiones()
 
-    def on_tblEB_customContextMenuRequested(self,  pos):
+    def on_mqtwBanks_customContextMenuRequested(self,  pos):
         if self.banks.selected==None:
             self.actionBankDelete.setEnabled(False)
             self.actionBankEdit.setEnabled(False)
@@ -127,8 +145,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         menu.addAction(self.actionBankDelete)
         menu.addSeparator()
         menu.addAction(self.actionActive)
-        menu.exec_(self.tblEB.mapToGlobal(pos))
-        
+        menu.exec_(self.mqtwBanks.table.mapToGlobal(pos))
+
     @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
         w=frmAccountsReport(self.mem, self.accounts.selected)
@@ -141,13 +159,13 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         w.exec_()
         self.load_inversiones()
 
-    def on_tblAccounts_itemSelectionChanged(self):
+    def on_mqtwAccounts_itemSelectionChanged(self):
         self.accounts.selected=None
-        for i in self.tblAccounts.selectedItems():#itera por cada item no row.
+        for i in self.mqtwAccounts.table.selectedItems():#itera por cada item no row.
             if i.row()<self.accounts.length():#Necesario porque tiene fila de total
                 self.accounts.selected=self.accounts.arr[i.row()]
         print ("Seleccionado: " +  str(self.accounts.selected))
-        
+
     ## Displays a pie graph of banks
     @pyqtSlot()
     def on_cmdGraph_released(self):
@@ -166,33 +184,33 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         d.exec_()
         self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
-    def on_tblAccounts_customContextMenuRequested(self,  pos):
+    def on_mqtwAccounts_customContextMenuRequested(self,  pos):
         if self.accounts.selected==None:
             self.actionAccountReport.setEnabled(False)
         else:
             self.actionAccountReport.setEnabled(True)
         menu=QMenu()
         menu.addAction(self.actionAccountReport)
-        menu.exec_(self.tblAccounts.mapToGlobal(pos))
+        menu.exec_(self.mqtwAccounts.table.mapToGlobal(pos))
 
 
-    def on_tblInvestments_itemSelectionChanged(self):
+    def on_mqtwInvestments_itemSelectionChanged(self):
         self.investments.selected=None
-        for i in self.tblInvestments.selectedItems():#itera por cada item no row.
+        for i in self.mqtwInvestments.table.selectedItems():#itera por cada item no row.
             if i.row()<self.investments.length():#Necesario porque tiene fila de total
                 self.investments.selected=self.investments.arr[i.row()]
         print ("Seleccionado: " +  str(self.investments.selected))
 
-        
-    def on_tblInvestments_customContextMenuRequested(self,  pos):
+
+    def on_mqtwInvestments_customContextMenuRequested(self,  pos):
         if self.investments.selected==None:
             self.actionInvestmentReport.setEnabled(False)
         else:
             self.actionInvestmentReport.setEnabled(True)
         menu=QMenu()
         menu.addAction(self.actionInvestmentReport)        
-        menu.exec_(self.tblInvestments.mapToGlobal(pos))
-        
+        menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
+
     @pyqtSlot()  
     def on_actionBankDelete_triggered(self):
         if self.banks.selected.qmessagebox_inactive():
@@ -203,13 +221,13 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             self.mem.data.banks.delete(self.banks.selected)
             self.mem.con.commit()  
             self.on_chkActives_stateChanged(self.chkActives.checkState())    
-        
+
     @pyqtSlot()  
     def on_actionBankAdd_triggered(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new bank"))
         if tipo[1]==True:
             self.bank_add(tipo[0])
-            
+
     def bank_add(self, bank):
         """Permits unit tests if separated"""
         eb=Bank(self.mem).init__create(bank)
@@ -224,14 +242,14 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         tipo=QInputDialog().getText(self,  "Xulpymoney", self.tr("Edit selected bank") , QLineEdit.Normal,   (self.banks.selected.name))       
         if tipo[1]==True:
             self.bank_edit(tipo[0])
-            
+
     def bank_edit(self, bank):
         """Permits unit tests if separated"""
         self.banks.selected.name=bank
         self.banks.selected.save()
         self.mem.con.commit()
         self.on_chkActives_stateChanged(self.chkActives.checkState())   
-        
+
     @pyqtSlot() 
     def on_actionActive_triggered(self):
         self.banks.selected.active=not self.banks.selected.active
