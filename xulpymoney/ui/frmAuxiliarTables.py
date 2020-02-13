@@ -20,7 +20,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.setupUi(self)
         self.mem=mem
 
-        self.tblConcepts.settings(self.mem, "frmAuxiliarTables")
+        self.tblConcepts.settings(self.mem, "frmAuxiliarTables", "tblConcepts")
         self.concepts=None
         self.regenerate_list()
         self.tblConcepts_reload()

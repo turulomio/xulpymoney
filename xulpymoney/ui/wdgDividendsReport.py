@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
+from logging import debug
 from xulpymoney.libxulpymoney import Money, Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
@@ -16,7 +17,9 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.mem=mem
         self.investmentes=[]
 
-        self.tblInvestments.settings(self.mem, "wdgDividendsReport")
+        self.mqtw.settings(self.mem.settings, "wdgDividendsReport", "mqtw")
+        self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
+        self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
@@ -25,11 +28,10 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         d=frmEstimationsAdd(self.mem, self.selInvestment.product, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-        self.tblInvestments.clearSelection()
+        self.mqtw.table.clearSelection()
 
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
-             
             self.investmentes=self.mem.data.investments_inactive()
         else:
             self.investmentes=self.mem.data.investments_active()
@@ -38,10 +40,8 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def load_inversiones(self):    
         if self.investmentes.order_by_dividend()==False:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        
-        self.tblInvestments.applySettings()
-        self.tblInvestments.clearContents()
-        self.tblInvestments.setRowCount(len(self.investmentes.arr));
+        self.mqtw.table.setColumnCount(4)
+        hh= [self.tr("Investment" ), self.tr("Bank" ), self.tr("Price" ), self.tr("DPS" ), self.tr("Shares" ), self.tr("Estimated" ), self.tr("% Annual dividend" )]
         rows=[]
         for i, inv in enumerate(self.investmentes.arr):
             if inv.product.estimations_dps.find(date.today().year)==None:
@@ -61,11 +61,12 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
             row.append(divestimado)
             row.append(tpc)
             rows.append(row)
+        self.mqtw.setData(hh, None, rows,  decimals=[0, 0, 6, 6, 6, 2, 2])
                
+        for i, inv in enumerate(self.investmentes.arr):
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
-                self.tblInvestments.item(i, 3).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-        self.tblInvestments.fillWithListOfRows(rows,  decimals=[0, 0, 6, 6, 6, 2, 2])
+                self.mqtw.table.item(i, 3).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
         self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.sum_of_estimated_dividends()))
         
     ## Reused in AssestsReport
@@ -95,17 +96,17 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def on_cmd_pressed(self):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
-    def on_tblInvestments_customContextMenuRequested(self,  pos):        
+    def on_mqtw_customContextMenuRequested(self,  pos):        
         menu=QMenu()
         menu.addAction(self.actionEstimationDPSEdit)
         menu.addSeparator()
         menu.addAction(self.actionInvestmentReport) 
         menu.addAction(self.actionProductReport)    
-        menu.exec_(self.tblInvestments.mapToGlobal(pos))
+        menu.exec_(self.mqtw.table.mapToGlobal(pos))
 
-    def on_tblInvestments_itemSelectionChanged(self):
+    def on_mqtw_itemSelectionChanged(self):
         self.selInvestment=None
-        for i in self.tblInvestments.selectedItems():#itera por cada item no row.
+        for i in self.mqtw.table.selectedItems():#itera por cada item no row.
             self.selInvestment=self.investmentes.arr[i.row()]
-        print ("Seleccionado: " +  str(self.selInvestment))
+        debug ("Seleccionado: " +  str(self.selInvestment))
 

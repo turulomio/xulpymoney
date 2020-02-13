@@ -315,6 +315,7 @@
    <addaction name="actionFavorites"/>
    <addaction name="actionIndexesAll"/>
    <addaction name="actionSearch"/>
+   <addaction name="actionGlobalReport"/>
    <addaction name="separator"/>
    <addaction name="actionProductsComparation"/>
    <addaction name="separator"/>
@@ -333,7 +334,6 @@
    </attribute>
    <addaction name="actionIndexRange"/>
    <addaction name="actionLastOperation"/>
-   <addaction name="actionDerivativesReport"/>
   </widget>
   <widget class="QToolBar" name="tbReports">
    <property name="windowTitle">
@@ -1012,7 +1012,7 @@
   <action name="actionGlobalReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Generate global report</string>

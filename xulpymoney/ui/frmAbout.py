@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
-from xulpymoney.ui.myqtablewidget import qcenter, qempty, qright, qleft, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qempty
 from xulpymoney.datetime_functions import string2dtnaive
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
@@ -164,55 +164,29 @@ class frmAbout(QDialog, Ui_frmAbout):
 
     def OpenLink(self,item):
         print(item.text())
-        if item.column() == 1:
+        if item.column() == 2:
             QDesktopServices.openUrl(QUrl(item.text()));
 
     ##Function that fills mqtwSoftware with data 
     def load_mqtwSoftware(self):
-        #Postgres version
-        cur=self.mem.con.cursor()
-        postgres_version=self.mem.con.cursor_one_field("show server_version")
-        cur.close()
-
-        # Ui
-        self.mqtwSoftware.table.setItem(0, 0, qright(colorama__version__))
-        self.mqtwSoftware.table.setItem(0, 1, qleft("https://github.com/tartley/colorama"))
-        
-        self.mqtwSoftware.table.setItem(1, 0, qright(officegenerator__version__))
-        self.mqtwSoftware.table.setItem(1, 1, qleft("https://github.com/turulomio/officegenerator"))
-        
-        self.mqtwSoftware.table.setItem(2, 0, qright(postgres_version))
-        self.mqtwSoftware.table.setItem(2, 1, qleft("https://www.postgresql.org/"))
-        
-        self.mqtwSoftware.table.setItem(3, 0, qright(psycopg2__version__.split(" ")[0]))
-        self.mqtwSoftware.table.setItem(3, 1, qleft("http://initd.org/psycopg/"))
-        
-        self.mqtwSoftware.table.setItem(4, 0, qright(PYQT_VERSION_STR))
-        self.mqtwSoftware.table.setItem(4, 1, qleft("https://riverbankcomputing.com/software/pyqt/intro"))
-        
-        self.mqtwSoftware.table.setItem(5, 0, qright(PYQT_CHART_VERSION_STR))
-        self.mqtwSoftware.table.setItem(5, 1, qleft("https://www.riverbankcomputing.com/software/pyqtchart/intro"))
-        
-        self.mqtwSoftware.table.setItem(6, 0, qright(python_version()))
-        self.mqtwSoftware.table.setItem(6, 1, qleft("https://www.python.org"))
-        
-        self.mqtwSoftware.table.setItem(7, 0, qright(stdnum__version__))
-        self.mqtwSoftware.table.setItem(7, 1, qleft("https://arthurdejong.org/python-stdnum"))
-        
-        self.mqtwSoftware.table.setItem(8, 0, qright(pytz__version__))
-        self.mqtwSoftware.table.setItem(8, 1, qleft("https://pypi.org/project/pytz"))
-        
-        self.mqtwSoftware.applySettings()
-
+        hh=[self.tr("Software"), self.tr("Version"),  self.tr("Project main page")]
+        data=[]       
+        data.append(["Colorama", colorama__version__,  "https://github.com/tartley/colorama"])
+        data.append(["OfficeGenerator", officegenerator__version__,  "https://github.com/turulomio/officegenerator"])
+        data.append(["PostgreSQL", self.mem.con.cursor_one_field("show server_version"),  "https://www.postgresql.org/"])
+        data.append(["Psycopg2", psycopg2__version__.split(" ")[0],  "http://initd.org/psycopg/"])
+        data.append(["Python", python_version(),  "https://www.python.org"])
+        data.append(["Python-stdnum", stdnum__version__,  "https://arthurdejong.org/python-stdnum"])
+        data.append(["PyQt5", PYQT_VERSION_STR,  "https://riverbankcomputing.com/software/pyqt/intro"])
+        data.append(["PyQtChart", PYQT_CHART_VERSION_STR,  "https://riverbankcomputing.com/software/pyqtchart/intro"])        
+        data.append(["Pytz", pytz__version__,  "https://pypi.org/project/pytz"])
+        self.mqtwSoftware.setData(hh, None, data)
 
     def load_mqtwRegisters(self):
         rows=self.mem.con.cursor_one_column("SELECT tablename FROM pg_catalog.pg_tables where schemaname='public' order by tablename") 
-        self.mqtwRegisters.table.setColumnCount(2)
-        self.mqtwRegisters.table.setHorizontalHeaderItem(0, qcenter(self.tr("Table")))
-        self.mqtwRegisters.table.setHorizontalHeaderItem(1, qcenter(self.tr("Number of registers")))
-        self.mqtwRegisters.applySettings()
-        self.mqtwRegisters.table.clearContents()
-        self.mqtwRegisters.table.setRowCount(len(rows))
+        
+        hh=[self.tr("Table"),  self.tr("Number of registers")]
+        data=[]
         for i, row in enumerate(rows):
-            self.mqtwRegisters.table.setItem(i, 0, qleft(row))
-            self.mqtwRegisters.table.setItem(i, 1, qnumber(self.mem.con.cursor_one_field("select count(*) from "+ row), digits=0))
+            data.append([row, self.mem.con.cursor_one_field("select count(*) from "+ row)])
+        self.mqtwRegisters.setData(hh, None, data, decimals=0)

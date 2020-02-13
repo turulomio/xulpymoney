@@ -15,18 +15,20 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.selCurrentOperations=None
 
         self.tab.setCurrentIndex(0)
-        self.tblOperations.settings(self.mem,"wdgInvestmentsRanking" , "self.tblOperations")
-        self.tblOperations.setColumnCount(5)
-        self.tblOperations.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Investment")))
-        self.tblOperations.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Current gains")))
-        self.tblOperations.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Historical gains")))
-        self.tblOperations.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Dividends")))
-        self.tblOperations.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Total")))
+        self.mqtwOperations.settings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwOperations")
+        self.mqtwOperations.table.customContextMenuRequested.connect(self.on_mqtwOperations_customContextMenuRequested)
+        self.mqtwOperations.table.itemSelectionChanged.connect(self.on_mqtwOperations_itemSelectionChanged)
+        self.mqtwOperations.table.setColumnCount(5)
+        self.mqtwOperations.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Investment")))
+        self.mqtwOperations.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Current gains")))
+        self.mqtwOperations.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Historical gains")))
+        self.mqtwOperations.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Dividends")))
+        self.mqtwOperations.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Total")))
 
         set=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
-        self.tblOperations.applySettings()
-        self.tblOperations.clearContents()
-        self.tblOperations.setRowCount(set.length()+1)
+        self.mqtwOperations.applySettings()
+        self.mqtwOperations.table.clearContents()
+        self.mqtwOperations.table.setRowCount(set.length()+1)
         self.listOperations=[]
         sumcurrent=Money(self.mem, 0, self.mem.localcurrency)
         sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
@@ -45,30 +47,32 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.listOperations=sorted(self.listOperations, key=lambda c: c[4],  reverse=True)     
 
         for i, l in enumerate(self.listOperations):
-            self.tblOperations.setItem(i, 0, QTableWidgetItem(l[0].product.name))
-            self.tblOperations.setItem(i, 1, l[1].qtablewidgetitem())
-            self.tblOperations.setItem(i, 2,  l[2].qtablewidgetitem())
-            self.tblOperations.setItem(i, 3, l[3].qtablewidgetitem())
-            self.tblOperations.setItem(i, 4, l[4].qtablewidgetitem())
-        self.tblOperations.setItem(len(self.listOperations)+1, 0, QTableWidgetItem(self.tr("Total")))
-        self.tblOperations.setItem(len(self.listOperations)+1, 1, sumcurrent.qtablewidgetitem())
-        self.tblOperations.setItem(len(self.listOperations)+1, 2, sumhistorical.qtablewidgetitem())
-        self.tblOperations.setItem(len(self.listOperations)+1, 3, sumdividends.qtablewidgetitem())
-        self.tblOperations.setItem(len(self.listOperations)+1, 4, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
+            self.mqtwOperations.table.setItem(i, 0, QTableWidgetItem(l[0].product.name))
+            self.mqtwOperations.table.setItem(i, 1, l[1].qtablewidgetitem())
+            self.mqtwOperations.table.setItem(i, 2,  l[2].qtablewidgetitem())
+            self.mqtwOperations.table.setItem(i, 3, l[3].qtablewidgetitem())
+            self.mqtwOperations.table.setItem(i, 4, l[4].qtablewidgetitem())
+        self.mqtwOperations.table.setItem(len(self.listOperations)+1, 0, QTableWidgetItem(self.tr("Total")))
+        self.mqtwOperations.table.setItem(len(self.listOperations)+1, 1, sumcurrent.qtablewidgetitem())
+        self.mqtwOperations.table.setItem(len(self.listOperations)+1, 2, sumhistorical.qtablewidgetitem())
+        self.mqtwOperations.table.setItem(len(self.listOperations)+1, 3, sumdividends.qtablewidgetitem())
+        self.mqtwOperations.table.setItem(len(self.listOperations)+1, 4, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
 
 #####################################################################################################################33
 
-        self.tblCurrentOperations.settings(self.mem,"wdgInvestmentsRanking" , "self.tblCurrentOperations")
-        self.tblCurrentOperations.setColumnCount(5)
-        self.tblCurrentOperations.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Investment")))
-        self.tblCurrentOperations.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Current gains")))
-        self.tblCurrentOperations.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Historical gains")))
-        self.tblCurrentOperations.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Dividends")))
-        self.tblCurrentOperations.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Total")))
+        self.mqtwCurrentOperations.settings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwCurrentOperations")
+        self.mqtwCurrentOperations.table.customContextMenuRequested.connect(self.on_mqtwCurrentOperations_customContextMenuRequested)
+        self.mqtwCurrentOperations.table.itemSelectionChanged.connect(self.on_mqtwCurrentOperations_itemSelectionChanged)
+        self.mqtwCurrentOperations.table.setColumnCount(5)
+        self.mqtwCurrentOperations.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Investment")))
+        self.mqtwCurrentOperations.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Current gains")))
+        self.mqtwCurrentOperations.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Historical gains")))
+        self.mqtwCurrentOperations.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Dividends")))
+        self.mqtwCurrentOperations.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Total")))
 
-        self.tblCurrentOperations.applySettings()
-        self.tblCurrentOperations.clearContents()
-        self.tblCurrentOperations.setRowCount(set.length()+1)
+        self.mqtwCurrentOperations.applySettings()
+        self.mqtwCurrentOperations.table.clearContents()
+        self.mqtwCurrentOperations.table.setRowCount(set.length()+1)
         self.listCurrentOperations=[]
         sumcurrent=Money(self.mem, 0, self.mem.localcurrency)
         sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
@@ -91,16 +95,16 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.listCurrentOperations=sorted(self.listCurrentOperations, key=lambda c: c[4],  reverse=True)     
 
         for i, l in enumerate(self.listCurrentOperations):
-            self.tblCurrentOperations.setItem(i, 0, QTableWidgetItem(l[0].name))
-            self.tblCurrentOperations.setItem(i, 1, l[1].qtablewidgetitem())
-            self.tblCurrentOperations.setItem(i, 2,  l[2].qtablewidgetitem())
-            self.tblCurrentOperations.setItem(i, 3, l[3].qtablewidgetitem())
-            self.tblCurrentOperations.setItem(i, 4, l[4].qtablewidgetitem())
-        self.tblCurrentOperations.setItem(len(self.listCurrentOperations)+1, 0, QTableWidgetItem(self.tr("Total")))
-        self.tblCurrentOperations.setItem(len(self.listCurrentOperations)+1, 1, sumcurrent.qtablewidgetitem())
-        self.tblCurrentOperations.setItem(len(self.listCurrentOperations)+1, 2, sumhistorical.qtablewidgetitem())
-        self.tblCurrentOperations.setItem(len(self.listCurrentOperations)+1, 3, sumdividends.qtablewidgetitem())
-        self.tblCurrentOperations.setItem(len(self.listCurrentOperations)+1, 4, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
+            self.mqtwCurrentOperations.table.setItem(i, 0, QTableWidgetItem(l[0].name))
+            self.mqtwCurrentOperations.table.setItem(i, 1, l[1].qtablewidgetitem())
+            self.mqtwCurrentOperations.table.setItem(i, 2,  l[2].qtablewidgetitem())
+            self.mqtwCurrentOperations.table.setItem(i, 3, l[3].qtablewidgetitem())
+            self.mqtwCurrentOperations.table.setItem(i, 4, l[4].qtablewidgetitem())
+        self.mqtwCurrentOperations.table.setItem(len(self.listCurrentOperations)+1, 0, QTableWidgetItem(self.tr("Total")))
+        self.mqtwCurrentOperations.table.setItem(len(self.listCurrentOperations)+1, 1, sumcurrent.qtablewidgetitem())
+        self.mqtwCurrentOperations.table.setItem(len(self.listCurrentOperations)+1, 2, sumhistorical.qtablewidgetitem())
+        self.mqtwCurrentOperations.table.setItem(len(self.listCurrentOperations)+1, 3, sumdividends.qtablewidgetitem())
+        self.mqtwCurrentOperations.table.setItem(len(self.listCurrentOperations)+1, 4, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
 
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
@@ -125,7 +129,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         w=frmProductReport(self.mem, product, inv, self)
         w.exec_()
 
-    def on_tblOperations_customContextMenuRequested(self,  pos):
+    def on_mqtwOperations_customContextMenuRequested(self,  pos):
         if self.selOperations==None:
             self.actionProduct.setEnabled(False)
             self.actionSameProductFIFO.setEnabled(False)
@@ -136,20 +140,20 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         menu=QMenu()
         menu.addAction(self.actionProduct)
         menu.addSeparator()
-        menu.addAction(self.actionSameProductFIFO)       
-        menu.exec_(self.tblOperations.mapToGlobal(pos))
+        menu.addAction(self.actionSameProductFIFO)      
+        menu.exec_(self.mqtwOperations.table.mapToGlobal(pos))
 
-    def on_tblOperations_itemSelectionChanged(self):
+    def on_mqtwOperations_itemSelectionChanged(self):
         self.selOperations=None
         try:
-            for i in self.tblOperations.selectedItems():#itera por cada item no row.
+            for i in self.mqtwOperations.table.selectedItems():#itera por cada item no row.
                 self.selOperations=self.listOperations[i.row()][0]
         except:
             pass
             
             
         
-    def on_tblCurrentOperations_customContextMenuRequested(self,  pos):
+    def on_mqtwCurrentOperations_customContextMenuRequested(self,  pos):
         if self.selCurrentOperations==None:
             self.actionProduct.setEnabled(False)
             self.actionSameProduct.setEnabled(False)
@@ -161,12 +165,12 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         menu.addAction(self.actionProduct)
         menu.addSeparator()
         menu.addAction(self.actionSameProduct)
-        menu.exec_(self.tblCurrentOperations.mapToGlobal(pos))
+        menu.exec_(self.mqtwCurrentOperations.table.mapToGlobal(pos))
 
-    def on_tblCurrentOperations_itemSelectionChanged(self):
+    def on_mqtwCurrentOperations_itemSelectionChanged(self):
         self.selCurrentOperations=None
         try:
-            for i in self.tblCurrentOperations.selectedItems():#itera por cada item no row.
+            for i in self.mqtwCurrentOperations.table.selectedItems():#itera por cada item no row.
                 self.selCurrentOperations=self.listCurrentOperations[i.row()][0]
         except:
             pass

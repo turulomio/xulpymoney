@@ -565,14 +565,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
     @pyqtSlot() 
     def on_actionShowIncomes_triggered(self):
-        
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem, "wdgTotal","tblShowIncomes")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
-        table.verticalHeader().setVisible(False)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
+        wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=2
         set=AccountOperationManager(self.mem)
@@ -602,8 +599,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                         id_tiposoperaciones={0} and 
                                                         date_part('year',datetime)={1} and 
                                                         date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
-        set.myqtablewidget(table,  True)
-        horizontalLayout.addWidget(table)
+        set.myqtablewidget(wdg,  True)
+        horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
 
@@ -612,11 +609,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowExpenses_triggered(self):     
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem, "wdgTotal","tblShowExpenses")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
-        table.verticalHeader().setVisible(False)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
+        wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=1
         set=AccountOperationManager(self.mem)
@@ -646,8 +641,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                             id_tiposoperaciones={0} and 
                                                             date_part('year',datetime)={1} and 
                                                             date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month))
-        set.myqtablewidget(table,  True)
-        horizontalLayout.addWidget(table)
+        set.myqtablewidget(wdg,  True)
+        horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)
 
@@ -693,11 +688,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_more():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            table.setObjectName("tblShowShellingOperations")
-            table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            table.setSelectionMode(QAbstractItemView.SingleSelection)
-            table.verticalHeader().setVisible(False)
+            wdg= myQTableWidget(newtab)
+            wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
             positive=Decimal(0)
             negative=Decimal(0)
@@ -723,8 +715,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto()
             set.order_by_fechaventa()
-            set.myqtablewidget(table, "wdgTotal")
-            horizontalLayout.addWidget(table)
+            set.myqtablewidget(wdg, "wdgTotal")
+            horizontalLayout.addWidget(wdg)
             lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
@@ -732,11 +724,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_less():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            table.setObjectName("tblShowShellingOperations")
-            table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            table.setSelectionMode(QAbstractItemView.SingleSelection)
-            table.verticalHeader().setVisible(False)
+            wdg = myQTableWidget(newtab)
+            wdg.settings(self.mem.settings, "wdgTotal","tblShowSellingLessOperations")
+            wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
             positive=Decimal(0)
             negative=Decimal(0)
@@ -762,8 +752,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto()
             set.order_by_fechaventa()
-            set.myqtablewidget(table, "wdgTotal")
-            horizontalLayout.addWidget(table)
+            set.myqtablewidget(wdg)
+            horizontalLayout.addWidget(wdg)
             lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
@@ -779,11 +769,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem,"wdgTotal","tblShowDividends")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
-        table.verticalHeader().setVisible(False)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings,"wdgTotal","mqtwShowDividends")
+        wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         set=DividendHeterogeneusManager(self.mem)
         for inv in self.mem.data.investments.arr:
@@ -797,8 +785,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     if dividend.datetime.year==self.wyData.year and dividend.datetime.month==self.month:
                         set.append(dividend)
         set.order_by_datetime()
-        set.myqtablewidget(table,  True)
-        horizontalLayout.addWidget(table)
+        set.myqtablewidget(wdg,  True)
+        horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
 
@@ -807,32 +795,32 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowComissions_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem,"wdgTotal","tblShowComissions")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings,"wdgTotal","mqtwShowComissions")
+        wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
+        wdg.table.verticalHeader().show()
         
-        table.setColumnCount(13)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
-        table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
-        table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
-        table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
-        table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
-        table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
+        wdg.table.setColumnCount(13)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
+        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
+        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
+        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
+        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
+        wdg.table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
         
-        table.setRowCount(4)
-        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Bank commissions" )))
-        table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Custody fees" )))
-        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation commissions" )))
-        table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Total" )))
-        table.applySettings()
+        wdg.table.setRowCount(4)
+        wdg.table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Bank commissions" )))
+        wdg.table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Custody fees" )))
+        wdg.table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation commissions" )))
+        wdg.table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Total" )))
+        wdg.applySettings()
         (sum_bank_commissions, sum_custody_fees, sum_investment_commissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
@@ -841,7 +829,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (38, self.wyData.year, column+1))[0])
-            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions))    
+            wdg.table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions))    
             sum_bank_commissions=sum_bank_commissions+bank_commissions
             
             custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -849,22 +837,22 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (59, self.wyData.year, column+1))[0])
-            table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(custody_fees))    
+            wdg.table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(custody_fees))    
             sum_custody_fees=sum_custody_fees+custody_fees
             
             investment_commissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
                                                                                                             from operinversiones  
                                                                                                             where date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
-            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_commissions))    
+            wdg.table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_commissions))    
             sum_investment_commissions=sum_investment_commissions+investment_commissions
             
-            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions+custody_fees+investment_commissions))    
-        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions))    
-        table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
-        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_commissions))    
-        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions+sum_custody_fees+sum_investment_commissions))    
-        vlayout.addWidget(table)
+            wdg.table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions+custody_fees+investment_commissions))    
+        wdg.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions))    
+        wdg.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
+        wdg.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_commissions))    
+        wdg.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions+sum_custody_fees+sum_investment_commissions))    
+        vlayout.addWidget(wdg)
 
         #Number of operations
         num_operations=0
@@ -895,28 +883,28 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem,"wdgTotal","tblGainsByProductType")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
-        table.setColumnCount(5)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
+        wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        wdg.table.setSelectionMode(QAbstractItemView.SingleSelection)
+        wdg.table.setColumnCount(5)
         
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Gross gains" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross dividends")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "Net gains" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Net dividends")))
-        table.applySettings()
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Gross gains" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross dividends")))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "Net gains" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Net dividends")))
+        wdg.applySettings()
         sum_gains=Money(self.mem)
         sum_dividens=Money(self.mem)
         sum_netgains=Money(self.mem)
         sum_netdividends=Money(self.mem)
         
         settypes=self.mem.types.investment_types()
-        table.setRowCount(settypes.length()+1)
+        wdg.table.setRowCount(settypes.length()+1)
         
         for i, type in enumerate(settypes.arr):
-            table.setItem(i, 0, qleft(type.name))    
+            wdg.table.setItem(i, 0, qleft(type.name))    
             gains=Money(self.mem,  0,  self.mem.localcurrency)
             netgains=Money(self.mem, 0, self.mem.localcurrency)
             dividends=Money(self.mem,  0,  self.mem.localcurrency)
@@ -934,20 +922,20 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                         if d.datetime.year==self.wyData.year:
                             dividends=dividends+d.gross(eMoneyCurrency.User)
                             netdividens=netdividens+d.net(eMoneyCurrency.User)
-            table.setItem(i, 1, gains.qtablewidgetitem())
-            table.setItem(i, 2, dividends.qtablewidgetitem())
-            table.setItem(i, 3, netgains.qtablewidgetitem())
-            table.setItem(i, 4, netdividens.qtablewidgetitem())
+            wdg.table.setItem(i, 1, gains.qtablewidgetitem())
+            wdg.table.setItem(i, 2, dividends.qtablewidgetitem())
+            wdg.table.setItem(i, 3, netgains.qtablewidgetitem())
+            wdg.table.setItem(i, 4, netdividens.qtablewidgetitem())
             sum_gains=sum_gains+gains
             sum_netgains=sum_netgains+netgains
             sum_dividens=sum_dividens+dividends
             sum_netdividends=sum_netdividends+netdividens
             
-        table.setItem(i+1, 0, qleft(self.tr("Total")))
-        table.setItem(i+1, 1, sum_gains.qtablewidgetitem())
-        table.setItem(i+1, 2, sum_dividens.qtablewidgetitem())
-        table.setItem(i+1, 3, sum_netgains.qtablewidgetitem())
-        table.setItem(i+1, 4, sum_netdividends.qtablewidgetitem())
+        wdg.table.setItem(i+1, 0, qleft(self.tr("Total")))
+        wdg.table.setItem(i+1, 1, sum_gains.qtablewidgetitem())
+        wdg.table.setItem(i+1, 2, sum_dividens.qtablewidgetitem())
+        wdg.table.setItem(i+1, 3, sum_netgains.qtablewidgetitem())
+        wdg.table.setItem(i+1, 4, sum_netdividends.qtablewidgetitem())
         
         label=QLabel(newtab)
         font = QFont()
@@ -958,7 +946,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         label.setAlignment(Qt.AlignCenter)
         label.setText(self.tr("Gross gains + Gross dividends: {} + {} = {}\nNet gains + Net dividens: {} + {} = {}".format(sum_gains, sum_dividens, sum_gains+sum_dividens, sum_netgains, sum_netdividends, sum_netgains+sum_netdividends)))
             
-        vlayout.addWidget(table)
+        vlayout.addWidget(wdg)
         vlayout.addWidget(label)
         self.tab.addTab(newtab, self.tr("Gains by product type of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
@@ -967,34 +955,34 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QVBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem,"wdgTotal","tblShowPaidTaxes")
-        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        wdg = myQTableWidget(newtab)
+        wdg.settings(self.mem.settings,"wdgTotal","myqtwShowPaidTaxes")
+        wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
+        wdg.table.verticalHeader().show()        
         
-        table.setColumnCount(13)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
-        table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
-        table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
-        table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
-        table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
-        table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
+        wdg.table.setColumnCount(13)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
+        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
+        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
+        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
+        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
+        wdg.table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
         
-        table.setRowCount(5)
-        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Investment operation retentions" )))
-        table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Dividend retentions" )))
-        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Other paid taxes" )))
-        table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Returned taxes" )))
-        table.setVerticalHeaderItem(4,  QTableWidgetItem(self.tr( "Total" )))
+        wdg.table.setRowCount(5)
+        wdg.table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Investment operation retentions" )))
+        wdg.table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Dividend retentions" )))
+        wdg.table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Other paid taxes" )))
+        wdg.table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Returned taxes" )))
+        wdg.table.setVerticalHeaderItem(4,  QTableWidgetItem(self.tr( "Total" )))
 
-        table.applySettings()
+        wdg.applySettings()
         (sum_io_retentions, sum_div_retentions, sum_other_taxes,  sum_returned_taxes)=(Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
@@ -1002,14 +990,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                                                 from operinversiones  
                                                                                                                                 where date_part('year',datetime)=%s and 
                                                                                                                                     date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
-            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(io_retentions))    
+            wdg.table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(io_retentions))    
             sum_io_retentions=sum_io_retentions+io_retentions
             
             div_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(retencion) 
                                                                                                             from dividends 
                                                                                                             where date_part('year',fecha)=%s and 
                                                                                                                 date_part('month',fecha)=%s;""", (self.wyData.year, column+1))[0])
-            table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(div_retentions))    
+            wdg.table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(div_retentions))    
             sum_div_retentions=sum_div_retentions+div_retentions
             
             other_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -1017,7 +1005,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (37, self.wyData.year, column+1))[0])
-            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(other_taxes))    
+            wdg.table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(other_taxes))    
             sum_other_taxes=sum_other_taxes+other_taxes         
             
             returned_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -1025,18 +1013,18 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (6, self.wyData.year, column+1))[0])
-            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(returned_taxes))    
+            wdg.table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(returned_taxes))    
             sum_returned_taxes=sum_returned_taxes+returned_taxes
             
-            table.setItem(4, column, self.mem.localcurrency.qtablewidgetitem(io_retentions+div_retentions+other_taxes+returned_taxes))    
+            wdg.table.setItem(4, column, self.mem.localcurrency.qtablewidgetitem(io_retentions+div_retentions+other_taxes+returned_taxes))    
         
-        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions))    
-        table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_div_retentions))    
-        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_other_taxes))    
-        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_returned_taxes))    
-        table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes+sum_returned_taxes))    
+        wdg.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions))    
+        wdg.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_div_retentions))    
+        wdg.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_other_taxes))    
+        wdg.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_returned_taxes))    
+        wdg.table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes+sum_returned_taxes))    
 
-        horizontalLayout.addWidget(table)
+        horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, self.tr("Taxes report of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
             

@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QTableWidgetItem, QApplication
+from PyQt5.QtWidgets import QTableWidgetItem
 from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdDatetime_Selectable
 
 from xulpymoney.objects.comment import Comment
@@ -109,7 +109,7 @@ class AccountOperationManager(ObjectManager_With_IdDatetime_Selectable, QObject)
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Mem","Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
+                comentario=self.tr("Paid with {0}. {1}").format(self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']).name, row['comentario'] )
             co=AccountOperation(self.mem, row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']), fakeid)
             self.append(co)
             fakeid=fakeid+1
@@ -117,41 +117,42 @@ class AccountOperationManager(ObjectManager_With_IdDatetime_Selectable, QObject)
 
     ## Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
     ## show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)
-    def myqtablewidget(self, tabla, show_accounts=False):
+    def myqtablewidget(self, wdg, show_accounts=False):
         ##HEADERS
         diff=0
         if show_accounts==True:
-            tabla.setColumnCount(7)
+            wdg.table.setColumnCount(7)
             diff=1
         else:
-            tabla.setColumnCount(6)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date" )))
+            wdg.table.setColumnCount(6)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
         if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Mem","Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate("Mem","Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Mem","Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Mem","Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Mem","Comment" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
+            wdg.table.setHorizontalHeaderItem(diff, QTableWidgetItem(self.tr("Account" )))
+        wdg.table.setHorizontalHeaderItem(1+diff, QTableWidgetItem(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(3+diff, QTableWidgetItem(self.tr("Balance" )))
+        wdg.table.setHorizontalHeaderItem(4+diff, QTableWidgetItem(self.tr("Comment" )))
+        wdg.table.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
         ##DATA 
-        tabla.clearContents()
-        tabla.applySettings()
-        tabla.setRowCount(self.length())
-        tabla.setColumnHidden(5+diff, True)
+        wdg.table.clearContents()
+        wdg.applySettings()
+        wdg.table.setRowCount(self.length())
+        wdg.table.setColumnHidden(5+diff, True)
         balance=0
-        for rownumber, a in enumerate(self.values_order_by_datetime()):
+        self.order_by_datetime()
+        for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if show_accounts==True:
-                tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
-            tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
-            tabla.setItem(rownumber, 5+diff, qleft(a.id))
+                wdg.table.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
+            wdg.table.setItem(rownumber, 1+diff, qleft(a.concepto.name))
+            wdg.table.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
+            wdg.table.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
+            wdg.table.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
+            wdg.table.setItem(rownumber, 5+diff, qleft(a.id))
             if self.selected.length()>0:
                 if a.id==self.selected.only().id:
-                    tabla.selectRow(rownumber+1)
+                    wdg.table.selectRow(rownumber+1)
 
     def myqtablewidget_lastmonthbalance(self, wdg,    account, lastmonthbalance):
         
@@ -226,41 +227,42 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
 
     ## Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
     ## show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)
-    def myqtablewidget(self, tabla, show_accounts=False):
+    def myqtablewidget(self, wdg, show_accounts=False):
         ##HEADERS
         diff=0
         if show_accounts==True:
-            tabla.setColumnCount(7)
+            wdg.table.setColumnCount(7)
             diff=1
         else:
-            tabla.setColumnCount(6)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+            wdg.table.setColumnCount(6)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
         if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(self.tr("Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(self.tr("Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(self.tr("Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(self.tr("Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(self.tr("Comment" )))
-        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
+            wdg.table.setHorizontalHeaderItem(diff, QTableWidgetItem(self.tr("Account" )))
+        wdg.table.setHorizontalHeaderItem(1+diff, QTableWidgetItem(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(3+diff, QTableWidgetItem(self.tr("Balance" )))
+        wdg.table.setHorizontalHeaderItem(4+diff, QTableWidgetItem(self.tr("Comment" )))
+        wdg.table.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
         ##DATA 
-        tabla.clearContents()
-        tabla.applySettings()
-        tabla.setRowCount(self.length())
-        tabla.setColumnHidden(5+diff, True)
+        wdg.table.clearContents()
+        wdg.applySettings()
+        wdg.table.setRowCount(self.length())
+        wdg.table.setColumnHidden(5+diff, True)
         balance=0
-        for rownumber, a in enumerate(self.values_order_by_datetime()):
+        self.order_by_datetime()
+        for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if show_accounts==True:
-                tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
-            tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
-            tabla.setItem(rownumber, 5+diff, qleft(a.id))
+                wdg.table.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
+            wdg.table.setItem(rownumber, 1+diff, qleft(a.concepto.name))
+            wdg.table.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
+            wdg.table.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
+            wdg.table.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
+            wdg.table.setItem(rownumber, 5+diff, qleft(a.id))
             if self.selected.length()>0:
                 if a.id==self.selected.only().id:
-                    tabla.selectRow(rownumber+1)
+                    wdg.table.selectRow(rownumber+1)
 
 
 
@@ -272,7 +274,6 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
 
 
     def myqtablewidget_lastmonthbalance(self, table,    lastmonthbalance):
-        
         from xulpymoney.libxulpymoney import Money
         table.applySettings()
         table.clearContents()
@@ -280,7 +281,7 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
         table.setItem(0, 1, QTableWidgetItem(self.tr( "Starting month balance")))
         table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
         table.setColumnHidden(5, True)
-        for i, o in enumerate(self.values_order_by_datetime()):
+        for i, o in enumerate(self.arr):
             importe=Money(self.mem, o.importe, self.account.currency)
             lastmonthbalance=lastmonthbalance+importe
             table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))

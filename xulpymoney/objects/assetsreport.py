@@ -122,8 +122,8 @@ class AssetsReport(ODT, QObject):
         self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
         self.mem.frmMain.on_actionInvestments_triggered()
         self.table( 
-            list_remove_positions(self.mem.frmMain.w.tblInvestments.listHorizontalHeaders(), [1, 2, 3, 4]), 
-            lor_remove_columns(self.mem.frmMain.w.tblInvestments.lr, [1, 2, 3, 4]), 
+            list_remove_positions(self.mem.frmMain.w.mqtwInvestments.listHorizontalHeaders(), [1, 2, 3, 4]), 
+            lor_remove_columns(self.mem.frmMain.w.mqtwInvestments.data, [1, 2, 3, 4]), 
             [13,  3, 3, 3, 3],  8)       
         
         suminvertido=self.mem.data.investments_active().invested()
@@ -195,5 +195,5 @@ class AssetsReport(ODT, QObject):
         #Dividend report
         self.header(self.tr("Dividend estimations report"), 1)
         self.mem.frmMain.on_actionDividendsReport_triggered()
-        self.table(self.mem.frmMain.w.tblInvestments.listHorizontalHeaders(), self.mem.frmMain.w.tblInvestments.lr, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
+        self.table(self.mem.frmMain.w.mqtw.listHorizontalHeaders(), self.mem.frmMain.w.mqtw.data, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(self.mem.frmMain.w.sum_of_estimated_dividends()))

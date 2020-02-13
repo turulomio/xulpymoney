@@ -5,6 +5,7 @@ from xulpymoney.libxulpymoney import Assets,  Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
+from xulpymoney.ui.myqtablewidget import qcenter
 from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 from xulpymoney.ui.myqcharts import VCPie
 
@@ -24,8 +25,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.incomes=self.mem.conceptos.clone_x_tipooperacion(2)
         self.incomeslist=None
 
-        self.tblExpenses.settings(self.mem, "wdgConcepts")
-        self.tblIncomes.settings(self.mem, "wdgConcepts")
+        self.mqtwExpenses.settings(self.mem.settings, "wdgConcepts", "mqtwExpenses")
+        self.mqtwExpenses.table.customContextMenuRequested.connect(self.on_mqtwExpenses_customContextMenuRequested)
+        self.mqtwIncomes.settings(self.mem.settings, "wdgConcepts", "mqtwIncomes")
+        self.mqtwIncomes.table.customContextMenuRequested.connect(self.on_mqtwIncomes_customContextMenuRequested)
         
         anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
@@ -41,65 +44,75 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.viewExpenses.setTitle(self.tr("Concepts chart"))   
         self.viewExpenses.setCurrency(self.mem.localcurrency)
         
+        self.mqtwExpenses.table.setColumnCount(4)
+        self.mqtwExpenses.table.setHorizontalHeaderItem(0, qcenter(self.tr("Concept" )))
+        self.mqtwExpenses.table.setHorizontalHeaderItem(1, qcenter(self.tr("Monthly expenses" )))
+        self.mqtwExpenses.table.setHorizontalHeaderItem(2, qcenter(self.tr("% Monthly expenses" )))
+        self.mqtwExpenses.table.setHorizontalHeaderItem(3, qcenter(self.tr("Monthly average" )))
         (self.expenseslist, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
-        self.tblExpenses.applySettings()
-        self.tblExpenses.clearContents()
-        self.tblExpenses.setRowCount(len(self.expenseslist)+1)
+        self.mqtwExpenses.applySettings()
+        self.mqtwExpenses.table.clearContents()
+        self.mqtwExpenses.table.setRowCount(len(self.expenseslist)+1)
         
         for i, a in enumerate(self.expenseslist):
-            self.tblExpenses.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.tblExpenses.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
-            self.tblExpenses.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
-            self.tblExpenses.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
+            self.mqtwExpenses.table.setItem(i, 0, QTableWidgetItem(a[0].name))
+            self.mqtwExpenses.table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
+            self.mqtwExpenses.table.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
+            self.mqtwExpenses.table.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblExpenses.item(i, 1).setBackground( eQColor.Green)          
+                    self.mqtwExpenses.table.item(i, 1).setBackground( eQColor.Green)          
                 else:
-                    self.tblExpenses.item(i, 1).setBackground( eQColor.Red)      
+                    self.mqtwExpenses.table.item(i, 1).setBackground( eQColor.Red)      
                 self.viewExpenses.appendData(a[0].name.upper(), a[1])
         self.viewExpenses.display()
                 
-        self.tblExpenses.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblExpenses.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
-        self.tblExpenses.setItem(len(self.expenseslist), 2, Percentage(1, 1).qtablewidgetitem())
-        self.tblExpenses.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 2, Percentage(1, 1).qtablewidgetitem())
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
         self.viewIncomes.clear()
         self.viewIncomes.setTitle(self.tr("Concepts chart"))   
         self.viewIncomes.setCurrency(self.mem.localcurrency)
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
-        self.tblIncomes.applySettings()
-        self.tblIncomes.clearContents()
-        self.tblIncomes.setRowCount(len(self.incomeslist)+1)
+        self.mqtwIncomes.table.setColumnCount(4)
+        self.mqtwIncomes.table.setHorizontalHeaderItem(0, qcenter(self.tr("Concept" )))
+        self.mqtwIncomes.table.setHorizontalHeaderItem(1, qcenter(self.tr("Monthly expenses" )))
+        self.mqtwIncomes.table.setHorizontalHeaderItem(2, qcenter(self.tr("% Monthly expenses" )))
+        self.mqtwIncomes.table.setHorizontalHeaderItem(3, qcenter(self.tr("Monthly average" )))
+        self.mqtwIncomes.applySettings()
+        self.mqtwIncomes.table.clearContents()
+        self.mqtwIncomes.table.setRowCount(len(self.incomeslist)+1)
         
         for i, a in enumerate(self.incomeslist):
-            self.tblIncomes.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.tblIncomes.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
-            self.tblIncomes.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
-            self.tblIncomes.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
+            self.mqtwIncomes.table.setItem(i, 0, QTableWidgetItem(a[0].name))
+            self.mqtwIncomes.table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
+            self.mqtwIncomes.table.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
+            self.mqtwIncomes.table.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblIncomes.item(i, 1).setBackground( eQColor.Green)          
+                    self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Green)          
                 else:
-                    self.tblIncomes.item(i, 1).setBackground( eQColor.Red)      
+                    self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Red)      
                 self.viewIncomes.appendData(a[0].name.upper(), a[1])
         self.viewIncomes.display()
-        self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblIncomes.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
-        self.tblIncomes.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
-        self.tblIncomes.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
 
     @pyqtSlot() 
     def on_wdgYM_changed(self):
         self.load_gastos(self.wdgYM.year, self.wdgYM.month)
         self.load_ingresos(self.wdgYM.year,  self.wdgYM.month)
         
-    def on_tblExpenses_customContextMenuRequested(self, pos):
+    def on_mqtwExpenses_customContextMenuRequested(self, pos):
         self.selected=None
-        for i in self.tblExpenses.selectedItems():#itera por cada item no row.
+        for i in self.mqtwExpenses.table.selectedItems():#itera por cada item no row.
             if i.row()==len(self.expenseslist):#Si pulsa en total
                 self.selected=None
                 break
@@ -114,11 +127,11 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
 
         menu=QMenu()
         menu.addAction(self.actionHistoricalReport)   
-        menu.exec_(self.tblExpenses.mapToGlobal(pos))
+        menu.exec_(self.mqtwExpenses.table.mapToGlobal(pos))
         
-    def on_tblIncomes_customContextMenuRequested(self, pos):
+    def on_mqtwIncomes_customContextMenuRequested(self, pos):
         self.selected=None
-        for i in self.tblIncomes.selectedItems():#itera por cada item no row.
+        for i in self.mqtwIncomes.table.selectedItems():#itera por cada item no row.
             if i.row()==len(self.incomeslist):#Si pulsa en total
                 self.selected=None
                 break
@@ -132,7 +145,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         
         menu=QMenu()
         menu.addAction(self.actionHistoricalReport)   
-        menu.exec_(self.tblIncomes.mapToGlobal(pos))
+        menu.exec_(self.mqtwIncomes.table.mapToGlobal(pos))
         
     
     def on_tab_tabCloseRequested(self, index):
