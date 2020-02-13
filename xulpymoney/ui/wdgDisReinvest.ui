@@ -354,60 +354,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_24">
          <item>
-          <widget class="myQTableWidget" name="tblOps">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::NoSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Id</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Date</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Operation type</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Shares</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Price</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Comission</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Taxes</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="myQTableWidget" name="mqtwOps" native="true"/>
          </item>
         </layout>
        </widget>
@@ -417,65 +364,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_26">
          <item>
-          <widget class="myQTableWidget" name="tblCurrentOps">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::NoSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Date</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Shares</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Price</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Pending</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% Annual</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% APR</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% Total</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Benchmark</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="myQTableWidget" name="mqtwCurrentOps" native="true"/>
          </item>
         </layout>
        </widget>
@@ -485,23 +374,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
-          <widget class="myQTableWidget" name="tblHistoricalOps">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::NoSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-          </widget>
+          <widget class="myQTableWidget" name="mqtwHistoricalOps" native="true"/>
          </item>
         </layout>
        </widget>
@@ -513,14 +386,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
