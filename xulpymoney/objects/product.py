@@ -585,8 +585,9 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
 
 
 ## Class that compares two products, removes ohclDaily that aren't in both products
-class ProductComparation:
+class ProductComparation(QObject):
     def __init__(self, mem, product1, product2):
+        QObject.__init__(self)
         self.mem=mem
         
         self.__fromDate=None#None all array.
@@ -619,25 +620,24 @@ class ProductComparation:
             if ohcl.date in self.__commonDates:
                 self.set2.append(ohcl)
 
-    def myqtablewidget(self, tabla):
+    def myqtablewidget(self, wdg):
         arr=[]#date, product1, product2
         for i, dat in enumerate(self.__commonDates):
             arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close))
             
-        tabla.setColumnCount(3)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(self.product1.name))
-        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(self.product2.name))
+        wdg.table.setColumnCount(3)
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.product1.name))
+        wdg.table.setHorizontalHeaderItem(2,  QTableWidgetItem(self.product2.name))
         ##DATA 
-        tabla.clearContents()
-        tabla.applySettings()  
-        tabla.setRowCount(len(self.__commonDates))
+        wdg.table.clearContents()
+        wdg.applySettings()  
+        wdg.table.setRowCount(len(self.__commonDates))
         
         for i, a in enumerate(arr):
-            tabla.setItem(i, 0, qdate(a[0]))
-            tabla.setItem(i, 1, self.product1.currency.qtablewidgetitem(a[1]))
-            tabla.setItem(i, 2, self.product1.currency.qtablewidgetitem(a[2]))
-        tabla.setSortingEnabled(True)
+            wdg.table.setItem(i, 0, qdate(a[0]))
+            wdg.table.setItem(i, 1, self.product1.currency.qtablewidgetitem(a[1]))
+            wdg.table.setItem(i, 2, self.product1.currency.qtablewidgetitem(a[2]))
         
     def index(self, date):
         """Returns date index in array"""

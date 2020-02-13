@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
-from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.libmanagers import  ManagerSelectionMode
 from xulpymoney.objects.product import ProductManager
@@ -106,16 +106,9 @@ class frmProductSelector(QDialog):
         self.cmd.setIcon(icon)
         self.horizontalLayout.addWidget(self.cmd)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.tblInvestments = myQTableWidget(self)
-        self.tblInvestments.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.tblInvestments.setAlternatingRowColors(True)
-        self.tblInvestments.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tblInvestments.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tblInvestments.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.tblInvestments.settings(self.mem, "frmProductReport")
-
-        self.tblInvestments.verticalHeader().setVisible(False)
-        self.verticalLayout.addWidget(self.tblInvestments)
+        self.mqtwInvestments = myQTableWidget(self)
+        self.mqtwInvestments.settings(self.mem.settings, "frmProductSelector", "mqtwInvestments")
+        self.verticalLayout.addWidget(self.mqtwInvestments)
         self.lblFound = QLabel(self)
         self.verticalLayout.addWidget(self.lblFound)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
@@ -125,11 +118,11 @@ class frmProductSelector(QDialog):
         self.lblFound.setText(self.tr("Found registers"))
 
         self.setTabOrder(self.txt, self.cmd)
-        self.setTabOrder(self.cmd, self.tblInvestments)
+        self.setTabOrder(self.cmd, self.mqtwInvestments)
         self.cmd.released.connect(self.on_cmd_released)
         self.txt.returnPressed.connect(self.on_cmd_released)                    
-        self.tblInvestments.itemSelectionChanged.connect(self.on_tblInvestments_itemSelectionChanged)
-        self.tblInvestments.cellDoubleClicked.connect(self.on_tblInvestments_cellDoubleClicked)
+        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
+        self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=2:            
@@ -141,14 +134,14 @@ class frmProductSelector(QDialog):
         self.products.needStatus(1, progress=True)
         self.products.order_by_name()
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
-        self.products.myqtablewidget(self.tblInvestments)  
+        self.products.myqtablewidget(self.mqtwInvestments)  
         
-    def on_tblInvestments_cellDoubleClicked(self, row, column):
+    def on_mqtwInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
     
-    def on_tblInvestments_itemSelectionChanged(self):
+    def on_mqtwInvestments_itemSelectionChanged(self):
         self.products.selected=None
-        for i in self.tblInvestments.selectedItems():
+        for i in self.mqtwInvestments.table.selectedItems():
             if i.column()==0:
                 self.products.selected=self.products.arr[i.row()]
 

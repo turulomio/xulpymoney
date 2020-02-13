@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QTableWidgetItem
 from xulpymoney.ui.Ui_wdgCalculator import Ui_wdgCalculator
 from xulpymoney.libxulpymoney import Percentage, Money
 from xulpymoney.libxulpymoneytypes import eProductType
@@ -15,7 +15,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
         self.mem=mem
 
-        self.table.settings(self.mem, "wdgCalculator")
+        self.mqtw.settings(self.mem.settings, "wdgCalculator", "mqtw")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
 
         self.investments=None#SetINvestments of the selected product
@@ -139,7 +139,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.calculate()
 
     def calculate(self):
-        """Checks if compulsory fields are ok, if not changes style to red, else calculate table and shares"""
+        """Checks if compulsory fields are ok, if not changes style to red, else calculate mqtw and shares"""
         if self.txtAmount.isValid() and self.txtFinalPrice.isValid():
             finalprice=Money(self.mem, self.txtFinalPrice.decimal(), self.product.currency).convert(self.mem.localcurrency).amount
             if self.product.type.id in (eProductType.Share, eProductType.ETF):#Shares
@@ -147,10 +147,15 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             else:
                 self.txtShares.setText(round(self.txtAmount.decimal()/finalprice, 6))
             porcentages=[2.5, 5, 7.5, 10, 15, 30]
-            self.table.clearContents()
-            self.table.setRowCount(len(porcentages))
+            self.mqtw.table.setColumnCount(3)
+            self.mqtw.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("% Gains" )))
+            self.mqtw.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Price" )))
+            self.mqtw.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gains" )))
+            self.mqtw.table.clearContents()
+            self.mqtw.applySettings()
+            self.mqtw.table.setRowCount(len(porcentages))
             for i, tpc in enumerate(porcentages):        
-                self.table.setItem(i, 0, Percentage(tpc, 100).qtablewidgetitem())
+                self.mqtw.table.setItem(i, 0, Percentage(tpc, 100).qtablewidgetitem())
                 tpcprice= self.txtFinalPrice.decimal()*Decimal(1+tpc/100)
-                self.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
-                self.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
+                self.mqtw.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
+                self.mqtw.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
