@@ -176,9 +176,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         view=VCPie(d)
         view.settings(self.mem.settings, "wdgBanks", "pie")
         view.pie.clear()
-#        view.setCurrency(self.mem.localcurrency)
         for bank in self.mem.data.banks_active().arr:
-            view.pie.appendData(bank.name, bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active()).amount)
+            view.pie.appendData(bank.name, bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active()).generic_currency())
         view.pie.display()
         lay = QVBoxLayout(d)
         lay.addWidget(view)

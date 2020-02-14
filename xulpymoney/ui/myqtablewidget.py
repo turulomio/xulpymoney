@@ -454,6 +454,16 @@ def qcenter(string):
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
+    
+## Currency object from reusingcode
+def qcurrency(currency, decimals=2):
+    a=QTableWidgetItem(currency.string(decimals))
+    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+    if currency.amount==None:
+        a.setForeground(QColor(0, 0, 255))
+    elif currency.amount<0:
+        a.setForeground(QColor(255, 0, 0))
+    return a
 
 def qleft(string):
     if string==None:

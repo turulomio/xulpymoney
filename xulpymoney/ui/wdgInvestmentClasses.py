@@ -15,16 +15,22 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.hoy=datetime.date.today()
 
         self.viewTPC=VCPie()
+        self.viewTPC.settings(self.mem.settings, "wdgInvestmentClasses", "viewTPC")
         self.layTPC.addWidget(self.viewTPC)     
         self.viewPCI=VCPie()
+        self.viewPCI.settings(self.mem.settings, "wdgInvestmentClasses", "viewPCI")
         self.layPCI.addWidget(self.viewPCI)      
         self.viewTipo=VCPie()
+        self.viewTipo.settings(self.mem.settings, "wdgInvestmentClasses", "viewTipo")
         self.layTipo.addWidget(self.viewTipo)      
         self.viewApalancado=VCPie()
+        self.viewApalancado.settings(self.mem.settings, "wdgInvestmentClasses", "viewApalancado")
         self.layApalancado.addWidget(self.viewApalancado)    
         self.viewCountry=VCPie()
+        self.viewCountry.settings(self.mem.settings, "wdgInvestmentClasses", "viewCountry")
         self.layCountry.addWidget(self.viewCountry)      
         self.viewProduct=VCPie()
+        self.viewProduct.settings(self.mem.settings, "wdgInvestmentClasses", "viewProduct")
         self.layProduct.addWidget(self.viewProduct)
         
         self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy).local()
@@ -32,12 +38,12 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     ## @param animations boolean True to show animations
     def update(self, animations):
-        self.viewApalancado.setAnimations(animations)
-        self.viewCountry.setAnimations(animations)
-        self.viewPCI.setAnimations(animations)
-        self.viewProduct.setAnimations(animations)
-        self.viewTPC.setAnimations(animations)
-        self.viewTipo.setAnimations(animations)
+        self.viewApalancado.pie.setAnimations(animations)
+        self.viewCountry.pie.setAnimations(animations)
+        self.viewPCI.pie.setAnimations(animations)
+        self.viewProduct.pie.setAnimations(animations)
+        self.viewTPC.pie.setAnimations(animations)
+        self.viewTipo.pie.setAnimations(animations)
         self.scriptTPC()
         self.scriptPCI()
         self.scriptTipos()
@@ -50,8 +56,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.update(animations=True)
 
     def scriptTPC(self):
-        self.viewTPC.clear()
-#        self.viewTPC.setCurrency(self.mem.localcurrency)
+        self.viewTPC.pie.clear()
         for r in range(0, 11):
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
@@ -63,16 +68,15 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if r==0:
                 total=total+self.accounts
             if total.isGTZero():
-                self.viewTPC.appendData("{0}% variable".format(r*10), total.amount)
+                self.viewTPC.pie.appendData("{0}% variable".format(r*10), total.generic_currency())
         if self.radCurrent.isChecked():
-            self.viewTPC.setTitle(self.tr("Investment current balance by variable percentage"))
+            self.viewTPC.pie.setTitle(self.tr("Investment current balance by variable percentage"))
         else:
-            self.viewTPC.setTitle(self.tr("Invested balance by variable percentage"))
-        self.viewTPC.display()
+            self.viewTPC.pie.setTitle(self.tr("Invested balance by variable percentage"))
+        self.viewTPC.pie.display()
 
     def scriptPCI(self):
-        self.viewPCI.clear()
-#        self.viewPCI.setCurrency(self.mem.localcurrency)
+        self.viewPCI.pie.clear()
         for m in self.mem.investmentsmodes.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
@@ -83,16 +87,15 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                         total=total+i.invertido().local()
             if m.id=='c':
                 total=total+self.accounts
-            self.viewPCI.appendData(m.name.upper(), total.amount)
+            self.viewPCI.pie.appendData(m.name.upper(), total.generic_currency())
         if self.radCurrent.isChecked():    
-            self.viewPCI.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
+            self.viewPCI.pie.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
         else:
-            self.viewPCI.setTitle(self.tr("Invested balance by Put / Call / Inline"))   
-        self.viewPCI.display()
+            self.viewPCI.pie.setTitle(self.tr("Invested balance by Put / Call / Inline"))   
+        self.viewPCI.pie.display()
 
     def scriptTipos(self):
-        self.viewTipo.clear()
-#        self.viewTipo.setCurrency(self.mem.localcurrency)
+        self.viewTipo.pie.clear()
         
         for t in self.mem.types.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -106,18 +109,17 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 total=total+self.accounts
             if total.isGTZero():
                 if t.id==11:#Accounts
-                    self.viewTipo.appendData(t.name.upper(), total.amount, True)
+                    self.viewTipo.pie.appendData(t.name.upper(), total.generic_currency(), True)
                 else:
-                    self.viewTipo.appendData(t.name.upper(), total.amount)
+                    self.viewTipo.pie.appendData(t.name.upper(), total.generic_currency())
         if self.radCurrent.isChecked():    
-            self.viewTipo.setTitle(self.tr("Investment current balance by product type"))   
+            self.viewTipo.pie.setTitle(self.tr("Investment current balance by product type"))   
         else:
-            self.viewTipo.setTitle(self.tr("Invested balance by product type"))   
-        self.viewTipo.display()
+            self.viewTipo.pie.setTitle(self.tr("Invested balance by product type"))   
+        self.viewTipo.pie.display()
 
     def scriptApalancado(self):
-        self.viewApalancado.clear()
-#        self.viewApalancado.setCurrency(self.mem.localcurrency)
+        self.viewApalancado.pie.clear()
         
         for a in self.mem.leverages.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -130,16 +132,15 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if a.id==eLeverageType.NotLeveraged:#Accounts
                 total=total+self.accounts
             if total.isGTZero():
-                self.viewApalancado.appendData(a.name.upper(), total.amount)
+                self.viewApalancado.pie.appendData(a.name.upper(), total.generic_currency())
         if self.radCurrent.isChecked():    
-            self.viewApalancado.setTitle(self.tr("Investment current balance by leverage"))
+            self.viewApalancado.pie.setTitle(self.tr("Investment current balance by leverage"))
         else:
-            self.viewApalancado.setTitle(self.tr("Invested balance by leverage"))
-        self.viewApalancado.display()
+            self.viewApalancado.pie.setTitle(self.tr("Invested balance by leverage"))
+        self.viewApalancado.pie.display()
         
     def scriptCountry(self):
-        self.viewCountry.clear()
-#        self.viewCountry.setCurrency(self.mem.localcurrency)
+        self.viewCountry.pie.clear()
         
         for c in self.mem.countries.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -150,16 +151,15 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                     else:
                         total=total+i.invertido().local()
             if total.isGTZero():
-                self.viewCountry.appendData(c.name.upper(), total.amount)
+                self.viewCountry.pie.appendData(c.name.upper(), total.generic_currency())
         if self.radCurrent.isChecked():    
-            self.viewCountry.setTitle(self.tr("Investment current balance by country"))   
+            self.viewCountry.pie.setTitle(self.tr("Investment current balance by country"))   
         else:
-            self.viewCountry.setTitle(self.tr("Invested balance by country"))   
-        self.viewCountry.display()
+            self.viewCountry.pie.setTitle(self.tr("Invested balance by country"))   
+        self.viewCountry.pie.display()
 
     def scriptProduct(self):
-        self.viewProduct.clear()
-#        self.viewProduct.setCurrency(self.mem.localcurrency)
+        self.viewProduct.pie.clear()
         
         invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
         invs.order_by_balance()
@@ -168,15 +168,15 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 saldo=i.balance(type=3)
             else:
                 saldo=i.invertido(type=3)
-            self.viewProduct.appendData(i.name.replace("Virtual investment merging current operations of ", ""), saldo.amount)
+            self.viewProduct.pie.appendData(i.name.replace("Virtual investment merging current operations of ", ""), saldo.generic_currency())
 
-        self.viewProduct.appendData(self.tr("Accounts"), self.accounts.amount, True)
+        self.viewProduct.pie.appendData(self.tr("Accounts"), self.accounts.generic_currency(), True)
         
         if self.radCurrent.isChecked():    
-            self.viewProduct.setTitle(self.tr("Investment current balance by product"))
+            self.viewProduct.pie.setTitle(self.tr("Investment current balance by product"))
         else:
-            self.viewProduct.setTitle(self.tr("Invested balance by product"))        
-        self.viewProduct.display()
+            self.viewProduct.pie.setTitle(self.tr("Invested balance by product"))        
+        self.viewProduct.pie.display()
 
     ## Used to generate report to avoid bad resolution due to animations
     def open_all_tabs(self):

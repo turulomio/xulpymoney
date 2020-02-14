@@ -17,6 +17,11 @@ class Money:
             self.currency=self.mem.localcurrency
         else:
             self.currency=currency
+            
+    ## Returns a generic_currency object from reusingcode
+    def generic_currency(self):
+        from xulpymoney.objects.currency import Currency ##Generic Currency
+        return Currency(self.amount, self.currency.id)
 
 
     def __add__(self, money):

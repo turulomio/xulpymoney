@@ -17,8 +17,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.selected=None
         
         self.viewIncomes=VCPie()
+        self.viewIncomes.settings(self.mem.settings, "wdgConcepts", "viewIncomes")
         self.layIncomes.addWidget(self.viewIncomes)
         self.viewExpenses=VCPie()
+        self.viewExpenses.settings(self.mem.settings, "wdgConcepts", "viewExpenses")
         self.layExpenses.addWidget(self.viewExpenses)
         self.expenses=self.mem.conceptos.clone_x_tipooperacion(1)
         self.expenseslist=None
@@ -40,9 +42,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.tab.setCurrentIndex(0)
         
     def load_gastos(self,  year,  month):
-        self.viewExpenses.clear()
-        self.viewExpenses.setTitle(self.tr("Concepts chart"))   
-#        self.viewExpenses.setCurrency(self.mem.localcurrency)
+        self.viewExpenses.pie.clear()
+        self.viewExpenses.pie.setTitle(self.tr("Concepts chart"))   
         
         self.mqtwExpenses.table.setColumnCount(4)
         self.mqtwExpenses.table.setHorizontalHeaderItem(0, qcenter(self.tr("Concept" )))
@@ -65,8 +66,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                     self.mqtwExpenses.table.item(i, 1).setBackground( eQColor.Green)          
                 else:
                     self.mqtwExpenses.table.item(i, 1).setBackground( eQColor.Red)      
-                self.viewExpenses.appendData(a[0].name.upper(), a[1])
-        self.viewExpenses.display()
+                self.viewExpenses.pie.appendData(a[0].name.upper(), a[1])
+        self.viewExpenses.pie.display()
                 
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
@@ -74,9 +75,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
-        self.viewIncomes.clear()
-        self.viewIncomes.setTitle(self.tr("Concepts chart"))   
-#        self.viewIncomes.setCurrency(self.mem.localcurrency)
+        self.viewIncomes.pie.clear()
+        self.viewIncomes.pie.setTitle(self.tr("Concepts chart"))   
+        
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
         self.mqtwIncomes.table.setColumnCount(4)
         self.mqtwIncomes.table.setHorizontalHeaderItem(0, qcenter(self.tr("Concept" )))
@@ -98,8 +99,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                     self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Green)          
                 else:
                     self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Red)      
-                self.viewIncomes.appendData(a[0].name.upper(), a[1])
-        self.viewIncomes.display()
+                self.viewIncomes.pie.appendData(a[0].name.upper(), a[1])
+        self.viewIncomes.pie.display()
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
