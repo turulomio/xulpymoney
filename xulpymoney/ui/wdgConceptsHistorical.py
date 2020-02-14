@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
 from xulpymoney.ui.myqtablewidget import myQTableWidget
-from xulpymoney.objects.accountoperation import AccountOperationManager
+from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.myqtablewidget import qcenter
 from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
@@ -63,7 +63,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
-        set=AccountOperationManager(self.mem)
+        set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("""
              select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
              from opercuentas 
@@ -90,7 +90,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem, "wdgConceptsHistorical",  "tblShowYear")
-        set=AccountOperationManager(self.mem)
+        set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.sort()
         set.myqtablewidget(table, True)

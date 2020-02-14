@@ -7,7 +7,7 @@ from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0
 from xulpymoney.ui.myqtablewidget import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
-from xulpymoney.objects.accountoperation import AccountOperationManager
+from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from decimal import Decimal
 from xulpymoney.ui.myqcharts import VCTemporalSeries
@@ -572,7 +572,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=2
-        set=AccountOperationManager(self.mem)
+        set=AccountOperationManagerHeterogeneus(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
@@ -614,7 +614,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=1
-        set=AccountOperationManager(self.mem)
+        set=AccountOperationManagerHeterogeneus(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Expenses of {0}").format(self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
