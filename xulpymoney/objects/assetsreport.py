@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, QTime, QCoreApplication, QEventLoop
 from officegenerator import ODT
 from os import makedirs
 from xulpymoney.casts import lor_remove_columns, list_remove_positions
@@ -134,61 +134,62 @@ class AssetsReport(ODT, QObject):
             self.simpleParagraph(self.tr(" Assets average age: {}").format(  days2string(self.mem.data.investments_active().average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
-        self.pageBreak()
+        self.pageBreak(True)
         
         
         
         ### Graphics wdgInvestments clases
-        self.mem.frmMain.setGeometry(10, 10, 800, 800)
-        self.mem.frmMain.w.close()
-        from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
-        self.mem.frmMain.w=wdgInvestmentClasses(self.mem, self.mem.frmMain)
-        self.mem.frmMain.layout.addWidget(self.mem.frmMain.w)
-        self.mem.frmMain.w.show()
-        self.mem.frmMain.w.update(animations=False)
+        self.mem.frmMain.on_actionInvestmentsClasses_triggered()
+        self.mem.frmMain.w.open_all_tabs()#Load tabs to finish animations
+        self.sleep(3)
         
         self.header(self.tr("Investments group by variable percentage"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(0)
         self.mem.frmMain.w.viewTPC.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
-        self.pageBreak()
+        self.illustration([savefile, ], 25, 13, savefile)
+        self.pageBreak(True)
         
         self.header(self.tr("Investments group by investment type"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasTipo_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(2)
         self.mem.frmMain.w.viewTipo.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
-        self.pageBreak()
+        self.illustration([savefile, ], 25, 13, savefile)
+        self.pageBreak(True)
         
         self.header(self.tr("Investments group by leverage"), 2)        
         savefile="{}/wdgInvestmentsClasses_canvasApalancado_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(3)
         self.mem.frmMain.w.viewApalancado.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
-        self.pageBreak()
+        self.illustration([savefile, ], 25, 13, savefile)
+        self.pageBreak(True)
         
         self.header(self.tr("Investments group by investment product"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasProduct_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(5)
         self.mem.frmMain.w.viewProduct.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
-        self.pageBreak()
+        self.illustration([savefile, ], 25, 13, savefile)
+        self.pageBreak(True)
         
         self.header(self.tr("Investments group by country"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasCountry_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(4)
         self.mem.frmMain.w.viewCountry.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
-        self.pageBreak()
+        self.illustration([savefile, ], 25, 13, savefile)
+        self.pageBreak(True)
         
         self.header(self.tr("Investments group by Call/Put/Inline"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir)
+        self.mem.frmMain.w.tab.setCurrentIndex(1)
         self.mem.frmMain.w.viewPCI.save(savefile)
         self.addImage(savefile, savefile)
-        self.illustration([savefile, ], 15, 10, savefile)
+        self.illustration([savefile, ], 25, 13, savefile)
         
-        self.mem.frmMain.w.close()
         self.mem.frmMain.showMaximized()
         self.pageBreak(True)
         
@@ -197,3 +198,8 @@ class AssetsReport(ODT, QObject):
         self.mem.frmMain.on_actionDividendsReport_triggered()
         self.table(self.mem.frmMain.w.mqtw.listHorizontalHeaders(), self.mem.frmMain.w.mqtw.data, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(self.mem.frmMain.w.sum_of_estimated_dividends()))
+
+    def sleep(self, seconds):
+        dieTime= QTime.currentTime().addSecs(seconds);
+        while (QTime.currentTime() < dieTime):
+            QCoreApplication.processEvents(QEventLoop.AllEvents, 100)

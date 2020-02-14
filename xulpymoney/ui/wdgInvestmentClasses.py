@@ -44,13 +44,14 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.scriptApalancado()
         self.scriptCountry()
         self.scriptProduct()
+        QWidget.update(self)
 
     def on_radCurrent_toggled(self, checked):
         self.update(animations=True)
 
     def scriptTPC(self):
         self.viewTPC.clear()
-        self.viewTPC.setCurrency(self.mem.localcurrency)
+#        self.viewTPC.setCurrency(self.mem.localcurrency)
         for r in range(0, 11):
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
@@ -71,7 +72,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     def scriptPCI(self):
         self.viewPCI.clear()
-        self.viewPCI.setCurrency(self.mem.localcurrency)
+#        self.viewPCI.setCurrency(self.mem.localcurrency)
         for m in self.mem.investmentsmodes.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
@@ -91,7 +92,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     def scriptTipos(self):
         self.viewTipo.clear()
-        self.viewTipo.setCurrency(self.mem.localcurrency)
+#        self.viewTipo.setCurrency(self.mem.localcurrency)
         
         for t in self.mem.types.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -116,7 +117,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     def scriptApalancado(self):
         self.viewApalancado.clear()
-        self.viewApalancado.setCurrency(self.mem.localcurrency)
+#        self.viewApalancado.setCurrency(self.mem.localcurrency)
         
         for a in self.mem.leverages.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -138,7 +139,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         
     def scriptCountry(self):
         self.viewCountry.clear()
-        self.viewCountry.setCurrency(self.mem.localcurrency)
+#        self.viewCountry.setCurrency(self.mem.localcurrency)
         
         for c in self.mem.countries.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -158,7 +159,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     def scriptProduct(self):
         self.viewProduct.clear()
-        self.viewProduct.setCurrency(self.mem.localcurrency)
+#        self.viewProduct.setCurrency(self.mem.localcurrency)
         
         invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
         invs.order_by_balance()
@@ -176,3 +177,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         else:
             self.viewProduct.setTitle(self.tr("Invested balance by product"))        
         self.viewProduct.display()
+
+    ## Used to generate report to avoid bad resolution due to animations
+    def open_all_tabs(self):
+        for i in range (self.tab.count()):
+            self.tab.setCurrentIndex(i)
+            QWidget.update(self)
