@@ -31,8 +31,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         else:
             self.chkGainsTime.setEnabled(False)
 
-        self.table.settings(self.mem, "frmSellingPoint")
-        self.tableSP.settings(self.mem, "frmSellingPoint")
+        self.mqtw.settings(self.mem.settings, "frmSellingPoint", "mqtw")
+        self.mqtwSP.settings(self.mem.settings, "frmSellingPoint", "mqtwSP")
         
         self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  10)))
         
@@ -43,14 +43,14 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         #Setting self.operinversiones variable
         if self.chkPonderanAll.checkState()==Qt.Checked:#Results are in self.mem.localcurrency
             self.operinversiones=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(self.investment.product).op_actual
-            self.operinversiones.myqtablewidget(self.table)
+            self.operinversiones.myqtablewidget(self.mqtw)
         else:#Results in account currency
             self.operinversiones=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
             if self.chkGainsTime.checkState()==Qt.Checked:
                 self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone_name.now()-datetime.timedelta(days=365), self.mem, self.investment)
             else:
                 self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(None, self.mem, self.investment)
-            self.operinversiones.myqtablewidget(self.table, self.investment.product.result.basic.last,  eMoneyCurrency.Account)
+            self.operinversiones.myqtablewidget(self.mqtw, self.investment.product.result.basic.last,  eMoneyCurrency.Account)
         sumacciones=self.operinversiones.shares()
         
         #Calculations
@@ -78,7 +78,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         quote=Quote(self.mem).init__create(self.investment.product, self.mem.localzone.now(), self.puntoventa.amount)
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.puntoventa)))
         self.tab.setTabText(0, self.tr("Current state: {0}".format(quote.money())))
-        self.operinversiones.myqtablewidget(self.tableSP, quote, eMoneyCurrency.Account) 
+        self.operinversiones.myqtablewidget(self.mqtwSP, quote, eMoneyCurrency.Account) 
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
             self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, self.operinversiones.pendiente(quote, eMoneyCurrency.Account)))

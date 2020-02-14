@@ -215,46 +215,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="myQTableWidget" name="table">
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Date</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Investment (Bank)</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Operation type</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Shares</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Bought price</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Invested</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Pending</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="myQTableWidget" name="mqtw" native="true"/>
          </item>
         </layout>
        </widget>
@@ -264,46 +225,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="myQTableWidget" name="tableSP">
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Date</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Investment (Bank)</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Operation type</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Shares</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Price</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Invested</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Pending</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="myQTableWidget" name="mqtwSP" native="true"/>
          </item>
         </layout>
        </widget>
@@ -322,14 +244,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -1241,7 +1241,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             sioc.get_valor_benchmark(self.mem.data.benchmark)
         return (sioc, sioh)
 
-    def myqtablewidget(self, wdg, type=1):
+    def myqtablewidget(self, wdg, type=eMoneyCurrency.Product):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_accounts, muestra el producto y la cuenta
         type muestra los money en la currency de la cuenta
@@ -1288,11 +1288,13 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             if self.investment.hasSameAccountCurrency()==False:
                 wdg.table.setItem(rownumber, 8, qright(a.currency_conversion))
 
-class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable):    
+class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
+        QObject.__init__(self)
         self.mem=mem
+
     def __repr__(self):
         try:
             inversion=self.arr[0].investment.id
@@ -1374,18 +1376,18 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             Al ser heterogeneo se calcula con self.mem.localcurrency
         """
         wdg.table.setColumnCount(12)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Product" )))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Account" )))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Invested" )))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "Current balance" )))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "Pending" )))
-        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "% annual" )))
-        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "% APR" )))
-        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Mem", "% Total" )))
-        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Mem", "Benchmark" )))
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Product" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Account" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Shares" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Price" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Invested" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("Current balance" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("Pending" )))
+        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% annual" )))
+        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("% APR" )))
+        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr("% Total" )))
+        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr("Benchmark" )))
         #DATA
         if self.length()==0:
             wdg.table.setRowCount(0)
@@ -1460,7 +1462,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         InvestmentOperationCurrentHeterogeneusManager.__init__(self, mem)
         self.investment=investment
     
-    def average_age(self, type=1):
+    def average_age(self, type=eMoneyCurrency.Product):
         """Average age of the current investment operations in days"""
         (sumbalance, sumbalanceage)=(Decimal(0), Decimal(0))
         for o in self.arr:
@@ -1472,7 +1474,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         else:
             return Decimal(0)
 
-    def average_price(self, type=1):
+    def average_price(self, type=eMoneyCurrency.Product):
         """Calcula el precio medio de compra"""
         
         shares=self.shares()
@@ -1483,14 +1485,14 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         return Money(self.mem, 0, currency) if shares==Decimal(0) else Money(self.mem, sharesxprice/shares,  currency)
         
         
-    def average_price_after_a_gains_percentage(self, percentage,  type=1):
+    def average_price_after_a_gains_percentage(self, percentage,  type=eMoneyCurrency.Product):
         """
             percentage is a Percentage object
             Returns a Money object after add a percentage to the average_price
         """
         return self.average_price(type)*(1+percentage.value)
         
-    def invertido(self, type=1):
+    def invertido(self, type=eMoneyCurrency.Product):
         """Al ser homegeneo da el resultado en Money del producto"""
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
@@ -1498,7 +1500,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.invertido(type)
         return resultado
         
-    def balance(self, quote, type=1):
+    def balance(self, quote, type=eMoneyCurrency.Product):
         """Al ser homegeneo da el resultado en Money del producto"""
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
@@ -1506,7 +1508,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             resultado=resultado+o.balance(quote, type)
         return resultado        
 
-    def penultimate(self, type=1):
+    def penultimate(self, type=eMoneyCurrency.Product):
         """Al ser homegeneo da el resultado en Money del producto"""
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
@@ -1552,31 +1554,31 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
 
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual
-    def gains_last_day(self, type=1):
+    def gains_last_day(self, type=eMoneyCurrency.Product):
         return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
 
-    def gains_in_selling_point(self, type=1):
+    def gains_in_selling_point(self, type=eMoneyCurrency.Product):
         """Gains in investment defined selling point"""
         if self.investment.venta!=None:
             return self.investment.selling_price(type)*self.investment.shares()-self.investment.invertido(None, type)
         return Money(self.mem,  0, self.investment.resultsCurrency(type) )
         
 
-    def gains_from_percentage(self, percentage,  type=1):
+    def gains_from_percentage(self, percentage,  type=eMoneyCurrency.Product):
         """
             Gains a percentage from average_price
             percentage is a Percentage object
         """        
         return self.average_price(type)*percentage.value*self.shares()
 
-    def pendiente(self, lastquote, type=1):
+    def pendiente(self, lastquote, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
             resultado=resultado+o.pendiente(lastquote, type)
         return resultado
         
-    def pendiente_positivo(self, lastquote, type=1):
+    def pendiente_positivo(self, lastquote, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
@@ -1585,7 +1587,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
                 resultado=resultado+pendiente
         return resultado
         
-    def pendiente_negativo(self, lastquote, type=1):
+    def pendiente_negativo(self, lastquote, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
@@ -1606,13 +1608,13 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         else:
             return Percentage(-(last-penultimate), penultimate)
 
-    def tpc_tae(self, last,  type=1):
+    def tpc_tae(self, last,  type=eMoneyCurrency.Product):
         dias=self.average_age()
         if dias==0:
             dias=1
         return Percentage(self.tpc_total(last, type)*365, dias)
 
-    def tpc_total(self, last, type=1):
+    def tpc_total(self, last, type=eMoneyCurrency.Product):
         """
             last is a Money object with investment.product currency
             type puede ser:
@@ -1622,7 +1624,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         """
         return Percentage(self.pendiente(last, type), self.invertido(type))
     
-    def myqtablewidget(self,  wdg,  quote=None, type=1):
+    def myqtablewidget(self,  wdg,  quote=None, type=eMoneyCurrency.Product):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1635,16 +1637,16 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         """
             
         wdg.table.setColumnCount(10)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem", "Date" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem", "Shares" )))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem", "Price" )))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem", "Invested" )))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem", "Current balance" )))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem", "Pending" )))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem", "% annual" )))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem", "% APR" )))
-        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Mem", "% Total" )))
-        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Mem", "Benchmark" )))
+        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Shares" )))
+        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Price" )))
+        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Invested" )))
+        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Current balance" )))
+        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Pending" )))
+        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("% annual" )))
+        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("% APR" )))
+        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% Total" )))
+        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("Benchmark" )))
         #DATA
         if self.length()==0:
             wdg.table.setRowCount(0)
@@ -2175,7 +2177,7 @@ class InvestmentOperationCurrent:
         elif type==eMoneyCurrency.User:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
     
-    def price(self, type=1):
+    def price(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.valor_accion, self.investment.product.currency)
         elif type==2:
@@ -2184,7 +2186,7 @@ class InvestmentOperationCurrent:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
             
             
-    def revaluation_monthly(self, year, month, type=1):
+    def revaluation_monthly(self, year, month, type=eMoneyCurrency.Product):
         """
             Returns a money object with monthly reevaluation
         """
@@ -2206,7 +2208,7 @@ class InvestmentOperationCurrent:
             return money.convert(self.investment.account.currency, dt_last).local(dt_last)
             
             
-    def revaluation_annual(self, year, type=1):
+    def revaluation_annual(self, year, type=eMoneyCurrency.Product):
         """
             Returns a money object with monthly reevaluation
         """
@@ -2226,25 +2228,25 @@ class InvestmentOperationCurrent:
             return money.convert(self.investment.account.currency, dt_last).local(dt_last)
             
             
-    def gross(self, type=1):
+    def gross(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.shares*self.valor_accion, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.shares*self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def net(self, type=1):
+    def net(self, type=eMoneyCurrency.Product):
         if self.shares>=Decimal(0):
             return self.gross(type)+self.commission(type)+self.taxes(type)
         elif type==2:
             return self.gross(type)-self.commission(type)-self.taxes(type)
             
-    def taxes(self, type=1):
+    def taxes(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.impuestos, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.impuestos, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def commission(self, type=1):
+    def commission(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         elif type==2:
@@ -2286,7 +2288,7 @@ class InvestmentOperationCurrent:
     ## Función que calcula el balance  pendiente de la operacion de inversion actual
     ## Necesita haber cargado mq getbasic y operinversionesactual 
     ## lasquote es un objeto Quote
-    def pendiente(self, lastquote,  type=1):
+    def pendiente(self, lastquote,  type=eMoneyCurrency.Product):
         return self.balance(lastquote, type)-self.invertido(type)
             
 
@@ -2328,7 +2330,7 @@ class InvestmentOperationCurrent:
         else:
             return Percentage(-(last-lastyear), lastyear)
 
-    def tpc_total(self,  last,  type=1):
+    def tpc_total(self,  last,  type=eMoneyCurrency.Product):
         """
             last is a Quote object 
             type puede ser:
@@ -2341,7 +2343,7 @@ class InvestmentOperationCurrent:
         return Percentage(self.pendiente(last, type), self.invertido(type))
             
         
-    def tpc_tae(self, last, type=1):
+    def tpc_tae(self, last, type=eMoneyCurrency.Product):
         dias=self.age()
         if self.age()==0:
             dias=1
@@ -2608,7 +2610,7 @@ class Dividend:
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
         cur.close()
         
-    def gross(self, type=1):
+    def gross(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.bruto, self.investment.product.currency)
         elif type==2:
@@ -2616,21 +2618,21 @@ class Dividend:
         elif type==3:
             return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
 
-    def net(self, type=1):
+    def net(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.neto, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-    def retention(self, type=1):
+    def retention(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.retencion, self.investment.product.currency)
         elif type==2:
             return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-    def dps(self, type=1):
+    def dps(self, type=eMoneyCurrency.Product):
         "Dividend per share"
         if type==1:
             return Money(self.mem, self.dpa, self.investment.product.currency)
@@ -2638,7 +2640,7 @@ class Dividend:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-    def commission(self, type=1):
+    def commission(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         elif type==2:
@@ -2738,31 +2740,31 @@ class InvestmentOperation:
         investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
         return investment.op.find(row['id_operinversiones'])
         
-    def price(self, type=1):
+    def price(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.valor_accion, self.investment.product.currency)
         else:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def gross(self, type=1):
+    def gross(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency)
         else:
             return Money(self.mem, abs(self.shares*self.valor_accion), self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def net(self, type=1):
+    def net(self, type=eMoneyCurrency.Product):
         if self.shares>=Decimal(0):
             return self.gross(type)+self.commission(type)+self.taxes(type)
         else:
             return self.gross(type)-self.commission(type)-self.taxes(type)
             
-    def taxes(self, type=1):
+    def taxes(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.impuestos, self.investment.product.currency)
         else:
             return Money(self.mem, self.impuestos, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
             
-    def commission(self, type=1):
+    def commission(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.comision, self.investment.product.currency)
         else:
@@ -3019,7 +3021,7 @@ class Investment:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
 
-    def selling_price(self, type=1):
+    def selling_price(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.venta, self.product.currency)
 
@@ -3069,7 +3071,7 @@ class Investment:
         cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
         cur.close()
 
-    def resultsCurrency(self, type=1 ):
+    def resultsCurrency(self, type=eMoneyCurrency.Product ):
         if type==1:
             return self.product.currency
         elif type==2:
@@ -3078,7 +3080,7 @@ class Investment:
             return self.mem.localcurrency
         critical("Rare investment result currency: {}".format(type))
 
-    def quote2money(self, quote,  type=1):
+    def quote2money(self, quote,  type=eMoneyCurrency.Product):
         """
             Converts a quote object to a money. Then shows money with the currency type
         """        
@@ -3188,7 +3190,7 @@ class Investment:
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
-    def invertido(self, date=None, type=1):
+    def invertido(self, date=None, type=eMoneyCurrency.Product):
         if date==None or date==date.today():#Current
             return self.op_actual.invertido(type)
         else:
