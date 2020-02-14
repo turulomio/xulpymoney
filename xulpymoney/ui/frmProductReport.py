@@ -7,7 +7,9 @@ from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord,
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
-from xulpymoney.libxulpymoney import AgrupationManager,  CurrencyManager, LeverageManager, ProductModesManager, ProductTypeManager
+from xulpymoney.libxulpymoney import CurrencyManager, LeverageManager, ProductModesManager
+from xulpymoney.objects.agrupation import AgrupationManager
+from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.dps import DPS
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import QuoteManager, Quote, QuoteAllIntradayManager
@@ -635,14 +637,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#Warrants
             agr=self.mem.agrupations.clone_warrants()
         else:
-            agr=self.mem.agrupations.clone(self.mem)
+            agr=self.mem.agrupations.clone()
         if self.product.agrupations==None:
             selected=AgrupationManager(self.mem)#Vacio
         else:
             selected=self.product.agrupations
         f=frmManagerSelector(self)
-        f.manager.hideUpDown()
-        f.setManagers(self.mem, "frmProductReport", "frmSelectorAgrupations", agr, selected, self.mem)
+        f.setManagers(self.mem.settings, "frmProductReport", "frmSelectorAgrupations", agr, selected)
         f.setLabel(self.tr("Agrupation selection"))
         f.exec_()
         f.manager.selected.qcombobox(self.cmbAgrupations)

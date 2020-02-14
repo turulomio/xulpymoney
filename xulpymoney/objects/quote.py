@@ -241,13 +241,13 @@ class QuotesResult:
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
         if self.product.splits.length()>0:
-            self.ohclDaily=self.ohclDailyBeforeSplits.clone(self.mem, self.product)
+            self.ohclDaily=self.ohclDailyBeforeSplits.clone()
             self.ohclDaily=self.product.splits.adjustOHCLDailyManager(self.ohclDaily)
         else:
             self.ohclDaily=self.ohclDailyBeforeSplits
             
         if self.product.dps.length()>0:
-            self.ohclDailyAfterDividends=self.ohclDaily.clone(self.mem, self.product)
+            self.ohclDailyAfterDividends=self.ohclDaily.clone()
             self.ohclDailyAfterDividends=self.product.dps.adjustOHCLDailyManager(self.ohclDailyAfterDividends)
         else:
             self.ohclDailyAfterDividends=self.ohclDaily

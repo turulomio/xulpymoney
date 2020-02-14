@@ -348,6 +348,7 @@ class OHCLManager(ObjectManager):
 class OHCLDailyManager(OHCLManager):
     def __init__(self, mem, product):
         OHCLManager.__init__(self, mem, product)
+        self.setConstructorParameters(self.mem, product)
         self.itemclass=OHCLDaily
 
     def find(self, date):
@@ -389,11 +390,13 @@ class OHCLWeeklyManager(OHCLManager):
     def __init__(self, mem, product):
         OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLWeekly
+        self.setConstructorParameters(self.mem, product)
         
 class OHCLYearlyManager(OHCLManager):
     def __init__(self, mem, product):
         OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLYearly
+        self.setConstructorParameters(self.mem, product)
         
 
         
@@ -421,6 +424,7 @@ class OHCLMonthlyManager(OHCLManager):
     def __init__(self, mem, product):
         OHCLManager.__init__(self, mem, product)
         self.itemclass=OHCLMonthly
+        self.setConstructorParameters(self.mem, product)
         
     def find(self, year,  month):
         for ohcl in self.arr:
