@@ -146,8 +146,8 @@ class Reusing(Command):
         download_from_github('turulomio','reusingcode','python/datetime_functions.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/decorators.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/casts.py', 'xulpymoney')
-#        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
-#        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
+        download_from_github('turulomio','reusingcode','python/objects/percentage.py', 'xulpymoney/objects/')
+        download_from_github('turulomio','reusingcode','python/objects/currency.py', 'xulpymoney/objects/')
 
 class Uninstall(Command):
     description = "Uninstall installed files with install"

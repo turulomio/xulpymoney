@@ -50,7 +50,7 @@ class Currency:
     ##
     ## En caso de querer multiplicar por un numero debe ser despues. For example: money*4
     def __mul__(self, money):
-        if money.__class__ in (int,  float, Decimal):
+        if money.__class__.__name__ in ("int",  "float", "Decimal"):
             return Currency(self.amount*money, self.currency)
         if self.currency==money.currency:
             return Currency(self.amount*money.amount, self.currency)

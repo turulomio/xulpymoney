@@ -40,7 +40,7 @@ class ObjectManager(object):
         self.initparams=params
 
     ## Needs the setConstructorParameters before
-    def emptyManager(self):
+    def newEmptyManager(self):
         return self.__class__(*self.initparams)
 
     def append(self,  obj):
@@ -63,7 +63,7 @@ class ObjectManager(object):
     def clone(self):
         """Returns other Set object, with items referenced, ojo con las formas de las instancias
         initparams son los parametros de iniciación de la clase"""
-        result=self.__class__(*self.initparams)#Para que coja la clase del objeto que lo invoca
+        result=self.newEmptyManager()
         for a in self.arr:
             result.append(a)
         return result

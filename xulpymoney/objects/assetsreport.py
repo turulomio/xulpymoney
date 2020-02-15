@@ -1,11 +1,12 @@
 from PyQt5.QtCore import QObject, QTime, QCoreApplication, QEventLoop
+from datetime import datetime, date
+from logging import debug
 from officegenerator import ODT
 from os import makedirs
 from xulpymoney.casts import lor_remove_columns, list_remove_positions
 from xulpymoney.datetime_functions import days2string
 from xulpymoney.version import __version__
 from xulpymoney.libxulpymoney import Assets, AnnualTarget, Money, Percentage
-from datetime import datetime, date
 from xulpymoney.package_resources import package_filename
 
 
@@ -78,7 +79,7 @@ class AssetsReport(ODT, QObject):
                 columns.append(["","","","","","","","","", "", "", "", ""])
         columns.append([setData.incomes(), setData.gains(), setData.dividends(), setData.expenses(), setData.i_d_g_e(), "", "", "", "", "", setData.difference_with_previous_year(), "", setData.assets_percentage_in_month(12)]) 
         data=zip(*columns)
-        
+        debug("Porcentage {}".format(setData.assets_percentage_in_month(12).__class__.__name__))
         self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
                             data, [2.5]+[1.8]*13, 6)
                 
@@ -141,11 +142,17 @@ class AssetsReport(ODT, QObject):
         ### Graphics wdgInvestments clases
         self.mem.frmMain.on_actionInvestmentsClasses_triggered()
         self.mem.frmMain.w.open_all_tabs()#Load tabs to finish animations
-        self.sleep(3)
+        self.mem.frmMain.w.viewTPC.on_actionShowData_triggered()
+        self.mem.frmMain.w.viewTipo.on_actionShowData_triggered()
+        self.mem.frmMain.w.viewApalancado.on_actionShowData_triggered()
+        self.mem.frmMain.w.viewProduct.on_actionShowData_triggered()
+        self.mem.frmMain.w.viewCountry.on_actionShowData_triggered()
+        self.mem.frmMain.w.viewPCI.on_actionShowData_triggered()
         
         self.header(self.tr("Investments group by variable percentage"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(0)
+        self.sleep(2)
         self.mem.frmMain.w.viewTPC.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
@@ -154,6 +161,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments group by investment type"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasTipo_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(2)
+        self.sleep(2)
         self.mem.frmMain.w.viewTipo.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
@@ -162,6 +170,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments group by leverage"), 2)        
         savefile="{}/wdgInvestmentsClasses_canvasApalancado_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(3)
+        self.sleep(2)
         self.mem.frmMain.w.viewApalancado.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
@@ -170,6 +179,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments group by investment product"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasProduct_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(5)
+        self.sleep(2)
         self.mem.frmMain.w.viewProduct.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
@@ -178,6 +188,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments group by country"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasCountry_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(4)
+        self.sleep(2)
         self.mem.frmMain.w.viewCountry.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
@@ -186,6 +197,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments group by Call/Put/Inline"), 2)
         savefile="{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir)
         self.mem.frmMain.w.tab.setCurrentIndex(1)
+        self.sleep(2)
         self.mem.frmMain.w.viewPCI.pie.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
