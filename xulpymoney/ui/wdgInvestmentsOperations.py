@@ -1,8 +1,8 @@
-import datetime
-from xulpymoney.libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
+from datetime import date
+from xulpymoney.libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
 from xulpymoney.ui.Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
@@ -17,19 +17,23 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
          
-        self.wy.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        self.wy.initiate(fechainicio.year, date.today().year, date.today().year)
         self.wy.changed.connect(self.on_wy_mychanged)
         self.wy.label.hide()
         self.wy.hide()
-        self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
+        self.wym.initiate(fechainicio.year, date.today().year, date.today().year,  date.today().month)
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
         self.setOperations=InvestmentOperationHeterogeneusManager(self.mem)
         self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
-        self.table.settings(self.mem,  "wdgInvestmentsOperations")
-        self.tblCurrent.settings(self.mem, "wdgInvestmentsOperations")
+        self.mqtw.settings(self.mem.settings,  "wdgInvestmentsOperations", "mqtw")
+        self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
+        self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
+        self.mqtwCurrent.settings(self.mem.settings, "wdgInvestmentsOperations", "mqtwCurrent")
+        self.mqtwCurrent.table.customContextMenuRequested.connect(self.on_mqtwCurrent_customContextMenuRequested)
+        self.mqtwCurrent.table.itemSelectionChanged.connect(self.on_mqtwCurrent_itemSelectionChanged)
         self.tab.setCurrentIndex(0)
         self.load()
         self.load_current()
@@ -57,14 +61,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments.find_by_id(row['id_inversiones']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
         cur.close()
         
-        self.setOperations.myqtablewidget(self.table)
+        self.setOperations.myqtablewidget(self.mqtw)
         
     def load_current(self):
         for inv in self.mem.data.investments_active().arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.order_by_datetime()
-        self.setCurrent.myqtablewidget(self.tblCurrent)
+        self.setCurrent.myqtablewidget(self.mqtwCurrent)
 
         
     @pyqtSlot(int) 
@@ -85,14 +89,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     def on_wy_mychanged(self):
         self.load()    
 
-    def on_table_itemSelectionChanged(self):
+    def on_mqtw_itemSelectionChanged(self):
         self.selOperation=None
-        for i in self.table.selectedItems():#itera por cada item no row.
+        for i in self.mqtw.table.selectedItems():#itera por cada item no row.
             self.selOperation=self.setOperations.arr[i.row()]
             
-    def on_tblCurrent_itemSelectionChanged(self):
+    def on_mqtwCurrent_itemSelectionChanged(self):
         try: #Due it has one more row and crashes
-            for i in self.tblCurrent.selectedItems():#itera por cada item no row.
+            for i in self.mqtwCurrent.table.selectedItems():#itera por cada item no row.
                 self.selCurrentOperation=self.setCurrent.arr[i.row()]
         except:
             self.selCurrentOperation=None
@@ -148,7 +152,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
         
 
-    def on_table_customContextMenuRequested(self,  pos):
+    def on_mqtw_customContextMenuRequested(self,  pos):
         self.actionShowAccount.setEnabled(False)
         self.actionShowInvestment.setEnabled(False)
         self.actionShowInvestmentOperation.setEnabled(False)
@@ -177,9 +181,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowProduct)
         menu.addSeparator()
         menu.addAction(self.actionRangeReport)
-        menu.exec_(self.table.mapToGlobal(pos))
+        menu.exec_(self.mqtw.table.mapToGlobal(pos))
                 
-    def on_tblCurrent_customContextMenuRequested(self,  pos):
+    def on_mqtwCurrent_customContextMenuRequested(self,  pos):
         if self.selCurrentOperation==None:
             self.actionShowAccount.setEnabled(False)
             self.actionShowInvestment.setEnabled(False)
@@ -195,6 +199,4 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowInvestment)   
         menu.addSeparator()
         menu.addAction(self.actionShowProduct)
-        menu.exec_(self.tblCurrent.mapToGlobal(pos))
-        
-        
+        menu.exec_(self.mqtwCurrent.table.mapToGlobal(pos))
