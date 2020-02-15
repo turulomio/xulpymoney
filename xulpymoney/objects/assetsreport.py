@@ -6,7 +6,10 @@ from os import makedirs
 from xulpymoney.casts import lor_remove_columns, list_remove_positions
 from xulpymoney.datetime_functions import days2string
 from xulpymoney.version import __version__
-from xulpymoney.libxulpymoney import Assets, AnnualTarget, Money, Percentage
+from xulpymoney.objects.assets import  Assets
+from xulpymoney.objects.annualtarget import  AnnualTarget
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import  Percentage
 from xulpymoney.package_resources import package_filename
 
 

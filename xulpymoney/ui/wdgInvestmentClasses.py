@@ -1,10 +1,11 @@
-from xulpymoney.libxulpymoney import Assets, Money
 import math
 import datetime
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.libxulpymoneytypes import eLeverageType
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.money import Money
 
 class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
     def __init__(self, mem,  parent=None):

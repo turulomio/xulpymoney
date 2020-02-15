@@ -2,7 +2,8 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from xulpymoney.ui.Ui_wdgIndexRange import Ui_wdgIndexRange
-from xulpymoney.libxulpymoney import Assets, Percentage
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.ui.myqtablewidget import qcenter
 from xulpymoney.libxulpymoneytypes import eProductType,  eQColor
 from xulpymoney.ui.frmProductReport import frmProductReport

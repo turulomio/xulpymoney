@@ -1,21 +1,23 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
-from xulpymoney.datetime_functions import dtaware_day_end_from_date
-from xulpymoney.libxulpymoney import AnnualTarget, Assets, Money, DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager, Percentage
+from datetime import date, datetime, timedelta
+from decimal import Decimal
+from logging import info
+from xulpymoney.datetime_functions import dtaware_day_end_from_date, date_last_of_the_month, date_first_of_the_next_x_months
+from xulpymoney.libxulpymoney import DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0
 from xulpymoney.ui.myqtablewidget import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
+from xulpymoney.objects.annualtarget import AnnualTarget
+from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.ui.myqtablewidget import myQTableWidget
-from decimal import Decimal
 from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
-import datetime
-import logging
-
-
 
 class TotalMonth:
     """All values are calculated in last day of the month"""
@@ -71,13 +73,10 @@ class TotalMonth:
         return "{}-{}".format(self.year, self.month)
 
     def last_day(self):
-        date=datetime.date(self.year, self.month, 1)
-        if date.month == 12:
-            return date.replace(day=31)
-        return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
+        return date_last_of_the_month(self.year, self.month)
 
     def first_day(self):
-        return datetime.date(self.year, self.month, self.day)
+        return date(self.year, self.month, self.day)
 
     def total(self):
         """Total assests in the month"""
@@ -120,7 +119,7 @@ class TotalYear:
         self.mem=mem
         self.year=year
         self.arr=[]
-        self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(self.year-1, 12, 31))
+        self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments,  date(self.year-1, 12, 31))
         self.generate()
 
     def generate(self):
@@ -195,10 +194,10 @@ class TotalGraphic:
         self.generate()
 
     def generate(self):
-        date=self.previousmonth_lastday()
-        while datetime.date.today()>=date:
-            self.arr.append(TotalMonth(self.mem, date.year, date.month))
-            date=self.nextmonth_firstday(date)#Only gets year  and month, so  I can use first day
+        dt=date(self.startyear, self.startmonth, 1)-timedelta(days=1)#Previous month last day
+        while date.today()>=dt:
+            self.arr.append(TotalMonth(self.mem, dt.year, dt.month))
+            dt=date_first_of_the_next_x_months(dt.year, dt.month, 1)#Next month first day
 
     def find(self, year, month):
         for m in self.arr:
@@ -209,40 +208,17 @@ class TotalGraphic:
     def length(self):
         return len(self.arr)
 
-    def previousmonth_lastday(self, date=None):
-        """If date is None, it users start year and start month"""
-        if date==None:
-            date=datetime.date(self.startyear, self.startmonth, 1)
-        return datetime.date(date.year, date.month, 1)-datetime.timedelta(days=1)
-
-    def nextmonth_firstday(self, date=None):
-        """If date is None, date is today"""
-        if date==None:
-            date=datetime.date.today()
-
-        if date.month==12:
-            month=1
-            year=date.year+1
-        else:
-            month=date.month+1
-            year=date.year
-
-        return datetime.date(year, month, 1)
-
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem   
 
-        fechainicio=Assets(self.mem).first_datetime_with_user_data()         
+        dtFirst=Assets(self.mem).first_datetime_allowed_estimated()  
+        dtLast=Assets(self.mem).last_datetime_allowed_estimated()              
 
         self.setData=None#Será un TotalYear
         self.setGraphic=None #Será un TotalGraphic
-        
-        if fechainicio==None: #Base de datos vacía
-            self.tab.setEnabled(False)
-            return
         
         self.mqtw.settings(self.mem.settings, "wdgTotal", "mqtw")
         self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
@@ -255,8 +231,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.annualtarget=None#AnnualTarget Object
         
-        self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year-3)
+        self.wyData.initiate(dtFirst.year,  dtLast.year, date.today().year)
+        self.wyChart.initiate(dtFirst.year,  dtLast.year, date.today().year-3)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
         self.view=None#QChart view
@@ -299,11 +275,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtw.table.verticalHeader().show()
         self.mqtw.table.clearContents()
         self.mqtw.applySettings()
-        inicio=datetime.datetime.now()     
+        inicio=datetime.now()     
         self.setData=TotalYear(self.mem, self.wyData.year)
         self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.setData.total_last_year)))
         for i, m in enumerate(self.setData.arr):
-            if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
+            if m.year<date.today().year or (m.year==date.today().year and m.month<=date.today().month):
                 self.mqtw.table.setItem(0, i, m.incomes().qtablewidgetitem())
                 self.mqtw.table.setItem(1, i, m.gains().qtablewidgetitem())
                 self.mqtw.table.setItem(2, i, m.dividends().qtablewidgetitem())
@@ -322,15 +298,15 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtw.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
         self.mqtw.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
         self.mqtw.table.setItem(11, 12, self.setData.assets_percentage_in_month(12).qtablewidgetitem())
-        self.mqtw.table.setCurrentCell(6, datetime.date.today().month-1)
+        self.mqtw.table.setCurrentCell(6, date.today().month-1)
         s=""
         s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
-        invested=Assets(self.mem).invested(datetime.date.today())
-        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, datetime.date.today())
+        invested=Assets(self.mem).invested(date.today())
+        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, date.today())
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)
-        final=datetime.datetime.now()          
-        logging.info("wdgTotal > load_data: {0}".format(final-inicio))
+        final=datetime.now()          
+        info("wdgTotal > load_data: {0}".format(final-inicio))
 
     def load_targets(self):
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
@@ -345,7 +321,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwTargets.table.verticalHeader().show()        
         self.mqtwTargets.table.clearContents()
         self.mqtwTargets.applySettings()
-        inicio=datetime.datetime.now()     
+        inicio=datetime.now()     
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
@@ -356,7 +332,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.mqtwTargets.table.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.monthly_balance()*i))
         self.mqtwTargets.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
         self.mqtwTargets.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.annual_balance()))
-        self.mqtwTargets.table.setCurrentCell(2, datetime.date.today().month-1)   
+        self.mqtwTargets.table.setCurrentCell(2, date.today().month-1)   
                 
         s=""
         s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
@@ -365,7 +341,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+self.tr("Green color shows that target has been reached.")
         self.lblTargets.setText(s)
         
-        logging.info("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
+        info("wdgTargets > load_data_targets: {0}".format(datetime.now()  -inicio))
         
     def load_targets_with_funds_revaluation(self):        
         self.mqtwTargetsPlus.table.setColumnCount(13)
@@ -377,7 +353,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwTargetsPlus.table.verticalHeader().show()       
         self.mqtwTargetsPlus.table.clearContents()
         self.mqtwTargetsPlus.applySettings()
-        inicio=datetime.datetime.now()     
+        inicio=datetime.now()     
 
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
         sumf=Money(self.mem, 0, self.mem.localcurrency)
@@ -396,7 +372,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwTargetsPlus.table.setItem(1, 12, sumd_g.qtablewidgetitem())
         self.mqtwTargetsPlus.table.setItem(2, 12, sumf.qtablewidgetitem())
         self.mqtwTargetsPlus.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount,self.annualtarget.annual_balance()))
-        self.mqtwTargetsPlus.table.setCurrentCell(2, datetime.date.today().month-1)   
+        self.mqtwTargetsPlus.table.setCurrentCell(2, date.today().month-1)   
                 
         s=""
         s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
@@ -405,7 +381,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+self.tr("Green color shows that target has been reached.")
         self.lblTargetsPlus.setText(s)
         
-        logging.info("wdgTargets > load_data_targets_with_funds_revaluation: {0}".format(datetime.datetime.now()  -inicio))
+        info("wdgTargets > load_data_targets_with_funds_revaluation: {0}".format(datetime.now()  -inicio))
 
     def load_invest_or_work(self):
         def qresult(dg_e):
@@ -424,7 +400,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 item.setBackground(eQColor.Green)
             return item            
         ##------------------------------------------------
-        inicio=datetime.datetime.now()            
+        inicio=datetime.now()            
         self.mqtwInvestOrWork.table.setColumnCount(13)
         self.mqtwInvestOrWork.table.setRowCount(6)
         for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
@@ -444,7 +420,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwInvestOrWork.table.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
         self.mqtwInvestOrWork.table.setItem(3, 12, (self.setData.d_g()+self.setData.expenses()).qtablewidgetitem())
         self.mqtwInvestOrWork.table.setItem(5, 12, qresult(self.setData.d_g()+self.setData.expenses()))
-        self.mqtwInvestOrWork.table.setCurrentCell(2, datetime.date.today().month-1)   
+        self.mqtwInvestOrWork.table.setCurrentCell(2, date.today().month-1)   
         
         s=""
         s=s+self.tr("This report shows if the user could retire due to its investments") +"\n\n"
@@ -452,7 +428,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=s+self.tr("Difference between total gains and expenses shows if user could cover his expenses with his total gains")+"\n\n"
         s=s+self.tr("Investment taxes are not evaluated in this report")
         self.lblInvestOrWork.setText(s)
-        logging.info ("wdgTotal > load invest or work: {0}".format(datetime.datetime.now()  -inicio))
+        info ("wdgTotal > load invest or work: {0}".format(datetime.now()  -inicio))
 
     def load_make_ends_meet(self):
         def qresult(res):
@@ -469,7 +445,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 item.setBackground(eQColor.Green)
             return item            
         ##------------------------------------------------
-        inicio=datetime.datetime.now()    
+        inicio=datetime.now()    
         self.mqtwMakeEndsMeet.table.setColumnCount(13)
         self.mqtwMakeEndsMeet.table.setRowCount(6)
         for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
@@ -489,17 +465,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwMakeEndsMeet.table.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
         self.mqtwMakeEndsMeet.table.setItem(3, 12, (self.setData.incomes()+self.setData.expenses()).qtablewidgetitem())
         self.mqtwMakeEndsMeet.table.setItem(5, 12, qresult(self.setData.incomes()+self.setData.expenses()))
-        self.mqtwMakeEndsMeet.table.setCurrentCell(2, datetime.date.today().month-1)   
+        self.mqtwMakeEndsMeet.table.setCurrentCell(2, date.today().month-1)   
         
         s=""
         s=s+self.tr("This report shows if the user makes ends meet") +"\n\n"
         s=s+self.tr("Difference between incomes and expenses shows if user could cover his expenses with his incomes")
         self.lblMakeEndsMeet.setText(s)
-        logging.info("wdgTotal > load_make_ends_meet: {0}".format(datetime.datetime.now()  -inicio))
+        info("wdgTotal > load_make_ends_meet: {0}".format(datetime.now()  -inicio))
 
 
     def load_graphic(self, animations=True):               
-        inicio=datetime.datetime.now()  
+        inicio=datetime.now()  
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
 
@@ -510,7 +486,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.view.setAnimations(animations)
         
         #Series creation
-        last=self.setGraphic.find(datetime.date.today().year, datetime.date.today().month)
+        last=self.setGraphic.find(date.today().year, date.today().month)
         lsNoLoses=self.view.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
         lsMain=self.view.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
         lsZero=self.view.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
@@ -538,7 +514,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.tabGraphTotal.addWidget(self.view)
 
-        logging.info("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
+        info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
 
 
 

@@ -1,4 +1,4 @@
-from xulpymoney.libxulpymoney import  Assets
+from xulpymoney.objects.assets import  Assets
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.product import ProductUpdate
 from xulpymoney.objects.quote import Quote

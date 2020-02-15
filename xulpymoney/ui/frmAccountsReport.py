@@ -5,9 +5,10 @@ from logging import debug
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.objects.account import Account
-from xulpymoney.libxulpymoney import Assets, InvestmentOperation, CreditCardOperationManager
+from xulpymoney.libxulpymoney import InvestmentOperation, CreditCardOperationManager
 from xulpymoney.libxulpymoneytypes import eComment, eConcept
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationManagerHomogeneus
+from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.comment import Comment
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
@@ -77,8 +78,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.chkActiva.setChecked(b2c(self.account.active))
             self.cmdDatos.setText(self.tr("Update account data"))
 
-            anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
-            self.wdgYM.initiate(anoinicio,  date.today().year, date.today().year, date.today().month)
+            dtFirst=Assets(self.mem).first_datetime_allowed_estimated()       
+            dtLast=Assets(self.mem).last_datetime_allowed_estimated()
+            self.wdgYM.initiate(dtFirst.year,  dtLast.year, date.today().year, date.today().month)
             self.wdgYM.changed.connect(self.on_wdgYM_changed)
             self.on_wdgYM_changed()
             self.mqtwCreditCards_update()

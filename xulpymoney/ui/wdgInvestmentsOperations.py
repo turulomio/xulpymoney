@@ -2,7 +2,8 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
-from xulpymoney.libxulpymoney import Assets, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
+from xulpymoney.libxulpymoney import InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
+from xulpymoney.objects.assets import Assets
 from xulpymoney.ui.Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
@@ -14,16 +15,18 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        fechainicio=Assets(self.mem).first_datetime_with_user_data()         
+        dtFirst=Assets(self.mem).first_datetime_allowed_estimated()
+        dtLast=Assets(self.mem).last_datetime_allowed_estimated()       
 
-         
-        self.wy.initiate(fechainicio.year, date.today().year, date.today().year)
+        self.wy.initiate(dtFirst.year,  dtLast.year, date.today().year)
         self.wy.changed.connect(self.on_wy_mychanged)
         self.wy.label.hide()
         self.wy.hide()
-        self.wym.initiate(fechainicio.year, date.today().year, date.today().year,  date.today().month)
+        
+        self.wym.initiate(dtFirst.year,  dtLast.year, date.today().year, date.today().month)
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
+        
         self.setOperations=InvestmentOperationHeterogeneusManager(self.mem)
         self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         self.selOperation=None#For table

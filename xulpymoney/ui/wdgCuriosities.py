@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy
 from xulpymoney.ui.Ui_wdgCuriosities import Ui_wdgCuriosities
 from xulpymoney.ui.wdgCuriosity import wdgCuriosity
-from xulpymoney.libxulpymoney import Assets,  Money
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.money import Money
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 
 class wdgCuriosities(QWidget, Ui_wdgCuriosities):
@@ -14,7 +15,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
 
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Since when there is data in the database?"))
-        c.setText("The first data is from {}".format(Assets(self.mem).first_datetime_with_user_data()))
+        c.setText("The first data is from {}".format(Assets(self.mem).first_database_datetime()))
         self.layout.addWidget(c)
 
         c=wdgCuriosity(self.mem)

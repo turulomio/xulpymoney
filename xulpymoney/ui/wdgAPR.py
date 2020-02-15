@@ -1,7 +1,9 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import  QWidget, QProgressDialog
 from xulpymoney.ui.Ui_wdgAPR import Ui_wdgAPR
-from xulpymoney.libxulpymoney import Assets, Money, Percentage
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.casts import none2decimal0
 from xulpymoney.ui.myqtablewidget import qcenter, qright
 from xulpymoney.libxulpymoneytypes import eConcept
@@ -24,9 +26,10 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.tblReport.settings(self.mem, "wdgAPR")
          
         
-        firstyear=Assets(self.mem).first_datetime_with_user_data().year        
-        currentyear=int(self.mem.settingsdb.value("wdgAPR/cmbYear", firstyear))
-        self.wdgYear.initiate(firstyear,  datetime.date.today().year, currentyear)#Push an wdgYear changed
+        dtFirst=Assets(self.mem).first_datetime_allowed_estimated()
+        dtLast=Assets(self.mem).last_datetime_allowed_estimated()
+        currentyear=int(self.mem.settingsdb.value("wdgAPR/cmbYear", dtFirst.year))
+        self.wdgYear.initiate(dtFirst.year,  dtLast.year, currentyear)#Push an wdgYear changed
         self.wdgYear.changed.connect(self.on_my_wdgYear_changed)
         self.on_my_wdgYear_changed()
         

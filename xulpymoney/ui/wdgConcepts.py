@@ -1,7 +1,8 @@
-import datetime
+from datetime import date
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
-from xulpymoney.libxulpymoney import Assets,  Percentage
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
@@ -32,8 +33,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.mqtwIncomes.settings(self.mem.settings, "wdgConcepts", "mqtwIncomes")
         self.mqtwIncomes.table.customContextMenuRequested.connect(self.on_mqtwIncomes_customContextMenuRequested)
         
-        anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
-        self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
+        dtFirst=Assets(self.mem).first_datetime_allowed_estimated()       
+        dtLast=Assets(self.mem).last_datetime_allowed_estimated()
+        self.wdgYM.initiate(dtFirst.year,  dtLast.year, date.today().year, date.today().month)
         self.wdgYM.changed.connect(self.on_wdgYM_changed)
         
         
