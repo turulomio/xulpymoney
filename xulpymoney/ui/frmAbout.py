@@ -8,9 +8,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
-from xulpymoney.ui.myqtablewidget import qcenter, qempty
 from xulpymoney.datetime_functions import string2dtnaive
-from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
 from xulpymoney.version import __version__,  __versiondate__
 
@@ -40,127 +38,41 @@ class frmAbout(QDialog, Ui_frmAbout):
         self.lblProductsVersion.setText(self.tr("Database version: {}").format(productsversion))
         self.mqtwSoftware.settings(self.mem.settings, "frmAbout", "mqtwSoftware")
         self.mqtwStatistics.settings(self.mem.settings, "frmAbout", "mqtwStatistics")
+        self.mqtwStatistics.table.verticalHeader().show()
         self.mqtwRegisters.settings(self.mem.settings, "frmAbout", "mqtwRegisters")
         self.load_mqtwStatistics() 
         self.load_mqtwSoftware()
         self.load_mqtwRegisters()
         self.mqtwSoftware.table.itemClicked.connect(self.OpenLink)
     
-    def load_mqtwStatistics(self):
-        def pais(cur, columna, bolsa):
-            """Si pais es Null es para todos"""
-            total=0
-            cur.execute("select count(*) from products where type=1 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(0, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=2 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(1, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=3 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(2, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=4 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(3, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=5 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(4, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=7 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(5, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=9 and obsolete=false and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(6, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=%s and obsolete=false and stockmarkets_id=%s", (eProductType.CFD.value, bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(7, columna , qcenter(tmp))
-            cur.execute("select count(*) from products where type=%s and obsolete=false and stockmarkets_id=%s", (eProductType.Future.value, bolsa.id,))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(8, columna , qcenter(tmp))
-            self.mqtwStatistics.table.setItem(9, columna , qempty())
-            cur.execute("select count(*) from products where obsolete=true and stockmarkets_id=%s", (bolsa.id,))
-            tmp=cur.fetchone()[0]
-            self.mqtwStatistics.table.setItem(10, columna , qcenter(tmp))
-            self.mqtwStatistics.table.setItem(11, columna , qempty())
-            self.mqtwStatistics.table.setItem(12, columna , qcenter(total))
-#            self.mqtwStatistics.table.horizontalHeaderItem (columna).setIcon(bolsa.country.qicon())
-#            self.mqtwStatistics.table.horizontalHeaderItem (columna).setToolTip((bolsa.country.name))
+    def load_mqtwStatistics(self):   
+        hh=[""]*self.mem.stockmarkets.length()
+        hh.append(self.tr("Total"))
+        hv=[]
+        for i, tipo in enumerate(self.mem.types.arr):
+            hv.append(tipo.name)
+        hv.append(self.tr("Total"))
+        
+        data=[]
+        for i, tipo in enumerate(self.mem.types.arr):
+            row=[]
+            for j, stockmarket in enumerate(self.mem.stockmarkets.arr):
+                row.append(self.mem.con.cursor_one_field("select count(*) from products where type=%s and stockmarkets_id=%s and obsolete=False", (tipo.id, stockmarket.id)))
+            row.append(self.mem.con.cursor_one_field("select count(*) from products where type=%s and obsolete=False", (tipo.id, )))#Total
+            data.append(row)
+        
+        row=[]#Total last row
+        for j, stockmarket in enumerate(self.mem.stockmarkets.arr):
+            row.append(self.mem.con.cursor_one_field("select count(*) from products where stockmarkets_id=%s and obsolete=False", (stockmarket.id, )))
+        row.append(self.mem.con.cursor_one_field("select count(*) from products where obsolete=False")) #Cross of totals
+        data.append(row)
 
-        def todos(cur):
-            """Si pais es Null es para todos"""
-            total=0
-            cur.execute("select count(*) from products where type=1 and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(0, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=2  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(1, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=3  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(2, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=4  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(3, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=5  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(4, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=7  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(5, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=9  and obsolete=false")
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(6, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=%s  and obsolete=false", (eProductType.CFD.value, ))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(7, 0 , qcenter(tmp))
-            cur.execute("select count(*) from products where type=%s  and obsolete=false", (eProductType.Future.value, ))
-            tmp=cur.fetchone()[0]
-            total=total+tmp
-            self.mqtwStatistics.table.setItem(8, 0 , qcenter(tmp))
-            self.mqtwStatistics.table.setItem(9, 0 , qempty())
-            cur.execute("select count(*) from products where obsolete=true ")
-            tmp=cur.fetchone()[0]
-            self.mqtwStatistics.table.setItem(10, 0 , qcenter(tmp))
-            self.mqtwStatistics.table.setItem(11, 0 , qempty())
-            self.mqtwStatistics.table.setItem(12, 0 , qcenter(total))
-
-    
-        cur = self.mem.con.cursor()
-        todos(cur)
-        pais(cur, 1, self.mem.stockmarkets.find_by_id(1))
-        pais(cur, 2, self.mem.stockmarkets.find_by_id(2))
-        pais(cur, 3, self.mem.stockmarkets.find_by_id(3))
-        pais(cur, 4, self.mem.stockmarkets.find_by_id(4))
-        pais(cur, 5, self.mem.stockmarkets.find_by_id(5))
-        pais(cur, 6,self.mem.stockmarkets.find_by_id(6))
-        pais(cur, 7, self.mem.stockmarkets.find_by_id(7))
-        pais(cur, 8, self.mem.stockmarkets.find_by_id(8))
-        pais(cur, 9, self.mem.stockmarkets.find_by_id(9))
-        pais(cur, 10, self.mem.stockmarkets.find_by_id(10))
-        pais(cur, 11, self.mem.stockmarkets.find_by_id(11))
-        pais(cur, 12, self.mem.stockmarkets.find_by_id(12))
-        pais(cur, 13, self.mem.stockmarkets.find_by_id(13))
-        pais(cur, 14, self.mem.stockmarkets.find_by_id(14))
-        pais(cur, 15, self.mem.stockmarkets.find_by_id(15))
-        cur.close()
-        self.mqtwStatistics.applySettings()
+        self.mqtwStatistics.print(hh, hv, data)
+        self.mqtwStatistics.setData(hh, hv, data)
+        
+        for j, stockmarket in enumerate(self.mem.stockmarkets.arr):
+            self.mqtwStatistics.table.horizontalHeaderItem (j).setIcon(stockmarket.country.qicon())
+            self.mqtwStatistics.table.horizontalHeaderItem (j).setToolTip(stockmarket.name)
 
     def OpenLink(self,item):
         print(item.text())
