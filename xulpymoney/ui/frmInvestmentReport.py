@@ -3,7 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QVBoxLayout
 from datetime import date, timedelta
 from xulpymoney.casts import c2b
-from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager, days2string
+from xulpymoney.datetime_functions import days2string
+from xulpymoney.libxulpymoney import Investment, Money, Percentage, InvestmentOperationHomogeneusManager
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
 from xulpymoney.ui.myqcharts import VCTemporalSeries

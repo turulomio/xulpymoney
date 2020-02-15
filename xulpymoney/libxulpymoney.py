@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, date, time
 from decimal import Decimal, getcontext
 from logging import debug, info, critical, error
 from pytz import timezone
-from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date,  days2string, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
+from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, have_same_sign, set_sign_of_other_number
 from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qnumber
@@ -26,10 +26,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.objects.quote import Quote, QuoteAllIntradayManager
 
-
 getcontext().prec=20
-
-
 
 class SimulationTypeManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -1375,54 +1372,41 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
             
             Al ser heterogeneo se calcula con self.mem.localcurrency
         """
-        wdg.table.setColumnCount(12)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Product" )))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Account" )))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Shares" )))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Price" )))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Invested" )))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("Current balance" )))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("Pending" )))
-        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% annual" )))
-        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("% APR" )))
-        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr("% Total" )))
-        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr("Benchmark" )))
+        hh=[self.tr("Date" ), self.tr("Product" ), self.tr("Account" ), self.tr("Shares" ), self.tr("Price" ), self.tr("Invested" ), 
+            self.tr("Current balance" ), self.tr("Pending" ), self.tr("% annual" ), self.tr("% APR" ), self.tr("% Total" ), self.tr("Benchmark" )]
+            
         #DATA
         if self.length()==0:
             wdg.table.setRowCount(0)
             return
-        type=3
+        type=eMoneyCurrency.User
             
-        wdg.applySettings()
-        wdg.table.clearContents()
-        wdg.table.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):        
-            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+        data=[]
+        for rownumber, a in enumerate(self.arr):     
+            if a.referenciaindice==None:
+                benchmark=None
+            else:
+                benchmark=a.referenciaindice.quote
+            data.append([
+                a.datetime, 
+                a.investment.name, 
+                a.investment.account.name, 
+                a.shares,
+                a.price().local(), 
+                a.invertido(type), 
+                a.balance(a.investment.product.result.basic.last, type), 
+                a.pendiente(a.investment.product.result.basic.last, type),
+                a.tpc_anual(), 
+                a.tpc_tae(a.investment.product.result.basic.last, type), 
+                a.tpc_total(a.investment.product.result.basic.last, type), 
+                benchmark, 
+            ])
+        data.append([self.tr("Total"), "", "", "", "", self.invertido(), self.balance(), self.pendiente(), "", self.tpc_tae(), self.tpc_total(), ""])
+        wdg.setData(hh, None, data, zonename=self.mem.localzone_name)
+        for rownumber, a in enumerate(self.arr):    
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            wdg.table.setItem(rownumber, 1, qleft(a.investment.name))
-            wdg.table.setItem(rownumber, 2, qleft(a.investment.account.name))
-            wdg.table.setItem(rownumber, 3, qright("{0:.6f}".format(a.shares)))
-            wdg.table.setItem(rownumber, 4, a.price().local().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 6, a.balance(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 7, a.pendiente(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 8, a.tpc_anual().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 9, a.tpc_tae(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 10, a.tpc_total(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
-            if a.referenciaindice==None:
-                wdg.table.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(None))
-            else:
-                wdg.table.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
 
-        wdg.table.setItem(self.length(), 0, qleft(days2string(self.average_age())))
-        wdg.table.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
-        wdg.table.setItem(self.length(), 5, self.invertido().qtablewidgetitem())
-        wdg.table.setItem(self.length(), 6, self.balance().qtablewidgetitem())
-        wdg.table.setItem(self.length(), 7, self.pendiente().qtablewidgetitem())
-        wdg.table.setItem(self.length(), 8, self.tpc_tae().qtablewidgetitem())
-        wdg.table.setItem(self.length(), 9, self.tpc_total().qtablewidgetitem())
 
 
     def pendiente(self):
@@ -2290,7 +2274,6 @@ class InvestmentOperationCurrent:
     ## lasquote es un objeto Quote
     def pendiente(self, lastquote,  type=eMoneyCurrency.Product):
         return self.balance(lastquote, type)-self.invertido(type)
-            
 
     ## Función que calcula elbalance en el penultimate ida
     def penultimate(self, type=eMoneyCurrency.Product):        
@@ -2345,7 +2328,7 @@ class InvestmentOperationCurrent:
         
     def tpc_tae(self, last, type=eMoneyCurrency.Product):
         dias=self.age()
-        if self.age()==0:
+        if dias==0:
             dias=1
         return Percentage(self.tpc_total(last, type)*365,  dias)
         

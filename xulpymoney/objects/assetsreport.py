@@ -138,6 +138,11 @@ class AssetsReport(ODT, QObject):
         self.pageBreak(True)
         
         
+        ### Current Investment Operations list
+        self.header(self.tr("Current investment operations"), 2)
+        self.mem.frmMain.on_actionInvestmentsOperations_triggered()
+        self.mem.frmMain.w.mqtwCurrent.officegeneratorModel(self.tr("CurrentInvestmentOperations")).odt_table(self, [3.1, 4.1, 3.3, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7], 5)
+        self.pageBreak(True)
         
         ### Graphics wdgInvestments clases
         self.mem.frmMain.on_actionInvestmentsClasses_triggered()
