@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon,  QFont
-from PyQt5.QtWidgets import QTableWidgetItem, QApplication, QProgressDialog
+from PyQt5.QtWidgets import QApplication, QProgressDialog
 from datetime import datetime, timedelta, date
 from logging import debug
 from officegenerator import ODS_Write, Coord
@@ -15,7 +15,7 @@ from xulpymoney.objects.money import Money
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
-from xulpymoney.ui.myqtablewidget import qdate, qdatetime
+from xulpymoney.ui.myqtablewidget import qdate, qdatetime, qcenter, qleft
 class Product(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
@@ -311,9 +311,10 @@ class Product(QObject):
 
 
 ## Class to manage products
-class ProductManager(ObjectManager_With_IdName_Selectable):
+class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
+        QObject.__init__(self)
         self.setSelectionMode(ManagerSelectionMode.List)
         self.mem=mem
 
@@ -384,10 +385,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
     ## @param progress Boolean. If true shows a progress bar
     def needStatus(self, needstatus,  downgrade_to=None, progress=False):
         if progress==True:
-            pd= QProgressDialog(QApplication.translate("Mem","Loading additional data to {0} products from database").format(self.length()),None, 0,self.length())
+            pd= QProgressDialog(self.tr("Loading additional data to {0} products from database").format(self.length()),None, 0,self.length())
             pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Mem","Loading products..."))
+            pd.setWindowTitle(self.tr("Loading products..."))
             pd.forceShow()
         for i, product in enumerate(self.arr):
             if progress==True:
@@ -513,10 +514,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         for language in translationslanguagemanager.arr:
             translationslanguagemanager.cambiar(language.id, module)
             for o in manager.arr:
-                #                print (name, ":",  language.id,  o.name, QApplication.translate("Mem", o.name))
+                #                print (name, ":",  language.id,  o.name, self.tr( o.name))
                 
-                if QApplication.translate("Mem",o.name)==name:
-                    #print ("FOUND",  language.id,  o.name, QApplication.translate("Mem",o.name))
+                if self.tr(o.name)==name:
+                    #print ("FOUND",  language.id,  o.name, self.tr(o.name))
                     return o
         return None
 
@@ -550,14 +551,14 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         tachado.setStrikeOut(True)        #Fuente tachada
         transfer=QIcon(":/xulpymoney/transfer.png")
         wdg.table.setColumnCount(8)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Id")))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Product")))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","ISIN")))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Last update")))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","Price")))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Mem","% Year to date")))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Mem","% Dividend")))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Id")))
+        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Product")))
+        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("ISIN")))
+        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Last update")))
+        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Price")))
+        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr("% Daily")))
+        wdg.table.setHorizontalHeaderItem(6, qcenter(self.tr("% Year to date")))
+        wdg.table.setHorizontalHeaderItem(7, qcenter(self.tr("% Dividend")))
    
         wdg.applySettings()
         wdg.table.clearSelection()    
@@ -566,10 +567,10 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
         wdg.table.clearContents()
         wdg.table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
-            wdg.table.setItem(i, 0, QTableWidgetItem(str(p.id)))
-            wdg.table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
+            wdg.table.setItem(i, 0, qcenter(str(p.id)))
+            wdg.table.setItem(i, 1, qleft(p.name.upper()))
             wdg.table.item(i, 1).setIcon(p.stockmarket.country.qicon())
-            wdg.table.setItem(i, 2, QTableWidgetItem(p.isin))   
+            wdg.table.setItem(i, 2, qleft(p.isin))   
             wdg.table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
             wdg.table.setItem(i, 4, p.money(p.result.basic.last.quote).qtablewidgetitem(6 ))  
 
@@ -631,9 +632,9 @@ class ProductComparation(QObject):
             arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close))
             
         wdg.table.setColumnCount(3)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.product1.name))
-        wdg.table.setHorizontalHeaderItem(2,  QTableWidgetItem(self.product2.name))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, qcenter(self.product1.name))
+        wdg.table.setHorizontalHeaderItem(2,  qcenter(self.product2.name))
         ##DATA 
         wdg.table.clearContents()
         wdg.applySettings()  
@@ -641,8 +642,8 @@ class ProductComparation(QObject):
         
         for i, a in enumerate(arr):
             wdg.table.setItem(i, 0, qdate(a[0]))
-            wdg.table.setItem(i, 1, self.product1.currency.qtablewidgetitem(a[1]))
-            wdg.table.setItem(i, 2, self.product1.currency.qtablewidgetitem(a[2]))
+            wdg.table.setItem(i, 1, self.product1.money(a[1]).qtablewidgetitem())
+            wdg.table.setItem(i, 2, self.product1.money(a[2]).qtablewidgetitem())
         
     def index(self, date):
         """Returns date index in array"""
