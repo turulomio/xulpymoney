@@ -24,7 +24,7 @@ class Currency:
     def __add__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
         if self.currency==money.currency:
-            return Currency(self.amount+money.amount, self.currency)
+            return self.__class__(self.amount+money.amount, self.currency)
         else:
             error("Before adding, please convert to the same currency")
             raise "OdfMoneyOperationException"
@@ -32,7 +32,7 @@ class Currency:
     def __sub__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
         if self.currency==money.currency:
-            return Currency(self.amount-money.amount, self.currency)
+            return self.__class__(self.amount-money.amount, self.currency)
         else:
             error("Before substracting, please convert to the same currency")
             raise "CurrencyOperationException"
@@ -51,9 +51,9 @@ class Currency:
     ## En caso de querer multiplicar por un numero debe ser despues. For example: money*4
     def __mul__(self, money):
         if money.__class__.__name__ in ("int",  "float", "Decimal"):
-            return Currency(self.amount*money, self.currency)
+            return self.__class__(self.amount*money, self.currency)
         if self.currency==money.currency:
-            return Currency(self.amount*money.amount, self.currency)
+            return self.__class__(self.amount*money.amount, self.currency)
         else:
             error("Before multiplying, please convert to the same currency")
             exit(1)
@@ -61,7 +61,7 @@ class Currency:
     def __truediv__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
         if self.currency==money.currency:
-            return Currency(self.amount/money.amount, self.currency)
+            return self.__class__(self.amount/money.amount, self.currency)
         else:
             error("Before true dividing, please convert to the same currency")
             exit(1)
@@ -112,7 +112,7 @@ class Currency:
 
     def __neg__(self):
         """Devuelve otro money con el amount con signo cambiado"""
-        return Currency(-self.amount, self.currency)
+        return self.__class__(-self.amount, self.currency)
 
     def round(self, digits=2):
         return round(self.amount, digits)

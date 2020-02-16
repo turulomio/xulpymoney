@@ -2841,15 +2841,15 @@ class Bank:
             cur.execute("update entidadesbancarias set entidadbancaria=%s, active=%s where id_entidadesbancarias=%s", (self.name, self.active, self.id))
         cur.close()
         
-    def balance(self, setcuentas,  setinversiones):
+    def balance(self):
         resultado=Money(self, 0, self.mem.localcurrency)
         #Recorre balance cuentas
-        for c in setcuentas.arr:
+        for c in self.mem.data.accounts_active().arr:
             if c.eb.id==self.id:
                 resultado=resultado+c.balance().local()
         
         #Recorre balance inversiones
-        for i in setinversiones.arr:
+        for i in self.mem.data.investments_active().arr:
             if i.account.eb.id==self.id:
                 resultado=resultado+i.balance().local()
         return resultado

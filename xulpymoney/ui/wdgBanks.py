@@ -44,7 +44,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         for i,  e in enumerate(self.banks.arr):
             self.mqtwBanks.table.setItem(i, 0, QTableWidgetItem(e.name))
             self.mqtwBanks.table.setCellWidget(i, 1, wdgBool(e.active))
-            balanc=e.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
+            balanc=e.balance()
             self.mqtwBanks.table.setItem(i, 2, balanc.qtablewidgetitem())
             sumsaldos=sumsaldos+balanc    
         self.mqtwBanks.table.setItem(self.banks.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
@@ -177,7 +177,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         view.settings(self.mem.settings, "wdgBanks", "pie")
         view.pie.clear()
         for bank in self.mem.data.banks_active().arr:
-            view.pie.appendData(bank.name, bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active()))
+            view.pie.appendData(bank.name, bank.balance())
         view.pie.display()
         lay = QVBoxLayout(d)
         lay.addWidget(view)
