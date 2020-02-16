@@ -52,10 +52,8 @@ class Quote:
             r=False
         return r
         
+    ## Returns a MOney Object
     def money(self):
-        """
-            Returns a MOney Object
-        """
         return Money(self.mem, self.quote, self.product.currency)
     
     def none(self, product):

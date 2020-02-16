@@ -121,15 +121,6 @@ class Currency:
         from .. ui.myqtablewidget import qcurrency
         return qcurrency(self, decimals=2)
 
-    ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
-    def qtablewidgetitem_with_target(self, target, digits=2):
-        item=self.qtablewidgetitem(digits)
-#        if self.amount<target:   
-#            item.setBackground(eQColor.Red)
-#        else:
-#            item.setBackground(eQColor.Green)
-        return item
-
 ## Returns the symbol of the currency
 def currency_symbol(currency):
     if currency=="EUR":

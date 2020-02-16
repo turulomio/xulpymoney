@@ -1,7 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
 from logging import error, debug, critical
+from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.currency import Currency
+from xulpymoney.ui.myqtablewidget import qcurrency
         
 class Money(Currency):
     "Permite operar con dinero y divisas teniendo en cuenta la fecha de la operación mirando la divisa en mystocks"
@@ -119,3 +121,16 @@ class Money(Currency):
             return self
         
         return Money(self.mem, self.amount*factor, currency)
+
+    def currency_object(self):
+        return Currency(self.amount, self.currency)
+        
+        
+    ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
+    def qtablewidgetitem_with_target(self, target, digits=2):
+        item=qcurrency(self.currency_object(), digits)
+        if self.amount<target:   
+            item.setBackground(eQColor.Red)
+        else:
+            item.setBackground(eQColor.Green)
+        return item
