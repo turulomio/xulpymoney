@@ -1,27 +1,13 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QTableWidgetItem
 from datetime import datetime
 from decimal import Decimal
 from logging import error, debug, critical
+from xulpymoney.objects.currency import Currency
         
-class Money:
+class Money(Currency):
     "Permite operar con dinero y divisas teniendo en cuenta la fecha de la operación mirando la divisa en mystocks"
     def __init__(self, mem,  amount=None,  currency=None) :
+        Currency.__init__(self, amount, currency)
         self.mem=mem
-        if amount==None:
-            self.amount=Decimal(0)
-        else:
-            self.amount=Decimal(str(amount))
-        if currency==None:
-            self.currency=self.mem.localcurrency
-        else:
-            self.currency=currency
-            
-    ## Returns a generic_currency object from reusingcode
-    def generic_currency(self):
-        from xulpymoney.objects.currency import Currency ##Generic Currency
-        return Currency(self.amount, self.currency.id)
 
 
     def __add__(self, money):
@@ -41,15 +27,7 @@ class Money:
             error("Before substracting, please convert to the same currency")
             raise "MoneyOperationException"
         
-    def __lt__(self, money):
-        if self.currency==money.currency:
-            if self.amount < money.amount:
-                return True
-            return False
-        else:
-            error("Before lt ordering, please convert to the same currency")
-            exit(1)
-        
+       
     def __mul__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero
         En caso de querer multiplicar por un numero debe ser despues
@@ -70,41 +48,6 @@ class Money:
         else:
             error("Before true dividing, please convert to the same currency")
             exit(1)
-        
-    def __repr__(self):
-        return self.string(2)
-        
-    def string(self,   digits=2):
-        return self.currency.string(self.amount, digits)
-        
-    def isZero(self):
-        if self.amount==Decimal(0):
-            return True
-        else:
-            return False
-            
-    def isGETZero(self):
-        if self.amount>=Decimal(0):
-            return True
-        else:
-            return False            
-    def isGTZero(self):
-        if self.amount>Decimal(0):
-            return True
-        else:
-            return False
-
-    def isLTZero(self):
-        if self.amount<Decimal(0):
-            return True
-        else:
-            return False
-
-    def isLETZero(self):
-        if self.amount<=Decimal(0):
-            return True
-        else:
-            return False
             
     def __neg__(self):
         """Devuelve otro money con el amount con signo cambiado"""
@@ -135,11 +78,11 @@ class Money:
         if self.currency==currency:
             return Decimal(1)
         
-        if self.currency.id=="EUR":
-            if currency.id=="USD":
+        if self.currency=="EUR":
+            if currency=="USD":
                 return self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
-        elif self.currency.id=="USD":
-            if currency.id=="EUR":
+        elif self.currency=="USD":
+            if currency=="EUR":
                 return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
         critical("No existe factor de conversión")
         return None  
@@ -151,7 +94,7 @@ class Money:
         if self.currency==currency:
             return "No currency conversion factor"
             
-        return "1 {} = {} {}".format(self.currency.id, factor, currency.id)
+        return "1 {} = {} {}".format(self.currency, factor, currency)
    
     def conversionDatetime(self, currency, dt):
         """
@@ -160,11 +103,11 @@ class Money:
         if self.currency==currency:
             return dt
         
-        if self.currency.id=="EUR":
-            if currency.id=="USD":
+        if self.currency=="EUR":
+            if currency=="USD":
                 return self.mem.data.currencies.find_by_id(74747).result.all.find(dt).datetime
-        elif self.currency.id=="USD":
-            if currency.id=="EUR":
+        elif self.currency=="USD":
+            if currency=="EUR":
                 return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).datetime
         critical("No existe factor de conversión, por lo que tampoco su datetime")
         return None
@@ -176,18 +119,3 @@ class Money:
             return self
         
         return Money(self.mem, self.amount*factor, currency)
-
-    def qtablewidgetitem(self, digits=2):
-        """Devuelve un QTableWidgetItem mostrando un currency
-        curren es un objeto Curryency"""
-        text=self.string(digits)
-        a=QTableWidgetItem(text)
-        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-        if self.amount==None:
-            a.setForeground(QColor(0, 0, 255))
-        elif self.amount<Decimal(0):
-            a.setForeground(QColor(255, 0, 0))
-        return a
-
-    def round(self, digits=2):
-        return round(self.amount, digits)

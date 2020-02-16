@@ -33,7 +33,7 @@ class Account(QObject):
             self.eb=args[2]
             self.active=args[1]['active']
             self.numero=args[1]['numerocuenta']
-            self.currency=self.mem.currencies.find_by_id(args[1]['currency'])            
+            self.currency=args[1]['currency']
         if len(args)==7:
             self.name=args[1]
             self.eb=args[2]
@@ -125,6 +125,11 @@ class Account(QObject):
         if oc_comision!=None:
             oc_comision.comentario=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
             oc_comision.save()
+            
+    ## REturn a money object with the amount and account currency
+    def money(self, amount):
+        return Money(self.mem, amount, self.currency)
+
     ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
     ## @param statusneeded  Integer with the status needed 
     ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing

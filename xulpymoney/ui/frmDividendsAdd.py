@@ -21,8 +21,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
         self.wdgDT.show_timezone(False)
-        self.lblGross.setText(self.tr("Gross in {}".format(self.investment.product.currency.symbol)))
-        self.lblGrossAccount.setText(self.tr("Gross converted to {}".format(self.investment.account.currency.symbol)))
+        self.lblGross.setText(self.tr("Gross in {}".format(self.investment.product.currency.currency_symbol)))
+        self.lblGrossAccount.setText(self.tr("Gross converted to {}".format(self.investment.account.currency.currency_symbol)))
         if dividend==None:#insertar
             if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)

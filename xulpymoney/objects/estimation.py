@@ -166,7 +166,7 @@ class EstimationDPSManager(ObjectManager):
         wdg.table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
             wdg.table.setItem(i, 0, qcenter(str(e.year)))
-            wdg.table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
+            wdg.table.setItem(i, 1, self.product.money(e.estimation).qtablewidget(6))
             wdg.table.setItem(i, 2, e.percentage().qtablewidgetitem())
             wdg.table.setItem(i, 3, qdate(e.date_estimation))
             wdg.table.setItem(i, 4, qleft(e.source))

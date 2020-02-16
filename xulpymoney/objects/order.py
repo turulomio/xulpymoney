@@ -145,7 +145,7 @@ class OrderManager(ObjectManager_With_Id_Selectable, QObject):
             wdg.table.setItem(i, 2, qleft(p.investment.name))
             wdg.table.setItem(i, 3, qleft(p.investment.account.name))   
             wdg.table.setItem(i, 4, qright(p.shares))
-            wdg.table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
+            wdg.table.setItem(i, 5, p.investment.money(p.price).qtablewidgetitem())
             wdg.table.setItem(i, 6, p.amount().qtablewidgetitem())
             if p.is_in_force():
                 wdg.table.setItem(i, 7, p.percentage_from_current_price().qtablewidgetitem())

@@ -403,7 +403,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.grpPago.setEnabled(False)
 
         #Calcula el balance
-        self.lblPago.setText(self.mem.localcurrency.string(self.creditcardoperations.selected.balance()))
+        self.lblPago.setText(self.mem.localmoney(self.creditcardoperations.selected.balance()))
 
     def mqtwCreditCardsOperations_update(self):
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)
@@ -463,7 +463,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.account.creditcards.selected.id, ))
             for row in cur:   
                 ao=AccountOperation(self.mem, row['id_opercuentas'])
-                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(str(row['fechapago'])[0:19],  self.mem.localcurrency.string(-ao.importe))    , ao.id)
+                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(str(row['fechapago'])[0:19],  self.mem.localmoney(-ao.importe))    , ao.id)
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
 

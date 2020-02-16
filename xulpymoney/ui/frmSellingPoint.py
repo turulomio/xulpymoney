@@ -36,8 +36,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
         self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  10)))
         
-        self.lblPriceSymbol.setText(self.investment.product.currency.symbol)
-        self.lblAmountSymbol.setText(self.investment.account.currency.symbol)
+        self.lblPricecurrency_symbol.setText(self.investment.product.currency.currency_symbol)
+        self.lblAmountcurrency_symbol.setText(self.investment.account.currency.currency_symbol)
         
     def __calcular(self):
         #Setting self.operinversiones variable

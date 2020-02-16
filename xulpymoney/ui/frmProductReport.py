@@ -7,8 +7,9 @@ from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord,
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
-from xulpymoney.libxulpymoney import CurrencyManager, LeverageManager, ProductModesManager
+from xulpymoney.libxulpymoney import LeverageManager, ProductModesManager
 from xulpymoney.objects.agrupation import AgrupationManager
+from xulpymoney.objects.currency import currency_name, currency_symbol
 from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.dps import DPS
 from xulpymoney.objects.percentage import Percentage
@@ -131,10 +132,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             productmodes=ProductModesManager(mem)
             productmodes.append(self.product.mode)
             productmodes.qcombobox(self.cmbPCI)
-            
-            currencies=CurrencyManager(mem)
-            currencies.append(self.product.currency)
-            currencies.qcombobox(self.cmbCurrency)
+
+            self.cmbCurrency.addItem("{0} - {1} ({2})".format(self.product.currency, currency_name(self.product.currency), currency_symbol(self.product.currency)), self.product.currency)
             
             leverages=LeverageManager(mem)
             leverages.append(self.product.leveraged)

@@ -326,12 +326,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
-            self.mqtwTargets.table.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.mqtwTargets.table.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount, self.annualtarget.monthly_balance()))
-            self.mqtwTargets.table.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.mqtwTargets.table.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.monthly_balance()*i))
-        self.mqtwTargets.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.mqtwTargets.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount, self.annualtarget.annual_balance()))
+            self.mqtwTargets.table.setItem(0, i-1, self.mem.localmoney(self.annualtarget.monthly_balance()).qtablewidgetitem())
+            self.mqtwTargets.table.setItem(1, i-1, self.mem.localmoney(m.d_g().amount).qtablewidgetitem_with_target(self.annualtarget.monthly_balance()))
+            self.mqtwTargets.table.setItem(3, i-1, self.mem.localmoney(self.annualtarget.monthly_balance()*i).qtablewidgetitem())
+            self.mqtwTargets.table.setItem(4, i-1, self.mem.localmoney(sumd_g.amount).qtablewidgetitem_with_target(self.annualtarget.monthly_balance()*i))
+        self.mqtwTargets.table.setItem(0, 12, self.mem.localmoney(self.annualtarget.annual_balance()).qtablewidgetitem())
+        self.mqtwTargets.table.setItem(1, 12, self.mem.localmoney(sumd_g.amount).qtablewidgetitem_with_target(self.annualtarget.annual_balance()))
         self.mqtwTargets.table.setCurrentCell(2, date.today().month-1)   
                 
         s=""
@@ -361,17 +361,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
             sumf=sumf+m.funds_revaluation()
-            self.mqtwTargetsPlus.table.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.mqtwTargetsPlus.table.setItem(0, i-1, self.mem.localmoney(self.annualtarget.monthly_balance()).qtablewidgetitem())
             self.mqtwTargetsPlus.table.setItem(1, i-1,m.d_g().qtablewidgetitem())
             self.mqtwTargetsPlus.table.setItem(2, i-1, m.funds_revaluation().qtablewidgetitem())
-            self.mqtwTargetsPlus.table.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(m.d_g().amount+m.funds_revaluation().amount, self.annualtarget.monthly_balance()))
+            self.mqtwTargetsPlus.table.setItem(3, i-1, self.mem.localmoney(m.d_g().amount+m.funds_revaluation().amount).qtablewidgetitem_with_target(self.annualtarget.monthly_balance()))
             
-            self.mqtwTargetsPlus.table.setItem(5, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.mqtwTargetsPlus.table.setItem(6, i-1, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount, self.annualtarget.monthly_balance()*i))
-        self.mqtwTargetsPlus.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+            self.mqtwTargetsPlus.table.setItem(5, i-1, self.mem.localmoney(self.annualtarget.monthly_balance()*i).qtablewidgetitem())
+            self.mqtwTargetsPlus.table.setItem(6, i-1, self.mem.localmoney(sumd_g.amount+sumf.amount).qtablewidgetitem_with_target(self.annualtarget.monthly_balance()*i))
+        self.mqtwTargetsPlus.table.setItem(0, 12, self.mem.localmoney(self.annualtarget.annual_balance()).qtablewidgetitem())
         self.mqtwTargetsPlus.table.setItem(1, 12, sumd_g.qtablewidgetitem())
         self.mqtwTargetsPlus.table.setItem(2, 12, sumf.qtablewidgetitem())
-        self.mqtwTargetsPlus.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem_with_target(sumd_g.amount+sumf.amount,self.annualtarget.annual_balance()))
+        self.mqtwTargetsPlus.table.setItem(3, 12, self.mem.localmoney(sumd_g.amount+sumf.amount).qtablewidgetitem_with_target(self.annualtarget.annual_balance()))
         self.mqtwTargetsPlus.table.setCurrentCell(2, date.today().month-1)   
                 
         s=""
@@ -693,7 +693,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             set.order_by_fechaventa()
             set.myqtablewidget(wdg, "wdgTotal")
             horizontalLayout.addWidget(wdg)
-            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
+            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localmoney(positive), self.mem.localmoney(negative)))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
             self.tab.setCurrentWidget(newtab)
@@ -730,7 +730,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             set.order_by_fechaventa()
             set.myqtablewidget(wdg)
             horizontalLayout.addWidget(wdg)
-            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
+            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localmoney(positive), self.mem.localmoney(negative)))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
             self.tab.setCurrentWidget(newtab)            
@@ -805,7 +805,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (38, self.wyData.year, column+1))[0])
-            wdg.table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions))    
+            wdg.table.setItem(0, column, self.mem.localmoney(bank_commissions).qtablewidgetitem())
             sum_bank_commissions=sum_bank_commissions+bank_commissions
             
             custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -813,21 +813,21 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (59, self.wyData.year, column+1))[0])
-            wdg.table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(custody_fees))    
+            wdg.table.setItem(1, column, self.mem.localmoney(custody_fees).qtablewidgetitem())
             sum_custody_fees=sum_custody_fees+custody_fees
             
             investment_commissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
                                                                                                             from operinversiones  
                                                                                                             where date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
-            wdg.table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_commissions))    
+            wdg.table.setItem(2, column, self.mem.localmoney(investment_commissions).qtablewidgetitem())
             sum_investment_commissions=sum_investment_commissions+investment_commissions
             
-            wdg.table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_commissions+custody_fees+investment_commissions))    
-        wdg.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions))    
-        wdg.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
-        wdg.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_commissions))    
-        wdg.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_commissions+sum_custody_fees+sum_investment_commissions))    
+            wdg.table.setItem(3, column, self.mem.localmoney(bank_commissions+custody_fees+investment_commissions).qtablewidgetitem())    
+        wdg.table.setItem(0, 12, self.mem.localmoney(sum_bank_commissions).qtablewidgetitem()) 
+        wdg.table.setItem(1, 12, self.mem.localmoney(sum_custody_fees).qtablewidgetitem())    
+        wdg.table.setItem(2, 12, self.mem.localmoney(sum_investment_commissions).qtablewidgetitem())
+        wdg.table.setItem(3, 12, self.mem.localmoney(sum_bank_commissions+sum_custody_fees+sum_investment_commissions).qtablewidgetitem())
         vlayout.addWidget(wdg)
 
         #Number of operations
@@ -847,7 +847,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             font.setWeight(75)
             label.setFont(font)
             label.setAlignment(Qt.AlignCenter)
-            cs=self.mem.localcurrency.string
+            cs=self.mem.localmoney
             label.setText(self.tr("Number of purchase and sale investment operations: {}. Commissions average: {}".format(int(num_operations), cs(sum_investment_commissions/num_operations))))
             vlayout.addWidget(label)
             
@@ -966,14 +966,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                                                 from operinversiones  
                                                                                                                                 where date_part('year',datetime)=%s and 
                                                                                                                                     date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
-            wdg.table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(io_retentions))    
+            wdg.table.setItem(0, column, self.mem.localmoney(io_retentions).qtablewidgetitem())
             sum_io_retentions=sum_io_retentions+io_retentions
             
             div_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(retencion) 
                                                                                                             from dividends 
                                                                                                             where date_part('year',fecha)=%s and 
                                                                                                                 date_part('month',fecha)=%s;""", (self.wyData.year, column+1))[0])
-            wdg.table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(div_retentions))    
+            wdg.table.setItem(1, column, self.mem.localmoney(div_retentions).qtablewidgetitem())
             sum_div_retentions=sum_div_retentions+div_retentions
             
             other_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -981,7 +981,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (37, self.wyData.year, column+1))[0])
-            wdg.table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(other_taxes))    
+            wdg.table.setItem(2, column, self.mem.localmoney(other_taxes).qtablewidgetitem())
             sum_other_taxes=sum_other_taxes+other_taxes         
             
             returned_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
@@ -989,16 +989,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                                                                             where id_conceptos=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (6, self.wyData.year, column+1))[0])
-            wdg.table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(returned_taxes))    
+            wdg.table.setItem(3, column, self.mem.localmoney(returned_taxes).qtablewidgetitem())
             sum_returned_taxes=sum_returned_taxes+returned_taxes
             
-            wdg.table.setItem(4, column, self.mem.localcurrency.qtablewidgetitem(io_retentions+div_retentions+other_taxes+returned_taxes))    
+            wdg.table.setItem(4, column, self.mem.localmoney(io_retentions+div_retentions+other_taxes+returned_taxes))    
         
-        wdg.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions))    
-        wdg.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_div_retentions))    
-        wdg.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_other_taxes))    
-        wdg.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_returned_taxes))    
-        wdg.table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes+sum_returned_taxes))    
+        wdg.table.setItem(0, 12, self.mem.localmoney(sum_io_retentions).qtablewidgetitem())
+        wdg.table.setItem(1, 12, self.mem.localmoney(sum_div_retentions).qtablewidgetitem())
+        wdg.table.setItem(2, 12, self.mem.localmoney(sum_other_taxes).qtablewidgetitem())
+        wdg.table.setItem(3, 12, self.mem.localmoney(sum_returned_taxes).qtablewidgetitem())
+        wdg.table.setItem(4, 12, self.mem.localmoney(sum_io_retentions+sum_div_retentions+sum_other_taxes+sum_returned_taxes).qtablewidgetitem())
 
         horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, self.tr("Taxes report of {}").format(self.wyData.year))

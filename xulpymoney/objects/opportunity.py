@@ -178,9 +178,9 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
             wdg.table.setItem(i, 1, qdate(p.removed))      
             wdg.table.setItem(i, 2, qleft(p.product.name))
             wdg.table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem())
-            wdg.table.setItem(i, 4, p.product.currency.qtablewidgetitem(p.entry))
-            wdg.table.setItem(i, 5, p.product.currency.qtablewidgetitem(p.target))
-            wdg.table.setItem(i, 6, p.product.currency.qtablewidgetitem(p.stoploss))
+            wdg.table.setItem(i, 4, p.product.money(p.entry).qtablewidgetitem())
+            wdg.table.setItem(i, 5, p.product.money(p.target).qtablewidgetitem())
+            wdg.table.setItem(i, 6, p.product.money(p.stoploss).qtablewidgetitem())
             wdg.table.setItem(i, 7, qright(p.relation_gains_risk()))
             if p.is_in_force():
                 wdg.table.setItem(i, 8, p.percentage_from_current_price().qtablewidgetitem())

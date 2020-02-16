@@ -69,7 +69,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if r==0:
                 total=total+self.accounts
             if total.isGTZero():
-                self.viewTPC.pie.appendData("{0}% variable".format(r*10), total.generic_currency())
+                self.viewTPC.pie.appendData("{0}% variable".format(r*10), total)
         if self.radCurrent.isChecked():
             self.viewTPC.pie.setTitle(self.tr("Investment current balance by variable percentage"))
         else:
@@ -88,7 +88,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                         total=total+i.invertido().local()
             if m.id=='c':
                 total=total+self.accounts
-            self.viewPCI.pie.appendData(m.name.upper(), total.generic_currency())
+            self.viewPCI.pie.appendData(m.name.upper(), total)
         if self.radCurrent.isChecked():    
             self.viewPCI.pie.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
         else:
@@ -110,9 +110,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 total=total+self.accounts
             if total.isGTZero():
                 if t.id==11:#Accounts
-                    self.viewTipo.pie.appendData(t.name.upper(), total.generic_currency(), True)
+                    self.viewTipo.pie.appendData(t.name.upper(), total, True)
                 else:
-                    self.viewTipo.pie.appendData(t.name.upper(), total.generic_currency())
+                    self.viewTipo.pie.appendData(t.name.upper(), total)
         if self.radCurrent.isChecked():    
             self.viewTipo.pie.setTitle(self.tr("Investment current balance by product type"))   
         else:
@@ -133,7 +133,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if a.id==eLeverageType.NotLeveraged:#Accounts
                 total=total+self.accounts
             if total.isGTZero():
-                self.viewApalancado.pie.appendData(a.name.upper(), total.generic_currency())
+                self.viewApalancado.pie.appendData(a.name.upper(), total)
         if self.radCurrent.isChecked():    
             self.viewApalancado.pie.setTitle(self.tr("Investment current balance by leverage"))
         else:
@@ -152,7 +152,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                     else:
                         total=total+i.invertido().local()
             if total.isGTZero():
-                self.viewCountry.pie.appendData(c.name.upper(), total.generic_currency())
+                self.viewCountry.pie.appendData(c.name.upper(), total)
         if self.radCurrent.isChecked():    
             self.viewCountry.pie.setTitle(self.tr("Investment current balance by country"))   
         else:
@@ -169,9 +169,9 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 saldo=i.balance(type=3)
             else:
                 saldo=i.invertido(type=3)
-            self.viewProduct.pie.appendData(i.name.replace("Virtual investment merging current operations of ", ""), saldo.generic_currency())
+            self.viewProduct.pie.appendData(i.name.replace("Virtual investment merging current operations of ", ""), saldo)
 
-        self.viewProduct.pie.appendData(self.tr("Accounts"), self.accounts.generic_currency(), True)
+        self.viewProduct.pie.appendData(self.tr("Accounts"), self.accounts, True)
         
         if self.radCurrent.isChecked():    
             self.viewProduct.pie.setTitle(self.tr("Investment current balance by product"))

@@ -11,9 +11,10 @@ from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, ProductModesManager, CurrencyManager, SimulationTypeManager, OperationTypeManager, ConceptManager, LeverageManager
+from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, ProductModesManager, SimulationTypeManager, OperationTypeManager, ConceptManager, LeverageManager
 from xulpymoney.casts import str2bool, string2list_of_integers
 from xulpymoney.objects.agrupation import AgrupationManager
+from xulpymoney.objects.money import Money
 from xulpymoney.objects.product import ProductUpdate
 from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.settingsdb import SettingsDB
@@ -223,9 +224,7 @@ class MemXulpymoney(Mem):
         self.autoupdate=ProductUpdate.generateAutoupdateSet(self) #Set with a list of products with autoupdate
         info("There are {} products with autoupdate".format(len(self.autoupdate)))
         
-        self.currencies=CurrencyManager(self)
-        self.currencies.load_all()
-        self.localcurrency=self.currencies.find_by_id(self.settingsdb.value("mem/localcurrency", "EUR"))
+        self.localcurrency=self.settingsdb.value("mem/localcurrency", "EUR")
         
         self.investmentsmodes=ProductModesManager(self)
         self.investmentsmodes.load_all()
@@ -268,4 +267,7 @@ class MemXulpymoney(Mem):
         self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
         
         info("Loading db data took {}".format(datetime.now()-inicio))
+        
+    def localmoney(self, amount):
+        return Money(self, amount, self.localcurrency)
 

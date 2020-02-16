@@ -178,9 +178,9 @@ from (
         s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, sumgd)
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(diff)
         if (diff+sumgd).isGETZero():
-            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(sumgd+diff, self.mem.localcurrency.string((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
+            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(sumgd+diff, self.mem.localmoney((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
         else:
-            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(sumgd+diff, self.mem.localcurrency.string((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
+            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(sumgd+diff, self.mem.localmoney((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
         
         self.lblReport.setText(s)
         

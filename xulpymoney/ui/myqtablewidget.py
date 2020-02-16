@@ -124,7 +124,7 @@ class myQTableWidget(QWidget):
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action):
         action=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
-        action_index=self.data_header_horizontal.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
+        action_index=self.hh.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
 
         # Sets if its reverse or not and renames action
         if action.text().find(self.tr(" (desc)"))>0:
@@ -146,7 +146,7 @@ class myQTableWidget(QWidget):
             self.data=null+nonull
         else:
             self.data=nonull+null
-        self.setData(self.data_header_horizontal, self.data_header_vertical, self.data)
+        self.setData(self.hh, self.hv, self.data)
 
 
     def applySettings(self):
@@ -173,24 +173,24 @@ class myQTableWidget(QWidget):
                 action.triggered.connect(self.on_orderby_action_triggered)
 
         # Headers
-        self.data_header_horizontal=header_horizontal
-        self.data_header_vertical=header_vertical
+        self.hh=header_horizontal
+        self.hv=header_vertical
         self.data=data
-        self.table.setColumnCount(len(self.data_header_horizontal))
-        if self.data_header_horizontal is not None:
-            for i in range(len(self.data_header_horizontal)):
-                self.table.setHorizontalHeaderItem(i, QTableWidgetItem(self.data_header_horizontal[i]))
-        if self.data_header_vertical is not None:
+        self.table.setColumnCount(len(self.hh))
+        if self.hh is not None:
+            for i in range(len(self.hh)):
+                self.table.setHorizontalHeaderItem(i, QTableWidgetItem(self.hh[i]))
+        if self.hv is not None:
             self.table.setRowCount(len(self.data))# To do not lose data
-            for i in range(len(self.data_header_vertical)):
-                self.table.setVerticalHeaderItem(i, QTableWidgetItem(self.data_header_vertical[i]))
+            for i in range(len(self.hv)):
+                self.table.setVerticalHeaderItem(i, QTableWidgetItem(self.hv[i]))
 
         # Data
         self.applySettings()
         self.table.clearContents()
         self.table.setRowCount(len(self.data))        
         for row in range(len(self.data)):
-            for column in range(len(self.data_header_horizontal)):
+            for column in range(len(self.hh)):
                 wdg=self.object2qtablewidgetitem(self.data[row][column], decimals[column], zonename)
                 if wdg.__class__.__name__=="QWidget":#wdgBool
                     self.table.setCellWidget(row, column, wdg)
@@ -270,6 +270,8 @@ class myQTableWidget(QWidget):
 
     ## Returns a list of strings with the horizontal headers
     def listHorizontalHeaders(self):
+        if self.hh is None:
+            return None
         header=[]
         for i in range(self.table.horizontalHeader().count()):
             header.append(self.table.horizontalHeaderItem(i).text())
@@ -277,13 +279,13 @@ class myQTableWidget(QWidget):
 
     ## Returns a list of strings with the horizontal headers
     def listVerticalHeaders(self):
-        try:
-            header=[]
-            for i in range(self.table.verticalHeader().count()):
-                header.append(self.table.verticalHeaderItem(i).text())
-                return header
-        except:
+        if self.hv is None:
             return None
+        header=[]
+        for i in range(self.table.verticalHeader().count()):
+            if self.table.verticalHeaderItem(i) is not None:
+                header.append(self.table.verticalHeaderItem(i).text())
+        return header
 
     ## Returns a lisf of rows with the text of the 
     def listText(self):
@@ -379,15 +381,23 @@ class myQTableWidget(QWidget):
                 
                 
     def officegeneratorModel(self, title="sheet"):
+        def pixel2cm(pixels):
+            #Converts size in pixels to cm
+            PixelWidthDimension = self.logicalDpiX()# width dots per inch
+            inch = pixels/PixelWidthDimension
+            cm= inch*2.54*(1+0.05)
+            return cm
+        # # # # # # # # # #
         widths=[]
+        vwidth=pixel2cm(self.table.verticalHeader().width())
         for i in range(self.table.columnCount()):
-            widths.append(self.table.columnWidth(i)*0.033)
+            widths.append(pixel2cm(self.table.columnWidth(i)))
 
         from officegenerator.standard_sheets import Model
         m=Model()
         m.setTitle(title)
         m.setHorizontalHeaders(self.listHorizontalHeaders(), widths)
-        m.setVerticalHeaders(self.listVerticalHeaders())
+        m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
         m.setData(self.data)
         return m
 
@@ -576,20 +586,26 @@ if __name__ == '__main__':
     manager.append(Prueba(None, False, None, None))
     manager.append(Prueba(None, True, None, None))
     
+    data=[]
+    for o in manager.arr:
+        data.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.pruebita.age(1)])
+    
         
     selected=PruebaManager()
     selected.append(manager.arr[3])
     
     mem=Mem()
     app = QApplication([])
+    hv=None
 
     w = myQTableWidget()
+    hv=["Johnny be good"]*manager.length()
+    w.table.verticalHeader().show()
     w.settings(mem.settings, "myqtablewidget", "tblExample")
-    w.setDataFromManager(["Id", "Name", "Date", "Last update","Mem.name", "Mmem.age (i)"], None, manager, ["id", "name", "date", "datetime","pruebita.name", ["pruebita.age", [22,]], ] )
+    w.setData(["Id", "Name", "Date", "Last update","Mem.name", "Age"], hv, data )
     w.move(300, 300)
     w.resize(800, 400)
     w.setWindowTitle('myQTableWidget example')
-    
     
     w.setContextMenuPolicy(Qt.CustomContextMenu)
     w.table.customContextMenuRequested.connect(on_customContextMenuRequested)

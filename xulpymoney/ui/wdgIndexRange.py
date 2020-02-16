@@ -70,8 +70,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def cmbBenchmarkCurrent_load(self):       
         if self.benchmark:
             self.cmbBenchmarkCurrent.clear() 
-            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark penultimate price ({}) is {}".format(str(self.benchmark.result.basic.penultimate.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.penultimate.quote))))
-            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last daily variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote), self.benchmark.result.basic.tpc_diario()) ))
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark penultimate price ({}) is {}".format(str(self.benchmark.result.basic.penultimate.datetime)[:16], self.benchmark.money(self.benchmark.result.basic.penultimate.quote))))
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last daily variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.money(self.benchmark.result.basic.last.quote), self.benchmark.result.basic.tpc_diario()) ))
             self.cmbBenchmarkCurrent.setCurrentIndex(1)#Last price
             
     def cmbBenchmarkCurrent_price(self):
@@ -156,7 +156,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                     colorized=colorized+1
 
         #Prints label
-        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)))
+        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.benchmark.name, self.mem.localmoney(zeroriskplusbonds)))
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):

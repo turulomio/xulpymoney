@@ -40,7 +40,6 @@ class AssetsReport(ODT, QObject):
         self.pageBreak()
         
     def body(self):
-        c=self.mem.localcurrency.string
         # About
         self.header(self.tr("About Xulpymoney"), 1)
         
@@ -89,7 +88,7 @@ class AssetsReport(ODT, QObject):
         ## Target
         target=AnnualTarget(self.mem).init__from_db(date.today().year)
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
-                self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
+                self.tr("With this target you will gain {} at the end of the year.").format(self.mem.localmoney(target.annual_balance())) +" " +
                 self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(setData.dividends()+setData.gains(), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
         self.pageBreak(True)
         
@@ -144,7 +143,14 @@ class AssetsReport(ODT, QObject):
         ### Current Investment Operations list
         self.header(self.tr("Current investment operations"), 2)
         self.mem.frmMain.on_actionInvestmentsOperations_triggered()
-        self.mem.frmMain.w.mqtwCurrent.officegeneratorModel(self.tr("CurrentInvestmentOperations")).odt_table(self, [3.1, 4.1, 3.3, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7], 5)
+        model=self.mem.frmMain.w.mqtwCurrent.officegeneratorModel(self.tr("CurrentInvestmentOperations"))
+        print(model.hh)
+        model.hh=list_remove_positions(model.hh, [8, 9, 11])
+        model.data=lor_remove_columns(model.data, [8, 9, 11])
+        model.hh_sizes=list_remove_positions(model.hh_sizes, [8, 9, 11])
+        print(model.hh)
+        
+        model.odt_table(self, [3.6, 4.6, 3.8] +[2, ]*6,  6)
         self.pageBreak(True)
         
         ### Graphics wdgInvestments clases

@@ -1,12 +1,12 @@
 from datetime import date
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
+from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
-from xulpymoney.ui.myqtablewidget import qcenter
+from xulpymoney.ui.myqtablewidget import qcenter, qleft
 from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 from xulpymoney.ui.myqcharts import VCPie
 
@@ -58,10 +58,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.mqtwExpenses.table.setRowCount(len(self.expenseslist)+1)
         
         for i, a in enumerate(self.expenseslist):
-            self.mqtwExpenses.table.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.mqtwExpenses.table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
+            self.mqtwExpenses.table.setItem(i, 0, qleft(a[0].name))
+            self.mqtwExpenses.table.setItem(i, 1, self.mem.localmoney(a[1]).qtablewidgetitem())
             self.mqtwExpenses.table.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
-            self.mqtwExpenses.table.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
+            self.mqtwExpenses.table.setItem(i, 3, self.mem.localmoney(a[3]).qtablewidgetitem())
             
             if a[1]!=0:
                 if a[1]>a[3]:
@@ -71,10 +71,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                 self.viewExpenses.pie.appendData(a[0].name.upper(), a[1])
         self.viewExpenses.pie.display()
                 
-        self.mqtwExpenses.table.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.mqtwExpenses.table.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 0, qleft(self.tr('TOTAL')))
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 1, self.mem.localmoney(totalexpenses).qtablewidgetitem())
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 2, Percentage(1, 1).qtablewidgetitem())
-        self.mqtwExpenses.table.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
+        self.mqtwExpenses.table.setItem(len(self.expenseslist), 3, self.mem.localmoney(totalaverageexpenses).qtablewidgetitem())
 
     def load_ingresos(self,  year,  month):
         self.viewIncomes.pie.clear()
@@ -91,10 +91,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.mqtwIncomes.table.setRowCount(len(self.incomeslist)+1)
         
         for i, a in enumerate(self.incomeslist):
-            self.mqtwIncomes.table.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.mqtwIncomes.table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
+            self.mqtwIncomes.table.setItem(i, 0, qleft(a[0].name))
+            self.mqtwIncomes.table.setItem(i, 1, self.mem.localmoney(a[1]).qtablewidgetitem())
             self.mqtwIncomes.table.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
-            self.mqtwIncomes.table.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
+            self.mqtwIncomes.table.setItem(i, 3, self.mem.localmoney(a[3]).qtablewidgetitem())
             
             if a[1]!=0:
                 if a[1]>a[3]:
@@ -103,10 +103,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                     self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Red)      
                 self.viewIncomes.pie.appendData(a[0].name.upper(), a[1])
         self.viewIncomes.pie.display()
-        self.mqtwIncomes.table.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.mqtwIncomes.table.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 0, qleft(self.tr('TOTAL')))
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 1, self.mem.localmoney(totalincomes).qtablewidgetitem())
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
-        self.mqtwIncomes.table.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
+        self.mqtwIncomes.table.setItem(len(self.incomeslist), 3, self.mem.localmoney(totalaverageincomes).qtablewidgetitem())
 
     @pyqtSlot() 
     def on_wdgYM_changed(self):

@@ -10,7 +10,7 @@ from decimal import Decimal
 ##
 ## The symbol is defined by code with self.symbol()
 class Currency:
-    def __init__(self, amount=None,  currency='EUR') :
+    def __init__(self, amount=None,  currency=None) :
         if amount==None:
             self.amount=Decimal(0)
         else:
@@ -73,19 +73,12 @@ class Currency:
     ## @param digits int that defines the number of decimals. 2 by default
     ## @return string
     def string(self,   digits=2):
-        return "{} {}".format(round(self.amount, digits), self.symbol())
+        return "{} {}".format(round(self.amount, digits), currency_symbol(self.currency))
 
-        
-    def qtablewidgetitem(self, decimals=2):
-        from .. ui.myqtablewidget import qcurrency
-        return qcurrency(self, decimals=2)
 
-    ## Returns the symbol of the currency
-    def symbol(self):
-        if self.currency=="EUR":
-            return "€"
-        elif self.currency=="USD":
-            return "$"
+
+
+
 
     def isZero(self):
         if self.amount==Decimal(0):
@@ -123,3 +116,56 @@ class Currency:
 
     def round(self, digits=2):
         return round(self.amount, digits)
+
+    def qtablewidgetitem(self, decimals=2):
+        from .. ui.myqtablewidget import qcurrency
+        return qcurrency(self, decimals=2)
+
+    ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
+    def qtablewidgetitem_with_target(self, target, digits=2):
+        item=self.qtablewidgetitem(digits)
+#        if self.amount<target:   
+#            item.setBackground(eQColor.Red)
+#        else:
+#            item.setBackground(eQColor.Green)
+        return item
+
+## Returns the symbol of the currency
+def currency_symbol(currency):
+    if currency=="EUR":
+        return "€"
+    elif currency=="USD":
+        return "$"
+    elif currency in ["CNY",  "JPY"]:
+        return "¥"
+    elif currency=="GBP":
+        return "£"
+    elif currency=="u":
+            return "u"## Returns the symbol of the currency
+
+def currency_name(name):
+    if name=="EUR":
+        return "Euro"
+    elif name=="USD":
+        return "American Dolar"
+    elif name=="CNY":
+        return "Chinese Yoan"
+    elif name=="JPY":
+        return "Japanes Yen"
+    elif name=="GBP":
+        return "Pound"
+    elif name=="u":
+            return "Unit"
+            
+            
+def MostCommonCurrencyTypes():
+    return ['CNY', 'USD', 'JPY', 'u', 'EUR', 'GBP']
+
+## @param selectedcurrency is an currency
+def currencies_qcombobox(combo, selectedcurrency=None):
+    """Función que carga en un combo pasado como parámetro las currencies"""
+    for currency in MostCommonCurrencyTypes():
+        combo.addItem("{0} - {1} ({2})".format(currency, currency_name(currency), currency_symbol(currency)), currency)
+    if selectedcurrency!=None:
+            combo.setCurrentIndex(combo.findData(selectedcurrency))
+

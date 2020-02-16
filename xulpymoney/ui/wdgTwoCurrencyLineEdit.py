@@ -102,8 +102,8 @@ class wdgTwoCurrencyLineEdit(QWidget):
             self.lblCurrencyB.hide()
             self.txtB.hide()
 
-        self.lblCurrencyA.setText(self.currencya.symbol+" ")   
-        self.lblCurrencyB.setText(self.currencyb.symbol)
+        self.lblCurrencyA.setText(self.currencya.currency_symbol+" ")   
+        self.lblCurrencyB.setText(self.currencyb.currency_symbol)
 
         self.txtA.textChanged.disconnect()
         self.txtB.textChanged.disconnect()

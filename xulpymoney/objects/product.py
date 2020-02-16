@@ -11,6 +11,7 @@ from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdNa
 from xulpymoney.libxulpymoneytypes import eTickerPosition, eProductType, eQColor
 from xulpymoney.objects.dps import DPSManager
 from xulpymoney.objects.percentage import Percentage
+from xulpymoney.objects.money import Money
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
@@ -87,7 +88,7 @@ class Product(QObject):
         """row es una fila de un pgcursro de investmentes"""
         self.name=row['name'].upper()
         self.isin=row['isin']
-        self.currency=self.mem.currencies.find_by_id(row['currency'])
+        self.currency=row['currency']
         self.type=self.mem.types.find_by_id(row['type'])
         self.agrupations=self.mem.agrupations.clone_from_dbstring(row['agrupations'])
         self.id=row['id']
@@ -224,7 +225,7 @@ class Product(QObject):
             Returns a boolean
             Check if product currency is the same that local currency
         """
-        if self.currency.id==self.mem.localcurrency.id:
+        if self.currency==self.mem.localcurrency:
             return True
         return False
 
@@ -291,6 +292,10 @@ class Product(QObject):
         r=QuoteManager(self.mem)
         r.print()
         
+    ## REturn a money object with the amount and account currency
+    def money(self, amount):
+        return Money(self.mem, amount, self.currency)
+
     def mqtw_tickers(self, mqtw):
         data=[]
         data.append(["Yahoo", self.tickers[eTickerPosition.Yahoo]])
@@ -566,7 +571,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable):
             wdg.table.item(i, 1).setIcon(p.stockmarket.country.qicon())
             wdg.table.setItem(i, 2, QTableWidgetItem(p.isin))   
             wdg.table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
-            wdg.table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
+            wdg.table.setItem(i, 4, p.money(p.result.basic.last.quote).qtablewidgetitem(6 ))  
 
             wdg.table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
             wdg.table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     

@@ -1,8 +1,8 @@
 ## @namespace xulpymoney.libxulpymoney
 ## @brief Package with all xulpymoney core classes .
 
-from PyQt5.QtCore import QObject, Qt,  QCoreApplication
-from PyQt5.QtGui import QIcon,  QColor,  QPixmap
+from PyQt5.QtCore import QObject, QCoreApplication
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QTableWidgetItem,   QMessageBox, QApplication, QProgressDialog
 from datetime import datetime, timedelta, date, time
 from decimal import Decimal, getcontext
@@ -176,7 +176,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 wdg.table.setItem(i, 2, qleft(inv.name))
                 wdg.table.setItem(i, 3, qleft(inv.account.name))   
                 wdg.table.setItem(i, 4, qright(inv.shares()))
-                wdg.table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
+                wdg.table.setItem(i, 5, inv.money(inv.venta).qtablewidgetitem())
                 wdg.table.setItem(i, 6, inv.percentage_to_selling_point().qtablewidgetitem())
 
 
@@ -877,33 +877,6 @@ class CountryManager(ObjectManager_With_IdName_Selectable):
 
 
 
-class CurrencyManager(ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem):
-        ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem   
-    
-    def load_all(self):
-        self.append(Currency().init__create(QApplication.translate("Mem","Chinese Yoan"), "¥", 'CNY'))
-        self.append(Currency().init__create(QApplication.translate("Mem","Euro"), "€", "EUR"))
-        self.append(Currency().init__create(QApplication.translate("Mem","Pound"),"£", 'GBP'))
-        self.append(Currency().init__create(QApplication.translate("Mem","Japones Yen"), '¥', "JPY"))
-        self.append(Currency().init__create(QApplication.translate("Mem","American Dolar"), '$', 'USD'))
-        self.append(Currency().init__create(QApplication.translate("Mem","Units"), 'u', 'u'))
-
-    def find_by_symbol(self, symbol,  log=False):
-        """Finds by id"""
-        for c in self.arr:
-            if c.symbol==symbol:
-                return c
-        error("CurrencyManager fails finding {}".format(symbol))
-        return None
-
-    def qcombobox(self, combo, selectedcurrency=None):
-        """Función que carga en un combo pasado como parámetro las currencies"""
-        for c in self.arr:
-            combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
-        if selectedcurrency!=None:
-                combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
 class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Class that  groups dividends from a Xulpymoney Product"""
@@ -2928,6 +2901,10 @@ class Investment:
         self.status=0
         self.dividends=None#Must be created due to in mergeing investments needs to add it manually
     
+    ## REturn a money object with the amount and investment currency
+    def money(self, amount):
+        return Money(self.mem, amount, self.product.currency)
+
     ## ESTA FUNCION VA AUMENTANDO STATUS SIN MOLESTAR LOS ANTERIORES, SOLO CARGA CUANDO stsatus_to es mayor que self.status
     ## @param statusneeded  Integer with the status needed 
     ## @param downgrade_to Integer with the status to downgrade before checking needed status. If None it does nothing
@@ -3384,50 +3361,7 @@ class LeverageManager(ObjectManager_With_IdName_Selectable):
         self.append(Leverage(self.mem).init__create(eLeverageType.X50, QApplication.translate("Mem", "Leverage x50"), eLeverageType.X50))
         self.append(Leverage(self.mem).init__create(eLeverageType.X100, QApplication.translate("Mem", "Leverage x100"), eLeverageType.X100))
 
-
-class Currency:
-    """Clase que almacena el concepto divisa"""
-    def __init__(self ):
-        self.name=None
-        self.symbol=None
-        self.id=None
-
-    def __repr__(self):
-        return ("Currency: {} ({})".format( self.id, self.symbol))
-        
-    def init__create(self, name, symbol,  id=None):
-        self.name=name
-        self.symbol=symbol
-        self.id=id
-        return self
-
-    def string(self, number,  digits=2):
-        if number==None:
-            return "None " + self.symbol
-        else:
-            return "{} {}".format(round(number, digits), self.symbol)
-
-    def qtablewidgetitem(self, n, digits=2):
-        """Devuelve un QTableWidgetItem mostrando un currency
-        curren es un objeto Curryency"""
-        text= self.string(n,  digits)
-        a=QTableWidgetItem(text)
-        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-        if n==None:
-            a.setForeground(QColor(0, 0, 255))
-        elif n<0:
-            a.setForeground(QColor(255, 0, 0))
-        return a
-
-    ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
-    def qtablewidgetitem_with_target(self, amount, target, digits=2):
-        item=self.qtablewidgetitem(amount, digits)
-        if amount<target:   
-            item.setBackground(eQColor.Red)
-        else:
-            item.setBackground(eQColor.Green)
-        return item
-        
+      
 
             
 
@@ -3770,8 +3704,8 @@ class Maintenance:
             acciones=inv.shares(date)
             price=Quote(self.mem).init__from_query(inv.product, datet)
             if acciones!=0:
-                print ("{0:<40s} {1:>15f} {2:>15s} {3:>15s}".format(inv.name, acciones, self.mem.localcurrency.string(price.quote),  self.mem.localcurrency.string(balance)))
-        print ("{0:>40s} {1:>15s} {2:>15s} {3:>15s}".format("Total balance at {0}".format(date), "","", self.mem.localcurrency.string(sumbalance)))
+                print ("{0:<40s} {1:>15f} {2:>15s} {3:>15s}".format(inv.name, acciones, self.mem.localmoney(price.quote),  self.mem.localmoney(balance)))
+        print ("{0:>40s} {1:>15s} {2:>15s} {3:>15s}".format("Total balance at {0}".format(date), "","", self.mem.localmoney(sumbalance)))
 
 class Country(Object_With_IdName):
     def __init__(self, *args):

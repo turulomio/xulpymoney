@@ -5,6 +5,7 @@ from xulpymoney.libxulpymoney import Percentage, Money
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
+from xulpymoney.objects.currency import currency_symbol
 from decimal import Decimal
 
 class wdgCalculator(QWidget, Ui_wdgCalculator):
@@ -21,7 +22,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.investments=None#SetINvestments of the selected product
         self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
         self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, self.product)
-        self.lblAmount.setText(self.tr("Amount to invest in {} ({})").format(self.mem.localcurrency.id, self.mem.localcurrency.symbol))
+        self.lblAmount.setText(self.tr("Amount to invest in {} ({})").format(self.mem.localcurrency, currency_symbol(self.mem.localcurrency)))
 
     def setProduct(self,  product):
         self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(product.id))
@@ -35,8 +36,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def cmbPrice_load(self):       
         if self.product:
             self.cmbPrice.clear() 
-            self.cmbPrice.addItem(self.tr("Penultimate price at {} in {} ({})".format(str(self.product.result.basic.penultimate.datetime)[:16], self.product.currency.id, self.product.currency.symbol)))
-            self.cmbPrice.addItem(self.tr("Last price at {} in {} ({})".format(str(self.product.result.basic.last.datetime)[:16], self.product.currency.id, self.product.currency.symbol)))
+            self.cmbPrice.addItem(self.tr("Penultimate price at {} in {} ({})".format(str(self.product.result.basic.penultimate.datetime)[:16], self.product.currency, currency_symbol(self.product.currency))))
+            self.cmbPrice.addItem(self.tr("Last price at {} in {} ({})".format(str(self.product.result.basic.last.datetime)[:16], self.product.currency, currency_symbol(self.product.currency))))
             self.cmbPrice.setCurrentIndex(1)#Last price
         else:
             self.cmbPrice.clear()
@@ -61,7 +62,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
         self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
         if self.product!=None:
-            self.lblFinalPrice.setText(self.tr("Final price in {} ({})").format(self.product.currency.id, self.product.currency.symbol))
+            self.lblFinalPrice.setText(self.tr("Final price in {} ({})").format(self.product.currency, currency_symbol(self.product.currency)))
             if self.product.hasSameLocalCurrency():
                 self.lblShares.setText(self.tr("Shares calculated"))
             else:
@@ -157,5 +158,5 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             for i, tpc in enumerate(porcentages):        
                 self.mqtw.table.setItem(i, 0, Percentage(tpc, 100).qtablewidgetitem())
                 tpcprice= self.txtFinalPrice.decimal()*Decimal(1+tpc/100)
-                self.mqtw.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
-                self.mqtw.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
+                self.mqtw.table.setItem(i, 1, self.product.money(tpcprice).qtablewidgetitem())       
+                self.mqtw.table.setItem(i, 2, self.product.money(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())).qtablewidgetitem())

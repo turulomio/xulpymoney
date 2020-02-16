@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog
 from xulpymoney.casts import b2c, c2b
 from xulpymoney.libxulpymoneytypes import eProductType
 from decimal import Decimal
+from xulpymoney.objects.currency import currencies_qcombobox
 from xulpymoney.ui.Ui_frmSettings import Ui_frmSettings
 
 class frmSettings(QDialog, Ui_frmSettings):
@@ -21,7 +22,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.setupUi(self)
         self.mem=mem
  
-        self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
+        currencies_qcombobox(self.cmbCurrencies,self.mem.localcurrency)
         self.mem.frmAccess.languages.qcombobox(self.cmbLanguages,self.mem.frmAccess.languages.selected)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
         self.indexes=self.mem.data.products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.Index.value))
@@ -42,7 +43,7 @@ class frmSettings(QDialog, Ui_frmSettings):
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
-        self.mem.localcurrency=self.mem.currencies.find_by_id(self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex()))
+        self.mem.localcurrency=self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex())
         self.mem.localzone=self.mem.zones.find_by_id(self.cmbZones.itemData(self.cmbZones.currentIndex()))
         self.mem.data.benchmark=self.mem.data.products.find_by_id(self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
         self.mem.data.benchmark.needStatus(2)
@@ -51,14 +52,14 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.taxcapitalappreciationbelow=Decimal(self.spnGainsPercentajeBelow.value())/100
         self.mem.gainsyear=c2b(self.chkGainsYear.checkState())
 
-        self.settingsdb.setValue("mem/localcurrency", self.mem.localcurrency.id)
-        self.settingsdb.setValue("mem/localzone", self.mem.localzone.name)
-        self.settingsdb.setValue("mem/dividendwithholding", Decimal(self.mem.dividendwithholding))
-        self.settingsdb.setValue("mem/taxcapitalappreciation", Decimal(self.mem.taxcapitalappreciation))
-        self.settingsdb.setValue("mem/taxcapitalappreciationbelow", Decimal(self.mem.taxcapitalappreciationbelow))
-        self.settingsdb.setValue("mem/gainsyear", self.mem.gainsyear)
-        self.settingsdb.setValue("mem/benchmarkid", self.mem.data.benchmark.id)
-        self.settingsdb.setValue("mem/fillfromyear", self.mem.fillfromyear)
+        self.mem.settingsdb.setValue("mem/localcurrency", self.mem.localcurrency)
+        self.mem.settingsdb.setValue("mem/localzone", self.mem.localzone.name)
+        self.mem.settingsdb.setValue("mem/dividendwithholding", Decimal(self.mem.dividendwithholding))
+        self.mem.settingsdb.setValue("mem/taxcapitalappreciation", Decimal(self.mem.taxcapitalappreciation))
+        self.mem.settingsdb.setValue("mem/taxcapitalappreciationbelow", Decimal(self.mem.taxcapitalappreciationbelow))
+        self.mem.settingsdb.setValue("mem/gainsyear", self.mem.gainsyear)
+        self.mem.settingsdb.setValue("mem/benchmarkid", self.mem.data.benchmark.id)
+        self.mem.settingsdb.setValue("mem/fillfromyear", self.mem.fillfromyear)
         
         self.mem.settings.setValue("access/language", self.mem.frmAccess.languages.selected.id)
         self.mem.frmAccess.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()), "xulpymoney")  

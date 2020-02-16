@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from xulpymoney.objects.money import Money
+from xulpymoney.objects.currency import MostCommonCurrencyTypes
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class Assets:
@@ -180,7 +181,7 @@ class Assets:
     def saldo_por_tipo_operacion(self,  year,  month,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for currency in self.mem.currencies.arr:
+        for currency in MostCommonCurrencyTypes():
             cur=self.mem.con.cursor()
             sql="""
                 select sum(Importe) as importe 
@@ -205,7 +206,7 @@ class Assets:
                     date_part('month',datetime)={2} and
                     cuentas.currency='{3}' and
                     cuentas.id_cuentas=tarjetas.id_cuentas and
-                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year, month,  currency.id)
+                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year, month,  currency)
             cur.execute(sql)        
             for i in cur:
                 if i['importe']==None:
