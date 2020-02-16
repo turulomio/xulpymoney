@@ -1,9 +1,7 @@
 from PyQt5.QtCore import QObject, QTime, QCoreApplication, QEventLoop
 from datetime import datetime, date
-from logging import debug
 from officegenerator import ODT
 from os import makedirs
-from xulpymoney.casts import lor_remove_columns, list_remove_positions
 from xulpymoney.datetime_functions import days2string
 from xulpymoney.version import __version__
 from xulpymoney.objects.assets import  Assets
@@ -58,7 +56,7 @@ class AssetsReport(ODT, QObject):
         self.mem.data.banks_active().order_by_name()
         sumbalances=Money(self.mem, 0, self.mem.localcurrency)
         for bank in self.mem.data.banks_active().arr:
-            balance=bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
+            balance=bank.balance()
             sumbalances=sumbalances+balance
             data.append((bank.name, balance))
         self.table( [self.tr("Bank"), self.tr("Balance")], data, [4, 3], 9)       
@@ -69,33 +67,20 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Assets current year evolution"), 2)
         
         #wdgTotal
-        from xulpymoney.ui.wdgTotal import TotalYear
-        setData=TotalYear(self.mem, date.today().year)
-        columns=[]
-        columns.append([self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D-E"), "",  self.tr("Accounts"), self.tr("Investments"), self.tr("Total"),"",  self.tr("Monthly difference"), "",  self.tr("% current year")])
-        self.simpleParagraph(self.tr("Assets Balance at {0}-12-31 is {1}".format(setData.year-1, setData.total_last_year)))
-        for i, m in enumerate(setData.arr):
-            if m.year<date.today().year or (m.year==date.today().year and m.month<=date.today().month):
-                columns.append([m.incomes(), m.gains(), m.dividends(), m.expenses(), m.i_d_g_e(), "", m.total_accounts(), m.total_investments(), m.total(),"", setData.difference_with_previous_month(m),"",  setData.assets_percentage_in_month(m.month)])
-            else:
-                columns.append(["","","","","","","","","", "", "", "", ""])
-        columns.append([setData.incomes(), setData.gains(), setData.dividends(), setData.expenses(), setData.i_d_g_e(), "", "", "", "", "", setData.difference_with_previous_year(), "", setData.assets_percentage_in_month(12)]) 
-        data=zip(*columns)
-        debug("Porcentage {}".format(setData.assets_percentage_in_month(12).__class__.__name__))
-        self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
-                            data, [2.5]+[1.8]*13, 6)
+        self.mem.frmMain.on_actionTotalReport_triggered()
+        model=self.mem.frmMain.w.mqtw.officegeneratorModel("mqtwTotal")
+        model.odt_table(self, 26, 6)
                 
         ## Target
         target=AnnualTarget(self.mem).init__from_db(date.today().year)
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(self.mem.localmoney(target.annual_balance())) +" " +
-                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(setData.dividends()+setData.gains(), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(self.mem.frmMain.w.setData.dividends()+self.mem.frmMain.w.setData.gains(), Percentage(self.mem.frmMain.w.setData.gains()+self.mem.frmMain.w.setData.dividends(), target.annual_balance())))
         self.pageBreak(True)
         
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
         
-        self.mem.frmMain.on_actionTotalReport_triggered()
         self.mem.frmMain.w.load_graphic(animations=False)
         self.mem.frmMain.w.tab.setCurrentIndex(1)
         savefile="{}/wdgTotal.png".format(self.dir)
@@ -124,10 +109,10 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Investments list"), 2)
         self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
         self.mem.frmMain.on_actionInvestments_triggered()
-        self.table( 
-            list_remove_positions(self.mem.frmMain.w.mqtwInvestments.listHorizontalHeaders(), [1, 2, 3, 4]), 
-            lor_remove_columns(self.mem.frmMain.w.mqtwInvestments.data, [1, 2, 3, 4]), 
-            [13,  3, 3, 3, 3],  8)       
+        
+        model=self.mem.frmMain.w.mqtwInvestments.officegeneratorModel()
+        model.removeColumns([1, 2, 3, 4])
+        model.odt_table(self, 26,  8 )
         
         suminvertido=self.mem.data.investments_active().invested()
         sumpendiente=self.mem.data.investments_active().pendiente()
@@ -144,13 +129,8 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Current investment operations"), 2)
         self.mem.frmMain.on_actionInvestmentsOperations_triggered()
         model=self.mem.frmMain.w.mqtwCurrent.officegeneratorModel(self.tr("CurrentInvestmentOperations"))
-        print(model.hh)
-        model.hh=list_remove_positions(model.hh, [8, 9, 11])
-        model.data=lor_remove_columns(model.data, [8, 9, 11])
-        model.hh_sizes=list_remove_positions(model.hh_sizes, [8, 9, 11])
-        print(model.hh)
-        
-        model.odt_table(self, [3.6, 4.6, 3.8] +[2, ]*6,  6)
+        model.removeColumns([8, 9, 11])        
+        model.odt_table(self, 26,  6)       
         self.pageBreak(True)
         
         ### Graphics wdgInvestments clases

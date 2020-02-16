@@ -181,6 +181,7 @@ class myQTableWidget(QWidget):
             for i in range(len(self.hh)):
                 self.table.setHorizontalHeaderItem(i, QTableWidgetItem(self.hh[i]))
         if self.hv is not None:
+            self.table.verticalHeader().show()
             self.table.setRowCount(len(self.data))# To do not lose data
             for i in range(len(self.hv)):
                 self.table.setVerticalHeaderItem(i, QTableWidgetItem(self.hv[i]))

@@ -7,7 +7,7 @@ from logging import info
 from xulpymoney.datetime_functions import dtaware_day_end_from_date, date_last_of_the_month, date_first_of_the_next_x_months
 from xulpymoney.libxulpymoney import DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
-from xulpymoney.casts import list2string, none2decimal0
+from xulpymoney.casts import list2string, none2decimal0, lor_transposed
 from xulpymoney.ui.myqtablewidget import qcenter, qleft
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.objects.annualtarget import AnnualTarget
@@ -266,47 +266,59 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
 
     def load_data(self):
-        self.mqtw.table.setColumnCount(13)
-        self.mqtw.table.setRowCount(12)
-        for i, s in enumerate([self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]):
-            self.mqtw.table.setHorizontalHeaderItem(i, QTableWidgetItem(s))
-        for i, s in enumerate([self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D+E"), "", self.tr("Accounts"), self.tr("Investments"), self.tr("Total"), self.tr("Monthly difference"), "", self.tr("% Year to date")]):
-            self.mqtw.table.setVerticalHeaderItem(i, QTableWidgetItem(s))
-        self.mqtw.table.verticalHeader().show()
-        self.mqtw.table.clearContents()
-        self.mqtw.applySettings()
-        inicio=datetime.now()     
+        inicio=datetime.now()
         self.setData=TotalYear(self.mem, self.wyData.year)
-        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.setData.total_last_year)))
+        
+        hh=[self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]
+        hv=[self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D+E"), "", self.tr("Accounts"), self.tr("Investments"), self.tr("Total"), self.tr("Monthly difference"), "", self.tr("% Year to date")]
+        data=[]
         for i, m in enumerate(self.setData.arr):
             if m.year<date.today().year or (m.year==date.today().year and m.month<=date.today().month):
-                self.mqtw.table.setItem(0, i, m.incomes().qtablewidgetitem())
-                self.mqtw.table.setItem(1, i, m.gains().qtablewidgetitem())
-                self.mqtw.table.setItem(2, i, m.dividends().qtablewidgetitem())
-                self.mqtw.table.setItem(3, i, m.expenses().qtablewidgetitem())
-                self.mqtw.table.setItem(4, i, m.i_d_g_e().qtablewidgetitem())
-                self.mqtw.table.setItem(6, i, m.total_accounts().qtablewidgetitem())
-                self.mqtw.table.setItem(7, i, m.total_investments().qtablewidgetitem())
-                self.mqtw.table.setItem(8, i, m.total().qtablewidgetitem())
-                self.mqtw.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
-                self.mqtw.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())            
+                row=[]
+                row.append(m.incomes())
+                row.append(m.gains())
+                row.append(m.dividends())
+                row.append(m.expenses())
+                row.append(m.i_d_g_e())
+                row.append("")
+                row.append(m.total_accounts())
+                row.append(m.total_investments())
+                row.append(m.total())
+                row.append(self.setData.difference_with_previous_month(m))
+                row.append("")
+                row.append(self.setData.assets_percentage_in_month(m.month))        
+            else:
+                row=[""]*12
+            data.append(row)
             self.progress_bar_update()
-        self.mqtw.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
-        self.mqtw.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
-        self.mqtw.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
-        self.mqtw.table.setItem(3, 12, self.setData.expenses().qtablewidgetitem())
-        self.mqtw.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
-        self.mqtw.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
-        self.mqtw.table.setItem(11, 12, self.setData.assets_percentage_in_month(12).qtablewidgetitem())
+        row=[]
+        row.append(self.setData.incomes())
+        row.append(self.setData.gains())
+        row.append(self.setData.dividends())
+        row.append(self.setData.expenses())
+        row.append(self.setData.i_d_g_e())
+        row.append("")
+        row.append("")
+        row.append("")
+        row.append("")
+        row.append(self.setData.difference_with_previous_year())
+        row.append("")
+        row.append(self.setData.assets_percentage_in_month(12))        
+        data.append(row)
+        data=lor_transposed(data)
+        self.mqtw.setData(hh, hv, data)
+        
         self.mqtw.table.setCurrentCell(6, date.today().month-1)
-        s=""
-        s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
+        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.setData.total_last_year)))
+
+
         invested=Assets(self.mem).invested(date.today())
         current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, date.today())
+        s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)
-        final=datetime.now()          
-        info("wdgTotal > load_data: {0}".format(final-inicio))
+
+        info("wdgTotal > load_data: {0}".format(datetime.now()-inicio))
 
     def load_targets(self):
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
