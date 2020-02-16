@@ -69,7 +69,7 @@ class Order(QObject):
             type="Sell"
         else:
             type="Buy"
-        qmessagebox(self.tr("Don't forget to tell your bank to add and order for:\n{} ({})\n{} {} shares to {}".format(self.investment.name, self.investment.account.name, type, abs(self.shares), self.investment.product.currency.string(self.price, 6))))
+        qmessagebox(self.tr("Don't forget to tell your bank to add and order for:\n{} ({})\n{} {} shares to {}".format(self.investment.name, self.investment.account.name, type, abs(self.shares), self.investment.money(self.price).string(6))))
         
     def percentage_from_current_price(self):
         """Calculates percentage from current price to order price"""

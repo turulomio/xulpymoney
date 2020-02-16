@@ -10,6 +10,7 @@ from xulpymoney.libxulpymoneytypes import eComment, eConcept
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationManagerHomogeneus
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.comment import Comment
+from xulpymoney.objects.currency import currencies_qcombobox
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
@@ -53,7 +54,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     
         self.wdgDtPago.set(None, self.mem.localzone_name)
         
-        self.mem.currencies.qcombobox(self.cmbCurrency)
+        currencies_qcombobox(self.cmbCurrency)
         self.mem.data.banks_active().qcombobox(self.cmbEB)
                     
         if self.account==None:
@@ -73,7 +74,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.txtNumero.setText(str(self.account.numero))            
             self.cmbEB.setCurrentIndex(self.cmbEB.findData(self.account.eb.id))
             self.cmbEB.setEnabled(False)    
-            self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.account.currency.id))
+            self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.account.currency))
             self.cmbCurrency.setEnabled(False)
             self.chkActiva.setChecked(b2c(self.account.active))
             self.cmdDatos.setText(self.tr("Update account data"))
@@ -142,7 +143,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.account.name=cuenta
             self.account.numero=numerocuenta
             self.account.active=active
-            self.account.currency=self.mem.currencies.find_by_id(currency)
+            self.account.currency=currency
             self.account.save()
             self.lblTitulo.setText(self.account.name)
         self.mem.con.commit()

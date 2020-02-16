@@ -64,14 +64,14 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def on_radDes_clicked(self):
         self.lblTitulo.setText(self.tr("Divest simulation of {0}").format(self.investment.name))
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
-        self.lblValor.setText(self.tr("Selling price (Current: {})").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
+        self.lblValor.setText(self.tr("Selling price (Current: {})").format(self.investment.money(self.investment.product.result.basic.last.quote)))
         self.cmdOrder.setEnabled(False)
         
     @pyqtSlot() 
     def on_radRe_clicked(self):
         self.lblTitulo.setText(self.tr("Reinvest simulation of {0}").format(self.investment.name))
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))
-        self.lblValor.setText(self.tr("Purchase price (Current: {})").format(self.investment.product.currency.string(self.investment.product.result.basic.last.quote)))
+        self.lblValor.setText(self.tr("Purchase price (Current: {})").format(self.investment.money(self.investment.product.result.basic.last.quote)))
         self.cmdOrder.setEnabled(False)
    
     def on_cmd_released(self):

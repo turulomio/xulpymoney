@@ -11,7 +11,7 @@ from pytz import timezone
 from xulpymoney.datetime_functions import dtaware, dtaware_day_end_from_date, dtaware_month_end, dtaware_month_start, dtaware_year_end, dtaware_year_start
 from xulpymoney.decorators import deprecated
 from xulpymoney.libxulpymoneyfunctions import  function_name, have_same_sign, set_sign_of_other_number
-from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qnumber
+from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qnumber, qnone
 from xulpymoney.libxulpymoneytypes import eConcept, eComment,  eProductType,  eOperationType,  eLeverageType,  eQColor, eMoneyCurrency
 from xulpymoney.libmanagers import Object_With_IdName, ObjectManager_With_Id_Selectable, ObjectManager_With_IdName_Selectable, ObjectManager_With_IdDatetime_Selectable,  DictObjectManager_With_IdName_Selectable
 from xulpymoney.objects.account import Account, AccountManager
@@ -1629,9 +1629,9 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             wdg.table.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
             wdg.table.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
-                wdg.table.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
+                wdg.table.setItem(rownumber, 9, qnone(None))
             else:
-                wdg.table.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
+                wdg.table.setItem(rownumber, 9, self.mem.data.benchmark.money(a.referenciaindice.quote).qtablewidgetitem())
                 
         wdg.table.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
         wdg.table.setItem(self.length(), 1, qright(self.shares()))
@@ -3106,7 +3106,7 @@ class Investment:
             Returns a boolean
             Check if investment currency is the same that account currency
         """
-        if self.product.currency.id==self.account.currency.id:
+        if self.product.currency==self.account.currency:
             return True
         return False
         

@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>985</width>
-                <height>904</height>
+                <width>598</width>
+                <height>798</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -1035,52 +1035,6 @@
              <item>
               <widget class="myQTableWidget" name="mqtwDividendsEstimations" native="true"/>
              </item>
-             <item>
-              <widget class="QTableWidget" name="tblDividendsEstimations">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Year</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>%</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Annotation date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Source</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Manual</string>
-                </property>
-               </column>
-              </widget>
-             </item>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_9">
@@ -1094,52 +1048,6 @@
             <layout class="QHBoxLayout" name="horizontalLayout_20">
              <item>
               <widget class="myQTableWidget" name="mqtwEPS" native="true"/>
-             </item>
-             <item>
-              <widget class="QTableWidget" name="tblEPS">
-               <property name="contextMenuPolicy">
-                <enum>Qt::CustomContextMenu</enum>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>true</bool>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Year</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Price</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>PER</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Annotation date</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Source</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Manual</string>
-                </property>
-               </column>
-              </widget>
              </item>
             </layout>
            </widget>

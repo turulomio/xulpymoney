@@ -78,7 +78,7 @@ class DPSManager(ObjectManager_With_IdDate, QObject):
         for i, e in enumerate(self.arr):
             wdg.table.setItem(i, 0, qdate(e.date))
             wdg.table.setItem(i, 1, qdate(e.paydate))
-            wdg.table.setItem(i, 2, self.product.currency.qtablewidgetitem(e.gross, 6))
+            wdg.table.setItem(i, 2, self.product.money(e.gross).qtablewidgetitem(6))
         wdg.table.setCurrentCell(self.length()-1, 0)
 
     def adjustPrice(self, datetime, price):

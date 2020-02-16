@@ -191,7 +191,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             if quote==None:
                 return
             self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.mem.localzone_name))
-            self.tblTPC.setItem(row, 1, self.product.currency.qtablewidgetitem(quote.quote, 6))
+            self.tblTPC.setItem(row, 1, self.product.money(quote.quote).qtablewidgetitem(self.product.decimals))
 
             try:
                 tpc=Percentage(self.product.result.basic.last.quote-quote.quote, quote.quote)
@@ -200,7 +200,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 3,  (tpc*365/days).qtablewidgetitem())
                 if self.investment:
                     self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.investment.shares(), self.investment.balance()))
-                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.investment.shares()*(self.product.result.basic.last.quote-quote.quote)))
+                    self.tblTPC.setItem(row, 4,  self.product.money(self.investment.shares()*(self.product.result.basic.last.quote-quote.quote)).qtablewidgetitem())
             except:
                 self.tblTPC.setItem(row, 2, Percentage().qtablewidgetitem())    
                 self.tblTPC.setItem(row, 3,  Percentage().qtablewidgetitem())
@@ -232,7 +232,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.chkHL.setCheckState(Qt.Checked)
 
         self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.product.stockmarket.id))
-        self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.product.currency.id))
+        self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.product.currency))
         self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.product.mode.id))
         self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.product.type.id))
         self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.product.leveraged.id))
@@ -248,7 +248,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             unasemana=Quote(self.mem).init__from_query(self.product, dt_day_end(now-timedelta(days=7)))             
             
             self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone_name))   
-            self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
+            self.tblTPC.setItem(0, 1, self.product.money(self.product.result.basic.last.quote).qtablewidgetitem(6))
             
             row_mqtwTPV(penultimate, 2)
             row_mqtwTPV(iniciosemana, 3)## Para que sea el domingo

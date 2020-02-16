@@ -413,7 +413,6 @@ def qbool(bool):
         a.setCheckState(Qt.Unchecked);
         a.setText(QApplication.translate("Core","False"))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
-    a.blockSignals(True)
     return a
 
 ## Center checkbox
@@ -446,13 +445,13 @@ def qempty():
 
 def qcenter(string):
     if string==None:
-        return qempty()
+        return qnone()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
     
 def qcrossedout():
-    a=qempty()        
+    a=qempty()
     brush = QBrush(QColor(0, 0, 0))
     brush.setStyle(Qt.BDiagPattern)
     a.setBackground(brush)
@@ -460,6 +459,8 @@ def qcrossedout():
 
 ## Currency object from reusingcode
 def qcurrency(currency, decimals=2):
+    if currency is None or currency.amount is None:
+        return qnone()
     a=QTableWidgetItem(currency.string(decimals))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     if currency.amount==None:
@@ -470,14 +471,14 @@ def qcurrency(currency, decimals=2):
 
 def qleft(string):
     if string==None:
-        return qempty()
+        return qnone()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
 
 def qright(string):
     if string==None:
-        return qempty()
+        return qnone()
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
@@ -485,7 +486,7 @@ def qright(string):
 ## Creates a QTableWidgetItem with the date
 def qdate(date):
     if date==None:
-        return qempty()
+        return qnone()
     return qcenter(str(date))
     
     
@@ -494,7 +495,7 @@ def qdate(date):
 def qdatetime(dt, tz_name):
     newdt=dtaware_changes_tz(dt, tz_name)
     if newdt==None:
-        return qempty()
+        return qnone()
     a=QTableWidgetItem(dtaware2string(newdt, "%Y-%m-%d %H:%M:%S"))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
@@ -502,7 +503,7 @@ def qdatetime(dt, tz_name):
 
 def qnumber(n, digits=2):
     if n==None:
-        return qempty()
+        return qnone()
     n=round(n, digits)
     a=qright(n)
     if n<0:
@@ -512,7 +513,7 @@ def qnumber(n, digits=2):
 ## Colorizes a number comparing it with a limit
 def qnumber_limited(n, limit, digits=2, reverse=False):
     if n==None:
-        return qempty()
+        return qnone()
     a=qnumber(n, 2)
     if reverse==True:
         color_above=QColor(148, 255, 148)
@@ -531,7 +532,7 @@ def qnumber_limited(n, limit, digits=2, reverse=False):
 ## @param ti must be a time object
 def qtime(ti, format="HH:MM"):
     if ti==None:
-        return qempty()
+        return qnone()
     item=qright(time2string(ti, format))
     if format=="Xulpymoney":
         if ti.microsecond==5:
@@ -541,6 +542,8 @@ def qtime(ti, format="HH:MM"):
     return item
 
 def qpercentage(percentage, decimals=2):
+    if percentage is None:
+        return qnone()
     a=QTableWidgetItem(percentage.string(decimals))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     if percentage.value==None:

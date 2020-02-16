@@ -1,9 +1,10 @@
+from PyQt5.QtCore import QObject
 from datetime import date
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.myqtablewidget import qcenter, qdate, qleft, qbool, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qdate, qleft, qnumber, wdgBool
 class EstimationDPS:
     """Dividends por acción"""
     def __init__(self, mem):
@@ -117,9 +118,10 @@ class EstimationEPS:
             return last_year_quote_of_estimation.quote/self.estimation
         except:
             return None
-class EstimationDPSManager(ObjectManager):
+class EstimationDPSManager(ObjectManager, QObject):
     def __init__(self, mem,  product):
         ObjectManager.__init__(self)
+        QObject.__init__(self)
         self.arr=[]
         self.mem=mem   
         self.product=product
@@ -159,25 +161,32 @@ class EstimationDPSManager(ObjectManager):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
     def myqtablewidget(self, wdg):
-        """settings, must be thrown before, not in each reload"""
+        wdg.table.setColumnCount(6)
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Year")))
+        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Estimation")))
+        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Percentage")))
+        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Estimation date")))
+        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Source")))
+        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr("Manual")))
         self.sort()  
         wdg.applySettings()
         wdg.table.clearContents()
         wdg.table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
             wdg.table.setItem(i, 0, qcenter(str(e.year)))
-            wdg.table.setItem(i, 1, self.product.money(e.estimation).qtablewidget(6))
+            wdg.table.setItem(i, 1, self.product.money(e.estimation).qtablewidgetitem(6))
             wdg.table.setItem(i, 2, e.percentage().qtablewidgetitem())
             wdg.table.setItem(i, 3, qdate(e.date_estimation))
             wdg.table.setItem(i, 4, qleft(e.source))
-            wdg.table.setItem(i, 5, qbool(e.manual))
+            wdg.table.setCellWidget(i, 5, wdgBool(e.manual))
 
         wdg.table.setCurrentCell(len(self.arr)-1, 0)
         wdg.table.setFocus()
 
-class EstimationEPSManager(ObjectManager):
+class EstimationEPSManager(ObjectManager, QObject):
     def __init__(self, mem,  product):
         ObjectManager.__init__(self)
+        QObject.__init__(self)
         self.arr=[]
         self.mem=mem   
         self.product=product
@@ -216,6 +225,13 @@ class EstimationEPSManager(ObjectManager):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
     def myqtablewidget(self, wdg):
+        wdg.table.setColumnCount(6)
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Year")))
+        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Estimation")))
+        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("PER")))
+        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Estimation date")))
+        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Source")))
+        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr("Manual")))
         self.sort()     
         wdg.applySettings()
         wdg.table.clearContents()
@@ -226,6 +242,6 @@ class EstimationEPSManager(ObjectManager):
             wdg.table.setItem(i, 2, qnumber(e.PER(Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone.name)))))
             wdg.table.setItem(i, 3, qdate(e.date_estimation))
             wdg.table.setItem(i, 4, qleft(e.source))
-            wdg.table.setItem(i, 5, qbool(e.manual)) 
+            wdg.table.setCellWidget(i, 5, wdgBool(e.manual)) 
         wdg.table.setCurrentCell(len(self.arr)-1, 0)
         wdg.table.setFocus()
