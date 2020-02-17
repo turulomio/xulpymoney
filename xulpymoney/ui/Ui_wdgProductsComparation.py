@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgProductsComparation(object):
     def setupUi(self, wdgProductsComparation):
         wdgProductsComparation.setObjectName("wdgProductsComparation")
-        wdgProductsComparation.resize(955, 261)
+        wdgProductsComparation.resize(967, 261)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(wdgProductsComparation)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -103,6 +103,7 @@ class Ui_wdgProductsComparation(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(wdgProductsComparation)
+        self.cmbCompareTypes.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(wdgProductsComparation)
 
     def retranslateUi(self, wdgProductsComparation):

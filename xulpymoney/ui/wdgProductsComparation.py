@@ -1,9 +1,9 @@
-import datetime
+from PyQt5.QtChart import QValueAxis
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from datetime import datetime
 from xulpymoney.ui.myqtablewidget import myQTableWidget
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
-from PyQt5.QtChart import QValueAxis
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.objects.product import ProductComparation
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -16,24 +16,25 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.mem=mem
         self.parent=parent
 
+        if product1 is None:
+            product1=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgProductsComparation/product1", "79228")))
+        
+        if product2 is None:
+            product2=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgProductsComparation/product2", "79329")))
+
         self.selector1.setupUi(self.mem)
         self.selector1.label.setText(self.tr("Select a product to compare"))
         self.selector1.setSelected(product1)
-
-        self.selector1.showProductButton(False)
+        
         self.selector2.setupUi(self.mem)
         self.selector2.label.setText(self.tr("Select a product to compare"))
-        if product2==None:
-            self.selector2.setSelected(self.mem.data.benchmark)
-        else:
-            self.selector2.setSelected(product2)
-
-        self.selector2.showProductButton(False)
-        self.cmbCompareTypes.setCurrentIndex(0)
+        self.selector2.setSelected(product2)
+            
+        self.cmbCompareTypes.setCurrentIndex(int(self.mem.settings.value("wdgProductsComparation/cmbCompareTypes", "0")))
         self.comparation=None
 
     def on_cmdComparation_released(self):
-        inicio=datetime.datetime.now()
+        inicio=datetime.now()
         if self.selector1.selected==None or self.selector2.selected==None:
             qmessagebox(self.tr("You must select a product to compare with"))
             return
@@ -134,10 +135,14 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
+        self.verticalLayout.addWidget(self.viewCompare)            
 
+        self.mem.settings.setValue("wdgProductsComparation/product1", str(self.comparation.product1.id))
+        self.mem.settings.setValue("wdgProductsComparation/product2", str(self.comparation.product2.id))
+        self.mem.settings.setValue("wdgProductsComparation/cmbCompareTypes", str(self.cmbCompareTypes.currentIndex()))
+        self.mem.settings.sync()
 
-        self.verticalLayout.addWidget(self.viewCompare)
-        print ("Comparation took {}".format(datetime.datetime.now()-inicio))
+        print ("Comparation took {}".format(datetime.now()-inicio))
 
     def on_cmdComparationData_released(self):
         if self.comparation==None:
