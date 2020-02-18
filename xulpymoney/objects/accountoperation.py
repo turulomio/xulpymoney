@@ -1,10 +1,9 @@
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QTableWidgetItem
 from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
-
-from xulpymoney.objects.comment import Comment
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
-from xulpymoney.ui.myqtablewidget import qdatetime, qleft
+from xulpymoney.objects.comment import Comment
+from xulpymoney.ui.myqtablewidget import qdatetime, qleft, qcenter
+
 ## Class to manage everything relationed with bank accounts operations
 class AccountOperation(QObject):
     ## Constructor with the following attributes combination
@@ -133,14 +132,14 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
             diff=1
         else:
             wdg.table.setColumnCount(6)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
         if show_accounts==True:
-            wdg.table.setHorizontalHeaderItem(diff, QTableWidgetItem(self.tr("Account" )))
-        wdg.table.setHorizontalHeaderItem(1+diff, QTableWidgetItem(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(self.tr("Amount" )))
-        wdg.table.setHorizontalHeaderItem(3+diff, QTableWidgetItem(self.tr("Balance" )))
-        wdg.table.setHorizontalHeaderItem(4+diff, QTableWidgetItem(self.tr("Comment" )))
-        wdg.table.setHorizontalHeaderItem(5+diff, QTableWidgetItem("Id"))
+            wdg.table.setHorizontalHeaderItem(diff, qcenter(self.tr("Account" )))
+        wdg.table.setHorizontalHeaderItem(1+diff, qcenter(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2+diff,  qcenter(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(3+diff, qcenter(self.tr("Balance" )))
+        wdg.table.setHorizontalHeaderItem(4+diff, qcenter(self.tr("Comment" )))
+        wdg.table.setHorizontalHeaderItem(5+diff, qcenter("Id"))
         ##DATA 
         wdg.table.clearContents()
         wdg.applySettings()
@@ -152,10 +151,10 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
             balance=balance+a.importe
             wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             if show_accounts==True:
-                wdg.table.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
+                wdg.table.setItem(rownumber, diff, qleft(a.account.name))
             wdg.table.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            wdg.table.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
-            wdg.table.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
+            wdg.table.setItem(rownumber, 2+diff, self.mem.localmoney(a.importe).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 3+diff, self.mem.localmoney(balance).qtablewidgetitem())
             wdg.table.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
             wdg.table.setItem(rownumber, 5+diff, qleft(a.id))
 #            if len(self.selected)>0:
@@ -170,25 +169,25 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
     def myqtablewidget_lastmonthbalance(self, wdg,    lastmonthbalance):
         from xulpymoney.libxulpymoney import Money
         wdg.table.setColumnCount(6)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Amount" )))
-        wdg.table.setHorizontalHeaderItem(3,  QTableWidgetItem(self.tr("Balance" )))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Comment" )))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
+        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Concept" )))
+        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Balance" )))
+        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Comment" )))
         wdg.applySettings()
         wdg.table.clearContents()
         wdg.table.setRowCount(self.length()+1)
-        wdg.table.setItem(0, 1, QTableWidgetItem(self.tr( "Starting month balance")))
+        wdg.table.setItem(0, 1, qleft(self.tr( "Starting month balance")))
         wdg.table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
         self.order_by_datetime()
         for i, o in enumerate(self.arr):
             importe=Money(self.mem, o.importe, self.account.currency)
             lastmonthbalance=lastmonthbalance+importe
             wdg.table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
-            wdg.table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
+            wdg.table.setItem(i+1, 1, qleft(o.concepto.name))
             wdg.table.setItem(i+1, 2, importe.qtablewidgetitem())
             wdg.table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            wdg.table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).decode(o.comentario)))
+            wdg.table.setItem(i+1, 4, qleft(Comment(self.mem).decode(o.comentario)))
 
 #            if self.selected.length()>0:
 #                if o.id==self.selected.only().id:
