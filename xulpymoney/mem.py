@@ -178,6 +178,7 @@ class MemXulpymoney(Mem):
         self.inittime=datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         self.con=None#Conexión        
+        self._products_maintainer_mode=False
         
                 
         self.closing=False#Used to close threads
@@ -270,4 +271,10 @@ class MemXulpymoney(Mem):
         
     def localmoney(self, amount):
         return Money(self, amount, self.localcurrency)
+        
+    def setProductsMaintainerMode(self, boolean):
+        self._products_maintainer_mode=boolean
+        
+    def isProductsMaintainerMode(self):
+        return self._products_maintainer_mode
 
