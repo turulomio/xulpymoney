@@ -5,7 +5,7 @@ import xulpymoney.libdbupdates
 from xulpymoney.admin_pg import AdminPG
 import xulpymoney.ui.frmMain
 from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
-from xulpymoney.libxulpymoney import  SimulationManager
+from xulpymoney.objects.simulation import  SimulationManager
 from xulpymoney.mem import MemXulpymoney
 from xulpymoney.connection_pg_qt import ConnectionQt
 from xulpymoney.libxulpymoneyfunctions import qmessagebox

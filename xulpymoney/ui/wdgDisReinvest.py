@@ -5,7 +5,10 @@ from decimal import Decimal
 from logging import error
 from pytz import timezone
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
-from xulpymoney.libxulpymoney import InvestmentOperation, Money, Percentage,  Quote
+from xulpymoney.objects.investmentoperation import InvestmentOperation
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
+from xulpymoney.objects.quote import Quote
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.Ui_wdgDisReinvest import Ui_wdgDisReinvest
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalReinvestChart

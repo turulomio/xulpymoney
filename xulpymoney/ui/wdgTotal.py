@@ -5,7 +5,8 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 from logging import info
 from xulpymoney.datetime_functions import dtaware_day_end_from_date, date_last_of_the_month, date_first_of_the_next_x_months
-from xulpymoney.libxulpymoney import DividendHeterogeneusManager, InvestmentOperationHistoricalHeterogeneusManager
+from xulpymoney.objects.dividend import DividendHeterogeneusManager
+from xulpymoney.objects.investmentoperation import InvestmentOperationHistoricalHeterogeneusManager
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0, lor_transposed
 from xulpymoney.ui.myqtablewidget import qcenter, qleft

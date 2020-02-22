@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
-from xulpymoney.libxulpymoney import Assets,  Simulation
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.simulation import Simulation
 from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 

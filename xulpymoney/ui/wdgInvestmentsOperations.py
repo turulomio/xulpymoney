@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
-from xulpymoney.libxulpymoney import InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
+from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
 from xulpymoney.objects.assets import Assets
 from xulpymoney.ui.Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport

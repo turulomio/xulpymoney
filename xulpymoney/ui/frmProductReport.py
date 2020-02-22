@@ -7,7 +7,8 @@ from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord,
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
-from xulpymoney.libxulpymoney import LeverageManager, ProductModesManager
+from xulpymoney.objects.leverage import LeverageManager
+from xulpymoney.objects.productmode import ProductModesManager
 from xulpymoney.objects.agrupation import AgrupationManager
 from xulpymoney.objects.currency import currency_name, currency_symbol
 from xulpymoney.objects.producttype import ProductTypeManager

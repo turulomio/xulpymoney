@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmQuotesIBM import Ui_frmQuotesIBM
-from xulpymoney.libxulpymoney import Quote
+from xulpymoney.objects.quote import Quote
 from xulpymoney.datetime_functions import dtaware
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType

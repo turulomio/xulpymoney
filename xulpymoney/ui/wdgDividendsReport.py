@@ -3,7 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
 from logging import debug
-from xulpymoney.libxulpymoney import Money, Percentage
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport

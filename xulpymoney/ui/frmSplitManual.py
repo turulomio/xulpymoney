@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
-from xulpymoney.libxulpymoney import QuoteAllIntradayManager, SplitManual
+from xulpymoney.objects.quote import QuoteAllIntradayManager
+from xulpymoney.objects.split import SplitManual
 import datetime
 
 from xulpymoney.ui.Ui_frmSplitManual import Ui_frmSplitManual

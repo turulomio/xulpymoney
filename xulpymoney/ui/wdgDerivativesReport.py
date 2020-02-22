@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget
 from logging import debug
-from xulpymoney.libxulpymoney import InvestmentOperationHistoricalHeterogeneusManager, InvestmentOperationCurrentHeterogeneusManager
+from xulpymoney.objects.investmentoperation import InvestmentOperationHistoricalHeterogeneusManager, InvestmentOperationCurrentHeterogeneusManager
 from xulpymoney.libxulpymoneytypes import eConcept, eProductType
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.ui.Ui_wdgDerivativesReport import Ui_wdgDerivativesReport

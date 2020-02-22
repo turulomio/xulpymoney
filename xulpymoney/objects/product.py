@@ -14,6 +14,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
+from xulpymoney.objects.split import SplitManager
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
 from xulpymoney.ui.myqtablewidget import qdate, qdatetime, qcenter, qleft
 class Product(QObject):
@@ -186,7 +187,6 @@ class Product(QObject):
             return
         #0
         if self.status==0 and statusneeded==1: #MAIN
-            from xulpymoney.libxulpymoney import SplitManager
             start=datetime.now()
             self.estimations_dps=EstimationDPSManager(self.mem, self)
             self.estimations_dps.load_from_db()

@@ -4,7 +4,7 @@ from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
 from xulpymoney.casts import  list2string
 from xulpymoney.libmanagers import ManagerSelectionMode
-from xulpymoney.libxulpymoney import QuoteAllIntradayManager
+from xulpymoney.objects.quote import QuoteAllIntradayManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgProductsDataMove import wdgProductsDataMove

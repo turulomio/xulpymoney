@@ -3,7 +3,9 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog,  QMessageBox, QVBoxLayout
 from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
-from xulpymoney.libxulpymoney import InvestmentOperation, Money
+
+from xulpymoney.objects.investmentoperation import InvestmentOperation
+from xulpymoney.objects.money import Money
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd

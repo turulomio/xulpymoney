@@ -5,12 +5,13 @@ from logging import debug
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.objects.account import Account
-from xulpymoney.libxulpymoney import InvestmentOperation, CreditCardOperationManager
 from xulpymoney.libxulpymoneytypes import eComment, eConcept
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationManagerHomogeneus
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.comment import Comment
+from xulpymoney.objects.creditcardoperation import CreditCardOperationManager
 from xulpymoney.objects.currency import currencies_qcombobox
+from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd

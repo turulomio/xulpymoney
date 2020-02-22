@@ -1,7 +1,10 @@
 from PyQt5.QtCore import Qt, QSize, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout
 from PyQt5.QtGui import QIcon
-from xulpymoney.libxulpymoney import Bank, Money, AccountManager, InvestmentManager
+from xulpymoney.objects.bank import Bank
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.account import AccountManager
+from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.myqtablewidget import wdgBool
 from xulpymoney.ui.myqcharts import VCPie

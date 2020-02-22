@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 from os import environ, path
 from datetime import datetime
+from sys import exit
 from stdnum.isin import is_valid
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
@@ -38,7 +39,6 @@ from xulpymoney.ui.wdgOpportunities import wdgOpportunities
 from xulpymoney.ui.wdgProducts import wdgProducts
 from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
 from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
-
 
 class frmMain(QMainWindow, Ui_frmMain):
     def __init__(self, mem, parent = 0,  flags = False):
@@ -94,10 +94,8 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionExit_triggered(self):
-        self.mem.__del__()
         print ("App correctly closed")
-        self.close()
-        self.destroy()
+        exit(0)
         
     @pyqtSlot()
     def on_actionAbout_triggered(self):

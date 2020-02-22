@@ -4,25 +4,145 @@ from PyQt5.QtWidgets import QApplication
 from argparse import ArgumentParser, RawTextHelpFormatter
 from colorama import Fore, Style
 from datetime import datetime
-from decimal import Decimal
-from logging import info, basicConfig, DEBUG, INFO, CRITICAL, ERROR, WARNING
+from decimal import Decimal, getcontext
+from logging import info, basicConfig, DEBUG, INFO, CRITICAL, ERROR, WARNING, debug
 from os import path, makedirs
 from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.libxulpymoney import DBData, CountryManager, ZoneManager, ProductModesManager, SimulationTypeManager, OperationTypeManager, ConceptManager, LeverageManager
 from xulpymoney.casts import str2bool, string2list_of_integers
+from xulpymoney.objects.account import AccountManager
+from xulpymoney.objects.bank import BankManager
 from xulpymoney.objects.agrupation import AgrupationManager
+from xulpymoney.objects.concept import ConceptManager
+from xulpymoney.objects.country import CountryManager
+from xulpymoney.objects.investment import InvestmentManager
+from xulpymoney.objects.leverage import LeverageManager
 from xulpymoney.objects.money import Money
-from xulpymoney.objects.product import ProductUpdate
+from xulpymoney.objects.operationtype import OperationTypeManager
+from xulpymoney.objects.product import ProductUpdate, ProductManager
+from xulpymoney.objects.productmode import ProductModesManager
 from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.settingsdb import SettingsDB
+from xulpymoney.objects.simulationtype import SimulationTypeManager
 from xulpymoney.objects.stockmarket import StockMarketManager
+from xulpymoney.objects.zone import ZoneManager
 from xulpymoney.package_resources import package_filename
 from xulpymoney.version import __version__, __versiondate__
 from xulpymoney.translationlanguages import TranslationLanguageManager
 
+        
+getcontext().prec=20
+
+class DBData:
+    def __init__(self, mem):
+        self.mem=mem
+
+    def load(self, progress=True):
+        """
+            This method will subsitute load_actives and load_inactives
+        """
+        inicio=datetime.now()
+        
+        start=datetime.now()
+        self.products=ProductManager(self.mem)
+        self.products.load_from_db("select * from products", progress)
+        debug("DBData > Products took {}".format(datetime.now()-start))
+        
+        self.benchmark=self.products.find_by_id(int(self.mem.settingsdb.value("mem/benchmark", "79329" )))
+        self.benchmark.needStatus(2)
+        
+        #Loading currencies
+        start=datetime.now()
+        self.currencies=ProductManager(self.mem)
+        for p in self.products.arr:
+            if p.type.id==6:
+                p.needStatus(3)
+                self.currencies.append(p)
+        debug("DBData > Currencies took {}".format(datetime.now()-start))
+        
+        self.banks=BankManager(self.mem)
+        self.banks.load_from_db("select * from entidadesbancarias")
+
+        self.accounts=AccountManager(self.mem, self.banks)
+        self.accounts.load_from_db("select * from cuentas")
+
+        self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        self.investments.load_from_db("select * from inversiones", progress)
+        self.investments.needStatus(2, progress=True)
+        
+        
+        #change status to 1 to self.investments products
+        pros=self.investments.ProductManager_with_investments_distinct_products()
+        pros.needStatus(1, progress=True)
+        
+        info("DBData loaded: {}".format(datetime.now()-inicio))
+
+    def accounts_active(self):        
+        r=AccountManager(self.mem, self.banks)
+        for b in self.accounts.arr:
+            if b.active==True:
+                r.append(b)
+        return r 
+
+    def accounts_inactive(self):        
+        r=AccountManager(self.mem, self.banks)
+        for b in self.accounts.arr:
+            if b.active==False:
+                r.append(b)
+        return r
+        
+    def banks_active(self):        
+        r=BankManager(self.mem)
+        for b in self.banks.arr:
+            if b.active==True:
+                r.append(b)
+        return r        
+        
+    def banks_inactive(self):        
+        r=BankManager(self.mem)
+        for b in self.banks.arr:
+            if b.active==False:
+                r.append(b)
+        return r        
+
+            
+    def investments_active(self):        
+        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for b in self.investments.arr:
+            if b.active==True:
+                r.append(b)
+        return r        
+        
+    def investments_inactive(self):        
+        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        for b in self.investments.arr:
+            if b.active==False:
+                r.append(b)
+        return r        
+
+    def banks_set(self, active):
+        """Function to point to list if is active or not"""
+        if active==True:
+            return self.banks_active()
+        else:
+            return self.banks_inactive()
+            
+    def accounts_set(self, active):
+        """Function to point to list if is active or not"""
+        if active==True:
+            return self.accounts_active()
+        else:
+            return self.accounts_inactive()
+    
+    def investments_set(self, active):
+        """Function to point to list if is active or not"""
+        if active==True:
+            return self.investments_active()
+        else:
+            return self.investments_inactive()
+        
 class Mem(QObject):
     def __init__(self):
         QObject.__init__(self)

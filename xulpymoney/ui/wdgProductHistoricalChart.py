@@ -11,7 +11,10 @@ import logging
 from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_start
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqcharts import   VCTemporalSeries, eOHCLDuration
-from xulpymoney.libxulpymoney import InvestmentOperation,  Investment,  Money, Percentage, InvestmentOperationHomogeneusManager
+from xulpymoney.objects.investment import Investment
+from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationHomogeneusManager
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.casts import string2list_of_integers
 from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOperationType
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd

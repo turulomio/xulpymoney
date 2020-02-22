@@ -1,4 +1,4 @@
-from xulpymoney.libxulpymoney import Percentage
+from xulpymoney.objects.percentage import Percentage
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from xulpymoney.ui.Ui_wdgLastCurrent import Ui_wdgLastCurrent

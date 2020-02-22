@@ -94,14 +94,15 @@ class wdgManagerSelector(QWidget):
     ## By default is True. Show Icons y tables and combobox 
     def showObjectIcons(self, boolean):
         self._showObjectIcons=boolean
-        
+
+    ## manager needs to have add setConstructorParameters to generate emptyManager
     def setManagers(self, settings, settingsSection,  settingsObject, manager, selected):
         self.settings=settings
         self.settingsSection=settingsSection
         self.settingsObject=settingsObject
         self.mqtw.settings(self.settings, self.settingsSection, "{}_tbl".format(self.settingsObject))
         self.mqtwSelected.settings(self.settings, self.settingsSection, "{}_tblSelected".format(self.settingsObject))
-        
+
         self.manager=manager.clone()#Clone manager to delete safely objects
 
         #removes selected objects from manager

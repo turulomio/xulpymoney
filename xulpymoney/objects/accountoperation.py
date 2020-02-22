@@ -2,6 +2,7 @@ from PyQt5.QtCore import QObject
 from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
 from xulpymoney.objects.comment import Comment
+from xulpymoney.objects.money import Money
 from xulpymoney.ui.myqtablewidget import qdatetime, qleft, qcenter
 
 ## Class to manage everything relationed with bank accounts operations
@@ -90,7 +91,6 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
     
     ## Función que calcula el balance de todas las AccountOperation in eMoneyCurrency.User
     def balance(self):
-        from xulpymoney.libxulpymoney import Money
         r=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
             if o.account.currency==self.mem.localcurrency:
@@ -167,7 +167,6 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
         self.account=account
 
     def myqtablewidget_lastmonthbalance(self, wdg,    lastmonthbalance):
-        from xulpymoney.libxulpymoney import Money
         wdg.table.setColumnCount(6)
         wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
         wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Concept" )))

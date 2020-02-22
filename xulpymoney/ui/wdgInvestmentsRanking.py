@@ -4,7 +4,7 @@ from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_wdgInvestmentsRanking import Ui_wdgInvestmentsRanking
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmProductReport import frmProductReport
-from xulpymoney.libxulpymoney import Money
+from xulpymoney.objects.money import Money
 
 class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
     def __init__(self, mem,  parent=None):

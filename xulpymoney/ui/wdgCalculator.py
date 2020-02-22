@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QTableWidgetItem
 from xulpymoney.ui.Ui_wdgCalculator import Ui_wdgCalculator
-from xulpymoney.libxulpymoney import Percentage, Money
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart

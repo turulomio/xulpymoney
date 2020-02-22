@@ -2,7 +2,10 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmSellingPoint import Ui_frmSellingPoint
-from xulpymoney.libxulpymoney import Money,  Quote, InvestmentOperationCurrentHomogeneusManager,  Percentage
+from xulpymoney.objects.quote import Quote
+from xulpymoney.objects.money import Money
+from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHomogeneusManager
+from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from decimal import Decimal

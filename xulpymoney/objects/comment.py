@@ -4,6 +4,8 @@ from logging import debug
 from xulpymoney.casts import string2list_of_integers
 from xulpymoney.datetime_functions import dtaware2string
 from xulpymoney.libxulpymoneytypes import eComment, eMoneyCurrency
+from xulpymoney.objects.dividend import Dividend
+from xulpymoney.objects.money import Money
 ## Class who controls all comments from opercuentas, operinversiones ...
 class Comment(QObject):
     def __init__(self, mem):
@@ -105,7 +107,6 @@ class Comment(QObject):
                 return QApplication.translate("Mem","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
 
             elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
-                from xulpymoney.libxulpymoney import Dividend
                 if not self.validateLength(1, code, args): return string
                 dividend=Dividend(self.mem).init__db_query(args[0])
                 investment=self.mem.data.investments.find_by_id(dividend.investment.id)
@@ -121,7 +122,7 @@ class Comment(QObject):
                 return QApplication.translate("Mem","Billing {} movements of {}").format(number, creditcard.name)
 
             elif code==eComment.CreditCardRefund:#Devolución de tarjeta
-                from xulpymoney.libxulpymoney import CreditCardOperation, Money
+                from xulpymoney.objects.creditcardoperation import CreditCardOperation
                 if not self.validateLength(1, code, args): return string
                 cco=CreditCardOperation(self.mem).init__db_query(args[0])
                 money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)

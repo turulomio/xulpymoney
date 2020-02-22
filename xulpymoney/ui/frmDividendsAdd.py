@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
-from xulpymoney.libxulpymoney import Dividend,  Money
+from xulpymoney.objects.dividend import Dividend
+from xulpymoney.objects.money import Money
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmDividendsAdd import Ui_frmDividendsAdd
