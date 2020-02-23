@@ -91,66 +91,6 @@
     <string>Investment report</string>
    </property>
   </action>
-  <action name="actionSortTPCDiario">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Daily</string>
-   </property>
-   <property name="toolTip">
-    <string>% Daily</string>
-   </property>
-  </action>
-  <action name="actionSortTPCVenta">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Selling point</string>
-   </property>
-   <property name="toolTip">
-    <string>% Selling point</string>
-   </property>
-  </action>
-  <action name="actionSortTPC">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Invested</string>
-   </property>
-   <property name="toolTip">
-    <string>% Invested</string>
-   </property>
-  </action>
-  <action name="actionSortName">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Name</string>
-   </property>
-   <property name="toolTip">
-    <string>Name</string>
-   </property>
-  </action>
-  <action name="actionSortHour">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Time</string>
-   </property>
-   <property name="toolTip">
-    <string>Time</string>
-   </property>
-  </action>
   <action name="actionActive">
    <property name="text">
     <string>Is it active?</string>

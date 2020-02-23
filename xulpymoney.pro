@@ -1,7 +1,42 @@
 SOURCES         = \
                   xulpymoney/libdbupdates.py \
                   xulpymoney/libxulpymoney.py \
+                  xulpymoney/objects/accountoperation.py \
+                  xulpymoney/objects/assets.py \
+                  xulpymoney/objects/concept.py \
+                  xulpymoney/objects/currency.py \
+                  xulpymoney/objects/investmentoperation.py \
+                  xulpymoney/objects/money.py \
+                  xulpymoney/objects/order.py \
+                  xulpymoney/objects/producttype.py \
+                  xulpymoney/objects/simulationtype.py \
+                  xulpymoney/objects/account.py \
                   xulpymoney/objects/assetsreport.py \
+                  xulpymoney/objects/country.py \
+                  xulpymoney/objects/dividend.py \
+                  xulpymoney/objects/investment.py \
+                  xulpymoney/objects/ohcl.py \
+                  xulpymoney/objects/percentage.py \
+                  xulpymoney/objects/quote.py \
+                  xulpymoney/objects/split.py \
+                  xulpymoney/objects/agrupation.py \
+                  xulpymoney/objects/bank.py \
+                  xulpymoney/objects/creditcardoperation.py \
+                  xulpymoney/objects/dps.py \
+                  xulpymoney/objects/leverage.py \
+                  xulpymoney/objects/operationtype.py \
+                  xulpymoney/objects/productmode.py \
+                  xulpymoney/objects/settingsdb.py \
+                  xulpymoney/objects/stockmarket.py \
+                  xulpymoney/objects/annualtarget.py \
+                  xulpymoney/objects/comment.py \
+                  xulpymoney/objects/creditcard.py \
+                  xulpymoney/objects/estimation.py \
+                  xulpymoney/objects/maintenance.py \
+                  xulpymoney/objects/opportunity.py \
+                  xulpymoney/objects/product.py \
+                  xulpymoney/objects/simulation.py \
+                  xulpymoney/objects/zone.py \
                   xulpymoney/ui/frmAbout.py \
                   xulpymoney/ui/Ui_frmAbout.py \
                   xulpymoney/ui/frmAccess.py \

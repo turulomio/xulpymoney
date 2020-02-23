@@ -2,10 +2,11 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmSellingPoint import Ui_frmSellingPoint
-from xulpymoney.objects.quote import Quote
-from xulpymoney.objects.money import Money
+from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHomogeneusManager
+from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
+from xulpymoney.objects.quote import Quote
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from decimal import Decimal
@@ -39,8 +40,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
         self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  10)))
         
-        self.lblPricecurrency_symbol.setText(self.investment.product.currency.currency_symbol)
-        self.lblAmountcurrency_symbol.setText(self.investment.account.currency.currency_symbol)
+        self.lblPriceSymbol.setText(currency_symbol(self.investment.product.currency))
+        self.lblAmountSymbol.setText(currency_symbol(self.investment.account.currency))
         
     def __calcular(self):
         #Setting self.operinversiones variable

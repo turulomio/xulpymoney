@@ -103,7 +103,7 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
         wdg.table.setColumnCount(5)
         wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
         wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2,  qcenter(self.tr("Amount" )))
+        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Amount" )))
         wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Balance" )))
         wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Comment" )))
         ##DATA 
@@ -116,8 +116,8 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
             balance=balance+a.importe
             wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
             wdg.table.setItem(rownumber, 1, qleft(a.concepto.name))
-            wdg.table.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
-            wdg.table.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
+            wdg.table.setItem(rownumber, 2, self.mem.localmoney(a.importe).qtablewidgetitem())
+            wdg.table.setItem(rownumber, 3, self.mem.localmoney(balance).qtablewidgetitem())
             wdg.table.setItem(rownumber, 4, qleft(Comment(self.mem).decode(a.comentario)))
             if self.selected: #If selected is not necesary is None by default
                 if self.selected.length()>0:

@@ -22,7 +22,7 @@ from xulpymoney.objects.quote import Quote
 from xulpymoney.ui.myqtablewidget import qright, qleft, qdate, qcenter
 
 
-class Investment:
+class Investment(QObject):
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
     
     Las entradas al objeto pueden ser por:
@@ -32,6 +32,7 @@ class Investment:
         
     """
     def __init__(self, mem):
+        QObject.__init__(self)
         """Constructor que inicializa los atributos a None"""
         self.mem=mem
         self.id=None
@@ -283,11 +284,6 @@ class Investment:
         
     ## Función que calcula el balance de la inversión
     def balance(self, fecha=None, type=eMoneyCurrency.Product):
-#        acciones=self.shares(fecha)
-#        currency=self.resultsCurrency(type)
-#        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-#            return Money(self.mem, 0, currency)
-                
         if fecha==None:
             return self.op_actual.balance(self.product.result.basic.last, type)
         else:
@@ -882,6 +878,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             return True
         except:
             return False
+
     def order_by_selling_expiration(self):
         """Orders the Set using self.arr"""
         try:
@@ -909,13 +906,8 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
 
 
     def order_by_percentage_sellingpoint(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.percentage_to_selling_point(),  reverse=False)##, -inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)),  reverse=False) #Ordenado por dos criterios
-            return True
-        except:
-            return False
-            
+        self.order_with_none(["percentage_to_selling_point", ()], False, True)
+
     def order_by_percentage_invested(self):
         """Orders the Set using self.arr"""
             

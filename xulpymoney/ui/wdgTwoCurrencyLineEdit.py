@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout, QToolButton, QSizePolicy, QSpacerItem
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap
+from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from decimal import Decimal
 
@@ -102,8 +103,8 @@ class wdgTwoCurrencyLineEdit(QWidget):
             self.lblCurrencyB.hide()
             self.txtB.hide()
 
-        self.lblCurrencyA.setText(self.currencya.currency_symbol+" ")   
-        self.lblCurrencyB.setText(self.currencyb.currency_symbol)
+        self.lblCurrencyA.setText(currency_symbol(self.currencya)+" ")   
+        self.lblCurrencyB.setText(currency_symbol(self.currencyb))
 
         self.txtA.textChanged.disconnect()
         self.txtB.textChanged.disconnect()

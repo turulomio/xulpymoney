@@ -1,11 +1,11 @@
+from PyQt5.QtCore import Qt,  pyqtSlot
+from PyQt5.QtWidgets import QMenu, QWidget
+from xulpymoney.datetime_functions import days2string
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.objects.assets import  Assets
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.product import ProductUpdate
 from xulpymoney.objects.quote import Quote
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from PyQt5.QtCore import Qt,  pyqtSlot
-from PyQt5.QtWidgets import QMenu, QWidget
-from xulpymoney.datetime_functions import days2string
 from xulpymoney.ui.Ui_wdgInvestments import Ui_wdgInvestments
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
@@ -51,7 +51,6 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                             self.investments.gains_last_day()
                             , days2string(self.investments.average_age())))
 
-
     @pyqtSlot() 
     def on_actionActive_triggered(self):
         if self.selInvestment.account.eb.qmessagebox_inactive()  or self.selInvestment.account.qmessagebox_inactive():
@@ -64,18 +63,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.chkInactivas.setCheckState(Qt.Unchecked)
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
-            
     @pyqtSlot() 
     def on_actionInvestmentDelete_triggered(self):
-        """
-            on_mqtwInvestments_customContextMenuRequested validates if it's deletable
-        """
         self.selInvestment.borrar()
         self.mem.data.investments.remove(self.selInvestment)
         self.mem.con.commit()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
-          
     @pyqtSlot() 
     def on_actionInvestmentAdd_triggered(self):
         w=frmInvestmentReport(self.mem,   None, self)
@@ -116,8 +110,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-            
-            
+
     @pyqtSlot() 
     def on_actionProductPrice_triggered(self):
         w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
@@ -131,55 +124,18 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mem.con.commit()
         self.selInvestment.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-
-    @pyqtSlot() 
-    def on_actionSortTPCDiario_triggered(self):
-        if self.investments.order_by_percentage_daily():
-            self.mqtwInvestments_reload()    
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))  
-            self.mqtwInvestments_reload()       
-        
-    @pyqtSlot() 
-    def on_actionSortTPCVenta_triggered(self):
-        if self.investments.order_by_percentage_invested() and self.investments.order_by_percentage_sellingpoint():
-            self.mqtwInvestments_reload()    
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-            self.mqtwInvestments_reload()    
-        
-    @pyqtSlot() 
-    def on_actionSortTPC_triggered(self):
-        if self.investments.order_by_percentage_invested():
-            self.mqtwInvestments_reload()    
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-            self.mqtwInvestments_reload()    
-        
-    @pyqtSlot() 
-    def on_actionSortHour_triggered(self):
-        if self.investments.order_by_datetime():
-            self.mqtwInvestments_reload()    
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-            self.mqtwInvestments_reload()    
-        
-    @pyqtSlot() 
-    def on_actionSortName_triggered(self):
-        if self.investments.order_by_name():
-            self.mqtwInvestments_reload()    
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-            self.mqtwInvestments_reload()    
             
     @pyqtSlot(int) 
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active()
-            self.on_actionSortTPCVenta_triggered()
+            self.investments.order_by_percentage_sellingpoint()
+            self.mqtwInvestments_reload()
         else:
             self.investments=self.mem.data.investments_inactive()
-            self.on_actionSortName_triggered()
+            self.investments.order_by_name()
+            self.mqtwInvestments_reload()
+            
         self.mqtwInvestments.table.clearSelection()
         self.selInvestment=None   
 
@@ -232,14 +188,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addAction(self.actionProductUpdate)
         menu.addSeparator()
         menu.addAction(self.actionActive)
-        menu.addSeparator()        
-        ordenar=QMenu(self.tr("Order by"))
-        ordenar.addAction(self.actionSortName)
-        ordenar.addAction(self.actionSortHour)
-        ordenar.addAction(self.actionSortTPCDiario)
-        ordenar.addAction(self.actionSortTPC)
-        ordenar.addAction(self.actionSortTPCVenta)
-        menu.addMenu(ordenar)
+        menu.addSeparator()
         menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
@@ -288,9 +237,10 @@ Zero risk assests balance: {2} ( {3} from your total assets {4} )""").format(
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active().InvestmentManager_with_investments_with_zero_risk()
-            self.on_actionSortTPCVenta_triggered()
+            #self.order_by_percentage_sellingpoint()
         else:
             self.investments=self.mem.data.investments_inactive().InvestmentManager_with_investments_with_zero_risk()
-            self.on_actionSortName_triggered()
+            #self.investments.order_by_name()
+        self.mqtwInvestments_reload()
         self.mqtwInvestments.table.clearSelection()
         self.selInvestment=None   
