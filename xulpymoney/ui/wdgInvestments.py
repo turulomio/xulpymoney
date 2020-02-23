@@ -239,7 +239,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         ordenar.addAction(self.actionSortTPCDiario)
         ordenar.addAction(self.actionSortTPC)
         ordenar.addAction(self.actionSortTPCVenta)
-        menu.addMenu(ordenar)        
+        menu.addMenu(ordenar)
+        menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
     def on_mqtwInvestments_itemSelectionChanged(self):

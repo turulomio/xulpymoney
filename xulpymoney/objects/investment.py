@@ -362,7 +362,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             None, 
             data,  
             decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], 
-            zonename=self.mem.localzone_name, 
+            zonename=self.mem.localzone_name
         )   
         
         """Esta tabla muestra los money con la moneda local"""
