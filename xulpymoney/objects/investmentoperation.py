@@ -421,6 +421,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
         QObject.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
 
     def __repr__(self):
@@ -575,6 +576,7 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
 class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationCurrentHeterogeneusManager.__init__(self, mem)
+        self.setConstructorParameters(mem, investment)
         self.investment=investment
     
     def average_age(self, type=eMoneyCurrency.Product):
@@ -804,6 +806,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
     def __init__(self, mem):
         ObjectManager_With_Id_Selectable.__init__(self)
         QObject.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
 
     def consolidado_bruto(self,  year=None,  month=None):
@@ -952,6 +955,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
 class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoricalHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationHistoricalHeterogeneusManager.__init__(self, mem)
+        self.setConstructorParameters(mem, investment)
         self.investment=investment
         
     def taxes(self, type=eMoneyCurrency.Product):
@@ -1235,6 +1239,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
         QObject.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
         
     def get_highest_io_id(self):
@@ -1319,6 +1324,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
 class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManager):
     def __init__(self, mem, investment):
         InvestmentOperationHeterogeneusManager.__init__(self, mem)
+        self.setConstructorParameters(mem, investment)
         self.investment=investment
 
     ## InvestmentOperationHistorical hasn't id. They are generated dinamically with get_current_and_historical_operations from InvestmentOperations. 

@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QObject
-from xulpymoney.libmanagers import DictObjectManager_With_IdName_Selectable
+from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
 from xulpymoney.libxulpymoneytypes import eOperationType
 
 
@@ -14,9 +14,9 @@ class OperationType:
         return self
 
 
-class OperationTypeManager(DictObjectManager_With_IdName_Selectable, QObject):
+class OperationTypeManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
-        DictObjectManager_With_IdName_Selectable.__init__(self)
+        ObjectManager_With_IdName_Selectable.__init__(self)
         QObject.__init__(self)
         self.mem=mem     
 

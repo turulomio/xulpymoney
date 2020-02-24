@@ -117,9 +117,9 @@ class Investment(QObject):
     def Investment_At_Datetime(self, dt):
         self.needStatus(3)
         r=self.copy()
-        r.op=self.op.ObjectManager_copy_until_datetime(dt, self.mem, r)
+        r.op=self.op.ObjectManager_copy_until_datetime(dt)
         (r.op_actual,  r.op_historica)=r.op.get_current_and_historical_operations()
-        r.dividends=self.dividends.ObjectManager_copy_until_datetime(dt, self.mem, r)
+        r.dividends=self.dividends.ObjectManager_copy_until_datetime(dt)
         return r
 
     def copy(self ):
@@ -145,7 +145,7 @@ class Investment(QObject):
         if self.op_actual.length()==0:
             return DividendHomogeneusManager(self.mem, self)
         else:
-            return self.dividends.ObjectManager_from_datetime(self.op_actual.first().datetime, self.mem, self)
+            return self.dividends.ObjectManager_from_datetime(self.op_actual.first().datetime)
         
     def __repr__(self):
         return ("Instancia de Investment: {0} ({1})".format( self.name, self.id))
@@ -301,7 +301,7 @@ class Investment(QObject):
         else:
             # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=self.copy()
-            invfake.op=self.op.ObjectManager_copy_until_datetime(dtaware_day_end_from_date(date, self.mem.localzone_name), self.mem, invfake)
+            invfake.op=self.op.ObjectManager_copy_until_datetime(dtaware_day_end_from_date(date, self.mem.localzone_name))
             (invfake.op_actual,  invfake.op_historica)=invfake.op.get_current_and_historical_operations()
             return invfake.op_actual.invertido(type)
                 

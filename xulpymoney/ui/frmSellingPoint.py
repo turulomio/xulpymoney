@@ -51,9 +51,9 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         else:#Results in account currency
             self.operinversiones=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
             if self.chkGainsTime.checkState()==Qt.Checked:
-                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone_name.now()-datetime.timedelta(days=365), self.mem, self.investment)
+                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone_name.now()-datetime.timedelta(days=365))
             else:
-                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(None, self.mem, self.investment)
+                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(None)
             self.operinversiones.myqtablewidget(self.mqtw, self.investment.product.result.basic.last,  eMoneyCurrency.Account)
         sumacciones=self.operinversiones.shares()
         

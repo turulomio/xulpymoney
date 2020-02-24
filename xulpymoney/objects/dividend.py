@@ -142,6 +142,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
         QObject.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
             
     ## Net amount in self.mem.localcurrency
@@ -219,6 +220,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
 class DividendHomogeneusManager(DividendHeterogeneusManager):
     def __init__(self, mem, investment):
         DividendHeterogeneusManager.__init__(self, mem)
+        self.setConstructorParameters(mem, investment)
         self.investment=investment
         
     ## @param emoneycurrency eMoneyCurrency type
