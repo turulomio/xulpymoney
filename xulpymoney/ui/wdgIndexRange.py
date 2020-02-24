@@ -33,15 +33,15 @@ class Range:
         
     def textBottom(self):
         """Used to action text"""
-        return ("Bottom: {0}. Variation: {1}".format(self.product.currency.string(self.bottom), self.currentPriceBottomVariation()))
+        return ("Bottom: {0}. Variation: {1}".format(self.product.money(self.bottom), self.currentPriceBottomVariation()))
 
     def textMiddle(self):
         """Used to action text"""
-        return ("Middle: {0}. Variation: {1}".format(self.product.currency.string(self.middle), self.currentPriceMiddleVariation()))
+        return ("Middle: {0}. Variation: {1}".format(self.product.money(self.middle), self.currentPriceMiddleVariation()))
 
     def textTop(self):
         """Used to action text"""
-        return ("Top: {0}. Variation: {1}".format(self.product.currency.string(self.top), self.currentPriceTopVariation()))
+        return ("Top: {0}. Variation: {1}".format(self.product.money(self.top), self.currentPriceTopVariation()))
 
 class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def __init__(self,mem, parent=None):

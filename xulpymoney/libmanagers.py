@@ -84,7 +84,7 @@ class ObjectManager(object):
             print(" * {}".format(q))
 
     ## Order data columns. None values are set at the beginning
-    def order_with_none(self, command, reverse=False,none_at_top=True):
+    def order_with_none(self, command, reverse=False, none_at_top=True):
         nonull=[]
         null=[]
         for o in self.arr:
@@ -106,12 +106,9 @@ class ObjectManager(object):
     def _attribute_to_command(self, o, attribute):
         ## Returns an object 
         def str_attribute_with_points(o, attribute):
-            #if attribute.find(".")==-1:# Without .
-            #    o=getattr(o, attribute)
-            #else:
-                for s in attribute.split("."): # With .
-                    o=getattr(o, s)
-                return o
+            for s in attribute.split("."): # With .
+                o=getattr(o, s)
+            return o
         # --------------------------------------
         if attribute.__class__.__name__=="str":
             return str_attribute_with_points(o,attribute)
@@ -711,9 +708,9 @@ if __name__ == "__main__":
     manager.append(Object_With_IdName(4,"D"))
     manager.append(Object_With_IdName(None,"E"))
     manager.print()
-    manager.sort_with_none("id", True, True)
+    manager.order_with_none("id", True, True)
     manager.print()
-    manager.sort_with_none("name", False, False)
+    manager.order_with_none("name", False, False)
     manager.print()
-    manager.sort_with_none(["upper_name", (True,)], False, False)
+    manager.order_with_none(["upper_name", (True,)], False, False)
     manager.print()
