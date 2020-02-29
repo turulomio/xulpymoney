@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSlot, QSize
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from datetime import date
+from logging import debug
 from xulpymoney.objects.order import OrderManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
@@ -95,6 +96,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             return
         
         if self.orders.selected.executed==None:#Only adds operation if it's not executed
+            debug(self.orders.selected.investment)
             w=frmInvestmentReport(self.mem, self.orders.selected.investment, self)
             w.frmInvestmentOperationsAdd_initiated.connect(self.load_OrderData)
             w.on_actionOperationAdd_triggered()        
@@ -207,6 +209,8 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         for i in self.mqtwOrders.table.selectedItems():
             if i.column()==0:#only once per row
                 self.orders.selected=self.orders.arr[i.row()]
+                
+        debug("Order selected: {}".format(self.orders.selected))
                 
     def on_wdgYear_changed(self):
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())

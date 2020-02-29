@@ -1,18 +1,10 @@
 from PyQt5.QtCore import QObject
-from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
+from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable, Object_With_IdName
 from xulpymoney.libxulpymoneytypes import eOperationType
 
-
-class OperationType:
-    def __init__(self):
-        self.id=None
-        self.name=None
-        
-    def init__create(self, name,  id=None):
-        self.id=id
-        self.name=name
-        return self
-
+class OperationType(Object_With_IdName):
+    def __init__(self, id=None, name=None):
+        Object_With_IdName.__init__(self, id, name)
 
 class OperationTypeManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
@@ -20,41 +12,26 @@ class OperationTypeManager(ObjectManager_With_IdName_Selectable, QObject):
         QObject.__init__(self)
         self.mem=mem     
 
-    def load(self):
-        self.append(OperationType().init__create( self.tr("Expense"),  eOperationType.Expense))
-        self.append(OperationType().init__create( self.tr("Income"), eOperationType.Income))
-        self.append(OperationType().init__create( self.tr("Transfer"), eOperationType.Transfer))
-        self.append(OperationType().init__create( self.tr("Purchase of shares"), eOperationType.SharesPurchase))
-        self.append(OperationType().init__create( self.tr("Sale of shares"), eOperationType.SharesSale))
-        self.append(OperationType().init__create( self.tr("Added of shares"), eOperationType.SharesAdd))
-        self.append(OperationType().init__create( self.tr("Credit card billing"), eOperationType.CreditCardBilling))
-        self.append(OperationType().init__create( self.tr("Transfer of funds"), eOperationType.TransferFunds)) #Se contabilizan como ganancia
-        self.append(OperationType().init__create( self.tr("Transfer of shares. Origin"), eOperationType.TransferSharesOrigin)) #No se contabiliza
-        self.append(OperationType().init__create( self.tr("Transfer of shares. Destiny"), eOperationType.TransferSharesDestiny)) #No se contabiliza     
-        self.append(OperationType().init__create( self.tr("HL investment guarantee"), eOperationType.DerivativeManagement)) #No se contabiliza     
+def OperationTypeManager_hardcoded(mem):
+    r=OperationTypeManager(mem)
+    r.append(OperationType(eOperationType.Expense, r.tr("Expense")))
+    r.append(OperationType(eOperationType.Income, r.tr("Income")))
+    r.append(OperationType(eOperationType.Transfer, r.tr("Transfer")))
+    r.append(OperationType(eOperationType.SharesPurchase, r.tr("Purchase of shares")))
+    r.append(OperationType(eOperationType.SharesSale, r.tr("Sale of shares")))
+    r.append(OperationType(eOperationType.SharesAdd, r.tr("Added of shares")))
+    r.append(OperationType(eOperationType.CreditCardBilling, r.tr("Credit card billing")))
+    r.append(OperationType(eOperationType.TransferFunds, r.tr("Transfer of funds"))) #Se contabilizan como ganancia
+    r.append(OperationType(eOperationType.TransferSharesOrigin, r.tr("Transfer of shares. Origin"))) #No se contabiliza
+    r.append(OperationType(eOperationType.TransferSharesDestiny, r.tr("Transfer of shares. Destiny"))) #No se contabiliza     
+    r.append(OperationType(eOperationType.DerivativeManagement, r.tr("HL investment guarantee"))) #No se contabiliza     
+    return r
 
-
-    def qcombobox_basic(self, combo,  selected=None):
-        """Load lust some items
-        Selected is and object
-        It sorts by name the arr""" 
-        combo.clear()
-        for n in (eOperationType.Expense, eOperationType.Income):
-            a=self.find_by_id(str(n))
-            combo.addItem(a.name, a.id)
-
-        if selected!=None:
-            combo.setCurrentIndex(combo.findData(selected.id))
-            
-            
-    def qcombobox_investments_operations(self, combo,  selected=None):
-        """Load lust some items
-        Selected is and object
-        It sorts by name the arr""" 
-        combo.clear()
-        for n in (eOperationType.SharesPurchase, eOperationType.SharesSale, eOperationType.SharesAdd, eOperationType.TransferFunds):
-            a=self.find_by_id(str(n))
-            combo.addItem(a.name, a.id)
-
-        if selected!=None:
-            combo.setCurrentIndex(combo.findData(selected.id))
+def OperationTypeManager_from_list_ids(mem, list_ids):
+    r=OperationTypeManager(mem)
+    for id in list_ids:
+        r.append(mem.tiposoperaciones.find_by_id(id))
+    return r
+    
+def OperationTypeManager_for_InvestmentOperations(mem):
+    return OperationTypeManager_from_list_ids( mem,  (eOperationType.SharesPurchase, eOperationType.SharesSale, eOperationType.SharesAdd, eOperationType.TransferFunds))

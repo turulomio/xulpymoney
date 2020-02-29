@@ -6,6 +6,7 @@ from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
 
 from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.objects.money import Money
+from xulpymoney.objects.operationtype import OperationTypeManager_for_InvestmentOperations
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
@@ -53,12 +54,12 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion=InvestmentOperation(self.mem)
             self.operinversion.investment=self.investment
             self.lblTitulo.setText(self.tr("New operation of {}").format(self.investment.name))
-            self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones)
             self.wdgDT.set()
+            OperationTypeManager_for_InvestmentOperations(self.mem).qcombobox(self.cmbTiposOperaciones)
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
-            self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
+            OperationTypeManager_for_InvestmentOperations(self.mem).qcombobox(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.operinversion.datetime, self.mem.localzone_name)
             self.wdg2CGross.setTextA(self.operinversion.net(type=1))
             self.wdg2CNet.setTextA(self.operinversion.gross(type=1))

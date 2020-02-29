@@ -354,20 +354,22 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
     ## @param needtoselect Adds a foo item with value==None with the text select one
     ## @param icons Boolean. If it's true uses o.qicon() method to add an icon to the item
     def qcombobox(self, combo,  selected=None, needtoselect=False, icons=False):
-        self.order_by_name()
+        combo.blockSignals(True)
         combo.clear()
-
         if needtoselect==True:
             if self.length()>0:
                 combo.addItem(combo.tr("Select an option"), None)
             else:
                 combo.addItem(combo.tr("No options to select"), None)
+        else:
+            combo.setCurrentIndex(-1)
 
         for a in self.arr:
             if icons==True:
                 combo.addItem(a.qicon(), a.name, a.id)
             else:
                 combo.addItem(a.name, a.id)
+        combo.blockSignals(False)
 
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))

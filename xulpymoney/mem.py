@@ -20,7 +20,7 @@ from xulpymoney.objects.country import CountryManager
 from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.objects.leverage import LeverageManager
 from xulpymoney.objects.money import Money
-from xulpymoney.objects.operationtype import OperationTypeManager
+from xulpymoney.objects.operationtype import OperationTypeManager_hardcoded
 from xulpymoney.objects.product import ProductUpdate, ProductManager
 from xulpymoney.objects.productmode import ProductModesManager
 from xulpymoney.objects.producttype import ProductTypeManager
@@ -357,8 +357,7 @@ class MemXulpymoney(Mem):
         self.zones.load_all()
         self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
         
-        self.tiposoperaciones=OperationTypeManager(self)
-        self.tiposoperaciones.load()
+        self.tiposoperaciones=OperationTypeManager_hardcoded(self)
         
         self.conceptos=ConceptManager(self)
         self.conceptos.load_from_db()
