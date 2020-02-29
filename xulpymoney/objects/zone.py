@@ -51,6 +51,7 @@ class Zone:
 class ZoneManager(ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
         
     def load_all(self):

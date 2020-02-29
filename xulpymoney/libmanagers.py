@@ -2,17 +2,11 @@
 ## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 ##
-## This file is from Xulpymoney project. Do not edit, It will be overriden.
-##
 ## You have to use list objects if you are going to make selections and secuential access.
-##
-## You have to use dictionary objects i f you are going to make unordered access to the dictionary. It consumes more memory. To access a selected item in a table you have to hide a column with the id and getit when selecting a row
-##
 
 from datetime import datetime, timedelta, date
-from logging import debug, critical
+from logging import critical
 from .datetime_functions import dtaware_day_end_from_date, dtaware_day_start_from_date, dtnaive_day_end_from_date, dtnaive_day_start_from_date
-
 
 ## Defines who self.selected is managed
 ## If can take the following values
@@ -25,8 +19,7 @@ class ManagerSelectionMode:
 
 class ObjectManager(object):
     def __init__(self):
-        self.arr=[]       
-        self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
+        self.arr=[]
 
     ## Store constructor params to allow create new instances of this managers
     def setConstructorParameters(self, *params):
@@ -44,10 +37,6 @@ class ObjectManager(object):
 
     def length(self):
         return len(self.arr)
-
-    #To use the same name as DictObjectManager
-    def values(self):
-        return self.arr
 
     def clean(self):
         """Deletes all items"""
@@ -80,41 +69,74 @@ class ObjectManager(object):
             print(" * {}".format(q))
 
     ## Order data columns. None values are set at the beginning
-    def order_with_none(self, command, reverse=False, none_at_top=True):
+    def order_with_none(self, string_or_tuple, reverse=False, none_at_top=True):
         nonull=[]
         null=[]
         for o in self.arr:
-            com=self._attribute_to_command(o, command)
+            com=self._string_or_tuple_to_command(o, string_or_tuple)
             if com is None:
                 null.append(o)
             else:
                 nonull.append(o)
-        nonull=sorted(nonull, key=lambda c: self._attribute_to_command(c,command), reverse=reverse)
+        nonull=sorted(nonull, key=lambda c: self._string_or_tuple_to_command(c,string_or_tuple), reverse=reverse)
         if none_at_top==True:#Set None at top of the list
             self.arr=null+nonull
         else:
             self.arr=nonull+null
+            
+    ## Returns a new manager with the objects that have found a list of strings in several commands, passed as 
+    ## This function doen't make exact matches. Only if strings in s_list are contained
+    ## @param string_or_tuple_list List of _string_or_tuple_to_command parameters
+    ## @param s_list List of string to search
+    def find_strings_contained_in_string_or_tuple_results(self, string_or_tuple_list, s_list, upper=False):
+        r=self.emptyManager()
+        for o in self.arr:
+            string_=""
+            for string_or_tuple in string_or_tuple_list:
+                string_=string_+str(self._string_or_tuple_to_command(o, string_or_tuple))
+                
+            for s in s_list:
+                if upper==True:
+                    if s.upper() in string_.upper():
+                        r.append(o)
+                        break
+                else:#upper False
+                    if s in string_:
+                        r.append(o)
+                        break
+        return r
+        
+    def find_string_exact_in_string_or_tuple_results(self, string_or_tuple, s, upper=False):        
+        r=self.emptyManager()
+        for o in self.arr:
+            if upper==True:
+                if s.upper() == self._string_or_tuple_to_command(o, string_or_tuple).upper():
+                    r.append(o)
+            else:#upper False
+                if s == self._string_or_tuple_to_command(o, string_or_tuple):
+                    r.append(o)
+        return r
 
     ## @param attribute str or list
     ## Class Person, has self.name, self.age(), self.age_years_ago(year) self.son (another Person object)
     ## manager_attributes of setDataFromManager must be called in a PersonManager
     ## - ["name", ["age",[]], ["age_years_ago", [year]], ["son.age",[]]
-    def _attribute_to_command(self, o, attribute):
+    def _string_or_tuple_to_command(self, o, string_or_tuple):
         ## Returns an object 
-        def str_attribute_with_points(o, attribute):
-            for s in attribute.split("."): # With .
-                o=getattr(o, s)
+        def string_with_points(o, string_):
+            for s in string_.split("."): # With .
+                if "()" in s:#object.method1().attirbute
+                    o=getattr(o, s)()
+                else:#object.attribute1
+                    o=getattr(o, s)
             return o
         # --------------------------------------
-        if attribute.__class__.__name__=="str":
-            return str_attribute_with_points(o,attribute)
+        if string_or_tuple.__class__.__name__=="str":
+            return string_with_points(o, string_or_tuple)
         else:#List
-            function=str_attribute_with_points(o, attribute[0])
-            parameters=attribute[1]
+            function=string_with_points(o, string_or_tuple[0])
+            parameters=string_or_tuple[1]
             return function(*parameters)
-
-
-
 
 ## Manager Selection class
 ## By default selectionmode is
@@ -203,13 +225,8 @@ class ObjectManager_With_Id(ObjectManager):
         except:
             return None
 
-    def order_by_id(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
-            return True
-        except:
-            return False
+    def order_by_id(self, reverse=False, none_at_top=True):
+        self.order_with_none(self, "id", reverse=reverse, none_at_top=none_at_top)
 
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
@@ -228,24 +245,22 @@ class ObjectManager_With_IdDate(ObjectManager_With_Id):
     def __init__(self):
         ObjectManager_With_Id.__init__(self)
 
-    def order_by_date(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.date,  reverse=False) 
+    def order_by_date(self, reverse=False, none_at_top=True):
+        self.order_with_none(self, "date", reverse=reverse, none_at_top=none_at_top)
         
 ## Objects in DictListObjectManager has and id and a datetime
 class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     def __init__(self):
         ObjectManager_With_Id.__init__(self)
 
-    def order_by_datetime(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
+    def order_by_datetime(self, reverse=False, none_at_top=True):
+        self.order_with_none(self, "datetime", reverse=reverse, none_at_top=none_at_top)
                 
     ## Function that returns the same object manager, with a pointer to the of the objects that contains from the datetime given in the parameter.
     ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
     ## @param datetime. This function copies all object with datetime until this parameter
     def ObjectManager_from_datetime(self, dt):
-        result=self.emptyManager()#Para que coja la clase del objeto que lo invoca
-        if dt==None:
-            dt=self.mem.localzone.now()
+        result=self.emptyManager()
         for a in self.arr:
             if a.datetime>=dt:
                 result.append(a)
@@ -255,19 +270,14 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
     ## @param datetime. This function copies all object with datetime until this parameter
     def ObjectManager_until_datetime(self, dt):
-        result=self.emptyManager() #Para que coja la clase del objeto que lo invoca
-        if dt==None:
-            dt=self.mem.localzone.now()
+        result=self.emptyManager()
         for a in self.arr:
             if a.datetime<=dt:
                 result.append(a)
         return result
         
     def ObjectManager_copy_from_datetime(self, dt):
-        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro tambien copiadas."""
-        result=self.emptyManager() #Para que coja la clase del objeto que lo invoca
-        if dt==None:
-            dt=self.mem.localzone.now()
+        result=self.emptyManager()
         for a in self.arr:
             if a.datetime>=dt:
                 result.append(a.copy())
@@ -277,9 +287,7 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
     ## For exemple the constuctor of InvemestOperationHomogeneous is InvemestOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_copy_until_datetime(dt,mem,investment)
     ## @param datetime. This function copies all object with datetime until this parameter
     def ObjectManager_copy_until_datetime(self, dt):
-        result=self.emptyManager() #Para que coja la clase del objeto que lo invoca
-        if dt==None:
-            dt=self.mem.localzone.now()
+        result=self.emptyManager()
         for a in self.arr:
             if a.datetime<=dt:
                 result.append(a.copy())
@@ -304,16 +312,8 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
             r.sort()
         return r
 
-    ## Find an object searching in its name to match the parameter
-    def find_by_name(self, name,  log=False):
-        """self.find_by_id() search by id (number).
-        This function replaces  it and searches by name (Europe/Madrid)"""
-        for a in self.arr:
-            if a.name==name:
-                return a
-        debug("{} didn't find the name: {}".format(self.__class__, name))
-        return None
-
+    def find_by_name(self, s,  upper=False):
+        return self.find_string_exact_in_string_or_tuple_results("name", s, upper)
 
     ## Returns another object manager of the same class with the elements that contains a string in the name
     ## @param s string to search
@@ -334,21 +334,11 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
                     result.append(a)
             return result
         
-    def order_by_name(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)       
-            return True
-        except:
-            return False        
+    def order_by_name(self, reverse=False, none_at_top=True):
+        self.order_with_none("name", reverse=reverse, none_at_top=none_at_top)
 
-    def order_by_upper_name(self):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda c: c.name.upper(),  reverse=False)       
-            return True
-        except:
-            return False
+    def order_by_upper_name(self, reverse=False, none_at_top=True):
+        self.order_with_none(self, ("name.upper", []), reverse=reverse, none_at_top=none_at_top)
 
     ## @param selected it's an object
     ## @param needtoselect Adds a foo item with value==None with the text select one
@@ -557,7 +547,7 @@ if __name__ == "__main__":
     filled=r.DateValueManager_filling_empty()
     filled.print()
 
-    sizes=(1,10,100,1000,10000,100000,1000000,3000000)
+    sizes=(1,10,100,1000,10000,100000)#,1000000,3000000)
     for size in sizes:
         l=ObjectManager_With_Id()
         for number in range(size):
@@ -574,15 +564,25 @@ if __name__ == "__main__":
     print()
     print("Ordering with None")
     manager=ObjectManager_With_IdName()
-    manager.append(Object_With_IdName(1, None))
-    manager.append(Object_With_IdName(2,"B"))
-    manager.append(Object_With_IdName(3,"C"))
-    manager.append(Object_With_IdName(4,"D"))
-    manager.append(Object_With_IdName(None,"E"))
-    manager.print()
-    manager.order_with_none("id", True, True)
-    manager.print()
-    manager.order_with_none("name", False, False)
+    manager.setConstructorParameters()
+    manager.append(Object_With_IdName(12, None))
+    manager.append(Object_With_IdName(23,"AB"))
+    manager.append(Object_With_IdName(34,"BC"))
+    manager.append(Object_With_IdName(45,"CD"))
+    manager.append(Object_With_IdName(None,"DE"))
     manager.print()
     manager.order_with_none(["upper_name", (True,)], False, False)
     manager.print()
+
+    print()
+    print("Finding objects")
+    find_name=manager.find_strings_contained_in_string_or_tuple_results(
+                            [
+                                ("upper_name", (True, )),  #tuple
+                                "id" #string
+                            ],  
+                            ["2", "C"] #Words to find
+                        )
+    find_name.print()
+    find_name=manager.find_by_name("CD")
+    find_name.print()

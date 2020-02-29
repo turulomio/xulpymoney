@@ -1,7 +1,7 @@
 ## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
-from PyQt5.QtCore import Qt,  pyqtSlot, QObject
+from PyQt5.QtCore import Qt,  pyqtSlot, QObject,  pyqtSignal
 from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
@@ -10,6 +10,7 @@ from logging import info, debug
 from datetime import datetime, date,  timedelta
                 
 class myQTableWidget(QWidget):
+    setDataFinished=pyqtSignal()
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.parent=parent
@@ -133,20 +134,30 @@ class myQTableWidget(QWidget):
         else: #No encontrado
              reverse=False
              action.setText(action.text() + " (desc)")
-
-        nonull=[]
-        null=[]
-        for row in self.data:
-            if row[action_index] is None:
-                null.append(row)
+             
+        # Remover others (desc), to the rest of actions
+        for i, other_action in enumerate(self.actionListOrderBy):
+            if i!=action_index:# Different to selected action index
+                other_action.setText(other_action.text().replace(self.tr(" (desc)"),""))
+            
+        # Orders and sets data
+        if self.isDataFromManager()==True: #With set data manager
+            self.manager.order_with_none(self.manager_attributes[action_index], reverse=reverse, none_at_top=self._none_at_top)
+            self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename)
+        else:#With set Data
+            nonull=[]
+            null=[]
+            for row in self.data:
+                if row[action_index] is None:
+                    null.append(row)
+                else:
+                    nonull.append(row)
+            nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
+            if self._none_at_top==True:#Set None at top of the list
+                self.data=null+nonull
             else:
-                nonull.append(row)
-        nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
-        if self._none_at_top==True:#Set None at top of the list
-            self.data=null+nonull
-        else:
-            self.data=nonull+null
-        self.setData(self.hh, self.hv, self.data)
+                self.data=nonull+null
+            self.setData(self.hh, self.hv, self.data)
 
 
     def applySettings(self):
@@ -164,6 +175,8 @@ class myQTableWidget(QWidget):
     def setData(self, header_horizontal, header_vertical, data, decimals=2, zonename='UTC'):
         if decimals.__class__.__name__=="int":
             decimals=[decimals]*len(header_horizontal)
+        self.data_decimals=decimals
+        self.data_zonename=zonename
         # Creates order actions here after creating data
         if hasattr(self,"actionListOrderBy")==False:
             self.actionListOrderBy=[]
@@ -197,9 +210,9 @@ class myQTableWidget(QWidget):
                     self.table.setCellWidget(row, column, wdg)
                 else:#qtablewidgetitem
                     self.table.setItem(row, column, wdg)
-                    
+        self.setDataFinished.emit()
+
     def print(self, hh, hv, data):
-    
         print(hh)
         for i, row in enumerate(data):
             print (hv[i] , row)
@@ -224,30 +237,16 @@ class myQTableWidget(QWidget):
         for o in manager.arr:
             row=[]
             for attribute in self.manager_attributes:
-                row.append(self._attribute_to_command(o,attribute))
+                row.append(self.manager._string_or_tuple_to_command(o,attribute))
             data.append(row)
         self.setData(header_horizontal, header_vertical, data, decimals, zonename)
-
-
-    ## @param attribute str or list
-    ## Class Person, has self.name, self.age(), self.age_years_ago(year) self.son (another Person object)
-    ## manager_attributes of setDataFromManager must be called in a PersonManager
-    ## - ["name", ["age",[]], ["age_years_ago", [year]], ["son.age",[]]
-    def _attribute_to_command(self, o, attribute):
-        ## Returns an object 
-        def str_attribute_with_points(o, attribute):
-            for s in attribute.split("."):
-                o=getattr(o, s)
-            return o
-        # --------------------------------------
-        if attribute.__class__.__name__=="str":
-            return str_attribute_with_points(o,attribute)
-        else:#List
-            function=str_attribute_with_points(o, attribute[0])
-            parameters=attribute[1]
-            return function(*parameters)
-
-                    
+        
+    ## Returns if data has been added from manager
+    def isDataFromManager(self):
+        if hasattr(self, "manager")==True:
+            return True
+        return False
+            
     ## Converts a objecct class to a qtablewidgetitem
     def object2qtablewidgetitem(self, o, decimals=2, zonename="UTC"):
         if o.__class__.__name__ in ["int"]:
@@ -379,8 +378,7 @@ class myQTableWidget(QWidget):
                 self.table.hideRow(row)
             else:
                 self.table.showRow(row)
-                
-                
+
     def officegeneratorModel(self, title="sheet"):
         def pixel2cm(pixels):
             #Converts size in pixels to cm
@@ -606,7 +604,10 @@ if __name__ == '__main__':
     hv=["Johnny be good"]*manager.length()
     w.table.verticalHeader().show()
     w.settings(mem.settings, "myqtablewidget", "tblExample")
-    w.setData(["Id", "Name", "Date", "Last update","Mem.name", "Age"], hv, data )
+    hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
+    #ALTERNATE TO DEBUG
+    #w.setData(hh, hv, data )
+    w.setDataFromManager(hh, hv, manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])])
     w.move(300, 300)
     w.resize(800, 400)
     w.setWindowTitle('myQTableWidget example')

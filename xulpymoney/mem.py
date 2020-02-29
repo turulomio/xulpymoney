@@ -186,8 +186,10 @@ class Mem(QObject):
         info("Loading db data took {}".format(datetime.now()-inicio))
 
     def __del__(self):
-        if self.con:#Cierre por reject en frmAccess
+        try:
             self.con.disconnect()
+        except:
+            pass
             
 
     ## Sets debug sustem, needs
@@ -275,7 +277,7 @@ class MemSources(Mem):
         self.app.setApplicationName("xulpymoney")
         
         self.settings=QSettings()
-        self.localzone=self.settings.value("mem/localzone", "Europe/Madrid")
+        self.localzone_name=self.settings.value("mem/localzone", "Europe/Madrid")
         self.load_translation()
         self.settings=QSettings()
         
@@ -323,9 +325,6 @@ class MemXulpymoney(Mem):
         args=self.parser.parse_args()
         return args
         
-    def setLocalzone(self):
-        self.localzone_name=self.settings.value("mem/localzone", "Europe/Madrid")
-        self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", self.localzone_name))
     
     def qicon(self):
         icon = QIcon()
@@ -341,7 +340,7 @@ class MemXulpymoney(Mem):
     def load_db_data(self, progress=True, load_data=True):
         """Esto debe ejecutarse una vez establecida la conexión"""
         inicio=datetime.now()
-        
+
         self.autoupdate=ProductUpdate.generateAutoupdateSet(self) #Set with a list of products with autoupdate
         info("There are {} products with autoupdate".format(len(self.autoupdate)))
         
@@ -355,7 +354,8 @@ class MemXulpymoney(Mem):
         
         self.zones=ZoneManager(self)
         self.zones.load_all()
-        self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
+        self.localzone_name=self.settingsdb.value("mem/localzone", "Europe/Madrid")
+        self.localzone=self.zones.find_by_name(self.localzone_name).first() #Find by name returns a ZoneManager
         
         self.tiposoperaciones=OperationTypeManager_hardcoded(self)
         

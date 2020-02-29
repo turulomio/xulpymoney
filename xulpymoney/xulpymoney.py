@@ -27,8 +27,6 @@ def main():
         if update.need_update()==True:
             update.run()
 
-        mem.setLocalzone()#Needs settings in mem
-
         mem.frmMain = frmMain(mem)
         mem.frmMain.show()
         exit(mem.app.exec_())
