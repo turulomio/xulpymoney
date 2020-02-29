@@ -26,7 +26,7 @@ class StockMarket:
         self.closes=closes
         self.starts_futures=starts_futures
         self.closes_futures=closes_futures
-        self.zone=self.mem.zones.find_by_name(zone_name)
+        self.zone=self.mem.zones.find_by_name(zone_name).first()
         return self
 
     ## Returns the close time of a given date

@@ -226,7 +226,7 @@ class ObjectManager_With_Id(ObjectManager):
             return None
 
     def order_by_id(self, reverse=False, none_at_top=True):
-        self.order_with_none(self, "id", reverse=reverse, none_at_top=none_at_top)
+        self.order_with_none("id", reverse=reverse, none_at_top=none_at_top)
 
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
@@ -246,7 +246,7 @@ class ObjectManager_With_IdDate(ObjectManager_With_Id):
         ObjectManager_With_Id.__init__(self)
 
     def order_by_date(self, reverse=False, none_at_top=True):
-        self.order_with_none(self, "date", reverse=reverse, none_at_top=none_at_top)
+        self.order_with_none("date", reverse=reverse, none_at_top=none_at_top)
         
 ## Objects in DictListObjectManager has and id and a datetime
 class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
@@ -254,7 +254,7 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
         ObjectManager_With_Id.__init__(self)
 
     def order_by_datetime(self, reverse=False, none_at_top=True):
-        self.order_with_none(self, "datetime", reverse=reverse, none_at_top=none_at_top)
+        self.order_with_none("datetime", reverse=reverse, none_at_top=none_at_top)
                 
     ## Function that returns the same object manager, with a pointer to the of the objects that contains from the datetime given in the parameter.
     ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
@@ -338,7 +338,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         self.order_with_none("name", reverse=reverse, none_at_top=none_at_top)
 
     def order_by_upper_name(self, reverse=False, none_at_top=True):
-        self.order_with_none(self, ("name.upper", []), reverse=reverse, none_at_top=none_at_top)
+        self.order_with_none(("name.upper", []), reverse=reverse, none_at_top=none_at_top)
 
     ## @param selected it's an object
     ## @param needtoselect Adds a foo item with value==None with the text select one
