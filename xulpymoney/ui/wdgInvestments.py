@@ -25,7 +25,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
     
     def mqtwInvestments_reload(self):
-        self.update()
+        self.investments.myqtablewidget(self.mqtwInvestments)
         self.lblTotal_update()
     
     ## Updates lblTotal
@@ -121,11 +121,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active()
-            self.investments.order_by_percentage_sellingpoint()
+            self.investments.myqtablewidget(self.mqtwInvestments)
+            self.mqtwInvestments.setOrderBy(7, True)
         else:
             self.investments=self.mem.data.investments_inactive()
-            self.investments.order_by_name()
-        self.investments.myqtablewidget(self.mqtwInvestments)
+            self.investments.myqtablewidget(self.mqtwInvestments)
+            self.mqtwInvestments.setOrderBy(0, False)
         self.lblTotal_update()
 
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
@@ -221,9 +222,10 @@ Zero risk assests balance: {2} ( {3} from your total assets {4} )""").format(
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active().InvestmentManager_with_investments_with_zero_risk()
-            #self.order_by_percentage_sellingpoint()
+            self.investments.myqtablewidget(self.mqtwInvestments)
+            self.mqtwInvestments.setOrderBy(7, True)
         else:
             self.investments=self.mem.data.investments_inactive().InvestmentManager_with_investments_with_zero_risk()
-            #self.investments.order_by_name()
-        self.mqtwInvestments_reload()
-        self.mqtwInvestments.table.clearSelection()
+            self.investments.myqtablewidget(self.mqtwInvestments)
+            self.mqtwInvestments.setOrderBy(0, False)
+        self.lblTotal_update()

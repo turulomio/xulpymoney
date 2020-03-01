@@ -371,7 +371,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         
     def myqtablewidget_additional(self, wdg):
         type=eMoneyCurrency.User
-        for i, inv in enumerate(self.arr):
+        for i, inv in enumerate(wdg.objects()):
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             tpc_venta=inv.percentage_to_selling_point()
             if inv.op_actual.shares()>=0: #Long operation

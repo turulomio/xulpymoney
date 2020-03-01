@@ -2,7 +2,7 @@
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 from PyQt5.QtCore import Qt,  pyqtSlot, QObject,  pyqtSignal
-from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush
+from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush, QFont
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
 from .. libmanagers import ManagerSelectionMode
@@ -22,6 +22,7 @@ class myQTableWidget(QWidget):
         self.table=QTableWidget()
         self.table.setContextMenuPolicy(Qt.CustomContextMenu)
         self.table.verticalScrollBar().valueChanged.connect(self.on_table_verticalscrollbar_value_changed)
+        self.table.horizontalHeader().sectionClicked.connect(self.on_table_horizontalHeader_sectionClicked)
         self.table.verticalHeader().hide()
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -57,13 +58,20 @@ class myQTableWidget(QWidget):
         self.table.setAlternatingRowColors(True)
         self._last_height=None
         self._none_at_top=True
+        self._sort_action_reverse=None#Needed for first setData
         
     def on_generic_customContextMenuRequested(self, pos):
         self.qmenu().exec_(self.table.mapToGlobal(pos))
         
     def setGenericContextMenu(self):
         self.table.customContextMenuRequested.connect(self.on_generic_customContextMenuRequested)
-                
+        
+    ## Strikes out all qtablewidgetitem in a row
+    ## @param row int Row index
+    def setRowStrikeOut(self, row):
+        for i in range(self.table.horizontalHeader().count()):
+            qtwiSetStrikeOut(self.table.item(row, i))
+
     def setVerticalHeaderHeight(self, height):
         """height, if null default.
         Must be after settings"""
@@ -130,22 +138,24 @@ class myQTableWidget(QWidget):
     ## Affeter selection an action of the OrderByAction list, returns its information, to be used in several classes
     def _get_triggered_action_information(self):
         action=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
-        action_index=self.hh.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
+        self._sort_action_index=self.hh.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
 
         # Sets if its reverse or not and renames action
         if action.text().find(self.tr(" (desc)"))>0:
-             reverse=True
+             self._sort_action_reverse=True
              action.setText(action.text().replace(self.tr(" (desc)"),""))
+             action.setIcon(QIcon(":/reusingcode/sort_up.png"))
         else: #No encontrado
-             reverse=False
+             self._sort_action_reverse=False
              action.setText(action.text() + " (desc)")
-             
+             action.setIcon(QIcon(":/reusingcode/sort_down.png"))
+
         # Remover others (desc), to the rest of actions
         for i, other_action in enumerate(self.actionListOrderBy):
-            if i!=action_index:# Different to selected action index
+            if i!=self._sort_action_index:# Different to selected action index
                 other_action.setText(other_action.text().replace(self.tr(" (desc)"),""))
                 
-        self.on_orderby_action_triggered(action,  action_index, reverse)
+        self.on_orderby_action_triggered(action,  self._sort_action_index, self._sort_action_reverse)
         
     ## Orders self.data. Seperated due is used by several sub clases
     def _order_data(self, action_index, reverse):
@@ -156,7 +166,10 @@ class myQTableWidget(QWidget):
                 null.append(row)
             else:
                 nonull.append(row)
-        nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
+        try:
+            nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
+        except:
+            debug("I couldn't order column due to there are different types on it.")
         if self._none_at_top==True:#Set None at top of the list
             if reverse==False:# Desc must put None on the other side
                 self.data=null+nonull
@@ -167,6 +180,20 @@ class myQTableWidget(QWidget):
                 self.data=nonull+null
             else:
                 self.data=null+nonull
+
+    ## Used to order using clicks in headers
+    def on_table_horizontalHeader_sectionClicked(self, index):
+        self.actionListOrderBy[index].triggered.emit()
+        debug("Ordering table by header '{}'".format(self.actionListOrderBy[index].text()))
+        
+        
+    ## Used to order table progamatically
+    def setOrderBy(self, index, reverse):
+        action=self.actionListOrderBy[index]
+        action.setText(action.text().replace(" (desc)",""))#Leave action as ascendant
+        if reverse==True:#Emulated action change of text
+            action.setText(action.text() + " (desc)")
+        action.triggered.emit()
 
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):
@@ -200,6 +227,7 @@ class myQTableWidget(QWidget):
                 action=QAction("{}".format(header))
                 self.actionListOrderBy.append(action)
                 action.triggered.connect(self._get_triggered_action_information)
+                action.setIcon(QIcon(":/reusingcode/sort_up.png"))
 
         # Headers
         self.hh=header_horizontal
@@ -209,6 +237,10 @@ class myQTableWidget(QWidget):
         if self.hh is not None:
             for i in range(len(self.hh)):
                 self.table.setHorizontalHeaderItem(i, QTableWidgetItem(self.hh[i]))
+        if self._sort_action_reverse==True:
+            self.table.horizontalHeaderItem(self._sort_action_index).setIcon(QIcon(":reusingcode/sort_down.png"))
+        elif self._sort_action_reverse==False:
+            self.table.horizontalHeaderItem(self._sort_action_index).setIcon(QIcon(":reusingcode/sort_up.png"))
         if self.hv is not None:
             self.table.verticalHeader().show()
             self.table.setRowCount(len(self.data))# To do not lose data
@@ -696,8 +728,21 @@ def qpercentage(percentage, decimals=2):
         a.setForeground(QColor(255, 0, 0))
     return a
     
+## Sets font to bold
+## @param qtwi QTableWidgetItem
+def qtwiSetBold(qtwi):
+    font=QFont()
+    font.setBold(True)
+    qtwi.setFont(font)
+    
+## Text is set to strike out
+## @param qtwi QTableWidgetItem
+def qtwiSetStrikeOut(qtwi):
+    font=QFont()
+    font.setStrikeOut(True)
+    qtwi.setFont(font)
 
-if __name__ == '__main__':
+def example():
     from libmanagers import ObjectManager_With_IdName_Selectable
     from PyQt5.QtCore import QSettings
     from base64 import b64encode
@@ -724,11 +769,20 @@ if __name__ == '__main__':
         def prueba(self, wdg):
             print("ICONS", wdg)
 
-    def additional_with_objects(wdg):
+    def __additional_with_objects(wdg):
         wdg.table.setRowCount(len(wdg.data)+1)
         wdg.table.setItem(len(wdg.data), 0 , qnone())
+        for i, o in enumerate(wdg.objects()):
+            if o.id==5:
+                wdg.table.item(i , 0).setIcon(QIcon(":/reusingcode/search.png"))
+            if o.id==6:
+                qtwiSetBold(wdg.table.item(i, 0))
+            if o.id==7:
+                qtwiSetStrikeOut(wdg.table.item(i, 0))
+            if o.id==8:
+                wdg.setRowStrikeOut(i)
 
-    def on_mqtw_manager_customContextMenuRequested(pos):
+    def __on_mqtw_manager_customContextMenuRequested(pos):
         menu=QMenu()
         menu.addMenu(mqtw_manager.qmenu())
         menu.addSeparator()
@@ -757,6 +811,8 @@ if __name__ == '__main__':
 
     mem=Mem()
     app = QApplication([])
+    from importlib import import_module
+    import_module("xulpymoney.images.xulpymoney_rc")
     w=QWidget()
     hv=None
 
@@ -769,6 +825,7 @@ if __name__ == '__main__':
     mqtw_data.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data.setData(hh, hv, data )
+    mqtw_data.setOrderBy(2,  False)
     
     #mqtw with object
     mqtw_data_with_object = mqtwDataWithObjects(w)
@@ -776,22 +833,23 @@ if __name__ == '__main__':
     hv=["Johnny be good"]*len(data_object)
     mqtw_data_with_object.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
-    mqtw_data_with_object.setDataWithObjects(hh, hv, data_object, additional=additional_with_objects )
+    mqtw_data_with_object.setDataWithObjects(hh, hv, data_object, additional=__additional_with_objects )
+    mqtw_data_with_object.setOrderBy(2,  False)
 
     #mqtwManager
     mqtw_manager = mqtwManager(w)    
     mqtw_manager.setSelectionMode(ManagerSelectionMode.List)
-    mqtw_manager.table.customContextMenuRequested.connect(on_mqtw_manager_customContextMenuRequested)
+    mqtw_manager.table.customContextMenuRequested.connect(__on_mqtw_manager_customContextMenuRequested)
     mqtw_manager.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
 
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)
+    mqtw_manager.setOrderBy(2,  False)
 
     lay.addWidget(mqtw_data)
     lay.addWidget(mqtw_data_with_object)
     lay.addWidget(mqtw_manager)
     w.setWindowTitle('myQTableWidget example')
-    w.move(300, 300)
     w.resize(1400, 600)
     w.show()
 
