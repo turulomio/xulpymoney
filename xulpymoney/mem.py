@@ -355,7 +355,7 @@ class MemXulpymoney(Mem):
         self.zones=ZoneManager(self)
         self.zones.load_all()
         self.localzone_name=self.settingsdb.value("mem/localzone", "Europe/Madrid")
-        self.localzone=self.zones.find_by_name(self.localzone_name).first() #Find by name returns a ZoneManager
+        self.localzone=self.zones.find_by_name(self.localzone_name).first() #Find by name returns a ZoneManager, so I need first
         
         self.tiposoperaciones=OperationTypeManager_hardcoded(self)
         

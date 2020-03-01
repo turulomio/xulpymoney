@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
-from logging import debug
 from xulpymoney.ui.Ui_wdgAccounts import Ui_wdgAccounts
 from xulpymoney.ui.frmTransfer import frmTransfer
 from xulpymoney.ui.frmAccountsReport import frmAccountsReport
@@ -14,7 +13,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mqtwAccounts.settings(self.mem.settings, "wdgAccounts", "mqtwAccounts")
         self.mqtwAccounts.table.cellDoubleClicked.connect(self.on_mqtwAccounts_cellDoubleClicked)
         self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
-        self.mqtwAccounts.table.itemSelectionChanged.connect(self.on_mqtwAccounts_itemSelectionChanged)
         self.mem.data.accounts.order_by_name()
         self.accounts=self.mem.data.accounts_active()
         self.update()
@@ -74,6 +72,8 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         menu.addAction(self.actionTransfer)
         menu.addSeparator()
         menu.addAction(self.actionAccountReport)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwAccounts.qmenu())
         menu.exec_(self.mqtwAccounts.table.mapToGlobal(pos))
 
         
@@ -96,14 +96,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         
     def on_mqtwAccounts_cellDoubleClicked(self, row,  column):
         self.on_actionAccountReport_triggered()
-        
-    def on_mqtwAccounts_itemSelectionChanged(self):
-        self.accounts.selected=None
-        for i in self.mqtwAccounts.table.selectedItems():#itera por cada item no row.
-            if i.column()==0:
-                self.accounts.selected=self.accounts.arr[i.row()]
-                break
-        debug("Account selected: {}".format(self.accounts.selected))
 
     def update(self):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())

@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot, QObject,  pyqtSignal
 from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
+from .. libmanagers import ManagerSelectionMode
 from officegenerator import ODS_Write
 from logging import info, debug
 from datetime import datetime, date,  timedelta
@@ -34,6 +35,7 @@ class myQTableWidget(QWidget):
         self.laySearch.addWidget(self.txtSearch)
         self.laySearch.addWidget(self.cmdCloseSearch)
         self.lay.addWidget(self.table)
+        self.table.verticalScrollBar().valueChanged.connect(self.on_table_verticalscrollbar_value_changed)
         self.lay.addLayout(self.laySearch)
         self.setLayout(self.lay)
         
@@ -77,10 +79,9 @@ class myQTableWidget(QWidget):
     
     @pyqtSlot(int)
     def on_table_verticalscrollbar_value_changed(self, value):
-        if value % 8 ==1:
+        if value % 3 ==1:
             self.on_actionSizeNeeded_triggered()
-        
-        
+
     def settings(self, settings, settingsSection,  objectname):
         self.settings=settings
         #For all myQTableWidget in settings app
@@ -89,15 +90,12 @@ class myQTableWidget(QWidget):
         self.settingsObject=objectname
         self.setObjectName(self.settingsObject)
 
-
     def clear(self):
         """Clear table"""
         self.table.setRowCount(0)
         self.table.clearContents()
-
     
-    ## Resizes columns if column width is less than table hint
-    #def verticalScrollbarAction(self,  action):
+    ## Resizes columns if column width is less than table hin
     def wheelEvent(self, event):
         self.on_actionSizeNeeded_triggered()
         event.accept()
@@ -121,9 +119,8 @@ class myQTableWidget(QWidget):
                 self.officegeneratorModel( "My table").ods_sheet(ods)
                 ods.save()
 
-
-    ## Order data columns. None values are set at the beginning
-    def on_orderby_action_triggered(self, action):
+    ## Affeter selection an action of the OrderByAction list, returns its information, to be used in several classes
+    def _get_triggered_action_information(self):
         action=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
         action_index=self.hh.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
 
@@ -139,25 +136,24 @@ class myQTableWidget(QWidget):
         for i, other_action in enumerate(self.actionListOrderBy):
             if i!=action_index:# Different to selected action index
                 other_action.setText(other_action.text().replace(self.tr(" (desc)"),""))
-            
-        # Orders and sets data
-        if self.isDataFromManager()==True: #With set data manager
-            self.manager.order_with_none(self.manager_attributes[action_index], reverse=reverse, none_at_top=self._none_at_top)
-            self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename)
-        else:#With set Data
-            nonull=[]
-            null=[]
-            for row in self.data:
-                if row[action_index] is None:
-                    null.append(row)
-                else:
-                    nonull.append(row)
-            nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
-            if self._none_at_top==True:#Set None at top of the list
-                self.data=null+nonull
+                
+        self.on_orderby_action_triggered(action,  action_index, reverse)
+
+    ## Order data columns. None values are set at the beginning
+    def on_orderby_action_triggered(self, action, action_index, reverse):
+        nonull=[]
+        null=[]
+        for row in self.data:
+            if row[action_index] is None:
+                null.append(row)
             else:
-                self.data=nonull+null
-            self.setData(self.hh, self.hv, self.data)
+                nonull.append(row)
+        nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
+        if self._none_at_top==True:#Set None at top of the list
+            self.data=null+nonull
+        else:
+            self.data=nonull+null
+        self.setData(self.hh, self.hv, self.data)
 
 
     def applySettings(self):
@@ -183,7 +179,7 @@ class myQTableWidget(QWidget):
             for header in header_horizontal:
                 action=QAction("{}".format(header))
                 self.actionListOrderBy.append(action)
-                action.triggered.connect(self.on_orderby_action_triggered)
+                action.triggered.connect(self._get_triggered_action_information)
 
         # Headers
         self.hh=header_horizontal
@@ -225,28 +221,6 @@ class myQTableWidget(QWidget):
     def setNoneAtTop(self,boolean):
         self._none_at_top=boolean
 
-    ## Adds a horizontal header array , a vertical header array and a data array
-    ##
-    ## Automatically set alignment
-    ## @param manager Manager object from libmanagers
-    ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
-    def setDataFromManager(self, header_horizontal, header_vertical, manager, manager_attributes, decimals=2, zonename='UTC'):
-        self.manager_attributes=manager_attributes
-        self.manager=manager
-        data=[]
-        for o in manager.arr:
-            row=[]
-            for attribute in self.manager_attributes:
-                row.append(self.manager._string_or_tuple_to_command(o,attribute))
-            data.append(row)
-        self.setData(header_horizontal, header_vertical, data, decimals, zonename)
-        
-    ## Returns if data has been added from manager
-    def isDataFromManager(self):
-        if hasattr(self, "manager")==True:
-            return True
-        return False
-            
     ## Converts a objecct class to a qtablewidgetitem
     def object2qtablewidgetitem(self, o, decimals=2, zonename="UTC"):
         if o.__class__.__name__ in ["int"]:
@@ -399,6 +373,65 @@ class myQTableWidget(QWidget):
         m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
         m.setData(self.data)
         return m
+## Acronim of myQTableWidget
+## Used for readibility improvement
+class mqtw(myQTableWidget):
+    def __init__(self, parent):
+        myQTableWidget.__init__(self, parent)
+        
+class mqtwManager(myQTableWidget):
+    def __init__(self, parent):
+        myQTableWidget.__init__(self, parent)
+        self._manager_selection_mode=ManagerSelectionMode.Object
+        self.table.itemSelectionChanged.connect(self.on_itemSelectionChanged)
+
+    def on_itemSelectionChanged(self):
+        self.manager.cleanSelection()
+        for i in self.table.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                if self.manager.selectionMode()==ManagerSelectionMode.Object:
+                    self.manager.selected=self.manager.object(i.row())
+                elif self.manager.selectionMode()==ManagerSelectionMode.List:
+                    self.manager.selected.append(self.manager.object(i.row()))
+        debug("{} selection: {}".format(self.manager.__class__.__name__,  self.manager.selected))
+
+    ## Adds a horizontal header array , a vertical header array and a data array
+    ##
+    ## Automatically set alignment
+    ## @param manager Manager object from libmanagers
+    ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
+    ## @param additional Function without it's call, to add additional table information like Total Rows or icons
+    def setDataFromManager(self, header_horizontal, header_vertical, manager, manager_attributes, decimals=2, zonename='UTC', additional=None):
+        self.manager_attributes=manager_attributes
+        self.manager=manager
+        self.additional=additional
+
+        #Sets manager selection mode and table
+        self.manager.setSelectionMode(self._manager_selection_mode)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        if self._manager_selection_mode==ManagerSelectionMode.Object:
+            self.table.setSelectionMode(QAbstractItemView.SingleSelection)
+        else:
+            self.table.setSelectionMode(QAbstractItemView.MultiSelection)
+
+        # Sets data
+        data=[]
+        for o in manager.arr:
+            row=[]
+            for attribute in self.manager_attributes:
+                row.append(self.manager._string_or_tuple_to_command(o,attribute))
+            data.append(row)
+        self.setData(header_horizontal, header_vertical, data, decimals, zonename)
+
+        self.additional(self)
+
+    def setSelectionMode(self, manager_selection_mode):
+        self._manager_selection_mode=manager_selection_mode
+
+    ## Order data columns. None values are set at the beginning
+    def on_orderby_action_triggered(self, action, action_index, reverse):
+        self.manager.order_with_none(self.manager_attributes[action_index], reverse=reverse, none_at_top=self._none_at_top)
+        self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename, additional=self.additional)
 
 ## @return qtablewidgetitem
 def qbool(bool):
@@ -550,9 +583,10 @@ def qpercentage(percentage, decimals=2):
     elif percentage.value<0:
         a.setForeground(QColor(255, 0, 0))
     return a
+    
 
 if __name__ == '__main__':
-    from libmanagers import ObjectManager_With_IdName
+    from libmanagers import ObjectManager_With_IdName_Selectable
     from PyQt5.QtCore import QSettings
     from base64 import b64encode
 
@@ -562,7 +596,7 @@ if __name__ == '__main__':
             self.name="namemem"
         def age(self, integer):
             return integer
-            
+
     class Prueba:
         def __init__(self, id=None, name=None, date=None, datetime=None):
             self.id=id
@@ -570,50 +604,67 @@ if __name__ == '__main__':
             self.date=date
             self.datetime=datetime
             self.pruebita=Mem()
-                
-    class PruebaManager(ObjectManager_With_IdName):
-        def __init__(self):
-            ObjectManager_With_IdName.__init__(self)
-            
-    def on_customContextMenuRequested(pos):
-        w.qmenu().exec_(w.mapToGlobal(pos))
 
-    manager=PruebaManager()
+    class PruebaManager(ObjectManager_With_IdName_Selectable):
+        def __init__(self):
+            ObjectManager_With_IdName_Selectable.__init__(self)
+
+        def prueba(self, wdg):
+            print("ICONS", wdg)
+
+    def on_mqtw_data_customContextMenuRequested(pos):
+        mqtw_data.qmenu().exec_(mqtw_data.mapToGlobal(pos))
+    def on_mqtw_manager_customContextMenuRequested(pos):
+        mqtw_manager.qmenu().exec_(mqtw_manager.mapToGlobal(pos))
+
+    manager_manager=PruebaManager()
     for i in range(100):
-        manager.append(Prueba(i, b64encode(bytes(str(i).encode('UTF-8'))).decode('UTF-8'), date.today()-timedelta(days=i), datetime.now()+timedelta(seconds=3758*i)))
-    manager.append(Prueba(None,"Con None",date.today(),datetime.now()))
-    manager.append(Prueba(None, "", None, None))
-    manager.append(Prueba(None, None, None, None))
-    manager.append(Prueba(None, "#crossedout", None, None))
-    manager.append(Prueba(None, False, None, None))
-    manager.append(Prueba(None, True, None, None))
-    
+        manager_manager.append(Prueba(i, b64encode(bytes(str(i).encode('UTF-8'))).decode('UTF-8'), date.today()-timedelta(days=i), datetime.now()+timedelta(seconds=3758*i)))
+
+    manager_data=PruebaManager()
+    manager_data.append(Prueba(None,"Con None",date.today(),datetime.now()))
+    manager_data.append(Prueba(None, "", None, None))
+    manager_data.append(Prueba(None, None, None, None))
+    manager_data.append(Prueba(None, "#crossedout", None, None))
+    manager_data.append(Prueba(None, False, None, None))
+    manager_data.append(Prueba(None, True, None, None))
+
     data=[]
-    for o in manager.arr:
+    for o in manager_data.arr:
         data.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.pruebita.age(1)])
-    
-        
-    selected=PruebaManager()
-    selected.append(manager.arr[3])
-    
+
     mem=Mem()
     app = QApplication([])
+    w=QWidget()
     hv=None
 
-    w = myQTableWidget()
-    hv=["Johnny be good"]*manager.length()
-    w.table.verticalHeader().show()
-    w.settings(mem.settings, "myqtablewidget", "tblExample")
+    #mqtw
+    lay=QHBoxLayout(w)
+    mqtw_data = mqtw(w)
+    hv=["Johnny be good"]*len(data)
+    mqtw_data.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
-    #ALTERNATE TO DEBUG
-    #w.setData(hh, hv, data )
-    w.setDataFromManager(hh, hv, manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])])
-    w.move(300, 300)
-    w.resize(800, 400)
+    mqtw_data.setData(hh, hv, data )
+
+    mqtw_data.setContextMenuPolicy(Qt.CustomContextMenu)
+    mqtw_data.table.customContextMenuRequested.connect(on_mqtw_data_customContextMenuRequested)
+
+    #mqtwManager
+    mqtw_manager = mqtwManager(w)    
+    mqtw_manager.setSelectionMode(ManagerSelectionMode.List)
+    mqtw_manager.settings(mem.settings, "myqtablewidget", "tblExample")
+    hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
+
+    mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)
+
+    mqtw_manager.setContextMenuPolicy(Qt.CustomContextMenu)
+    mqtw_manager.table.customContextMenuRequested.connect(on_mqtw_manager_customContextMenuRequested)
+
+    lay.addWidget(mqtw_data)
+    lay.addWidget(mqtw_manager)
     w.setWindowTitle('myQTableWidget example')
-    
-    w.setContextMenuPolicy(Qt.CustomContextMenu)
-    w.table.customContextMenuRequested.connect(on_customContextMenuRequested)
+    w.move(300, 300)
+    w.resize(1400, 600)
     w.show()
-    
+
     app.exec()

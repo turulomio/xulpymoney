@@ -21,6 +21,9 @@ class ObjectManager(object):
     def __init__(self):
         self.arr=[]
 
+    def __repr__(self):
+        return "{} with {} objects".format(self.__class__.__name__, self.length())
+
     ## Store constructor params to allow create new instances of this managers
     def setConstructorParameters(self, *params):
         self.initparams=params
@@ -51,22 +54,25 @@ class ObjectManager(object):
         return result
    
     def first(self):
-        if self.length()>0:
-            return self.arr[0]
-        else:
-            print ("There is no first item")
-            return None
+        return self.object(0)
 
     def index(self,o):
         return self.arr.index(o)
 
     def last(self):
-        return self.arr[self.length()-1]
+        return self.object(self.length()-1)
 
     def print(self):
         print ("Objects in {}".format(self.__class__))
         for q in self.arr:
             print(" * {}".format(q))
+            
+    ## Return the object at the index position
+    def object(self, index):
+        try:
+            return self.arr[index]
+        except:
+            critical("I couldn't retrive object from {} position".format(index))
 
     ## Order data columns. None values are set at the beginning
     def order_with_none(self, string_or_tuple, reverse=False, none_at_top=True):

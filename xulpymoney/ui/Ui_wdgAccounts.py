@@ -32,7 +32,7 @@ class Ui_wdgAccounts(object):
         self.chkInactivas = QtWidgets.QCheckBox(wdgAccounts)
         self.chkInactivas.setObjectName("chkInactivas")
         self.verticalLayout.addWidget(self.chkInactivas)
-        self.mqtwAccounts = myQTableWidget(wdgAccounts)
+        self.mqtwAccounts = mqtwManager(wdgAccounts)
         self.mqtwAccounts.setObjectName("mqtwAccounts")
         self.verticalLayout.addWidget(self.mqtwAccounts)
         self.verticalLayout_2.addLayout(self.verticalLayout)
@@ -91,5 +91,5 @@ class Ui_wdgAccounts(object):
         self.actionActive.setToolTip(_translate("wdgAccounts", "Is it active?"))
         self.actionTransfer.setText(_translate("wdgAccounts", "Transfer between accounts"))
         self.actionTransfer.setToolTip(_translate("wdgAccounts", "Transfer between accounts"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtwManager
 import xulpymoney.images.xulpymoney_rc

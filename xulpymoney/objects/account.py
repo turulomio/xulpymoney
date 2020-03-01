@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QIcon
 from datetime import date
 from logging import critical
 from xulpymoney.datetime_functions import  dtaware_day_end_from_date
@@ -44,7 +45,7 @@ class Account(QObject):
 
         
     def __repr__(self):
-        return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
+        return ("Account '{0}' ({1})".format( self.name, self.id))
 
     def balance(self,fecha=None, type=eMoneyCurrency.User):
         """Función que calcula el balance de una cuenta
@@ -145,6 +146,9 @@ class Account(QObject):
             self.creditcards.load_from_db(self.mem.con.mogrify("select * from tarjetas where id_cuentas=%s", (self.id, )))
             self.status=1
 
+    def qicon(self):
+        return QIcon(":/xulpymoney/coins.png")
+
     def qmessagebox_inactive(self):
         if self.active==False:
             qmessagebox(self.tr("The associated account is not active. You must activate it first"))
@@ -201,19 +205,20 @@ class AccountManager(QObject, ObjectManager_With_IdName_Selectable):
                     r.append(cc)
         return r
 
-    def mqtw(self, wdg):            
-        data=[]
-        for i, o in enumerate(self.arr):
-            data.append([
-                o.name, 
-                o.eb.name, 
-                o.numero, 
-                o.balance().local(), 
-            ])
-        wdg.setData(
-            [self.tr("Account"), self.tr("Bank"), self.tr("Account number"), self.tr("Bank")], 
+    def mqtw(self, wdg):                
+        wdg.setDataFromManager(
+            [self.tr("Account"), self.tr("Bank"), self.tr("Account number"), self.tr("Balance")], 
             None, 
-            data, 
+            self, 
+            ["name", "eb.name", "numero", ("balance", [])], 
             decimals=2, 
-            zonename=self.mem.localzone_name
+            zonename=self.mem.localzone_name, 
+            additional=self.mqtw_additional
         )
+
+    def mqtw_additional(self, wdg):
+        for i, o in enumerate(self.arr):
+            if o.name=="Cash":
+                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/Money.png"))
+            else:
+                wdg.table.item(i, 0).setIcon(o.qicon())

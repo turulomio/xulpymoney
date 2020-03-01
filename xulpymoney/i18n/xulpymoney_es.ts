@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>Account</name>
     <message>
@@ -1719,42 +1720,42 @@ Purgadas en total en el proceso global: {1}</translation>
         <source>Loading products...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="14"/>
         <source>Teléfono</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="16"/>
         <source>Televisión &amp; Video &amp; Cine</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="21"/>
         <source>Loterías</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="27"/>
         <source>Médicos </source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="29"/>
         <source>Loterías Premios</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="30"/>
         <source>Informática</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="47"/>
         <source>Préstamo (Me devuelven)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../hardcoded_strings.py" line="50"/>
         <source>Regalos económicos recibidos</source>
         <translation type="unfinished"></translation>
@@ -2345,7 +2346,7 @@ Purgadas en total en el proceso global: {1}</translation>
     </message>
     <message>
         <location filename="../ui/frmAbout.py" line="25"/>
-        <source>This program has been developed by Mariano Mu&#xf1;oz</source>
+        <source>This program has been developed by Mariano Muñoz</source>
         <translation>Este programa ha sido desarrollado por Mariano Muñoz</translation>
     </message>
     <message>
@@ -2599,7 +2600,7 @@ Purgadas en total en el proceso global: {1}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="374"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -3864,12 +3865,12 @@ Purgadas en total en el proceso global: {1}</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="63"/>
-        <source>Xulpymoney 2010-{0} &#xa9;</source>
+        <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="60"/>
-        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
     <message>
@@ -8335,7 +8336,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="90"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
         <translation>Xulpymoney SIMULADA EN {} 2010-{} ©</translation>
     </message>
 </context>

@@ -40,7 +40,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQTableWidget" name="mqtwAccounts" native="true"/>
+        <widget class="mqtwManager" name="mqtwAccounts" native="true"/>
        </item>
       </layout>
      </item>
@@ -129,7 +129,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtwManager</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>
