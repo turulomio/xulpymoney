@@ -212,6 +212,9 @@ class Investment(QObject):
         elif type==3:
             return  Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime).local(quote.datetime)
     
+    def fullName(self):
+        return "{} ({})".format(self.name, self.account.name)
+
     @deprecated
     def get_operinversiones(self, date=None):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
@@ -503,6 +506,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id and inv.op_actual.shares()==0:
                 result.append(inv)
         return result
+
 
     ## Returns the balance of al investments
     def balance(self, date=None):

@@ -23,7 +23,6 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mqtwInvestments.settings(self.mem.settings, "wdgInvestments", "mqtwInvestments")
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
-        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
     
     def mqtwInvestments_reload(self):
@@ -191,11 +190,6 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addSeparator()
         menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
-
-    def on_mqtwInvestments_itemSelectionChanged(self):
-        self.selInvestment=None
-        for i in self.mqtwInvestments.table.selectedItems():#itera por cada item no row.
-            self.selInvestment=self.investments.arr[i.row()]
 
     @pyqtSlot(int, int) 
     def on_mqtwInvestments_cellDoubleClicked(self, row, column):

@@ -55,6 +55,12 @@ class myQTableWidget(QWidget):
         self.table.setAlternatingRowColors(True)
         self._last_height=None
         self._none_at_top=True
+        
+    def on_generic_customContextMenuRequested(self, pos):
+        self.qmenu().exec_(self.table.mapToGlobal(pos))
+        
+    def setGenericContextMenu(self):
+        self.table.customContextMenuRequested.connect(self.on_generic_customContextMenuRequested)
                 
     def setVerticalHeaderHeight(self, height):
         """height, if null default.
@@ -150,9 +156,15 @@ class myQTableWidget(QWidget):
                 nonull.append(row)
         nonull=sorted(nonull, key=lambda c: c[action_index],  reverse=reverse)
         if self._none_at_top==True:#Set None at top of the list
-            self.data=null+nonull
+            if reverse==False:# Desc must put None on the other side
+                self.data=null+nonull
+            else:
+                self.data=nonull+null
         else:
-            self.data=nonull+null
+            if reverse==False:
+                self.data=nonull+null
+            else:
+                self.data=null+nonull
         self.setData(self.hh, self.hv, self.data)
 
 
@@ -433,6 +445,7 @@ class mqtwManager(myQTableWidget):
         self.manager.order_with_none(self.manager_attributes[action_index], reverse=reverse, none_at_top=self._none_at_top)
         self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename, additional=self.additional)
 
+
 ## @return qtablewidgetitem
 def qbool(bool):
     """Prints bool and check. Is read only and enabled"""
@@ -612,10 +625,12 @@ if __name__ == '__main__':
         def prueba(self, wdg):
             print("ICONS", wdg)
 
-    def on_mqtw_data_customContextMenuRequested(pos):
-        mqtw_data.qmenu().exec_(mqtw_data.mapToGlobal(pos))
     def on_mqtw_manager_customContextMenuRequested(pos):
-        mqtw_manager.qmenu().exec_(mqtw_manager.mapToGlobal(pos))
+        menu=QMenu()
+        menu.addMenu(mqtw_manager.qmenu())
+        menu.addSeparator()
+        menu.addMenu(mqtw_manager.qmenu())
+        menu.exec_(mqtw_manager.table.mapToGlobal(pos))
 
     manager_manager=PruebaManager()
     for i in range(100):
@@ -641,24 +656,20 @@ if __name__ == '__main__':
     #mqtw
     lay=QHBoxLayout(w)
     mqtw_data = mqtw(w)
+    mqtw_data.setGenericContextMenu()
     hv=["Johnny be good"]*len(data)
     mqtw_data.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data.setData(hh, hv, data )
 
-    mqtw_data.setContextMenuPolicy(Qt.CustomContextMenu)
-    mqtw_data.table.customContextMenuRequested.connect(on_mqtw_data_customContextMenuRequested)
-
     #mqtwManager
     mqtw_manager = mqtwManager(w)    
     mqtw_manager.setSelectionMode(ManagerSelectionMode.List)
+    mqtw_manager.table.customContextMenuRequested.connect(on_mqtw_manager_customContextMenuRequested)
     mqtw_manager.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
 
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)
-
-    mqtw_manager.setContextMenuPolicy(Qt.CustomContextMenu)
-    mqtw_manager.table.customContextMenuRequested.connect(on_mqtw_manager_customContextMenuRequested)
 
     lay.addWidget(mqtw_data)
     lay.addWidget(mqtw_manager)
