@@ -17,22 +17,15 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.setupUi(self)
         self.mem=mem
         self.investments=None
-        self.selInvestment=None##Apunta a un objeto inversión
         self.loadedinactive=False
 
-        self.mqtwInvestments.settings(self.mem.settings, "wdgInvestments", "mqtwInvestments")
+        self.mqtwInvestments.settings(self.mem.settings, "wdgInvestments", "mqtwInvestments")#It's a mqtwDataWithObjects. Selection in mqtw, not in manager
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
     
     def mqtwInvestments_reload(self):
-        """Función que carga la tabla de inversiones con el orden que tenga el arr serl.investments"""
-        if self.chkInactivas.checkState()==Qt.Checked:
-            self.mqtwInvestments.table.setColumnHidden(8, True)
-        else:
-            self.mqtwInvestments.table.setColumnHidden(8, False)
-
-        self.investments.myqtablewidget(self.mqtwInvestments)
+        self.update()
         self.lblTotal_update()
     
     ## Updates lblTotal
@@ -52,11 +45,11 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @pyqtSlot() 
     def on_actionActive_triggered(self):
-        if self.selInvestment.account.eb.qmessagebox_inactive()  or self.selInvestment.account.qmessagebox_inactive():
+        if self.mqtwInvestments.selected.account.eb.qmessagebox_inactive()  or self.mqtwInvestments.selected.account.qmessagebox_inactive():
             return  
     
-        self.selInvestment.active=not self.selInvestment.active
-        self.selInvestment.save()
+        self.mqtwInvestments.selected.active=not self.mqtwInvestments.selected.active
+        self.mqtwInvestments.selected.save()
         self.mem.con.commit()     
 
         self.chkInactivas.setCheckState(Qt.Unchecked)
@@ -64,8 +57,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @pyqtSlot() 
     def on_actionInvestmentDelete_triggered(self):
-        self.selInvestment.borrar()
-        self.mem.data.investments.remove(self.selInvestment)
+        self.mqtwInvestments.selected.borrar()
+        self.mem.data.investments.remove(self.mqtwInvestments.selected)
         self.mem.con.commit()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
@@ -77,20 +70,20 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
-        w=frmInvestmentReport(self.mem,  self.selInvestment, self)
+        w=frmInvestmentReport(self.mem,  self.mqtwInvestments.selected, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionProduct_triggered(self):
-        w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
+        w=frmProductReport(self.mem, self.mqtwInvestments.selected.product, self.mqtwInvestments.selected, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionProductUpdate_triggered(self):
         update=ProductUpdate(self.mem)
-        update.setCommands(self.selInvestment.product)
+        update.setCommands(self.mqtwInvestments.selected.product)
         quotes=update.run()
         quotes.save()
         self.mem.con.commit()
@@ -98,30 +91,30 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
-        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.selInvestment.product)
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.mqtwInvestments.selected.product)
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
                     
     @pyqtSlot() 
     def on_actionSameProductFIFO_triggered(self):
-        inv=self.mem.data.investments.Investment_merging_operations_with_same_product(self.selInvestment.product)
+        inv=self.mem.data.investments.Investment_merging_operations_with_same_product(self.mqtwInvestments.selected.product)
         w=frmInvestmentReport(self.mem, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionProductPrice_triggered(self):
-        w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
+        w=frmQuotesIBM(self.mem, self.mqtwInvestments.selected.product,None,  self)
         w.exec_()
-        self.selInvestment.product.needStatus(1, downgrade_to=0)
+        self.mqtwInvestments.selected.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
-        self.selInvestment.product.result.basic.last.delete()
+        self.mqtwInvestments.selected.product.result.basic.last.delete()
         self.mem.con.commit()
-        self.selInvestment.product.needStatus(1, downgrade_to=0)
+        self.mqtwInvestments.selected.product.needStatus(1, downgrade_to=0)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
             
     @pyqtSlot(int) 
@@ -129,17 +122,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active()
             self.investments.order_by_percentage_sellingpoint()
-            self.mqtwInvestments_reload()
         else:
             self.investments=self.mem.data.investments_inactive()
             self.investments.order_by_name()
-            self.mqtwInvestments_reload()
-            
-        self.mqtwInvestments.table.clearSelection()
-        self.selInvestment=None   
+        self.investments.myqtablewidget(self.mqtwInvestments)
+        self.lblTotal_update()
 
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
-        if self.selInvestment==None:
+        if self.mqtwInvestments.selected==None:
             self.actionInvestmentReport.setEnabled(False)
             self.actionInvestmentDelete.setEnabled(False)
             self.actionActive.setEnabled(False)
@@ -151,14 +141,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       
             self.actionProduct.setEnabled(True)
-            if self.mem.data.investments.numberWithSameProduct(self.selInvestment.product)>1:
+            if self.mem.data.investments.numberWithSameProduct(self.mqtwInvestments.selected.product)>1:
                 self.actionSameProduct.setEnabled(True)
                 self.actionSameProductFIFO.setEnabled(True)
             else:
                 self.actionSameProduct.setEnabled(False)
                 self.actionSameProductFIFO.setEnabled(False)
             self.actionProductPrice.setEnabled(True)
-            if self.selInvestment.is_deletable()==True:
+            if self.mqtwInvestments.selected.is_deletable()==True:
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
@@ -166,7 +156,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionProductPriceLastRemove.setEnabled(True)
             self.actionProductUpdate.setEnabled(True)
                 
-            if self.selInvestment.active==True:
+            if self.mqtwInvestments.selected.active==True:
                 self.actionActive.setText(self.tr('Deactivate investment'))
             else:
                 self.actionActive.setText(self.tr('Activate investment'))
@@ -194,10 +184,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     @pyqtSlot(int, int) 
     def on_mqtwInvestments_cellDoubleClicked(self, row, column):
         if column==8:#TPC Venta
-            qmessagebox(self.tr("Shares number: {0}").format(self.selInvestment.shares())+"\n"+
-                    self.tr("Purchase price average: {0}").format(self.selInvestment.op_actual.average_price().local())+"\n"+
-                    self.tr("Selling point: {}").format(self.selInvestment.venta)+"\n"+
-                    self.tr("Selling all shares you get {}").format(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta)).local())
+            qmessagebox(self.tr("Shares number: {0}").format(self.mqtwInvestments.selected.shares())+"\n"+
+                    self.tr("Purchase price average: {0}").format(self.mqtwInvestments.selected.op_actual.average_price().local())+"\n"+
+                    self.tr("Selling point: {}").format(self.mqtwInvestments.selected.venta)+"\n"+
+                    self.tr("Selling all shares you get {}").format(self.mqtwInvestments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.mqtwInvestments.selected.product, self.mem.localzone.now(),  self.mqtwInvestments.selected.venta)).local())
             )  
         else:
             self.on_actionInvestmentReport_triggered()
@@ -237,4 +227,3 @@ Zero risk assests balance: {2} ( {3} from your total assets {4} )""").format(
             #self.investments.order_by_name()
         self.mqtwInvestments_reload()
         self.mqtwInvestments.table.clearSelection()
-        self.selInvestment=None   

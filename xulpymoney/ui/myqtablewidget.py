@@ -170,8 +170,10 @@ class myQTableWidget(QWidget):
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):
         self._order_data(action_index, reverse)
-        self.setData(self.hh, self.hv, self.data)
+        self.update()
 
+    def update(self):
+        self.setData(self.hh, self.hv, self.data, self.data_decimals, self.data_zonename)
 
     def applySettings(self):
         """settings must be defined before"""
@@ -475,8 +477,11 @@ class mqtwDataWithObjects(mqtwData):
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):
         self._order_data(action_index, reverse)
+        self.update()
+
+    def update(self):
         self.setDataWithObjects(self.hh, self.hv, self.data, self.data_decimals, self.data_zonename, additional=self.additional)
-        
+
 class mqtwManager(myQTableWidget):
     def __init__(self, parent):
         myQTableWidget.__init__(self, parent)
@@ -531,6 +536,9 @@ class mqtwManager(myQTableWidget):
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):
         self.manager.order_with_none(self.manager_attributes[action_index], reverse=reverse, none_at_top=self._none_at_top)
+        self.update()
+
+    def update(self):
         self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename, additional=self.additional)
 
 
