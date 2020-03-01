@@ -54,7 +54,10 @@ class Investment(QObject):
         ## 3 Dividends
         self.status=0
         self.dividends=None#Must be created due to in mergeing investments needs to add it manually
-    
+
+    def qicon(self):
+        return QIcon(":/xulpymoney/investment.png")
+
     ## REturn a money object with the amount and investment currency
     def money(self, amount):
         return Money(self.mem, amount, self.product.currency)
@@ -386,6 +389,21 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                     wdg.table.item(i, 7).setBackground(eQColor.Red)
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
                     wdg.table.item(i, 8).setBackground(eQColor.Green)
+
+    def mqtw_active(self, wdg):                
+        wdg.setDataFromManager(
+            [self.tr("Investment"), self.tr("Active"), self.tr("Balance")], 
+            None, 
+            self, 
+            ["name", "active", ("balance", [])], 
+            additional=self.mqtw_active_additional
+        )
+
+    def mqtw_active_additional(self, wdg):
+        wdg.table.setRowCount(self.length()+1)
+        for i, o in enumerate(self.arr):
+            wdg.table.item(i, 0).setIcon(o.qicon())
+        wdg.addRow(self.length(), [self.tr("Total"), "#crossedout", self.balance()])
 
     ## Displays last current operation and shows in red background when operation has lost more than a percentage
     ## @param table MyQTableWidget

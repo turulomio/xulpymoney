@@ -30,6 +30,7 @@ class myQTableWidget(QWidget):
         self.txtSearch=QLineEdit()
         self.txtSearch.textChanged.connect(self.on_txt_textChanged)
         self.cmdCloseSearch=QToolButton()
+        self.cmdCloseSearch.setIcon(QIcon(":/reusingcode/button_cancel.png"))
         self.showSearchOptions(False)
         self.cmdCloseSearch.released.connect(self.on_cmdCloseSearch_released)
         self.laySearch.addWidget(self.lbl)
@@ -350,27 +351,29 @@ class myQTableWidget(QWidget):
     def qmenu(self, title="Table options"):
         menu=QMenu(self.parent)
         menu.setTitle(self.tr(title))
-        menu.addAction(self.actionExport)
-        menu.addSeparator()
-        menu.addAction(self.actionSearch)
-        menu.addSeparator()
-        order=QMenu(menu)
-        order.setTitle(self.tr("Order by"))
-        for action in self.actionListOrderBy:
-            order.addAction(action)
-        menu.addMenu(order)
-        size=QMenu(menu)
-        size.setTitle(self.tr("Columns size"))
-        size.addAction(self.actionSizeMinimum)
-        size.addAction(self.actionSizeNeeded)
-        menu.addMenu(size)
+        if hasattr(self,"actionListOrderBy")==True:
+            menu.addAction(self.actionExport)
+            menu.addSeparator()
+            menu.addAction(self.actionSearch)
+            menu.addSeparator()
+            order=QMenu(menu)
+            order.setTitle(self.tr("Order by"))
+            for action in self.actionListOrderBy:
+                order.addAction(action)
+            menu.addMenu(order)
+            size=QMenu(menu)
+            size.setTitle(self.tr("Columns size"))
+            size.addAction(self.actionSizeMinimum)
+            size.addAction(self.actionSizeNeeded)
+            menu.addMenu(size)
         return menu
-        
+
     def on_txt_textChanged(self, text):
         for row in range(self.table.rowCount()):
             found=False
             for column in range(self.table.columnCount()):
-                if self.table.item(row,column).text().lower().find(text.lower())>=0:
+                item=self.table.item(row,column)
+                if item is not None and item.text().lower().find(text.lower())>=0:
                     found=True
                     break
             if found==False:

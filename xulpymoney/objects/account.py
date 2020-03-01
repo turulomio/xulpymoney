@@ -222,3 +222,21 @@ class AccountManager(QObject, ObjectManager_With_IdName_Selectable):
                 wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/Money.png"))
             else:
                 wdg.table.item(i, 0).setIcon(o.qicon())
+
+    def mqtw_active(self, wdg):                
+        wdg.setDataFromManager(
+            [self.tr("Account"), self.tr("Active"), self.tr("Balance")], 
+            None, 
+            self, 
+            ["name", "active", ("balance", [])], 
+            additional=self.mqtw_active_additional
+        )
+
+    def mqtw_active_additional(self, wdg):
+        wdg.table.setRowCount(self.length()+1)
+        for i, o in enumerate(self.arr):
+            if o.name=="Cash":
+                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/Money.png"))
+            else:
+                wdg.table.item(i, 0).setIcon(o.qicon())
+        wdg.addRow(self.length(), [self.tr("Total"), "#crossedout", self.balance()])

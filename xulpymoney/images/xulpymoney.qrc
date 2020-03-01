@@ -106,6 +106,7 @@
     <file>save.png</file>
     <file>database.png</file>
     <file>search.png</file>
+    <file>button_cancel.png</file>
     <file>libreoffice_calc.png</file>
   </qresource>
 </RCC>
