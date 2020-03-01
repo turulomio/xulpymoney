@@ -144,9 +144,9 @@ class myQTableWidget(QWidget):
                 other_action.setText(other_action.text().replace(self.tr(" (desc)"),""))
                 
         self.on_orderby_action_triggered(action,  action_index, reverse)
-
-    ## Order data columns. None values are set at the beginning
-    def on_orderby_action_triggered(self, action, action_index, reverse):
+        
+    ## Orders self.data. Seperated due is used by several sub clases
+    def _order_data(self, action_index, reverse):
         nonull=[]
         null=[]
         for row in self.data:
@@ -165,6 +165,10 @@ class myQTableWidget(QWidget):
                 self.data=nonull+null
             else:
                 self.data=null+nonull
+
+    ## Order data columns. None values are set at the beginning
+    def on_orderby_action_triggered(self, action, action_index, reverse):
+        self._order_data(action_index, reverse)
         self.setData(self.hh, self.hv, self.data)
 
 
@@ -385,11 +389,81 @@ class myQTableWidget(QWidget):
         m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
         m.setData(self.data)
         return m
+        
 ## Acronim of myQTableWidget
 ## Used for readibility improvement
-class mqtw(myQTableWidget):
+class mqtwData(myQTableWidget):
     def __init__(self, parent):
-        myQTableWidget.__init__(self, parent)
+        myQTableWidget.__init__(self, parent)        
+        
+## Uses data, but the last column of data it's the object of the row
+## It's not a manager, but it's similar
+## Used when Table is too complex for mqtwManager
+class mqtwDataWithObject(mqtwData):
+    def __init__(self, parent):
+        mqtwData.__init__(self, parent)
+        self._selection_mode=ManagerSelectionMode.Object #Used although it's not a manager
+        self.selected=None
+        self.table.itemSelectionChanged.connect(self.on_itemSelectionChanged)
+        
+    ## REturn the last index of a row, where the object is
+    def objectColumnIndex(self):
+        return len(self.hh)
+        
+    ## @row row integer
+    def object(self, row):
+        return self.data[row][self.objectColumnIndex()]
+        
+    ## Returns a list of objects in self.data. Usefull to set additional data
+    def objects(self):
+        r=[]
+        for i in range(len(self.data)):
+            r.append(self.object())
+        return r
+
+    def on_itemSelectionChanged(self):
+        if self._selection_mode==ManagerSelectionMode.Object:
+            self.selected=None
+        else:
+            self.selected=[]
+        for i in self.table.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                if self._selection_mode==ManagerSelectionMode.Object:
+                    self.selected=self.object(i.row())
+                elif self._selection_mode==ManagerSelectionMode.List:
+                    self.selected.append(self.object(i.row()))
+        debug("{} data selection: {}".format(self.__class__.__name__,  self.selected))
+
+    ## Adds a horizontal header array , a vertical header array and a data array
+    ##
+    ## Automatically set alignment
+    ## @param manager Manager object from libmanagers
+    ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
+    ## @param additional Function without it's call, to add additional table information like Total Rows or icons
+    def setDataWithObjects(self, header_horizontal, header_vertical, data, decimals=2, zonename='UTC', additional=None):
+        self.additional=additional
+        self.data=data
+
+        #Sets selection mode to table
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        if self._selection_mode==ManagerSelectionMode.Object:
+            self.table.setSelectionMode(QAbstractItemView.SingleSelection)
+        else:
+            self.table.setSelectionMode(QAbstractItemView.MultiSelection)
+
+        # Sets data
+        self.setData(header_horizontal, header_vertical, data, decimals, zonename)
+
+        if additional is not None:
+            self.additional(self)
+
+    def setSelectionMode(self, manager_selection_mode):
+        self._selection_mode=manager_selection_mode
+
+    ## Order data columns. None values are set at the beginning
+    def on_orderby_action_triggered(self, action, action_index, reverse):
+        self._order_data(action_index, reverse)
+        self.setDataWithObjects(self.hh, self.hv, self.data, self.data_decimals, self.data_zonename, additional=self.additional)
         
 class mqtwManager(myQTableWidget):
     def __init__(self, parent):
@@ -435,7 +509,8 @@ class mqtwManager(myQTableWidget):
             data.append(row)
         self.setData(header_horizontal, header_vertical, data, decimals, zonename)
 
-        self.additional(self)
+        if additional is not None:
+            self.additional(self)
 
     def setSelectionMode(self, manager_selection_mode):
         self._manager_selection_mode=manager_selection_mode
@@ -625,6 +700,10 @@ if __name__ == '__main__':
         def prueba(self, wdg):
             print("ICONS", wdg)
 
+    def additional_with_objects(wdg):
+        wdg.table.setRowCount(len(wdg.data)+1)
+        wdg.table.setItem(len(wdg.data), 0 , qnone())
+
     def on_mqtw_manager_customContextMenuRequested(pos):
         menu=QMenu()
         menu.addMenu(mqtw_manager.qmenu())
@@ -647,20 +726,33 @@ if __name__ == '__main__':
     data=[]
     for o in manager_data.arr:
         data.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.pruebita.age(1)])
+        
+    data_object=[]
+    for o in manager_manager.arr[0:10]:
+        data_object.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.pruebita.age(1), o])
 
     mem=Mem()
     app = QApplication([])
     w=QWidget()
     hv=None
 
-    #mqtw
     lay=QHBoxLayout(w)
-    mqtw_data = mqtw(w)
+    
+    #mqtw
+    mqtw_data = mqtwData(w)
     mqtw_data.setGenericContextMenu()
     hv=["Johnny be good"]*len(data)
     mqtw_data.settings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data.setData(hh, hv, data )
+    
+    #mqtw with object
+    mqtw_data_with_object = mqtwDataWithObject(w)
+    mqtw_data_with_object.setGenericContextMenu()
+    hv=["Johnny be good"]*len(data_object)
+    mqtw_data_with_object.settings(mem.settings, "myqtablewidget", "tblExample")
+    hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
+    mqtw_data_with_object.setDataWithObjects(hh, hv, data_object, additional=additional_with_objects )
 
     #mqtwManager
     mqtw_manager = mqtwManager(w)    
@@ -672,6 +764,7 @@ if __name__ == '__main__':
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)
 
     lay.addWidget(mqtw_data)
+    lay.addWidget(mqtw_data_with_object)
     lay.addWidget(mqtw_manager)
     w.setWindowTitle('myQTableWidget example')
     w.move(300, 300)

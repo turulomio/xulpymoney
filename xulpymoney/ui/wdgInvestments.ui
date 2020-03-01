@@ -40,7 +40,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQTableWidget" name="mqtwInvestments" native="true"/>
+        <widget class="mqtwDataWithObject" name="mqtwInvestments" native="true"/>
        </item>
       </layout>
      </item>
@@ -186,7 +186,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtwDataWithObject</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

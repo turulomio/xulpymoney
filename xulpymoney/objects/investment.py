@@ -343,7 +343,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             tpc_venta=inv.percentage_to_selling_point()
             data.append([
-                "{0} ({1})".format(inv.name, inv.account.name), 
+                inv.fullName(), 
                 inv.product.result.basic.last.datetime, 
                 inv.product.result.basic.last.quote, 
                 inv.op_actual.gains_last_day(type),
@@ -352,8 +352,9 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 inv.op_actual.pendiente(inv.product.result.basic.last, type), 
                 tpc_invertido, 
                 tpc_venta, 
+                inv#Data with objects
             ])
-        wdg.setData(
+        wdg.setDataWithObjects(
             [self.tr("Investment"), self.tr("Last datetime"), self.tr("Last value"), 
             self.tr("Daily difference"), self.tr("% Intraday"), self.tr("Balance"), 
             self.tr("Pending"), self.tr("% Invested"), self.tr("% Selling point")
@@ -361,10 +362,12 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             None, 
             data,  
             decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], 
-            zonename=self.mem.localzone_name
+            zonename=self.mem.localzone_name, 
+            additional=self.myqtablewidget_additional
         )   
         
-        """Esta tabla muestra los money con la moneda local"""
+    def myqtablewidget_additional(self, wdg):
+        type=eMoneyCurrency.User
         for i, inv in enumerate(self.arr):
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             tpc_venta=inv.percentage_to_selling_point()
