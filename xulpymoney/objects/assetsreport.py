@@ -6,7 +6,6 @@ from xulpymoney.datetime_functions import days2string
 from xulpymoney.version import __version__
 from xulpymoney.objects.assets import  Assets
 from xulpymoney.objects.annualtarget import  AnnualTarget
-from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import  Percentage
 from xulpymoney.package_resources import package_filename
 
@@ -52,17 +51,15 @@ class AssetsReport(ODT, QObject):
         
         # Assets by bank
         self.header(self.tr("Assets by bank"), 2)
-        data=[]
-        self.mem.data.banks_active().order_by_name()
-        sumbalances=Money(self.mem, 0, self.mem.localcurrency)
-        for bank in self.mem.data.banks_active().arr:
-            balance=bank.balance()
-            sumbalances=sumbalances+balance
-            data.append((bank.name, balance))
-        self.table( [self.tr("Bank"), self.tr("Balance")], data, [4, 3], 9)       
-        self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(sumbalances))
+        self.mem.frmMain.on_actionBanks_triggered()
         
+        model=self.mem.frmMain.w.mqtwBanks.officegeneratorModel()
+        model.removeColumns([1,])
+        model.odt_table(self, 10,  8 )
+
+        self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(self.mem.frmMain.w.banks.balance()))
         self.pageBreak(True)
+
         # Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
         
