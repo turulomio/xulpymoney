@@ -113,7 +113,7 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="myQTableWidget" name="mqtwBanks" native="true"/>
+             <widget class="mqtwDataWithObjects" name="mqtwBanks" native="true"/>
             </item>
            </layout>
           </widget>
@@ -241,6 +241,12 @@
  <customwidgets>
   <customwidget>
    <class>myQTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtwDataWithObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

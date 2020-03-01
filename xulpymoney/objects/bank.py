@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QIcon
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.objects.money import Money
@@ -20,7 +21,10 @@ class Bank(QObject):
         return self
         
     def __repr__(self):
-        return ("Instancia de Bank: {0} ({1})".format( self.name, self.id))
+        return ("Bank: {0} ({1})".format( self.name, self.id))
+
+    def qicon(self):
+        return QIcon(":/xulpymoney/bank.png")
 
     def init__db_row(self, row):
         self.id=row['id_entidadesbancarias']
@@ -71,9 +75,10 @@ class Bank(QObject):
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
         
-class BankManager(ObjectManager_With_IdName_Selectable):
+class BankManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
+        QObject.__init__(self )
         self.mem=mem   
 
     def load_from_db(self, sql):
@@ -88,3 +93,31 @@ class BankManager(ObjectManager_With_IdName_Selectable):
         bank is an object"""
         bank.delete()
         self.remove(bank)
+        
+    def balance(self):
+        r=Money(self, 0, self.mem.localcurrency)
+        for o in self.arr:
+            r=r+o.balance()
+        return r
+
+    def mqtw(self, wdg):
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.name, 
+                o.active, 
+                o.balance(), 
+                o#Data with objects
+            ])
+        wdg.setDataWithObjects(
+            [self.tr("Bank"), self.tr("Active"), self.tr("Balance")],
+            None, 
+            data,
+            additional=self.mqtw_additional
+        )   
+        
+    def mqtw_additional(self, wdg):
+        wdg.table.setRowCount(self.length()+1)
+        wdg.addRow(self.length(), [self.tr("Total"), "#crossedout", self.balance()])
+        for row, o in enumerate(wdg.objects()):
+            wdg.table.item(row, 0).setIcon(o.qicon())
