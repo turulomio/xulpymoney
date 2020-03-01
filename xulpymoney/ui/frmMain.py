@@ -906,17 +906,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgProducts(self.mem)
         self.layout.addWidget(self.w)
-        self.w.show()
         
     @pyqtSlot()  
     def on_actionOrders_triggered(self):  
         self.w.close()
         self.w=wdgOrders(self.mem, self)
         self.layout.addWidget(self.w)
-
+        self.w.show()
 
     @pyqtSlot()  
     def on_actionPriceUpdates_triggered(self):  
         self.w.close()
         self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
+        self.w.show()

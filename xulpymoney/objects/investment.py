@@ -745,7 +745,6 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             invs.append(i) 
         return invs
 
-                
     def setInvestments_merging_investments_with_same_product_merging_current_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
@@ -759,11 +758,6 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             i=self.Investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
         return invs
-
-
-
-
-
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""

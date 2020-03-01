@@ -196,6 +196,14 @@ class AssetsReport(ODT, QObject):
         self.mem.frmMain.showMaximized()
         self.pageBreak(True)
         
+        #Orders report
+        self.header(self.tr("Investments orders"), 1)
+        self.mem.frmMain.on_actionOrders_triggered()        
+        self.simpleParagraph(self.tr("These are the current investment orders that have been set in your banks"))
+        model=self.mem.frmMain.w.mqtwOrders.officegeneratorModel("mqtwOrders")
+        model.odt_table(self, 26, 8)
+        self.pageBreak(True)
+        
         #Dividend report
         self.header(self.tr("Dividend estimations report"), 1)
         self.mem.frmMain.on_actionDividendsReport_triggered()

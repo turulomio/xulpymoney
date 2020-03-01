@@ -16,15 +16,13 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mem=mem
         self.orders=None 
          
-        self.mqtwOrders.settings(self.mem.settings, "wdgOrders", "mqtwOrders")
-        self.mqtwOrders.table.customContextMenuRequested.connect(self.on_mqtwOrders_customContextMenuRequested)
-        self.mqtwOrders.table.itemSelectionChanged.connect(self.on_mqtwOrders_itemSelectionChanged)
+        self.mqtwOrders.settings(self.mem.settings, "wdgOrders", "mqtwOrders")#mqtwDataWithOrders
+        self.mqtwOrders.table.customContextMenuRequested.connect(self.on_mqtwOrders_customContextMenuRequested) 
         self.mqtwSellingPoints.settings(self.mem.settings, "wdgOrders", "mqtwSellingPoints")
         self.mem.data.investments_active().myqtablewidget_sellingpoints(self.mqtwSellingPoints)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.orders.date_first_db_order().year,  date.today().year, date.today().year)
-        
-        
+
     @pyqtSlot()  
     def on_actionOrderNew_triggered(self):
         d=QDialog(self)     
@@ -41,7 +39,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d=QDialog(self)     
         d.setModal(True)
         d.setWindowTitle(self.tr("Edit order"))
-        w=wdgOrdersAdd(self.mem, self.orders.selected, self.orders.selected.investment, d)
+        w=wdgOrdersAdd(self.mem, self.mqtwOrders.selected, self.mqtwOrders.selected.investment, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -49,14 +47,14 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @pyqtSlot() 
     def on_actionOrderDelete_triggered(self):
-        self.orders.remove(self.orders.selected)
+        self.orders.remove(self.mqtwOrders.selected)
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
         
     @pyqtSlot()
     def on_actionShowReinvest_triggered(self):
-        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.shares()==0:
+        if self.mqtwOrders.selected.price==None or self.mqtwOrders.selected.shares==None or self.mqtwOrders.selected.investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
@@ -65,9 +63,9 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d=QDialog()       
         d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Order reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.orders.selected.investment, False,  d)
-        w.txtValorAccion.setText(self.orders.selected.price)
-        w.txtSimulacion.setText(self.orders.selected.price*self.orders.selected.shares)
+        w=wdgDisReinvest(self.mem, self.mqtwOrders.selected.investment, False,  d)
+        w.txtValorAccion.setText(self.mqtwOrders.selected.price)
+        w.txtSimulacion.setText(self.mqtwOrders.selected.price*self.mqtwOrders.selected.shares)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -75,16 +73,16 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 
     @pyqtSlot()
     def on_actionShowReinvestSameProduct_triggered(self):
-        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.shares()==0:
+        if self.mqtwOrders.selected.price==None or self.mqtwOrders.selected.shares==None or self.mqtwOrders.selected.investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
         d=QDialog()       
         d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Order reinvest simulation with all investments with the same product"))
-        w=wdgDisReinvest(self.mem, self.orders.selected.investment, True,  d)
-        w.txtValorAccion.setText(self.orders.selected.price)
-        w.txtSimulacion.setText(self.orders.selected.price*self.orders.selected.shares)
+        w=wdgDisReinvest(self.mem, self.mqtwOrders.selected.investment, True,  d)
+        w.txtValorAccion.setText(self.mqtwOrders.selected.price)
+        w.txtSimulacion.setText(self.mqtwOrders.selected.price*self.mqtwOrders.selected.shares)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -92,33 +90,33 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @pyqtSlot() 
     def on_actionExecute_triggered(self):
-        if self.orders.selected.investment.questionbox_inactive()==QMessageBox.No:#It's not active, after all.
+        if self.mqtwOrders.selected.investment.questionbox_inactive()==QMessageBox.No:#It's not active, after all.
             return
         
-        if self.orders.selected.executed==None:#Only adds operation if it's not executed
-            debug(self.orders.selected.investment)
-            w=frmInvestmentReport(self.mem, self.orders.selected.investment, self)
+        if self.mqtwOrders.selected.executed==None:#Only adds operation if it's not executed
+            debug(self.mqtwOrders.selected.investment)
+            w=frmInvestmentReport(self.mem, self.mqtwOrders.selected.investment, self)
             w.frmInvestmentOperationsAdd_initiated.connect(self.load_OrderData)
             w.on_actionOperationAdd_triggered()        
             w.exec_()
         
-        if self.orders.selected.executed==None:
-            self.orders.selected.executed=self.mem.localzone.now()#Set execution
+        if self.mqtwOrders.selected.executed==None:
+            self.mqtwOrders.selected.executed=self.mem.localzone.now()#Set execution
         else:
-            self.orders.selected.executed=None#Remove execution
-        self.orders.selected.save()
+            self.mqtwOrders.selected.executed=None#Remove execution
+        self.mqtwOrders.selected.save()
         self.mem.con.commit()
 
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
     def load_OrderData(self, frm):
         """Carga los datos de la orden en el frmInvestmentOperationsAdd"""
-        if self.orders.selected.shares<0:
+        if self.mqtwOrders.selected.shares<0:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(5))#Sale
         else:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(4))#Purchase
-        frm.txtAcciones.setText(self.orders.selected.shares)
-        frm.wdg2CPrice.setTextA(self.orders.selected.price)
+        frm.txtAcciones.setText(self.mqtwOrders.selected.shares)
+        frm.wdg2CPrice.setTextA(self.mqtwOrders.selected.price)
 
     @pyqtSlot(int)     
     def on_cmbMode_currentIndexChanged(self, index):
@@ -170,10 +168,10 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.orders.order_by_date()
-        self.orders.myqtablewidget(self.mqtwOrders)
+        self.orders.mqtw(self.mqtwOrders)
        
     def on_mqtwOrders_customContextMenuRequested(self,  pos):
-        if self.orders.selected==None:
+        if self.mqtwOrders.selected==None:
             self.actionOrderDelete.setEnabled(False)
             self.actionOrderEdit.setEnabled(False)
             self.actionExecute.setEnabled(False)
@@ -183,7 +181,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.actionOrderDelete.setEnabled(True)
             self.actionOrderEdit.setEnabled(True)
             self.actionExecute.setEnabled(True)
-            if self.orders.selected.executed==None:
+            if self.mqtwOrders.selected.executed==None:
                 self.actionExecute.setText("Execute order")
             else:
                 self.actionExecute.setText("Remove execution time")
@@ -202,15 +200,8 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         menu.addSeparator()
         menu.addAction(self.actionShowReinvest)
         menu.addAction(self.actionShowReinvestSameProduct)
+        menu.addMenu(self.mqtwOrders.qmenu())
         menu.exec_(self.mqtwOrders.table.mapToGlobal(pos))
-
-    def on_mqtwOrders_itemSelectionChanged(self):
-        self.orders.selected=None
-        for i in self.mqtwOrders.table.selectedItems():
-            if i.column()==0:#only once per row
-                self.orders.selected=self.orders.arr[i.row()]
-                
-        debug("Order selected: {}".format(self.orders.selected))
                 
     def on_wdgYear_changed(self):
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())

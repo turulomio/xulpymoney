@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtGui import QIcon
 from datetime import date
-from xulpymoney.ui.myqtablewidget import qdatetime, qright, qleft, qdate, qempty
 from xulpymoney.libmanagers import ObjectManager_With_Id_Selectable
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
@@ -29,6 +28,9 @@ class Order(QObject):
         self.executed=row['executed']
         return self
         
+    def qicon(self):
+        return QIcon(":/xulpymoney/coins.png")
+
     def is_in_force(self):
         "Está vigente"
         if self.is_expired()==False and self.is_executed()==False:
@@ -124,42 +126,36 @@ class OrderManager(ObjectManager_With_Id_Selectable, QObject):
             return date.today()
         else:
             return r[0]
+
+    def mqtw(self, wdg):
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.date, 
+                o.expiration, 
+                o.investment.fullName(), 
+                o.shares, 
+                o.investment.money(o.price), 
+                o.amount(), 
+                o.percentage_from_current_price(), 
+                o.executed, 
+                o#Data with objects
+            ])
+        wdg.setDataWithObjects(
+            [self.tr("Date"), self.tr("Expiration"), self.tr("Investment"), self.tr("Shares"), self.tr("Price"), self.tr("Amount"), self.tr("% from current"), self.tr("Executed")
+            ], 
+            None, 
+            data,
+            zonename=self.mem.localzone_name, 
+            additional=self.mqtw_additional
+        )   
         
-    def myqtablewidget(self, wdg):
-        wdg.table.setColumnCount(9)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Expiration")))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Investment")))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Account")))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Shares")))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Price")))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("Amount")))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("% from current")))
-        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("Executed")))
-        wdg.applySettings()
-        wdg.table.clearContents()
-        wdg.table.setRowCount(self.length())
-        for i, p in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qdate(p.date))
-            wdg.table.setItem(i, 1, qdate(p.expiration))      
-            wdg.table.setItem(i, 2, qleft(p.investment.name))
-            wdg.table.setItem(i, 3, qleft(p.investment.account.name))   
-            wdg.table.setItem(i, 4, qright(p.shares))
-            wdg.table.setItem(i, 5, p.investment.money(p.price).qtablewidgetitem())
-            wdg.table.setItem(i, 6, p.amount().qtablewidgetitem())
-            if p.is_in_force():
-                wdg.table.setItem(i, 7, p.percentage_from_current_price().qtablewidgetitem())
-            else:
-                wdg.table.setItem(i, 7, qempty())
-            if p.is_executed():
-                wdg.table.setItem(i, 8, qdatetime(p.executed, self.mem.localzone_name))
-            else:
-                wdg.table.setItem(i, 8, qempty())
-                
-            #Color
-            if p.is_executed():
+    def mqtw_additional(self, wdg):
+        for i, o in enumerate(self.arr):
+            wdg.table.item(i, 2).setIcon(o.qicon())
+            if o.is_executed():
                 for column in range (wdg.table.columnCount()):
                     wdg.table.item(i, column).setBackground(eQColor.Green)                     
-            elif p.is_expired():
+            elif o.is_expired():
                 for column in range (wdg.table.columnCount()):
                     wdg.table.item(i, column).setBackground(eQColor.Red)     

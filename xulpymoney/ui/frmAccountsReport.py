@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, pyqtSlot,  QSize
-from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
-from datetime import date,  timedelta
+from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout, QAbstractItemView
+from datetime import date,  timedelta, datetime
 from logging import debug
 from xulpymoney.casts import b2c,  c2b
 from xulpymoney.libmanagers import ManagerSelectionMode
@@ -51,9 +51,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mqtwCreditCardOperations.settings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperations")
         self.mqtwCreditCardOperations.table.customContextMenuRequested.connect(self.on_mqtwCreditCardOperations_customContextMenuRequested)
         self.mqtwCreditCardOperations.table.itemSelectionChanged.connect(self.on_mqtwCreditCardOperations_itemSelectionChanged)
+
+        self.mqtwCreditCardOperations.table.setSelectionMode(QAbstractItemView.MultiSelection)        
         self.mqtwCreditCardOperationsHistorical.settings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperationsHistorical")
     
-        self.wdgDtPago.set(None, self.mem.localzone_name)
+        self.wdgDtPago.set(datetime.now(), self.mem.localzone_name)
         
         currencies_qcombobox(self.cmbCurrency)
         self.mem.data.banks_active().qcombobox(self.cmbEB)
@@ -208,7 +210,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot() 
     def on_actionCreditCardOperEdit_triggered(self):
         #Como es unico
-        selOperCreditCard=self.creditcardoperations.selected.arr[0]
+        selOperCreditCard=self.creditcardoperations.selected.first()
         w=frmAccountOperationsAdd(self.mem,  self.account, None, self.account.creditcards.selected, selOperCreditCard)
         w.CreditCardOperationChanged.connect(self.mqtwCreditCardsOperations_update)
         w.exec_()
@@ -223,7 +225,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @pyqtSlot() 
     def on_actionCreditCardOperRefund_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, opertarjeta=self.creditcardoperations.selected.arr[0], refund=True)
+        w=frmAccountOperationsAdd(self.mem, opertarjeta=self.creditcardoperations.selected.first(), refund=True)
         w.CreditCardOperationChanged.connect(self.mqtwCreditCardsOperations_update)
         w.exec_()
             
@@ -374,7 +376,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             else:
                 self.actionCreditCardOperDelete.setEnabled(True)
                 self.actionCreditCardOperEdit.setEnabled(True)
-                if self.account.creditcards.selected.pagodiferido==True and self.creditcardoperations.selected.arr[0].importe<0:#Only difered purchases
+                if self.account.creditcards.selected.pagodiferido==True and self.creditcardoperations.selected.first().importe<0:#Only difered purchases
                     self.actionCreditCardOperRefund.setEnabled(True)
                 else:
                     self.actionCreditCardOperRefund.setEnabled(False)
@@ -405,7 +407,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.grpPago.setEnabled(False)
 
         #Calcula el balance
-        self.lblPago.setText(self.mem.localmoney(self.creditcardoperations.selected.balance()))
+        self.lblPago.setText(self.mem.localmoney(self.creditcardoperations.selected.balance()).string())
 
     def mqtwCreditCardsOperations_update(self):
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)

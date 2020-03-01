@@ -77,6 +77,7 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
     def __init__(self, mem):
         ObjectManager_With_IdDatetime_Selectable.__init__(self)
         QObject.__init__(self)
+        self.setConstructorParameters(mem)
         self.mem=mem
 
     def balance(self):

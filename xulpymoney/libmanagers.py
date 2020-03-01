@@ -16,6 +16,7 @@ from .datetime_functions import dtaware_day_end_from_date, dtaware_day_start_fro
 class ManagerSelectionMode:
     Object=0
     List=1
+    Manager=2
 
 class ObjectManager(object):
     def __init__(self):
@@ -169,18 +170,22 @@ class ManagerSelection(object):
             self.selected=None
         elif value==ManagerSelectionMode.List:
             self.selected=[]
+        elif value==ManagerSelectionMode.Manager:
+            self.selected=self.emptyManager()
 
     def cleanSelection(self):
         if self.selectionMode()==ManagerSelectionMode.Object:
             self.selected=None
         elif self.selectionMode()==ManagerSelectionMode.List:
             self.selected=[]
+        elif self.selectionMode()==ManagerSelectionMode.Manager:
+            self.selected.clean()
 
     ## Useful to setselection without interactivvite ui
     ## @param list Can be, list, manager or object
     def setSelected(self, list):
         self.cleanSelection()
-        if self.selectionMode()==ManagerSelectionMode.List:
+        if self.selectionMode() in (ManagerSelectionMode.List, ManagerSelectionMode.Manager):
             for o in list:
                 self.selected.append(o)
         else:#Object
