@@ -19,7 +19,6 @@ from xulpymoney.objects.order import OrderManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.myqtablewidget import qright, qleft, qdate, qcenter
 
 
 class Investment(QObject):
@@ -438,38 +437,31 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if lasttpc<percentage:
                 wdg.table.item(i, 6).setBackground(eQColor.Red)
 
-    def myqtablewidget_sellingpoints(self, wdg):
-        """Crea un set y luego construye la tabla"""
+    def mqtw_sellingpoints(self, wdg):                
+        data=[]
+        for o in self.arr:
+            data.append([
+                o.op_actual.last().datetime.date(), 
+                o.selling_expiration, 
+                o.fullName(), 
+                o.shares(), 
+                o.money(o.venta), 
+                o.percentage_to_selling_point(), 
+                o, #mqtwDataWithObjects
+            ])
         
-        set=InvestmentManager(self.mem,  self.accounts, self.products, self.benchmark)
-        for inv in self.arr:
-            if inv.selling_expiration!=None and inv.shares()>0:
-                set.append(inv)
-        set.order_by_percentage_sellingpoint()
+        wdg.setDataWithObjects(
+            [self.tr("Date"), self.tr("Expiration"), self.tr("Investment"), self.tr("Shares"), self.tr("Price"), self.tr("% selling point")], 
+            None, 
+            data, 
+            additional=self.mqtw_sellingpoints_additional
+        )
         
-        wdg.table.setColumnCount(7)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date")))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Expiration")))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Investment")))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Account")))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Shares")))
-        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr("Price")))
-        wdg.table.setHorizontalHeaderItem(6, qcenter(self.tr("% selling point")))
-   
-        wdg.applySettings()
-        wdg.table.clearContents()
-        wdg.table.setRowCount(set.length())
-        for i, inv in enumerate(set.arr):
-            if inv.selling_expiration!=None:
-                wdg.table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
-                wdg.table.setItem(i, 1, qdate(inv.selling_expiration))    
-                if inv.selling_expiration<date.today():
-                    wdg.table.item(i, 1).setBackground(eQColor.Red)       
-                wdg.table.setItem(i, 2, qleft(inv.name))
-                wdg.table.setItem(i, 3, qleft(inv.account.name))   
-                wdg.table.setItem(i, 4, qright(inv.shares()))
-                wdg.table.setItem(i, 5, inv.money(inv.venta).qtablewidgetitem())
-                wdg.table.setItem(i, 6, inv.percentage_to_selling_point().qtablewidgetitem())
+    def mqtw_sellingpoints_additional(self, wdg):
+        for i, inv in enumerate(wdg.objects()):
+                if inv.selling_expiration is not None and inv.selling_expiration<date.today():
+                    wdg.table.item(i, 1).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+                wdg.table.item(i, 2).setIcon(inv.qicon())
 
 
     def average_age(self):

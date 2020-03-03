@@ -29,7 +29,7 @@ class Order(QObject):
         return self
         
     def qicon(self):
-        return QIcon(":/xulpymoney/coins.png")
+        return QIcon(":/xulpymoney/order.png")
 
     def is_in_force(self):
         "Está vigente"
