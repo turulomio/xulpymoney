@@ -122,7 +122,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active()
             self.investments.myqtablewidget(self.mqtwInvestments)
-            self.mqtwInvestments.setOrderBy(7, True)
+            self.mqtwInvestments.setOrderBy(8,  False)
         else:
             self.investments=self.mem.data.investments_inactive()
             self.investments.myqtablewidget(self.mqtwInvestments)
@@ -223,7 +223,7 @@ Zero risk assests balance: {2} ( {3} from your total assets {4} )""").format(
         if state==Qt.Unchecked:
             self.investments=self.mem.data.investments_active().InvestmentManager_with_investments_with_zero_risk()
             self.investments.myqtablewidget(self.mqtwInvestments)
-            self.mqtwInvestments.setOrderBy(7, True)
+            self.mqtwInvestments.setOrderBy(8, False)
         else:
             self.investments=self.mem.data.investments_inactive().InvestmentManager_with_investments_with_zero_risk()
             self.investments.myqtablewidget(self.mqtwInvestments)

@@ -6429,7 +6429,7 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="194"/>
         <source>After simulation: simulation price ({})</source>
-        <translation>Después de la simulación: precio de la simulación({})</translation>
+        <translation type="unfinished">Después de la simulación: precio de la simulación ({})</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="195"/>
