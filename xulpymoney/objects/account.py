@@ -205,12 +205,13 @@ class AccountManager(QObject, ObjectManager_With_IdName_Selectable):
                     r.append(cc)
         return r
 
-    def mqtw(self, wdg):                
+    ## @param wdg
+    def mqtw(self, wdg):  
         wdg.setDataFromManager(
-            [self.tr("Account"), self.tr("Bank"), self.tr("Account number"), self.tr("Balance")], 
+            [self.tr("Account"), self.tr("Bank"), self.tr("Active"),  self.tr("Account number"), self.tr("Balance")], 
             None, 
             self, 
-            ["name", "eb.name", "numero", ("balance", [])], 
+            ["name", "eb.name", "active", "numero", ("balance", [])], 
             decimals=2, 
             zonename=self.mem.localzone_name, 
             additional=self.mqtw_additional

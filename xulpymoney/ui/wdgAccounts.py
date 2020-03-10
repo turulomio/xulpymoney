@@ -13,14 +13,13 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mqtwAccounts.settings(self.mem.settings, "wdgAccounts", "mqtwAccounts")
         self.mqtwAccounts.table.cellDoubleClicked.connect(self.on_mqtwAccounts_cellDoubleClicked)
         self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
-        self.mem.data.accounts.order_by_name()
-        self.accounts=self.mem.data.accounts_active()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
         f=frmAccountsReport(self.mem, self.accounts.selected)
         f.exec_()
+        self.update()
         
     @pyqtSlot() 
     def on_actionAccountAdd_triggered(self):
@@ -48,6 +47,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.accounts=self.mem.data.accounts_active()
         else:
             self.accounts=self.mem.data.accounts_inactive()
+        self.update()
         
 
     def on_mqtwAccounts_customContextMenuRequested(self,  pos):
@@ -76,7 +76,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         menu.addMenu(self.mqtwAccounts.qmenu())
         menu.exec_(self.mqtwAccounts.table.mapToGlobal(pos))
 
-        
     @pyqtSlot() 
     def on_actionActive_triggered(self):
         if self.accounts.selected.eb.qmessagebox_inactive()==True:
@@ -97,8 +96,8 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
     def on_mqtwAccounts_cellDoubleClicked(self, row,  column):
         self.on_actionAccountReport_triggered()
 
+    ## Updates table
     def update(self):
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.accounts.mqtw(self.mqtwAccounts)
+        self.mqtwAccounts.setOrderBy(0, False)
         self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.accounts.balance())))
-        
