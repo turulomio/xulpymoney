@@ -3,7 +3,7 @@
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries, QCandlestickSeries,  QCandlestickSet
-from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize
 from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage
 from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem, QSizePolicy
 from .myqtablewidget import myQTableWidget
@@ -13,7 +13,6 @@ from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2stri
 from datetime import timedelta, datetime
 from decimal import Decimal
 
-    
 class eOHCLDuration:
     Day=1
     Week=2
@@ -135,8 +134,7 @@ class VCTemporalSeries(VCCommons):
         self.maxy=None
         self.minx=None
         self.miny=None
-        
-        
+
         self.__ohclduration=eOHCLDuration.Day
         self.axisY = QValueAxis()
         self.axisY.setLabelFormat("%i")
@@ -475,8 +473,7 @@ class MyPopup(QDialog):
 
     def mousePressEvent(self, event):
         self.hide()
-        
-        
+
 class VCPie(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -530,6 +527,7 @@ class VCPie(QWidget):
         
     def on_actionShowData_triggered(self):
         if self.actionShowData.text()==self.tr("Show chart data"):
+            self.table.setMinimumSize(QSize(self.width()*3/8, self.height()*3/8))
             self.table.show()
             self.lblTotal.show()
             self.actionShowData.setText(self.tr("Hide chart data"))
@@ -537,9 +535,6 @@ class VCPie(QWidget):
             self.table.hide()
             self.lblTotal.hide()
             self.actionShowData.setText(self.tr("Show chart data"))
-            
-            
-        
 
     ## Returns a qmenu to be used in other qmenus
     def qmenu(self, title="Pie chart options"):
