@@ -158,6 +158,19 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
         for d in self.arr:
             r=r+d.gross(eMoneyCurrency.User)
         return r
+    ## retention amount in self.mem.localcurrency
+    def retention(self):
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for d in self.arr:
+            r=r+d.retention(eMoneyCurrency.User)
+        return r
+
+    ## commission amount in self.mem.localcurrency
+    def commission(self):
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for d in self.arr:
+            r=r+d.commission(eMoneyCurrency.User)
+        return r
 
     def load_from_db(self, sql):    
         del self.arr
@@ -192,15 +205,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
 
 
         wdg.table.setRowCount(len(self.arr)+1)
-        sumneto=0
-        sumbruto=0
-        sumretencion=0
-        sumcomision=0
         for i, d in enumerate(self.arr):
-            sumneto=sumneto+d.neto
-            sumbruto=sumbruto+d.bruto
-            sumretencion=sumretencion+d.retencion
-            sumcomision=sumcomision+d.comision
             wdg.table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
             if show_investment==True:
                 wdg.table.setItem(i, diff, qleft(d.investment.name))
@@ -211,11 +216,10 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
             wdg.table.setItem(i, diff+5, self.mem.localcurrency.qtablewidgetitem(d.neto))
             wdg.table.setItem(i, diff+6, self.mem.localcurrency.qtablewidgetitem(d.dpa))
         wdg.table.setItem(len(self.arr), diff+1, qleft(self.tr("TOTAL")))
-        wdg.table.setItem(len(self.arr), diff+2, self.mem.localcurrency.qtablewidgetitem(sumbruto))
-        wdg.table.setItem(len(self.arr), diff+3, self.mem.localcurrency.qtablewidgetitem(sumretencion))
-        wdg.table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
-        wdg.table.setItem(len(self.arr), diff+5, self.mem.localcurrency.qtablewidgetitem(sumneto))
-        return (sumneto, sumbruto, sumretencion, sumcomision)
+        wdg.table.setItem(len(self.arr), diff+2, self.gross().qtablewidgetitem())
+        wdg.table.setItem(len(self.arr), diff+3, self.retention().qtablewidgetitem())
+        wdg.table.setItem(len(self.arr), diff+4, self.commission().qtablewidgetitem())
+        wdg.table.setItem(len(self.arr), diff+5, self.net().qtablewidgetitem())
 
 class DividendHomogeneusManager(DividendHeterogeneusManager):
     def __init__(self, mem, investment):

@@ -494,7 +494,7 @@ class mqtwDataWithObjects(mqtwData):
     ## Automatically set alignment
     ## @param manager Manager object from libmanagers
     ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
-    ## @param additional Function without it's call, to add additional table information like Total Rows or icons
+    ## @param additional Function without it's call, to add additional table information like Total Rows or icons. Additional method has only one parameter, mqtw
     def setDataWithObjects(self, header_horizontal, header_vertical, data, decimals=2, zonename='UTC', additional=None):
         self.additional=additional
         self.data=data
@@ -545,7 +545,7 @@ class mqtwManager(myQTableWidget):
     ## Automatically set alignment
     ## @param manager Manager object from libmanagers
     ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
-    ## @param additional Function without it's call, to add additional table information like Total Rows or icons
+    ## @param additional Function without it's call, to add additional table information like Total Rows or icons. Additional method has only one parameter, mqtw
     def setDataFromManager(self, header_horizontal, header_vertical, manager, manager_attributes, decimals=2, zonename='UTC', additional=None):
         self.manager_attributes=manager_attributes
         self.manager=manager

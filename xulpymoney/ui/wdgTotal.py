@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel, QApplication
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from logging import info
+from logging import info, debug
 from xulpymoney.datetime_functions import dtaware_day_end_from_date, date_last_of_the_month, date_first_of_the_next_x_months
 from xulpymoney.objects.dividend import DividendHeterogeneusManager
 from xulpymoney.objects.investmentoperation import InvestmentOperationHistoricalHeterogeneusManager
@@ -224,6 +224,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtw.settings(self.mem.settings, "wdgTotal", "mqtw")
         self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
+        self.mqtw.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
         self.mqtwTargets.settings(self.mem.settings, "wdgTotal", "mqtwTargets")
         self.mqtwTargetsPlus.settings(self.mem.settings, "wdgTotal", "mqtwTargetsPlus")
@@ -1050,8 +1051,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         menu.addAction(self.actionGainsByProductType)
         menu.exec_(self.mqtw.table.mapToGlobal(pos))
 
+    @pyqtSlot()
     def on_mqtw_itemSelectionChanged(self):
+        debug("NOW")
         self.month=None
         for i in self.mqtw.table.selectedItems():#itera por cada item no row.
             self.month=i.column()+1
-        print ("Selected month: {0}.".format(self.month))
+        debug("Selected month: {0}.".format(self.month))
