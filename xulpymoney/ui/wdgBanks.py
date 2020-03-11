@@ -110,11 +110,11 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         d.resize(self.mem.settings.value("wdgBanks/qdialog_graph", QSize(800, 600)))
         d.setWindowTitle(self.tr("Banks graph"))
         view=VCPie(d)
+        view.pie.setTitle(self.tr("Banks graph"))
         view.settings(self.mem.settings, "wdgBanks", "pie")
-        view.pie.clear()
         for bank in self.mem.data.banks_active().arr:
             view.pie.appendData(bank.name, bank.balance())
-        view.pie.display()
+        view.display()
         lay = QVBoxLayout(d)
         lay.addWidget(view)
         d.exec_()

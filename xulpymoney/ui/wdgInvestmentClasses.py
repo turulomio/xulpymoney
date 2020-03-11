@@ -1,6 +1,6 @@
-import math
-import datetime
 from PyQt5.QtWidgets import QWidget
+from datetime import date
+from math import ceil
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.libxulpymoneytypes import eLeverageType
@@ -12,8 +12,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.balances={}#Variable que cachea todos los balances
-        self.hoy=datetime.date.today()
+        self.hoy=date.today()
 
         self.viewTPC=VCPie()
         self.viewTPC.settings(self.mem.settings, "wdgInvestmentClasses", "viewTPC")
@@ -57,11 +56,11 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.update(animations=True)
 
     def scriptTPC(self):
-        self.viewTPC.pie.clear()
+        self.viewTPC.clear()
         for r in range(0, 11):
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
-                if math.ceil(i.product.percentage/10.0)==r:
+                if ceil(i.product.percentage/10.0)==r:
                     if self.radCurrent.isChecked():
                         total=total+i.balance().local()
                     else:
@@ -74,10 +73,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewTPC.pie.setTitle(self.tr("Investment current balance by variable percentage"))
         else:
             self.viewTPC.pie.setTitle(self.tr("Invested balance by variable percentage"))
-        self.viewTPC.pie.display()
+        self.viewTPC.display()
 
     def scriptPCI(self):
-        self.viewPCI.pie.clear()
+        self.viewPCI.clear()
         for m in self.mem.investmentsmodes.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
@@ -93,10 +92,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewPCI.pie.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
         else:
             self.viewPCI.pie.setTitle(self.tr("Invested balance by Put / Call / Inline"))   
-        self.viewPCI.pie.display()
+        self.viewPCI.display()
 
     def scriptTipos(self):
-        self.viewTipo.pie.clear()
+        self.viewTipo.clear()
         
         for t in self.mem.types.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -117,10 +116,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewTipo.pie.setTitle(self.tr("Investment current balance by product type"))   
         else:
             self.viewTipo.pie.setTitle(self.tr("Invested balance by product type"))   
-        self.viewTipo.pie.display()
+        self.viewTipo.display()
 
     def scriptApalancado(self):
-        self.viewApalancado.pie.clear()
+        self.viewApalancado.clear()
         
         for a in self.mem.leverages.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -138,10 +137,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewApalancado.pie.setTitle(self.tr("Investment current balance by leverage"))
         else:
             self.viewApalancado.pie.setTitle(self.tr("Invested balance by leverage"))
-        self.viewApalancado.pie.display()
+        self.viewApalancado.display()
         
     def scriptCountry(self):
-        self.viewCountry.pie.clear()
+        self.viewCountry.clear()
         
         for c in self.mem.countries.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
@@ -157,10 +156,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewCountry.pie.setTitle(self.tr("Investment current balance by country"))   
         else:
             self.viewCountry.pie.setTitle(self.tr("Invested balance by country"))   
-        self.viewCountry.pie.display()
+        self.viewCountry.display()
 
     def scriptProduct(self):
-        self.viewProduct.pie.clear()
+        self.viewProduct.clear()
         
         invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
         invs.order_by_balance()
@@ -177,7 +176,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.viewProduct.pie.setTitle(self.tr("Investment current balance by product"))
         else:
             self.viewProduct.pie.setTitle(self.tr("Invested balance by product"))        
-        self.viewProduct.pie.display()
+        self.viewProduct.display()
 
     ## Used to generate report to avoid bad resolution due to animations
     def open_all_tabs(self):

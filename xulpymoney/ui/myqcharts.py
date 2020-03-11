@@ -5,7 +5,7 @@
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries, QCandlestickSeries,  QCandlestickSet
 from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize
 from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage
-from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem
 from .myqtablewidget import myQTableWidget
 from .. objects.percentage import Percentage
 from .. casts import object2value
@@ -359,8 +359,6 @@ class VCPieAlone(VCCommons):
     def __init__(self):
         VCCommons.__init__(self)
         self.data=[]#Dta with float only for chart
-        self.dataobjects=[]#Data with objects
-        self.setRenderHint(QPainter.Antialiasing)
         self.clear()
         
     ## If you use VCPieAlone you can add a context menu setting boolean to True
@@ -372,9 +370,20 @@ class VCPieAlone(VCCommons):
         slice=self.serie.append(name, object2value(value))#only float
         slice.setExploded(exploded)
         slice.setLabelVisible()
-        
-    def display(self):
+    
+    ## To clean pie, removes serie and everithing is like create an empty pie
+    def clear(self):
+        self.__chart=QChart()
         self.setChart(self.__chart)
+        self.setRenderHint(QPainter.Antialiasing)
+        self.data=[]
+        self.serie=QPieSeries()
+        self.serie.setPieStartAngle(90)
+        self.serie.setPieEndAngle(450)
+        self.chart().legend().hide()
+    
+    ## To show pie
+    def display(self):
         self.chart().layout().setContentsMargins(0,0,0,0);
         if self._animations==True:
             self.chart().setAnimationOptions(QChart.AllAnimations);
@@ -404,14 +413,7 @@ class VCPieAlone(VCCommons):
         for row in self.data:
             s=s+row[1]
         return s
-        
-    def clear(self):
-        self.__chart=QChart()
-        self.setChart(self.__chart)
-        self.chart().legend().hide()
-        self.serie=QPieSeries()
-        self.serie.setPieStartAngle(90)
-        self.serie.setPieEndAngle(450)
+
 
 
     ## Returns a qmenu to be used in other qmenus
@@ -474,6 +476,14 @@ class MyPopup(QDialog):
     def mousePressEvent(self, event):
         self.hide()
 
+
+## Yo must:
+## 1. Create widget
+## 1. Append data
+## 1. Display
+
+## If you use clear, you must append data and display again
+
 class VCPie(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -489,31 +499,30 @@ class VCPie(QWidget):
         font.setBold(True)
         self.lblTotal.setFont(font)
         self.lblTotal.setAlignment(Qt.AlignCenter)
-        
+
         self.pie=VCPieAlone()
-        piesizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        piesizePolicy.setHorizontalStretch(2)
-        self.pie.setSizePolicy(piesizePolicy)
-        self.pie.displayed.connect(self.on_pie_displayed)
-        
+        #piesizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        #piesizePolicy.setHorizontalStretch(2)
+        #self.pie.setSizePolicy(piesizePolicy)
+
         self.table=myQTableWidget(self)
         self.table.hide()
-        self.table.table.horizontalHeader().setStretchLastSection(True)
-        tablesizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        tablesizePolicy.setHorizontalStretch(1)
-        self.table.setSizePolicy(tablesizePolicy)
-        
+        #tablesizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        #tablesizePolicy.setHorizontalStretch(1)
+        #self.table.setSizePolicy(tablesizePolicy)
+
         self.lay.addWidget(self.pie)
         self.layTable.addWidget(self.table)
         self.layTable.addWidget(self.lblTotal)
         self.lay.addLayout(self.layTable)
         self.setLayout(self.lay)
-        
+
         self.actionShowData=QAction(self.tr("Show chart data"))
         self.actionShowData.setIcon(QIcon(":/reusingcode/database.png"))
         self.actionShowData.triggered.connect(self.on_actionShowData_triggered)
+
         self.pie.customContextMenuRequested.connect(self.on_customContextMenuRequested)
-        
+
     def settings(self, settings, settingsSection,  settingsObject):
         self.settings=settings
         self.settingsSection=settingsSection
@@ -521,10 +530,6 @@ class VCPie(QWidget):
         self.setObjectName(self.settingsObject)
         self.table.settings(self.settings, self.settingsSection, self.settingsObject+"_mqtw")
 
-    def on_pie_displayed(self):
-        self.table.setData([self.tr("Name"), self.tr("Value")], None, self.pie.data)
-        self.lblTotal.setText(self.tr("Total: {}").format(self.pie.sum_values()))
-        
     def on_actionShowData_triggered(self):
         if self.actionShowData.text()==self.tr("Show chart data"):
             self.table.setMinimumSize(QSize(self.width()*3/8, self.height()*3/8))
@@ -548,9 +553,28 @@ class VCPie(QWidget):
     def on_customContextMenuRequested(self, pos):
         self.qmenu().exec_(self.mapToGlobal(pos))
 
-if __name__ == '__main__':
+    ## Widget is restored to fabric, it's like instanciate a new one
+    def clear(self):
+        self.pie.clear()
+        self.table.clear()
+        self.lblTotal.setText("")
+
+    def display(self):
+        self.pie.display()
+        data=[]
+        for o in self.pie.data:
+            data.append([o[0], o[1], Percentage(o[1],self.pie.sum_values())])
+        self.table.setData([self.tr("Name"), self.tr("Value"), self.tr("Percentage")], None, data)
+        self.table.setOrderBy(2, False)
+        self.lblTotal.setText(self.tr("Total: {}").format(self.pie.sum_values()))
+        self.table.on_actionSizeMinimum_triggered()
+        self.table.settings.sync()
+
+def example():
     d={'one':1, 'two':2, 'three':3, 'four':4}
     app = QApplication([])
+    from importlib import import_module
+    import_module("xulpymoney.images.xulpymoney_rc")
     w=QWidget()
     from PyQt5.QtCore import QSettings
     settings=QSettings()
@@ -564,11 +588,12 @@ if __name__ == '__main__':
     
     #Pie
     wdgvcpie=VCPie(w)
+    wdgvcpie.pie.setTitle("Demo pie")
     wdgvcpie.settings(settings, "example", "vcpie")
     for k, v in d.items():
         wdgvcpie.pie.appendData(k, v)
-    wdgvcpie.pie.display()
-    
+    wdgvcpie.display()
+
     #Widget
     lay=QHBoxLayout(w)
     lay.addWidget(vcts)

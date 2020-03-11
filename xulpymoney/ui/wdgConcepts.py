@@ -69,7 +69,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                 else:
                     self.mqtwExpenses.table.item(i, 1).setBackground( eQColor.Red)      
                 self.viewExpenses.pie.appendData(a[0].name.upper(), a[1])
-        self.viewExpenses.pie.display()
+        self.viewExpenses.display()
                 
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 0, qleft(self.tr('TOTAL')))
         self.mqtwExpenses.table.setItem(len(self.expenseslist), 1, self.mem.localmoney(totalexpenses).qtablewidgetitem())
@@ -102,7 +102,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                 else:
                     self.mqtwIncomes.table.item(i, 1).setBackground( eQColor.Red)      
                 self.viewIncomes.pie.appendData(a[0].name.upper(), a[1])
-        self.viewIncomes.pie.display()
+        self.viewIncomes.display()
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 0, qleft(self.tr('TOTAL')))
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 1, self.mem.localmoney(totalincomes).qtablewidgetitem())
         self.mqtwIncomes.table.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
