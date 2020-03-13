@@ -104,7 +104,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
 
         if self.chkMedian.isChecked():#Median value
             median=self.setohcl.closes_median_value()
-            med=self.view.appendTemporalSeries(self.tr("Median at {}".format(self.product.currency.string(median))))
+            med=self.view.appendTemporalSeries(self.tr("Median at {}".format(self.product.money(median))))
             med.setColor(QColor(165, 165, 0))
             self.view.appendTemporalSeriesData(med, selected_datetime, median)
             self.view.appendTemporalSeriesData(med, self.mem.localzone.now(), median)

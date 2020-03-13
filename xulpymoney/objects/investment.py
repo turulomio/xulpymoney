@@ -441,9 +441,8 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         data=[]
         for o in self.arr:
             data.append([
-                o.op_actual.last().datetime.date(), 
-                o.selling_expiration, 
                 o.fullName(), 
+                o.selling_expiration, 
                 o.shares(), 
                 o.money(o.venta), 
                 o.percentage_to_selling_point(), 
@@ -451,7 +450,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             ])
         
         wdg.setDataWithObjects(
-            [self.tr("Date"), self.tr("Expiration"), self.tr("Investment"), self.tr("Shares"), self.tr("Price"), self.tr("% selling point")], 
+            [self.tr("Investment"),  self.tr("Expiration"), self.tr("Shares"), self.tr("Price"), self.tr("% selling point")], 
             None, 
             data, 
             additional=self.mqtw_sellingpoints_additional
@@ -461,8 +460,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         for i, inv in enumerate(wdg.objects()):
                 if inv.selling_expiration is not None and inv.selling_expiration<date.today():
                     wdg.table.item(i, 1).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-                wdg.table.item(i, 2).setIcon(inv.qicon())
-
+                wdg.table.item(i, 0).setIcon(inv.qicon())
 
     def average_age(self):
         """Average age of the investments in this set in days"""

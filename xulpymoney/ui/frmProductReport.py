@@ -317,7 +317,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         try:
             self.product.result.intradia.myqtablewidget(self.mqtwIntradia)
             if self.product.result.intradia.length()>0:
-                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
+                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.money(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
         except:
             error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
 

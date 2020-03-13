@@ -20,7 +20,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mqtwOrders.table.customContextMenuRequested.connect(self.on_mqtwOrders_customContextMenuRequested) 
         self.mqtwSellingPoints.settings(self.mem.settings, "wdgOrders", "mqtwSellingPoints")
         self.mem.data.investments_active().mqtw_sellingpoints(self.mqtwSellingPoints)
-        self.mqtwSellingPoints.setOrderBy(5, False)
+        self.mqtwSellingPoints.setOrderBy(4, False)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.orders.date_first_db_order().year,  date.today().year, date.today().year)
 
