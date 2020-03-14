@@ -4,7 +4,7 @@
 
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries, QCandlestickSeries,  QCandlestickSet
 from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize
-from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage
+from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage, QClipboard
 from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem
 from .myqtablewidget import myQTableWidget
 from .. objects.percentage import Percentage
@@ -36,10 +36,16 @@ class VCCommons(QChartView):
         self._titleFontSize=14
         self._animations=True
         self._progressDialogEnabled=False
+        
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        
         self.actionSave=QAction(self.tr("Save as image"))
         self.actionSave.setIcon(QIcon(":/reusingcode/save.png"))
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.actionSave.triggered.connect(self.on_actionSave_triggered)
+        
+        self.actionCopyToClipboard=QAction(self.tr("Copy image"))
+        self.actionCopyToClipboard.setIcon(QIcon(":/reusingcode/clipboard_copy.png"))
+        self.actionCopyToClipboard.triggered.connect(self.on_actionCopyToClipboard_triggered)
         
     @pyqtSlot()
     def on_actionSave_triggered(self):
@@ -47,6 +53,10 @@ class VCCommons(QChartView):
         filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), filename, self.tr("PNG Image (*.png)"))[0]
         if filename:
             self.save(filename)
+        
+    @pyqtSlot()
+    def on_actionCopyToClipboard_triggered(self):
+        self.copyImageToClipboard()
 
     ## Sets the title of the chart. If it's None, none title is shown.
     def setTitle(self, title):
@@ -113,6 +123,14 @@ class VCCommons(QChartView):
         self.render(painter)
         painter.end()
         img.save(savefile, quality=100)
+        
+    def copyImageToClipboard(self):
+        img=QImage(self.size(), QImage.Format_ARGB32)
+        painter=QPainter(img)
+        painter.setRenderHint(QPainter.Antialiasing)
+        self.render(painter)
+        painter.end()
+        QApplication.clipboard().setImage(img, QClipboard.Clipboard)
 
     ## Sets if the chart must show animations
     def setAnimations(self, boolean):
@@ -349,6 +367,8 @@ class VCTemporalSeries(VCCommons):
     def qmenu(self, title="Chart options"):
         menu=QMenu(self)
         menu.setTitle(self.tr(title))
+        menu.addAction(self.actionCopyToClipboard)
+        menu.addSeparator()
         menu.addAction(self.actionSave)
         return menu
 
@@ -545,6 +565,8 @@ class VCPie(QWidget):
     def qmenu(self, title="Pie chart options"):
         menu=QMenu(self)
         menu.setTitle(self.tr(title))
+        menu.addAction(self.pie.actionCopyToClipboard)
+        menu.addSeparator()
         menu.addAction(self.pie.actionSave)
         menu.addSeparator()
         menu.addAction(self.actionShowData)

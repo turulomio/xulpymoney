@@ -11,6 +11,12 @@ class Money(Currency):
         Currency.__init__(self, amount, currency)
         self.mem=mem
 
+    ## Return the absolute value of obj.
+    def __abs__(self):
+        if self.amount <0:
+            return Money(self.mem, -self.amount, self.currency)
+        else:
+            return Money(self.mem, self.amount, self.currency)
 
     def __add__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
@@ -19,8 +25,7 @@ class Money(Currency):
         else:
             error("Before adding, please convert to the same currency")
             raise "MoneyOperationException"
-            
-        
+
     def __sub__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
         if self.currency==money.currency:

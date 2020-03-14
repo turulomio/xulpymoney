@@ -170,6 +170,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.orders.order_by_date()
         self.orders.mqtw(self.mqtwOrders)
+        self.lblBalance.setText(self.tr("Ordered balance: {}").format(self.orders.amount()))
        
     def on_mqtwOrders_customContextMenuRequested(self,  pos):
         if self.mqtwOrders.selected==None:

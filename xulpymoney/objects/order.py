@@ -116,6 +116,13 @@ class OrderManager(ObjectManager_With_Id_Selectable, QObject):
         except:            
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
         
+    ## Sum of all order amounts in manager. It's showed in user currency
+    def amount(self):
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for o in self.arr:
+            r=r+abs(o.amount()) #abs due to can be negative amounts.
+        return r
+        
     def date_first_db_order(self):
         """First order date. It searches in database not in array"""
         cur=self.mem.con.cursor()
