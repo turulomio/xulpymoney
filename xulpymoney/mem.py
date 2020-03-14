@@ -63,10 +63,10 @@ class DBData:
         debug("DBData > Currencies took {}".format(datetime.now()-start))
         
         self.banks=BankManager(self.mem)
-        self.banks.load_from_db("select * from entidadesbancarias")
+        self.banks.load_from_db("select * from entidadesbancarias order by entidadbancaria")
 
         self.accounts=AccountManager(self.mem, self.banks)
-        self.accounts.load_from_db("select * from cuentas")
+        self.accounts.load_from_db("select * from cuentas order by cuenta")
 
         self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)

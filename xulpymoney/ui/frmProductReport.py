@@ -10,7 +10,7 @@ from xulpymoney.investing_com import InvestingCom
 from xulpymoney.objects.leverage import LeverageManager
 from xulpymoney.objects.productmode import ProductModesManager
 from xulpymoney.objects.agrupation import AgrupationManager
-from xulpymoney.objects.currency import currency_name, currency_symbol
+from xulpymoney.objects.currency import currency_name, currency_symbol, currencies_qcombobox
 from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.dps import DPS
 from xulpymoney.objects.percentage import Percentage
@@ -61,7 +61,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.tabGraphics.setCurrentIndex(1)
         self.tabHistorical.setCurrentIndex(4)
         
-#        self.tblTPC.settings(self.mem.settings, "frmProductReport", "tblTPC")
         self.mqtwTickers.settings(self.mem.settings, "frmProductReport", "mqtwTickers")
         self.mqtwDaily.settings(self.mem.settings, "frmProductReport", "mqtwDaily")    
         self.mqtwDaily.table.customContextMenuRequested.connect(self.on_mqtwDaily_customContextMenuRequested)
@@ -101,13 +100,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tab.setTabEnabled(3, False)
             self.mem.stockmarkets.qcombobox(self.cmbBolsa)
             self.mem.investmentsmodes.qcombobox(self.cmbPCI)
-            self.mem.currencies.qcombobox(self.cmbCurrency)
+            currencies_qcombobox(self.cmbCurrency, self.mem.localcurrency)
             self.mem.leverages.qcombobox(self.cmbApalancado)
             self.mem.types.qcombobox(self.cmbTipo)
         elif self.product.id<0: #Editar
             self.mem.stockmarkets.qcombobox(self.cmbBolsa)
             self.mem.investmentsmodes.qcombobox(self.cmbPCI)
-            self.mem.currencies.qcombobox(self.cmbCurrency)
+            currencies_qcombobox(self.cmbCurrency, self.product.currency)
             self.mem.leverages.qcombobox(self.cmbApalancado)
             self.mem.types.qcombobox(self.cmbTipo)
         elif self.product.id>=0:#Readonly
@@ -283,16 +282,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             info("Datos mensuales cargados: {}".format(datetime.now()-inicio))
             self.on_tabHistorical_currentChanged(self.tabHistorical.currentIndex())
 
-
-        
-
     def load_graphics(self):
         self.product.result.get_intraday(self.calendar.selectedDate().toPyDate())
         
         #Canvas Historical
-        if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
-            pass
-        else:
+        if self.product.result.ohclDaily.length()>2:#Needs 2 to show just a line
             self.wdgHistorical.setProduct(self.product, self.investment)
             self.wdgHistorical.generate()
             self.wdgHistorical.display()

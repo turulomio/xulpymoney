@@ -75,11 +75,6 @@ class Currency:
     def string(self,   digits=2):
         return "{} {}".format(round(self.amount, digits), currency_symbol(self.currency))
 
-
-
-
-
-
     def isZero(self):
         if self.amount==Decimal(0):
             return True
@@ -150,7 +145,7 @@ def currency_name(name):
             
             
 def MostCommonCurrencyTypes():
-    return ['CNY', 'USD', 'JPY', 'u', 'EUR', 'GBP']
+    return ['CNY', 'EUR', 'GBP', 'JPY', 'USD', 'u']
 
 ## @param selectedcurrency is an currency
 def currencies_qcombobox(combo, selectedcurrency=None):
