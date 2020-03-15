@@ -35,6 +35,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
         self.banks.order_by_name()
         self.banks.mqtw(self.mqtwBanks)
+        self.mqtwBanks.setOrderBy(0, False)
         self.mqtwBanks.table.clearSelection()   
         self.mqtwAccounts.table.setRowCount(0)
         self.mqtwAccounts.table.clearContents()
@@ -43,7 +44,6 @@ class wdgBanks(QWidget, Ui_wdgBanks):
 
     @pyqtSlot()
     def on_mqtwBanks_tableSelectionChanged(self):
-        print("AHORA")
         self.investments.clean()
         self.accounts.clean()
 
@@ -67,7 +67,9 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.accounts.order_by_name()
         self.investments.order_by_name()
         self.accounts.mqtw_active(self.mqtwAccounts)
+        self.mqtwAccounts.setOrderBy(0, False)
         self.investments.mqtw_active(self.mqtwInvestments)
+        self.mqtwInvestments.setOrderBy(0, False)
 
     def on_mqtwBanks_customContextMenuRequested(self,  pos):
         if self.mqtwBanks.selected==None:
