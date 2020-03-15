@@ -3,14 +3,14 @@
 
 from PyQt5.QtCore import pyqtSlot, Qt,  QDate
 from PyQt5.QtGui import QColor,  QPen,  QIcon, QPixmap,  QWheelEvent
-from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy,  QPushButton, QVBoxLayout, QDialog, QLineEdit, QDoubleSpinBox
+from PyQt5.QtWidgets import QWidget,  QHBoxLayout, QLabel,  QToolButton,  QSpacerItem,  QSizePolicy,  QPushButton, QVBoxLayout, QDialog, QLineEdit
 from xulpymoney.ui.Ui_wdgProductHistoricalChart import Ui_wdgProductHistoricalChart
 
 import datetime
 import logging
 from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_start
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqcharts import   VCTemporalSeries, eOHCLDuration
+from xulpymoney.ui.myqcharts import VCTemporalSeries, eOHCLDuration
 from xulpymoney.objects.investment import Investment
 from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationHomogeneusManager
 from xulpymoney.objects.money import Money
@@ -29,6 +29,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.view=None
         self.dtFrom.blockSignals(True)
         self.HistoricalChartAdjusts=eHistoricalChartAdjusts.Splits
+#        self.verticalLayout.addLayout(self.laySpinGainsPercentage(self, spacer_at_right=True))
         
     def _pen(self, style, color):
         pen=QPen()
@@ -48,6 +49,18 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 from_=self.investment.op.first().datetime-datetime.timedelta(days=30)
         self.dtFrom.setDate(from_)
         self.dtFrom.blockSignals(False)
+
+        if self.__class__.__name__=="wdgProductHistoricalChart" and self.investment is not None and self.investment.venta is not None and self.investment.venta!=0:
+            m_average_price=self.investment.op_actual.average_price(type=1)       
+            gains_percentage=Percentage(self.investment.selling_price().amount-m_average_price.amount, m_average_price.amount)
+            self.spnGainsPercentage.blockSignals(True)
+            self.spnGainsPercentage.setValue(gains_percentage.value_100())
+            self.spnGainsPercentage.blockSignals(False)
+        else:
+            self.spnGainsPercentage.blockSignals(True)
+            self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
+            self.spnGainsPercentage.blockSignals(False)
+        
         self.cmbOHCLDuration.currentIndexChanged.disconnect()
         eOHCLDuration.qcombobox(self.cmbOHCLDuration, eOHCLDuration.Day)
         self.cmbOHCLDuration.currentIndexChanged.connect(self.on_cmbOHCLDuration_currentIndexChanged)
@@ -59,6 +72,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.cmdFromRight.setEnabled(False)
         else:
             self.cmdFromRight.setEnabled(True)
+        self.generate()
+        self.display()
+
+    @pyqtSlot(float) 
+    def on_spnGainsPercentage_valueChanged(self, value):
         self.generate()
         self.display()
 
@@ -122,7 +140,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     self.view.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
 
         #INVESTMENT
-        if self.investment!=None:
+        if self.investment is not None:
             #Buy sell operations
             buy=self.view.appendScatterSeries(self.tr("Buy operations"))
             buy.setColor(QColor(85, 170, 127))
@@ -140,39 +158,19 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
 
             #Average price
             if self.investment.op_actual.length()>0:
-                m_selling_price=self.investment.selling_price()
-                m_average_price=self.investment.op_actual.average_price(type=1)
-                if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
-                    selling_price=self.view.appendTemporalSeries(self.tr("Selling price at {} to gain {}".format(m_selling_price,  self.investment.op_actual.gains_in_selling_point())))
-                    selling_price.setColor(QColor(170, 85, 85))
-                    self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, m_selling_price.amount)
-                    self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now()+datetime.timedelta(days=1), m_selling_price.amount)
+                gains_percentage=Percentage(self.spnGainsPercentage.value(), 100)
+                m_average_price=self.investment.op_actual.average_price(type=1)                
+                m_selling_price=self.investment.op_actual.average_price_after_a_gains_percentage(gains_percentage)
+
+                selling_price=self.view.appendTemporalSeries(self.tr("Selling price at {} to gain {}".format(m_selling_price,  self.investment.op_actual.gains_from_percentage(gains_percentage))))
+                selling_price.setColor(QColor(170, 85, 85))
+                self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, m_selling_price.amount)
+                self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now()+datetime.timedelta(days=1), m_selling_price.amount)
+
                 average_price=self.view.appendTemporalSeries(self.tr("Average price at {}".format(m_average_price)))
-                average_price.setColor(QColor(85, 170, 127))
+                average_price.setColor(QColor(85, 85, 170))
                 self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
                 self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now() + datetime.timedelta(days=1), m_average_price.amount)
-
-
-    ## This code generates an Horizontal Layout with an spin Gains, it's not shown by default, but it will be usefull in several subclases
-    ##  You can access objects normally because they are in self
-    def laySpinGainsPercentage(self, parent, spacer_at_right=False):
-        self.layGainsPercentage = QHBoxLayout(parent)
-        self.layGainsPercentage.setObjectName("layGainsPercentage")
-        self.lblGainsPercentage = QLabel(parent)
-        self.lblGainsPercentage.setObjectName("lblGainsPercentage")
-        self.lblGainsPercentage.setText(self.tr("Gains percentage"))
-        self.layGainsPercentage.addWidget(self.lblGainsPercentage)
-        self.spnGainsPercentage = QDoubleSpinBox(parent)
-        self.spnGainsPercentage.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-        self.spnGainsPercentage.setMaximum(300.0)
-        self.spnGainsPercentage.setSingleStep(0.5)
-        self.spnGainsPercentage.setProperty("value", 10.0)
-        self.spnGainsPercentage.setObjectName("spnGainsPercentage")
-        self.layGainsPercentage.addWidget(self.spnGainsPercentage)
-        if spacer_at_right==True:
-            spacerItem = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-            self.layGainsPercentage.addItem(spacerItem)
-        return self.layGainsPercentage
 
     def display(self):
         self.view.display()
@@ -269,48 +267,39 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
         self.sim_op=sim_op
         self.sim_opactual=sim_opactual
         self.mem=sim_op.mem
-        self.verticalLayout.addLayout(self.laySpinGainsPercentage(self, spacer_at_right=True))
-        self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
         self.spnGainsPercentage.valueChanged.connect(self.on_spnGainsPercentage_valueChanged)
         
 
-    def generate(self):
-        """Just draw the chart with selected options. It creates and destroys objects"""
-            
+    def generate(self):            
         wdgProductHistoricalChart.generate(self)
-        if self.investment!=None:
-            if self.investment.op_actual.length()>0:
-                #Calcs
-                percentage=Percentage(self.spnGainsPercentage.value(), 100)
-                new_avg_1=self.sim_opactual.average_price()
-                new_sell_price_1=self.sim_opactual.average_price_after_a_gains_percentage(percentage)                
-                new_purchase_price_1=self.sim_opactual.last().price()
-                gains_1=self.sim_opactual.gains_from_percentage(percentage)
-                
-                #First reinvestment
-                if self.investment.selling_expiration!=None:#If no selling point, it makes ugly the chart
-                    new_selling_price=self.view.appendTemporalSeries(self.tr("Reinvestment selling price at {} to gain {}".format(new_sell_price_1, gains_1)))
-                    new_selling_price.setColor(QColor(170, 85, 85))
-                    new_selling_price.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
-                    self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price_1.amount)
-                    self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price_1.amount)
-                
-                new_average_price=self.view.appendTemporalSeries(self.tr("Reinvestment average price at {}").format(new_avg_1))
-                new_average_price.setColor(QColor(85, 85, 170))
-                new_average_price.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
-                self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg_1.amount)
-                self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg_1.amount)
-                
-                new_purchase_price=self.view.appendTemporalSeries(self.tr("Reinvestment purchase at {}").format(new_purchase_price_1))
-                new_purchase_price.setColor(QColor(85, 170, 127))
-                new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
-                self.view.appendTemporalSeriesData(new_purchase_price, self.sim_opactual.first().datetime, new_purchase_price_1.amount)
-                self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), new_purchase_price_1.amount) 
+        
+        if self.investment.op_actual.length()>0:
+            #Calcs
+            percentage=Percentage(self.spnGainsPercentage.value(), 100)
+            new_avg_1=self.sim_opactual.average_price()
+            new_sell_price_1=self.sim_opactual.average_price_after_a_gains_percentage(percentage)                
+            new_purchase_price_1=self.sim_opactual.last().price()
+            gains_1=self.sim_opactual.gains_from_percentage(percentage)
+            
+            #First reinvestment
+            new_selling_price=self.view.appendTemporalSeries(self.tr("Reinvestment selling price at {} to gain {}".format(new_sell_price_1, gains_1)))
+            new_selling_price.setColor(QColor(170, 85, 85))
+            new_selling_price.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
+            self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price_1.amount)
+            self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price_1.amount)
+            
+            new_average_price=self.view.appendTemporalSeries(self.tr("Reinvestment average price at {}").format(new_avg_1))
+            new_average_price.setColor(QColor(85, 85, 170))
+            new_average_price.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
+            self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg_1.amount)
+            self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg_1.amount)
+            
+            new_purchase_price=self.view.appendTemporalSeries(self.tr("Reinvestment purchase at {}").format(new_purchase_price_1))
+            new_purchase_price.setColor(QColor(85, 170, 127))
+            new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
+            self.view.appendTemporalSeriesData(new_purchase_price, self.sim_opactual.first().datetime, new_purchase_price_1.amount)
+            self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), new_purchase_price_1.amount) 
 
-    @pyqtSlot(float) 
-    def on_spnGainsPercentage_valueChanged(self, value):
-        self.generate()
-        self.display()
 
 class ReinvestmentLines:
     Buy=0
@@ -356,8 +345,8 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.layAmounts.addWidget(self.label1)
         self.layAmounts.addWidget(self.txtAmounts)
         self.layAmounts.addItem(self.spacer2)
-        self.layAmounts.addLayout(self.laySpinGainsPercentage(self))
-        self.layAmounts.addItem(self.spacer5)
+#        self.layAmounts.addLayout(self.laySpinGainsPercentage(self))
+#        self.layAmounts.addItem(self.spacer5)
         self.layAmounts.addWidget(self.labelLastOperationPercentage)
         self.layAmounts.addWidget(self.txtLastOperationPercentage)
         self.layAmounts.addItem(self.spacer6)
