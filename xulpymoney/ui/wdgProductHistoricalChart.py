@@ -345,8 +345,6 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.layAmounts.addWidget(self.label1)
         self.layAmounts.addWidget(self.txtAmounts)
         self.layAmounts.addItem(self.spacer2)
-#        self.layAmounts.addLayout(self.laySpinGainsPercentage(self))
-#        self.layAmounts.addItem(self.spacer5)
         self.layAmounts.addWidget(self.labelLastOperationPercentage)
         self.layAmounts.addWidget(self.txtLastOperationPercentage)
         self.layAmounts.addItem(self.spacer6)
@@ -362,9 +360,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         self.cmdOpportunity.setIcon(icon1)
         self.layOpportunity.addItem(self.spacerOpportunity)
         self.layOpportunity.addWidget(self.cmdOpportunity)
-        
-        
-        
+
     ## Must be added after setProduct
     def setPrice(self, price):
         self.txtBuyPrice.setText(price)

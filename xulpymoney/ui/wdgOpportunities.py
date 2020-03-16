@@ -18,11 +18,9 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         self.txtInvest.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
         self.mqtwOpportunities.settings(self.mem.settings, "wdgOpportunities", "mqtwOpportunities")
         self.mqtwOpportunities.table.customContextMenuRequested.connect(self.on_mqtwOpportunities_customContextMenuRequested)
-        self.mqtwOpportunities.table.itemSelectionChanged.connect(self.on_mqtwOpportunities_itemSelectionChanged)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.opportunities.date_of_the_first_database_oppportunity().year,  datetime.date.today().year, datetime.date.today().year)
-        
-        
+
     @pyqtSlot()  
     def on_actionOpportunityNew_triggered(self):
         d=QDialog(self)     
@@ -39,7 +37,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         d=QDialog(self)     
         d.setModal(True)
         d.setWindowTitle(self.tr("Edit opportunity"))
-        w=wdgOpportunitiesAdd(self.mem, self.opportunities.selected, d)
+        w=wdgOpportunitiesAdd(self.mem, self.mqtwOpportunities.selected, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -47,53 +45,53 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         
     @pyqtSlot() 
     def on_actionOpportunityDelete_triggered(self):
-        self.opportunities.remove(self.opportunities.selected)
+        self.opportunities.remove(self.mqtwOpportunities.selected)
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
         
     @pyqtSlot() 
     def on_actionExecute_triggered(self):        
-        if self.opportunities.selected.executed==None:#Only adds an order if it's not executed
+        if self.mqtwOpportunities.selected.executed==None:#Only adds an order if it's not executed
             d=QDialog(self)        
             d.setModal(True)
             d.setFixedSize(850, 850)
             d.setWindowTitle(self.tr("Investment calculator"))
             w=wdgCalculator(self.mem, self)
-            w.setProduct(self.opportunities.selected.product)
-            w.txtFinalPrice.setText(self.opportunities.selected.entry)
+            w.setProduct(self.mqtwOpportunities.selected.product)
+            w.txtFinalPrice.setText(self.mqtwOpportunities.selected.entry)
             lay = QVBoxLayout(d)
             lay.addWidget(w)
             d.exec_()
             reply = QMessageBox.question(None, self.tr('Opportunity execution'), self.tr("If you have make and order, you must execute\nDo you want to execute this oportunity?"),  QMessageBox.Yes, QMessageBox.No)          
             if reply==QMessageBox.Yes:
-                self.opportunities.selected.executed=self.mem.localzone.now()#Set execution
-                self.opportunities.selected.save()
+                self.mqtwOpportunities.selected.executed=self.mem.localzone.now()#Set execution
+                self.mqtwOpportunities.selected.save()
                 self.mem.con.commit()
         else:
-            self.opportunities.selected.executed=None#Remove execution
-            self.opportunities.selected.save()
+            self.mqtwOpportunities.selected.executed=None#Remove execution
+            self.mqtwOpportunities.selected.save()
             self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
 
     @pyqtSlot() 
     def on_actionRemove_triggered(self):        
-        self.opportunities.selected.removed=datetime.date.today()
-        self.opportunities.selected.save()
+        self.mqtwOpportunities.selected.removed=datetime.date.today()
+        self.mqtwOpportunities.selected.save()
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
 
     @pyqtSlot() 
     def on_actionShowGraphic_triggered(self):
-        self.opportunities.selected.product.needStatus(2)
+        self.mqtwOpportunities.selected.product.needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Opportunity graph"))
         lay = QVBoxLayout(d)
         wc=wdgProductHistoricalOpportunity()
-        wc.setProduct(self.opportunities.selected.product, None)
-        wc.setOpportunity(self.opportunities.selected)
-#        wc.setPrice(self.opportunities.selected.entry)
+        wc.setProduct(self.mqtwOpportunities.selected.product, None)
+        wc.setOpportunity(self.mqtwOpportunities.selected)
+#        wc.setPrice(self.mqtwOpportunities.selected.entry)
         wc.generate()
         wc.display()
         lay.addWidget(wc)
@@ -101,12 +99,12 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
 
     def load_OpportunityData(self, frm):
         """Carga los datos de la orden en el frmInvestmentOperationsAdd"""
-        if self.opportunities.selected.shares<0:
+        if self.mqtwOpportunities.selected.shares<0:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(5))#Sale
         else:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(4))#Purchase
-        frm.txtAcciones.setText(self.opportunities.selected.shares)
-        frm.wdg2CPrice.setTextA(self.opportunities.selected.entry)
+        frm.txtAcciones.setText(self.mqtwOpportunities.selected.shares)
+        frm.wdg2CPrice.setTextA(self.mqtwOpportunities.selected.entry)
 
     @pyqtSlot(int)     
     def on_cmbMode_currentIndexChanged(self, index):
@@ -158,10 +156,11 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.opportunities.order_by_date()
-        self.opportunities.myqtablewidget(self.mqtwOpportunities, self.txtInvest.decimal())
+        self.opportunities.mqtw(self.mqtwOpportunities, self.txtInvest.decimal())
+        self.mqtwOpportunities.setOrderBy(8, True)
        
     def on_mqtwOpportunities_customContextMenuRequested(self,  pos):
-        if self.opportunities.selected==None:
+        if self.mqtwOpportunities.selected==None:
             self.actionOpportunityDelete.setEnabled(False)
             self.actionOpportunityEdit.setEnabled(False)
             self.actionExecute.setEnabled(False)
@@ -172,7 +171,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
             self.actionOpportunityEdit.setEnabled(True)
             self.actionExecute.setEnabled(True)
             self.actionRemove.setEnabled(True)
-            if self.opportunities.selected.executed==None:
+            if self.mqtwOpportunities.selected.executed==None:
                 self.actionExecute.setText("Execute opportunity")
             else:
                 self.actionExecute.setText("Remove execution time")
@@ -190,13 +189,9 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         menu.addAction(self.actionRemove)        
         menu.addSeparator()
         menu.addAction(self.actionShowGraphic)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwOpportunities.qmenu())
         menu.exec_(self.mqtwOpportunities.table.mapToGlobal(pos))
-
-    def on_mqtwOpportunities_itemSelectionChanged(self):
-        self.opportunities.selected=None
-        for i in self.mqtwOpportunities.table.selectedItems():
-            if i.column()==0:#only once per row
-                self.opportunities.selected=self.opportunities.arr[i.row()]
                 
     def on_wdgYear_changed(self):
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())

@@ -5,9 +5,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneyfunctions import relation_gains_risk, qmessagebox
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.libxulpymoneytypes import eQColor, eInvestmentTypePosition
-from xulpymoney.ui.myqtablewidget import qdate, qleft, qempty, qright
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QTableWidgetItem
 
 ## Class that register a purchase opportunity
 class Opportunity:
@@ -156,54 +154,42 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
 
     ## @param table
     ## @invested Decimal with the amount to invest in product currency
-    def myqtablewidget(self, wdg, dInvested):
-        wdg.table.setColumnCount(12)
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Date")))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Removed")))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Product")))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Current price")))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Entry")))
-        wdg.table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr("Target")))
-        wdg.table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr("Stop loss")))
-        wdg.table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr("Gains/Risk")))
-        wdg.table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr("% from current")))
-        wdg.table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr("Executed")))
-        wdg.table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr("Target gains")))
-        wdg.table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr("Stop loss losses")))
-        wdg.applySettings()
-        wdg.table.clearContents()
-        wdg.table.setRowCount(self.length())
-        for i, p in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qdate(p.date))
-            wdg.table.item(i, 0).setIcon(eInvestmentTypePosition.qicon_boolean(p.short))
-            wdg.table.setItem(i, 1, qdate(p.removed))      
-            wdg.table.setItem(i, 2, qleft(p.product.name))
-            wdg.table.setItem(i, 3, p.product.result.basic.last.money().qtablewidgetitem())
-            wdg.table.setItem(i, 4, p.product.money(p.entry).qtablewidgetitem())
-            wdg.table.setItem(i, 5, p.product.money(p.target).qtablewidgetitem())
-            wdg.table.setItem(i, 6, p.product.money(p.stoploss).qtablewidgetitem())
-            wdg.table.setItem(i, 7, qright(p.relation_gains_risk()))
-            if p.is_in_force():
-                wdg.table.setItem(i, 8, p.percentage_from_current_price().qtablewidgetitem())
-            else:
-                wdg.table.setItem(i, 8, qempty())
-            if p.is_executed():
-                wdg.table.setItem(i, 9, qdate(p.executed))
-            else:
-                wdg.table.setItem(i, 9, qempty())
-                
-            wdg.table.setItem(i, 10, p.m_target_gains(dInvested).qtablewidgetitem())
-            wdg.table.setItem(i, 11, p.m_stop_loss_losses(dInvested).qtablewidgetitem())
-                
+    def mqtw(self, wdg, dInvested):
+        hh=[self.tr("Date"), self.tr("Removed"), self.tr("Product"), self.tr("Current price"), self.tr("Entry"), 
+        self.tr("Target"), self.tr("Stop loss"), self.tr("Gains/Risk"), self.tr("% from current"), self.tr("Executed"), 
+        self.tr("Target gains"), self.tr("Stop loss losses")]
+        data=[]
+        for i, o in enumerate(self.arr):
+            percentage_from_current_price=o.percentage_from_current_price() if o.is_in_force() else None
+            executed=o.executed if o.is_executed() else None
+            data.append([
+                o.date, 
+                o.removed, 
+                o.product.name, 
+                o.product.result.basic.last.money(), 
+                o.product.money(o.entry), 
+                o.product.money(o.target), 
+                o.product.money(o.stoploss), 
+                o.relation_gains_risk(), 
+                percentage_from_current_price, 
+                executed, 
+                o.m_target_gains(dInvested), 
+                o.m_stop_loss_losses(dInvested), 
+                o, 
+            ])
+            wdg.setDataWithObjects(hh, None, data, additional=self.mqtw_additional)
+
+    def mqtw_additional(self, wdg):
+        for i, o in enumerate(wdg.objects()):
             #Color
-            if p.is_executed():
+            wdg.table.item(i, 0).setIcon(eInvestmentTypePosition.qicon_boolean(o.short))
+            if o.is_executed():
                 for column in range (wdg.table.columnCount()):
                     wdg.table.item(i, column).setBackground(eQColor.Green)                     
-            elif p.is_removed():
+            elif o.is_removed():
                 for column in range (wdg.table.columnCount()):
                     wdg.table.item(i, column).setBackground(eQColor.Red)     
                     
-            if p.is_executed()==False and p.is_removed()==False:#Color if current oportunity
-                if p.percentage_from_current_price().value_100()>Decimal(0):
+            if o.is_executed()==False and o.is_removed()==False:#Color if current oportunity
+                if o.percentage_from_current_price().value_100()>Decimal(0):
                     wdg.table.item(i, 3).setBackground(eQColor.Green)
-
