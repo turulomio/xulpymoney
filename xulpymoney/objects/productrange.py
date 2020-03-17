@@ -1,7 +1,9 @@
 from PyQt5.QtCore import QObject
 from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager
+from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.investment import InvestmentManager
+from xulpymoney.objects.order import OrderManager
 
 class ProductRange(QObject):
     def __init__(self, mem=None, product=None,  value=None, percentage_down=None,  percentage_up=None, decimals=2):
@@ -17,17 +19,44 @@ class ProductRange(QObject):
         
     ## Return th value of the range highest value.. Points + percentage/2
     def range_highest_value(self):
-        return self.value/(1-self.percentage_down.value)
+        points_to_next_high= self.value/(1-self.percentage_down.value)-self.value
+        return self.value+points_to_next_high/2
+
     ## Return th value of the range highest value.. Points + percentage/2
     def range_lowest_value(self):
-        return self.value*(1-self.percentage_down.value)
+        points_to_next_low=self.value-self.value*(1-self.percentage_down.value)
+        return self.value-points_to_next_low/2
+        
+    ## @return Boolean if it's inside the range
+    def isInside(self, value):
+        if value<self.range_highest_value() and value>=self.range_lowest_value():
+            return True
+        else:
+            return False
         
     ## Search for investments in self.mem.data and 
     def getInvestments(self):
         r=InvestmentManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
-            if o.op_actual.length()>0 and o.op_actual.first().valor_accion<self.range_highest_value() and o.op_actual.first().valor_accion>=self.range_lowest_value():
+            if o.op_actual.length()>0 and self.isInside(o.op_actual.first().valor_accion)==True:
                 r.append(o)
+        return r
+        
+    ## Search for orders in self.mem.data and 
+    def getInvestmentsFromOrders(self): 
+        orders=OrderManager(self.mem).init__from_db("""
+            SELECT * 
+            FROM 
+                ORDERS
+            WHERE
+                EXPIRATION>=NOW()::DATE AND
+                EXECUTED IS NULL
+            ORDER BY DATE
+       """)
+        r=InvestmentManager(self.mem)
+        for o in orders.arr:
+            if o.investment.product==self.product and self.isInside(o.price)==True:
+                r.append(o.investment)
         return r
       
 
@@ -59,21 +88,24 @@ class ProductRangeManager(ObjectManager, QObject):
         for i, o in enumerate(self.arr):
             data.append([
                 o.value, 
-                o.getInvestments().string_with_names(), 
+                o.getInvestments().string_with_names(),                 
+                o.getInvestmentsFromOrders().string_with_names(), 
                 o, 
             ])
         wdg.setDataWithObjects(
-            [self.tr("Value"), self.tr("Investments")
+            [self.tr("Value"), self.tr("Investments"), self.tr("Orders"),
             ], 
             None, 
             data,  
-            decimals=[self.decimals, 0, 0, 0, 0, 0, 0], 
+            decimals=[self.decimals, 0, 6, 6, 0, 0, 0], 
             zonename=self.mem.localzone_name, 
             additional=self.mqtw_additional
         )   
         
     def mqtw_additional(self, wdg):
-        pass
+        for i, o in enumerate(wdg.objects()):
+            if o.isInside(o.product.result.basic.last.quote)==True:
+                wdg.table.item(i, 0).setBackground(eQColor.Green)
 #        type=eMoneyCurrency.User
 #        for i, inv in enumerate(wdg.objects()):
 #            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
