@@ -14,7 +14,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
 
         self.mqtw.settings(self.mem.settings, "wdgProductRange", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
-        
+
         self.spnDown.setValue(float(self.mem.settings.value("wdgProductRange/spnDown", "5")))
         self.spnGains.setValue(float(self.mem.settings.value("wdgProductRange/spnGains", "5")))
         self.txtInvertir.setText(Decimal(self.mem.settings.value("wdgProductRange/invertir", "10000")))
@@ -27,43 +27,41 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
     def load_data(self):
         self.prm=ProductRangeManager(self.mem, self.product, Percentage(self.spnDown.value(), 100), Percentage(self.spnGains.value(), 100))
         self.prm.mqtw(self.mqtw)
-        
+
         self.mem.settings.setValue("wdgProductRange/spnDown", self.spnDown.value())
         self.mem.settings.setValue("wdgProductRange/spnGains", self.spnGains.value())
         self.mem.settings.setValue("wdgProductRange/invertir", self.txtInvertir.text())
         self.mem.settings.setValue("wdgProductRange/product", self.product.id)
         self.mem.settings.sync()
-        
+
         self.lblTotal.setText(self.tr("Total invested: {}. Current balance: {} ({})").format(self.investment_merged.invertido(),  self.investment_merged.balance(), self.investment_merged.op_actual.tpc_total(self.product.result.basic.last)))
 
     def on_cmd_pressed(self):
         self.load_data()
-        
+
     @pyqtSlot(int)
     def on_cmbShowOptions_currentIndexChanged(self, index):
         self.load_data()
 
     @pyqtSlot(int)
     def on_cmbProducts_currentIndexChanged(self, index):
-        if index==-1:
-            debug("-1")
-            return
-        debug("cmbProducts index changed to {}".format(index))
-        self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
-        self.investment_merged=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.product)
-        self.load_data()
+        if index>=0:
+            debug("cmbProducts index changed to {}".format(index))
+            self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
+            self.investment_merged=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.product)
+            self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
         from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.product, None,  self)
         w.exec_()
-        
+        self.load_data()
+
     def on_cmdIRInsertar_pressed(self):
         from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
         w=frmQuotesIBM(self.mem, self.product, None,  self)
         w.exec_() 
         self.product.needStatus(2, downgrade_to=0)
-        self.cmbBenchmarkCurrent_load()
         self.load_data()
 
     def on_mqtw_customContextMenuRequested(self,  pos):
@@ -87,4 +85,3 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
-        
