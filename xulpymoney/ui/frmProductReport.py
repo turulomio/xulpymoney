@@ -682,7 +682,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteMonths)        
-        menu.exec_(self.mqtwMonthlytable.table.mapToGlobal(pos))  
+        menu.exec_(self.mqtwMonthly.table.mapToGlobal(pos))  
         
     def on_mqtwYearly_itemSelectionChanged(self):
         if self.product.result.ohclYearly.selected!=None:

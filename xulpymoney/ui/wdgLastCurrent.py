@@ -113,9 +113,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         if index==0:
             self.investments=self.mem.data.investments_active()
         elif index==1:
-            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+            self.investments=self.mem.data.investments_active().InvestmentManager_merging_investments_with_same_product_merging_current_operations()
         elif index==2:
-            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_operations()
+            self.investments=self.mem.data.investments_active().InvestmentManager_merging_investments_with_same_product_merging_operations()
         self.investments.order_by_percentage_last_operation()
         self.mqtwInvestments_reload()
         self.mem.settingsdb.setValue("wdgLastCurrent/viewmode", index)

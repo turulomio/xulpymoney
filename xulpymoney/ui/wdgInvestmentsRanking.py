@@ -25,7 +25,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.mqtwOperations.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Dividends")))
         self.mqtwOperations.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Total")))
 
-        set=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
+        set=self.mem.data.investments.InvestmentManager_merging_investments_with_same_product_merging_operations()
         self.mqtwOperations.applySettings()
         self.mqtwOperations.table.clearContents()
         self.mqtwOperations.table.setRowCount(set.length()+1)

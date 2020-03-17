@@ -161,7 +161,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
     def scriptProduct(self):
         self.viewProduct.clear()
         
-        invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+        invs=self.mem.data.investments_active().InvestmentManager_merging_investments_with_same_product_merging_current_operations()
         invs.order_by_balance()
         for i in invs.arr:
             if self.radCurrent.isChecked():

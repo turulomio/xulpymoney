@@ -531,6 +531,13 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         for inv in self.InvestmentManager_with_investments_with_the_same_product(product_from).arr:
             inv.product=product_to
             inv.save()
+            
+    ## Gets an ivestment object from it's fullName. Used to get dinamic actions by name in wdgProductRange
+    def find_by_fullName(self, s):
+        for o in self.arr:
+            if o.fullName()==s:
+                return o
+        return None
 
     def findInvestmentOperation(self, id):
         """Busca la IO en el set o dveuleve None"""
@@ -629,11 +636,16 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 r=r+pendiente
         return r
 
-    def ProductManager_with_investments_distinct_products(self):
+    ## @param only_with_shares Boolean. If True only investments of products used with shares in current operations. If False all used products with investments
+    def ProductManager_with_investments_distinct_products(self, only_with_shares=False):
         """Returns a SetProduct with all distinct products of the Set investments items"""
         s=set([])
         for i in self.arr:
-            s.add(i.product)
+            if only_with_shares==True:
+                if i.shares()!=0:
+                    s.add(i.product)
+            else:
+                s.add(i.product)
             
         r=ProductManager(self.mem)
         for p in s:
@@ -722,10 +734,10 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     def string_with_names(self):
             resultado=""
             for o in self.arr:
-                    resultado=resultado+ self.tr("{}: {}\n".format(o.fullName(), o.balance()))
+                    resultado=resultado+ self.tr("{}. Invested: {}\n").format(o.fullName(), o.invertido())
             return resultado[:-1]
 
-    def setInvestments_merging_investments_with_same_product_merging_operations(self):
+    def InvestmentManager_merging_investments_with_same_product_merging_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
             
@@ -733,13 +745,13 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
         """
-        invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
+        invs=InvestmentManager(self.mem)
         for product in self.ProductManager_with_investments_distinct_products().arr:
             i=self.Investment_merging_operations_with_same_product(product)
             invs.append(i) 
         return invs
 
-    def setInvestments_merging_investments_with_same_product_merging_current_operations(self):
+    def InvestmentManager_merging_investments_with_same_product_merging_current_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
             
@@ -747,7 +759,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
         """
-        invs=InvestmentManager(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
+        invs=InvestmentManager(self.mem)
         for product in self.ProductManager_with_investments_distinct_products().arr:
             i=self.Investment_merging_current_operations_with_same_product(product)
             invs.append(i) 

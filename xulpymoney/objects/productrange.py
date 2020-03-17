@@ -4,6 +4,7 @@ from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.investment import InvestmentManager
+from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHeterogeneusManager
 from xulpymoney.objects.order import OrderManager
 
 class ProductRange(QObject):
@@ -43,8 +44,18 @@ class ProductRange(QObject):
     def getInvestments(self):
         r=InvestmentManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
-            if o.op_actual.length()>0 and self.isInside(o.op_actual.first().valor_accion)==True:
-                r.append(o)
+            for op in o.op_actual.arr:
+                if self.isInside(op.valor_accion)==True:
+                    r.append(o)
+        return r        
+
+    ## Search for investments in self.mem.data and 
+    def getInvestmentsOperations(self):
+        r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
+        for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
+            for op in o.op_actual.arr:
+                if self.isInside(op.valor_accion)==True:
+                    r.append(o)
         return r
         
     ## Search for orders in self.mem.data and 
