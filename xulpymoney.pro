@@ -28,6 +28,7 @@ SOURCES         = \
                   xulpymoney/objects/percentage.py \
                   xulpymoney/objects/productmode.py \
                   xulpymoney/objects/product.py \
+                  xulpymoney/objects/productrange.py \
                   xulpymoney/objects/producttype.py \
                   xulpymoney/objects/quote.py \
                   xulpymoney/objects/settingsdb.py \
@@ -126,6 +127,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgLastCurrent.py \
                   xulpymoney/ui/wdgProductHistoricalChart.py \
                   xulpymoney/ui/Ui_wdgProductHistoricalChart.py \
+                  xulpymoney/ui/wdgProductRange.py \
+                  xulpymoney/ui/Ui_wdgProductRange.py \
                   xulpymoney/ui/wdgProducts.py \
                   xulpymoney/ui/Ui_wdgProducts.py \
                   xulpymoney/ui/wdgProductsComparation.py \
@@ -205,6 +208,7 @@ FORMS           = \
                   xulpymoney/ui/wdgOrders.ui \
                   xulpymoney/ui/wdgOrdersAdd.ui \
                   xulpymoney/ui/wdgProductHistoricalChart.ui \
+                  xulpymoney/ui/wdgProductRange.ui \
                   xulpymoney/ui/wdgProducts.ui \
                   xulpymoney/ui/wdgProductsComparation.ui \
                   xulpymoney/ui/wdgProductsDataMove.ui \

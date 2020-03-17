@@ -17,7 +17,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.mem=mem
 
         self.banks=None#Set in on_chkActives_stateChanged
-        self.investments=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
+        self.investments=InvestmentManager(self.mem) #Set
         self.accounts=AccountManager(self.mem, self.mem.data.banks)#Set
 
         self.mqtwBanks.settings(self.mem.settings, "wdgBanks", "mqtwBanks")

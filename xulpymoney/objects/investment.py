@@ -322,19 +322,16 @@ class Investment(QObject):
         
 
 class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
-    def __init__(self, mem, cuentas, products, benchmark):
+    def __init__(self, mem):
         QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
-        self.accounts=cuentas
-        self.products=products
-        self.benchmark=benchmark  ##Objeto product
 
     def load_from_db(self, sql,  progress=False):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
         for row in cur:
-            inv=Investment(self.mem).init__db_row(row,  self.accounts.find_by_id(row['id_cuentas']), self.products.find_by_id(row['products_id']))
+            inv=Investment(self.mem).init__db_row(row,  self.mem.data.accounts.find_by_id(row['id_cuentas']), self.mem.data.products.find_by_id(row['products_id']))
             self.append(inv)
         cur.close()  
 
@@ -479,7 +476,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## @return InvestmentManager
     def InvestmentManager_At_Datetime(self, dt):
         start=datetime.now()
-        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        result=InvestmentManager(self.mem)
         for inv in self.arr:
             result.append(inv.Investment_At_Datetime(dt))
         debug("InvestmentManager_At_Datetime took {}".format(datetime.now()-start))
@@ -490,7 +487,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
     def InvestmentManager_with_investments_with_zero_risk(self):
-        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        result=InvestmentManager(self.mem)
         for inv in self.arr:
             if inv.product.percentage==0:
                 result.append(inv)
@@ -500,7 +497,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
     def InvestmentManager_with_investments_with_the_same_product(self, product):
-        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        result=InvestmentManager(self.mem)
         for inv in self.arr:
             if inv.product.id==product.id:
                 result.append(inv)
@@ -512,7 +509,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## @param product Product to search in this InvestmentManager
     ## @return InvestmentManager
     def InvestmentManager_with_investments_with_the_same_product_with_zero_shares(self, product):
-        result=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        result=InvestmentManager(self.mem)
         for inv in self.arr:
             if inv.product.id==product.id and inv.op_actual.shares()==0:
                 result.append(inv)
@@ -715,11 +712,18 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             Returns a new setinvestments filtering original by type_id
             For example to get all funds in the original setinvesmet
         """
-        r=InvestmentManager(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark )
+        r=InvestmentManager(self.mem )
         for inv in self.arr:
             if inv.product.type.id==type_id:
                 r.append(inv)
         return r
+        
+    ## REturns a string with investments separated with \n for range indexes
+    def string_with_names(self):
+            resultado=""
+            for o in self.arr:
+                    resultado=resultado+ self.tr("{}: {}\n".format(o.fullName(), o.balance()))
+            return resultado[:-1]
 
     def setInvestments_merging_investments_with_same_product_merging_operations(self):
         """

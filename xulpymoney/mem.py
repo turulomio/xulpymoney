@@ -68,7 +68,7 @@ class DBData:
         self.accounts=AccountManager(self.mem, self.banks)
         self.accounts.load_from_db("select * from cuentas order by cuenta")
 
-        self.investments=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        self.investments=InvestmentManager(self.mem)
         self.investments.load_from_db("select * from inversiones", progress)
         self.investments.needStatus(2, progress=True)
         
@@ -109,14 +109,14 @@ class DBData:
 
             
     def investments_active(self):        
-        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        r=InvestmentManager(self.mem)
         for b in self.investments.arr:
             if b.active==True:
                 r.append(b)
         return r        
         
     def investments_inactive(self):        
-        r=InvestmentManager(self.mem, self.accounts, self.products, self.benchmark)
+        r=InvestmentManager(self.mem)
         for b in self.investments.arr:
             if b.active==False:
                 r.append(b)

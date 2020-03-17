@@ -327,21 +327,23 @@ class OHCLManager(ObjectManager):
                     datetimes.append(ohcl.datetime())
         return datetimes
 
+    ## Return the ohcl with the bigest ohcl.high
     def highest(self):
         if self.length()==0:
             return None
-        r=self.arr[0]
+        r=self.first()
         for ohcl in self.arr:
-            if ohcl.close>=r.close:
+            if ohcl.high>=r.high:
                 r=ohcl
         return r
         
+    ## Return the ohcl with the lowes ohcl.low
     def lowest(self):
         if self.length()==0:
             return None
-        r=self.arr[0]
+        r=self.first()
         for ohcl in self.arr:
-            if ohcl.close<=r.close:
+            if ohcl.low<=r.low:
                 r=ohcl
         return r
 

@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>34</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -253,6 +253,7 @@
      <string>&amp;Strategies</string>
     </property>
     <addaction name="actionIndexRange"/>
+    <addaction name="actionProductRange"/>
     <addaction name="separator"/>
     <addaction name="actionLastOperation"/>
     <addaction name="separator"/>
@@ -333,6 +334,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionIndexRange"/>
+   <addaction name="actionProductRange"/>
    <addaction name="actionLastOperation"/>
   </widget>
   <widget class="QToolBar" name="tbReports">
@@ -1229,6 +1231,18 @@
    </property>
    <property name="toolTip">
     <string>Report an issue</string>
+   </property>
+  </action>
+  <action name="actionProductRange">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/layers.png</normaloff>:/xulpymoney/layers.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Product range</string>
+   </property>
+   <property name="toolTip">
+    <string>Product range</string>
    </property>
   </action>
  </widget>

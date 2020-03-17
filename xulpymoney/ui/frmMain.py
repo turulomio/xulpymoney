@@ -27,7 +27,6 @@ from xulpymoney.ui.wdgBanks import wdgBanks
 from xulpymoney.ui.wdgConcepts import wdgConcepts
 from xulpymoney.ui.wdgCalculator import wdgCalculator
 from xulpymoney.ui.wdgCuriosities import wdgCuriosities
-from xulpymoney.ui.wdgIndexRange import wdgIndexRange
 from xulpymoney.ui.wdgInvestmentsOperations import wdgInvestmentsOperations
 from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
 from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
@@ -62,6 +61,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             self.actionDocumentsPurge.setEnabled(False)
+
         
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
@@ -209,12 +209,22 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
+        from xulpymoney.ui.wdgIndexRange import wdgIndexRange
         if self.mem.data.benchmark.result.ohclDaily.length()==0:
             qmessagebox(self.tr("There isn't any benchmark data yet."))
             return
         
         self.w.close()
         self.w=wdgIndexRange(self.mem, self)
+                
+        self.layout.addWidget(self.w)
+        self.w.show()
+
+    @pyqtSlot()  
+    def on_actionProductRange_triggered(self):
+        from xulpymoney.ui.wdgProductRange import wdgProductRange
+        self.w.close()
+        self.w=wdgProductRange(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
