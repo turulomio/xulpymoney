@@ -1,11 +1,9 @@
-
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout
 from logging import debug
 from xulpymoney.ui.Ui_wdgProductRange import Ui_wdgProductRange
 from xulpymoney.objects.productrange import ProductRangeManager
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.ui.wdgCalculator import wdgCalculator
 from decimal import Decimal
 
 class wdgProductRange(QWidget, Ui_wdgProductRange):
@@ -35,9 +33,8 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mem.settings.setValue("wdgProductRange/invertir", self.txtInvertir.text())
         self.mem.settings.setValue("wdgProductRange/product", self.product.id)
         self.mem.settings.sync()
-        #Prints label
-#        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.product.name, self.mem.localmoney(zeroriskplusbonds)))
-#        print ("wdgProductRange > load_data: {0}".format(datetime.datetime.now()-inicio))
+        
+        self.lblTotal.setText(self.tr("Total invested: {}. Current balance: {} ({})").format(self.investment_merged.invertido(),  self.investment_merged.balance(), self.investment_merged.op_actual.tpc_total(self.product.result.basic.last)))
 
     def on_cmd_pressed(self):
         self.load_data()
@@ -53,6 +50,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             return
         debug("cmbProducts index changed to {}".format(index))
         self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
+        self.investment_merged=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.product)
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
@@ -69,59 +67,24 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.load_data()
 
     def on_mqtw_customContextMenuRequested(self,  pos):
-        if self.range!=None:
-            self.actionBottom.setText(self.range.textBottom())
-            self.actionTop.setText(self.range.textTop())
-            self.actionMiddle.setText(self.range.textMiddle())
+        if self.mqtw.selected is not None:
             menu=QMenu()
-            menu.addAction(self.actionTop)
-            menu.addAction(self.actionMiddle)   
-            menu.addAction(self.actionBottom)
+            menu.addAction(self.actionOrderAdd)   
+            menu.addSeparator()
+            menu.addMenu(self.mqtw.qmenu())
             menu.exec_(self.mqtw.table.mapToGlobal(pos))
 
-
     @pyqtSlot() 
-    def on_actionBottom_triggered(self):        
-        d=QDialog(self)        
-        d.setFixedSize(850, 850)
-        d.setWindowTitle(self.tr("Investment calculator"))
-        w=wdgCalculator(self.mem)
-        w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
-        w.spnProductPriceVariation.setValue(self.range.currentPriceBottomVariation().value_100())
+    def on_actionOrderAdd_triggered(self):
+        from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
+        d=QDialog(self)     
+        d.setModal(True)
+        d.setWindowTitle(self.tr("Add new order"))
+        w=wdgOrdersAdd(self.mem, None, None, d)
+        w.txtPrice.setText(self.mqtw.selected.value_rounded())
+        w.txtShares.setText(int(self.txtInvertir.decimal()/self.mqtw.selected.value_rounded()))
+        w.cmbProducts.setCurrentIndex(w.cmbProducts.findData(self.product.id))
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
-
-    @pyqtSlot() 
-    def on_actionTop_triggered(self):        
-        d=QDialog(self)
-        d.setFixedSize(850, 850)
-        d.setWindowTitle(self.tr("Investment calculator"))
-        w=wdgCalculator(self.mem)
-        w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
-        w.spnProductPriceVariation.setValue(self.range.currentPriceTopVariation().value_100())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
-
-    @pyqtSlot() 
-    def on_actionMiddle_triggered(self):        
-        d=QDialog(self)        
-        d.setFixedSize(850, 850)
-        d.setWindowTitle(self.tr("Investment calculator"))
-        w=wdgCalculator(self.mem)
-        w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
-        w.spnProductPriceVariation.setValue(self.range.currentPriceMiddleVariation().value_100())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
+        d.exec_()
         

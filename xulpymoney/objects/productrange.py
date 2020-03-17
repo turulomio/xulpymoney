@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QAbstractItemView
 from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoneytypes import eQColor
@@ -16,6 +17,10 @@ class ProductRange(QObject):
         self.decimals=decimals
         self.recomendation_invest=False
         self.recomendation_reinvest=False
+    
+    ## Returns the value rounded to the number of decimals
+    def value_rounded(self):
+        return round(self.value, self.decimals)
         
     ## Return th value of the range highest value.. Points + percentage/2
     def range_highest_value(self):
@@ -74,8 +79,8 @@ class ProductRangeManager(ObjectManager, QObject):
         # Create ranges
         product_highest=self.product.result.ohclYearly.highest().high
         product_lowest=self.product.result.ohclYearly.lowest().low
-        range_highest=product_highest*2#100%
-        range_lowest=product_lowest*Decimal(0.1)#90%
+        range_highest=product_highest*Decimal(1+0.2)#20%
+        range_lowest=product_lowest*Decimal(1-0.2)#20%
         current_value=10000000
         while current_value>range_lowest:
             if current_value>=range_lowest and current_value<=range_highest:
@@ -106,25 +111,6 @@ class ProductRangeManager(ObjectManager, QObject):
         for i, o in enumerate(wdg.objects()):
             if o.isInside(o.product.result.basic.last.quote)==True:
                 wdg.table.item(i, 0).setBackground(eQColor.Green)
-#        type=eMoneyCurrency.User
-#        for i, inv in enumerate(wdg.objects()):
-#            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
-#            tpc_venta=inv.percentage_to_selling_point()
-#            if inv.op_actual.shares()>=0: #Long operation
-#                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
-#            else:
-#                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))         
-#            if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
-#                wdg.table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
-#            if inv.selling_expiration!=None:
-#                if inv.selling_expiration<date.today():
-#                    wdg.table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-#
-#            if tpc_invertido.isValid() and tpc_venta.isValid():
-#                if tpc_invertido.value_100()<=-Decimal(50):   
-#                    wdg.table.item(i, 7).setBackground(eQColor.Red)
-#                if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
-#                    wdg.table.item(i, 8).setBackground(eQColor.Green)
-        
-        
-        
+                wdg.table.scrollToItem(wdg.table.item(i, 0), QAbstractItemView.PositionAtCenter)
+                wdg.table.selectRow(i)
+                wdg.table.clearSelection()

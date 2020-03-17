@@ -336,19 +336,16 @@
     </layout>
    </item>
   </layout>
-  <action name="actionTop">
-   <property name="text">
-    <string>Top</string>
+  <action name="actionOrderAdd">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/order.png</normaloff>:/xulpymoney/order.png</iconset>
    </property>
-  </action>
-  <action name="actionMiddle">
    <property name="text">
-    <string>Middle</string>
+    <string>Add order at this price</string>
    </property>
-  </action>
-  <action name="actionBottom">
-   <property name="text">
-    <string>Bottom</string>
+   <property name="toolTip">
+    <string>Add order at this price</string>
    </property>
   </action>
  </widget>

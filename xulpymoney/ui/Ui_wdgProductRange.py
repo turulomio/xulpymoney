@@ -173,12 +173,11 @@ class Ui_wdgProductRange(object):
         self.horizontalLayout_6.addWidget(self.cmbShowOptions)
         self.verticalLayout_3.addLayout(self.horizontalLayout_6)
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
-        self.actionTop = QtWidgets.QAction(wdgProductRange)
-        self.actionTop.setObjectName("actionTop")
-        self.actionMiddle = QtWidgets.QAction(wdgProductRange)
-        self.actionMiddle.setObjectName("actionMiddle")
-        self.actionBottom = QtWidgets.QAction(wdgProductRange)
-        self.actionBottom.setObjectName("actionBottom")
+        self.actionOrderAdd = QtWidgets.QAction(wdgProductRange)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/xulpymoney/order.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionOrderAdd.setIcon(icon3)
+        self.actionOrderAdd.setObjectName("actionOrderAdd")
 
         self.retranslateUi(wdgProductRange)
         QtCore.QMetaObject.connectSlotsByName(wdgProductRange)
@@ -204,9 +203,8 @@ class Ui_wdgProductRange(object):
         self.cmbShowOptions.setItemText(2, _translate("wdgProductRange", "Show bonds"))
         self.cmbShowOptions.setItemText(3, _translate("wdgProductRange", "Show funds"))
         self.cmbShowOptions.setItemText(4, _translate("wdgProductRange", "Show all investment operations"))
-        self.actionTop.setText(_translate("wdgProductRange", "Top"))
-        self.actionMiddle.setText(_translate("wdgProductRange", "Middle"))
-        self.actionBottom.setText(_translate("wdgProductRange", "Bottom"))
+        self.actionOrderAdd.setText(_translate("wdgProductRange", "Add order at this price"))
+        self.actionOrderAdd.setToolTip(_translate("wdgProductRange", "Add order at this price"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
 import xulpymoney.images.xulpymoney_rc
