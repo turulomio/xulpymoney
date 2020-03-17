@@ -12,6 +12,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLMonthlyManager, OHCLWeeklyManager, OHCLYearlyManager
 from xulpymoney.ui.myqtablewidget import  qdatetime, qleft, qtime, qcenter
 from xulpymoney.ui.myqcharts import eOHCLDuration
+
 ## Class that represents a Quote
 ## A quote can be a datetime duplicated
 class Quote:
@@ -58,7 +59,7 @@ class Quote:
     
     def none(self, product):
         return self.init__create(product, None, None)
-        
+
     def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
         No hace commit a la conexión

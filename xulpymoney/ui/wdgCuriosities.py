@@ -46,7 +46,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         else:            
             highest=self.mem.data.benchmark.result.ohclDaily.highest()
             lowest=self.mem.data.benchmark.result.ohclDaily.lowest()
-            c.setText(self.tr("Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.".format(self.mem.data.benchmark.name,self.mem.data.benchmark.currency.string(highest.high), highest.date, self.mem.data.benchmark.currency.string(lowest.low), lowest.date)))
+            c.setText(self.tr("Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.".format(self.mem.data.benchmark.name, self.mem.data.benchmark.money(highest.high), highest.date, self.mem.data.benchmark.money(lowest.low), lowest.date)))
         self.layout.addWidget(c)
 
         c=wdgCuriosity(self.mem)
@@ -64,8 +64,8 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         operations.load_from_db("select * from opercuentas where importe = (select max(importe) from opercuentas) order by datetime desc limit 1")
         c.setTitle(self.tr("Which is the amount of the largest account operation?"))
         if operations.length()==1:
-            o=operations.only()
-            c.setText(self.tr("The largest account operation took place at {}. It's concept was '{}' and it's amount was {}.".format(o.datetime, o.concepto.name, o.account.currency.string(o.importe))))
+            o=operations.first()
+            c.setText(self.tr("The largest account operation took place at {}. It's concept was '{}' and it's amount was {}.".format(o.datetime, o.concepto.name, o.account.money(o.importe))))
         else:
             c.setText(self.tr("There are not account operations yet."))
         self.layout.addWidget(c)

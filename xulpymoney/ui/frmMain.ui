@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>30</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -1236,7 +1236,7 @@
   <action name="actionProductRange">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/layers.png</normaloff>:/xulpymoney/layers.png</iconset>
+     <normaloff>:/xulpymoney/layers2.png</normaloff>:/xulpymoney/layers2.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Product range</string>

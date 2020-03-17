@@ -18,6 +18,12 @@ class ProductRange(QObject):
         self.decimals=decimals
         self.recomendation_invest=False
         self.recomendation_reinvest=False
+        
+    def __repr__(self):
+        return "({}, {}]".format(
+            round(self.range_highest_value(), self.decimals), 
+            round(self.range_lowest_value(),  self.decimals), 
+        )
     
     ## Returns the value rounded to the number of decimals
     def value_rounded(self):
@@ -41,7 +47,7 @@ class ProductRange(QObject):
             return False
         
     ## Search for investments in self.mem.data and 
-    def getInvestments(self):
+    def getInvestmentsInside(self):
         r=InvestmentManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
             for op in o.op_actual.arr:
@@ -50,16 +56,16 @@ class ProductRange(QObject):
         return r        
 
     ## Search for investments in self.mem.data and 
-    def getInvestmentsOperations(self):
+    def getInvestmentsOperationsInside(self):
         r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
             for op in o.op_actual.arr:
                 if self.isInside(op.valor_accion)==True:
-                    r.append(o)
+                    r.append(op)
         return r
         
     ## Search for orders in self.mem.data and 
-    def getInvestmentsFromOrders(self): 
+    def getOrdersInside(self): 
         orders=OrderManager(self.mem).init__from_db("""
             SELECT * 
             FROM 
@@ -69,10 +75,10 @@ class ProductRange(QObject):
                 EXECUTED IS NULL
             ORDER BY DATE
        """)
-        r=InvestmentManager(self.mem)
+        r=OrderManager(self.mem)
         for o in orders.arr:
             if o.investment.product==self.product and self.isInside(o.price)==True:
-                r.append(o.investment)
+                r.append(o)
         return r
       
 
@@ -104,12 +110,12 @@ class ProductRangeManager(ObjectManager, QObject):
         for i, o in enumerate(self.arr):
             data.append([
                 o.value, 
-                o.getInvestments().string_with_names(),                 
-                o.getInvestmentsFromOrders().string_with_names(), 
+                o.getInvestmentsOperationsInside().string_with_names(), 
+                o.getOrdersInside().string_with_names(), 
                 o, 
             ])
         wdg.setDataWithObjects(
-            [self.tr("Value"), self.tr("Investments"), self.tr("Orders"),
+            [self.tr("Center"), self.tr("Product operations"), self.tr("Product orders"),
             ], 
             None, 
             data,  

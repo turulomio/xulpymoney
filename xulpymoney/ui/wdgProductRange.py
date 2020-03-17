@@ -1,10 +1,14 @@
 from PyQt5.QtCore import pyqtSlot, QObject
 from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
-from logging import debug
-from xulpymoney.ui.Ui_wdgProductRange import Ui_wdgProductRange
-from xulpymoney.objects.productrange import ProductRangeManager
-from xulpymoney.objects.percentage import Percentage
+from datetime import date
 from decimal import Decimal
+from logging import debug
+from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency
+from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.percentage import Percentage, percentage_between
+from xulpymoney.objects.productrange import ProductRangeManager
+from xulpymoney.ui.Ui_wdgProductRange import Ui_wdgProductRange
 
 class wdgProductRange(QWidget, Ui_wdgProductRange):
     def __init__(self,mem, parent=None):
@@ -16,33 +20,57 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
 
-        self.spnDown.setValue(float(self.mem.settings.value("wdgProductRange/spnDown", "5")))
-        self.spnGains.setValue(float(self.mem.settings.value("wdgProductRange/spnGains", "5")))
-        self.txtInvertir.setText(Decimal(self.mem.settings.value("wdgProductRange/invertir", "10000")))
-        product_in_settings=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgProductRange/product", "79329")))
+        self.spnDown.setValue(float(self.mem.settingsdb.value("wdgProductRange/spnDown", "5")))
+        self.spnGains.setValue(float(self.mem.settingsdb.value("wdgProductRange/spnGains", "5")))
+        self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgProductRange/invest", "10000")))
+        product_in_settings=self.mem.data.products.find_by_id(int(self.mem.settingsdb.value("wdgProductRange/product", "79329")))
 
         products=self.mem.data.investments.ProductManager_with_investments_distinct_products(only_with_shares=True)
         products.order_by_name()
         products.qcombobox(self.cmbProducts, product_in_settings)
 
     def load_data(self):
-        self.prm=ProductRangeManager(self.mem, self.product, Percentage(self.spnDown.value(), 100), Percentage(self.spnGains.value(), 100))
+        percentage_down=Percentage(self.spnDown.value(), 100)
+        percentage_gains=Percentage(self.spnGains.value(), 100)
+        self.prm=ProductRangeManager(self.mem, self.product, percentage_down, percentage_gains)
         self.prm.mqtw(self.mqtw)
 
-        self.mem.settings.setValue("wdgProductRange/spnDown", self.spnDown.value())
-        self.mem.settings.setValue("wdgProductRange/spnGains", self.spnGains.value())
-        self.mem.settings.setValue("wdgProductRange/invertir", self.txtInvertir.text())
-        self.mem.settings.setValue("wdgProductRange/product", self.product.id)
+        self.mem.settingsdb.setValue("wdgProductRange/spnDown", self.spnDown.value())
+        self.mem.settingsdb.setValue("wdgProductRange/spnGains", self.spnGains.value())
+        self.mem.settingsdb.setValue("wdgProductRange/invest", self.txtInvertir.text())
+        self.mem.settingsdb.setValue("wdgProductRange/product", self.product.id)
         self.mem.settings.sync()
 
-        self.lblTotal.setText(self.tr("Total invested: {}. Current balance: {} ({})").format(self.investment_merged.invertido(),  self.investment_merged.balance(), self.investment_merged.op_actual.tpc_total(self.product.result.basic.last)))
+        s=self.tr("Product current price: {} at {}").format(
+            self.product.result.basic.last.money(),
+            self.product.result.basic.last.datetime, 
+        )
+        s=s + ". " + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
+        s=s + "\n" + self.tr("Total invested: {}. Current balance: {} ({})").format(
+            self.investment_merged.invertido(),  
+            self.investment_merged.balance(), 
+            self.investment_merged.op_actual.tpc_total(self.product.result.basic.last), 
+        )
+        s=s + "\n" + self.tr("Average price: {}").format(
+            self.investment_merged.op_actual.average_price(), 
+        )
+        s=s + "\n" + self.tr("Selling price to gain {}: {}. Gains at this selling price: {} ({})").format(
+            percentage_gains, 
+            self.investment_merged.op_actual.selling_price_to_gain_percentage_of_invested(percentage_gains, eMoneyCurrency.Product), 
+            self.investment_merged.op_actual.gains_from_percentage(percentage_gains, eMoneyCurrency.Product), 
+            percentage_between(self.product.result.basic.last.money(), self.investment_merged.op_actual.selling_price_to_gain_percentage_of_invested(percentage_gains, eMoneyCurrency.Product)), 
+        )
+        
+        zerorisk=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), date.today())
+        s=s + "\n\n"+ self.tr("Zero risk assets: {}".format(zerorisk))
+
+        self.lblTotal.setText(s)
 
     def on_cmd_pressed(self):
-        self.load_data()
-
-    @pyqtSlot(int)
-    def on_cmbShowOptions_currentIndexChanged(self, index):
-        self.load_data()
+        if hasattr(self, "product"):
+            self.load_data()
+        else:
+            qmessagebox(self.tr("You must select a product"))
 
     @pyqtSlot(int)
     def on_cmbProducts_currentIndexChanged(self, index):
@@ -65,36 +93,52 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.product.needStatus(2, downgrade_to=0)
         self.load_data()
 
-
-        
     def on_mqtw_customContextMenuRequested(self,  pos):    
-        # Dinamica action trigerred
+        # Dinamic action trigerred
         def on_menuInvestment_action_triggered():
             from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
             action=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
-            print(action.text())
             investment=self.mem.data.investments.find_by_fullName(action.text())
             w=frmInvestmentReport(self.mem,  investment, self)
             w.exec_()
             self.load_data()
         # -------------------------------------------------------------
         if self.mqtw.selected is not None:
+            if hasattr(self, "investment_merged")==True:
+                self.actionInvestmentMergingCurrent.setEnabled=True
+            else:
+                self.actionInvestmentMergingCurrent.setEnabled=False
+
             menu=QMenu()
-            menu.addAction(self.actionOrderAdd)   
+            menu.addAction(self.actionRangeInformation)   
             menu.addSeparator()
+            menu.addAction(self.actionOrderAdd)   
             #Dinamic investments by range
             menuInvestments=QMenu(self.tr("Investments in this range"))
-            for o in self.mqtw.selected.getInvestments().arr:
+            for o in self.mqtw.selected.getInvestmentsInside().arr:
                 action=QAction(o.fullName(), menuInvestments)
                 action.triggered.connect(on_menuInvestment_action_triggered)
                 action.setIcon(o.qicon())
                 menuInvestments.addAction(action)
             menu.addMenu(menuInvestments)
             menu.addSeparator()
+            menu.addAction(self.actionInvestmentMergingCurrent)
+            menu.addSeparator()
 
             #mqtw menu
             menu.addMenu(self.mqtw.qmenu())
             menu.exec_(self.mqtw.table.mapToGlobal(pos))
+            
+    @pyqtSlot() 
+    def on_actionRangeInformation_triggered(self):
+        qmessagebox(self.tr("Range limits are {}").format(self.mqtw.selected))
+
+    @pyqtSlot() 
+    def on_actionInvestmentMergingCurrent_triggered(self):
+        from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+        w=frmInvestmentReport(self.mem,  self.investment_merged, self)
+        w.exec_()
+        self.load_data()
 
     @pyqtSlot() 
     def on_actionOrderAdd_triggered(self):

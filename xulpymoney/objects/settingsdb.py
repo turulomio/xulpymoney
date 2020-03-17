@@ -84,4 +84,12 @@ class SettingsDB:
             return 23
         elif name=="strategyLongShort/historicalShort":
             return 24
+        elif name=="wdgProductRange/spnDown":
+            return 25
+        elif name=="wdgProductRange/spnGains":
+            return 26
+        elif name=="wdgProductRange/invest":
+            return 27
+        elif name=="wdgProductRange/product":
+            return 28
         return None

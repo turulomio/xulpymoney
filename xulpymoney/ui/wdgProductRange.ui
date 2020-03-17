@@ -289,48 +289,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QComboBox" name="cmbShowOptions">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QComboBox::AdjustToContents</enum>
-         </property>
-         <item>
-          <property name="text">
-           <string>Marked to show investment operations</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show ETF, Shares and Warrants Investment operations</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show bonds</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show funds</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show all investment operations</string>
-          </property>
-         </item>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>
@@ -346,6 +304,30 @@
    </property>
    <property name="toolTip">
     <string>Add order at this price</string>
+   </property>
+  </action>
+  <action name="actionInvestmentMergingCurrent">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/investment.png</normaloff>:/xulpymoney/investment.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investment merging current operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment merging current operations</string>
+   </property>
+  </action>
+  <action name="actionRangeInformation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Range information</string>
+   </property>
+   <property name="toolTip">
+    <string>Range information</string>
    </property>
   </action>
  </widget>

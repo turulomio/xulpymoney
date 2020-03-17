@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>layers2.png</file>
     <file>investing_com.png</file>
     <file>zerorisk.png</file>
     <file>benchmark.png</file>

@@ -729,13 +729,6 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.type.id==type_id:
                 r.append(inv)
         return r
-        
-    ## REturns a string with investments separated with \n for range indexes
-    def string_with_names(self):
-            resultado=""
-            for o in self.arr:
-                    resultado=resultado+ self.tr("{}. Invested: {}\n").format(o.fullName(), o.invertido())
-            return resultado[:-1]
 
     def InvestmentManager_merging_investments_with_same_product_merging_operations(self):
         """

@@ -251,8 +251,8 @@ class InvestmentOperationCurrent:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
-            
-            
+
+
     def revaluation_monthly(self, year, month, type=eMoneyCurrency.Product):
         """
             Returns a money object with monthly reevaluation
@@ -469,6 +469,13 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         for o in self.arr:
             resultado=resultado+o.shares
         return resultado
+
+    ## Returns a string with investments separated with \n for range indexes
+    def string_with_names(self):
+            resultado=""
+            for o in self.arr:
+                    resultado=resultado+ self.tr("{}. Invested: {}\n").format(o.investment.fullName(), o.invertido())
+            return resultado[:-1]
 
     ## Returns a list with operation shares. Usefull to debug io calculations
     def list_of_shares(self):

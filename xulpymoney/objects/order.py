@@ -115,7 +115,14 @@ class OrderManager(ObjectManager_With_Id_Selectable, QObject):
             self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
         except:            
             qmessagebox(self.tr("I couldn't order data due to they have null values"))
-        
+
+    ## Returns a string with investments separated with \n for range indexes
+    def string_with_names(self):
+            resultado=""
+            for o in self.arr:
+                    resultado=resultado+ self.tr("{}. Amount: {}\n").format(o.investment.fullName(), o.amount())
+            return resultado[:-1]
+
     ## Sum of all order amounts in manager. It's showed in user currency
     def amount(self):
         r=Money(self.mem, 0, self.mem.localcurrency)

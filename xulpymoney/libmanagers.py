@@ -372,13 +372,15 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
             else:
                 combo.addItem(a.name, a.id)
 
+        #Force without signals to be in -1. There were problems when 0 is selected, becouse it didn't emit anything
+        combo.setCurrentIndex(-1)
+
         #Set selection
         if needtoselect==True:
             combo.blockSignals(False)
             combo.setCurrentIndex(0)
         else:#need to select False
             if selected is None:
-                combo.setCurrentIndex(-1)
                 combo.blockSignals(False)
             else:
                 combo.blockSignals(False)

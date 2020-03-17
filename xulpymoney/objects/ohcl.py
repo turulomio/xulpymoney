@@ -336,7 +336,7 @@ class OHCLManager(ObjectManager):
             if ohcl.high>=r.high:
                 r=ohcl
         return r
-        
+
     ## Return the ohcl with the lowes ohcl.low
     def lowest(self):
         if self.length()==0:
@@ -346,6 +346,10 @@ class OHCLManager(ObjectManager):
             if ohcl.low<=r.low:
                 r=ohcl
         return r
+
+    ## @returns string with the limits of the price [loweest, highest]
+    def string_limits(self):
+        return "[{},{}]".format(self.product.money(self.lowest().low), self.product.money(self.highest().high))
 
 class OHCLDailyManager(OHCLManager):
     def __init__(self, mem, product):

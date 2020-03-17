@@ -120,7 +120,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         if self.chkPonderanAll.checkState()==Qt.Checked:
             for inv in self.mem.data.investments_active().arr:
                 if inv.product.id==self.investment.product.id:
-                    inv.venta=self.puntoventa.amount
+                    inv.venta=self.puntoventa.round(inv.product.decimals)
                     inv.save()
             self.mem.con.commit()
         
