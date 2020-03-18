@@ -29,7 +29,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.view=None
         self.dtFrom.blockSignals(True)
         self.HistoricalChartAdjusts=eHistoricalChartAdjusts.Splits
-#        self.verticalLayout.addLayout(self.laySpinGainsPercentage(self, spacer_at_right=True))
         
     def _pen(self, style, color):
         pen=QPen()
@@ -106,6 +105,13 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     self.view.appendCandlestickSeriesData(candle, ohcl.datetime(), ohcl.open, ohcl.high, ohcl.close, ohcl.low)
             self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
+        if self.chkSMA10.isChecked() and self.setohcl.length()>10:#SMA10 line series
+            sma10=self.view.appendTemporalSeries(self.tr("SMA10"))
+            sma10.setColor(QColor(255, 165, 165))
+            for dt, value in self.setohcl.sma(10):
+                if dt>=selected_datetime:
+                    self.view.appendTemporalSeriesData(sma10, dt, value)
+
         if self.chkSMA50.isChecked() and self.setohcl.length()>50:#SMA50 line series
             sma50=self.view.appendTemporalSeries(self.tr("SMA50"))
             sma50.setColor(QColor(255, 170, 255))
@@ -205,6 +211,10 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.generate()
         self.display()
         
+    def on_chkSMA10_stateChanged(self, state):
+        self.generate()
+        self.display()
+
     def on_chkSMA50_stateChanged(self, state):
         self.generate()
         self.display()
@@ -212,6 +222,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def on_chkSMA200_stateChanged(self, state):
         self.generate()
         self.display()
+
     def on_chkAdjustSplits_stateChanged(self, state):
         self.generate()
         self.display()
