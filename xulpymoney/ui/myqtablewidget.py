@@ -6,10 +6,11 @@ from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush, QFont
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
 from .. libmanagers import ManagerSelectionMode
+from .. casts import lor_remove_columns
 from officegenerator import ODS_Write
 from logging import info, debug
 from datetime import datetime, date,  timedelta
-                
+
 class myQTableWidget(QWidget):
     setDataFinished=pyqtSignal()
     tableSelectionChanged=pyqtSignal()
@@ -101,7 +102,6 @@ class myQTableWidget(QWidget):
             self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
             debug("Saved {}/{}_horizontalheader_state manually".format(self.settingsSection, self.settingsObject))
             self.settings.sync()
-
 
     @pyqtSlot(int)
     def on_table_verticalscrollbar_value_changed(self, value):
@@ -195,8 +195,7 @@ class myQTableWidget(QWidget):
     def on_table_horizontalHeader_sectionClicked(self, index):
         self.actionListOrderBy[index].triggered.emit()
         debug("Ordering table by header '{}'".format(self.actionListOrderBy[index].text()))
-        
-        
+
     ## Used to order table progamatically
     def setOrderBy(self, index, reverse):
         action=self.actionListOrderBy[index]
@@ -450,7 +449,11 @@ class myQTableWidget(QWidget):
         m.setTitle(title)
         m.setHorizontalHeaders(self.listHorizontalHeaders(), widths)
         m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
-        m.setData(self.data)
+        if self.__class__==mqtwDataWithObjects:
+            data=lor_remove_columns(self.data, [len(self.data[0])-1, ])
+        else:
+            data=self.data
+        m.setData(data)
         return m
         
 ## Acronim of myQTableWidget
