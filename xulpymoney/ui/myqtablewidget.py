@@ -193,8 +193,9 @@ class myQTableWidget(QWidget):
 
     ## Used to order using clicks in headers
     def on_table_horizontalHeader_sectionClicked(self, index):
-        self.actionListOrderBy[index].triggered.emit()
-        debug("Ordering table by header '{}'".format(self.actionListOrderBy[index].text()))
+        if hasattr(self, "data")==True:
+            self.actionListOrderBy[index].triggered.emit()
+            debug("Ordering table by header '{}'".format(self.actionListOrderBy[index].text()))
 
     ## Used to order table progamatically
     def setOrderBy(self, index, reverse):
@@ -449,7 +450,7 @@ class myQTableWidget(QWidget):
         m.setTitle(title)
         m.setHorizontalHeaders(self.listHorizontalHeaders(), widths)
         m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
-        if self.__class__==mqtwDataWithObjects:
+        if self.__class__==mqtwDataWithObjects: #Need to remove last column (object column)
             data=lor_remove_columns(self.data, [len(self.data[0])-1, ])
         else:
             data=self.data
