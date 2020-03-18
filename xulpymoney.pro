@@ -19,7 +19,7 @@ SOURCES         = \
                   xulpymoney/objects/investment.py \
                   xulpymoney/objects/investmentoperation.py \
                   xulpymoney/objects/leverage.py \
-                  xulpymoney/objects/maintenanc0e.py \
+                  xulpymoney/objects/maintenance.py \
                   xulpymoney/objects/money.py \
                   xulpymoney/objects/ohcl.py \
                   xulpymoney/objects/operationtype.py \

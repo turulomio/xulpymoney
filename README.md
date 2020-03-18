@@ -60,6 +60,17 @@ Dependencies
 
 Changelog
 =========
+0.11.0
+  * Added modules from reusingcode repository, myqcharts and myqtablewidget has big changes
+  * Added translation of hardcoded strings
+  * Added a new system to update database
+  * Added futures trading hours to stock market objects
+  * Added number of registers in about dialog
+  * Created strategies submenu. Action has been reordered
+  * Assets report has been improved
+  * Added paydate to DPS
+  * Added product range strategy
+
 0.10.0
   * In orders you can now select products and investments
   * Improved spanish translation
