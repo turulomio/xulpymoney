@@ -103,7 +103,7 @@
                       </sizepolicy>
                      </property>
                      <property name="text">
-                      <string>1000</string>
+                      <string>0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -153,7 +153,7 @@
                       </sizepolicy>
                      </property>
                      <property name="text">
-                      <string>10</string>
+                      <string>0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

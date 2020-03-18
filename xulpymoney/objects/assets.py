@@ -108,12 +108,7 @@ class Assets:
                     if dividend.datetime.year==ano and dividend.datetime.month==mes:
                         r=r+dividend.net(type=3)
         return r
-        
-        
-        
-        
 
-        
     def invested(self, date=None):
         """Devuelve el patrimonio invertido en una determinada fecha"""
         if date==None or date==date.today():

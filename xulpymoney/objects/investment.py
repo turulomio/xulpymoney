@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMessageBox, QApplication, QProgressDialog
 from datetime import datetime, date
 from decimal import Decimal
 from logging import debug, critical, error
+from math import ceil
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.decorators import deprecated
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
@@ -11,6 +12,7 @@ from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eQColor, eOperationTyp
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.objects.account import Account
 from xulpymoney.objects.accountoperation import AccountOperation
+from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.bank import Bank
 from xulpymoney.objects.dividend import DividendHomogeneusManager
 from xulpymoney.objects.investmentoperation import InvestmentOperationHomogeneusManager, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager
@@ -186,6 +188,18 @@ class Investment(QObject):
         cur=self.mem.con.cursor()
         cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
         cur.close()
+
+    ## @returns Decimal. Amount to invest considering Zero risk assets and the number of the reinvestment
+    def recommended_amount_to_invest(self):
+        zr=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), date.today()).amount
+        i=ceil(zr/250000)
+        if self.op_actual.length()==0:
+            amount=2500
+        elif self.op_actual.length()==1:
+            amount=3500
+        elif self.op_actual.length()>=2:
+            amount=8400
+        return i*amount
 
     def resultsCurrency(self, type=eMoneyCurrency.Product ):
         if type==1:
