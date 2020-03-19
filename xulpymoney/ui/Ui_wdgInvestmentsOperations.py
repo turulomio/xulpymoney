@@ -95,7 +95,7 @@ class Ui_wdgInvestmentsOperations(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
         self.horizontalLayout_6.addLayout(self.verticalLayout_2)
         self.verticalLayout_4.addWidget(self.groupBox)
-        self.mqtw = myQTableWidget(self.tab_1)
+        self.mqtw = mqtwDataWithObjects(self.tab_1)
         self.mqtw.setObjectName("mqtw")
         self.verticalLayout_4.addWidget(self.mqtw)
         self.horizontalLayout_7.addLayout(self.verticalLayout_4)
@@ -106,7 +106,7 @@ class Ui_wdgInvestmentsOperations(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.mqtwCurrent = myQTableWidget(self.tab_2)
+        self.mqtwCurrent = mqtwDataWithObjects(self.tab_2)
         self.mqtwCurrent.setObjectName("mqtwCurrent")
         self.horizontalLayout_5.addWidget(self.mqtwCurrent)
         self.tab.addTab(self.tab_2, icon4, "")
@@ -162,7 +162,7 @@ class Ui_wdgInvestmentsOperations(object):
         self.actionShowProduct.setToolTip(_translate("wdgInvestmentsOperations", "Show product"))
         self.actionRangeReport.setText(_translate("wdgInvestmentsOperations", "Hide in range report"))
         self.actionRangeReport.setToolTip(_translate("wdgInvestmentsOperations", "Hide in range report"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
 from xulpymoney.ui.wdgYear import wdgYear
 from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

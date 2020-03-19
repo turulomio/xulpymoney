@@ -29,14 +29,12 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         
         self.setOperations=InvestmentOperationHeterogeneusManager(self.mem)
         self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
-        self.selOperation=None#For table
-        self.selCurrentOperation=None#For tblCurrent
+        self.mqtw.selected=None#For table
+        self.mqtwCurrent.selected=None#For tblCurrent
         self.mqtw.settings(self.mem.settings,  "wdgInvestmentsOperations", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
-        self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
         self.mqtwCurrent.settings(self.mem.settings, "wdgInvestmentsOperations", "mqtwCurrent")
         self.mqtwCurrent.table.customContextMenuRequested.connect(self.on_mqtwCurrent_customContextMenuRequested)
-        self.mqtwCurrent.table.itemSelectionChanged.connect(self.on_mqtwCurrent_itemSelectionChanged)
         self.tab.setCurrentIndex(0)
         self.load()
         self.load_current()
@@ -65,13 +63,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         cur.close()
         
         self.setOperations.myqtablewidget(self.mqtw)
+        self.mqtw.setOrderBy(0, False)
         
     def load_current(self):
         for inv in self.mem.data.investments_active().arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
-        self.setCurrent.order_by_datetime()
         self.setCurrent.myqtablewidget(self.mqtwCurrent)
+        self.mqtwCurrent.setOrderBy(0, False)
 
         
     @pyqtSlot(int) 
@@ -88,29 +87,17 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
         
     def on_wym_mychanged(self):
-        self.load()            
+        self.load()
+
     def on_wy_mychanged(self):
         self.load()    
-
-    def on_mqtw_itemSelectionChanged(self):
-        self.selOperation=None
-        for i in self.mqtw.table.selectedItems():#itera por cada item no row.
-            self.selOperation=self.setOperations.arr[i.row()]
-            
-    def on_mqtwCurrent_itemSelectionChanged(self):
-        try: #Due it has one more row and crashes
-            for i in self.mqtwCurrent.table.selectedItems():#itera por cada item no row.
-                self.selCurrentOperation=self.setCurrent.arr[i.row()]
-        except:
-            self.selCurrentOperation=None
-            
     
     @pyqtSlot() 
     def on_actionShowAccount_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            cuenta=self.selOperation.investment.account
+            cuenta=self.mqtw.selected.investment.account
         else:#Current operation list
-            cuenta=self.selCurrentOperation.investment.account
+            cuenta=self.mqtwCurrent.selected.investment.account
         w=frmAccountsReport(self.mem, cuenta, self)
         w.exec_()
         self.load()
@@ -118,9 +105,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @pyqtSlot() 
     def on_actionShowInvestment_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            investment=self.selOperation.investment
+            investment=self.mqtw.selected.investment
         else:#Current operation list
-            investment=self.selCurrentOperation.investment
+            investment=self.mqtwCurrent.selected.investment
         w=frmInvestmentReport(self.mem, investment, self)
         w.exec_()
         self.load()
@@ -128,28 +115,28 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @pyqtSlot() 
     def on_actionShowProduct_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            investment=self.selOperation.investment
+            investment=self.mqtw.selected.investment
         else:#Current operation list
-            investment=self.selCurrentOperation.investment
+            investment=self.mqtwCurrent.selected.investment
         w=frmProductReport(self.mem, investment.product, investment, self)
         w.exec_()
         self.load()
                 
     @pyqtSlot() 
     def on_actionRangeReport_triggered(self):
-        self.selOperation.show_in_ranges= not self.selOperation.show_in_ranges
-        self.selOperation.save()
+        self.mqtw.selected.show_in_ranges= not self.mqtw.selected.show_in_ranges
+        self.mqtw.selected.save()
         self.mem.con.commit()
-        #self.selOperation doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
-        self.mem.data.investments.find_by_id(self.selOperation.investment.id).get_operinversiones()
+        #self.mqtw.selected doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
+        self.mem.data.investments.find_by_id(self.mqtw.selected.investment.id).get_operinversiones()
         self.load()
         
     @pyqtSlot() 
     def on_actionShowInvestmentOperation_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            operation=self.selOperation
+            operation=self.mqtw.selected
         else:#Current operation list
-            operation=self.selCurrentOperation
+            operation=self.mqtwCurrent.selected
         w=frmInvestmentOperationsAdd(self.mem, operation.investment, operation, self)
         w.exec_()
         self.load()
@@ -160,14 +147,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.actionShowInvestment.setEnabled(False)
         self.actionShowInvestmentOperation.setEnabled(False)
         self.actionShowProduct.setEnabled(False)
-        if self.selOperation!=None:
-            if self.selOperation.investment.account.active==True:#only enabled if it's active
+        if self.mqtw.selected!=None:
+            if self.mqtw.selected.investment.account.active==True:#only enabled if it's active
                 self.actionShowAccount.setEnabled(True)
-            if self.selOperation.investment.active==True:
+            if self.mqtw.selected.investment.active==True:
                 self.actionShowInvestment.setEnabled(True)
                 self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
-            if self.selOperation.show_in_ranges==True:
+            if self.mqtw.selected.show_in_ranges==True:
                 self.actionRangeReport.setText(self.tr("Hide in range report"))
                 self.actionRangeReport.setIcon(QIcon(":/xulpymoney/eye_red.png"))
             else:
@@ -184,10 +171,12 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowProduct)
         menu.addSeparator()
         menu.addAction(self.actionRangeReport)
+        menu.addSeparator()
+        menu.addMenu(self.mqtw.qmenu())
         menu.exec_(self.mqtw.table.mapToGlobal(pos))
                 
     def on_mqtwCurrent_customContextMenuRequested(self,  pos):
-        if self.selCurrentOperation==None:
+        if self.mqtwCurrent.selected==None:
             self.actionShowAccount.setEnabled(False)
             self.actionShowInvestment.setEnabled(False)
             self.actionShowProduct.setEnabled(False)
@@ -202,4 +191,6 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowInvestment)   
         menu.addSeparator()
         menu.addAction(self.actionShowProduct)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwCurrent.qmenu())
         menu.exec_(self.mqtwCurrent.table.mapToGlobal(pos))

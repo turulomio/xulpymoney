@@ -414,8 +414,7 @@ class InvestmentOperationCurrent:
         if dias==0:
             dias=1
         return Percentage(self.tpc_total(last, type)*365,  dias)
-        
-        
+
 class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
@@ -506,30 +505,16 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         return False
         
     def myqtablewidget(self,  wdg):
-        """Parámetros
-            - tabla myQTableWidget en la que rellenar los datos
-            
-            Al ser heterogeneo se calcula con self.mem.localcurrency
-        """
-        hh=[self.tr("Date" ), self.tr("Product" ), self.tr("Account" ), self.tr("Shares" ), self.tr("Price" ), self.tr("Invested" ), 
+        hh=[self.tr("Date" ), self.tr("Investment" ), self.tr("Shares" ), self.tr("Price" ), self.tr("Invested" ), 
             self.tr("Current balance" ), self.tr("Pending" ), self.tr("% annual" ), self.tr("% APR" ), self.tr("% Total" ), self.tr("Benchmark" )]
-            
-        #DATA
-        if self.length()==0:
-            wdg.table.setRowCount(0)
-            return
         type=eMoneyCurrency.User
             
         data=[]
         for rownumber, a in enumerate(self.arr):     
-            if a.referenciaindice==None:
-                benchmark=None
-            else:
-                benchmark=a.referenciaindice.quote
+            benchmark=None if a.referenciaindice==None else a.referenciaindice.quote
             data.append([
                 a.datetime, 
-                a.investment.name, 
-                a.investment.account.name, 
+                a.investment.fullName(),
                 a.shares,
                 a.price().local(), 
                 a.invertido(type), 
@@ -539,14 +524,16 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
                 a.tpc_tae(a.investment.product.result.basic.last, type), 
                 a.tpc_total(a.investment.product.result.basic.last, type), 
                 benchmark, 
+                a, 
             ])
-        data.append([self.tr("Total"), "", "", "", "", self.invertido(), self.balance(), self.pendiente(), "", self.tpc_tae(), self.tpc_total(), ""])
-        wdg.setData(hh, None, data, zonename=self.mem.localzone_name)
-        for rownumber, a in enumerate(self.arr):    
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+        
+    def myqtablewidget_additional(self, wdg):
+        wdg.table.setRowCount(len(wdg.objects())+1)
+        for rownumber, a in enumerate(wdg.objects()):    
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-
-
+        wdg.addRow(len(wdg.objects()), [self.tr("Total"), "", "", "", self.invertido(), self.balance(), self.pendiente(), "", self.tpc_tae(), self.tpc_total(), ""], zonename=self.mem.localzone_name)
 
     def pendiente(self):
         """Calcula el resultado de pendientes utilizando lastquote como el ultimo de cada operaci´on"""
@@ -1283,43 +1270,34 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
 
     def myqtablewidget(self, wdg):
-        """Muestra los resultados en self.mem.localcurrency al ser heterogeneo().local()"""
-        self.order_by_datetime()
-        wdg.table.setColumnCount(10)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr( "Product" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr( "Account" )))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr( "Operation type" )))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr( "Shares" )))
-        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr( "Price" )))
-        wdg.table.setHorizontalHeaderItem(6, qcenter(self.tr( "Amount" )))
-        wdg.table.setHorizontalHeaderItem(7, qcenter(self.tr( "Comission" )))
-        wdg.table.setHorizontalHeaderItem(8, qcenter(self.tr( "Taxes" )))
-        wdg.table.setHorizontalHeaderItem(9, qcenter(self.tr( "Total" )))
-        #DATA 
-        wdg.applySettings()
-        wdg.table.clearContents()  
-        wdg.table.setRowCount(self.length())
+        hh=[self.tr("Date" ), self.tr("Investment" ), self.tr("Operation type"),  self.tr("Shares" ), self.tr("Price" ), 
+        self.tr("Amount" ), self.tr("Commission"), self.tr("Taxes"), self.tr("Total")]
+        type=eMoneyCurrency.User
+            
+        data=[]
         for rownumber, a in enumerate(self.arr):
-            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
+            data.append([
+                a.datetime, 
+                a.investment.fullName(),
+                a.tipooperacion.name, 
+                a.shares,
+                a.price(type), 
+                a.gross(type), 
+                a.commission(type), 
+                a.taxes(type), 
+                a.net(type), 
+                a, 
+            ])
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+
+    def myqtablewidget_additional(self, wdg):
+        for rownumber, a in enumerate(wdg.objects()):
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-        
-            wdg.table.setItem(rownumber, 1, qleft(a.investment.name))
-            wdg.table.setItem(rownumber, 2, qleft(a.investment.account.name))
-            
-            wdg.table.setItem(rownumber, 3, qleft(a.tipooperacion.name))
             if a.show_in_ranges==True:
-                wdg.table.item(rownumber, 3).setIcon(QIcon(":/xulpymoney/eye.png"))
+                wdg.table.item(rownumber, 2).setIcon(QIcon(":/xulpymoney/eye.png"))
             else:
-                wdg.table.item(rownumber, 3).setIcon(QIcon(":/xulpymoney/eye_red.png"))
-            
-            wdg.table.setItem(rownumber, 4, qright(a.shares))
-            wdg.table.setItem(rownumber, 5, a.price().local().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 6, a.gross().local().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 7, a.commission().local().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 8, a.taxes().local().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 9, a.net().local().qtablewidgetitem())
+                wdg.table.item(rownumber, 2).setIcon(QIcon(":/xulpymoney/eye_red.png"))
 
     def find(self,  investmentoperation_id):
         """Returns an investmenoperation with the id equals to the parameter"""

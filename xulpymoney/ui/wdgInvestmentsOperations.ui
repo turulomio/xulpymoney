@@ -188,7 +188,7 @@
             </widget>
            </item>
            <item>
-            <widget class="myQTableWidget" name="mqtw" native="true"/>
+            <widget class="mqtwDataWithObjects" name="mqtw" native="true"/>
            </item>
           </layout>
          </item>
@@ -204,7 +204,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="myQTableWidget" name="mqtwCurrent" native="true"/>
+          <widget class="mqtwDataWithObjects" name="mqtwCurrent" native="true"/>
          </item>
         </layout>
        </widget>
@@ -288,7 +288,7 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtwDataWithObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>
