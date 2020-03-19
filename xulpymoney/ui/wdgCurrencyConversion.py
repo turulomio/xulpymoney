@@ -34,16 +34,16 @@ class wdgCurrencyConversion(QWidget):
         else:
             self.factor=factor
         self.txt.setText(self.mfrom.convert_from_factor(tcurrency, self.factor).amount)
-        self.txt.setToolTip(self.tr("Factor conversion from {} to {} at {} is {}. So {} are {}.".format(self.mfrom.currency.id, tcurrency.id, dt, self.factor,  self.mfrom, self.mfrom.convert_from_factor(tcurrency, self.factor))))
+        self.txt.setToolTip(self.tr("Factor conversion from {} to {} at {} is {}. So {} are {}.".format(self.mfrom.currency, tcurrency, dt, self.factor,  self.mfrom, self.mfrom.convert_from_factor(tcurrency, self.factor))))
 
     def decimal(self):
         return self.txt.decimal()
  
     def on_cmd_released(self):
         if self.factor==None:
-            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce the relation between {} and {}. To help you I set value at {}.".format(self.mfrom.currency.id, self.tcurrency.id, self.dt)), QLineEdit.Normal, str(self.mfrom.conversionFactor(self.tcurrency, self.dt)))
+            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce the relation between {} and {}. To help you I set value at {}.".format(self.mfrom.currency, self.tcurrency, self.dt)), QLineEdit.Normal, str(self.mfrom.conversionFactor(self.tcurrency, self.dt)))
         else:
-            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please change relation between {} and {} if necessary".format(self.mfrom.currency.id, self.tcurrency.id)), QLineEdit.Normal, str(self.factor))
+            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please change relation between {} and {} if necessary".format(self.mfrom.currency, self.tcurrency)), QLineEdit.Normal, str(self.factor))
         if input[1]==True:
             try:
                 self.setConversion(self.mfrom, self.tcurrency, self.dt, Decimal(input[0]))

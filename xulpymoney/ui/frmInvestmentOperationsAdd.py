@@ -56,6 +56,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.lblTitulo.setText(self.tr("New operation of {}").format(self.investment.name))
             self.wdgDT.set()
             OperationTypeManager_for_InvestmentOperations(self.mem).qcombobox(self.cmbTiposOperaciones)
+            self.cmbTiposOperaciones.setCurrentIndex(0)
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
@@ -106,7 +107,6 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
         self.operinversion.shares=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
-#            self.operinversion.importe=self.txtNetBruto.decimal()
             self.operinversion.show_in_ranges=False
             if self.operinversion.shares>Decimal('0'):
                 m=QMessageBox()
@@ -116,25 +116,13 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return        
         elif id_tiposoperaciones==4: #Compra
-#            self.operinversion.importe=self.txtNet.decimal()
             if self.operinversion.shares<0: 
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("Purchase shares number must be positive"))
-                m.exec_()    
+                qmessagebox(self.tr("Purchase shares number must be positive"))
                 return
-        elif id_tiposoperaciones==6: #Añadido    
-#            self.operinversion.importe=self.txtNet.decimal()
+        elif id_tiposoperaciones==6: #Añadido
             if self.operinversion.shares<0: 
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("Added shares number must be positive"))
-                m.exec_()    
-                return            
-#        elif id_tiposoperaciones==8: #Traspaso fondos
-#            self.operinversion.importe=self.txtNet.decimal()
+                qmessagebox(self.tr("Added shares number must be positive"))
+                return
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
@@ -159,8 +147,9 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.mem.data.benchmark.result.basic.load_from_db()                
         self.done(0)
 
+    @pyqtSlot(int)
     def on_cmbTiposOperaciones_currentIndexChanged(self, index):
-        id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
+        id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(index))
         if id_tiposoperaciones==6:#Añadido acciones
             self.wdg2CPrice.setTextA(0)
             self.wdg2CPrice.setEnabled(False)

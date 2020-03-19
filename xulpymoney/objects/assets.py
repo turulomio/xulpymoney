@@ -48,14 +48,14 @@ class Assets:
         
     def saldo_total(self, setinversiones,  datetime):
         """Versión que se calcula en cliente muy optimizada"""
-        return self.saldo_todas_cuentas(datetime)+self.saldo_todas_inversiones(setinversiones, datetime)
+        return self.saldo_todas_cuentas(datetime)+self.saldo_todas_inversiones(datetime)
 
     ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
     ##
     ## Esta función se calcula en cliente
-    def saldo_todas_inversiones(self, setinversiones, fecha):
+    def saldo_todas_inversiones(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for i in setinversiones.arr:
+        for i in self.mem.data.investments.arr:
             if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
@@ -63,19 +63,19 @@ class Assets:
     ## This method gets all High-Low investments balance
     ##
     ## Esta función se calcula en cliente
-    def saldo_todas_inversiones_high_low(self, setinversiones, fecha):
+    def saldo_todas_inversiones_high_low(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for i in setinversiones.arr:
+        for i in self.mem.data.investments.arr:
             if i.product.high_low==True:
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
 
-    def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
+    def saldo_todas_inversiones_riesgo_cero(self, fecha=None):
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for inv in setinversiones.arr:
+        for inv in self.mem.data.investments.arr:
             if inv.product.percentage==0:        
                 resultado=resultado+inv.balance( fecha, type=3)
         return resultado
@@ -136,12 +136,12 @@ class Assets:
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
         """CAlcula el patrimonio de riego cero"""
-        return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones_riesgo_cero(setinversiones, fecha)
+        return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones_riesgo_cero(fecha)
 
     def saldo_anual_por_tipo_operacion(self,  year,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for currency in self.mem.currencies.arr:
+        for currency in MostCommonCurrencyTypes():
             cur=self.mem.con.cursor()
             sql="""
                 select sum(Importe) as importe 
@@ -164,7 +164,7 @@ class Assets:
                     date_part('year',datetime)={1} and
                     cuentas.currency='{2}' and
                     cuentas.id_cuentas=tarjetas.id_cuentas and
-                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year,  currency.id)
+                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year,  currency)
             cur.execute(sql)        
             for i in cur:
                 if i['importe']==None:

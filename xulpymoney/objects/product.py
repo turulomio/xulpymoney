@@ -3,7 +3,6 @@ from PyQt5.QtGui import QIcon,  QFont
 from PyQt5.QtWidgets import QApplication, QProgressDialog
 from datetime import datetime, timedelta, date
 from logging import debug
-from officegenerator import ODS_Write, Coord
 from os import system
 from xulpymoney.github import get_file_modification_dtaware
 from xulpymoney.decorators import deprecated
@@ -17,6 +16,7 @@ from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.split import SplitManager
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
 from xulpymoney.ui.myqtablewidget import qdate, qdatetime, qcenter, qleft
+
 class Product(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
@@ -54,34 +54,6 @@ class Product(QObject):
         self.dps=None #It's created when loading quotes in quotes result
         self.splits=None #It's created when loading quotes in quotes result
         
-#    ## Compares this product with other products
-#    ## Logs differences
-#    def __eq__(self, other):
-#        if (self.id!=other.id or
-#            self.name!=other.name or
-#            self.isin!=other.isin or
-#            self.stockmarket.id!=other.stockmarket.id or
-#            self.currency.id!=other.currency.id or
-#            self.type.id!=other.type.id or
-#            self.agrupations.dbstring()!=other.agrupations.dbstring() or 
-#            self.web!=other.web or
-#            self.address!=other.address or
-#            self.phone!=other.phone or
-#            self.mail!=other.mail or
-#            self.percentage!=other.percentage or
-#            self.mode.id!=other.mode.id or
-#            self.leveraged.id!=other.leveraged.id or
-#            self.comment!=other.comment or 
-#            self.obsolete!=other.obsolete or
-#            self.tickers[0]!=other.tickers[0] or
-#            self.tickers[1]!=other.tickers[1] or
-#            self.tickers[2]!=other.tickers[2] or
-#            self.tickers[3]!=other.tickers[3]):
-#            return False
-#        return True
-#        
-#    def __ne__(self, other):
-#        return not self.__eq__(other)
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
                 
@@ -153,10 +125,10 @@ class Product(QObject):
             if id>=0:
                 id=-1
             print(self.decimals)
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, decimals=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, decimals=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
         cur.close()
     
     
@@ -488,17 +460,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
             ObjectManager_With_Id_Selectable.remove(self, o)
             return True
         return False
-        
-    ## Function that store products in a libreoffice ods file
-    def save_to_ods(self, filename):
-        products=ProductManager(self.mem)
-        products.load_from_db("select * from products order by id")
-        ods=ODS_Write(filename)
-        s1=ods.createSheet("Products")
-        s1.add("A1", [['ID','NAME',  'ISIN',  'STOCKMARKET',  'CURRENCY',  'TYPE    ',  'AGRUPATIONS',  'WEB', 'ADDRESS', 'PHONE', 'MAIL', 'PERCENTAGE', 'PCI', 'LEVERAGED', 'COMMENT', 'OBSOLETE', 'TYAHOO', 'TMORNINGSTAR', 'TGOOGLE', 'TQUEFONDOS', 'TINVESTING']], "OrangeCenter")
-        for row, p in enumerate(products.arr):
-            s1.add(Coord("A2").addRow(row), [[p.id, p.name, p.isin, p.stockmarket.name, p.currency.id, p.type.name, p.agrupations.dbstring(), p.web, p.address, p.phone, p.mail, p.percentage, p.mode.id, p.leveraged.name, p.comment, str(p.obsolete), p.tickers[0], p.tickers[1], p.tickers[2], p.tickers[3], p.tickers[4] ]])
-        ods.save()
 
     ## Returns products.xlsx modification datetime or None if it can't find it
     def dtaware_internet_products_xlsx(self):
@@ -507,7 +468,6 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
             return aware
         else:
             return aware.replace(second=0)#Due to in database globals we only save minutes
-
 
     ## Used to find names using translations
     def find_by_name_translations(self, manager, name, translationslanguagemanager,  module):

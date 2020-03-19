@@ -90,12 +90,12 @@ class TotalMonth:
 
     def total_investments(self):
         if self.total_investments_value==None:
-            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments,  self.last_day())
+            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.last_day())
         return self.total_investments_value
 
     def total_investments_high_low(self):
         if self.total_investments_high_low_value==None:
-            self.total_investments_high_low_value=Assets(self.mem).saldo_todas_inversiones_high_low(self.mem.data.investments,  self.last_day())
+            self.total_investments_high_low_value=Assets(self.mem).saldo_todas_inversiones_high_low(self.last_day())
         return self.total_investments_high_low_value
 
 
@@ -315,7 +315,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
 
         invested=Assets(self.mem).invested(date.today())
-        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, date.today())
+        current=Assets(self.mem).saldo_todas_inversiones( date.today())
         s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)

@@ -128,7 +128,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             else:
                 self.progress.setValue(self.progress.value()+1)                     
             sinvested=Assets(self.mem).invested(datetime.date(i, 12, 31))
-            sbalance=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, datetime.date(i, 12, 31))
+            sbalance=Assets(self.mem).saldo_todas_inversiones(datetime.date(i, 12, 31))
             gd=Assets(self.mem).consolidado_neto(self.mem.data.investments,  i)+Assets(self.mem).dividends_neto(i)
             sumgd=sumgd+gd
 
@@ -173,7 +173,7 @@ from (
         self.tblReport.setItem(anofinal-anoinicio+1, 9, qright(sumcommissions))
         
         lastyear=datetime.date(datetime.date.today().year, 12, 31)
-        diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, lastyear)-Assets(self.mem).invested(lastyear)
+        diff=Assets(self.mem).saldo_todas_inversiones(lastyear)-Assets(self.mem).invested(lastyear)
         s=""
         s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, sumgd)
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(diff)

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
+from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.dividend import Dividend
 from xulpymoney.objects.money import Money
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -22,8 +23,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
         self.wdgDT.show_timezone(False)
-        self.lblGross.setText(self.tr("Gross in {}".format(self.investment.product.currency.currency_symbol)))
-        self.lblGrossAccount.setText(self.tr("Gross converted to {}".format(self.investment.account.currency.currency_symbol)))
+        self.lblGross.setText(self.tr("Gross in {}").format(currency_symbol(self.investment.product.currency)))
+        self.lblGrossAccount.setText(self.tr("Gross converted to {}").format(currency_symbol(self.investment.account.currency)))
         if dividend==None:#insertar
             if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)
@@ -31,6 +32,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.mem.conceptos.load_futures_qcombobox(self.cmb)
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb)
+            self.cmb.setCurrentIndex(0)
             self.dividend=Dividend(self.mem)
             self.dividend.investment=inversion
             self.cmd.setText(self.tr("Add new dividend"))

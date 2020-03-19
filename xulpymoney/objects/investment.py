@@ -209,24 +209,6 @@ class Investment(QObject):
         elif type==3:
             return self.mem.localcurrency
         critical("Rare investment result currency: {}".format(type))
-
-    def quote2money(self, quote,  type=eMoneyCurrency.Product):
-        """
-            Converts a quote object to a money. Then shows money with the currency type
-        """        
-        if quote==None:
-            return None
-            
-        if quote.product.currency.id!=self.product.currency.id:
-            error("I can't convert a quote to money, if quote product is diferent to investment product")
-            return None
-            
-        if type==1:
-            return Money(self.mem, quote.quote, self.product.currency)
-        elif type==2:
-            return Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime)
-        elif type==3:
-            return  Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime).local(quote.datetime)
     
     def fullName(self):
         return "{} ({})".format(self.name, self.account.name)
