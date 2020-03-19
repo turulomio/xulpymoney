@@ -32,6 +32,7 @@ class frmInit(QDialog, Ui_frmInit):
                 qmessagebox(self.newdb.error)
             else:
                 qmessagebox(self.tr("Database created. User xulpymoney_user and xulpymoney_admin have been created. Please run Xulpymoney and login"))        
+                self.mem.settings.sync()
                 logging.info ("App correctly closed")
                 self.close()
 

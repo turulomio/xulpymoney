@@ -232,11 +232,7 @@ class MemRunClient(Mem):
 class MemInit(Mem):
     def __init__(self):
         Mem.__init__(self)
-        
         self.settings=QSettings()
-        
-    def __del__(self):
-        self.settings.sync()
 
     def run(self):
         self.args=self.parse_arguments()
