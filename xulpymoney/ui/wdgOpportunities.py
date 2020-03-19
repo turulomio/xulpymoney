@@ -157,6 +157,8 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
            """, (self.wdgYear.year, self.wdgYear.year)))
             self.opportunities.order_by_date()
         self.opportunities.mqtw(self.mqtwOpportunities, self.txtInvest.decimal())
+        print(self.opportunities)
+        print(self.mqtwOpportunities.data)
         self.mqtwOpportunities.setOrderBy(8, True)
        
     def on_mqtwOpportunities_customContextMenuRequested(self,  pos):

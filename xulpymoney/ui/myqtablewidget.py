@@ -450,7 +450,7 @@ class myQTableWidget(QWidget):
         m.setTitle(title)
         m.setHorizontalHeaders(self.listHorizontalHeaders(), widths)
         m.setVerticalHeaders(self.listVerticalHeaders(),vwidth)
-        if self.__class__==mqtwDataWithObjects: #Need to remove last column (object column)
+        if len(self.data)>0 and self.__class__==mqtwDataWithObjects: #Need to remove last column (object column)
             data=lor_remove_columns(self.data, [len(self.data[0])-1, ])
         else:
             data=self.data

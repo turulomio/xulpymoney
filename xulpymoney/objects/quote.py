@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QProgressDialog
+from PyQt5.QtWidgets import QApplication, QProgressDialog
 from datetime import date, timedelta, datetime
 from decimal import Decimal
 from logging import debug, info, critical
@@ -8,9 +8,9 @@ from xulpymoney.datetime_functions import dt_day_end,  dtaware_day_start_from_da
 from  xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoneytypes import   eHistoricalChartAdjusts, eQColor
 from xulpymoney.objects.money import Money
-from xulpymoney.objects.percentage import Percentage
+from xulpymoney.objects.percentage import Percentage, percentage_between
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLMonthlyManager, OHCLWeeklyManager, OHCLYearlyManager
-from xulpymoney.ui.myqtablewidget import  qdatetime, qleft, qtime, qcenter
+from xulpymoney.ui.myqtablewidget import  qdatetime, qleft, qcenter
 from xulpymoney.ui.myqcharts import eOHCLDuration
 
 ## Class that represents a Quote
@@ -557,38 +557,35 @@ class QuoteIntradayManager(QuoteManager):
         l=self.low().quote
         return Percentage(h-l, l)
 
-    def myqtablewidget(self, mqtw): 
+    def myqtablewidget(self, wdg): 
         
-        if self.product.hasSameLocalCurrency():
-            mqtw.table.setColumnCount(3)
-        else:
-            mqtw.table.setColumnCount(5)
-            mqtw.table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Mem","Price")))
-            mqtw.table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        mqtw.table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Mem","Time")))
-        mqtw.table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Mem","Price")))
-        mqtw.table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Mem","% Daily")))
-        mqtw.applySettings()
-        mqtw.table.clearContents()
-        mqtw.table.setRowCount(self.length())
+        hh=[self.tr("Time"), self.tr("Price"), self.tr("% Daily")]
+        if self.product.hasSameLocalCurrency()==False:
+            hh=hh + [self.tr("Price"), self.tr("% Daily")]
         QuoteDayBefore=Quote(self.mem).init__from_query(self.product, dtaware_day_start_from_date(self.date, self.mem.localzone_name))#day before as selected
 
+        data=[]
         ##Construye tabla
         for i , q in enumerate(self.arr):
-            mqtw.table.setItem(i, 0, qtime(q.datetime))
-            mqtw.table.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))
-            tpcq=Percentage(q.quote-QuoteDayBefore.quote, QuoteDayBefore.quote)
-            mqtw.table.setItem(i, 2, tpcq.qtablewidgetitem())
+            row=[]
+            row.append(q.datetime.time())
+            row.append(q.quote)
+            row.append(percentage_between(QuoteDayBefore.quote, q.quote))
             if self.product.hasSameLocalCurrency()==False:
                 moneybefore=QuoteDayBefore.money().convert(self.mem.localcurrency, q.datetime)
                 money=q.money().convert(self.mem.localcurrency, q.datetime)
-                mqtw.table.setItem(i, 3, money.qtablewidgetitem(6))
-                tpcq=Percentage(money-moneybefore, moneybefore)
-                mqtw.table.setItem(i, 4, tpcq.qtablewidgetitem())
-                
+                row.append(money)
+                row.append(percentage_between(moneybefore, money))
+            row.append(q)
+            data.append(row)
+
+        wdg.setDataWithObjects(hh, None,  data, decimals=6, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+
+    def myqtablewidget_additional(self, wdg):
+        for i , q in enumerate(wdg.objects()):
             if q==self.high():
-                mqtw.table.item(i, 1).setBackground(eQColor.Green)
+                wdg.table.item(i, 1).setBackground(eQColor.Green)
             elif q==self.product.result.intradia.low():
-                mqtw.table.item(i, 1).setBackground(eQColor.Red)             
-        mqtw.table.setCurrentCell(self.length()-1, 0)
-        mqtw.table.clearSelection()
+                wdg.table.item(i, 1).setBackground(eQColor.Red)             
+        wdg.table.setCurrentCell(self.length()-1, 0)
+        wdg.table.clearSelection()

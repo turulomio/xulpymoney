@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -79,8 +79,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>598</width>
-                <height>798</height>
+                <width>985</width>
+                <height>904</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -473,7 +473,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="myQTableWidget" name="mqtwTickers" native="true"/>
+                       <widget class="mqtwDataWithObjects" name="mqtwTickers" native="true"/>
                       </item>
                      </layout>
                     </item>
@@ -619,7 +619,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="myQTableWidget" name="mqtwIntradia" native="true"/>
+                    <widget class="mqtwDataWithObjects" name="mqtwIntradia" native="true"/>
                    </item>
                    <item>
                     <widget class="QLabel" name="lblIntradayVariance">
@@ -879,7 +879,7 @@
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_12">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwDaily" native="true"/>
+                     <widget class="mqtwDataWithObjects" name="mqtwDaily" native="true"/>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_6">
@@ -900,7 +900,7 @@
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_4">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwWeekly" native="true"/>
+                     <widget class="mqtwDataWithObjects" name="mqtwWeekly" native="true"/>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_8">
@@ -921,7 +921,7 @@
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_13">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwMonthly" native="true"/>
+                     <widget class="mqtwDataWithObjects" name="mqtwMonthly" native="true"/>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_17">
@@ -942,7 +942,7 @@
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_14">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwYearly" native="true"/>
+                     <widget class="mqtwDataWithObjects" name="mqtwYearly" native="true"/>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_18">
@@ -967,7 +967,7 @@
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_15">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwMensuales" native="true"/>
+                     <widget class="mqtwDataWithObjects" name="mqtwMensuales" native="true"/>
                     </item>
                     <item>
                      <widget class="QLabel" name="label_19">
@@ -986,7 +986,7 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_45">
                   <item>
-                   <widget class="myQTableWidget" name="mqtwSplits" native="true"/>
+                   <widget class="mqtwDataWithObjects" name="mqtwSplits" native="true"/>
                   </item>
                  </layout>
                 </widget>
@@ -1019,7 +1019,7 @@
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_40">
              <item>
-              <widget class="myQTableWidget" name="mqtwDPSPaid" native="true"/>
+              <widget class="mqtwDataWithObjects" name="mqtwDPSPaid" native="true"/>
              </item>
             </layout>
            </widget>
@@ -1033,7 +1033,7 @@
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="myQTableWidget" name="mqtwDividendsEstimations" native="true"/>
+              <widget class="mqtwDataWithObjects" name="mqtwDividendsEstimations" native="true"/>
              </item>
             </layout>
            </widget>
@@ -1047,7 +1047,7 @@
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_20">
              <item>
-              <widget class="myQTableWidget" name="mqtwEPS" native="true"/>
+              <widget class="mqtwDataWithObjects" name="mqtwEPS" native="true"/>
              </item>
             </layout>
            </widget>
@@ -1315,7 +1315,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtwDataWithObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

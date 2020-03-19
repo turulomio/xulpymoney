@@ -177,7 +177,7 @@ class OpportunityManager(ObjectManager_With_IdDate, QObject):
                 o.m_stop_loss_losses(dInvested), 
                 o, 
             ])
-            wdg.setDataWithObjects(hh, None, data, additional=self.mqtw_additional)
+        wdg.setDataWithObjects(hh, None, data, additional=self.mqtw_additional)
 
     def mqtw_additional(self, wdg):
         for i, o in enumerate(wdg.objects()):

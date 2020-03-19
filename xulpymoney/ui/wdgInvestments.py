@@ -138,6 +138,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionProductPrice.setEnabled(False)
             self.actionProductPriceLastRemove.setEnabled(False)
             self.actionProductUpdate.setEnabled(False)
+            self.actionSameProduct.setEnabled(False)
+            self.actionSameProductFIFO.setEnabled(False)
         else:
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       

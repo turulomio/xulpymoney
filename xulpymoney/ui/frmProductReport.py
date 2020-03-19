@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
 from datetime import datetime, date, timedelta, time
-from logging import info, error
+from logging import info
 from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
@@ -19,7 +19,7 @@ from xulpymoney.objects.product import  Product
 from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
-from xulpymoney.ui.myqtablewidget import qdatetime
+from xulpymoney.ui.myqtablewidget import qdatetime, qcurrency
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
 from xulpymoney.ui.frmSelector import frmManagerSelector
@@ -204,7 +204,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             except:
                 self.tblTPC.setItem(row, 2, Percentage().qtablewidgetitem())    
                 self.tblTPC.setItem(row, 3,  Percentage().qtablewidgetitem())
-                self.tblTPC.setItem(row, 3,  self.product.currency.qtablewidgetitem(None))     
+                self.tblTPC.setItem(row, 3,  qcurrency(None))     
 
         self.product.agrupations.qcombobox(self.cmbAgrupations)
 
@@ -260,27 +260,30 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         
     def update_due_to_quotes_change(self):
-        if self.product.id!=None:
+        if self.product.id is not None:
             self.product.needStatus(2)
-            self.product.result.ohclDaily.selected=[]
-            self.product.result.ohclMonthly.selected=[]
-            self.product.result.ohclWeekly.selected=[]
-            self.product.result.ohclYearly.selected=[]
-            self.product.estimations_dps.load_from_db()#No cargada por defecto en product
-            self.product.estimations_eps.load_from_db()#No cargada por defecto en product
+            if self.product.result.ohclDaily.length()>0:
+                self.product.result.ohclDaily.selected=[]
+                self.product.result.ohclMonthly.selected=[]
+                self.product.result.ohclWeekly.selected=[]
+                self.product.result.ohclYearly.selected=[]
+                self.product.estimations_dps.load_from_db()#No cargada por defecto en product
+                self.product.estimations_eps.load_from_db()#No cargada por defecto en product
 
-            self.product.estimations_dps.myqtablewidget(self.mqtwDividendsEstimations)   
-            self.product.estimations_eps.myqtablewidget(self.mqtwEPS)            
-            self.product.dps.myqtablewidget(self.mqtwDPSPaid)         
-            self.product.splits.myqtablewidget(self.mqtwSplits)
-            inicio=datetime.now()
-            self.load_information()
-            info("Datos informacion cargados: {}".format(datetime.now()-inicio))
-            self.load_graphics()
-            info("Datos gráficos cargados: {}".format(datetime.now()-inicio))
-            self.load_mensuales()
-            info("Datos mensuales cargados: {}".format(datetime.now()-inicio))
-            self.on_tabHistorical_currentChanged(self.tabHistorical.currentIndex())
+                self.product.estimations_dps.myqtablewidget(self.mqtwDividendsEstimations)   
+                self.product.estimations_eps.myqtablewidget(self.mqtwEPS)            
+                self.product.dps.myqtablewidget(self.mqtwDPSPaid)         
+                self.product.splits.myqtablewidget(self.mqtwSplits)
+                inicio=datetime.now()
+                self.load_information()
+                info("Datos informacion cargados: {}".format(datetime.now()-inicio))
+                self.load_graphics()
+                info("Datos gráficos cargados: {}".format(datetime.now()-inicio))
+                self.load_mensuales()
+                info("Datos mensuales cargados: {}".format(datetime.now()-inicio))
+                self.on_tabHistorical_currentChanged(self.tabHistorical.currentIndex())
+            else:
+                qmessagebox(self.tr("Not enough quotes for this product"))
 
     def load_graphics(self):
         self.product.result.get_intraday(self.calendar.selectedDate().toPyDate())
@@ -308,12 +311,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.viewIntraday.display()
 
         #mqtwIntradia
-        try:
-            self.product.result.intradia.myqtablewidget(self.mqtwIntradia)
-            if self.product.result.intradia.length()>0:
-                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.money(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
-        except:
-            error("Error creating intraday table. Perhaps due to currency exchange missing quotes")
+        self.product.result.intradia.myqtablewidget(self.mqtwIntradia)
+        if self.product.result.intradia.length()>0:
+            self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.money(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
 
     def load_mensuales(self):
         data=[]
