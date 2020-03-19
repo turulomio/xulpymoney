@@ -67,7 +67,7 @@ print(sys.path)
 """.format(module))
         f.close()        
         ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
-        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --nowindowed \
+        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --windowed \
             --noconfirm  --distpath ./dist  --clean {}  \
             --add-data xulpymoney/i18n/*.qm;i18n \
             --add-data xulpymoney/sql/*;sql \

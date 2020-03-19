@@ -82,6 +82,7 @@
     <file>down.png</file>
     <file>visa2.png</file>
     <file>visa.png</file>
+    <file>xulpymoney.png</file>
   </qresource>
   <qresource prefix="/countries">
     <file>belgium.gif</file>

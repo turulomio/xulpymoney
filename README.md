@@ -1,5 +1,4 @@
-Links
-=====
+# Links
 
 Doxygen documentation:
     http://turulomio.users.sourceforge.net/doxygen/xulpymoney/
@@ -7,8 +6,8 @@ Doxygen documentation:
 Pypi web page:
     https://pypi.org/project/xulpymoney/
 
-Install in Linux
-================
+# Install in Linux
+
 If you use Gentoo, you can find the ebuild in https://github.com/turulomio/myportage/tree/master/app-office/xulpymoney
 
 If you use another distribution, you nee to install PyQtChart and PyQtWebEngine manually. They aren't in Linux setup.py dependencies due to PyQt5 doesn't use standard setup tools. So for compatibility reasons with distributions like Gentoo, we use this additional step.
@@ -19,13 +18,12 @@ If you use another distribution, you nee to install PyQtChart and PyQtWebEngine 
 
 `pip install xulpymoney`
 
-Install in Windows
-==================
+# Install in Windows
 
-You just download xulpymoney-X.X.X.exe and xulpymoney_init-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
+You just must download xulpymoney-X.X.X.exe and xulpymoney_init-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
 
-Install in Windows with Python
-==============================
+# Install in Windows with Python
+
 Install python from https://www.python.org/downloads/ and don't forget to add python to the path during installation.
 
 Open a CMD console
@@ -36,8 +34,8 @@ If you want to create a Desktop shortcut you can write in console
 
 `xulpymoney_shortcuts`
 
-How to launch Xulpymoney
-========================
+# How to launch Xulpymoney
+
 Xulpymoney uses PostgreSQL database as its backend. So you need to create a database and load its schema. Just type:
 
 `xulpymoney_init`
@@ -48,8 +46,8 @@ Once database has been created, just log into Xulpymoney after typing:
 
 Warning: Remember Xulpymoney it's still in beta status
 
-Dependencies
-============
+# Dependencies
+
 * https://www.python.org/, as the main programming language.
 * https://pypi.org/project/colorama/, to give console colors.
 * http://initd.org/psycopg/, to access PostgreSQL database.
@@ -58,8 +56,8 @@ Dependencies
 * https://pypi.org/project/officegenerator/, to work with LibreOffice and Microsoft Office documents.
 * https://pypi.org/project/PyQtChart/, to work with charts.
 
-Changelog
-=========
+# Changelog
+
 0.11.0
   * Added modules from reusingcode repository, myqcharts and myqtablewidget has big changes
   * Added translation of hardcoded strings
