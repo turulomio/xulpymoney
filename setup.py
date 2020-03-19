@@ -67,13 +67,10 @@ print(sys.path)
 """.format(module))
         f.close()        
         ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
-        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --windowed \
+        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --nowindowed \
             --noconfirm  --distpath ./dist  --clean {}  \
-            --add-data xulpymoney/i18n/xulpymoney_es.qm;i18n \
-            --add-data xulpymoney/i18n/xulpymoney_fr.qm;i18n \
-            --add-data xulpymoney/i18n/xulpymoney_ro.qm;i18n \
-            --add-data xulpymoney/i18n/xulpymoney_ru.qm;i18n \
-            --add-data xulpymoney/sql/xulpymoney.sql;sql \
+            --add-data xulpymoney/i18n/*.qm;i18n \
+            --add-data xulpymoney/sql/*;sql \
             --add-data "{};stdnum" \
         """.format(name,__version__,filename, iban_dat))
 
