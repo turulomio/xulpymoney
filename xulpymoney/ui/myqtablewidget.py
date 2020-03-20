@@ -472,8 +472,7 @@ class mqtwData(myQTableWidget):
 class mqtwDataWithObjects(mqtwData):
     def __init__(self, parent):
         mqtwData.__init__(self, parent)
-        self._selection_mode=ManagerSelectionMode.Object #Used although it's not a manager
-        self.selected=None
+        self.setSelectionMode(ManagerSelectionMode.Object) #Used although it's not a manager
         self.table.itemSelectionChanged.connect(self.on_itemSelectionChanged)
         
     ## REturn the last index of a row, where the object is
@@ -531,6 +530,12 @@ class mqtwDataWithObjects(mqtwData):
 
     def setSelectionMode(self, manager_selection_mode):
         self._selection_mode=manager_selection_mode
+        if self._selection_mode==ManagerSelectionMode.Object:
+            self.selected=None
+        elif self._selection_mode==ManagerSelectionMode.List:
+            self.selected=[]
+        else:
+            self.selected=self.manager.emptyManager()
 
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):

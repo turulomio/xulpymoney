@@ -164,9 +164,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     o.open, 
                     o.high, 
                     o.low, 
-                    o.datetime(),  
+                    o.datetime(),
+                    o, 
                 ])
-            mqtw.setData(
+            mqtw.setDataWithObjects(
                 [self.tr("Date"), self.tr("Price"), self.tr("Open"), self.tr("Higher"), self.tr("Lower"), self.tr("Agrupation start")], 
                 None, 
                 data, 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>892</width>
-    <height>654</height>
+    <height>263</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -117,7 +117,7 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="mqtwInvestments" native="true"/>
+      <widget class="mqtwDataWithObjects" name="mqtwInvestments" native="true"/>
      </item>
      <item>
       <widget class="QLabel" name="lblFound">
@@ -139,66 +139,6 @@
    </property>
    <property name="toolTip">
     <string>Product report</string>
-   </property>
-  </action>
-  <action name="actionSortTPCDiario">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Daily</string>
-   </property>
-   <property name="toolTip">
-    <string>% Daily</string>
-   </property>
-  </action>
-  <action name="actionSortTPCAnual">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Annual</string>
-   </property>
-   <property name="toolTip">
-    <string>% Annual</string>
-   </property>
-  </action>
-  <action name="actionSortName">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Name</string>
-   </property>
-   <property name="toolTip">
-    <string>Name</string>
-   </property>
-  </action>
-  <action name="actionSortDividend">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Dividend</string>
-   </property>
-   <property name="toolTip">
-    <string>Dividend</string>
-   </property>
-  </action>
-  <action name="actionSortHour">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Hour</string>
-   </property>
-   <property name="toolTip">
-    <string>Hour</string>
    </property>
   </action>
   <action name="actionIbex35">
@@ -321,7 +261,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtwDataWithObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

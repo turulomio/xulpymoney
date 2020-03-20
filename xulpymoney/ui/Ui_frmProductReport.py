@@ -14,7 +14,7 @@ class Ui_frmProductReport(object):
     def setupUi(self, frmProductReport):
         frmProductReport.setObjectName("frmProductReport")
         frmProductReport.setWindowModality(QtCore.Qt.WindowModal)
-        frmProductReport.resize(1052, 974)
+        frmProductReport.resize(814, 598)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpmoney/dinero.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmProductReport.setWindowIcon(icon)
@@ -50,7 +50,7 @@ class Ui_frmProductReport(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 985, 904))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 726, 798))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_31 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_31.setObjectName("horizontalLayout_31")
@@ -542,7 +542,7 @@ class Ui_frmProductReport(object):
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout()
         self.verticalLayout_15.setObjectName("verticalLayout_15")
-        self.mqtwMensuales = mqtwDataWithObjects(self.tab_6)
+        self.mqtwMensuales = mqtwData(self.tab_6)
         self.mqtwMensuales.setObjectName("mqtwMensuales")
         self.verticalLayout_15.addWidget(self.mqtwMensuales)
         self.label_19 = QtWidgets.QLabel(self.tab_6)
@@ -556,7 +556,7 @@ class Ui_frmProductReport(object):
         self.tabSplits.setObjectName("tabSplits")
         self.horizontalLayout_45 = QtWidgets.QHBoxLayout(self.tabSplits)
         self.horizontalLayout_45.setObjectName("horizontalLayout_45")
-        self.mqtwSplits = mqtwDataWithObjects(self.tabSplits)
+        self.mqtwSplits = mqtwData(self.tabSplits)
         self.mqtwSplits.setObjectName("mqtwSplits")
         self.horizontalLayout_45.addWidget(self.mqtwSplits)
         self.tabHistorical.addTab(self.tabSplits, "")
@@ -574,7 +574,7 @@ class Ui_frmProductReport(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_40 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_40.setObjectName("horizontalLayout_40")
-        self.mqtwDPSPaid = mqtwDataWithObjects(self.tab_2)
+        self.mqtwDPSPaid = mqtwData(self.tab_2)
         self.mqtwDPSPaid.setObjectName("mqtwDPSPaid")
         self.horizontalLayout_40.addWidget(self.mqtwDPSPaid)
         icon7 = QtGui.QIcon()
@@ -584,7 +584,7 @@ class Ui_frmProductReport(object):
         self.tab_8.setObjectName("tab_8")
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.tab_8)
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.mqtwDividendsEstimations = mqtwDataWithObjects(self.tab_8)
+        self.mqtwDividendsEstimations = mqtwData(self.tab_8)
         self.mqtwDividendsEstimations.setObjectName("mqtwDividendsEstimations")
         self.horizontalLayout_13.addWidget(self.mqtwDividendsEstimations)
         self.tabEstimaciones.addTab(self.tab_8, icon7, "")
@@ -592,7 +592,7 @@ class Ui_frmProductReport(object):
         self.tab_9.setObjectName("tab_9")
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.tab_9)
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.mqtwEPS = mqtwDataWithObjects(self.tab_9)
+        self.mqtwEPS = mqtwData(self.tab_9)
         self.mqtwEPS.setObjectName("mqtwEPS")
         self.horizontalLayout_20.addWidget(self.mqtwEPS)
         icon8 = QtGui.QIcon()
@@ -677,10 +677,10 @@ class Ui_frmProductReport(object):
         self.actionQuoteImportInvestingCom.setObjectName("actionQuoteImportInvestingCom")
 
         self.retranslateUi(frmProductReport)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(3)
         self.tabGraphics.setCurrentIndex(0)
         self.tabHistorical.setCurrentIndex(5)
-        self.tabEstimaciones.setCurrentIndex(2)
+        self.tabEstimaciones.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(frmProductReport)
 
     def retranslateUi(self, frmProductReport):
@@ -806,5 +806,5 @@ class Ui_frmProductReport(object):
         self.actionQuoteExport.setToolTip(_translate("frmProductReport", "Export quotes to Libreoffice ODS"))
         self.actionQuoteImportInvestingCom.setText(_translate("frmProductReport", "Import historical csv from Investing.com"))
         self.actionQuoteImportInvestingCom.setToolTip(_translate("frmProductReport", "Import historical csv from Investing.com"))
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
+from xulpymoney.ui.myqtablewidget import mqtwData, mqtwDataWithObjects
 import xulpymoney.images.xulpymoney_rc

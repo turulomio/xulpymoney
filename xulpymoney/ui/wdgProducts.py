@@ -1,5 +1,6 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
+from logging import debug
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
 from xulpymoney.casts import  list2string
@@ -10,7 +11,6 @@ from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgProductsDataMove import wdgProductsDataMove
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
-import logging
 
 class wdgProducts(QWidget, Ui_wdgProducts):
     def __init__(self, mem,  arrInt=[],  parent=None):
@@ -20,26 +20,25 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mqtwInvestments.settings(self.mem.settings, "wdgProducts", "mqtwInvestments")
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
-        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
+        self.mqtwInvestments.setSelectionMode(ManagerSelectionMode.List)
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.arrInt=arrInt#Lista de ids of products showed and used to show
         self.build_array_from_arrInt()
 
     def build_array_from_arrInt(self):        
         self.products=self.mem.data.products.ProductManager_with_id_in_list(self.arrInt)
-        self.products.setSelectionMode(ManagerSelectionMode.List)
         self.products.needStatus(needstatus=1, progress=True)
-        self.products.order_by_upper_name()
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
         self.products.myqtablewidget(self.mqtwInvestments)
+        self.mqtwInvestments.setOrderBy(1, False)
 
     @pyqtSlot()
     def on_actionFavorites_triggered(self):      
-        if self.products.selected[0].id in self.mem.favorites:
-            self.mem.favorites.remove(self.products.selected[0].id)
+        if self.mqtwInvestments.selected[0].id in self.mem.favorites:
+            self.mem.favorites.remove(self.mqtwInvestments.selected[0].id)
         else:
-            self.mem.favorites.append(self.products.selected[0].id)
-        logging.debug("Favoritos: {}".format(self.mem.favorites))
+            self.mem.favorites.append(self.mqtwInvestments.selected[0].id)
+        debug("Favorites: {}".format(self.mem.favorites))
         self.mem.settingsdb.setValue("mem/favorites", list2string(self.mem.favorites))
         
         del self.arrInt
@@ -60,18 +59,18 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionProductDelete_triggered(self):
-        if self.products.selected[0].is_deletable()==False:
+        if self.mqtwInvestments.selected[0].is_deletable()==False:
             qmessagebox(self.tr("This product can't be removed, because is marked as not remavable"))
             return
             
-        if self.products.selected[0].is_system()==True:
+        if self.mqtwInvestments.selected[0].is_system()==True:
             qmessagebox(self.tr("This product can't be removed, because is a system product"))
             return
             
-        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.products.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.mqtwInvestments.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            self.arrInt.remove(self.products.selected[0].id)
-            self.mem.data.products.remove(self.products.selected[0])
+            self.arrInt.remove(self.mqtwInvestments.selected[0].id)
+            self.mem.data.products.remove(self.mqtwInvestments.selected[0])
             self.mem.con.commit()
             self.build_array_from_arrInt()            
 
@@ -85,15 +84,15 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionPurchaseGraphic_triggered(self):
-        self.products.selected[0].needStatus(2)
+        self.mqtwInvestments.selected[0].needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
         lay = QVBoxLayout(d)
         
         wc=wdgProductHistoricalBuyChart()
-        wc.setProduct(self.products.selected[0], None)
-        wc.setPrice(self.products.selected[0].result.basic.last.quote)
+        wc.setProduct(self.mqtwInvestments.selected[0], None)
+        wc.setPrice(self.mqtwInvestments.selected[0].result.basic.last.quote)
         wc.generate()
         wc.display()
         lay.addWidget(wc)
@@ -101,41 +100,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @pyqtSlot() 
     def on_actionProductReport_triggered(self):
-        w=frmProductReport(self.mem, self.products.selected[0], None,  self)
+        w=frmProductReport(self.mem, self.mqtwInvestments.selected[0], None,  self)
         w.exec_()        
         self.build_array_from_arrInt()
-        
-    @pyqtSlot() 
-    def on_actionSortTPCDiario_triggered(self):
-        if self.products.order_by_daily_tpc():
-            self.products.myqtablewidget(self.mqtwInvestments)        
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))
-
-    @pyqtSlot()
-    def on_actionSortTPCAnual_triggered(self):
-        if self.products.order_by_annual_tpc():
-            self.products.myqtablewidget(self.mqtwInvestments)        
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))
-
-    @pyqtSlot()
-    def on_actionSortHour_triggered(self):
-        self.products.order_by_datetime()
-        self.products.myqtablewidget(self.mqtwInvestments)        
-
-    @pyqtSlot()
-    def on_actionSortName_triggered(self):
-        self.products.order_by_upper_name()
-        self.products.myqtablewidget(self.mqtwInvestments)        
-
-    @pyqtSlot()
-    def on_actionSortDividend_triggered(self):
-        if self.products.order_by_dividend():
-            self.products.myqtablewidget(self.mqtwInvestments)        
-        else:
-            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
-        
+    
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
 
@@ -179,30 +147,22 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavorites)
-        if len(self.products.selected)==1:
-            if self.products.selected[0].id in self.mem.favorites:
+        if len(self.mqtwInvestments.selected)==1:
+            if self.mqtwInvestments.selected[0].id in self.mem.favorites:
                 self.actionFavorites.setText(self.tr("Remove from favorites"))
             else:
                 self.actionFavorites.setText(self.tr("Add to favorites"))
         menu.addSeparator()
         menu.addAction(self.actionPurge)
 
-        if len (self.products.selected)==1:
-            if self.products.selected[0].id==79329:
+        if len (self.mqtwInvestments.selected)==1:
+            if self.mqtwInvestments.selected[0].id==79329:
                 menu.addSeparator()
                 menu.addAction(self.actionIbex35)
-        menu.addSeparator()
-        ordenar=QMenu(self.tr("Order by"))
-        menu.addMenu(ordenar)
-        ordenar.addAction(self.actionSortName)
-        ordenar.addAction(self.actionSortHour)
-        ordenar.addAction(self.actionSortTPCDiario)
-        ordenar.addAction(self.actionSortTPCAnual)
-        ordenar.addAction(self.actionSortDividend)
         #menu.addMenu(self.mqtwInvestments.qmenu()) MUST ADD A SET DATA IN MYQTABLEWIDGET
         
         #Enabled disabled  
-        if len(self.products.selected)==1:
+        if len(self.mqtwInvestments.selected)==1:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductDelete.setEnabled(True)
             self.actionFavorites.setEnabled(True)
@@ -213,7 +173,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionEstimationDPSNew.setEnabled(True)
             self.actionPurge.setEnabled(True)
             self.actionProductPriceLastRemove.setEnabled(True)
-        elif len(self.products.selected)==2:
+        elif len(self.mqtwInvestments.selected)==2:
             self.actionMergeCodes.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
@@ -226,6 +186,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionEstimationDPSNew.setEnabled(False)
             self.actionPurge.setEnabled(False)
             self.actionProductPriceLastRemove.setEnabled(False)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
     @pyqtSlot() 
@@ -233,48 +195,41 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         #Only two checked in custom contest
         d=QDialog(self)
         d.setWindowTitle(self.tr("Merging codes"))
-        w=wdgProductsDataMove(self.mem, self.products.selected[0], self.products.selected[1])
+        w=wdgProductsDataMove(self.mem, self.mqtwInvestments.selected[0], self.mqtwInvestments.selected[1])
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.resize(w.size())
         d.exec_()
         self.build_array_from_arrInt()
-    
-    def on_mqtwInvestments_itemSelectionChanged(self):
-        self.products.cleanSelection()
-        for i in self.mqtwInvestments.table.selectedItems():
-            if i.column()==0:#only once per row
-                self.products.selected.append(self.products.arr[i.row()])
-        logging.debug(self.products.selected)
 
     @pyqtSlot()  
     def on_actionPurge_triggered(self):
         all=QuoteAllIntradayManager(self.mem)
-        all.load_from_db(self.products.selected[0])
+        all.load_from_db(self.mqtwInvestments.selected[0])
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.mem.con.commit()
-            qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.products.selected[0].name)))
+            qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.mqtwInvestments.selected[0].name)))
         else:
             self.mem.con.rollback()
 
     @pyqtSlot()  
     def on_actionQuoteNew_triggered(self):
-        w=frmQuotesIBM(self.mem,  self.products.selected[0])
+        w=frmQuotesIBM(self.mem,  self.mqtwInvestments.selected[0])
         w.exec_()
         self.build_array_from_arrInt()
 
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
-        self.products.selected[0].result.basic.last.delete()
+        self.mqtwInvestments.selected[0].result.basic.last.delete()
         self.mem.con.commit()
-        self.products.selected[0].needStatus(1, downgrade_to=0)
+        self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
         self.build_array_from_arrInt()
 
     @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
-        d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
+        d=frmEstimationsAdd(self.mem, self.mqtwInvestments.selected[0], "dps")
         d.exec_()
         if d.result()==QDialog.Accepted:
-            self.products.selected[0].needStatus(1, downgrade_to=0)
+            self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
             self.build_array_from_arrInt()

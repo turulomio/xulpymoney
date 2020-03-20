@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QObject
-from PyQt5.QtGui import QIcon,  QFont
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QProgressDialog
 from datetime import datetime, timedelta, date
 from logging import debug
@@ -9,13 +9,12 @@ from xulpymoney.decorators import deprecated
 from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdName_Selectable, ObjectManager_With_Id_Selectable
 from xulpymoney.libxulpymoneytypes import eTickerPosition, eProductType, eQColor
 from xulpymoney.objects.dps import DPSManager
-from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.split import SplitManager
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
-from xulpymoney.ui.myqtablewidget import qdate, qdatetime, qcenter, qleft
+from xulpymoney.ui.myqtablewidget import qdate, qcenter
 
 class Product(QObject):
     def __init__(self, mem):
@@ -507,46 +506,37 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
         cur.close()
 
     def myqtablewidget(self, wdg):
-        tachado = QFont()
-        tachado.setStrikeOut(True)        #Fuente tachada
-        transfer=QIcon(":/xulpymoney/transfer.png")
-        wdg.table.setColumnCount(8)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Id")))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Product")))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("ISIN")))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Last update")))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Price")))
-        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr("% Daily")))
-        wdg.table.setHorizontalHeaderItem(6, qcenter(self.tr("% Year to date")))
-        wdg.table.setHorizontalHeaderItem(7, qcenter(self.tr("% Dividend")))
-   
-        wdg.applySettings()
-        wdg.table.clearSelection()    
-        wdg.table.setFocus()
-        wdg.table.horizontalHeader().setStretchLastSection(False)   
-        wdg.table.clearContents()
-        wdg.table.setRowCount(self.length())
-        for i, p in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qcenter(str(p.id)))
-            wdg.table.setItem(i, 1, qleft(p.name.upper()))
-            wdg.table.item(i, 1).setIcon(p.stockmarket.country.qicon())
-            wdg.table.setItem(i, 2, qleft(p.isin))   
-            wdg.table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone_name))
-            wdg.table.setItem(i, 4, p.money(p.result.basic.last.quote).qtablewidgetitem(6 ))  
+        hh=[self.tr("Id"), self.tr("Product"), self.tr("ISIN"), self.tr("Last update"), self.tr("Price"), 
+            self.tr("% Daily"), self.tr("% Year to date"), self.tr("% Dividend")]
+        
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.id, 
+                o.name.upper(), 
+                o.isin, 
+                o.result.basic.last.datetime, 
+                o.result.basic.last.money(), 
+                o.result.basic.tpc_diario(), 
+                o.result.basic.tpc_anual(), 
+                o.estimations_dps.currentYear().percentage(), 
+                o, 
+            ])
 
-            wdg.table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
-            wdg.table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     
-            if p.estimations_dps.currentYear()==None:
-                wdg.table.setItem(i, 7, Percentage().qtablewidgetitem())
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+
+    def myqtablewidget_additional(self, wdg):
+        for i, o in enumerate(wdg.objects()):
+            wdg.table.item(i, 1).setIcon(o.stockmarket.country.qicon())
+            if o.estimations_dps.currentYear()==None:
+#                wdg.table.setItem(i, 7, Percentage().qtablewidgetitem())
                 wdg.table.item(i, 7).setBackground( eQColor.Red)          
-            else:
-                wdg.table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
-                
-            if p.has_autoupdate()==True:#Active
-                wdg.table.item(i, 4).setIcon(transfer)
-            if p.obsolete==True:#Obsolete
-                for c in range(wdg.table.columnCount()):
-                    wdg.table.item(i, c).setFont(tachado)
+#            else:
+#                wdg.table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
+            if o.has_autoupdate()==True:#Active
+                wdg.table.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
+            if o.obsolete==True:#Obsolete
+                wdg.setRowStrikeOut(i)
 
 
 
