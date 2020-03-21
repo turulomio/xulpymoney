@@ -17,10 +17,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
+        self.mqtwInvestments.setSelectionMode(ManagerSelectionMode.List)
         self.mqtwInvestments.settings(self.mem.settings, "wdgProducts", "mqtwInvestments")
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
-        self.mqtwInvestments.setSelectionMode(ManagerSelectionMode.List)
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.arrInt=arrInt#Lista de ids of products showed and used to show
         self.build_array_from_arrInt()
@@ -134,6 +134,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_array_from_arrInt()
 
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
+        if self.mqtwInvestments.selected is None:
+            debug("on_mqtwInvestments_customContextMenuRequested without selected. May be list selection mode")
+            return
+        debug("Customcontext: {}".format(self.mqtwInvestments.selected))
         menu=QMenu()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurchaseGraphic)

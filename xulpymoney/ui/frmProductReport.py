@@ -9,7 +9,6 @@ from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2
 from xulpymoney.investing_com import InvestingCom
 from xulpymoney.objects.leverage import LeverageManager
 from xulpymoney.objects.productmode import ProductModesManager
-from xulpymoney.objects.agrupation import AgrupationManager
 from xulpymoney.objects.currency import currency_name, currency_symbol, currencies_qcombobox
 from xulpymoney.objects.producttype import ProductTypeManager
 from xulpymoney.objects.dps import DPS
@@ -22,7 +21,6 @@ from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.myqtablewidget import qdatetime, qcurrency
 from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.ui.Ui_frmProductReport import Ui_frmProductReport
-from xulpymoney.ui.frmSelector import frmManagerSelector
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.frmSplit import frmSplit
@@ -240,8 +238,30 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             currencies_qcombobox(self.cmbCurrency, self.product.currency)
             self.mem.leverages.qcombobox(self.cmbApalancado, self.product.leveraged)
             self.mem.types.qcombobox(self.cmbTipo, self.product.type)
-        else: #None            
+        else: #None                        
+            self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
             self.cmsAgrupations.setManagers(self.mem.settings,"frmProductReport", "cmsAgrupations", self.__agrupations_by_type(), None)
+            self.txtTPC.setText(str(self.product.percentage))
+            self.txtName.setText(self.product.name)
+            self.txtISIN.setText(self.product.isin)
+            self.product.mqtw_tickers(self.mqtwTickers)
+            self.txtComentario.setText(self.product.comment)
+            self.txtAddress.setText(self.product.address)
+            self.txtWeb.setText(self.product.web)
+            self.txtMail.setText(self.product.mail)
+            self.txtPhone.setText(self.product.phone)
+            self.spnDecimals.setValue(self.product.decimals)
+
+            if self.product.has_autoupdate()==True:
+                self.lblAutoupdate.setText('<img src=":/xulpymoney/transfer.png" width="16" height="16"/>  {}'.format(self.tr("Product prices are updated automatically")))
+            else:
+                self.lblAutoupdate.setText(self.tr("Product prices are not updated automatically"))
+                
+            if self.product.obsolete==True:
+                self.chkObsolete.setCheckState(Qt.Checked)
+            
+            if self.product.high_low==True:
+                self.chkHL.setCheckState(Qt.Checked)
             self.txtISIN.setReadOnly(True)
             self.txtName.setReadOnly(True)
             self.txtWeb.setReadOnly(True)
@@ -249,9 +269,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.txtMail.setReadOnly(True)
             self.txtTPC.setReadOnly(True)
             self.txtPhone.setReadOnly(True)
-            self.mqtwTickers.blockSignals(True)
+#            self.mqtwTickers.blockSignals(True)
+            self.mqtwTickers.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
             self.txtComentario.setReadOnly(True)
-            self.cmdAgrupations.setEnabled(False)
             setReadOnly(self.chkObsolete, True)
             setReadOnly(self.chkHL, True)
             self.cmdSave.setEnabled(False)
@@ -259,22 +279,21 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
             bolsa=StockMarketManager(self.mem)
             bolsa.append(self.product.stockmarket)
-            bolsa.qcombobox(self.cmbBolsa)
+            bolsa.qcombobox(self.cmbBolsa, self.product.stockmarket)
             
             productmodes=ProductModesManager(self.mem)
             productmodes.append(self.product.mode)
-            productmodes.qcombobox(self.cmbPCI)
+            productmodes.qcombobox(self.cmbPCI, self.product.mode)
 
             self.cmbCurrency.addItem("{0} - {1} ({2})".format(self.product.currency, currency_name(self.product.currency), currency_symbol(self.product.currency)), self.product.currency)
             
             leverages=LeverageManager(self.mem)
             leverages.append(self.product.leveraged)
-            leverages.qcombobox(self.cmbApalancado)
+            leverages.qcombobox(self.cmbApalancado, self.product.leveraged)
             
             types=ProductTypeManager(self.mem)
             types.append(self.product.type)
-            types.qcombobox(self.cmbTipo)
-            print("C")
+            types.qcombobox(self.cmbTipo, self.product.type)
         
     def update_due_to_quotes_change(self):
         self.load_product()
