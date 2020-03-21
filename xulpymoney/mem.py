@@ -295,7 +295,7 @@ class MemXulpymoney(Mem):
         self.inittime=datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         self.con=None#Conexión        
-        self._products_maintainer_mode=False
+        self._products_maintenance_mode=False
         
                 
         self.closing=False#Used to close threads
@@ -304,10 +304,14 @@ class MemXulpymoney(Mem):
     def run(self):
         self.args=self.parse_arguments()
         self.addDebugSystem(self.args.debug)
+        self.setProductsMaintenanceMode(self.args.products_maintenance)
         self.app=QApplication(argv)
         self.app.setOrganizationName("xulpymoney")
         self.app.setOrganizationDomain("xulpymoney")
         self.app.setApplicationName("xulpymoney")
+        from importlib import import_module
+        import_module("xulpymoney.images.xulpymoney_rc")
+
         self.con=None
 
         self.frmMain=None #Pointer to mainwidget
@@ -317,6 +321,7 @@ class MemXulpymoney(Mem):
     def parse_arguments(self):
         self.parser=ArgumentParser(prog='xulpymoney', description=self.tr('Personal accounting system'), epilog=self.epilog(), formatter_class=RawTextHelpFormatter)
         self. addCommonToArgParse(self.parser)
+        self.parser.add_argument('--products_maintenance', help=self.tr("Products mantainer interface (only developers)"), action="store_true", default=False)
         args=self.parser.parse_args()
         return args
         
@@ -386,9 +391,9 @@ class MemXulpymoney(Mem):
     def localmoney(self, amount):
         return Money(self, amount, self.localcurrency)
         
-    def setProductsMaintainerMode(self, boolean):
-        self._products_maintainer_mode=boolean
+    def setProductsMaintenanceMode(self, boolean):
+        self._products_maintenance_mode=boolean
         
-    def isProductsMaintainerMode(self):
-        return self._products_maintainer_mode
+    def isProductsMaintenanceMode(self):
+        return self._products_maintenance_mode
 

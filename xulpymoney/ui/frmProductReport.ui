@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -80,7 +80,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>726</width>
-                <height>798</height>
+                <height>784</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -240,15 +240,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QComboBox" name="cmbAgrupations"/>
-                      </item>
-                      <item>
-                       <widget class="QToolButton" name="cmdAgrupations">
-                        <property name="icon">
-                         <iconset resource="../images/xulpymoney.qrc">
-                          <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                        </property>
-                       </widget>
+                       <widget class="cmbManagerSelector" name="cmsAgrupations" native="true"/>
                       </item>
                      </layout>
                     </item>
@@ -473,7 +465,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="mqtwDataWithObjects" name="mqtwTickers" native="true"/>
+                       <widget class="mqtwData" name="mqtwTickers" native="true"/>
                       </item>
                      </layout>
                     </item>
@@ -1324,6 +1316,12 @@
    <class>mqtwData</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cmbManagerSelector</class>
+   <extends>QWidget</extends>
+   <header location="global">frmSelector</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

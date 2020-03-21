@@ -3,7 +3,7 @@
 from PyQt5.QtWidgets import  QDialog, qApp
 from xulpymoney.mem import MemXulpymoney
 from xulpymoney.ui.frmAccess import frmAccess
-from xulpymoney.ui.frmMain import frmMain
+from xulpymoney.ui.frmMain import frmMain, frmMainProductsMaintenance
 from sys import exit
 
 def main():
@@ -27,6 +27,9 @@ def main():
         if update.need_update()==True:
             update.run()
 
-        mem.frmMain = frmMain(mem)
+        if mem.isProductsMaintenanceMode():
+            mem.frmMain=frmMainProductsMaintenance(mem)
+        else:
+            mem.frmMain = frmMain(mem)
         mem.frmMain.show()
         exit(mem.app.exec_())

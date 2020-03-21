@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QProgressDialog
 from datetime import datetime, timedelta, date
 from logging import debug
 from os import system
+from xulpymoney.casts import b2s
 from xulpymoney.github import get_file_modification_dtaware
 from xulpymoney.decorators import deprecated
 from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdName_Selectable, ObjectManager_With_Id_Selectable
@@ -112,25 +113,47 @@ class Product(QObject):
         return self.init__db_row(row)
 
     def save(self):
-        """
-            Esta función inserta una inversión manua
-            Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None
-        """
-        
-        cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("select min(id)-1 from products")
-            id=cur.fetchone()[0]
-            if id>=0:
-                id=-1
-            print(self.decimals)
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low))
-            self.id=id
+            if self.mem.isProductsMaintenanceMode()==True:
+                self.id=self.mem.con.cursor_one_field("select max(id)+1 from products")
+            else:
+                self.id=self.mem.con.cursor_one_field("select min(id)-1 from products")
+            self.mem.con.execute(self.sql_insert(returning_id=False))
+        else:# update
+            self.mem.con.execute(self.sql_update())
+
+        ## @param returning_id True sql with returning id (normal insert). False without returning_id and id inside sql. Used for automatic inserts
+    def sql_insert(self, returning_id=True):
+        sql= """insert into products (name,  isin,  currency,  type,  agrupations, web, 
+            address,  phone, mail, percentage, pci, leveraged, 
+            decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (
+            %s, %s, %s, %s, %s, %s, 
+            %s, %s, %s, %s, %s, %s, 
+            %s, %s, %s, %s, %s, %s
+            ) returning id;"""
+        sql_parameters=(self.name, self.isin, self.currency, self.type.id,  self.agrupations.dbstring(), self.web, 
+            self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, 
+            self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low)
+
+        if returning_id==True:
+            r=self.mem.con.mogrify(sql, sql_parameters)
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, decimals=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s where id=%s", ( self.name,  self.isin,  self.currency,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  self.id))
-        cur.close()
-    
-    
+            sql=sql.replace(") values (", ", id ) values (")
+            sql=sql.replace(") returning id", ", %s)")
+            r=self.mem.con.mogrify(sql, sql_parameters+(self.id, ))
+        return b2s(r)
+
+    def sql_update(self):
+        sql="""update products set name=%s, isin=%s, currency=%s, type=%s, agrupations=%s, web=%s, 
+            address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, 
+            decimals=%s, stockmarkets_id=%s, tickers=%s, comment=%s, obsolete=%s,high_low=%s 
+            where id=%s;"""
+        sql_parameters= ( self.name,  self.isin,  self.currency,  self.type.id,  self.agrupations.dbstring(),  self.web, 
+            self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, 
+            self.decimals, self.stockmarket.id, self.tickers, self.comment, self.obsolete, self.high_low,  
+            self.id)
+        return b2s(self.mem.con.mogrify(sql, sql_parameters))
+
     ## Return if the product has autoupdate in some source
     def has_autoupdate(self):
         if self.obsolete==True:

@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog, QAbstractItemView
 from datetime import datetime, date, timedelta, time
-from logging import info
+from logging import info, debug
 from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
@@ -50,7 +50,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.investment=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=set([])
         
-        self.adding_new_product=False#Tag to know is I access this dialog adding a product
         self.selDPS=None
         self.selEstimationDPS=None
         self.selEstimationEPS=None
@@ -62,6 +61,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.tabHistorical.setCurrentIndex(4)
         
         self.mqtwTickers.settings(self.mem.settings, "frmProductReport", "mqtwTickers")
+        self.mqtwTickers.table.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.mqtwDaily.settings(self.mem.settings, "frmProductReport", "mqtwDaily")    
         self.mqtwDaily.table.customContextMenuRequested.connect(self.on_mqtwDaily_customContextMenuRequested)
         self.mqtwDaily.table.itemSelectionChanged.connect(self.on_mqtwDaily_itemSelectionChanged)
@@ -90,58 +90,21 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwEPS.table.itemSelectionChanged.connect(self.on_mqtwEPS_itemSelectionChanged)
 
 
+
+        # PRODUCT INFORMATION
         if self.product==None: #Insertar
-            self.adding_new_product=True
+            self.__insert=True
             self.product=Product(self.mem)
             self.cmdSave.setText(self.tr("Add a new product"))
             
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
-            self.mem.stockmarkets.qcombobox(self.cmbBolsa)
-            self.mem.investmentsmodes.qcombobox(self.cmbPCI)
-            currencies_qcombobox(self.cmbCurrency, self.mem.localcurrency)
-            self.mem.leverages.qcombobox(self.cmbApalancado)
-            self.mem.types.qcombobox(self.cmbTipo)
-        elif self.product.id<0: #Editar
-            self.mem.stockmarkets.qcombobox(self.cmbBolsa)
-            self.mem.investmentsmodes.qcombobox(self.cmbPCI)
-            currencies_qcombobox(self.cmbCurrency, self.product.currency)
-            self.mem.leverages.qcombobox(self.cmbApalancado)
-            self.mem.types.qcombobox(self.cmbTipo)
-        elif self.product.id>=0:#Readonly
-            self.txtISIN.setReadOnly(True)
-            self.txtName.setReadOnly(True)
-            self.txtWeb.setReadOnly(True)
-            self.txtAddress.setReadOnly(True)
-            self.txtMail.setReadOnly(True)
-            self.txtTPC.setReadOnly(True)
-            self.txtPhone.setReadOnly(True)
-            self.mqtwTickers.blockSignals(True)
-            self.txtComentario.setReadOnly(True)
-            self.cmdAgrupations.setEnabled(False)
-            setReadOnly(self.chkObsolete, True)
-            setReadOnly(self.chkHL, True)
-            self.cmdSave.setEnabled(False)
-            self.spnDecimals.setReadOnly(True)
-            
-            bolsa=StockMarketManager(mem)
-            bolsa.append(self.product.stockmarket)
-            bolsa.qcombobox(self.cmbBolsa)
-            
-            productmodes=ProductModesManager(mem)
-            productmodes.append(self.product.mode)
-            productmodes.qcombobox(self.cmbPCI)
+        elif (self.mem.isProductsMaintenanceMode()==False and self.product.id<0) or (self.mem.isProductsMaintenanceMode()==True and self.product.id>=0): #Editar
+            self.__insert=False
+        else:#Readonly
+            self.__insert=None
 
-            self.cmbCurrency.addItem("{0} - {1} ({2})".format(self.product.currency, currency_name(self.product.currency), currency_symbol(self.product.currency)), self.product.currency)
-            
-            leverages=LeverageManager(mem)
-            leverages.append(self.product.leveraged)
-            leverages.qcombobox(self.cmbApalancado)
-            
-            types=ProductTypeManager(mem)
-            types.append(self.product.type)
-            types.qcombobox(self.cmbTipo)
         
         self.viewIntraday=VCTemporalSeries()
         self.layIntraday.addWidget(self.viewIntraday)
@@ -206,38 +169,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 2, Percentage().qtablewidgetitem())    
                 self.tblTPC.setItem(row, 3,  Percentage().qtablewidgetitem())
                 self.tblTPC.setItem(row, 3,  qcurrency(None))     
-
-        self.product.agrupations.qcombobox(self.cmbAgrupations)
-
-        self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
-        self.txtTPC.setText(str(self.product.percentage))
-        self.txtName.setText(self.product.name)
-        self.txtISIN.setText(self.product.isin)
-        self.product.mqtw_tickers(self.mqtwTickers)
-        self.txtComentario.setText(self.product.comment)
-        self.txtAddress.setText(self.product.address)
-        self.txtWeb.setText(self.product.web)
-        self.txtMail.setText(self.product.mail)
-        self.txtPhone.setText(self.product.phone)
-        self.spnDecimals.setValue(self.product.decimals)
-
-        if self.product.has_autoupdate()==True:
-            self.lblAutoupdate.setText('<img src=":/xulpymoney/transfer.png" width="16" height="16"/>  {}'.format(self.tr("Product prices are updated automatically")))
-        else:
-            self.lblAutoupdate.setText(self.tr("Product prices are not updated automatically"))
-            
-        if self.product.obsolete==True:
-            self.chkObsolete.setCheckState(Qt.Checked)
-        
-        if self.product.high_low==True:
-            self.chkHL.setCheckState(Qt.Checked)
-
-        self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.product.stockmarket.id))
-        self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.product.currency))
-        self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.product.mode.id))
-        self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.product.type.id))
-        self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.product.leveraged.id))
-        
+        # ---------------------------------
         if len(self.product.result.ohclDaily.arr)!=0:
             now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
@@ -259,8 +191,93 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             row_mqtwTPV(unmes, 8)
             row_mqtwTPV(docemeses, 9)
 
+    ## Load product object to be showed in widget
+    ## Uses self.__insert to differentiate cases
+    ## 1. True New product
+    ## 1. False Edit product
+    ## 1. None Readonly product
+    def load_product(self):
+        debug("Entering product with self.__insert={}".format(self.__insert))
+        if self.__insert==True:
+            self.mem.stockmarkets.qcombobox(self.cmbBolsa)
+            self.cmbBolsa.setCurrentIndex(10)
+            self.mem.investmentsmodes.qcombobox(self.cmbPCI)
+            self.cmbPCI.setCurrentIndex(1)
+            currencies_qcombobox(self.cmbCurrency, self.mem.localcurrency)
+            self.mem.leverages.qcombobox(self.cmbApalancado)
+            self.cmbApalancado.setCurrentIndex(1)
+            self.mem.types.qcombobox(self.cmbTipo)
+            self.cmbTipo.setCurrentIndex(0)
+            self.product.mqtw_tickers(self.mqtwTickers)
+            self.cmsAgrupations.setManagers(self.mem.settings,"frmProductReport", "cmsAgrupations",self.__agrupations_by_type(), None)
+        elif self.__insert==False:
+            self.cmsAgrupations.setManagers(self.mem.settings,"frmProductReport", "cmsAgrupations", self.__agrupations_by_type(), self.product.agrupations)
+            self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
+            self.txtTPC.setText(str(self.product.percentage))
+            self.txtName.setText(self.product.name)
+            self.txtISIN.setText(self.product.isin)
+            self.product.mqtw_tickers(self.mqtwTickers)
+            self.txtComentario.setText(self.product.comment)
+            self.txtAddress.setText(self.product.address)
+            self.txtWeb.setText(self.product.web)
+            self.txtMail.setText(self.product.mail)
+            self.txtPhone.setText(self.product.phone)
+            self.spnDecimals.setValue(self.product.decimals)
+
+            if self.product.has_autoupdate()==True:
+                self.lblAutoupdate.setText('<img src=":/xulpymoney/transfer.png" width="16" height="16"/>  {}'.format(self.tr("Product prices are updated automatically")))
+            else:
+                self.lblAutoupdate.setText(self.tr("Product prices are not updated automatically"))
+                
+            if self.product.obsolete==True:
+                self.chkObsolete.setCheckState(Qt.Checked)
+            
+            if self.product.high_low==True:
+                self.chkHL.setCheckState(Qt.Checked)
+
+            self.mem.stockmarkets.qcombobox(self.cmbBolsa, self.product.stockmarket)
+            self.mem.investmentsmodes.qcombobox(self.cmbPCI, self.product.mode)
+            currencies_qcombobox(self.cmbCurrency, self.product.currency)
+            self.mem.leverages.qcombobox(self.cmbApalancado, self.product.leveraged)
+            self.mem.types.qcombobox(self.cmbTipo, self.product.type)
+        else: #None            
+            self.cmsAgrupations.setManagers(self.mem.settings,"frmProductReport", "cmsAgrupations", self.__agrupations_by_type(), None)
+            self.txtISIN.setReadOnly(True)
+            self.txtName.setReadOnly(True)
+            self.txtWeb.setReadOnly(True)
+            self.txtAddress.setReadOnly(True)
+            self.txtMail.setReadOnly(True)
+            self.txtTPC.setReadOnly(True)
+            self.txtPhone.setReadOnly(True)
+            self.mqtwTickers.blockSignals(True)
+            self.txtComentario.setReadOnly(True)
+            self.cmdAgrupations.setEnabled(False)
+            setReadOnly(self.chkObsolete, True)
+            setReadOnly(self.chkHL, True)
+            self.cmdSave.setEnabled(False)
+            self.spnDecimals.setReadOnly(True)
+            
+            bolsa=StockMarketManager(self.mem)
+            bolsa.append(self.product.stockmarket)
+            bolsa.qcombobox(self.cmbBolsa)
+            
+            productmodes=ProductModesManager(self.mem)
+            productmodes.append(self.product.mode)
+            productmodes.qcombobox(self.cmbPCI)
+
+            self.cmbCurrency.addItem("{0} - {1} ({2})".format(self.product.currency, currency_name(self.product.currency), currency_symbol(self.product.currency)), self.product.currency)
+            
+            leverages=LeverageManager(self.mem)
+            leverages.append(self.product.leveraged)
+            leverages.qcombobox(self.cmbApalancado)
+            
+            types=ProductTypeManager(self.mem)
+            types.append(self.product.type)
+            types.qcombobox(self.cmbTipo)
+            print("C")
         
     def update_due_to_quotes_change(self):
+        self.load_product()
         if self.product.id is not None:
             self.product.needStatus(2)
             if self.product.result.ohclDaily.length()>0:
@@ -583,15 +600,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.rollback()
         
     def on_cmdSave_pressed(self):
-        if self.product.id==None or self.product.id<0:
+        if (self.mem.isProductsMaintenanceMode()==False and (self.product.id is None or self.product.id<0)) or (self.mem.isProductsMaintenanceMode()==True and (self.product.id is None or self.product.id>0)):
             self.product.name=self.txtName.text()
-            if self.txtISIN.text()=="":
-                self.product.isin=None
-            else:
-                self.product.isin=self.txtISIN.text()
-            self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
+            self.product.isin=None if self.txtISIN.text()=="" else self.txtISIN.text()
+            self.product.currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
             self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-            self.product.agrupations=AgrupationManager(self.mem).clone_from_combo(self.cmbAgrupations)
+            self.product.agrupations=self.cmsAgrupations.selected()
             self.product.obsolete=c2b(self.chkObsolete.checkState())
             self.product.high_low=c2b(self.chkHL.checkState())
             self.product.web=self.txtWeb.text()
@@ -603,26 +617,27 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
             self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
             for i in range(self.mqtwTickers.table.rowCount()):
-                value=self.mqtwTickers.table.item(i, 0).text()
-                if value =="":
-                    value=None
-                self.product.tickers[i]=value
+                self.product.tickers[i]=None if self.mqtwTickers.table.item(i, 1).text()=="- - -" else  self.mqtwTickers.table.item(i, 1).text()
             self.product.comment=self.txtComentario.text()                
             self.product.decimals=self.spnDecimals.value()
             self.product.save()
-            self.mem.con.commit()  
-            self.mem.data.products.append(self.product)
+            if self.mem.isProductsMaintenanceMode():
+                if self.__insert==True:
+                    self.mem.data.products.append(self.product) #Manager of the singleton
+                    self.mem.insertProducts.append(self.product)
+                else:
+                    self.mem.updateProducts.append(self.product)
+            else:#Not maintainer mode
+                if self.__insert==True:
+                    self.mem.data.products.append(self.product) #Manager of the singleton
+                self.mem.con.commit()  
+            self.product.needStatus(1, downgrade_to=0)
             self.done(0)
-        elif self.product.id>0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setText("Only developers can change system products. You can create a new personal product or fill a ticket in the sourceforge page. It will be updated soon")
-            m.setIcon(QMessageBox.Information)
-            m.exec_()        
-            return
+        else:
+            qmessagebox(self.tr("This product can be edited at this moment"))
 
-    def on_cmdAgrupations_released(self):
-        ##Se debe clonar, porque selector borra
+
+    def __agrupations_by_type(self):      
         if self.cmbTipo.itemData(self.cmbTipo.currentIndex())==2:#Fondos de inversión
             agr=self.mem.agrupations.clone_fondos()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==1:#Acciones
@@ -633,15 +648,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             agr=self.mem.agrupations.clone_warrants()
         else:
             agr=self.mem.agrupations.clone()
-        if self.product.agrupations==None:
-            selected=AgrupationManager(self.mem)#Vacio
-        else:
-            selected=self.product.agrupations
-        f=frmManagerSelector(self)
-        f.setManagers(self.mem.settings, "frmProductReport", "frmSelectorAgrupations", agr, selected)
-        f.setLabel(self.tr("Agrupation selection"))
-        f.exec_()
-        f.manager.selected.qcombobox(self.cmbAgrupations)
+        return agr
 
     def on_mqtwDaily_itemSelectionChanged(self):
         if self.product.result.ohclDaily.selected!=None:

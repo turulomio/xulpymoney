@@ -99,6 +99,7 @@ class Compile(Command):
                  os.system("sed -i -e 's/from myqcharts/from xulpymoney.ui.myqcharts/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from myqtablewidget/from xulpymoney.ui.myqtablewidget/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from frmSelector/from xulpymoney.ui.frmSelector/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from xulpymoney.ui.myqlineedit/from xulpymoney.ui.myqlineedit/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgTwoCurrencyLineEdit/from xulpymoney.ui.wdgTwoCurrencyLineEdit/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgInvestmentOperationsSelector/from xulpymoney.ui.wdgInvestmentOperationsSelector/' xulpymoney/ui/{}".format(filename))

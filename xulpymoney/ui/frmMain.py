@@ -85,6 +85,11 @@ class frmMain(QMainWindow, Ui_frmMain):
             QDesktopServices.openUrl(QUrl("file://"+file));
 
 
+    @pyqtSlot()
+    def closeEvent(self, event):
+        event.accept()
+        self.on_actionExit_triggered()
+        
     def inactivity_timeout(self):
         self.hide()
         qmessagebox(self.tr("Disconnecting due to {} minutes of inactivity.".format(self.mem.con.connectionTimeout()/60)))
@@ -929,3 +934,66 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
+
+
+class frmMainProductsMaintenance(frmMain):
+    def __init__(self, mem, parent = 0,  flags = False):
+        frmMain.__init__(self, mem, parent, flags)
+        self.mem.insertProducts=ProductManager(self.mem)
+        self.mem.updateProducts=ProductManager(self.mem)
+        self.mem.deleteProducts=ProductManager(self.mem)
+        self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Products maintenance mode)").format(__versiondate__.year))#print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
+        self.setWindowIcon(self.mem.qicon_admin())
+        
+        for action in [
+            self.actionAccounts, 
+            self.actionBanks, 
+            self.actionCalculator, 
+            self.actionConcepts, 
+            self.actionDerivativesReport, 
+            self.actionDividendsReport, 
+            self.actionEvolutionReport,
+            self.actionGlobalReport,
+            self.actionLastOperation, 
+            self.actionOrders, 
+            self.actionIndexRange, 
+            self.actionInvestmentRanking, 
+            self.actionInvestmentsClasses, 
+            self.actionInvestmentsOperations, 
+            self.actionInvestmentsZeroRisk, 
+            self.actionInvestments, 
+            self.actionSimulations, 
+            self.actionAuxiliarTables, 
+            self.actionTotalReport, 
+            self.actionTransfer, 
+            self.actionProductRange, 
+            self.actionProductsComparation, 
+            self.actionPurchaseOpportunities, 
+            
+        ]:
+            action.setEnabled(False)
+        
+    @pyqtSlot()  
+    def on_actionExit_triggered(self): 
+        reply = QMessageBox.question(
+                    None, 
+                    self.tr('Developer mode'), 
+                    self.tr("""You are in products maintenance mode.
+Changes will not be saved in database, but they will added to a SQL format file, for futures updates.
+Do you want to generate it?"""), 
+                    QMessageBox.Yes, 
+                    QMessageBox.No
+                )
+        if reply==QMessageBox.Yes:
+            filename="{}.sql".format(dtnaive2string(datetime.now(), "%Y%m%d%H%M"))
+            f=open(filename, "w")
+            f.write("\n-- Products inserts\n")
+            for o in self.mem.insertProducts.arr:
+                f.write(o.sql_insert(returning_id=False) + "\n")
+            f.write("\n-- Products updates\n")
+            for o in self.mem.updateProducts.arr:
+                f.write(o.sql_update() + "\n")
+            f.close()
+        print ("App correctly closed")
+        exit(0)
+        

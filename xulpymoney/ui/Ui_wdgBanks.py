@@ -81,7 +81,7 @@ class Ui_wdgBanks(object):
         self.groupBox_2.setObjectName("groupBox_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.mqtwAccounts = mqtwManager(self.groupBox_2)
+        self.mqtwAccounts = mqtwDataWithObjects(self.groupBox_2)
         self.mqtwAccounts.setObjectName("mqtwAccounts")
         self.horizontalLayout_2.addWidget(self.mqtwAccounts)
         self.horizontalLayout_3.addWidget(self.groupBox_2)
