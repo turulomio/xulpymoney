@@ -54,7 +54,7 @@ class eTickerPosition(IntEnum):
         
     ## Returns the number of atributes
     def length():
-        return len(eTickerPosition.__dict__)
+        return 5
 
 
 class eComment:

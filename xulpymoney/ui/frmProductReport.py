@@ -269,7 +269,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.txtMail.setReadOnly(True)
             self.txtTPC.setReadOnly(True)
             self.txtPhone.setReadOnly(True)
-#            self.mqtwTickers.blockSignals(True)
+            self.mqtwTickers.blockSignals(True)
             self.mqtwTickers.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
             self.txtComentario.setReadOnly(True)
             setReadOnly(self.chkObsolete, True)
@@ -636,6 +636,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
             self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
             for i in range(self.mqtwTickers.table.rowCount()):
+                print(i)
                 self.product.tickers[i]=None if self.mqtwTickers.table.item(i, 1).text()=="- - -" else  self.mqtwTickers.table.item(i, 1).text()
             self.product.comment=self.txtComentario.text()                
             self.product.decimals=self.spnDecimals.value()

@@ -124,6 +124,7 @@ class Product(QObject):
 
         ## @param returning_id True sql with returning id (normal insert). False without returning_id and id inside sql. Used for automatic inserts
     def sql_insert(self, returning_id=True):
+        print(self.tickers,  len(self.tickers))
         sql= """insert into products (name,  isin,  currency,  type,  agrupations, web, 
             address,  phone, mail, percentage, pci, leveraged, 
             decimals, stockmarkets_id, tickers, comment, obsolete, high_low) values (
