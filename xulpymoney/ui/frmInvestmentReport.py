@@ -360,7 +360,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.cmdInvestment.setEnabled(False)
         
     def on_mqtwOperations_customContextMenuRequested(self,  pos):
-        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive()or self.investment.account.eb.qmessagebox_inactive():
+        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive()or self.investment.account.bank.qmessagebox_inactive():
             return
         
         if self.op.selected==None:
@@ -416,7 +416,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
     def on_mqtwInvestmentCurrent_customContextMenuRequested(self,  pos):
         
-        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
+        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.bank.qmessagebox_inactive():
             return
                 
         if self.investment.op_actual.selected:
@@ -456,7 +456,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         print (self.tr("Selected: {0}".format(str(self.op.selected))))
 
     def on_mqtwDividends_customContextMenuRequested(self,  pos):
-        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.eb.qmessagebox_inactive():
+        if self.investment.qmessagebox_inactive() or self.investment.account.qmessagebox_inactive() or self.investment.account.bank.qmessagebox_inactive():
             return
 
         if self.investment.dividends.selected==None:

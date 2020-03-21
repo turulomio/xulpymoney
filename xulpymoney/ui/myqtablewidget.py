@@ -456,7 +456,12 @@ class myQTableWidget(QWidget):
             data=self.data
         m.setData(data)
         return m
-        
+
+    ## Returns the length of self.data. Additional functions doesn't affect this result
+    ## If we are using a mqtwDataWithObjects, self.data has the same length as self.objects(), so it's fine
+    def length(self):
+        return len(self.data)
+
 ## Acronim of myQTableWidget
 ## Used for readibility improvement
 class mqtwData(myQTableWidget):

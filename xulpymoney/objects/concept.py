@@ -17,7 +17,7 @@ class Concept:
     def __init__(self, *args):
         def init__create(name, tipooperacion, editable,  id):
             self.id=id
-            self.name=self.mem.trMem(name)
+            self.name=self.mem.trHS(name)
             self.tipooperacion=tipooperacion
             self.editable=editable
 

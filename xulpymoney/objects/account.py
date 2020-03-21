@@ -13,9 +13,6 @@ from xulpymoney.objects.money import Money
 
 ## Class to manage everything relationed with bank accounts
 class Account(QObject):
-    ## Constructor with the following attributes combination
-    ## 1. Account(mem, row, bank). Create an Account from a db row, generated in a database query
-    ## 2. Account(mem, name, bank, active, numero, currency, id). Create account passing all attributes
     ## @param mem MemXulpymoney object
     ## @param row Dictionary of a database query cursor
     ## @param bank Bank object
@@ -24,24 +21,16 @@ class Account(QObject):
     ## @param numero String with the account number
     ## @param currency Currency object that sets the currency of the Account
     ## @param id Integer that sets the id of an account. If id=None it's not in the database. id is set in the save method
-    def __init__(self, *args):
+    def __init__(self, mem=None,name=None,  bank=None, active=None, number=None, currency=None, id=None):
         QObject.__init__(self)
-        self.mem=args[0]
+        self.mem=mem
+        self.name=name
+        self.bank=bank
+        self.active=active
+        self.number=number
+        self.currency=currency
+        self.id=id
         self.status=0
-        if len(args)==3:
-            self.id=args[1]['id_cuentas']
-            self.name=self.tr(args[1]['cuenta'])
-            self.eb=args[2]
-            self.active=args[1]['active']
-            self.numero=args[1]['numerocuenta']
-            self.currency=args[1]['currency']
-        if len(args)==7:
-            self.name=args[1]
-            self.eb=args[2]
-            self.active=args[3]
-            self.numero=args[4]
-            self.currency=args[5]
-            self.id=args[6]
 
         
     def __repr__(self):
@@ -77,12 +66,14 @@ class Account(QObject):
 
     def save(self):
         if self.id==None:
-            self.mem.con.cursor_one_field("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.active, self.currency))
+            self.mem.con.cursor_one_field("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
         else:
-            self.mem.con.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.active, self.currency, self.id))
+            self.mem.con.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
 
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
+        if self.id==4:#Cash
+            return False
         cur=self.mem.con.cursor()
         cur.execute("select count(*) from tarjetas where id_cuentas=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
@@ -164,21 +155,11 @@ class Account(QObject):
 
 
 class AccountManager(QObject, ObjectManager_With_IdName_Selectable):   
-    def __init__(self, mem,  setebs):
+    def __init__(self, mem):
         QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
-        self.mem=mem   
-        self.ebs=setebs
+        self.mem=mem
 
-    def load_from_db(self, sql):
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from cuentas"
-        for row in cur:
-            c=Account(self.mem, row, self.ebs.find_by_id(row['id_entidadesbancarias']))
-            c.balance()
-            self.append(c)
-        cur.close()
-        
     def balance(self, date=None):
         """Give the sum of all accounts balances in self.arr"""
         res=Money(self.mem, 0, self.mem.localcurrency)
@@ -206,38 +187,70 @@ class AccountManager(QObject, ObjectManager_With_IdName_Selectable):
         return r
 
     ## @param wdg
-    def mqtw(self, wdg):  
-        wdg.setDataFromManager(
+    def mqtw(self, wdg):      
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.name,
+                o.bank.name, 
+                o.active, 
+                o.number, 
+                o.balance(), 
+                o, 
+            ])
+        wdg.setDataWithObjects(
             [self.tr("Account"), self.tr("Bank"), self.tr("Active"),  self.tr("Account number"), self.tr("Balance")], 
             None, 
-            self, 
-            ["name", "eb.name", "active", "numero", ("balance", [])], 
+            data, 
             decimals=2, 
             zonename=self.mem.localzone_name, 
             additional=self.mqtw_additional
         )
 
     def mqtw_additional(self, wdg):
-        for i, o in enumerate(self.arr):
-            if o.name=="Cash":
+        for i, o in enumerate(wdg.objects()):
+            if o.name==self.mem.trHS("Cash"):
                 wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/Money.png"))
             else:
                 wdg.table.item(i, 0).setIcon(o.qicon())
 
-    def mqtw_active(self, wdg):                
-        wdg.setDataFromManager(
+    def mqtw_active(self, wdg):       
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.name,
+                o.active, 
+                o.balance(), 
+                o
+            ])
+        wdg.setDataWithObjects(
             [self.tr("Account"), self.tr("Active"), self.tr("Balance")], 
             None, 
-            self, 
-            ["name", "active", ("balance", [])], 
+            data, 
             additional=self.mqtw_active_additional
         )
 
     def mqtw_active_additional(self, wdg):
-        wdg.table.setRowCount(self.length()+1)
-        for i, o in enumerate(self.arr):
-            if o.name=="Cash":
+        wdg.table.setRowCount(wdg.length()+1)
+        for i, o in enumerate(wdg.objects()):
+            if o.name==self.mem.trHS("Cash"):
                 wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/Money.png"))
             else:
                 wdg.table.item(i, 0).setIcon(o.qicon())
-        wdg.addRow(self.length(), [self.tr("Total"), "#crossedout", self.balance()])
+        wdg.addRow(wdg.length(), [self.tr("Total"), "#crossedout", self.balance()])
+
+def Account_from_dict(mem, row):
+    r=Account(mem)
+    r.id=row['id_cuentas']
+    r.name=mem.trHS(row['cuenta'])
+    r.bank=mem.data.banks.find_by_id(row['id_entidadesbancarias'])
+    r.active=row['active']
+    r.number=row['numerocuenta']
+    r.currency=row['currency']
+    return r
+
+def AccountManager_from_sql(mem, sql):
+    r=AccountManager(mem)
+    for row in mem.con.cursor_rows(sql):
+        r.append(Account_from_dict(mem, row))
+    return r

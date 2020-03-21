@@ -6,65 +6,66 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>758</width>
-    <height>532</height>
+    <width>639</width>
+    <height>211</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="lbl">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Account list</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="chkInactivas">
-         <property name="text">
-          <string>Show inactive accounts</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="mqtwManager" name="mqtwAccounts" native="true"/>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="lbl">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Account list</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chkInactivas">
+           <property name="text">
+            <string>Show inactive accounts</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="mqtwDataWithObjects" name="mqtwAccounts" native="true"/>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QWidget" name="wdgIBM" native="true"/>
+      <widget class="QLabel" name="lblTotal">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="lblTotal">
-     <property name="font">
-      <font>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
    </item>
   </layout>
   <action name="actionAccountAdd">
@@ -129,7 +130,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>mqtwManager</class>
+   <class>mqtwDataWithObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

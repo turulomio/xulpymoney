@@ -17,7 +17,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
 
     @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
-        f=frmAccountsReport(self.mem, self.accounts.selected)
+        f=frmAccountsReport(self.mem, self.mqtwAccounts.selected)
         f.exec_()
         self.update()
         
@@ -29,16 +29,16 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
       
     @pyqtSlot() 
     def on_actionAccountDelete_triggered(self):
-        if self.accounts.selected.eb.qmessagebox_inactive() or self.accounts.selected.qmessagebox_inactive():
+        if self.mqtwAccounts.selected.bank.qmessagebox_inactive() or self.mqtwAccounts.selected.qmessagebox_inactive():
             return
         cur = self.mem.con.cursor()
-        if self.accounts.selected.is_deletable()==False:
+        if self.mqtwAccounts.selected.is_deletable()==False:
             qmessagebox(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
         else:
-            self.accounts.selected.borrar(cur)
+            self.mqtwAccounts.selected.borrar(cur)
             self.mem.con.commit()
             #Only can't be deleted an active account, so I remove from active set
-            self.mem.data.accounts.remove(self.accounts.selected)
+            self.mem.data.accounts.remove(self.mqtwAccounts.selected)
         cur.close()
         self.update()
         
@@ -51,7 +51,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         
 
     def on_mqtwAccounts_customContextMenuRequested(self,  pos):
-        if self.accounts.selected==None:
+        if self.mqtwAccounts.selected==None:
             self.actionAccountDelete.setEnabled(False)
             self.actionAccountReport.setEnabled(False)
             self.actionActive.setEnabled(False)
@@ -61,7 +61,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.actionAccountReport.setEnabled(True)
             self.actionActive.setEnabled(True)
             self.actionAccountReport.setEnabled(True)
-            self.actionActive.setChecked(self.accounts.selected.active)
+            self.actionActive.setChecked(self.mqtwAccounts.selected.active)
         
         menu=QMenu()
         menu.addAction(self.actionAccountAdd)
@@ -78,18 +78,18 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
 
     @pyqtSlot() 
     def on_actionActive_triggered(self):
-        if self.accounts.selected.eb.qmessagebox_inactive()==True:
+        if self.mqtwAccounts.selected.bank.qmessagebox_inactive()==True:
             return
         
          #Debe tenerlas para borrarla luego
-        self.accounts.selected.active=self.chkInactivas.isChecked()
-        self.accounts.selected.save()
+        self.mqtwAccounts.selected.active=self.chkInactivas.isChecked()
+        self.mqtwAccounts.selected.save()
         self.mem.con.commit()
         self.update()
 
     @pyqtSlot()  
     def on_actionTransfer_triggered(self):
-        f=frmTransfer(self.mem, self.accounts.selected)
+        f=frmTransfer(self.mem, self.mqtwAccounts.selected)
         f.exec_()
         self.update()
         

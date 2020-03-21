@@ -144,7 +144,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="mqtwManager" name="mqtwAccounts" native="true"/>
+           <widget class="mqtwDataWithObjects" name="mqtwAccounts" native="true"/>
           </item>
          </layout>
         </widget>

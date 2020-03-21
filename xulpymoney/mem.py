@@ -12,7 +12,7 @@ from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
 from xulpymoney.casts import str2bool, string2list_of_integers
-from xulpymoney.objects.account import AccountManager
+from xulpymoney.objects.account import AccountManager, AccountManager_from_sql
 from xulpymoney.objects.bank import BankManager
 from xulpymoney.objects.agrupation import AgrupationManager
 from xulpymoney.objects.concept import ConceptManager
@@ -65,8 +65,7 @@ class DBData:
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias order by entidadbancaria")
 
-        self.accounts=AccountManager(self.mem, self.banks)
-        self.accounts.load_from_db("select * from cuentas order by cuenta")
+        self.accounts=AccountManager_from_sql(self.mem, "select * from cuentas order by cuenta")
 
         self.investments=InvestmentManager(self.mem)
         self.investments.load_from_db("select * from inversiones", progress)
@@ -80,14 +79,14 @@ class DBData:
         info("DBData loaded: {}".format(datetime.now()-inicio))
 
     def accounts_active(self):        
-        r=AccountManager(self.mem, self.banks)
+        r=AccountManager(self.mem)
         for b in self.accounts.arr:
             if b.active==True:
                 r.append(b)
         return r 
 
     def accounts_inactive(self):        
-        r=AccountManager(self.mem, self.banks)
+        r=AccountManager(self.mem)
         for b in self.accounts.arr:
             if b.active==False:
                 r.append(b)
@@ -153,7 +152,7 @@ class Mem(QObject):
         signal(SIGINT, self.signal_handler)
 
     ## If you want to translate hardcoded string you can use mem.tr due to strings are into Mem Class
-    def trMem(self, s):
+    def trHS(self, s):
         return QCoreApplication.translate("Mem", s)
 
     def epilog(self):

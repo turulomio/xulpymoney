@@ -18,7 +18,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
 
         self.banks=None#Set in on_chkActives_stateChanged
         self.investments=InvestmentManager(self.mem) #Set
-        self.accounts=AccountManager(self.mem, self.mem.data.banks)#Set
+        self.accounts=AccountManager(self.mem)#Set
 
         self.mqtwBanks.settings(self.mem.settings, "wdgBanks", "mqtwBanks")
         self.mqtwBanks.table.customContextMenuRequested.connect(self.on_mqtwBanks_customContextMenuRequested)
@@ -55,12 +55,12 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             return
 
         for i in self.mem.data.investments.arr:
-            if i.account.eb.id==self.mqtwBanks.selected.id:
+            if i.account.bank.id==self.mqtwBanks.selected.id:
                 if (self.chkActives.isChecked() and i.active==True) or (self.chkActives.isChecked()==False):
                     self.investments.append(i)
 
         for v in self.mem.data.accounts.arr:
-            if v.eb.id==self.mqtwBanks.selected.id:
+            if v.bank.id==self.mqtwBanks.selected.id:
                 if (self.chkActives.isChecked() and v.active==True) or (self.chkActives.isChecked()==False):
                     self.accounts.append(v)
 

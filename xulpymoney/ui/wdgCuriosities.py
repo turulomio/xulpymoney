@@ -30,7 +30,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         if selected==None:
             c.setText(self.tr("You still hasn't gains"))
         else:
-            c.setText(self.tr("The investment I gain more money is {} in {} ({}). I got {}.".format(selected.name,selected.account.name, selected.account.eb.name, maxgains)))
+            c.setText(self.tr("The investment I gain more money is {} in {} ({}). I got {}.".format(selected.name,selected.account.name, selected.account.bank.name, maxgains)))
         self.layout.addWidget(c)
 
 

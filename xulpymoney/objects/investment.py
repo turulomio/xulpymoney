@@ -759,7 +759,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         arr=[]
         for i in self.arr:
             if i.active==True and i.product==investmentmq:
-                arr.append(("{0} - {1}".format(i.account.eb.name, i.name), i.id))
+                arr.append(("{0} - {1}".format(i.account.bank.name, i.name), i.id))
                         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
         for a in arr:
@@ -802,7 +802,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:
-                arr.append(("{} - {}".format(i.account.eb.name, i.name), i.id))
+                arr.append(("{} - {}".format(i.account.bank.name, i.name), i.id))
             elif tipo==2:
                 arr.append(("{} ({})".format(i.name, i.account.name), i.id))
             elif tipo==3:

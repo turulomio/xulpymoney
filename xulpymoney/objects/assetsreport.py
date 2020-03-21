@@ -92,7 +92,7 @@ class AssetsReport(ODT, QObject):
         data=[]
         self.mem.data.accounts_active().order_by_name()
         for account in self.mem.data.accounts_active().arr:
-            data.append((account.name, account.eb.name, account.balance()))
+            data.append((account.name, account.bank.name, account.balance()))
         self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], data, [6, 6, 3], 9)       
         
         self.simpleParagraph(self.tr("Sum of all account balances is {}").format(self.mem.data.accounts_active().balance()))

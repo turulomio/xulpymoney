@@ -241,7 +241,7 @@ class Doc(Command):
         rows=con.cursor_rows("select * from conceptos where id_conceptos < 100 order by id_conceptos")
         f=open("xulpymoney/hardcoded_strings.py", "w")
         f.write("from PyQt5.QtCore import QT_TRANSLATE_NOOP\n")
-        f.write("## To translate this strings you must use qApp.translate('Mem',string) o mem.trMem.\n")
+        f.write("## To translate this strings you must use qApp.translate('Mem',string) o mem.trHS.\n")
         f.write("QT_TRANSLATE_NOOP('Mem','Personal Management')\n")
         f.write("QT_TRANSLATE_NOOP('Mem','Cash')\n")
         for row in rows:

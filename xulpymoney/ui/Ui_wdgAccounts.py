@@ -13,8 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgAccounts(object):
     def setupUi(self, wdgAccounts):
         wdgAccounts.setObjectName("wdgAccounts")
-        wdgAccounts.resize(758, 532)
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(wdgAccounts)
+        wdgAccounts.resize(639, 211)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(wdgAccounts)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -32,13 +34,10 @@ class Ui_wdgAccounts(object):
         self.chkInactivas = QtWidgets.QCheckBox(wdgAccounts)
         self.chkInactivas.setObjectName("chkInactivas")
         self.verticalLayout.addWidget(self.chkInactivas)
-        self.mqtwAccounts = mqtwManager(wdgAccounts)
+        self.mqtwAccounts = mqtwDataWithObjects(wdgAccounts)
         self.mqtwAccounts.setObjectName("mqtwAccounts")
         self.verticalLayout.addWidget(self.mqtwAccounts)
         self.verticalLayout_2.addLayout(self.verticalLayout)
-        self.wdgIBM = QtWidgets.QWidget(wdgAccounts)
-        self.wdgIBM.setObjectName("wdgIBM")
-        self.verticalLayout_2.addWidget(self.wdgIBM)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
         self.lblTotal = QtWidgets.QLabel(wdgAccounts)
         font = QtGui.QFont()
@@ -50,6 +49,7 @@ class Ui_wdgAccounts(object):
         self.lblTotal.setAlignment(QtCore.Qt.AlignCenter)
         self.lblTotal.setObjectName("lblTotal")
         self.verticalLayout_3.addWidget(self.lblTotal)
+        self.verticalLayout_4.addLayout(self.verticalLayout_3)
         self.actionAccountAdd = QtWidgets.QAction(wdgAccounts)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/xulpymoney/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -91,5 +91,5 @@ class Ui_wdgAccounts(object):
         self.actionActive.setToolTip(_translate("wdgAccounts", "Is it active?"))
         self.actionTransfer.setText(_translate("wdgAccounts", "Transfer between accounts"))
         self.actionTransfer.setToolTip(_translate("wdgAccounts", "Transfer between accounts"))
-from xulpymoney.ui.myqtablewidget import mqtwManager
+from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
 import xulpymoney.images.xulpymoney_rc

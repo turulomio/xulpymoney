@@ -74,8 +74,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.account.name)
             self.txtAccount.setText(self.account.name)
-            self.txtNumero.setText(str(self.account.numero))            
-            self.cmbEB.setCurrentIndex(self.cmbEB.findData(self.account.eb.id))
+            self.txtNumero.setText(str(self.account.number))            
+            self.cmbEB.setCurrentIndex(self.cmbEB.findData(self.account.bank.id))
             self.cmbEB.setEnabled(False)    
             self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.account.currency))
             self.cmbCurrency.setEnabled(False)
@@ -105,7 +105,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @pyqtSlot() 
     def on_actionCreditCardActivate_triggered(self):
-        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.bank.qmessagebox_inactive():
             return
         if self.account.creditcards.selected==None:
             debug("Selected must be not null")
@@ -142,9 +142,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             cu.save()
             self.mem.data.accounts.append(cu) #Always to active
         else:
-            self.account.eb=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
+            self.account.bank=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
             self.account.name=cuenta
-            self.account.numero=numerocuenta
+            self.account.number=numerocuenta
             self.account.active=active
             self.account.currency=currency
             self.account.save()
@@ -265,7 +265,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     ## Selection can be only one row, due to table definitions
     def on_mqtwOperations_customContextMenuRequested(self,  pos):      
-        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.bank.qmessagebox_inactive():
             return
 
         if self.accountoperations.selected is None:
@@ -365,7 +365,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
             
     def on_mqtwCreditCardOperations_customContextMenuRequested(self,  pos):
-        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive() or self.account.creditcards.selected.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.bank.qmessagebox_inactive() or self.account.creditcards.selected.qmessagebox_inactive():
             return
         if self.creditcardoperations.selected!=None:
             if self.creditcardoperations.selected.length()!=1: # 0 o más de 1

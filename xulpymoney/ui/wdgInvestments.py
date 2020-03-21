@@ -45,7 +45,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @pyqtSlot() 
     def on_actionActive_triggered(self):
-        if self.mqtwInvestments.selected.account.eb.qmessagebox_inactive()  or self.mqtwInvestments.selected.account.qmessagebox_inactive():
+        if self.mqtwInvestments.selected.account.bank.qmessagebox_inactive()  or self.mqtwInvestments.selected.account.qmessagebox_inactive():
             return  
     
         self.mqtwInvestments.selected.active=not self.mqtwInvestments.selected.active

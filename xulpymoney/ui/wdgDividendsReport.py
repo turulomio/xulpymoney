@@ -55,7 +55,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
                 divestimado=inv.dividend_bruto_estimado().local()
             row=[]
             row.append(inv.name)
-            row.append(inv.account.eb.name)
+            row.append(inv.account.bank.name)
             row.append(inv.product.result.basic.last.quote)
             row.append(dpa)
             row.append(inv.shares())

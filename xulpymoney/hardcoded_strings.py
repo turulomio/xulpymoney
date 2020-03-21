@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QT_TRANSLATE_NOOP
-## To translate this strings you must use qApp.translate('Mem',string) o mem.trMem.
+## To translate this strings you must use qApp.translate('Mem',string) o mem.trHS.
 QT_TRANSLATE_NOOP('Mem','Personal Management')
 QT_TRANSLATE_NOOP('Mem','Cash')
 QT_TRANSLATE_NOOP('Mem', 'Desconocido')
