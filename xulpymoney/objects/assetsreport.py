@@ -2,7 +2,7 @@ from PyQt5.QtCore import QObject, QTime, QCoreApplication, QEventLoop
 from datetime import datetime, date
 from officegenerator import ODT
 from os import makedirs
-from xulpymoney.datetime_functions import days2string
+from xulpymoney.datetime_functions import days2string, dtnaive2string
 from xulpymoney.version import __version__
 from xulpymoney.objects.assets import  Assets
 from xulpymoney.objects.annualtarget import  AnnualTarget
@@ -16,7 +16,7 @@ class AssetsReport(ODT, QObject):
         QObject.__init__(self)
         self.mem=mem
         self.datetime=datetime.now()
-        self.dir='/tmp/AssetsReport-{}'.format(datetime.now())
+        self.dir='/tmp/AssetsReport-{}'.format(dtnaive2string(datetime.now(), "%Y%m%d%H%M"))
         makedirs(self.dir, exist_ok=True)
         
     def generate(self):

@@ -299,7 +299,8 @@ entry_points={
         ],
     }
 if platform.system()=="Windows":
-    entry_points['console_scripts'].append( 'xulpymoney_shortcuts=xulpymoney.shortcuts:create',)
+    entry_points['console_scripts'].append( 'xulpymoney_shortcuts=xulpymoney.shortcuts:create')
+    entry_points['console_scripts'].append( 'xulpymoney_console=xulpymoney.xulpymoney:main')#Uncomment to develop in windows
 
 #data_files
 if platform.system()=="Linux":
