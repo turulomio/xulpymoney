@@ -88,67 +88,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="myQTableWidget" name="table">
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Year</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Initial balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Final balance</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Difference</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Incomes</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Net gains</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Net dividends</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Expenses</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>I+G+D-E</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% APR</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="mqtwData" name="mqtw" native="true"/>
          </item>
         </layout>
        </widget>
@@ -164,61 +104,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="myQTableWidget" name="tblReport">
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>Year</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Invested balance</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Investment valoration</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Diff</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>%</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string/>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Net Gains + Dividends</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string/>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Taxes</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Comissions</string>
-              </property>
-             </column>
-            </widget>
+            <widget class="mqtwData" name="mqtwReport" native="true"/>
            </item>
            <item>
             <widget class="QLabel" name="lblReport">
@@ -248,14 +134,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>wdgYear</class>
    <extends>QWidget</extends>
    <header location="global">wdgYear</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtwData</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
