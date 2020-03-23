@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.currency import MostCommonCurrencyTypes
 from xulpymoney.libxulpymoneytypes import eProductType
@@ -109,6 +109,14 @@ class Assets:
                         r=r+dividend.net(type=3)
         return r
 
+    ## @return Money Returns the balance of dividend estimated of the current year.
+    def dividends_estimated(self):
+        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
+        for i, inv in enumerate(self.mem.data.investments_active().arr):
+            if inv.product.estimations_dps.find(date.today().year) is not None:
+                sumdiv=sumdiv+inv.dividend_bruto_estimado().local()
+        return sumdiv
+
     def invested(self, date=None):
         """Devuelve el patrimonio invertido en una determinada fecha"""
         if date==None or date==date.today():
@@ -134,7 +142,7 @@ class Assets:
                     resultado=resultado+inv.balance( fecha).local()
         return resultado
 
-    def patrimonio_riesgo_cero(self, setinversiones, fecha):
+    def patrimonio_riesgo_cero(self, fecha):
         """CAlcula el patrimonio de riego cero"""
         return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones_riesgo_cero(fecha)
 

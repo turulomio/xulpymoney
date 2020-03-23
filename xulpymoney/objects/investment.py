@@ -751,14 +751,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.type.id==type_id:
                 r.append(inv)
         return r
-        
-    ## Reused in AssestsReport
-    def sum_of_estimated_dividends(self):
-        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
-        for i, inv in enumerate(self.arr):
-            if inv.product.estimations_dps.find(date.today().year) is not None:
-                sumdiv=sumdiv+inv.dividend_bruto_estimado().local()
-        return sumdiv
+
         
     def InvestmentManager_merging_investments_with_same_product_merging_operations(self):
         """

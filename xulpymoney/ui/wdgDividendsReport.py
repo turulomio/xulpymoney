@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
+from xulpymoney.objects.assets import Assets
 from xulpymoney.ui.Ui_wdgDividendsReport import Ui_wdgDividendsReport
 
 class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
@@ -32,7 +33,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def load_inversiones(self):
         self.investments.mqtw_with_dps_estimations(self.mqtw)
         self.mqtw.setOrderBy(5, True)
-        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.investments.sum_of_estimated_dividends()))
+        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( Assets(self.mem).dividends_estimated()))
 
     ## It's here and not an additional due to depends self.spin.value()
     @pyqtSlot()

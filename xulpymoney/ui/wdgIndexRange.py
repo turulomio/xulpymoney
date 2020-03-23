@@ -133,7 +133,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     
         #Calculate zero risk assests and range number covered
         zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(datetime.date.today()).amount# +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today()).amount
-        rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())
+        rangescovered=int(zeroriskplusbonds.amount/self.txtInvertir.decimal())
         
         self.mqtw.table.setColumnCount(2)
         for i, s in enumerate([self.tr("Range"),  self.tr("Investments")]):
@@ -156,7 +156,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                     colorized=colorized+1
 
         #Prints label
-        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.benchmark.name, self.mem.localmoney(zeroriskplusbonds)))
+        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.benchmark.name, zeroriskplusbonds))
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
