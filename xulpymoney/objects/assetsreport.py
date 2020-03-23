@@ -208,7 +208,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Dividend estimations report"), 1)
         self.mem.frmMain.on_actionDividendsReport_triggered()
         self.table(self.mem.frmMain.w.mqtw.listHorizontalHeaders(), self.mem.frmMain.w.mqtw.data, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
-        self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(self.mem.frmMain.w.sum_of_estimated_dividends()))
+        self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(self.mem.data.investments_active().sum_of_estimated_dividends()))
 
     def sleep(self, seconds):
         dieTime= QTime.currentTime().addSecs(seconds);

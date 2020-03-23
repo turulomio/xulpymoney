@@ -439,7 +439,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 o.shares(), 
                 o.money(o.venta), 
                 o.percentage_to_selling_point(), 
-                o, #mqtwDataWithObjects
+                o, #mqtwObjects
             ])
         
         wdg.setDataWithObjects(
@@ -449,11 +449,37 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             additional=self.mqtw_sellingpoints_additional
         )
         
+    ## @param wdg mqtwObjects
     def mqtw_sellingpoints_additional(self, wdg):
         for i, inv in enumerate(wdg.objects()):
                 if inv.selling_expiration is not None and inv.selling_expiration<date.today():
                     wdg.table.item(i, 1).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
                 wdg.table.item(i, 0).setIcon(inv.qicon())
+
+
+    ## @param wdg mqtwObjects
+    def mqtw_with_dps_estimations(self, wdg):
+        hh= [self.tr("Investment" ), self.tr("Price" ), self.tr("DPS" ), self.tr("Shares" ), self.tr("Estimated" ), self.tr("% Annual dividend" )]
+        data=[]
+        for i, inv in enumerate(self.arr):
+            if inv.product.estimations_dps.find(date.today().year)==None:
+                dpa=0
+                tpc=Percentage()
+                divestimado=Money(self.mem, 0, self.mem.localcurrency)
+            else:
+                dpa=inv.product.estimations_dps.currentYear().estimation
+                tpc=inv.product.estimations_dps.currentYear().percentage()
+                divestimado=inv.dividend_bruto_estimado().local()
+            data.append([
+                inv.fullName(), 
+                inv.product.result.basic.last.money(), 
+                dpa, 
+                inv.shares(), 
+                divestimado, 
+                tpc, 
+                inv, 
+            ])
+        wdg.setDataWithObjects(hh, None, data,  decimals=[0, 6, 6, 6, 2, 2])
 
     def average_age(self):
         """Average age of the investments in this set in days"""
@@ -725,7 +751,15 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.type.id==type_id:
                 r.append(inv)
         return r
-
+        
+    ## Reused in AssestsReport
+    def sum_of_estimated_dividends(self):
+        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
+        for i, inv in enumerate(self.arr):
+            if inv.product.estimations_dps.find(date.today().year) is not None:
+                sumdiv=sumdiv+inv.dividend_bruto_estimado().local()
+        return sumdiv
+        
     def InvestmentManager_merging_investments_with_same_product_merging_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto

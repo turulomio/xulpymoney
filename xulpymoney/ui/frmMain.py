@@ -19,7 +19,6 @@ from xulpymoney.version import __versiondate__
 from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.wdgTotal import wdgTotal
-from xulpymoney.ui.wdgDividendsReport import wdgDividendsReport
 from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
 from xulpymoney.ui.wdgAPR import wdgAPR
 from xulpymoney.ui.wdgAccounts import wdgAccounts
@@ -160,6 +159,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()
     def on_actionDividendsReport_triggered(self):
+        from xulpymoney.ui.wdgDividendsReport import wdgDividendsReport
         self.w.close()
         self.w=wdgDividendsReport(self.mem, self)
                 

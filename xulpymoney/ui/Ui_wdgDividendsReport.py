@@ -60,7 +60,7 @@ class Ui_wdgDividendsReport(object):
         self.chkInactivas = QtWidgets.QCheckBox(wdgDividendsReport)
         self.chkInactivas.setObjectName("chkInactivas")
         self.verticalLayout.addWidget(self.chkInactivas)
-        self.mqtw = mqtw(wdgDividendsReport)
+        self.mqtw = mqtwObjects(wdgDividendsReport)
         self.mqtw.setObjectName("mqtw")
         self.verticalLayout.addWidget(self.mqtw)
         self.lblTotal = QtWidgets.QLabel(wdgDividendsReport)
@@ -104,5 +104,5 @@ class Ui_wdgDividendsReport(object):
         self.actionInvestmentReport.setToolTip(_translate("wdgDividendsReport", "Investment report"))
         self.actionProductReport.setText(_translate("wdgDividendsReport", "Product report"))
         self.actionProductReport.setToolTip(_translate("wdgDividendsReport", "Product report"))
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc

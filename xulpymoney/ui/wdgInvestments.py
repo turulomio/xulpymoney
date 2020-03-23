@@ -19,7 +19,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.investments=None
         self.loadedinactive=False
 
-        self.mqtwInvestments.settings(self.mem.settings, "wdgInvestments", "mqtwInvestments")#It's a mqtwDataWithObjects. Selection in mqtw, not in manager
+        self.mqtwInvestments.settings(self.mem.settings, "wdgInvestments", "mqtwInvestments")#It's a mqtwObjects. Selection in mqtw, not in manager
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
