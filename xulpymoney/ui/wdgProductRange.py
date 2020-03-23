@@ -61,8 +61,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             percentage_between(self.product.result.basic.last.money(), self.investment_merged.op_actual.selling_price_to_gain_percentage_of_invested(percentage_gains, eMoneyCurrency.Product)), 
         )
         
-        zerorisk=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), date.today())
-        s=s + "\n\n"+ self.tr("Zero risk assets: {}".format(zerorisk))
+        s=s + "\n\n"+ self.tr("Zero risk assets: {}".format(Assets(self.mem).patrimonio_riesgo_cero(date.today())))
 
         self.lblTotal.setText(s)
 
