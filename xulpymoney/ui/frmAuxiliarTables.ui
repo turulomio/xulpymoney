@@ -50,7 +50,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="myQTableWidget" name="tblConcepts">
+            <widget class="QTableWidget" name="tblConcepts">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -142,13 +142,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>

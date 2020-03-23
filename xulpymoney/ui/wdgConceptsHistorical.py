@@ -1,10 +1,12 @@
-import datetime
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout,  QTableWidgetItem
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout, QAbstractItemView
+from datetime import date
+from logging import debug
+from xulpymoney.casts import lor_sum_column, lor_sum_row
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
+from xulpymoney.objects.money import Money
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
-from xulpymoney.ui.myqtablewidget import qcenter
 from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
 class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
@@ -17,52 +19,50 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
         self.firstyear=None
-        self.table.settings(self.mem, "wdgConceptsHistorical")
+        self.mqtwReport.settings(self.mem.settings, "wdgConceptsHistorical", "mqtwReport")
+        self.mqtwReport.table.customContextMenuRequested.connect(self.on_mqtwReport_table_customContextMenuRequested)
+        self.mqtwReport.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.reload()
 
     def reload(self):
-        cur=self.mem.con.cursor()
         #Junta opercuentas y opertarjetas y sobre esa subquery uni hace un group by
-        sql="""
-        select date_part('year',datetime) as year,  date_part('month',datetime) as month, sum(importe) as suma 
+        rows=self.mem.con.cursor_rows("""
+        select date_part('year',datetime)::int as year,  date_part('month',datetime)::int as month, sum(importe) as value 
         from ( 
                     SELECT opercuentas.datetime, opercuentas.id_conceptos,  opercuentas.importe  FROM opercuentas where id_conceptos={0} 
                         UNION ALL 
                     SELECT opertarjetas.datetime, opertarjetas.id_conceptos, opertarjetas.importe FROM opertarjetas where id_conceptos={0}
                 ) as uni 
         group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;
-        """.format(self.concepto.id)
-        cur.execute(sql)
-        if cur.rowcount!=0:
-            arr=cur.fetchall()            
-        cur.close()
-        self.table.applySettings()
-        #Coloca filas y años
-        self.firstyear=int(arr[0][0])
-        rows=int(datetime.date.today().year-self.firstyear+1)
-        self.table.setRowCount(rows+1)
-        suma=[]#sumaa en array suma, en el que el año first es 0...
-        for i in range(rows):
-            suma.append(0)#Inicializa a 0 los sumadores
-            self.table.setItem(i, 0, QTableWidgetItem("{0}".format(self.firstyear+i)))
-        #Coloca en tabla 
-        for a in arr:
-            self.table.setItem(a[0]-self.firstyear, a[1],self.mem.localcurrency.qtablewidgetitem(a[2])  )
-            suma[int(a[0])-self.firstyear]=suma[int(a[0])-self.firstyear]+a[2]
-        #Coloca en tabla los sumaatorios
-        for i,  s in enumerate(suma):
-            self.table.setItem(i, 13,self.mem.localcurrency.qtablewidgetitem(s) )
+        """.format(self.concepto.id))
 
-        #Add years total
-        self.table.setItem(rows, 0, qcenter(self.tr("Total")))
-        self.table.setItem(rows, 13, self.mem.localcurrency.qtablewidgetitem(sum(suma)))
+        if len(rows)==0: #Due it may have no data
+            return
+            
+        self.firstyear=int(rows[0]['year'])
+        
+        hh=[self.tr("Year"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]
+        data=[]
+        # Create all data spaces filling year
+        for year in range(self.firstyear, date.today().year+1):
+            data.append([year, ] + [None]*13)
+        # Fills spaces with values
+        for row in rows:
+            for rowdata in data:
+                if rowdata[0]==row['year']:
+                    rowdata[row['month']]=Money(self.mem, row['value'], self.mem.localcurrency)
+                rowdata[13]=lor_sum_row(rowdata, 1, 12, Money(self.mem, 0, self.mem.localcurrency))
+                
+        total=lor_sum_column(data, 13, 0, len(data)-1, Money(self.mem, 0, self.mem.localcurrency))
+        data.append([self.tr("Total")]+["#crossedout"]*12+[total,])
+        self.mqtwReport.setData(hh, None, data)
 
     @pyqtSlot() 
     def on_actionShowMonth_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
+        mqtwMonth = mqtw(newtab)
+        mqtwMonth.settings(self.mem.settings, "wdgConceptsHistorical",  "mqtwMonth")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("""
              select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
@@ -79,30 +79,29 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
                  id_conceptos={0} and 
                  date_part('year',datetime)={1} and 
                  date_part('month',datetime)={2}""".format (self.concepto.id, self.year, self.month))
-        set.myqtablewidget(table, True)
-        horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
+        set.myqtablewidget(mqtwMonth, True)
+        horizontalLayout.addWidget(mqtwMonth)
+        self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.mqtwReport.table.horizontalHeaderItem(self.month).text(), self.year)))
         self.tab.setCurrentWidget(newtab)
 
     @pyqtSlot() 
     def on_actionShowYear_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        table = myQTableWidget(newtab)
-        table.settings(self.mem, "wdgConceptsHistorical",  "tblShowYear")
+        mqtwYear = mqtw(newtab)
+        mqtwYear.settings(self.mem.settings, "wdgConceptsHistorical",  "mqtwYear")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
-        set.sort()
-        set.myqtablewidget(table, True)
-        horizontalLayout.addWidget(table)
+        set.myqtablewidget(mqtwYear, True)
+        horizontalLayout.addWidget(mqtwYear)
         self.tab.addTab(newtab, self.tr("Report of {0}".format(self.year)))
         self.tab.setCurrentWidget(newtab)
 
-    def on_table_customContextMenuRequested(self,  pos):
+    def on_mqtwReport_table_customContextMenuRequested(self,  pos):
         self.actionShowYear.setEnabled(False)
         self.actionShowMonth.setEnabled(False)
         if self.month!=None:
-            if self.month==0 and self.year<=datetime.date.today().year:#Avoid total:
+            if self.month==0 and self.year<=date.today().year:#Avoid total:
                 self.actionShowYear.setEnabled(True)
             elif self.month>0:
                 self.actionShowMonth.setEnabled(True)
@@ -110,19 +109,22 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         menu=QMenu()
         menu.addAction(self.actionShowYear)
         menu.addSeparator()
-        menu.addAction(self.actionShowMonth)      
-        menu.exec_(self.table.mapToGlobal(pos))
+        menu.addAction(self.actionShowMonth)   
+        menu.addSeparator()
+        menu.addMenu(self.mqtwReport.qmenu())
+        menu.exec_(self.mqtwReport.table.mapToGlobal(pos))
 
-    def on_table_itemSelectionChanged(self):
+    @pyqtSlot()
+    def on_mqtwReport_tableSelectionChanged(self):
         self.month=None
         self.year=None
-        for i in self.table.selectedItems():#itera por cada item no row.
-            if i.column()==0 or i.column()==13:
+        if self.mqtwReport.selected is not None:
+            if self.mqtwReport.selected.column()==0 or self.mqtwReport.selected.column()==13:
                 self.month=0
             else:
-                self.month=i.column()
-            self.year=self.firstyear+i.row()
-        print ("Selected year: {0}. Selected month: {1}.".format(self.year, self.month))
+                self.month=self.mqtwReport.selected.column()
+            self.year=self.firstyear+self.mqtwReport.selected.row()
+        debug("Selected year: {0}. Selected month: {1}.".format(self.year, self.month))
 
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""

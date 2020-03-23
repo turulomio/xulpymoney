@@ -16,7 +16,7 @@ from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
 
@@ -557,7 +557,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowIncomes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -599,7 +599,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowExpenses_triggered(self):     
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -641,7 +641,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_all():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg = myQTableWidget(newtab)
+            wdg = mqtw(newtab)
             wdg.settings(self.mem.settings, "wdgTotal","tblShowShellingOperations")
             
             positive=Money(self.mem, 0, self.mem.localcurrency)
@@ -678,7 +678,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_more():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg= myQTableWidget(newtab)
+            wdg= mqtw(newtab)
             wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
             positive=Decimal(0)
@@ -714,7 +714,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_less():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg = myQTableWidget(newtab)
+            wdg = mqtw(newtab)
             wdg.settings(self.mem.settings, "wdgTotal","tblShowSellingLessOperations")
             wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
@@ -759,7 +759,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings,"wdgTotal","mqtwShowDividends")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -785,7 +785,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowComissions_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings,"wdgTotal","mqtwShowComissions")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()
@@ -873,7 +873,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
         wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         wdg.table.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -945,7 +945,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QVBoxLayout(newtab)
-        wdg = myQTableWidget(newtab)
+        wdg = mqtw(newtab)
         wdg.settings(self.mem.settings,"wdgTotal","myqtwShowPaidTaxes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()        

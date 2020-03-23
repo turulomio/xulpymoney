@@ -279,7 +279,7 @@
       </layout>
      </item>
      <item>
-      <widget class="myQTableWidget" name="mqtw" native="true"/>
+      <widget class="mqtw" name="mqtw" native="true"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -373,7 +373,7 @@
    <header location="global">myqlineedit</header>
   </customwidget>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

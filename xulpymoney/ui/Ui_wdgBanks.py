@@ -67,7 +67,7 @@ class Ui_wdgBanks(object):
         self.groupBox_3.setObjectName("groupBox_3")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.mqtwBanks = mqtwDataWithObjects(self.groupBox_3)
+        self.mqtwBanks = mqtwObjects(self.groupBox_3)
         self.mqtwBanks.setObjectName("mqtwBanks")
         self.horizontalLayout_4.addWidget(self.mqtwBanks)
         self.verticalLayout.addWidget(self.groupBox_3)
@@ -81,7 +81,7 @@ class Ui_wdgBanks(object):
         self.groupBox_2.setObjectName("groupBox_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.mqtwAccounts = mqtwDataWithObjects(self.groupBox_2)
+        self.mqtwAccounts = mqtwObjects(self.groupBox_2)
         self.mqtwAccounts.setObjectName("mqtwAccounts")
         self.horizontalLayout_2.addWidget(self.mqtwAccounts)
         self.horizontalLayout_3.addWidget(self.groupBox_2)
@@ -145,5 +145,5 @@ class Ui_wdgBanks(object):
         self.actionBankEdit.setToolTip(_translate("wdgBanks", "Edit bank"))
         self.actionActive.setText(_translate("wdgBanks", "Is it active?"))
         self.actionActive.setToolTip(_translate("wdgBanks", "Is it active?"))
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects, mqtwManager
+from xulpymoney.ui.myqtablewidget import mqtwManager, mqtwObjects
 import xulpymoney.images.xulpymoney_rc

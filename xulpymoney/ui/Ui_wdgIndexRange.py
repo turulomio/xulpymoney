@@ -135,7 +135,7 @@ class Ui_wdgIndexRange(object):
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem3)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
-        self.mqtw = myQTableWidget(wdgIndexRange)
+        self.mqtw = mqtw(wdgIndexRange)
         self.mqtw.setObjectName("mqtw")
         self.verticalLayout_3.addWidget(self.mqtw)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
@@ -206,5 +206,5 @@ class Ui_wdgIndexRange(object):
         self.actionMiddle.setText(_translate("wdgIndexRange", "Middle"))
         self.actionBottom.setText(_translate("wdgIndexRange", "Bottom"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 import xulpymoney.images.xulpymoney_rc

@@ -2,7 +2,7 @@ from PyQt5.QtChart import QValueAxis
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from datetime import datetime
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.objects.product import ProductComparation
@@ -151,10 +151,10 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         d=QDialog(self)
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Comparation data table"))
-        mqtw=myQTableWidget(d)
-        mqtw.settings(self.mem.settings,"wdgProductsComparation" , "mqtw")
-        mqtw.showSearchOptions(True)
-        self.comparation.myqtablewidget(mqtw)
+        mqtwQuotes=mqtw(d)
+        mqtwQuotes.settings(self.mem.settings,"wdgProductsComparation" , "mqtwQuotes")
+        mqtwQuotes.showSearchOptions(True)
+        self.comparation.myqtablewidget(mqtwQuotes)
         lay = QVBoxLayout(d)
-        lay.addWidget(mqtw)
+        lay.addWidget(mqtwQuotes)
         d.show()

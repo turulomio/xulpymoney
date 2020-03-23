@@ -38,7 +38,7 @@ class Ui_frmAuxiliarTables(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.tblConcepts = myQTableWidget(self.tabConceptos)
+        self.tblConcepts = QtWidgets.QTableWidget(self.tabConceptos)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -101,5 +101,4 @@ class Ui_frmAuxiliarTables(object):
         self.actionIncomesAdd.setToolTip(_translate("frmAuxiliarTables", "Add an income concept"))
         self.actionChangeName.setText(_translate("frmAuxiliarTables", "Change name"))
         self.actionChangeName.setToolTip(_translate("frmAuxiliarTables", "Change name"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

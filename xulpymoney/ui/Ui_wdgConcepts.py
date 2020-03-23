@@ -65,7 +65,7 @@ class Ui_wdgConcepts(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.layExpenses = QtWidgets.QHBoxLayout()
         self.layExpenses.setObjectName("layExpenses")
-        self.mqtwExpenses = myQTableWidget(self.tabExpenses)
+        self.mqtwExpenses = mqtw(self.tabExpenses)
         self.mqtwExpenses.setObjectName("mqtwExpenses")
         self.layExpenses.addWidget(self.mqtwExpenses)
         self.verticalLayout_3.addLayout(self.layExpenses)
@@ -76,7 +76,7 @@ class Ui_wdgConcepts(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.layIncomes = QtWidgets.QHBoxLayout()
         self.layIncomes.setObjectName("layIncomes")
-        self.mqtwIncomes = myQTableWidget(self.tabIncomes)
+        self.mqtwIncomes = mqtw(self.tabIncomes)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
@@ -105,6 +105,6 @@ class Ui_wdgConcepts(object):
         self.tab.setTabText(self.tab.indexOf(self.tabIncomes), _translate("wdgConcepts", "Incomes"))
         self.actionHistoricalReport.setText(_translate("wdgConcepts", "Historical report"))
         self.actionHistoricalReport.setToolTip(_translate("wdgConcepts", "Historical report"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc

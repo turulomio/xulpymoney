@@ -136,7 +136,7 @@ class Ui_wdgProductRange(object):
         self.horizontalLayout_5.addItem(spacerItem1)
         self.horizontalLayout_7.addLayout(self.horizontalLayout_5)
         self.verticalLayout_3.addWidget(self.groupBox)
-        self.mqtw = mqtwDataWithObjects(wdgProductRange)
+        self.mqtw = mqtwObjects(wdgProductRange)
         self.mqtw.setObjectName("mqtw")
         self.verticalLayout_3.addWidget(self.mqtw)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
@@ -199,5 +199,5 @@ class Ui_wdgProductRange(object):
         self.actionRangeInformation.setText(_translate("wdgProductRange", "Range information"))
         self.actionRangeInformation.setToolTip(_translate("wdgProductRange", "Range information"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc

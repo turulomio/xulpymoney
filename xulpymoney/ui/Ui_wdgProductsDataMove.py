@@ -35,7 +35,7 @@ class Ui_wdgProductsDataMove(object):
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.table = myQTableWidget(wdgProductsDataMove)
+        self.table = QtWidgets.QTableWidget(wdgProductsDataMove)
         self.table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.table.setObjectName("table")
@@ -127,5 +127,4 @@ class Ui_wdgProductsDataMove(object):
         self.cmdInterchange.setText(_translate("wdgProductsDataMove", "..."))
         self.chkInvestments.setText(_translate("wdgProductsDataMove", "Change personal investments with origin product to destiny product"))
         self.cmd.setText(_translate("wdgProductsDataMove", "Move data"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
 import xulpymoney.images.xulpymoney_rc

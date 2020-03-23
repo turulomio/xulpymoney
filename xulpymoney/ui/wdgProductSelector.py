@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.libmanagers import  ManagerSelectionMode
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -106,7 +106,7 @@ class frmProductSelector(QDialog):
         self.cmd.setIcon(icon)
         self.horizontalLayout.addWidget(self.cmd)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.mqtwInvestments = myQTableWidget(self)
+        self.mqtwInvestments = mqtw(self)
         self.mqtwInvestments.settings(self.mem.settings, "frmProductSelector", "mqtwInvestments")
         self.verticalLayout.addWidget(self.mqtwInvestments)
         self.lblFound = QLabel(self)

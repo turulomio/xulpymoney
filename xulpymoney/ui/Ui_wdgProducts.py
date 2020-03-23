@@ -83,7 +83,7 @@ class Ui_wdgProducts(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
         self.verticalLayout_3.addWidget(self.groupBox)
-        self.mqtwInvestments = mqtwDataWithObjects(wdgProducts)
+        self.mqtwInvestments = mqtwObjects(wdgProducts)
         self.mqtwInvestments.setObjectName("mqtwInvestments")
         self.verticalLayout_3.addWidget(self.mqtwInvestments)
         self.lblFound = QtWidgets.QLabel(wdgProducts)
@@ -172,5 +172,5 @@ class Ui_wdgProducts(object):
         self.actionPurchaseGraphic.setToolTip(_translate("wdgProducts", "Show purchase graphic"))
         self.actionProductPriceLastRemove.setText(_translate("wdgProducts", "Remove last product price"))
         self.actionProductPriceLastRemove.setToolTip(_translate("wdgProducts", "Remove last product price"))
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc

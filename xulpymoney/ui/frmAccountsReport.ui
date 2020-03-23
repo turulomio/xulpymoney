@@ -287,7 +287,7 @@
                  </layout>
                 </item>
                 <item>
-                 <widget class="myQTableWidget" name="mqtwOperations" native="true"/>
+                 <widget class="mqtw" name="mqtwOperations" native="true"/>
                 </item>
                </layout>
               </item>
@@ -325,7 +325,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="myQTableWidget" name="mqtwCreditCards" native="true"/>
+                 <widget class="mqtw" name="mqtwCreditCards" native="true"/>
                 </item>
                </layout>
               </item>
@@ -340,7 +340,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="tab_2">
                 <attribute name="title">
@@ -363,7 +363,7 @@
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_7">
                     <item>
-                     <widget class="myQTableWidget" name="mqtwCreditCardOperations" native="true"/>
+                     <widget class="mqtw" name="mqtwCreditCardOperations" native="true"/>
                     </item>
                    </layout>
                   </widget>
@@ -526,7 +526,7 @@
                     </layout>
                    </item>
                    <item>
-                    <widget class="myQTableWidget" name="mqtwCreditCardOperationsHistorical" native="true"/>
+                    <widget class="mqtw" name="mqtwCreditCardOperationsHistorical" native="true"/>
                    </item>
                   </layout>
                  </item>
@@ -738,7 +738,7 @@
    <header location="global">myqlineedit</header>
   </customwidget>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

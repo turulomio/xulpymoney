@@ -38,93 +38,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="myQTableWidget" name="table">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Year</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>January</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>February</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>March</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>April</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>May</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>June</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>July</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>August</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>September</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>October</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>November</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>December</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Total</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="mqtw" name="mqtwReport" native="true"/>
          </item>
         </layout>
        </widget>
@@ -160,9 +74,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
+   <class>mqtw</class>
+   <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

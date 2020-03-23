@@ -114,7 +114,7 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="mqtw" native="true"/>
+      <widget class="mqtw" name="mqtw" native="true"/>
      </item>
      <item>
       <widget class="QLabel" name="lblTotal">
@@ -172,7 +172,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

@@ -71,7 +71,7 @@ class Ui_wdgOrders(object):
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem3)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.mqtwOrders = mqtwDataWithObjects(self.tab)
+        self.mqtwOrders = mqtwObjects(self.tab)
         self.mqtwOrders.setObjectName("mqtwOrders")
         self.verticalLayout.addWidget(self.mqtwOrders)
         self.lblBalance = QtWidgets.QLabel(self.tab)
@@ -86,7 +86,7 @@ class Ui_wdgOrders(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.mqtwSellingPoints = mqtwDataWithObjects(self.tab_2)
+        self.mqtwSellingPoints = mqtwObjects(self.tab_2)
         self.mqtwSellingPoints.setObjectName("mqtwSellingPoints")
         self.horizontalLayout_5.addWidget(self.mqtwSellingPoints)
         icon6 = QtGui.QIcon()
@@ -144,6 +144,6 @@ class Ui_wdgOrders(object):
         self.actionShowReinvest.setToolTip(_translate("wdgOrders", "Show reinvest simulation"))
         self.actionShowReinvestSameProduct.setText(_translate("wdgOrders", "Show reinvest simulation all investments with same product"))
         self.actionShowReinvestSameProduct.setToolTip(_translate("wdgOrders", "Show reinvest simulation all investments with same product"))
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

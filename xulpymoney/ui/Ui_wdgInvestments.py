@@ -32,7 +32,7 @@ class Ui_wdgInvestments(object):
         self.chkInactivas = QtWidgets.QCheckBox(wdgInvestments)
         self.chkInactivas.setObjectName("chkInactivas")
         self.verticalLayout.addWidget(self.chkInactivas)
-        self.mqtwInvestments = mqtwDataWithObjects(wdgInvestments)
+        self.mqtwInvestments = mqtwObjects(wdgInvestments)
         self.mqtwInvestments.setObjectName("mqtwInvestments")
         self.verticalLayout.addWidget(self.mqtwInvestments)
         self.verticalLayout_2.addLayout(self.verticalLayout)
@@ -117,5 +117,5 @@ class Ui_wdgInvestments(object):
         self.actionSameProductFIFO.setToolTip(_translate("wdgInvestments", "Same product Investments merging operations"))
         self.actionProductUpdate.setText(_translate("wdgInvestments", "Update product"))
         self.actionProductUpdate.setToolTip(_translate("wdgInvestments", "Update product"))
-from xulpymoney.ui.myqtablewidget import mqtwDataWithObjects
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc

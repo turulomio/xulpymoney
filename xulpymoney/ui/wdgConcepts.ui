@@ -109,7 +109,7 @@
          <item>
           <layout class="QHBoxLayout" name="layExpenses">
            <item>
-            <widget class="myQTableWidget" name="mqtwExpenses" native="true"/>
+            <widget class="mqtw" name="mqtwExpenses" native="true"/>
            </item>
           </layout>
          </item>
@@ -123,7 +123,7 @@
          <item>
           <layout class="QHBoxLayout" name="layIncomes">
            <item>
-            <widget class="myQTableWidget" name="mqtwIncomes" native="true">
+            <widget class="mqtw" name="mqtwIncomes" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>1</horstretch>
@@ -162,7 +162,7 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

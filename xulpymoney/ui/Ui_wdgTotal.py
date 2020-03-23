@@ -64,7 +64,7 @@ class Ui_wdgTotal(object):
         self.lblPreviousYear.setAlignment(QtCore.Qt.AlignCenter)
         self.lblPreviousYear.setObjectName("lblPreviousYear")
         self.verticalLayout.addWidget(self.lblPreviousYear)
-        self.mqtw = myQTableWidget(self.tab_3)
+        self.mqtw = mqtw(self.tab_3)
         self.mqtw.setObjectName("mqtw")
         self.verticalLayout.addWidget(self.mqtw)
         self.lblInvested = QtWidgets.QLabel(self.tab_3)
@@ -115,7 +115,7 @@ class Ui_wdgTotal(object):
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.mqtwTargets = myQTableWidget(self.tab_6)
+        self.mqtwTargets = mqtw(self.tab_6)
         self.mqtwTargets.setObjectName("mqtwTargets")
         self.verticalLayout_3.addWidget(self.mqtwTargets)
         self.lblTargets = QtWidgets.QLabel(self.tab_6)
@@ -134,7 +134,7 @@ class Ui_wdgTotal(object):
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout()
         self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.mqtwTargetsPlus = myQTableWidget(self.tab_7)
+        self.mqtwTargetsPlus = mqtw(self.tab_7)
         self.mqtwTargetsPlus.setObjectName("mqtwTargetsPlus")
         self.verticalLayout_9.addWidget(self.mqtwTargetsPlus)
         self.lblTargetsPlus = QtWidgets.QLabel(self.tab_7)
@@ -158,7 +158,7 @@ class Ui_wdgTotal(object):
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.mqtwInvestOrWork = myQTableWidget(self.tab_2)
+        self.mqtwInvestOrWork = mqtw(self.tab_2)
         self.mqtwInvestOrWork.setObjectName("mqtwInvestOrWork")
         self.verticalLayout_5.addWidget(self.mqtwInvestOrWork)
         self.lblInvestOrWork = QtWidgets.QLabel(self.tab_2)
@@ -180,7 +180,7 @@ class Ui_wdgTotal(object):
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.mqtwMakeEndsMeet = myQTableWidget(self.tab_5)
+        self.mqtwMakeEndsMeet = mqtw(self.tab_5)
         self.mqtwMakeEndsMeet.setObjectName("mqtwMakeEndsMeet")
         self.verticalLayout_6.addWidget(self.mqtwMakeEndsMeet)
         self.lblMakeEndsMeet = QtWidgets.QLabel(self.tab_5)
@@ -247,7 +247,7 @@ class Ui_wdgTotal(object):
 
         self.retranslateUi(wdgTotal)
         self.tab.setCurrentIndex(0)
-        self.tabData.setCurrentIndex(3)
+        self.tabData.setCurrentIndex(0)
         self.tabPlus.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(wdgTotal)
 
@@ -277,6 +277,6 @@ class Ui_wdgTotal(object):
         self.actionShowTaxes.setToolTip(_translate("wdgTotal", "Show taxes"))
         self.actionGainsByProductType.setText(_translate("wdgTotal", "Gains by product type"))
         self.actionGainsByProductType.setToolTip(_translate("wdgTotal", "Gains by product type"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

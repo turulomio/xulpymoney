@@ -122,7 +122,7 @@ class Ui_frmSellingPoint(object):
         self.tab_current.setObjectName("tab_current")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tab_current)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.mqtw = myQTableWidget(self.tab_current)
+        self.mqtw = mqtw(self.tab_current)
         self.mqtw.setObjectName("mqtw")
         self.horizontalLayout_5.addWidget(self.mqtw)
         self.tab.addTab(self.tab_current, "")
@@ -130,7 +130,7 @@ class Ui_frmSellingPoint(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.mqtwSP = myQTableWidget(self.tab_2)
+        self.mqtwSP = mqtw(self.tab_2)
         self.mqtwSP.setObjectName("mqtwSP")
         self.horizontalLayout_6.addWidget(self.mqtwSP)
         self.tab.addTab(self.tab_2, "")
@@ -164,5 +164,5 @@ class Ui_frmSellingPoint(object):
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("frmSellingPoint", "Selling point state"))
         self.cmd.setText(_translate("frmSellingPoint", "Set the selling point"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 import xulpymoney.images.xulpymoney_rc

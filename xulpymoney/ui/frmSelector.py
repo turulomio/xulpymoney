@@ -2,7 +2,7 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QLabel, QComboBox, QDialog, QDialogButtonBox, QWidget, QTableWidgetItem, QVBoxLayout, QToolButton, QHBoxLayout
 from logging import debug
-from .myqtablewidget import myQTableWidget
+from .myqtablewidget import mqtw
 
 class frmManagerSelector(QDialog):
     def __init__(self, parent=None):
@@ -51,10 +51,10 @@ class frmManagerSelector(QDialog):
 class wdgManagerSelector(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.mqtw=myQTableWidget(self)
+        self.mqtw=mqtw(self)
         self.mqtw.showSearchOptions(True)
         self.mqtw.showSearchCloseButton(False)
-        self.mqtwSelected=myQTableWidget(self)
+        self.mqtwSelected=mqtw(self)
         self.mqtwSelected.showSearchOptions(True)
         self.mqtwSelected.showSearchCloseButton(False)
         

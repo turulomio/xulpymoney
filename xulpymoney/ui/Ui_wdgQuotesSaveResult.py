@@ -46,7 +46,7 @@ class Ui_wdgQuotesSaveResult(object):
         self.tabAdded.setObjectName("tabAdded")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tabAdded)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.mqtwAdded = myQTableWidget(self.tabAdded)
+        self.mqtwAdded = mqtw(self.tabAdded)
         self.mqtwAdded.setObjectName("mqtwAdded")
         self.horizontalLayout_3.addWidget(self.mqtwAdded)
         icon = QtGui.QIcon()
@@ -56,7 +56,7 @@ class Ui_wdgQuotesSaveResult(object):
         self.tabUpdated.setObjectName("tabUpdated")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.tabUpdated)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.mqtwUpdated = myQTableWidget(self.tabUpdated)
+        self.mqtwUpdated = mqtw(self.tabUpdated)
         self.mqtwUpdated.setObjectName("mqtwUpdated")
         self.horizontalLayout_4.addWidget(self.mqtwUpdated)
         icon1 = QtGui.QIcon()
@@ -66,7 +66,7 @@ class Ui_wdgQuotesSaveResult(object):
         self.tabIgnored.setObjectName("tabIgnored")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tabIgnored)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.mqtwIgnored = myQTableWidget(self.tabIgnored)
+        self.mqtwIgnored = mqtw(self.tabIgnored)
         self.mqtwIgnored.setObjectName("mqtwIgnored")
         self.horizontalLayout_5.addWidget(self.mqtwIgnored)
         icon2 = QtGui.QIcon()
@@ -76,7 +76,7 @@ class Ui_wdgQuotesSaveResult(object):
         self.tabErrors.setObjectName("tabErrors")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.tabErrors)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.mqtwErrors = myQTableWidget(self.tabErrors)
+        self.mqtwErrors = mqtw(self.tabErrors)
         self.mqtwErrors.setObjectName("mqtwErrors")
         self.horizontalLayout_6.addWidget(self.mqtwErrors)
         icon3 = QtGui.QIcon()
@@ -86,7 +86,7 @@ class Ui_wdgQuotesSaveResult(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(wdgQuotesSaveResult)
-        self.tab.setCurrentIndex(2)
+        self.tab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(wdgQuotesSaveResult)
 
     def retranslateUi(self, wdgQuotesSaveResult):
@@ -97,5 +97,5 @@ class Ui_wdgQuotesSaveResult(object):
         self.tab.setTabText(self.tab.indexOf(self.tabUpdated), _translate("wdgQuotesSaveResult", "Updated"))
         self.tab.setTabText(self.tab.indexOf(self.tabIgnored), _translate("wdgQuotesSaveResult", "Ignored"))
         self.tab.setTabText(self.tab.indexOf(self.tabErrors), _translate("wdgQuotesSaveResult", "Errors"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 import xulpymoney.images.xulpymoney_rc

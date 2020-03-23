@@ -166,7 +166,7 @@ class Ui_frmInvestmentReport(object):
         self.grpCurrentInvestmentCurrency.setObjectName("grpCurrentInvestmentCurrency")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.grpCurrentInvestmentCurrency)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.mqtwInvestmentCurrent = myQTableWidget(self.grpCurrentInvestmentCurrency)
+        self.mqtwInvestmentCurrent = mqtw(self.grpCurrentInvestmentCurrency)
         self.mqtwInvestmentCurrent.setObjectName("mqtwInvestmentCurrent")
         self.verticalLayout_6.addWidget(self.mqtwInvestmentCurrent)
         self.verticalLayout_11.addWidget(self.grpCurrentInvestmentCurrency)
@@ -174,7 +174,7 @@ class Ui_frmInvestmentReport(object):
         self.grpCurrentAccountCurrency.setObjectName("grpCurrentAccountCurrency")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.grpCurrentAccountCurrency)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
-        self.mqtwInvestmentCurrentAccountCurrency = myQTableWidget(self.grpCurrentAccountCurrency)
+        self.mqtwInvestmentCurrentAccountCurrency = mqtw(self.grpCurrentAccountCurrency)
         self.mqtwInvestmentCurrentAccountCurrency.setObjectName("mqtwInvestmentCurrentAccountCurrency")
         self.verticalLayout_8.addWidget(self.mqtwInvestmentCurrentAccountCurrency)
         self.verticalLayout_11.addWidget(self.grpCurrentAccountCurrency)
@@ -204,7 +204,7 @@ class Ui_frmInvestmentReport(object):
         self.grpOperationsInvestmentCurrency.setObjectName("grpOperationsInvestmentCurrency")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.grpOperationsInvestmentCurrency)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.mqtwOperations = myQTableWidget(self.grpOperationsInvestmentCurrency)
+        self.mqtwOperations = mqtw(self.grpOperationsInvestmentCurrency)
         self.mqtwOperations.setObjectName("mqtwOperations")
         self.horizontalLayout_9.addWidget(self.mqtwOperations)
         self.verticalLayout_7.addWidget(self.grpOperationsInvestmentCurrency)
@@ -212,7 +212,7 @@ class Ui_frmInvestmentReport(object):
         self.grpOperationsAccountCurrency.setObjectName("grpOperationsAccountCurrency")
         self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.grpOperationsAccountCurrency)
         self.horizontalLayout_16.setObjectName("horizontalLayout_16")
-        self.mqtwOperationsAccountCurrency = myQTableWidget(self.grpOperationsAccountCurrency)
+        self.mqtwOperationsAccountCurrency = mqtw(self.grpOperationsAccountCurrency)
         self.mqtwOperationsAccountCurrency.setObjectName("mqtwOperationsAccountCurrency")
         self.horizontalLayout_16.addWidget(self.mqtwOperationsAccountCurrency)
         self.verticalLayout_7.addWidget(self.grpOperationsAccountCurrency)
@@ -228,7 +228,7 @@ class Ui_frmInvestmentReport(object):
         self.grpHistoricalInvestmentCurrency.setObjectName("grpHistoricalInvestmentCurrency")
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.grpHistoricalInvestmentCurrency)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.mqtwInvestmentHistorical = myQTableWidget(self.grpHistoricalInvestmentCurrency)
+        self.mqtwInvestmentHistorical = mqtw(self.grpHistoricalInvestmentCurrency)
         self.mqtwInvestmentHistorical.setObjectName("mqtwInvestmentHistorical")
         self.verticalLayout_12.addWidget(self.mqtwInvestmentHistorical)
         self.verticalLayout_14.addWidget(self.grpHistoricalInvestmentCurrency)
@@ -236,7 +236,7 @@ class Ui_frmInvestmentReport(object):
         self.grpHistoricalAccountCurrency.setObjectName("grpHistoricalAccountCurrency")
         self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.grpHistoricalAccountCurrency)
         self.verticalLayout_13.setObjectName("verticalLayout_13")
-        self.mqtwInvestmentHistoricalAccountCurrency = myQTableWidget(self.grpHistoricalAccountCurrency)
+        self.mqtwInvestmentHistoricalAccountCurrency = mqtw(self.grpHistoricalAccountCurrency)
         self.mqtwInvestmentHistoricalAccountCurrency.setObjectName("mqtwInvestmentHistoricalAccountCurrency")
         self.verticalLayout_13.addWidget(self.mqtwInvestmentHistoricalAccountCurrency)
         self.verticalLayout_14.addWidget(self.grpHistoricalAccountCurrency)
@@ -257,7 +257,7 @@ class Ui_frmInvestmentReport(object):
         self.grpDividendsInvestmentCurrency.setObjectName("grpDividendsInvestmentCurrency")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.grpDividendsInvestmentCurrency)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.mqtwDividends = myQTableWidget(self.grpDividendsInvestmentCurrency)
+        self.mqtwDividends = mqtw(self.grpDividendsInvestmentCurrency)
         self.mqtwDividends.setObjectName("mqtwDividends")
         self.verticalLayout_5.addWidget(self.mqtwDividends)
         self.verticalLayout_16.addWidget(self.grpDividendsInvestmentCurrency)
@@ -265,7 +265,7 @@ class Ui_frmInvestmentReport(object):
         self.grpDividendsAccountCurrency.setObjectName("grpDividendsAccountCurrency")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.grpDividendsAccountCurrency)
         self.verticalLayout_15.setObjectName("verticalLayout_15")
-        self.mqtwDividendsAccountCurrency = myQTableWidget(self.grpDividendsAccountCurrency)
+        self.mqtwDividendsAccountCurrency = mqtw(self.grpDividendsAccountCurrency)
         self.mqtwDividendsAccountCurrency.setObjectName("mqtwDividendsAccountCurrency")
         self.verticalLayout_15.addWidget(self.mqtwDividendsAccountCurrency)
         self.verticalLayout_16.addWidget(self.grpDividendsAccountCurrency)
@@ -384,7 +384,7 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setObjectName("actionContractEdit")
 
         self.retranslateUi(frmInvestmentReport)
-        self.tab.setCurrentIndex(4)
+        self.tab.setCurrentIndex(2)
         self.chkExpiration.toggled['bool'].connect(self.calExpiration.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(frmInvestmentReport)
 
@@ -457,6 +457,6 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setText(_translate("frmInvestmentReport", "Edit contract"))
         self.actionContractEdit.setToolTip(_translate("frmInvestmentReport", "Edit contract"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

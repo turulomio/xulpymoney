@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -314,7 +314,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
-               <widget class="myQTableWidget" name="mqtwInvestmentCurrent" native="true"/>
+               <widget class="mqtw" name="mqtwInvestmentCurrent" native="true"/>
               </item>
              </layout>
             </widget>
@@ -326,7 +326,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <item>
-               <widget class="myQTableWidget" name="mqtwInvestmentCurrentAccountCurrency" native="true"/>
+               <widget class="mqtw" name="mqtwInvestmentCurrentAccountCurrency" native="true"/>
               </item>
              </layout>
             </widget>
@@ -374,7 +374,7 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
-               <widget class="myQTableWidget" name="mqtwOperations" native="true"/>
+               <widget class="mqtw" name="mqtwOperations" native="true"/>
               </item>
              </layout>
             </widget>
@@ -386,7 +386,7 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_16">
               <item>
-               <widget class="myQTableWidget" name="mqtwOperationsAccountCurrency" native="true"/>
+               <widget class="mqtw" name="mqtwOperationsAccountCurrency" native="true"/>
               </item>
              </layout>
             </widget>
@@ -413,7 +413,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_12">
               <item>
-               <widget class="myQTableWidget" name="mqtwInvestmentHistorical" native="true"/>
+               <widget class="mqtw" name="mqtwInvestmentHistorical" native="true"/>
               </item>
              </layout>
             </widget>
@@ -425,7 +425,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_13">
               <item>
-               <widget class="myQTableWidget" name="mqtwInvestmentHistoricalAccountCurrency" native="true"/>
+               <widget class="mqtw" name="mqtwInvestmentHistoricalAccountCurrency" native="true"/>
               </item>
              </layout>
             </widget>
@@ -459,7 +459,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_5">
               <item>
-               <widget class="myQTableWidget" name="mqtwDividends" native="true"/>
+               <widget class="mqtw" name="mqtwDividends" native="true"/>
               </item>
              </layout>
             </widget>
@@ -471,7 +471,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_15">
               <item>
-               <widget class="myQTableWidget" name="mqtwDividendsAccountCurrency" native="true"/>
+               <widget class="mqtw" name="mqtwDividendsAccountCurrency" native="true"/>
               </item>
              </layout>
             </widget>
@@ -782,7 +782,7 @@
    <header location="global">myqlineedit</header>
   </customwidget>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

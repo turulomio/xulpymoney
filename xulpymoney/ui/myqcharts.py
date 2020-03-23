@@ -6,7 +6,7 @@ from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTim
 from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize
 from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage, QClipboard
 from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem
-from .myqtablewidget import myQTableWidget
+from .myqtablewidget import mqtw
 from .. objects.percentage import Percentage
 from .. casts import object2value
 from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2string
@@ -525,7 +525,7 @@ class VCPie(QWidget):
         #piesizePolicy.setHorizontalStretch(2)
         #self.pie.setSizePolicy(piesizePolicy)
 
-        self.table=myQTableWidget(self)
+        self.table=mqtw(self)
         self.table.hide()
         #tablesizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         #tablesizePolicy.setHorizontalStretch(1)

@@ -82,7 +82,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabAdded">
         <attribute name="icon">
@@ -94,7 +94,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="myQTableWidget" name="mqtwAdded" native="true"/>
+          <widget class="mqtw" name="mqtwAdded" native="true"/>
          </item>
         </layout>
        </widget>
@@ -108,7 +108,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="myQTableWidget" name="mqtwUpdated" native="true"/>
+          <widget class="mqtw" name="mqtwUpdated" native="true"/>
          </item>
         </layout>
        </widget>
@@ -122,7 +122,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="myQTableWidget" name="mqtwIgnored" native="true"/>
+          <widget class="mqtw" name="mqtwIgnored" native="true"/>
          </item>
         </layout>
        </widget>
@@ -136,7 +136,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="myQTableWidget" name="mqtwErrors" native="true"/>
+          <widget class="mqtw" name="mqtwErrors" native="true"/>
          </item>
         </layout>
        </widget>
@@ -148,7 +148,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

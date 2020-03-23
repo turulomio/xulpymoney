@@ -36,7 +36,7 @@
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_">
         <attribute name="icon">
@@ -48,7 +48,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="myQTableWidget" name="mqtwCurrentOperations" native="true"/>
+          <widget class="mqtw" name="mqtwCurrentOperations" native="true"/>
          </item>
         </layout>
        </widget>
@@ -62,7 +62,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="myQTableWidget" name="mqtwOperations" native="true"/>
+          <widget class="mqtw" name="mqtwOperations" native="true"/>
          </item>
         </layout>
        </widget>
@@ -110,7 +110,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
+   <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

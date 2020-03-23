@@ -176,7 +176,7 @@ class Ui_wdgCalculator(object):
         self.groupBox_3.setObjectName("groupBox_3")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox_3)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.mqtw = myQTableWidget(self.groupBox_3)
+        self.mqtw = mqtw(self.groupBox_3)
         self.mqtw.setObjectName("mqtw")
         self.horizontalLayout.addWidget(self.mqtw)
         self.verticalLayout.addWidget(self.groupBox_3)
@@ -204,5 +204,5 @@ class Ui_wdgCalculator(object):
         self.cmdOrder.setText(_translate("wdgCalculator", "Add order annotation"))
         self.groupBox_3.setTitle(_translate("wdgCalculator", "Calc estimations"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 import xulpymoney.images.xulpymoney_rc

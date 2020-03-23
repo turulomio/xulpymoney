@@ -47,7 +47,7 @@ class Ui_wdgLastCurrent(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.mqtwInvestments = myQTableWidget(wdgLastCurrent)
+        self.mqtwInvestments = mqtw(wdgLastCurrent)
         self.mqtwInvestments.setObjectName("mqtwInvestments")
         self.verticalLayout.addWidget(self.mqtwInvestments)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -142,5 +142,5 @@ class Ui_wdgLastCurrent(object):
         self.actionReinvest.setToolTip(_translate("wdgLastCurrent", "Reinvest"))
         self.actionReinvestCurrent.setText(_translate("wdgLastCurrent", "Simulate reinvestment at product current price"))
         self.actionReinvestCurrent.setToolTip(_translate("wdgLastCurrent", "Simulate reinvestment at product current price"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtw
 import xulpymoney.images.xulpymoney_rc

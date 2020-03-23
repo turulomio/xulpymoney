@@ -51,7 +51,7 @@ class Ui_wdgAPR(object):
         self.tab_5.setObjectName("tab_5")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.tab_5)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.mqtw = mqtwData(self.tab_5)
+        self.mqtw = mqtw(self.tab_5)
         self.mqtw.setObjectName("mqtw")
         self.horizontalLayout.addWidget(self.mqtw)
         icon1 = QtGui.QIcon()
@@ -63,7 +63,7 @@ class Ui_wdgAPR(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.mqtwReport = mqtwData(self.tab_2)
+        self.mqtwReport = mqtw(self.tab_2)
         self.mqtwReport.setObjectName("mqtwReport")
         self.verticalLayout_2.addWidget(self.mqtwReport)
         self.lblReport = QtWidgets.QLabel(self.tab_2)
@@ -91,6 +91,6 @@ class Ui_wdgAPR(object):
         self.lbl.setText(_translate("wdgAPR", "Assets report"))
         self.tab.setTabText(self.tab.indexOf(self.tab_5), _translate("wdgAPR", "Assets report"))
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("wdgAPR", "Invested report"))
-from xulpymoney.ui.myqtablewidget import mqtwData
+from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc
