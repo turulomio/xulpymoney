@@ -94,7 +94,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="mqtw" name="mqtwAdded" native="true"/>
+          <widget class="mqtwObjects" name="mqtwAdded" native="true"/>
          </item>
         </layout>
        </widget>
@@ -108,7 +108,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="mqtw" name="mqtwUpdated" native="true"/>
+          <widget class="mqtwObjects" name="mqtwUpdated" native="true"/>
          </item>
         </layout>
        </widget>
@@ -122,7 +122,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="mqtw" name="mqtwIgnored" native="true"/>
+          <widget class="mqtwObjects" name="mqtwIgnored" native="true"/>
          </item>
         </layout>
        </widget>
@@ -136,7 +136,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="mqtw" name="mqtwErrors" native="true"/>
+          <widget class="mqtwObjects" name="mqtwErrors" native="true"/>
          </item>
         </layout>
        </widget>
@@ -148,7 +148,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>mqtw</class>
+   <class>mqtwObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

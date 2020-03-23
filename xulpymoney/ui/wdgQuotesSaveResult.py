@@ -29,7 +29,9 @@ class wdgQuotesSaveResult(QWidget, Ui_wdgQuotesSaveResult):
         ignored.myqtablewidget(self.mqtwIgnored)
         updated.myqtablewidget(self.mqtwUpdated)
         errors.myqtablewidget(self.mqtwErrors)
-
+        for mq in [self.mqtwAdded, self.mqtwIgnored, self.mqtwUpdated, self.mqtwErrors]:
+            mq.setOrderBy(1, False)
+            mq.setGenericContextMenu()
 
 ## Shows a quotes manager save result
 ## If widget is accepted it buttonbox is accepted it commits con, else rollback

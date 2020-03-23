@@ -141,15 +141,15 @@ class mqtw(QWidget):
         if modifiers == Qt.ShiftModifier:
             for i in range(self.table.columnCount()):
                 self.table.setColumnWidth(i, newSize)
-            self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
-            debug("Saved {}/{}_horizontalheader_state to equal sizes".format(self.settingsSection, self.settingsObject))
-            self.settings.sync()
+            self._settings.setValue("{}/{}_horizontalheader_state".format(self._settingsSection, self._settingsObject), self.table.horizontalHeader().saveState() )
+            debug("Saved {}/{}_horizontalheader_state to equal sizes".format(self._settingsSection, self._settingsObject))
+            self._settings.sync()
         elif modifiers == Qt.ControlModifier:
             self.on_actionSizeMinimum_triggered()
         else:
-            self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
-            debug("Saved {}/{}_horizontalheader_state manually".format(self.settingsSection, self.settingsObject))
-            self.settings.sync()
+            self._settings.setValue("{}/{}_horizontalheader_state".format(self._settingsSection, self._settingsObject), self.table.horizontalHeader().saveState() )
+            debug("Saved {}/{}_horizontalheader_state manually".format(self._settingsSection, self._settingsObject))
+            self._settings.sync()
 
     @pyqtSlot(int)
     def on_table_verticalscrollbar_value_changed(self, value):
@@ -157,12 +157,12 @@ class mqtw(QWidget):
             self.on_actionSizeNeeded_triggered()
 
     def settings(self, settings, settingsSection,  objectname):
-        self.settings=settings
+        self._settings=settings #Made private due it had the same name of the method
         #For all myQTableWidget in settings app
-        self.setVerticalHeaderHeight(int(self.settings.value("myQTableWidget/rowheight", 24)))
-        self.settingsSection=settingsSection
-        self.settingsObject=objectname
-        self.setObjectName(self.settingsObject)
+        self.setVerticalHeaderHeight(int(self._settings.value("myQTableWidget/rowheight", 24)))
+        self._settingsSection=settingsSection
+        self._settingsObject=objectname
+        self.setObjectName(self._settingsObject)
 
     def clear(self):
         """Clear table"""
@@ -177,15 +177,15 @@ class mqtw(QWidget):
     @pyqtSlot()
     def keyPressEvent(self, event):
         if  event.matches(QKeySequence.ZoomIn) and self._last_height!=None:
-            height=int(self.settings.value("myQTableWidget/rowheight", 24))
-            self.settings.setValue("myQTableWidget/rowheight", height+1)
-            info("Setting myQTableWidget/rowheight set to {}".format(self.settings.value("myQTableWidget/rowheight", 24)))
-            self.table.setVerticalHeaderHeight(int(self.settings.value("myQTableWidget/rowheight", 24)))
+            height=int(self._settings.value("myQTableWidget/rowheight", 24))
+            self._settings.setValue("myQTableWidget/rowheight", height+1)
+            info("Setting myQTableWidget/rowheight set to {}".format(self._settings.value("myQTableWidget/rowheight", 24)))
+            self.table.setVerticalHeaderHeight(int(self._settings.value("myQTableWidget/rowheight", 24)))
         elif  event.matches(QKeySequence.ZoomOut) and self._last_height!=None:
-            height=int(self.settings.value("myQTableWidget/rowheight", 24))
-            self.settings.setValue("myQTableWidget/rowheight", height-1)
-            ("Setting myQTableWidget/rowheight set to {}".format(self.settings.value("myQTableWidget/rowheight", 24)))
-            self.table.setVerticalHeaderHeight(int(self.settings.value("myQTableWidget/rowheight", 24)))
+            height=int(self._settings.value("myQTableWidget/rowheight", 24))
+            self._settings.setValue("myQTableWidget/rowheight", height-1)
+            ("Setting myQTableWidget/rowheight set to {}".format(self._settings.value("myQTableWidget/rowheight", 24)))
+            self.table.setVerticalHeaderHeight(int(self._settings.value("myQTableWidget/rowheight", 24)))
         elif event.matches(QKeySequence.Print):
             filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), "table.ods", self.tr("Libreoffice calc (*.ods)"))[0]
             if filename:
@@ -241,7 +241,7 @@ class mqtw(QWidget):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.table.horizontalHeader().sectionResized.connect(self.sectionResized)
         self.table.horizontalHeader().setStretchLastSection(False)
-        state=self.settings.value("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject))
+        state=self._settings.value("{}/{}_horizontalheader_state".format(self._settingsSection, self._settingsObject))
         if state:
             self.table.horizontalHeader().restoreState(state)
         
@@ -420,17 +420,17 @@ class mqtw(QWidget):
     def on_actionSizeMinimum_triggered(self):
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
-        self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
-        self.settings.sync()
-        debug("Saved {}/{}_horizontalheader_state to minimum".format(self.settingsSection, self.settingsObject))
+        self._settings.setValue("{}/{}_horizontalheader_state".format(self._settingsSection, self._settingsObject), self.table.horizontalHeader().saveState() )
+        self._settings.sync()
+        debug("Saved {}/{}_horizontalheader_state to minimum".format(self._settingsSection, self._settingsObject))
 
     def on_actionSizeNeeded_triggered(self):
         for i in range(self.table.columnCount()):
             if self.table.sizeHintForColumn(i)>self.table.columnWidth(i):
                 self.table.setColumnWidth(i, self.table.sizeHintForColumn(i))
-        self.settings.setValue("{}/{}_horizontalheader_state".format(self.settingsSection, self.settingsObject), self.table.horizontalHeader().saveState() )
-        self.settings.sync()
-        debug("Saved {}/{}_horizontalheader_state to needed".format(self.settingsSection, self.settingsObject))
+        self._settings.setValue("{}/{}_horizontalheader_state".format(self._settingsSection, self._settingsObject), self.table.horizontalHeader().saveState() )
+        self._settings.sync()
+        debug("Saved {}/{}_horizontalheader_state to needed".format(self._settingsSection, self._settingsObject))
 
     def on_actionSearch_triggered(self):
         self.lbl.show()

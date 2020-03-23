@@ -32,15 +32,15 @@ class frmManagerSelector(QDialog):
         
     ## Both managers must have setConstructorParameters
     def setManagers(self, settings, settingsSection,  settingsObject, manager, selected):
-        self.settings=settings
-        self.settingsSection=settingsSection
-        self.settingsObject=settingsObject
-        self.widget.setManagers(settings, settingsSection, settingsObject, manager, selected)
-        self.resize(self.settings.value("{}/{}_dialog_size".format(self.settingsSection, self.settingsObject), QSize(800, 600)))
+        self._settings=settings
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.widget.setManagers(self._settings, self._settingsSection, self._settingsObject, manager, selected)
+        self.resize(self._settings.value("{}/{}_dialog_size".format(self._settingsSection, self._settingsObject), QSize(800, 600)))
 
     def exec_(self):
         QDialog.exec_(self)
-        self.settings.setValue("{}/{}_dialog_size".format(self.settingsSection, self.settingsObject), self.size())
+        self._settings.setValue("{}/{}_dialog_size".format(self._settingsSection, self._settingsObject), self.size())
         debug("Selected objects: {}".format(str(self.widget.selected.arr)))
 
     def setLabel(self, s):
@@ -97,11 +97,11 @@ class wdgManagerSelector(QWidget):
 
     ## manager needs to have add setConstructorParameters to generate emptyManager
     def setManagers(self, settings, settingsSection,  settingsObject, manager, selected):
-        self.settings=settings
-        self.settingsSection=settingsSection
-        self.settingsObject=settingsObject
-        self.mqtw.settings(self.settings, self.settingsSection, "{}_tbl".format(self.settingsObject))
-        self.mqtwSelected.settings(self.settings, self.settingsSection, "{}_tblSelected".format(self.settingsObject))
+        self._settings=settings
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.mqtw.settings(self._settings, self._settingsSection, "{}_tbl".format(self._settingsObject))
+        self.mqtwSelected.settings(self._settings, self._settingsSection, "{}_tblSelected".format(self._settingsObject))
 
         self.manager=manager.clone()#Clone manager to delete safely objects
 
@@ -238,7 +238,7 @@ class cmbManagerSelector(QWidget):
                 self.combo.addItem(str(o))
 
     def setManagers(self, settings, settingsSection, settingsObject, manager, selected):
-        self.settings=settings
+        self._settings=settings
         self.frm.setManagers(settings, settingsSection, settingsObject, manager, selected)
         if selected!=None:
             for o in selected.arr:

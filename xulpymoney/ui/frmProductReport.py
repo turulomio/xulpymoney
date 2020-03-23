@@ -238,7 +238,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             currencies_qcombobox(self.cmbCurrency, self.product.currency)
             self.mem.leverages.qcombobox(self.cmbApalancado, self.product.leveraged)
             self.mem.types.qcombobox(self.cmbTipo, self.product.type)
-        else: #None                        
+        else: #None, readonly mode              
             self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
             self.cmsAgrupations.setManagers(self.mem.settings,"frmProductReport", "cmsAgrupations", self.__agrupations_by_type(), None)
             self.txtTPC.setText(str(self.product.percentage))

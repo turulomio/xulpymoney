@@ -10,7 +10,6 @@ from xulpymoney.libxulpymoneytypes import   eHistoricalChartAdjusts, eQColor
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage, percentage_between
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLMonthlyManager, OHCLWeeklyManager, OHCLYearlyManager
-from xulpymoney.ui.myqtablewidget import  qdatetime, qleft, qcenter
 from xulpymoney.ui.myqcharts import eOHCLDuration
 
 ## Class that represents a Quote
@@ -173,20 +172,27 @@ class QuoteManager(ObjectManager, QObject):
         """Añade los quotes en array a un nuevo set paasado por parametro"""
         for q in self.arr:
             settoadd.append(q)
-        
+
     def myqtablewidget(self, wdg):
-        wdg.table.setColumnCount(3)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date and time" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Product" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Price" )))        
-        wdg.applySettings()
-        wdg.table.clearContents() 
-        wdg.table.setRowCount(len(self.arr))
-        for rownumber, a in enumerate(self.arr):
-            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
-            wdg.table.setItem(rownumber, 1, qleft(a.product.name))
-            wdg.table.item(rownumber, 1).setIcon(a.product.stockmarket.country.qicon())
-            wdg.table.setItem(rownumber, 2, a.product.money(a.quote).qtablewidgetitem())
+        data=[]
+        for rownumber, o in enumerate(self.arr):
+            data.append([
+                o.datetime, 
+                o.product.name, 
+                o.product.money(o.quote), 
+                o
+            ])
+        wdg.setDataWithObjects(
+            [self.tr("Date and time"), self.tr("Product"), self.tr("Price")], 
+            None, 
+            data, 
+            zonename=self.mem.localzone_name, 
+            additional=self.myqtablewidget_additional
+        )
+        
+    def myqtablewidget_additional(self, wdg):
+        for rownumber, o in enumerate(wdg.objects()):
+            wdg.table.item(rownumber, 1).setIcon(o.product.stockmarket.country.qicon())
                 
 ## Class that stores all kind of quotes asociated to a product
 class QuotesResult:
