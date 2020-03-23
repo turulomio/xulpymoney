@@ -15,7 +15,7 @@ from xulpymoney.casts import str2bool, string2list_of_integers
 from xulpymoney.objects.account import AccountManager, AccountManager_from_sql
 from xulpymoney.objects.bank import BankManager
 from xulpymoney.objects.agrupation import AgrupationManager
-from xulpymoney.objects.concept import ConceptManager
+from xulpymoney.objects.concept import ConceptManager_from_sql
 from xulpymoney.objects.country import CountryManager
 from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.objects.leverage import LeverageManager
@@ -359,8 +359,7 @@ class MemXulpymoney(Mem):
         
         self.tiposoperaciones=OperationTypeManager_hardcoded(self)
         
-        self.conceptos=ConceptManager(self)
-        self.conceptos.load_from_db()
+        self.conceptos=ConceptManager_from_sql(self, "select * from conceptos order by concepto")
 
         self.types=ProductTypeManager(self)
         self.types.load_all()

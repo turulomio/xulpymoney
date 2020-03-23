@@ -23,9 +23,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.viewExpenses=VCPie()
         self.viewExpenses.settings(self.mem.settings, "wdgConcepts", "viewExpenses")
         self.layExpenses.addWidget(self.viewExpenses)
-        self.expenses=self.mem.conceptos.clone_x_tipooperacion(1)
+        self.expenses=self.mem.conceptos.ConceptManager_by_operation_type(1)
         self.expenseslist=None
-        self.incomes=self.mem.conceptos.clone_x_tipooperacion(2)
+        self.incomes=self.mem.conceptos.ConceptManager_by_operation_type(2)
         self.incomeslist=None
 
         self.mqtwExpenses.settings(self.mem.settings, "wdgConcepts", "mqtwExpenses")

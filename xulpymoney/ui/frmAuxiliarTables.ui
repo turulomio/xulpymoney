@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Xulpymoney &gt; Auxiliar tables</string>
+   <string>Auxiliar tables</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
@@ -50,39 +50,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QTableWidget" name="tblConcepts">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>Concepts</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Operation type</string>
-              </property>
-             </column>
-            </widget>
+            <widget class="mqtwObjects" name="mqtwConcepts" native="true"/>
            </item>
           </layout>
          </item>
@@ -142,6 +110,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>mqtwObjects</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>

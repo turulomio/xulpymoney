@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QObject
 from datetime import date, timedelta
 from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
@@ -14,37 +15,25 @@ class Concept:
     ## @param name Concept name
     ## @param editable Boolean that sets if a Concept is editable by the user
     ## @param id Integer that sets the id of an Concept. You must set id=None if the Concept is not in the database. id is set in the save method
-    def __init__(self, *args):
-        def init__create(name, tipooperacion, editable,  id):
-            self.id=id
-            self.name=self.mem.trHS(name)
-            self.tipooperacion=tipooperacion
-            self.editable=editable
+    def __init__(self, mem=None, name=None, tipooperacion=None, editable=None, id=None):
+        self.mem=mem
+        self.id=id
+        self.name=name
+        self.tipooperacion=tipooperacion
+        self.editable=editable
 
-        def init__db_row(row, tipooperacion):
-            return init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
-
-        self.mem=args[0]
-        if len(args)==1:
-            init__create(None, None, None, None)
-        elif len(args)==3:
-            init__db_row(*args[1:])
-        elif len(args)==5:
-            init__create(*args[1:])
+    def fullName(self):
+        return self.mem.trHS(self.name)
 
     def __repr__(self):
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
 
-        
     def save(self):
-        cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into conceptos (concepto, id_tiposoperaciones, editable) values (%s, %s, %s) returning id_conceptos", (self.name, self.tipooperacion.id, self.editable))
-            self.id=cur.fetchone()[0]
+            self.id=self.mem.con.cursor_one_field("insert into conceptos (concepto, id_tiposoperaciones, editable) values (%s, %s, %s) returning id_conceptos", (self.name, self.tipooperacion.id, self.editable))
         else:
-            cur.execute("update conceptos set concepto=%s, id_tiposoperaciones=%s, editable=%s where id_conceptos=%s", (self.name, self.tipooperacion.id, self.editable, self.id))
-        cur.close()
-                            
+            self.mem.con.execute("update conceptos set concepto=%s, id_tiposoperaciones=%s, editable=%s where id_conceptos=%s", (self.name, self.tipooperacion.id, self.editable, self.id))
+
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         if self.uses()>0 and self.editable==True:
@@ -97,23 +86,13 @@ class Concept:
             suma=suma+i['suma']
         cur.close()
         return suma
-        
-        
 
-class ConceptManager(ObjectManager_With_IdName_Selectable):
+class ConceptManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
+        QObject.__init__(self)
         self.mem=mem 
-                 
-        
-    def load_from_db(self):
-        cur=self.mem.con.cursor()
-        cur.execute("Select * from conceptos")
-        for row in cur:
-            self.append(Concept(self.mem, row, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
-        cur.close()
-        self.order_by_name()
-                        
+
     def load_opercuentas_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
         for c in self.arr:
@@ -149,7 +128,7 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
         return[39, 50, 62, 65, 66]
 
 
-    def clone_x_tipooperacion(self, id_tiposoperaciones):
+    def ConceptManager_by_operation_type(self, id_tiposoperaciones):
         """SSe usa clone y no init ya que ya están cargados en MEM"""
         resultado=ConceptManager(self.mem)
         for c in self.arr:
@@ -157,7 +136,7 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
                 resultado.append(c)
         return resultado
         
-    def clone_editables(self):
+    def ConceptManager_editables(self):
         """SSe usa clone y no init ya que ya están cargados en MEM"""
         resultado=ConceptManager(self.mem)
         for c in self.arr:
@@ -174,7 +153,7 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
         
         Returns three fields:
         1) dictionary arr, whith above values, sort by concepto.name
-        2) total expenses of all concepts
+        2) total expenses of all concepts                            
         3) total average expenses of all conceptos
         """
         ##Fills column 0 and 1, 3 and gets totalexpenses
@@ -200,3 +179,27 @@ class ConceptManager(ObjectManager_With_IdName_Selectable):
         arr=sorted(arr, key=lambda o:o[1])
         return (arr, totalexpenses,  totalmedia_mensual)
 
+    ## @param wdg mqtwObjects
+    def mqtw(self, wdg):
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.fullName(), 
+                o.tipooperacion.name, 
+                o, 
+            ])
+        wdg.setDataWithObjects(
+            [self.tr("Name"), self.tr("Operation type")], 
+            None, 
+            data
+        )
+
+def Concept_from_dict(mem, row):
+    tipooperacion=mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])
+    return Concept(mem, row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
+    
+def ConceptManager_from_sql(mem, sql):   
+    r=ConceptManager(mem)
+    for row in mem.con.cursor_rows(sql):
+        r.append(Concept_from_dict(mem, row))
+    return r
