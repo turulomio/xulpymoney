@@ -191,7 +191,7 @@ class Investment(QObject):
 
     ## @returns Decimal. Amount to invest considering Zero risk assets and the number of the reinvestment
     def recommended_amount_to_invest(self):
-        zr=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), date.today()).amount
+        zr=Assets(self.mem).patrimonio_riesgo_cero(date.today()).amount
         i=ceil(zr/250000)
         if self.op_actual.length()==0:
             amount=2500

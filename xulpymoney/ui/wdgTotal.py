@@ -101,7 +101,7 @@ class TotalMonth:
 
     def total_zerorisk(self): 
         if self.total_zerorisk_value==None:
-            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments, self.last_day())
+            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.last_day())
         return self.total_zerorisk_value
 
     def total_bonds(self):
