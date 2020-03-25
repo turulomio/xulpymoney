@@ -543,12 +543,15 @@ class VCPie(QWidget):
 
         self.pie.customContextMenuRequested.connect(self.on_customContextMenuRequested)
 
-    def settings(self, settings, settingsSection,  settingsObject):
-        self.settings=settings
-        self.settingsSection=settingsSection
-        self.settingsObject=settingsObject
-        self.setObjectName(self.settingsObject)
-        self.table.settings(self.settings, self.settingsSection, self.settingsObject+"_mqtw")
+    def setSettings(self, settings, settingsSection,  settingsObject):
+        self._settings=settings
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.setObjectName(self._settingsObject)
+        self.table.setSettings(self._settings, self._settingsSection, self._settingsObject+"_mqtw")
+
+    def settings(self):
+        return self._settings
 
     def on_actionShowData_triggered(self):
         if self.actionShowData.text()==self.tr("Show chart data"):
@@ -590,7 +593,7 @@ class VCPie(QWidget):
         self.table.setOrderBy(2, False)
         self.lblTotal.setText(self.tr("Total: {}").format(self.pie.sum_values()))
         self.table.on_actionSizeMinimum_triggered()
-        self.table.settings.sync()
+        self.table.settings().sync()
 
 def example():
     d={'one':1, 'two':2, 'three':3, 'four':4}
@@ -611,7 +614,7 @@ def example():
     #Pie
     wdgvcpie=VCPie(w)
     wdgvcpie.pie.setTitle("Demo pie")
-    wdgvcpie.settings(settings, "example", "vcpie")
+    wdgvcpie.setSettings(settings, "example", "vcpie")
     for k, v in d.items():
         wdgvcpie.pie.appendData(k, v)
     wdgvcpie.display()

@@ -16,9 +16,9 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mem=mem
         self.orders=None 
          
-        self.mqtwOrders.settings(self.mem.settings, "wdgOrders", "mqtwOrders")#mqtwDataWithOrders
+        self.mqtwOrders.setSettings(self.mem.settings, "wdgOrders", "mqtwOrders")#mqtwDataWithOrders
         self.mqtwOrders.table.customContextMenuRequested.connect(self.on_mqtwOrders_customContextMenuRequested) 
-        self.mqtwSellingPoints.settings(self.mem.settings, "wdgOrders", "mqtwSellingPoints")
+        self.mqtwSellingPoints.setSettings(self.mem.settings, "wdgOrders", "mqtwSellingPoints")
         self.mem.data.investments_active().mqtw_sellingpoints(self.mqtwSellingPoints)
         self.mqtwSellingPoints.setOrderBy(4, False)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())

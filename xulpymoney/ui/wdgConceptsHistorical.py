@@ -19,7 +19,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
         self.firstyear=None
-        self.mqtwReport.settings(self.mem.settings, "wdgConceptsHistorical", "mqtwReport")
+        self.mqtwReport.setSettings(self.mem.settings, "wdgConceptsHistorical", "mqtwReport")
         self.mqtwReport.table.customContextMenuRequested.connect(self.on_mqtwReport_table_customContextMenuRequested)
         self.mqtwReport.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.reload()
@@ -62,7 +62,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         mqtwMonth = mqtw(newtab)
-        mqtwMonth.settings(self.mem.settings, "wdgConceptsHistorical",  "mqtwMonth")
+        mqtwMonth.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwMonth")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("""
              select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
@@ -89,7 +89,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         mqtwYear = mqtw(newtab)
-        mqtwYear.settings(self.mem.settings, "wdgConceptsHistorical",  "mqtwYear")
+        mqtwYear.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwYear")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.myqtablewidget(mqtwYear, True)

@@ -29,9 +29,9 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.txtSimulacion.setText(self.investment.recommended_amount_to_invest())
         self.tabOps.setCurrentIndex(1)
 
-        self.mqtwOps.settings(self.mem.settings, "wdgDisReinvest", "mqtwOps")
-        self.mqtwCurrentOps.settings(self.mem.settings, "wdgDisReinvest", "mqtwCurrentOps")
-        self.mqtwHistoricalOps.settings(self.mem.settings, "wdgDisReinvest", "mqtwHistoricalOps")
+        self.mqtwOps.setSettings(self.mem.settings, "wdgDisReinvest", "mqtwOps")
+        self.mqtwCurrentOps.setSettings(self.mem.settings, "wdgDisReinvest", "mqtwCurrentOps")
+        self.mqtwHistoricalOps.setSettings(self.mem.settings, "wdgDisReinvest", "mqtwHistoricalOps")
 
         if self.investment.op_actual.length()==0:
             qmessagebox(self.tr("There aren't shares for this investment"))

@@ -23,8 +23,8 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         self.progress.setMinimumDuration(0)        
-        self.mqtw.settings(self.mem.settings, "wdgAPR", "mqtw")
-        self.mqtwReport.settings(self.mem.settings, "wdgAPR", "mqtwReport")
+        self.mqtw.setSettings(self.mem.settings, "wdgAPR", "mqtw")
+        self.mqtwReport.setSettings(self.mem.settings, "wdgAPR", "mqtwReport")
          
         
         dtFirst=Assets(self.mem).first_datetime_allowed_estimated()

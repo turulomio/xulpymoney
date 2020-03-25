@@ -152,7 +152,7 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Comparation data table"))
         mqtwQuotes=mqtw(d)
-        mqtwQuotes.settings(self.mem.settings,"wdgProductsComparation" , "mqtwQuotes")
+        mqtwQuotes.setSettings(self.mem.settings,"wdgProductsComparation" , "mqtwQuotes")
         mqtwQuotes.showSearchOptions(True)
         self.comparation.myqtablewidget(mqtwQuotes)
         lay = QVBoxLayout(d)

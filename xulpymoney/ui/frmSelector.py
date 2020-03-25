@@ -100,8 +100,8 @@ class wdgManagerSelector(QWidget):
         self._settings=settings
         self._settingsSection=settingsSection
         self._settingsObject=settingsObject
-        self.mqtw.settings(self._settings, self._settingsSection, "{}_tbl".format(self._settingsObject))
-        self.mqtwSelected.settings(self._settings, self._settingsSection, "{}_tblSelected".format(self._settingsObject))
+        self.mqtw.setSettings(self._settings, self._settingsSection, "{}_tbl".format(self._settingsObject))
+        self.mqtwSelected.setSettings(self._settings, self._settingsSection, "{}_tblSelected".format(self._settingsObject))
 
         self.manager=manager.clone()#Clone manager to delete safely objects
 

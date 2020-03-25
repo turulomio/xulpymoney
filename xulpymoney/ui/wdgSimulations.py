@@ -18,7 +18,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.resize(1000, 600)
         self.mem=mem
         self.parent=parent
-        self.tblSimulations.settings(self.mem, "wdgSimulations")
+        self.tblSimulations.setSettings(self.mem, "wdgSimulations")
         self.simulations=SimulationManager(self.mem)
         cur=self.mem.con.cursor()
         self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(self.mem.con.db, ) ), self.mem.con.db)

@@ -17,7 +17,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
         self.mem=mem
 
-        self.mqtw.settings(self.mem.settings, "wdgCalculator", "mqtw")
+        self.mqtw.setSettings(self.mem.settings, "wdgCalculator", "mqtw")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
 
         self.investments=None#SetINvestments of the selected product

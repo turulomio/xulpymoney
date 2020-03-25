@@ -35,8 +35,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         else:
             self.chkGainsTime.setEnabled(False)
 
-        self.mqtw.settings(self.mem.settings, "frmSellingPoint", "mqtw")
-        self.mqtwSP.settings(self.mem.settings, "frmSellingPoint", "mqtwSP")
+        self.mqtw.setSettings(self.mem.settings, "frmSellingPoint", "mqtw")
+        self.mqtwSP.setSettings(self.mem.settings, "frmSellingPoint", "mqtwSP")
         
         self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  10)))
         

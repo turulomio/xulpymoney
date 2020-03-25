@@ -107,7 +107,7 @@ class frmProductSelector(QDialog):
         self.horizontalLayout.addWidget(self.cmd)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.mqtwInvestments = mqtw(self)
-        self.mqtwInvestments.settings(self.mem.settings, "frmProductSelector", "mqtwInvestments")
+        self.mqtwInvestments.setSettings(self.mem.settings, "frmProductSelector", "mqtwInvestments")
         self.verticalLayout.addWidget(self.mqtwInvestments)
         self.lblFound = QLabel(self)
         self.verticalLayout.addWidget(self.lblFound)

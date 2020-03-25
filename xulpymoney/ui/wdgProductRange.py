@@ -16,7 +16,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.setupUi(self)
         self.mem=mem
 
-        self.mqtw.settings(self.mem.settings, "wdgProductRange", "mqtw")
+        self.mqtw.setSettings(self.mem.settings, "wdgProductRange", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
 

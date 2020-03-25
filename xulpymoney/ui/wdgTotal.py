@@ -221,15 +221,15 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.setData=None#Será un TotalYear
         self.setGraphic=None #Será un TotalGraphic
         
-        self.mqtw.settings(self.mem.settings, "wdgTotal", "mqtw")
+        self.mqtw.setSettings(self.mem.settings, "wdgTotal", "mqtw")
         self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
-        self.mqtwTargets.settings(self.mem.settings, "wdgTotal", "mqtwTargets")
-        self.mqtwTargetsPlus.settings(self.mem.settings, "wdgTotal", "mqtwTargetsPlus")
-        self.mqtwInvestOrWork.settings(self.mem.settings,  "wdgTotal", "mqtwInvestOrWork")
-        self.mqtwMakeEndsMeet.settings(self.mem.settings, "wdgTotal", "mqtwMakeEndsMeet")
+        self.mqtwTargets.setSettings(self.mem.settings, "wdgTotal", "mqtwTargets")
+        self.mqtwTargetsPlus.setSettings(self.mem.settings, "wdgTotal", "mqtwTargetsPlus")
+        self.mqtwInvestOrWork.setSettings(self.mem.settings,  "wdgTotal", "mqtwInvestOrWork")
+        self.mqtwMakeEndsMeet.setSettings(self.mem.settings, "wdgTotal", "mqtwMakeEndsMeet")
         
         self.annualtarget=None#AnnualTarget Object
         
@@ -558,7 +558,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
+        wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=2
@@ -600,7 +600,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
+        wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         id_tiposoperaciones=1
@@ -642,7 +642,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
             wdg = mqtw(newtab)
-            wdg.settings(self.mem.settings, "wdgTotal","tblShowShellingOperations")
+            wdg.setSettings(self.mem.settings, "wdgTotal","tblShowShellingOperations")
             
             positive=Money(self.mem, 0, self.mem.localcurrency)
             negative=Money(self.mem, 0, self.mem.localcurrency)
@@ -715,7 +715,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
             wdg = mqtw(newtab)
-            wdg.settings(self.mem.settings, "wdgTotal","tblShowSellingLessOperations")
+            wdg.setSettings(self.mem.settings, "wdgTotal","tblShowSellingLessOperations")
             wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
             positive=Decimal(0)
@@ -760,7 +760,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings,"wdgTotal","mqtwShowDividends")
+        wdg.setSettings(self.mem.settings,"wdgTotal","mqtwShowDividends")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
         set=DividendHeterogeneusManager(self.mem)
@@ -786,7 +786,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings,"wdgTotal","mqtwShowComissions")
+        wdg.setSettings(self.mem.settings,"wdgTotal","mqtwShowComissions")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()
         
@@ -874,7 +874,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
+        wdg.setSettings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
         wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         wdg.table.setSelectionMode(QAbstractItemView.SingleSelection)
         wdg.table.setColumnCount(5)
@@ -946,7 +946,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QVBoxLayout(newtab)
         wdg = mqtw(newtab)
-        wdg.settings(self.mem.settings,"wdgTotal","myqtwShowPaidTaxes")
+        wdg.setSettings(self.mem.settings,"wdgTotal","myqtwShowPaidTaxes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()        
         

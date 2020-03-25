@@ -17,7 +17,7 @@ class wdgObjectSelector(QWidget, Ui_wdgInvestmentOperationsSelector):
     ## Manager must be a manager with objects
     def setManager(self, mem, manager, objectname):
         self.mem=mem
-        self.tbl.settings(self.mem, "{}_tbl".format(objectname))
+        self.tbl.setSettings(self.mem, "{}_tbl".format(objectname))
         self.manager=manager
         self.manager.myqtablewidget(self.tbl)
 

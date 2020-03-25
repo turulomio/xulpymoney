@@ -13,7 +13,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.setupUi(self)
         self.mem=mem
 
-        self.mqtwConcepts.settings(self.mem.settings, "frmAuxiliarTables", "mqtwConcepts")
+        self.mqtwConcepts.setSettings(self.mem.settings, "frmAuxiliarTables", "mqtwConcepts")
         self.mqtwConcepts.table.customContextMenuRequested.connect(self.on_mqtwConcepts_table_customContextMenuRequested)
         self.regenerate_list()
         self.mqtwConcepts_reload()

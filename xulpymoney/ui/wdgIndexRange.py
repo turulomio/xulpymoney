@@ -53,7 +53,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.benchmark=self.mem.data.benchmark
         
         
-        self.mqtw.settings(self.mem.settings, "wdgIndexRange", "mqtw")
+        self.mqtw.setSettings(self.mem.settings, "wdgIndexRange", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings

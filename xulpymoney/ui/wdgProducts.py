@@ -18,7 +18,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.setupUi(self)
         self.mem=mem
         self.mqtwInvestments.setSelectionMode(ManagerSelectionMode.List)
-        self.mqtwInvestments.settings(self.mem.settings, "wdgProducts", "mqtwInvestments")
+        self.mqtwInvestments.setSettings(self.mem.settings, "wdgProducts", "mqtwInvestments")
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)

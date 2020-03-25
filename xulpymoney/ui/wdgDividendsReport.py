@@ -10,7 +10,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.setupUi(self)
         self.mem=mem
 
-        self.mqtw.settings(self.mem.settings, "wdgDividendsReport", "mqtw")#mqtwObjects
+        self.mqtw.setSettings(self.mem.settings, "wdgDividendsReport", "mqtw")#mqtwObjects
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)

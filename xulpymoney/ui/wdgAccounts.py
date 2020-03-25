@@ -10,7 +10,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.mqtwAccounts.settings(self.mem.settings, "wdgAccounts", "mqtwAccounts")
+        self.mqtwAccounts.setSettings(self.mem.settings, "wdgAccounts", "mqtwAccounts")
         self.mqtwAccounts.table.cellDoubleClicked.connect(self.on_mqtwAccounts_cellDoubleClicked)
         self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())

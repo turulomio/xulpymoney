@@ -18,19 +18,19 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.selected=None
         
         self.viewIncomes=VCPie()
-        self.viewIncomes.settings(self.mem.settings, "wdgConcepts", "viewIncomes")
+        self.viewIncomes.setSettings(self.mem.settings, "wdgConcepts", "viewIncomes")
         self.layIncomes.addWidget(self.viewIncomes)
         self.viewExpenses=VCPie()
-        self.viewExpenses.settings(self.mem.settings, "wdgConcepts", "viewExpenses")
+        self.viewExpenses.setSettings(self.mem.settings, "wdgConcepts", "viewExpenses")
         self.layExpenses.addWidget(self.viewExpenses)
         self.expenses=self.mem.conceptos.ConceptManager_by_operation_type(1)
         self.expenseslist=None
         self.incomes=self.mem.conceptos.ConceptManager_by_operation_type(2)
         self.incomeslist=None
 
-        self.mqtwExpenses.settings(self.mem.settings, "wdgConcepts", "mqtwExpenses")
+        self.mqtwExpenses.setSettings(self.mem.settings, "wdgConcepts", "mqtwExpenses")
         self.mqtwExpenses.table.customContextMenuRequested.connect(self.on_mqtwExpenses_customContextMenuRequested)
-        self.mqtwIncomes.settings(self.mem.settings, "wdgConcepts", "mqtwIncomes")
+        self.mqtwIncomes.setSettings(self.mem.settings, "wdgConcepts", "mqtwIncomes")
         self.mqtwIncomes.table.customContextMenuRequested.connect(self.on_mqtwIncomes_customContextMenuRequested)
         
         dtFirst=Assets(self.mem).first_datetime_allowed_estimated()       

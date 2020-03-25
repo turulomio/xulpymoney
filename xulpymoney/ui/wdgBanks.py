@@ -20,12 +20,12 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.investments=InvestmentManager(self.mem) #Set
         self.accounts=AccountManager(self.mem)#Set
 
-        self.mqtwBanks.settings(self.mem.settings, "wdgBanks", "mqtwBanks")
+        self.mqtwBanks.setSettings(self.mem.settings, "wdgBanks", "mqtwBanks")
         self.mqtwBanks.table.customContextMenuRequested.connect(self.on_mqtwBanks_customContextMenuRequested)
         self.mqtwBanks.tableSelectionChanged.connect(self.on_mqtwBanks_tableSelectionChanged)
-        self.mqtwAccounts.settings(self.mem.settings, "wdgBanks", "mqtwAccounts")
+        self.mqtwAccounts.setSettings(self.mem.settings, "wdgBanks", "mqtwAccounts")
         self.mqtwAccounts.table.customContextMenuRequested.connect(self.on_mqtwAccounts_customContextMenuRequested)
-        self.mqtwInvestments.settings(self.mem.settings, "wdgBanks", "mqtwInvestments")
+        self.mqtwInvestments.setSettings(self.mem.settings, "wdgBanks", "mqtwInvestments")
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
 
         self.on_chkActives_stateChanged(Qt.Checked)#Carga eb
@@ -113,7 +113,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         d.setWindowTitle(self.tr("Banks graph"))
         view=VCPie(d)
         view.pie.setTitle(self.tr("Banks graph"))
-        view.settings(self.mem.settings, "wdgBanks", "pie")
+        view.setSettings(self.mem.settings, "wdgBanks", "pie")
         for bank in self.mem.data.banks_active().arr:
             view.pie.appendData(bank.name, bank.balance())
         view.display()

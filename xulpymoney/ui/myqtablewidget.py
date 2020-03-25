@@ -156,13 +156,16 @@ class mqtw(QWidget):
         if value % 3 ==1:
             self.on_actionSizeNeeded_triggered()
 
-    def settings(self, settings, settingsSection,  objectname):
+    def setSettings(self, settings, settingsSection,  objectname):
         self._settings=settings #Made private due it had the same name of the method
         #For all myQTableWidget in settings app
         self.setVerticalHeaderHeight(int(self._settings.value("myQTableWidget/rowheight", 24)))
         self._settingsSection=settingsSection
         self._settingsObject=objectname
         self.setObjectName(self._settingsObject)
+        
+    def settings(self):
+        return self._settings
 
     def clear(self):
         """Clear table"""
@@ -875,7 +878,7 @@ def example():
     mqtw_data.table.setSelectionMode(QAbstractItemView.SingleSelection)
     mqtw_data.setGenericContextMenu()
     hv=["Johnny be good"]*len(data)
-    mqtw_data.settings(mem.settings, "myqtablewidget", "tblExample")
+    mqtw_data.setSettings(mem.settings, "myqtablewidget", "tblExample")
     hh=["mqtw", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data.setData(hh, hv, data )
     mqtw_data.setOrderBy(2,  False)
@@ -884,7 +887,7 @@ def example():
     mqtw_data_with_object = mqtwObjects(w)
     mqtw_data_with_object.setGenericContextMenu()
     hv=["Johnny be good"]*len(data_object)
-    mqtw_data_with_object.settings(mem.settings, "myqtablewidget", "tblExample")
+    mqtw_data_with_object.setSettings(mem.settings, "myqtablewidget", "tblExample")
     hh=["mqtwObjects", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data_with_object.setDataWithObjects(hh, hv, data_object, additional=__additional_with_objects )
     mqtw_data_with_object.setOrderBy(2,  False)
@@ -893,7 +896,7 @@ def example():
     mqtw_manager = mqtwManager(w)    
     mqtw_manager.setSelectionMode(ManagerSelectionMode.List)
     mqtw_manager.table.customContextMenuRequested.connect(__on_mqtw_manager_customContextMenuRequested)
-    mqtw_manager.settings(mem.settings, "myqtablewidget", "tblExample")
+    mqtw_manager.setSettings(mem.settings, "myqtablewidget", "tblExample")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
 
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)

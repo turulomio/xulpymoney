@@ -15,7 +15,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.selCurrentOperations=None
 
         self.tab.setCurrentIndex(0)
-        self.mqtwOperations.settings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwOperations")
+        self.mqtwOperations.setSettings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwOperations")
         self.mqtwOperations.table.customContextMenuRequested.connect(self.on_mqtwOperations_customContextMenuRequested)
         self.mqtwOperations.table.itemSelectionChanged.connect(self.on_mqtwOperations_itemSelectionChanged)
         self.mqtwOperations.table.setColumnCount(5)
@@ -60,7 +60,7 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
 
 #####################################################################################################################33
 
-        self.mqtwCurrentOperations.settings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwCurrentOperations")
+        self.mqtwCurrentOperations.setSettings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwCurrentOperations")
         self.mqtwCurrentOperations.table.customContextMenuRequested.connect(self.on_mqtwCurrentOperations_customContextMenuRequested)
         self.mqtwCurrentOperations.table.itemSelectionChanged.connect(self.on_mqtwCurrentOperations_itemSelectionChanged)
         self.mqtwCurrentOperations.table.setColumnCount(5)

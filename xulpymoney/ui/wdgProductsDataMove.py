@@ -9,7 +9,7 @@ class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
         self.origin=origin
         self.destiny=destiny
         self.setupUi(self)
-        self.table.settings(self.mem, "wdgProductsDataMove") 
+        self.table.setSettings(self.mem, "wdgProductsDataMove") 
         self.origin.needStatus(3)
         self.destiny.needStatus(3)
         self.reload()

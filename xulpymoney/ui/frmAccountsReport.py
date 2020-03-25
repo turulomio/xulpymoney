@@ -42,18 +42,18 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
         self.creditcardoperations=CreditCardOperationManager(self.mem)#CreditCardOperationManager. Selected will be another CreditCardOperationManager
           
-        self.mqtwOperations.settings(self.mem.settings, "frmAccountsReport", "mqtwOperations")
+        self.mqtwOperations.setSettings(self.mem.settings, "frmAccountsReport", "mqtwOperations")
         self.mqtwOperations.table.customContextMenuRequested.connect(self.on_mqtwOperations_customContextMenuRequested)
         self.mqtwOperations.table.itemSelectionChanged.connect(self.on_mqtwOperations_itemSelectionChanged)
-        self.mqtwCreditCards.settings(self.mem.settings, "frmAccountsReport", "mqtwCreditCards")
+        self.mqtwCreditCards.setSettings(self.mem.settings, "frmAccountsReport", "mqtwCreditCards")
         self.mqtwCreditCards.table.customContextMenuRequested.connect(self.on_mqtwCreditCards_customContextMenuRequested)
         self.mqtwCreditCards.table.itemSelectionChanged.connect(self.on_mqtwCreditCards_itemSelectionChanged)
-        self.mqtwCreditCardOperations.settings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperations")
+        self.mqtwCreditCardOperations.setSettings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperations")
         self.mqtwCreditCardOperations.table.customContextMenuRequested.connect(self.on_mqtwCreditCardOperations_customContextMenuRequested)
         self.mqtwCreditCardOperations.table.itemSelectionChanged.connect(self.on_mqtwCreditCardOperations_itemSelectionChanged)
 
         self.mqtwCreditCardOperations.table.setSelectionMode(QAbstractItemView.MultiSelection)        
-        self.mqtwCreditCardOperationsHistorical.settings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperationsHistorical")
+        self.mqtwCreditCardOperationsHistorical.setSettings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperationsHistorical")
     
         self.wdgDtPago.set(datetime.now(), self.mem.localzone_name)
         

@@ -17,10 +17,10 @@ class wdgQuotesSaveResult(QWidget, Ui_wdgQuotesSaveResult):
     ## Load information in widget
     def display(self, mem, added, ignored, updated, errors):
         self.mem=mem
-        self.mqtwAdded.settings(self.mem.settings, "wdgQuotesSaveResult", "mqtwAdded") 
-        self.mqtwIgnored.settings(self.mem.settings, "wdgQuotesSaveResult", "mqtwIgnored") 
-        self.mqtwUpdated.settings(self.mem.settings, "wdgQuotesSaveResult", "mqtwUpdated") 
-        self.mqtwErrors.settings(self.mem.settings, "wdgQuotesSaveResult", "mqtwErrors") 
+        self.mqtwAdded.setSettings(self.mem.settings, "wdgQuotesSaveResult", "mqtwAdded") 
+        self.mqtwIgnored.setSettings(self.mem.settings, "wdgQuotesSaveResult", "mqtwIgnored") 
+        self.mqtwUpdated.setSettings(self.mem.settings, "wdgQuotesSaveResult", "mqtwUpdated") 
+        self.mqtwErrors.setSettings(self.mem.settings, "wdgQuotesSaveResult", "mqtwErrors") 
         self.tab.setTabText(0, self.tr("Added") + " ({})".format(added.length()))
         self.tab.setTabText(1, self.tr("Updated") + " ({})".format(updated.length()))
         self.tab.setTabText(2, self.tr("Ignored") + " ({})".format(ignored.length()))

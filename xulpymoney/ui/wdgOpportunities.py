@@ -16,7 +16,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         self.opportunities=None 
          
         self.txtInvest.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.mqtwOpportunities.settings(self.mem.settings, "wdgOpportunities", "mqtwOpportunities")
+        self.mqtwOpportunities.setSettings(self.mem.settings, "wdgOpportunities", "mqtwOpportunities")
         self.mqtwOpportunities.table.customContextMenuRequested.connect(self.on_mqtwOpportunities_customContextMenuRequested)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.opportunities.date_of_the_first_database_oppportunity().year,  datetime.date.today().year, datetime.date.today().year)

@@ -13,7 +13,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.mqtwInvestments.settings(self.mem.settings, "wdgLastCurrent", "mqtwInvestments")
+        self.mqtwInvestments.setSettings(self.mem.settings, "wdgLastCurrent", "mqtwInvestments")
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
         self.spin.blockSignals(True)

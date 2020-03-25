@@ -31,9 +31,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         self.mqtw.selected=None#For table
         self.mqtwCurrent.selected=None#For tblCurrent
-        self.mqtw.settings(self.mem.settings,  "wdgInvestmentsOperations", "mqtw")
+        self.mqtw.setSettings(self.mem.settings,  "wdgInvestmentsOperations", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
-        self.mqtwCurrent.settings(self.mem.settings, "wdgInvestmentsOperations", "mqtwCurrent")
+        self.mqtwCurrent.setSettings(self.mem.settings, "wdgInvestmentsOperations", "mqtwCurrent")
         self.mqtwCurrent.table.customContextMenuRequested.connect(self.on_mqtwCurrent_customContextMenuRequested)
         self.tab.setCurrentIndex(0)
         self.load()
