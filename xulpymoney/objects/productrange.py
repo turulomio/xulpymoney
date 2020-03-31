@@ -1,6 +1,8 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QAbstractItemView
+from datetime import date, timedelta
 from decimal import Decimal
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.investment import InvestmentManager
@@ -98,11 +100,27 @@ class ProductRangeManager(ObjectManager, QObject):
         product_lowest=self.product.result.ohclYearly.lowest().low
         range_highest=product_highest*Decimal(1+0.2)#20%
         range_lowest=product_lowest*Decimal(1-0.2)#20%
+        
+        
+        penultimate=dtaware_day_end_from_date(date.today()-timedelta(days=1), self.mem.localzone_name)
+        sma_over_price=len(self.product.result.ohclDaily.list_of_sma_over_price(penultimate))
+        
         current_value=10000000
+        i=0
         while current_value>range_lowest:
+            pr=ProductRange(self.mem, self.product, current_value, percentage_down, percentage_up)
+            # Recomendation of investment
+            if sma_over_price==3 and i % 4==0:
+                pr.recomendation_invest=True
+            elif sma_over_price==2 and i%2==0:
+                pr.recomendation_invest=True
+            elif sma_over_price<=1:
+                pr.recomendation_invest=True
+            # Append in view            
             if current_value>=range_lowest and current_value<=range_highest:
-                self.append(ProductRange(self.mem, self.product, current_value, percentage_down, percentage_up))
+                self.append(pr)
             current_value=current_value*(1-percentage_down.value)
+            i=i+1
             
             
     def mqtw(self, wdg):
@@ -110,12 +128,13 @@ class ProductRangeManager(ObjectManager, QObject):
         for i, o in enumerate(self.arr):
             data.append([
                 o.value, 
+                o.recomendation_invest, 
                 o.getInvestmentsOperationsInside().string_with_names(), 
                 o.getOrdersInside().string_with_names(), 
                 o, 
             ])
         wdg.setDataWithObjects(
-            [self.tr("Center"), self.tr("Product operations"), self.tr("Product orders"),
+            [self.tr("Center"), self.tr("Invest"), self.tr("Product operations"), self.tr("Product orders"),
             ], 
             None, 
             data,  
