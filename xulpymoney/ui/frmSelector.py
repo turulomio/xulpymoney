@@ -54,9 +54,11 @@ class wdgManagerSelector(QWidget):
         self.mqtw=mqtw(self)
         self.mqtw.showSearchOptions(True)
         self.mqtw.showSearchCloseButton(False)
+        self.mqtw.setGenericContextMenu()
         self.mqtwSelected=mqtw(self)
         self.mqtwSelected.showSearchOptions(True)
         self.mqtwSelected.showSearchCloseButton(False)
+        self.mqtwSelected.setGenericContextMenu()
         
         self.laybuttons = QVBoxLayout()
         self.cmdLeft=QToolButton(self)
@@ -251,7 +253,7 @@ class cmbManagerSelector(QWidget):
     def selected(self):
         return self.frm.widget.selected
 
-if __name__ == '__main__':
+def example():
     from libmanagers import ObjectManager_With_IdName
     from PyQt5.QtCore import QSettings
     class Mem:
@@ -264,7 +266,7 @@ if __name__ == '__main__':
             self.name=name
             
         def qicon(self):
-            return QIcon(":/prueba.svg")
+            return QIcon(":/xulpymoney/xulpymoney.png")
     
     class PruebaManager(ObjectManager_With_IdName):
         def __init__(self):
@@ -283,6 +285,8 @@ if __name__ == '__main__':
     mem=Mem()
     from PyQt5.QtWidgets import QApplication
     app = QApplication([])
+    from importlib import import_module
+    import_module("xulpymoney.images.xulpymoney_rc")
 
     w = cmbManagerSelector()
     #w.frm.widget.hideUpDown()

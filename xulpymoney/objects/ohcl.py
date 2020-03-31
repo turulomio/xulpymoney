@@ -1,7 +1,9 @@
 from datetime import timedelta, date
 from decimal import Decimal
+from logging import debug
 from xulpymoney.datetime_functions import dtaware_day_end_from_date,  string2date, dtaware
-from  xulpymoney.libmanagers import ObjectManager
+from xulpymoney.decorators import timeit
+from xulpymoney.libmanagers import ObjectManager, DatetimeValueManager
 from xulpymoney.objects.percentage import Percentage
 
 ## Class to manage Open High Close Low Values in a period of time of a productº
@@ -241,31 +243,31 @@ class OHCLManager(ObjectManager):
                     closes.append(ohcl.close)
         return closes
 
-
-    def sma(self, number):
-        """
-        simple movil average
-            Return a sma array of tuples (datetime,sma_n)
-            Normal numbers are 50 and 200
-            
-        Calculamos segun
-        a=[1,2,3,4]
-        sum([0:2])=3
-        """
-        def average(inicio, final):
-            suma=Decimal(0)
-            for ohcl in self.arr[inicio:final]:
-                suma=suma+ohcl.close
-            return suma/(final-inicio)
-        ######################
-        if self.length()<=number:
-            return None
-            
-        sma=[]
-        for i, ohcl in enumerate(self.arr):
-            if i>=number:
-                sma.append((ohcl.datetime(), average(i-number, i)))
-        return sma
+#
+#    def sma(self, number):
+#        """
+#        simple movil average
+#            Return a sma array of tuples (datetime,sma_n)
+#            Normal numbers are 50 and 200
+#            
+#        Calculamos segun
+#        a=[1,2,3,4]
+#        sum([0:2])=3
+#        """
+#        def average(inicio, final):
+#            suma=Decimal(0)
+#            for ohcl in self.arr[inicio:final]:
+#                suma=suma+ohcl.close
+#            return suma/(final-inicio)
+#        ######################
+#        if self.length()<=number:
+#            return None
+#            
+#        sma=[]
+#        for i, ohcl in enumerate(self.arr):
+#            if i>=number:
+#                sma.append((ohcl.datetime(), average(i-number, i)))
+#        return sma
         
     ## Calculates the median value of all OHCL.close values
     ## This function is in OHCLManager and can be used in all derivated classes
@@ -326,6 +328,28 @@ class OHCLManager(ObjectManager):
                 if ohcl.datetime()>=from_dt:
                     datetimes.append(ohcl.datetime())
         return datetimes
+        
+    ## From this value you can get sma, median...
+    ## @return a DatetimeValueManager from libmanagers
+    def DatetimeValueManager(self,attribute,  from_dt=None):
+        r=DatetimeValueManager()
+        if from_dt==None:
+            for ohcl in self.arr:
+                r.appendDV(ohcl.datetime(), getattr(ohcl, attribute))
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    r.appendDV(ohcl.datetime(), getattr(ohcl, attribute))
+        return r
+
+    ## Return the value of the attribute of the <= dat 
+    ## @param dt datetime
+    ## @param attribute. Can be "open", "high", "close","low"
+    def find_by_datetime(self, dt, attribute):
+        for o in reversed(self.arr):
+            if o.datetime()<=dt:
+                return dt
+        return None
 
     ## Return the ohcl with the bigest ohcl.high
     def highest(self):
@@ -350,6 +374,21 @@ class OHCLManager(ObjectManager):
     ## @returns string with the limits of the price [loweest, highest]
     def string_limits(self):
         return "[{},{}]".format(self.product.money(self.lowest().low), self.product.money(self.highest().high))
+        
+    ## @param dt. datetime
+    ## @return int. With the number of standard sma (10, 50,200) that are over product current price
+    @timeit
+    def list_of_sma_over_price(self,  dt,   smas=[10, 50, 200]):
+        dvm=self.DatetimeValueManager("close")
+        r=[]
+        for sma in smas:
+            sma_value=dvm.sma(sma).find_le(dt).value
+            debug("{} ({}): {} -> {}".format(self.product.name, self.product.result.basic.last.money(), sma,  sma_value))
+            if self.product.result.basic.last.quote<sma_value:
+                r.append(sma)
+        debug (str(r))
+        return r
+        
 
 class OHCLDailyManager(OHCLManager):
     def __init__(self, mem, product):

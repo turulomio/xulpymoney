@@ -1,8 +1,9 @@
 from PyQt5.QtCore import pyqtSlot, QObject
 from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from logging import debug
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.assets import Assets
@@ -30,8 +31,11 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         products.qcombobox(self.cmbProducts, product_in_settings)
 
     def load_data(self):
+        self.product.needStatus(2)
         percentage_down=Percentage(self.spnDown.value(), 100)
         percentage_gains=Percentage(self.spnGains.value(), 100)
+        penultimate=dtaware_day_end_from_date(date.today()-timedelta(days=1), self.mem.localzone_name)
+        smas_over_price=self.product.result.ohclDaily.list_of_sma_over_price(penultimate)
         self.prm=ProductRangeManager(self.mem, self.product, percentage_down, percentage_gains)
         self.prm.mqtw(self.mqtw)
 
@@ -45,14 +49,15 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             self.product.result.basic.last.money(),
             self.product.result.basic.last.datetime, 
         )
-        s=s + ". " + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
+        s=s +"\n" + self.tr("Yesterday price ({}) was under {} standard sma lines {}.").format(self.product.result.basic.penultimate.money(), len(smas_over_price), str(smas_over_price))
+        s=s + "\n" + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
         s=s + "\n" + self.tr("Total invested: {}. Current balance: {} ({})").format(
             self.investment_merged.invertido(),  
             self.investment_merged.balance(), 
             self.investment_merged.op_actual.tpc_total(self.product.result.basic.last), 
         )
         s=s + "\n" + self.tr("Average price: {}").format(
-            self.investment_merged.op_actual.average_price(), 
+            self.investment_merged.op_actual.average_price()
         )
         s=s + "\n" + self.tr("Selling price to gain {}: {}. Gains at this selling price: {} ({})").format(
             percentage_gains, 
@@ -64,7 +69,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         s=s + "\n\n"+ self.tr("Zero risk assets: {}".format(Assets(self.mem).patrimonio_riesgo_cero(date.today())))
 
         self.lblTotal.setText(s)
-
+        
     def on_cmd_pressed(self):
         if hasattr(self, "product"):
             self.load_data()

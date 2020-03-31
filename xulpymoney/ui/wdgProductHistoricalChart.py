@@ -105,26 +105,29 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                     self.view.appendCandlestickSeriesData(candle, ohcl.datetime(), ohcl.open, ohcl.high, ohcl.close, ohcl.low)
             self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
+            
+        dvm=self.setohcl.DatetimeValueManager("close")
+            
         if self.chkSMA10.isChecked() and self.setohcl.length()>10:#SMA10 line series
             sma10=self.view.appendTemporalSeries(self.tr("SMA10"))
             sma10.setColor(QColor(255, 165, 165))
-            for dt, value in self.setohcl.sma(10):
-                if dt>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma10, dt, value)
+            for dv in dvm.sma(10).arr:
+                if dv.datetime>=selected_datetime:
+                    self.view.appendTemporalSeriesData(sma10, dv.datetime, dv.value)
 
         if self.chkSMA50.isChecked() and self.setohcl.length()>50:#SMA50 line series
             sma50=self.view.appendTemporalSeries(self.tr("SMA50"))
             sma50.setColor(QColor(255, 170, 255))
-            for dt, value in self.setohcl.sma(50):
-                if dt>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma50, dt, value)
+            for dv in dvm.sma(50).arr:
+                if dv.datetime>=selected_datetime:
+                    self.view.appendTemporalSeriesData(sma50, dv.datetime, dv.value)
                 
         if self.chkSMA200.isChecked() and self.setohcl.length()>200:#SMA200 line series
             sma200=self.view.appendTemporalSeries(self.tr("SMA200"))
             sma200.setColor(QColor(165, 165, 165))
-            for dt, value in self.setohcl.sma(200):
-                if dt>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma200, dt, value)
+            for dv in dvm.sma(200).arr:
+                if dv.datetime>=selected_datetime:
+                    self.view.appendTemporalSeriesData(sma200, dv.datetime, dv.value)
 
         if self.chkMedian.isChecked():#Median value
             median=self.setohcl.closes_median_value()
