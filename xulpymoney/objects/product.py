@@ -280,6 +280,27 @@ class Product(QObject):
         cur.close()
         return resultado
 
+    ## Returns the highest operation price of all investments in mem of this product
+    ## Used in wdgProductRange
+    def highest_investment_operation_price(self):
+        r=0
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self)
+        for op in inv.op_actual.arr:
+            if op.valor_accion>r:
+                r=op.valor_accion
+        return r
+    ## Returns the highest operation price of all investments in mem of this product
+    ## Used in wdgProductRange
+    ## When you add shares to an invesment operation, sometimes price is 0. Sometimes I want to ignore them
+    def lowest_investment_operation_price(self, ignore_zero=True):
+        r=100000000
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self)
+        for op in inv.op_actual.arr:
+            if op.valor_accion<r:
+                if op.valor_accion==0 and ignore_zero==True:
+                    continue
+                r=op.valor_accion
+        return r
 
     ## Search in Internet for last quote information
     ## @return QuoteManager QuoteManager object with the quotes found in Internet

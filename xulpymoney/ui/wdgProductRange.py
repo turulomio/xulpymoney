@@ -19,10 +19,6 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mqtw.setSettings(self.mem.settings, "wdgProductRange", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
-
-        self.spnDown.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnDown", "5"))
-        self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains", "5"))
-        self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest", "10000"))
         product_in_settings=self.mem.data.products.find_by_id(self.mem.settingsdb.value_integer("wdgProductRange/product", "79329"))
 
         products=self.mem.data.investments.ProductManager_with_investments_distinct_products(only_with_shares=True)
@@ -38,9 +34,9 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.prm.setInvestRecomendation(ProductRangeInvestRecomendation.ThreeSMA)
         self.prm.mqtw(self.mqtw)
 
-        self.mem.settingsdb.setValue("wdgProductRange/spnDown", self.spnDown.value())
-        self.mem.settingsdb.setValue("wdgProductRange/spnGains", self.spnGains.value())
-        self.mem.settingsdb.setValue("wdgProductRange/invest", self.txtInvertir.text())
+        self.mem.settingsdb.setValue("wdgProductRange/spnDown_product_{}".format(self.product.id), self.spnDown.value())
+        self.mem.settingsdb.setValue("wdgProductRange/spnGains_product_{}".format(self.product.id), self.spnGains.value())
+        self.mem.settingsdb.setValue("wdgProductRange/invest_product_{}".format(self.product.id), self.txtInvertir.text())
         self.mem.settingsdb.setValue("wdgProductRange/product", self.product.id)
         self.mem.settings.sync()
 
@@ -80,6 +76,9 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             debug("cmbProducts index changed to {}".format(index))
             self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
             self.investment_merged=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.product)
+            self.spnDown.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnDown_product_{}".format(self.product.id), "5"))
+            self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains_product_{}".format(self.product.id), "5"))
+            self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest_product_{}".format(self.product.id), "10000"))
             self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):

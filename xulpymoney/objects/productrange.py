@@ -99,13 +99,11 @@ class ProductRangeManager(ObjectManager, QObject):
         self.decimals=decimals
         
         # Create ranges
-        product_highest=self.product.result.ohclYearly.highest().high
-        product_lowest=self.product.result.ohclYearly.lowest().low
-        range_highest=product_highest*Decimal(1+0.1)#20%
-        range_lowest=product_lowest*Decimal(1-0.1)#20%
-        
-        
-        
+        range_highest=self.product.highest_investment_operation_price()*Decimal(1+self.percentage_down.value*10)#5 times up value
+        range_lowest=self.product.lowest_investment_operation_price()*Decimal(1-self.percentage_down.value*10)#5 times down value
+        if range_lowest<Decimal(0.001):#To avoid infinity loop
+            range_lowest=Decimal(0.001)
+
         self.highest_range_value=10000000
         current_value=self.highest_range_value
         i=0
