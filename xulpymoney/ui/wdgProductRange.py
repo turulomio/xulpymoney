@@ -1,7 +1,6 @@
 from PyQt5.QtCore import pyqtSlot, QObject
 from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
 from datetime import date
-from decimal import Decimal
 from logging import debug
 from xulpymoney.decorators import timeit
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -21,10 +20,10 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
 
-        self.spnDown.setValue(float(self.mem.settingsdb.value("wdgProductRange/spnDown", "5")))
-        self.spnGains.setValue(float(self.mem.settingsdb.value("wdgProductRange/spnGains", "5")))
-        self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgProductRange/invest", "10000")))
-        product_in_settings=self.mem.data.products.find_by_id(int(self.mem.settingsdb.value("wdgProductRange/product", "79329")))
+        self.spnDown.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnDown", "5"))
+        self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains", "5"))
+        self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest", "10000"))
+        product_in_settings=self.mem.data.products.find_by_id(self.mem.settingsdb.value_integer("wdgProductRange/product", "79329"))
 
         products=self.mem.data.investments.ProductManager_with_investments_distinct_products(only_with_shares=True)
         products.order_by_name()
@@ -48,7 +47,8 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         s=self.tr("Product current price: {} at {}").format(
             self.product.result.basic.last.money(),
             self.product.result.basic.last.datetime, 
-        )        s=s + "\n" + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
+        )
+        s=s + "\n" + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
         s=s + "\n" + self.tr("Total invested: {}. Current balance: {} ({})").format(
             self.investment_merged.invertido(),  
             self.investment_merged.balance(), 

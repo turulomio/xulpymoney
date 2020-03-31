@@ -29,7 +29,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         
         dtFirst=Assets(self.mem).first_datetime_allowed_estimated()
         dtLast=Assets(self.mem).last_datetime_allowed_estimated()
-        currentyear=int(self.mem.settingsdb.value("wdgAPR/cmbYear", dtFirst.year))
+        currentyear=self.mem.settingsdb.value_integer("wdgAPR/cmbYear", dtFirst.year)
         self.wdgYear.initiate(dtFirst.year,  dtLast.year, currentyear)#Push an wdgYear changed
         self.wdgYear.changed.connect(self.on_my_wdgYear_changed)
         self.on_my_wdgYear_changed()

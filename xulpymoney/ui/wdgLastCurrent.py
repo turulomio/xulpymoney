@@ -17,9 +17,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
         self.spin.blockSignals(True)
-        self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-33")))
+        self.spin.setValue(self.mem.settingsdb.value_integer("wdgLastCurrent/spin", "-33"))
         self.spin.blockSignals(False)
-        self.cmbSameProduct.setCurrentIndex(int(self.mem.settingsdb.value("wdgLastCurrent/viewmode", 0)))
+        self.cmbSameProduct.setCurrentIndex(self.mem.settingsdb.value_integer("wdgLastCurrent/viewmode", "0"))
         
     def mqtwInvestments_reload(self):
         self.investments.myqtablewidget_lastCurrent(self.mqtwInvestments, Percentage(self.spin.value(), 100))

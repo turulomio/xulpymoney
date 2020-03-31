@@ -49,18 +49,16 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.setupUi(self)
         self.mem=mem
          
-        
         self.benchmark=self.mem.data.benchmark
-        
         
         self.mqtw.setSettings(self.mem.settings, "wdgIndexRange", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.table.itemSelectionChanged.connect(self.on_mqtw_itemSelectionChanged)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings
                 
-        self.spin.setValue(float(self.mem.settingsdb.value("wdgIndexRange/spin", "2")))
-        self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.txtMinimo.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/minimo", "1000")))        
+        self.spin.setValue(self.mem.settingsdb.value_float("wdgIndexRange/spin", "2"))
+        self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgIndexRange/invertir", "10000"))
+        self.txtMinimo.setText(self.mem.settingsdb.value_decimal("wdgIndexRange/minimo", "1000"))
         
         self.cmbBenchmarkCurrent_load()
         self.load_data()

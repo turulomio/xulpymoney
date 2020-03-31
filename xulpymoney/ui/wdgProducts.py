@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from logging import debug
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.ui.frmProductReport import frmProductReport
-from xulpymoney.casts import  list2string
 from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.objects.quote import QuoteAllIntradayManager
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
@@ -24,7 +23,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.arrInt=arrInt#Lista de ids of products showed and used to show
         self.build_array_from_arrInt()
-
+        self.favorites=self.mem.settingsdb.value_list_of_integers("mem/favorites",  "")
+        
     def build_array_from_arrInt(self):        
         self.products=self.mem.data.products.ProductManager_with_id_in_list(self.arrInt)
         self.products.needStatus(needstatus=1, progress=True)
@@ -34,19 +34,18 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot()
     def on_actionFavorites_triggered(self):      
-        if self.mqtwInvestments.selected[0].id in self.mem.favorites:
-            self.mem.favorites.remove(self.mqtwInvestments.selected[0].id)
+        if self.mqtwInvestments.selected[0].id in self.favorites:
+            self.favorites.remove(self.mqtwInvestments.selected[0].id)
         else:
-            self.mem.favorites.append(self.mqtwInvestments.selected[0].id)
-        debug("Favorites: {}".format(self.mem.favorites))
-        self.mem.settingsdb.setValue("mem/favorites", list2string(self.mem.favorites))
+            self.favorites.append(self.mqtwInvestments.selected[0].id)
+        debug("Favorites: {}".format(self.favorites))
+        self.mem.settingsdb.setValue("mem/favorites", self.favorites)
         
         del self.arrInt
         self.arrInt=[]
-        for f in self.mem.favorites:
+        for f in self.favorites:
             self.arrInt.append(f)
         self.build_array_from_arrInt()
-        
 
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
@@ -152,7 +151,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavorites)
         if len(self.mqtwInvestments.selected)==1:
-            if self.mqtwInvestments.selected[0].id in self.mem.favorites:
+            if self.mqtwInvestments.selected[0].id in self.favorites:
                 self.actionFavorites.setText(self.tr("Remove from favorites"))
             else:
                 self.actionFavorites.setText(self.tr("Add to favorites"))

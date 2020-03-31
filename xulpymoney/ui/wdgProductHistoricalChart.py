@@ -57,7 +57,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             self.spnGainsPercentage.blockSignals(False)
         else:
             self.spnGainsPercentage.blockSignals(True)
-            self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
+            self.spnGainsPercentage.setValue(self.mem.settingsdb.value_float("frmSellingPoint/lastgainpercentage",  "5"))
             self.spnGainsPercentage.blockSignals(False)
         
         self.cmbOHCLDuration.currentIndexChanged.disconnect()

@@ -27,12 +27,12 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
 
     def setProduct(self,  product):
         self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(product.id))
-        self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
+        self.txtAmount.setText(self.mem.settingsdb.value_decimal("wdgIndexRange/invertir", "10000"))
         
     ## Sets an investment programatically
     def setInvestment(self, investment):
         self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
-        self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
+        self.txtAmount.setText(self.mem.settingsdb.value_decimal("wdgIndexRange/invertir", "10000"))
 
     def cmbPrice_load(self):       
         if self.product:

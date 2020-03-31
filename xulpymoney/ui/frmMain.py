@@ -468,15 +468,12 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionFavorites_triggered(self):
-        if len(self.mem.favorites)==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("There aren't favorite products"))
-            m.exec_()     
+        favorites=self.mem.settingsdb.value_list_of_integers("mem/favorites", "")
+        if len(favorites)==0:
+            qmessagebox(self.tr("There aren't favorite products"))
             return
         self.w.close()
-        self.w=wdgProducts(self.mem, self.mem.favorites)
+        self.w=wdgProducts(self.mem, favorites)
         self.layout.addWidget(self.w)
         self.w.show()
 

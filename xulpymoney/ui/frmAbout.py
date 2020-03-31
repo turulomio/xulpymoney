@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
 from PyQt5.QtChart import PYQT_CHART_VERSION_STR
-from xulpymoney.datetime_functions import string2dtnaive
 from xulpymoney.ui.Ui_frmAbout import Ui_frmAbout
 from xulpymoney.version import __version__,  __versiondate__
 
@@ -34,7 +33,7 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.textEdit.setHtml(s)
         self.lblVersion.setText("{} ({})".format(__version__, __versiondate__))
-        productsversion=string2dtnaive(self.mem.settingsdb.value("Version", "197001010000"), "%Y%m%d%H%M")
+        productsversion=self.mem.settingsdb.value_datetime_naive("Version", "197001010000", "%Y%m%d%H%M")
         self.lblProductsVersion.setText(self.tr("Database version: {}").format(productsversion))
         self.mqtwSoftware.setSettings(self.mem.settings, "frmAbout", "mqtwSoftware")
         self.mqtwStatistics.setSettings(self.mem.settings, "frmAbout", "mqtwStatistics")

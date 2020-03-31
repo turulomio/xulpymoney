@@ -38,7 +38,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.mqtw.setSettings(self.mem.settings, "frmSellingPoint", "mqtw")
         self.mqtwSP.setSettings(self.mem.settings, "frmSellingPoint", "mqtwSP")
         
-        self.spnGainsPercentage.setValue(float(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  10)))
+        self.spnGainsPercentage.setValue(self.mem.settingsdb.value_float("frmSellingPoint/lastgainpercentage",  "10"))
         
         self.lblPriceSymbol.setText(currency_symbol(self.investment.product.currency))
         self.lblAmountSymbol.setText(currency_symbol(self.investment.account.currency))

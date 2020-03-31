@@ -6,7 +6,6 @@ from xulpymoney.objects.opportunity import OpportunityManager
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalOpportunity
 from xulpymoney.ui.wdgCalculator import wdgCalculator
-from decimal import Decimal
 
 class wdgOpportunities(QWidget, Ui_wdgOpportunities):
     def __init__(self, mem,  parent=None):
@@ -15,7 +14,7 @@ class wdgOpportunities(QWidget, Ui_wdgOpportunities):
         self.mem=mem
         self.opportunities=None 
          
-        self.txtInvest.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
+        self.txtInvest.setText(self.mem.settingsdb.value_decimal("wdgIndexRange/invertir", "10000"))
         self.mqtwOpportunities.setSettings(self.mem.settings, "wdgOpportunities", "mqtwOpportunities")
         self.mqtwOpportunities.table.customContextMenuRequested.connect(self.on_mqtwOpportunities_customContextMenuRequested)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())

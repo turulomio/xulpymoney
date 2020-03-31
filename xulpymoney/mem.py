@@ -4,14 +4,14 @@ from PyQt5.QtWidgets import QApplication
 from argparse import ArgumentParser, RawTextHelpFormatter
 from colorama import Fore, Style
 from datetime import datetime
-from decimal import Decimal, getcontext
+from decimal import  getcontext
 from logging import info, basicConfig, DEBUG, INFO, CRITICAL, ERROR, WARNING, debug
 from os import path, makedirs
 from pytz import timezone
 from signal import signal, SIGINT
 from sys import exit, argv
 from xulpymoney.connection_pg import argparse_connection_arguments_group
-from xulpymoney.casts import str2bool, string2list_of_integers
+from xulpymoney.database_update import database_update, SettingsDB
 from xulpymoney.objects.account import AccountManager, AccountManager_from_sql
 from xulpymoney.objects.bank import BankManager
 from xulpymoney.objects.agrupation import AgrupationManager
@@ -24,12 +24,11 @@ from xulpymoney.objects.operationtype import OperationTypeManager_hardcoded
 from xulpymoney.objects.product import ProductUpdate, ProductManager
 from xulpymoney.objects.productmode import ProductModesManager
 from xulpymoney.objects.producttype import ProductTypeManager
-from xulpymoney.objects.settingsdb import SettingsDB
 from xulpymoney.objects.simulationtype import SimulationTypeManager
 from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.objects.zone import ZoneManager
 from xulpymoney.package_resources import package_filename
-from xulpymoney.version import __version__, __versiondate__
+from xulpymoney.version import __version__, __versiondate__, __versiondatetime__
 from xulpymoney.translationlanguages import TranslationLanguageManager
 
         
@@ -50,7 +49,7 @@ class DBData:
         self.products.load_from_db("select * from products", progress)
         debug("DBData > Products took {}".format(datetime.now()-start))
         
-        self.benchmark=self.products.find_by_id(int(self.mem.settingsdb.value("mem/benchmark", "79329" )))
+        self.benchmark=self.products.find_by_id(self.mem.settingsdb.value_integer("mem/benchmarkid", 79329 ))
         self.benchmark.needStatus(2)
         
         #Loading currencies
@@ -146,10 +145,15 @@ class Mem(QObject):
     def __init__(self):
         QObject.__init__(self)
         self.dir_tmp=self.dirs_create()
-        self.con=None
         self.inittime=datetime.now()
         self.load_data_in_code()
         signal(SIGINT, self.signal_handler)
+        
+    ## @param mode Qt or Console
+    def setConnection(self, con, mode):
+        self.con=con
+        self.settingsdb=SettingsDB(self.con)
+        database_update(self.con, "xulpymoney", __versiondatetime__, mode)
 
     ## If you want to translate hardcoded string you can use mem.tr due to strings are into Mem Class
     def trHS(self, s):
@@ -290,7 +294,6 @@ class MemXulpymoney(Mem):
     def __init__(self):        
         Mem.__init__(self)     
         
-        self.settingsdb=SettingsDB(self)
         
         self.inittime=datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
@@ -378,12 +381,11 @@ class MemXulpymoney(Mem):
             self.data.load(progress)
         
         #mem Variables con base de datos
-        self.dividendwithholding=Decimal(self.settingsdb.value("mem/dividendwithholding", "0.19"))
-        self.taxcapitalappreciation=Decimal(self.settingsdb.value("mem/taxcapitalappreciation", "0.19"))
-        self.taxcapitalappreciationbelow=Decimal(self.settingsdb.value("mem/taxcapitalappreciationbelow", "0.5"))
-        self.gainsyear=str2bool(self.settingsdb.value("mem/gainsyear", "False"))
-        self.favorites=string2list_of_integers(self.settingsdb.value("mem/favorites", ""))
-        self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
+        self.dividendwithholding=self.settingsdb.value_decimal("mem/dividendwithholding", "0.19")
+        self.taxcapitalappreciation=self.settingsdb.value_decimal("mem/taxcapitalappreciation", "0.19")
+        self.taxcapitalappreciationbelow=self.settingsdb.value_decimal("mem/taxcapitalappreciationbelow", "0.5")
+        self.gainsyear=self.settingsdb.value_boolean("mem/gainsyear", "False")
+        self.fillfromyear=self.settingsdb.value_integer("mem/fillfromyear", "2005")
         
         info("Loading db data took {}".format(datetime.now()-inicio))
         

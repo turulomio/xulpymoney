@@ -18,14 +18,8 @@ def main():
     mem.frmAccess.exec_()
 
     if mem.frmAccess.result()==QDialog.Accepted:
-        mem.con=mem.frmAccess.con
+        mem.setConnection(mem.frmAccess.con, "Qt")
         mem.settings=mem.frmAccess.settings      
-      
-        ##Update database
-        from xulpymoney.libdbupdates import Update
-        update=Update(mem, "Qt")
-        if update.need_update()==True:
-            update.run()
 
         if mem.isProductsMaintenanceMode():
             mem.frmMain=frmMainProductsMaintenance(mem)
