@@ -1,14 +1,14 @@
 from PyQt5.QtCore import pyqtSlot, QObject
 from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
-from datetime import date, timedelta
+from datetime import date
 from decimal import Decimal
 from logging import debug
-from xulpymoney.datetime_functions import dtaware_day_end_from_date
+from xulpymoney.decorators import timeit
 from xulpymoney.libxulpymoneyfunctions import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage, percentage_between
-from xulpymoney.objects.productrange import ProductRangeManager
+from xulpymoney.objects.productrange import ProductRangeManager, ProductRangeInvestRecomendation
 from xulpymoney.ui.Ui_wdgProductRange import Ui_wdgProductRange
 
 class wdgProductRange(QWidget, Ui_wdgProductRange):
@@ -30,13 +30,13 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         products.order_by_name()
         products.qcombobox(self.cmbProducts, product_in_settings)
 
+    @timeit
     def load_data(self):
         self.product.needStatus(2)
         percentage_down=Percentage(self.spnDown.value(), 100)
         percentage_gains=Percentage(self.spnGains.value(), 100)
-        penultimate=dtaware_day_end_from_date(date.today()-timedelta(days=1), self.mem.localzone_name)
-        smas_over_price=self.product.result.ohclDaily.list_of_sma_over_price(penultimate)
         self.prm=ProductRangeManager(self.mem, self.product, percentage_down, percentage_gains)
+        self.prm.setInvestRecomendation(ProductRangeInvestRecomendation.ThreeSMA)
         self.prm.mqtw(self.mqtw)
 
         self.mem.settingsdb.setValue("wdgProductRange/spnDown", self.spnDown.value())
@@ -48,9 +48,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         s=self.tr("Product current price: {} at {}").format(
             self.product.result.basic.last.money(),
             self.product.result.basic.last.datetime, 
-        )
-        s=s +"\n" + self.tr("Yesterday price ({}) was under {} standard sma lines {}.").format(self.product.result.basic.penultimate.money(), len(smas_over_price), str(smas_over_price))
-        s=s + "\n" + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
+        )        s=s + "\n" + self.tr("Product price limits: {}").format(self.product.result.ohclYearly.string_limits())
         s=s + "\n" + self.tr("Total invested: {}. Current balance: {} ({})").format(
             self.investment_merged.invertido(),  
             self.investment_merged.balance(), 

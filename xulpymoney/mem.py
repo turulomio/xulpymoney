@@ -221,7 +221,7 @@ class Mem(QObject):
             exit(1)
 
     def localzone_now(self):
-        return datetime.now(timezone(self.name))
+        return datetime.now(timezone(self.localzone_name))
 
 class MemRunClient(Mem):
     def __init__(self):

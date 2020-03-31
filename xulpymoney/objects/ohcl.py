@@ -1,8 +1,6 @@
 from datetime import timedelta, date
 from decimal import Decimal
-from logging import debug
 from xulpymoney.datetime_functions import dtaware_day_end_from_date,  string2date, dtaware
-from xulpymoney.decorators import timeit
 from xulpymoney.libmanagers import ObjectManager, DatetimeValueManager
 from xulpymoney.objects.percentage import Percentage
 
@@ -373,20 +371,30 @@ class OHCLManager(ObjectManager):
 
     ## @returns string with the limits of the price [loweest, highest]
     def string_limits(self):
-        return "[{},{}]".format(self.product.money(self.lowest().low), self.product.money(self.highest().high))
+        return "[ {}, {} ]".format(self.product.money(self.lowest().low), self.product.money(self.highest().high))
         
+    ## Returns a list of sma from smas, which dt values are over price parameter
     ## @param dt. datetime
+    ## @param price Decimal to compare
+    ## @param smas List of integers with the period of the sma
+    ## @param dvm_smas. List of DatetimeValueManager with the SMAS with integers are in smas
+    ## @param attribute. Can be "open", "high", "close","low"
     ## @return int. With the number of standard sma (10, 50,200) that are over product current price
-    @timeit
-    def list_of_sma_over_price(self,  dt,   smas=[10, 50, 200]):
-        dvm=self.DatetimeValueManager("close")
+    def list_of_sma_over_price(self,  dt, price, smas=[10, 50, 200], dvm_smas=None, attribute="close"):
+        if dvm_smas==None:#Used when I only neet to calculate one value
+            dvm=self.DatetimeValueManager(attribute)
+        
+            #Calculate smas for all values in smas
+            dvm_smas=[]#Temporal list to store sma to fast calculations
+            for sma in smas:
+                dvm_smas.append(dvm.sma(sma))
+            
+        # Compare dt sma with price and return a List with smas integers
         r=[]
-        for sma in smas:
-            sma_value=dvm.sma(sma).find_le(dt).value
-            debug("{} ({}): {} -> {}".format(self.product.name, self.product.result.basic.last.money(), sma,  sma_value))
-            if self.product.result.basic.last.quote<sma_value:
-                r.append(sma)
-        debug (str(r))
+        for i, dvm_sma in enumerate(dvm_smas):
+            sma_value=dvm_sma.find_le(dt).value
+            if price<sma_value:
+                r.append(smas[i])
         return r
         
 

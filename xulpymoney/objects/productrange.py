@@ -1,18 +1,21 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QAbstractItemView
-from datetime import date, timedelta
 from decimal import Decimal
-from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHeterogeneusManager
 from xulpymoney.objects.order import OrderManager
 
+class ProductRangeInvestRecomendation:
+    All=0
+    ThreeSMA=1
+
 class ProductRange(QObject):
-    def __init__(self, mem=None, product=None,  value=None, percentage_down=None,  percentage_up=None, decimals=2):
+    def __init__(self, mem=None, id=None,  product=None,  value=None, percentage_down=None,  percentage_up=None, decimals=2):
         QObject.__init__(self)
         self.mem=mem
+        self.id=id
         self.product=product
         self.value=value
         self.percentage_down=percentage_down
@@ -98,30 +101,39 @@ class ProductRangeManager(ObjectManager, QObject):
         # Create ranges
         product_highest=self.product.result.ohclYearly.highest().high
         product_lowest=self.product.result.ohclYearly.lowest().low
-        range_highest=product_highest*Decimal(1+0.2)#20%
-        range_lowest=product_lowest*Decimal(1-0.2)#20%
+        range_highest=product_highest*Decimal(1+0.1)#20%
+        range_lowest=product_lowest*Decimal(1-0.1)#20%
         
         
-        penultimate=dtaware_day_end_from_date(date.today()-timedelta(days=1), self.mem.localzone_name)
-        sma_over_price=len(self.product.result.ohclDaily.list_of_sma_over_price(penultimate))
         
-        current_value=10000000
+        self.highest_range_value=10000000
+        current_value=self.highest_range_value
         i=0
         while current_value>range_lowest:
-            pr=ProductRange(self.mem, self.product, current_value, percentage_down, percentage_up)
-            # Recomendation of investment
-            if sma_over_price==3 and i % 4==0:
-                pr.recomendation_invest=True
-            elif sma_over_price==2 and i%2==0:
-                pr.recomendation_invest=True
-            elif sma_over_price<=1:
-                pr.recomendation_invest=True
-            # Append in view            
             if current_value>=range_lowest and current_value<=range_highest:
-                self.append(pr)
+                self.append(ProductRange(self.mem, i, self.product, current_value, percentage_down, percentage_up))
             current_value=current_value*(1-percentage_down.value)
             i=i+1
             
+    ## Set investment recomendations to all ProductRange objects in array 
+    def setInvestRecomendation(self, method, method1_smas=[10, 50, 200]):
+        if method==ProductRangeInvestRecomendation.All:
+            for o in self.arr:
+                o.recomendation_invest=True
+        elif method==ProductRangeInvestRecomendation.ThreeSMA:      
+            dvm=self.product.result.ohclDaily.DatetimeValueManager("close")
+            dvm_smas=[]
+            for sma in method1_smas:
+                dvm_smas.append(dvm.sma(sma))
+            
+            for o in self.arr:
+                number_sma_over_price=len(self.product.result.ohclDaily.list_of_sma_over_price(self.mem.localzone_now(), o.value, method1_smas, dvm_smas,  "close"))
+                if number_sma_over_price==3 and o.id % 4==0:
+                    o.recomendation_invest=True
+                elif number_sma_over_price==2 and o.id %2==0:
+                    o.recomendation_invest=True
+                elif number_sma_over_price<=1:
+                    o.recomendation_invest=True
             
     def mqtw(self, wdg):
         data=[]
