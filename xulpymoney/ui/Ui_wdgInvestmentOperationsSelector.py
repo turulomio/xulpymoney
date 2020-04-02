@@ -29,11 +29,9 @@ class Ui_wdgInvestmentOperationsSelector(object):
         self.wdgProductSelector = wdgProductSelector(self.grp)
         self.wdgProductSelector.setObjectName("wdgProductSelector")
         self.verticalLayout.addWidget(self.wdgProductSelector)
-        self.tbl = myQTableWidget(self.grp)
-        self.tbl.setObjectName("tbl")
-        self.tbl.setColumnCount(0)
-        self.tbl.setRowCount(0)
-        self.verticalLayout.addWidget(self.tbl)
+        self.mqtwOperations = mqtwObjects(self.grp)
+        self.mqtwOperations.setObjectName("mqtwOperations")
+        self.verticalLayout.addWidget(self.mqtwOperations)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.horizontalLayout_2.addWidget(self.grp)
 
@@ -45,5 +43,5 @@ class Ui_wdgInvestmentOperationsSelector(object):
         wdgInvestmentOperationsSelector.setWindowTitle(_translate("wdgInvestmentOperationsSelector", "Form"))
         self.grp.setTitle(_translate("wdgInvestmentOperationsSelector", "Strategy"))
         self.chkShowSelected.setText(_translate("wdgInvestmentOperationsSelector", "Show selected"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector

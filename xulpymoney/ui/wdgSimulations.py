@@ -1,7 +1,6 @@
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
 from xulpymoney.ui.wdgSimulationsAdd import wdgSimulationsAdd
-import xulpymoney.libdbupdates
 from xulpymoney.admin_pg import AdminPG
 import xulpymoney.ui.frmMain
 from xulpymoney.ui.Ui_wdgSimulations import Ui_wdgSimulations
@@ -18,7 +17,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.resize(1000, 600)
         self.mem=mem
         self.parent=parent
-        self.tblSimulations.setSettings(self.mem, "wdgSimulations")
+        self.mqtwSimulations.setSettings(self.mem.settings, "wdgSimulations", "mqtwSimulations")
         self.simulations=SimulationManager(self.mem)
         cur=self.mem.con.cursor()
         self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(self.mem.con.db, ) ), self.mem.con.db)
@@ -27,7 +26,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.mem_sim=None
         
     def reload(self):
-        self.simulations.myqtablewidget(self.tblSimulations)
+        self.simulations.myqtablewidget(self.mqtwSimulations)
 
     def on_cmdCreate_released(self):
         d=QDialog(self)     
@@ -40,9 +39,9 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
             self.simulations.append(t.simulation)
             self.reload()
 
-    def on_tblSimulations_itemSelectionChanged(self):
+    def on_mqtwSimulations_itemSelectionChanged(self):
         self.simulations.selected=None
-        for i in self.tblSimulations.selectedItems():#itera por cada item no row.
+        for i in self.mqtwSimulations.table.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.simulations.selected=self.simulations.arr[i.row()]
                 

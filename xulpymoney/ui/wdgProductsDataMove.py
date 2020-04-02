@@ -1,6 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem,  QMessageBox
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from xulpymoney.ui.Ui_wdgProductsDataMove import Ui_wdgProductsDataMove
-from xulpymoney.ui.myqtablewidget import qcenter, qright
 
 class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
     def __init__(self, mem,  origin, destiny, parent = None, name = None, modal = False):
@@ -9,7 +8,7 @@ class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
         self.origin=origin
         self.destiny=destiny
         self.setupUi(self)
-        self.table.setSettings(self.mem, "wdgProductsDataMove") 
+        self.mqtwComparation.setSettings(self.mem.settings, "wdgProductsDataMove", "mqtwComparation") 
         self.origin.needStatus(3)
         self.destiny.needStatus(3)
         self.reload()
@@ -22,20 +21,25 @@ class wdgProductsDataMove(QWidget, Ui_wdgProductsDataMove):
     
     ## Sets tabble data
     def reload(self):
-        self.table.applySettings()
+        hh=[self.tr("Id"), self.tr("Name"), self.tr("ISIN"), self.tr("Quotes"), self.tr("DPS"), self.tr("Investments"), self.tr("Opportunities"), self.tr("Splits"), self.tr("DPS estimations"), self.tr("EPS estimations")]
+        hv=[self.tr("Origin"), self.tr("Destiny")]
+        data=[]
         for i,  p in enumerate([self.origin, self.destiny]):
-            self.table.setItem(i, 0, qcenter(p.id))
-            self.table.item(i, 0).setIcon(p.stockmarket.country.qicon())
-            self.table.setItem(i, 1, QTableWidgetItem(p.name))
-            self.table.setItem(i, 2, QTableWidgetItem(p.isin))
-            self.table.setItem(i, 3, qright(p.result.all.length()))
-            self.table.setItem(i, 4, qright(p.dps.length()))
-            self.table.setItem(i, 5, qright(self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(p).length()))
-            opportunities=self.mem.con.cursor_one_field("select count(*) from opportunities where products_id=%s and executed is null and removed is null", (p.id, ))
-            self.table.setItem(i, 6, qright(opportunities))
-            self.table.setItem(i, 7, qright(p.splits.length()))
-            self.table.setItem(i, 8, qright(p.estimations_dps.length()))
-            self.table.setItem(i, 9, qright(p.estimations_eps.length()))
+            data.append([
+                p.id, 
+                p.name, 
+                p.isin, 
+                p.result.all.length(), 
+                p.dps.length(), 
+                self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(p).length(), 
+                self.mem.con.cursor_one_field("select count(*) from opportunities where products_id=%s and executed is null and removed is null", (p.id, )), 
+                p.splits.length(), 
+                p.estimations_dps.length(), 
+                p.estimations_eps.length(), 
+            ])
+        self.mqtwComparation.setData(hh, hv, data)
+        for i,  p in enumerate([self.origin, self.destiny]):
+            self.mqtwComparation.table.item(i, 0).setIcon(p.stockmarket.country.qicon())
 
     def on_cmd_released(self):
         reply = QMessageBox.question(None, self.tr('Moving data between products'), self.tr("This action can't be undone.\nDo you want to continue?"), QMessageBox.Yes, QMessageBox.No)                  

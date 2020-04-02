@@ -1,6 +1,5 @@
 from PyQt5.QtCore import QObject
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
-from xulpymoney.ui.myqtablewidget import qdatetime, qleft, qcenter
 class SimulationManager(ObjectManager_With_IdName_Selectable, QObject):
     def __init__(self, mem):
         ObjectManager_With_IdName_Selectable.__init__(self)
@@ -22,24 +21,22 @@ class SimulationManager(ObjectManager_With_IdName_Selectable, QObject):
         cur.close()  
         
     def myqtablewidget(self, wdg):
-        wdg.table.setColumnCount(5)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Creation" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Type" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Database" )))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Starting" )))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Ending" )))
-        wdg.table.clearContents()
-        wdg.applySettings()
-        wdg.table.setRowCount(self.length())
+        hh=[self.tr("Creation" ), self.tr("Type" ), self.tr("Database" ), self.tr("Starting" ), self.tr("Ending" )]
+        data=[]
         for i, a in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone_name))
-            wdg.table.setItem(i, 1, qleft(a.type.name))
+            data.append([
+                a.creation, 
+                a.type.name, 
+                a.simulated_db(), 
+                a.starting, 
+                a.ending, 
+                a
+            ]) 
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+
+    def myqtablewidget_additional(self, wdg):
+        for i, a in enumerate(wdg.objects()):
             wdg.table.item(i, 1).setIcon(a.type.qicon())
-            wdg.table.setItem(i, 2, qleft(a.simulated_db()))
-            wdg.table.setItem(i, 3, qdatetime(a.starting, self.mem.localzone_name))
-            wdg.table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone_name))
-
-
     
 class Simulation:
     def __init__(self,mem, original_db):

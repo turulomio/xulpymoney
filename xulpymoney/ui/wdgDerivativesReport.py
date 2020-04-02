@@ -32,7 +32,7 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         s=s+"Resultado=OpHist+OpActu-Comisiones-Rollover= {} + {} + {} + {} = {}".format(iohhm.consolidado_bruto(), iochm.pendiente(), commissions.balance(), rollover.balance(), iohhm.consolidado_bruto()+iochm.pendiente()+commissions.balance()+rollover.balance())
         self.textBrowser.setText(s)
         self.wdgIOHSLong.blockSignals(True)
-        self.wdgIOHSLong.setManager(self.mem, iohhm, "wdgIOHSLong")
+        self.wdgIOHSLong.setManager(self.mem, iohhm, "wdgDerivativesReport", "wdgIOHSLong")
         self.wdgIOHSLong.setSelectedString(self.mem.settingsdb.value("strategyLongShort/historicalLong", ""))
         self.wdgIOHSLong.blockSignals(False)
         

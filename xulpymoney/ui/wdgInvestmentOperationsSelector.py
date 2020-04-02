@@ -1,35 +1,36 @@
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.casts import list2string, string2list_of_strings
 from xulpymoney.ui.Ui_wdgInvestmentOperationsSelector import Ui_wdgInvestmentOperationsSelector
 
 class wdgObjectSelector(QWidget, Ui_wdgInvestmentOperationsSelector):
-    itemChanged=pyqtSignal()
+#    itemChanged=pyqtSignal()
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.tbl.itemChanged.connect(self.__tbl_itemChanged)
-
-    @pyqtSlot()
-    def __tbl_itemChanged(self):
-        self.itemChanged.emit()
+#        self.mqtwOperations.itemChanged.connect(self.__mqtwOperations_itemChanged)
+#
+#    @pyqtSlot()
+#    def __mqtwOperations_itemChanged(self):
+#        self.itemChanged.emit()
         
     ## Manager must be a manager with objects
-    def setManager(self, mem, manager, objectname):
+    def setManager(self, mem, manager, settingsSection, settingsObject):
         self.mem=mem
-        self.tbl.setSettings(self.mem, "{}_tbl".format(objectname))
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.mqtwOperations.setSettings(self.mem.settings, settingsSection, "{}_tbl".format(settingsObject))
         self.manager=manager
-        self.manager.myqtablewidget(self.tbl)
+        self.manager.myqtablewidget(self.mqtwOperations)
 
-        
     def setBoxTitle(self, title):
         pass
 
     ## Objects must have id
     def getCheckedPositions(self):
         r=[]
-        for i in range(self.tbl.rowCount()):
-            item=self.tbl.item(i, 0)
+        for i in range(self.mqtwOperations.table.rowCount()):
+            item=self.mqtwOperations.table.item(i, 0)
             if item!=None:
                 if item.checkState()==Qt.Checked:
                     r.append(i)
@@ -37,21 +38,21 @@ class wdgObjectSelector(QWidget, Ui_wdgInvestmentOperationsSelector):
         
     ## Checks item from position list
     def setCheckedPositions(self, checked):
-        self.tbl.blockSignals(True)
-        for i in range(self.tbl.rowCount()):
-            item=self.tbl.item(i, 0)
+        self.mqtwOperations.table.blockSignals(True)
+        for i in range(self.mqtwOperations.table.rowCount()):
+            item=self.mqtwOperations.table.item(i, 0)
             if item!=None:
                 if i in checked:
                     item.setCheckState(Qt.Checked)
                 else:
                     item.setCheckState(Qt.Unchecked)
-        self.tbl.blockSignals(False)
+        self.mqtwOperations.table.blockSignals(False)
 
     ## Get selection position. It doesn
     def getCheckedObjectsList(self):
         r=[]
-        for i in range(self.tbl.rowCount()):
-            item=self.tbl.item(i, 0)
+        for i in range(self.mqtwOperations.table.rowCount()):
+            item=self.mqtwOperations.table.item(i, 0)
             if item!=None:
                 if item.checkState()==Qt.Checked:
                     if i < self.manager.length():

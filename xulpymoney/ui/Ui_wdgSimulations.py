@@ -53,13 +53,9 @@ class Ui_wdgSimulations(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.tblSimulations = myQTableWidget(self.groupBox)
-        self.tblSimulations.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.tblSimulations.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.tblSimulations.setObjectName("tblSimulations")
-        self.tblSimulations.setColumnCount(0)
-        self.tblSimulations.setRowCount(0)
-        self.horizontalLayout_2.addWidget(self.tblSimulations)
+        self.mqtwSimulations = mqtwObjects(self.groupBox)
+        self.mqtwSimulations.setObjectName("mqtwSimulations")
+        self.horizontalLayout_2.addWidget(self.mqtwSimulations)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.cmdCreate = QtWidgets.QPushButton(self.groupBox)
@@ -98,5 +94,5 @@ class Ui_wdgSimulations(object):
         self.cmdCreate.setText(_translate("wdgSimulations", "Create"))
         self.cmdDelete.setText(_translate("wdgSimulations", "Delete"))
         self.cmdConnect.setText(_translate("wdgSimulations", "Connect"))
-from xulpymoney.ui.myqtablewidget import myQTableWidget
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc

@@ -36,7 +36,7 @@
          <widget class="wdgProductSelector" name="wdgProductSelector" native="true"/>
         </item>
         <item>
-         <widget class="myQTableWidget" name="tbl"/>
+         <widget class="mqtwObjects" name="mqtwOperations" native="true"/>
         </item>
        </layout>
       </item>
@@ -47,14 +47,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>myQTableWidget</class>
-   <extends>QTableWidget</extends>
-   <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
    <class>wdgProductSelector</class>
    <extends>QWidget</extends>
    <header location="global">wdgProductSelector</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtwObjects</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -50,88 +50,7 @@ If origin is a user product, you can delete afterwards, because it won't have an
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QTableWidget" name="table">
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <row>
-          <property name="text">
-           <string>Origin</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Destiny</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>Id</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>ISIN</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Quotes</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>DPS</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Investments</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Oportunities</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Splits</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>DPS estimations</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>EPS Estimations</string>
-          </property>
-         </column>
-         <item row="1" column="0">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="background">
-           <brush brushstyle="NoBrush">
-            <color alpha="255">
-             <red>255</red>
-             <green>192</green>
-             <blue>192</blue>
-            </color>
-           </brush>
-          </property>
-         </item>
-        </widget>
+        <widget class="mqtw" name="mqtwComparation" native="true"/>
        </item>
        <item>
         <widget class="QToolButton" name="cmdInterchange">
@@ -168,6 +87,14 @@ If origin is a user product, you can delete afterwards, because it won't have an
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>mqtw</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
