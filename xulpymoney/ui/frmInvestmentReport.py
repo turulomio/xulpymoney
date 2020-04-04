@@ -1,6 +1,6 @@
-from PyQt5.QtCore import QSize, Qt,  pyqtSignal, pyqtSlot
+from PyQt5.QtCore import Qt,  pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu
 from datetime import date, timedelta
 from xulpymoney.casts import c2b
 from xulpymoney.datetime_functions import days2string
@@ -18,6 +18,7 @@ from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.frmSharesTransfer import frmSharesTransfer
 from xulpymoney.ui.frmSplit import frmSplit
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
@@ -163,25 +164,19 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     @pyqtSlot() 
     def on_actionDisReinvest_triggered(self):
-        d=QDialog()       
-        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
+        d=MyModalQDialog()
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investment, False, d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setSettings(self.mem.settings, "frmInvestmentReport", "frmDisReinvest")
+        d.setWidgets(wdgDisReinvest(self.mem, self.investment, False, d))
         d.exec_()
-        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
         
     @pyqtSlot() 
     def on_actionDisReinvestProduct_triggered(self):
-        d=QDialog()       
-        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
+        d=MyModalQDialog()
+        d.setSettings(self.mem.settings, "frmInvestmentReport", "frmDisReinvestProduct")
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investment, True,  d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(wdgDisReinvest(self.mem, self.investment, True,  d))
         d.exec_()
-        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
         
     @pyqtSlot() 
     def on_actionOperationAdd_triggered(self):

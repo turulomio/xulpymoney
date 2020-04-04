@@ -3,8 +3,7 @@ from PyQt5.QtWidgets import QWidget, QCheckBox, QDialogButtonBox
 from os import remove,  path
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgQuotesSaveResult import Ui_wdgQuotesSaveResult
-from xulpymoney.ui.myqdialog import MyQDialog
-
+from xulpymoney.ui.myqdialog import MyModalQDialog
 
 ## Shows a quotes manager save result, it doesn't commit results
 class wdgQuotesSaveResult(QWidget, Ui_wdgQuotesSaveResult):
@@ -35,11 +34,12 @@ class wdgQuotesSaveResult(QWidget, Ui_wdgQuotesSaveResult):
 
 ## Shows a quotes manager save result
 ## If widget is accepted it buttonbox is accepted it commits con, else rollback
-class frmQuotesSaveResult(MyQDialog):
+class frmQuotesSaveResult(MyModalQDialog):
     def __init__(self, parent=None):
-        MyQDialog.__init__(self, parent=None)
+        MyModalQDialog.__init__(self, parent=None)
         self._fileToDelete=None
         self.wdg=wdgQuotesSaveResult(self)               
+        self.setWindowTitle(self.tr("Report after saving quotes"))
         
         self.chkDeleteFile = QCheckBox(self)
         self.chkDeleteFile.setChecked(True)
@@ -71,11 +71,13 @@ class frmQuotesSaveResult(MyQDialog):
         self.mem.con.rollback()
         self.reject()#No haría falta pero para recordar que hay buttonbox
     
-    ## Includes an exec_
-    def settings_and_exec_(self, mem, added, ignored, updated, errors):
-        self.mem=mem 
-        if self.fileToDelete()==None:
-            self.chkDeleteFile.hide()
-        
+    def setQuotesManagers(self, added, ignored, updated, errors):
+        self.mem=added.mem
+        self.setSettings(self.mem.settings, "frmQuotesSaveResult", "myqdialog")
+        self.setWidgets(self.wdg, self.chkDeleteFile, self.bb)
         self.wdg.display(self.mem, added, ignored, updated, errors)
-        MyQDialog.settings_and_exec_(self, self.mem, "frmQuotesSaveResult/qdialog", [self.wdg, self.chkDeleteFile, self.bb ], self.tr("Report after saving quotes"))
+
+    def exec_(self):
+        if self.fileToDelete()==None:
+            self.chkDeleteFile.hide()        
+        MyModalQDialog.exec_(self)

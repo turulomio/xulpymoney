@@ -1,9 +1,10 @@
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem
 from xulpymoney.ui.Ui_wdgCalculator import Ui_wdgCalculator
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.libxulpymoneytypes import eProductType
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 from xulpymoney.objects.currency import currency_symbol
@@ -102,29 +103,28 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
     @pyqtSlot()
     def on_cmdOrder_released(self):
-        d=QDialog(self)     
-        d.setModal(True)
+        d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Add new order"))
+        d.setSettings(self.mem.settings,"wdgCalculator", "mqdOrdersAdd ")
         w=wdgOrdersAdd(self.mem, None, self.investments.selected, d)
         w.txtShares.setText(self.txtShares.decimal())
         w.txtPrice.setText(self.txtFinalPrice.decimal())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
         d.exec_()
 
     @pyqtSlot()
     def on_cmdGraph_released(self):
         self.product.needStatus(2)
-        d=QDialog(self)     
+        d=MyModalQDialog(self)     
         d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
-        lay = QVBoxLayout(d)
+        d.setSettings(self.mem.settings, "wdgCalculator", "mqdBuyGraph")
         wc=wdgProductHistoricalBuyChart()
         wc.setProduct(self.product, None)
         wc.setPrice(self.txtFinalPrice.decimal())
         wc.generate()
         wc.display()
-        lay.addWidget(wc)
+        d.setWidgets(wc)
         d.exec_()
 
     @pyqtSlot(float)

@@ -519,7 +519,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
             d=frmQuotesSaveResult()
             d.setFileToDelete(filename)
-            d.settings_and_exec_(self.mem, *result)
+            d.setQuotesManagers(*result)
+            d.exec_()
             #Reloads changed data
             set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             self.product.needStatus(2, downgrade_to=0)

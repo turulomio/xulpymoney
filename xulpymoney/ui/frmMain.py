@@ -1,9 +1,9 @@
 ## @namesapace xulpymoney.ui.frmMain
 ## @brief User interface main window.
 
-from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
+from PyQt5.QtCore import pyqtSlot, QProcess, QUrl
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
+from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QFileDialog
 from os import environ, path
 from datetime import datetime
 from logging import info
@@ -14,6 +14,7 @@ from xulpymoney.objects.product import Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.datetime_functions import dtnaive2string
 from xulpymoney.ui.myqwidgets import qmessagebox
+from xulpymoney.ui.myqdialog import MyNonModalQDialog, MyModalQDialog
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
 from xulpymoney.ui.myqlineedit import myQLineEdit
@@ -98,13 +99,13 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionCalculator_triggered(self):
         from xulpymoney.ui.wdgCalculator import wdgCalculator
-        d=QDialog(self)        
-        d.setFixedSize(850, 850)
+        d=MyNonModalQDialog(self)
+        d.setSettings(self.mem.settings, "frmMain", "wdgCalculator", 850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem, self)
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
+        d.show()
         if w.hasProducts==True:
             d.show()
         else:
@@ -345,14 +346,11 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionSimulations_triggered(self):
         from xulpymoney.ui.wdgSimulations import wdgSimulations
-        d=QDialog(self)
-        d.resize(self.mem.settings.value("wdgSimulations/qdialog", QSize(1024, 768)))
+        d=MyModalQDialog(self)
+        d.setSettings(self.mem.settings, "wdgSimulations", "mqdSimulations")
         d.setWindowTitle(self.tr("Xulpymoney Simulations"))
-        w=wdgSimulations(self.mem, d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(wdgSimulations(self.mem, d))
         d.exec_() 
-        self.mem.settings.setValue("wdgSimulations/qdialog", d.size())
 
     @pyqtSlot()  
     def on_actionSyncProducts_triggered(self):
@@ -741,7 +739,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
             d=frmQuotesSaveResult()
             d.setFileToDelete(filename)
-            d.settings_and_exec_(self.mem, *result)
+            d.setQuotesManagers(*result)
+            d.exec_()
             #Reloads changed data
             set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
             self.on_actionInvestments_triggered()
@@ -809,20 +808,18 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsWithPriceVariation_triggered(self):
         from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()        
-        d=QDialog()       
+        d=MyModalQDialog()       
         d.setWindowTitle(self.tr("Price variation"))
+        d.setSettings(self.mem.settings,"frmMain", "mqdProductsWithPriceVariation")
         lblDays=QLabel("Days")
         txtDays=myQLineEdit(d)
         txtDays.setText(90)
         lblVariation=QLabel("Variation")
         txtVariation=myQLineEdit(d)
         txtVariation.setText(-10)
-        lay = QVBoxLayout(d)
-        lay.addWidget(lblDays)
-        lay.addWidget(txtDays)
-        lay.addWidget(lblVariation)
-        lay.addWidget(txtVariation)
+        d.setWidgets(lblDays, txtDays, lblVariation, txtVariation)
         d.exec_()
+
         sql= "select * from products where is_price_variation_in_time(id, {}, now()::timestamptz-interval '{} day')=true and obsolete=False order by name".format(txtVariation.text(), txtDays.text())
         print(sql)
         self.w=wdgProducts(self.mem, sql)

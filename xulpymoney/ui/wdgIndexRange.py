@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayo
 from xulpymoney.ui.Ui_wdgIndexRange import Ui_wdgIndexRange
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage
+from xulpymoney.ui.myqdialog import MyNonModalQDialog
 from xulpymoney.ui.myqtablewidget import qcenter
 from xulpymoney.libxulpymoneytypes import eProductType,  eQColor
 from xulpymoney.ui.frmProductReport import frmProductReport
@@ -202,46 +203,33 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
 
     @pyqtSlot() 
     def on_actionBottom_triggered(self):        
-        d=QDialog(self)        
-        d.setFixedSize(850, 850)
+        d=MyNonModalQDialog(self)
+        d.setSettings(self.mem.settings, "wdgIndexRange", "mqdCalculator")
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
         w.spnProductPriceVariation.setValue(self.range.currentPriceBottomVariation().value_100())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
+        d.setWidgets(w)
+        d.show()
 
     @pyqtSlot() 
-    def on_actionTop_triggered(self):        
-        d=QDialog(self)
-        d.setFixedSize(850, 850)
+    def on_actionTop_triggered(self):
+        d=MyNonModalQDialog(self)
+        d.setSettings(self.mem.settings, "wdgIndexRange", "mqdCalculator")
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
         w.spnProductPriceVariation.setValue(self.range.currentPriceTopVariation().value_100())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
+        d.setWidgets(w)
+        d.show()
 
     @pyqtSlot() 
     def on_actionMiddle_triggered(self):        
-        d=QDialog(self)        
-        d.setFixedSize(850, 850)
+        d=MyNonModalQDialog(self)
+        d.setSettings(self.mem.settings, "wdgIndexRange", "mqdCalculator")
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
         w.spnProductPriceVariation.setValue(self.range.currentPriceMiddleVariation().value_100())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
-        
+        d.setWidgets(w)
+        d.show()

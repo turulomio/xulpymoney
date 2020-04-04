@@ -1,11 +1,12 @@
 import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
 from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.operationtype import OperationTypeManager_for_InvestmentOperations
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import  qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
@@ -80,16 +81,14 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CNet.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
 
     def on_cmdComissionCalculator_released(self):
-        d=QDialog(self)     
-        d.resize(800, 80)
+        d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Comission calculator"))
         d.setWindowIcon(QIcon(":/xulpymoney/tools-wizard.png"))
         t=wdgTwoCurrencyLineEdit(d)
         t.label.setWordWrap(True)
         t.set(self.mem, self.investment.product.currency, self.investment.account.currency, self.wdg2CCurrencyConversion.factor)
         t.setLabel(self.tr("Please add the final amount annoted in your bank account, then close this window"))
-        lay = QVBoxLayout(d)
-        lay.addWidget(t)
+        d.setWidgets(t)
         d.exec_()
         self.wdg2CComission.setTextA(t.decimalA()-self.wdg2CPrice.decimalA()*self.txtAcciones.decimal())
 

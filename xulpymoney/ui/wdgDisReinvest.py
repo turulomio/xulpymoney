@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QWidget
 from datetime import datetime
 from decimal import Decimal
 from logging import error
@@ -9,6 +9,7 @@ from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgDisReinvest import Ui_wdgDisReinvest
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalReinvestChart
@@ -117,25 +118,24 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     @pyqtSlot()
     def on_cmdGraph_released(self):
         self.investment.product.needStatus(2)
-        d=QDialog(self)     
+        d=MyModalQDialog(self)     
+        d.setSettings(self.mem.settings, "wdgDisReinvest", "mqdGraphReinvest")
         d.setWindowTitle(self.tr("Reinvest graph"))
         d.showMaximized()
-        lay = QVBoxLayout(d)
         
         wc=wdgProductHistoricalReinvestChart()
         wc.setProduct(self.investment.product, self.investment)
         wc.setReinvest( self.investment_simulated.op, self.investment_simulated.op_actual)
-        
-        lay.addWidget(wc)
         wc.generate()
         wc.display()
         
+        d.setWidgets(wc)
         d.exec_()
 
     @pyqtSlot()
     def on_cmdOrder_released(self):
-        d=QDialog(self)     
-        d.setModal(True)
+        d=MyModalQDialog(self)     
+        d.setSettings(self.mem.settings, "wdgDisReinvest", "mqdOrdersAdd")
         d.setWindowTitle(self.tr("Add new order"))
         w=wdgOrdersAdd(self.mem, None, self.investment, d)
         w.txtShares.setText(self.txtAcciones.decimal())
@@ -143,8 +143,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             w.txtPrice.setText(-self.txtValorAccion.decimal())
         else:#REINVERSION
             w.txtPrice.setText(self.txtValorAccion.decimal())
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
         d.exec_()
 
     ## This function is created because self.cmbPrices.setCurrentIndex(1) wouldn't create prices

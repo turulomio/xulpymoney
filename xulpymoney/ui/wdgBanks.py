@@ -1,11 +1,12 @@
-from PyQt5.QtCore import Qt, QSize, pyqtSlot
-from PyQt5.QtWidgets import QMenu, QWidget, QInputDialog, QLineEdit, QDialog, QVBoxLayout
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QMenu, QWidget, QInputDialog, QLineEdit
 from PyQt5.QtGui import QIcon
 from xulpymoney.objects.bank import Bank
 from xulpymoney.objects.account import AccountManager
 from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.myqcharts import VCPie
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.frmAccountsReport import frmAccountsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 from xulpymoney.ui.Ui_wdgBanks import Ui_wdgBanks
@@ -107,9 +108,9 @@ class wdgBanks(QWidget, Ui_wdgBanks):
     ## Displays a pie graph of banks
     @pyqtSlot()
     def on_cmdGraph_released(self):
-        d=QDialog(self)     
+        d=MyModalQDialog(self)     
         d.setWindowIcon(QIcon(":/xulpymoney/bank.png"))
-        d.resize(self.mem.settings.value("wdgBanks/qdialog_graph", QSize(800, 600)))
+        d.setSettings(self.mem.settings, "wdgBanks", "mqdGraph")
         d.setWindowTitle(self.tr("Banks graph"))
         view=VCPie(d)
         view.pie.setTitle(self.tr("Banks graph"))
@@ -117,10 +118,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         for bank in self.mem.data.banks_active().arr:
             view.pie.appendData(bank.name, bank.balance())
         view.display()
-        lay = QVBoxLayout(d)
-        lay.addWidget(view)
+        d.setWidgets(view)
         d.exec_()
-        self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
     def on_mqtwAccounts_customContextMenuRequested(self,  pos):
         if self.accounts.selected==None:

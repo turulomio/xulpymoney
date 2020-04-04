@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt, pyqtSlot,  QSize
-from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout, QAbstractItemView
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QAbstractItemView
 from datetime import date,  timedelta, datetime
 from logging import debug
 from xulpymoney.casts import b2c,  c2b
@@ -16,6 +16,7 @@ from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.wdgConceptsHistorical import wdgConceptsHistorical
 
@@ -253,14 +254,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         else:
             concepto=self.creditcardoperations.selected.concepto
 
-        d=QDialog(self)     
-        d.resize(self.mem.settings.value("frmAccountsReport/qdialog_conceptreport", QSize(800, 600)))
+        d=MyModalQDialog(self)     
+        d.setSettings(self.mem.settings, "frmAccountsReport","qdialog_conceptreport")
         d.setWindowTitle(self.tr("Historical report of {}").format(concepto.name))
-        w = wdgConceptsHistorical(self.mem, concepto, d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(wdgConceptsHistorical(self.mem, concepto, d))
         d.exec_()
-        self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
 
     ## Selection can be only one row, due to table definitions
