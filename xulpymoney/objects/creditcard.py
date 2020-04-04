@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QObject
 from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 
 
 

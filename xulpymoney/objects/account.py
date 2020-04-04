@@ -4,7 +4,7 @@ from datetime import date
 from logging import critical
 from xulpymoney.datetime_functions import  dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eComment, eConcept, eMoneyCurrency, eOperationType
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.comment import Comment

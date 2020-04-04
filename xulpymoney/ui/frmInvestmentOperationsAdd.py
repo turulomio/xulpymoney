@@ -1,13 +1,12 @@
 import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog,  QMessageBox, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QVBoxLayout
 from xulpymoney.ui.wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
-
 from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.operationtype import OperationTypeManager_for_InvestmentOperations
-from xulpymoney.libxulpymoneyfunctions import  qmessagebox
+from xulpymoney.ui.myqwidgets import  qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
 from decimal import Decimal
@@ -109,11 +108,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         if id_tiposoperaciones==5: #Venta
             self.operinversion.show_in_ranges=False
             if self.operinversion.shares>Decimal('0'):
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("Sale Shares number must be negative"))
-                m.exec_()    
+                qmessagebox(self.tr("Sale Shares number must be negative"))
                 return        
         elif id_tiposoperaciones==4: #Compra
             if self.operinversion.shares<0: 
@@ -125,11 +120,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 return
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Share price, taxes and commission must be positive amounts"))
-            m.exec_()    
+            qmessagebox(self.tr("Share price, taxes and commission must be positive amounts"))
             return
             
         self.operinversion.datetime=self.wdgDT.datetime()

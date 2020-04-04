@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QFileDialog, QAbstractItemView
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QFileDialog, QAbstractItemView
 from datetime import datetime, date, timedelta, time
 from logging import info, debug
 from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
@@ -15,7 +14,8 @@ from xulpymoney.objects.dps import DPS
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import QuoteManager, Quote, QuoteAllIntradayManager
 from xulpymoney.objects.product import  Product
-from xulpymoney.libxulpymoneyfunctions import qmessagebox, setReadOnly
+from xulpymoney.ui.myqwidgets import qmessagebox
+from xulpymoney.libxulpymoneyfunctions import setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
 from xulpymoney.ui.myqtablewidget import qdatetime, qcurrency
@@ -610,11 +610,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.mem.con.commit()
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
-            m.exec_()    
+            qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
         else:
             self.mem.con.rollback()
         

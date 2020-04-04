@@ -3,7 +3,7 @@ from decimal import Decimal
 from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.dividend import Dividend
 from xulpymoney.objects.money import Money
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmDividendsAdd import Ui_frmDividendsAdd
 

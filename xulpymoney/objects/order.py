@@ -2,7 +2,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
 from datetime import date
 from xulpymoney.libmanagers import ObjectManager_With_Id_Selectable
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage

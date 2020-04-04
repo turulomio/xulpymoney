@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmQuotesIBM import Ui_frmQuotesIBM
 from xulpymoney.objects.quote import Quote
 from xulpymoney.datetime_functions import dtaware
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):

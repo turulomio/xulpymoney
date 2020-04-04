@@ -6,7 +6,7 @@ from xulpymoney.casts import lor_sum_column, lor_sum_row
 from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.objects.money import Money
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
 class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):

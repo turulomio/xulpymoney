@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
 from datetime import date
 from logging import debug
 from xulpymoney.decorators import timeit
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage, percentage_between

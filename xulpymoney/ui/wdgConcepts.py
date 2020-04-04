@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
 from xulpymoney.ui.Ui_wdgConcepts import Ui_wdgConcepts
 from xulpymoney.ui.myqtablewidget import qcenter, qleft

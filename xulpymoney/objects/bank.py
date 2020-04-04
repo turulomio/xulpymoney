@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.objects.money import Money
 
 class Bank(QObject):

@@ -213,6 +213,7 @@ class mqtw(QWidget):
 
     ## Order data columns. None values are set at the beginning
     def on_orderby_action_triggered(self, action, action_index, reverse):
+        start=datetime.now()
         nonull=[]
         null=[]
         for row in self.data:
@@ -235,6 +236,7 @@ class mqtw(QWidget):
             else:
                 self.data=null+nonull
         self.update()
+        debug("Order by took {}".format(datetime.now()-start))
 
     def update(self):
         self.setData(self.hh, self.hv, self.data, self.data_decimals, self.data_zonename)
@@ -275,6 +277,7 @@ class mqtw(QWidget):
                     
             self.on_orderby_action_triggered(action,  self._sort_action_index, self._sort_action_reverse)
         # -----------------------------------------------------------------------------
+        start=datetime.now()
         if decimals.__class__.__name__=="int":
             decimals=[decimals]*len(header_horizontal)
         self.data_decimals=decimals
@@ -318,6 +321,7 @@ class mqtw(QWidget):
                 else:#qtablewidgetitem
                     self.table.setItem(row, column, wdg)
         self.setDataFinished.emit()
+        debug("Set data to {}/{} took {}".format(self._settingsSection, self._settingsObject, datetime.now()-start))
 
     def print(self, hh, hv, data):
         print(hh)
@@ -764,7 +768,7 @@ def qnumber_limited(n, limit, digits=2, reverse=False):
 ## Shows the time of a datetime
 ## See function time2string of datetime_functions to see formats
 ## @param ti must be a time object
-def qtime(ti, format="HH:MM"):
+def qtime(ti, format="HH:MM:SS"):
     if ti==None:
         return qnone()
     item=qright(time2string(ti, format))
@@ -825,7 +829,7 @@ def example():
             ObjectManager_With_IdName_Selectable.__init__(self)
 
         def prueba(self, wdg):
-            print("ICONS", wdg)
+            print("Función prueba ejecutada manager prueba en adiitional")
 
     def __additional_with_objects(wdg):
         wdg.table.setRowCount(len(wdg.data)+1)
@@ -865,13 +869,14 @@ def example():
         
     data_object=[]
     for o in manager_manager.arr[0:10]:
-        data_object.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.pruebita.age(1), o])
+        data_object.append([o.id, o.name,  o.date,  o.datetime,  o.pruebita.name, o.datetime.time(), o])
 
     mem=Mem()
     app = QApplication([])
     from importlib import import_module
     import_module("xulpymoney.images.xulpymoney_rc")
     w=QWidget()
+    w.showMaximized()
     hv=None
 
     lay=QHBoxLayout(w)
@@ -882,7 +887,7 @@ def example():
     mqtw_data.table.setSelectionMode(QAbstractItemView.SingleSelection)
     mqtw_data.setGenericContextMenu()
     hv=["Johnny be good"]*len(data)
-    mqtw_data.setSettings(mem.settings, "myqtablewidget", "tblExample")
+    mqtw_data.setSettings(mem.settings, "myqtablewidget", "mqtw")
     hh=["mqtw", "Name", "Date", "Last update","Mem.name", "Age"]
     mqtw_data.setData(hh, hv, data )
     mqtw_data.setOrderBy(2,  False)
@@ -891,8 +896,8 @@ def example():
     mqtw_data_with_object = mqtwObjects(w)
     mqtw_data_with_object.setGenericContextMenu()
     hv=["Johnny be good"]*len(data_object)
-    mqtw_data_with_object.setSettings(mem.settings, "myqtablewidget", "tblExample")
-    hh=["mqtwObjects", "Name", "Date", "Last update","Mem.name", "Age"]
+    mqtw_data_with_object.setSettings(mem.settings, "myqtablewidget", "mqtwObjects")
+    hh=["mqtwObjects", "Name", "Date", "Last update","Mem.name", "Time"]
     mqtw_data_with_object.setDataWithObjects(hh, hv, data_object, additional=__additional_with_objects )
     mqtw_data_with_object.setOrderBy(2,  False)
 
@@ -900,7 +905,7 @@ def example():
     mqtw_manager = mqtwManager(w)    
     mqtw_manager.setSelectionMode(ManagerSelectionMode.List)
     mqtw_manager.table.customContextMenuRequested.connect(__on_mqtw_manager_customContextMenuRequested)
-    mqtw_manager.setSettings(mem.settings, "myqtablewidget", "tblExample")
+    mqtw_manager.setSettings(mem.settings, "myqtablewidget", "mqtwManager")
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
 
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)

@@ -2,7 +2,7 @@ import logging
 from PyQt5.QtCore import pyqtSlot, QLocale
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from xulpymoney.ui.Ui_frmInit import Ui_frmInit
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
 
 class frmInit(QDialog, Ui_frmInit):

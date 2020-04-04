@@ -1,22 +1,11 @@
 ## @namespace xulpymoney.libxulpymoneyfunctions
 ## @brief Package with all xulpymoney auxiliar functions.
 from PyQt5.QtCore import Qt,  QCoreApplication
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import  QMessageBox
 from decimal import Decimal
+from xulpymoney.ui.myqwidgets import qmessagebox
 import inspect
 import logging
 import sys
-from xulpymoney.decorators import deprecated
-
-@deprecated
-def qmessagebox(text):
-    m=QMessageBox()
-    m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-    m.setIcon(QMessageBox.Information)
-    m.setText(text)
-    m.exec_()   
-
 
 ## con is con_target, 
 ## progress is a pointer to progressbar
@@ -183,8 +172,6 @@ def is_positive(number):
         return True
     return False
 
-
-
 ## Sets the sign of other number
 def set_sign_of_other_number(number, number_to_change):
     if is_positive(number):
@@ -197,5 +184,3 @@ def setReadOnly(wdg, boolean):
         wdg.blockSignals(boolean)
         wdg.setAttribute(Qt.WA_TransparentForMouseEvents)
         wdg.setFocusPolicy(Qt.NoFocus)
-    
-        

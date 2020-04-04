@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmAccountOperationsAdd import Ui_frmAccountOperationsAdd
 from xulpymoney.objects.creditcardoperation import  CreditCardOperation
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.comment import Comment

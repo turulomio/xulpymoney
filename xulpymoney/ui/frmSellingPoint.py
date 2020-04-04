@@ -7,7 +7,7 @@ from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHom
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from decimal import Decimal
 

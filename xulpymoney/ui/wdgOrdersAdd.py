@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialogButtonBox
 from datetime import date
 from xulpymoney.objects.order import Order
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgOrdersAdd import Ui_wdgOrdersAdd
 
 class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):

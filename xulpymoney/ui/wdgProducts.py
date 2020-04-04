@@ -2,14 +2,12 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from logging import debug
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
-from xulpymoney.ui.frmProductReport import frmProductReport
 from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.objects.quote import QuoteAllIntradayManager
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgProductsDataMove import wdgProductsDataMove
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
-from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
 
 class wdgProducts(QWidget, Ui_wdgProducts):
     def __init__(self, mem,  arrInt=[],  parent=None):
@@ -75,6 +73,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionProductNew_triggered(self):
+        from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, None, self)
         w.exec_()        
         del self.arrInt
@@ -83,6 +82,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionPurchaseGraphic_triggered(self):
+        from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
         self.mqtwInvestments.selected[0].needStatus(2)
         d=QDialog(self)     
         d.showMaximized()
@@ -99,6 +99,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @pyqtSlot() 
     def on_actionProductReport_triggered(self):
+        from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.mqtwInvestments.selected[0], None,  self)
         w.exec_()        
         self.build_array_from_arrInt()

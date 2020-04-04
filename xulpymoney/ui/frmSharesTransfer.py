@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from xulpymoney.ui.Ui_frmSharesTransfer import Ui_frmSharesTransfer
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from decimal import Decimal
 
 class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):

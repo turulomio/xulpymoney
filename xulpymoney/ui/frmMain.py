@@ -6,37 +6,17 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout, QFileDialog
 from os import environ, path
 from datetime import datetime
+from logging import info
 from sys import exit
 from stdnum.isin import is_valid
-from xulpymoney.investing_com import InvestingCom
 from xulpymoney.ui.Ui_frmMain import Ui_frmMain
 from xulpymoney.objects.product import Product, ProductManager
 from xulpymoney.casts import list2string
 from xulpymoney.datetime_functions import dtnaive2string
-from xulpymoney.libxulpymoneyfunctions import qmessagebox, sync_data
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.version import __versiondate__
-from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.wdgTotal import wdgTotal
-from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
-from xulpymoney.ui.wdgAPR import wdgAPR
-from xulpymoney.ui.wdgAccounts import wdgAccounts
-from xulpymoney.ui.wdgBanks import wdgBanks
-from xulpymoney.ui.wdgConcepts import wdgConcepts
-from xulpymoney.ui.wdgCalculator import wdgCalculator
-from xulpymoney.ui.wdgCuriosities import wdgCuriosities
-from xulpymoney.ui.wdgInvestmentsOperations import wdgInvestmentsOperations
-from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
-from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
-from xulpymoney.ui.frmTransfer import frmTransfer
-from xulpymoney.ui.frmSettings import frmSettings
-from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
-from xulpymoney.ui.wdgOrders import wdgOrders
-from xulpymoney.ui.wdgOpportunities import wdgOpportunities
-from xulpymoney.ui.wdgProducts import wdgProducts
-from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
-from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
 
 class frmMain(QMainWindow, Ui_frmMain):
     def __init__(self, mem, parent = 0,  flags = False):
@@ -97,7 +77,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionExit_triggered(self):
-        print ("App correctly closed")
+        info("App correctly closed")
         exit(0)
         
     @pyqtSlot()
@@ -108,6 +88,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionBanks_triggered(self):
+        from xulpymoney.ui.wdgBanks import wdgBanks
         self.w.close()
         self.w=wdgBanks(self.mem, self)
                 
@@ -116,6 +97,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionCalculator_triggered(self):
+        from xulpymoney.ui.wdgCalculator import wdgCalculator
         d=QDialog(self)        
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
@@ -130,6 +112,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionConcepts_triggered(self):
+        from xulpymoney.ui.wdgConcepts import wdgConcepts
         self.w.close()
         self.w=wdgConcepts(self.mem, self)
                 
@@ -138,6 +121,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionAccounts_triggered(self):
+        from xulpymoney.ui.wdgAccounts import wdgAccounts
         self.w.close()
         self.w=wdgAccounts(self.mem, self)
                 
@@ -168,6 +152,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionInvestmentsClasses_triggered(self):
+        from xulpymoney.ui.wdgInvestmentClasses import wdgInvestmentClasses
         self.w.close()
         self.w=wdgInvestmentClasses(self.mem, self)
         self.layout.addWidget(self.w)
@@ -176,6 +161,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionTotalReport_triggered(self):
+        from xulpymoney.ui.wdgTotal import wdgTotal
         self.w.close()
         self.w=wdgTotal(self.mem, self)
                 
@@ -184,6 +170,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionEvolutionReport_triggered(self):
+        from xulpymoney.ui.wdgAPR import wdgAPR
         self.w.close()
         self.w=wdgAPR(self.mem, self)
               
@@ -233,7 +220,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-
     @pyqtSlot()  
     def on_actionInvestments_triggered(self):
         from xulpymoney.ui.wdgInvestments import wdgInvestments
@@ -252,6 +238,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionLastOperation_triggered(self):
+        from xulpymoney.ui.wdgLastCurrent import wdgLastCurrent
         self.w.close()
         self.w=wdgLastCurrent(self.mem, self)               
         self.layout.addWidget(self.w)
@@ -259,6 +246,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionInvestmentsOperations_triggered(self):
+        from xulpymoney.ui.wdgInvestmentsOperations import wdgInvestmentsOperations
         self.w.close()
         self.w=wdgInvestmentsOperations(self.mem, self)
         self.layout.addWidget(self.w)
@@ -266,23 +254,27 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionAuxiliarTables_triggered(self):
+        from xulpymoney.ui.frmAuxiliarTables import frmAuxiliarTables
         w=frmAuxiliarTables(self.mem, self)
         w.exec_()
         
     @pyqtSlot()  
     def on_actionSettings_triggered(self):
+        from xulpymoney.ui.frmSettings import frmSettings
         w=frmSettings(self.mem, self)
         w.exec_()
         self.retranslateUi(self)
 
     @pyqtSlot()  
     def on_actionTransfer_triggered(self):
+        from xulpymoney.ui.frmTransfer import frmTransfer
         w=frmTransfer(self.mem, parent=self)
         w.exec_()
         self.on_actionAccounts_triggered()
 
     @pyqtSlot()  
     def on_actionCAC40_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -294,6 +286,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionActive_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=false order by name")
 
@@ -302,6 +295,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionCuriosities_triggered(self):
+        from xulpymoney.ui.wdgCuriosities import wdgCuriosities
         self.w.close()
         self.w=wdgCuriosities(self.mem,  self)
         self.layout.addWidget(self.w)
@@ -309,6 +303,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionCurrenciesAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -322,6 +317,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @pyqtSlot()  
     def on_actionDividends_triggered(self):
         """Shows products with current year estimations_dps and with quotes in current year"""
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()))")
@@ -332,6 +328,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionInvestmentRanking_triggered(self):
+        from xulpymoney.ui.wdgInvestmentsRanking import wdgInvestmentsRanking
         self.w.close()
         self.w=wdgInvestmentsRanking(self.mem, self)
         self.layout.addWidget(self.w)
@@ -359,6 +356,8 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionSyncProducts_triggered(self):
+        from xulpymoney.libxulpymoneyfunctions import sync_data
+        from xulpymoney.ui.frmAccess import frmAccess   
         self.w.hide()
         
         source=frmAccess("xulpymoney", "frmSync", self.mem.frmAccess.settings, self)
@@ -371,11 +370,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             return
         else:
             if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip() and source.con.port==self.mem.con.port:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("Databases can't be the same"))
-                m.exec_()   
+                qmessagebox(self.tr("Databases can't be the same"))
                 return
                 
             pd= QProgressDialog(QApplication.translate("Mem","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
@@ -390,6 +385,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
 
         arrInt=[]
@@ -402,6 +398,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             
     @pyqtSlot()  
     def on_actionISINDuplicado_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         cur=self.mem.con.cursor()
         
@@ -422,6 +419,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionMC_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -434,6 +432,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionETFAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -445,6 +444,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionETFObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -456,6 +456,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionEurostoxx50_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -468,6 +469,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionFavorites_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         favorites=self.mem.settingsdb.value_list_of_integers("mem/favorites", "")
         if len(favorites)==0:
             qmessagebox(self.tr("There aren't favorite products"))
@@ -484,6 +486,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionSharesAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -495,6 +498,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionSharesObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -506,6 +510,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionWarrantsAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -517,6 +522,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionWarrantsObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -528,6 +534,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionWarrantsCall_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -535,9 +542,11 @@ class frmMain(QMainWindow, Ui_frmMain):
                 arrInt.append(p.id)
         self.w=wdgProducts(self.mem,  arrInt)
         self.layout.addWidget(self.w)
-        self.w.show()              
+        self.w.show()
+
     @pyqtSlot()  
     def on_actionWarrantsPut_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -549,6 +558,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionWarrantsInline_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -560,6 +570,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionFundsAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -571,6 +582,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionFundsObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -582,6 +594,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionBondsPublic_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -594,6 +607,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionBondsPrivate_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -606,6 +620,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionPurchaseOpportunities_triggered(self):
+        from xulpymoney.ui.wdgOpportunities import wdgOpportunities
         self.w.close()
         self.w=wdgOpportunities(self.mem, self)
         self.layout.addWidget(self.w)
@@ -648,14 +663,11 @@ class frmMain(QMainWindow, Ui_frmMain):
                 counter=counter+invcounter
                 self.mem.con.commit()
         
-        m=QMessageBox()
-        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        m.setIcon(QMessageBox.Information)
-        m.setText(self.tr("{0} quotes have been purged from {1} products".format(counter, len(products))))
-        m.exec_()    
-        
+        qmessagebox(self.tr("{0} quotes have been purged from {1} products".format(counter, len(products))))
+
     @pyqtSlot()  
     def on_actionBondsAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -669,6 +681,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionBondsObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -681,6 +694,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -692,6 +706,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionIndexesAll_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -703,6 +718,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionIndexesObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -714,6 +730,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionQuoteImportInvestingComIntraday_triggered(self):
+        from xulpymoney.investing_com import InvestingCom
         self.w.close()
         filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
         if filename!="":
@@ -731,6 +748,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     @pyqtSlot()  
     def on_actionSP500_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -742,6 +760,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionProductsComparation_triggered(self):
+        from xulpymoney.ui.wdgProductsComparation import wdgProductsComparation
         self.w.close()
         self.w=wdgProductsComparation(self.mem)
 
@@ -750,6 +769,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsInvestmentActive_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()       
         prod=ProductManager(self.mem)
         prod.load_from_db("select * from products where id in (select products_id from inversiones where active=true) order by name")
@@ -762,6 +782,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsInvalidISIN_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -773,6 +794,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsWithoutQuotes_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("select p.*,q.* from products p, quote(p.id, now()) q where p.id=q.id and q.quote is null and obsolete=False order by name")
@@ -785,6 +807,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsWithPriceVariation_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()        
         d=QDialog()       
         d.setWindowTitle(self.tr("Price variation"))
@@ -808,6 +831,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsWithOldPrice_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("select p.* from products p, quote(p.id, now()) q where p.id=q.id and q.datetime<now() -interval '30 day' and obsolete=False order by name")
@@ -820,6 +844,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionProductsInvestmentInactive_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("select * from products where id in (select products_id from inversiones where active=false) order by name")
@@ -832,6 +857,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsObsolete_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -843,6 +869,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     @pyqtSlot()  
     def on_actionProductsAutoUpdate_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("""select * from products 
@@ -858,6 +885,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @pyqtSlot()  
     def on_actionProductsNotAutoUpdate_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("""select * from products 
@@ -873,6 +901,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionProductsUser_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -884,6 +913,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @pyqtSlot()  
     def on_actionProductsWithoutISIN_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
         prod.load_from_db("select * from products  where obsolete=false and (isin is null or isin ='') order by name,id")
@@ -895,14 +925,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
 
     @pyqtSlot()  
-    def on_actionTablasAuxiliares_triggered(self):
-        w=frmAuxiliarTables(self.mem, self)
-        w.tblTipos_reload()
-        w.exec_()
-
-                
-    @pyqtSlot()  
     def on_actionXetra_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         arrInt=[]
         for p in self.mem.data.products.arr:
@@ -914,19 +938,22 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()  
     def on_actionSearch_triggered(self):
+        from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         self.w=wdgProducts(self.mem)
         self.layout.addWidget(self.w)
         
     @pyqtSlot()  
     def on_actionOrders_triggered(self):  
+        from xulpymoney.ui.wdgOrders import wdgOrders
         self.w.close()
         self.w=wdgOrders(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
 
     @pyqtSlot()  
-    def on_actionPriceUpdates_triggered(self):  
+    def on_actionPriceUpdates_triggered(self):
+        from xulpymoney.ui.wdgQuotesUpdate import wdgQuotesUpdate
         self.w.close()
         self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
@@ -991,6 +1018,6 @@ Do you want to generate it?"""),
             for o in self.mem.updateProducts.arr:
                 f.write(o.sql_update() + "\n")
             f.close()
-        print ("App correctly closed")
+        info("App correctly closed")
         exit(0)
         

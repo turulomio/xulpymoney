@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QInputDialog
 from xulpymoney.objects.concept import Concept
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_frmAuxiliarTables import Ui_frmAuxiliarTables
 
 class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):

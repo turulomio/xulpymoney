@@ -4,7 +4,7 @@ from xulpymoney.ui.Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.simulation import Simulation
 from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     def __init__(self, mem,   parent = None, name = None):

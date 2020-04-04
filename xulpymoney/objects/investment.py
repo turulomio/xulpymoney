@@ -9,7 +9,7 @@ from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.decorators import deprecated
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency, eQColor, eOperationType
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.objects.account import Account
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.assets import Assets

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QT
 from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.libmanagers import  ManagerSelectionMode
 from xulpymoney.objects.product import ProductManager
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
@@ -53,6 +53,7 @@ class wdgProductSelector(QWidget):
         self.setSelected(d.products.selected)
         
     def on_cmdProduct_released(self):
+        from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.selected, self.investment,  self)
         w.exec_()
             
@@ -145,4 +146,3 @@ class frmProductSelector(QDialog):
             if i.column()==0:
                 self.products.selected=self.products.arr[i.row()]
 
-from xulpymoney.ui.frmProductReport import frmProductReport

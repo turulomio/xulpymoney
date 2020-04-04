@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QCheckBox, QDialogButtonBox
 from os import remove,  path
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgQuotesSaveResult import Ui_wdgQuotesSaveResult
 from xulpymoney.ui.myqdialog import MyQDialog
 

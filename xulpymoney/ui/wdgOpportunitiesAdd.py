@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from datetime import date
 from xulpymoney.objects.opportunity import Opportunity
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eInvestmentTypePosition
 from xulpymoney.ui.Ui_wdgOpportunitiesAdd import Ui_wdgOpportunitiesAdd
 

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from xulpymoney.datetime_functions import days2string
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.objects.assets import  Assets
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.product import ProductUpdate

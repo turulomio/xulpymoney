@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from xulpymoney.objects.bank import Bank
 from xulpymoney.objects.account import AccountManager
 from xulpymoney.objects.investment import InvestmentManager
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.myqcharts import VCPie
 from xulpymoney.ui.frmAccountsReport import frmAccountsReport
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport

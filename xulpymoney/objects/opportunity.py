@@ -2,7 +2,8 @@ import datetime
 from decimal import Decimal
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.libxulpymoneyfunctions import relation_gains_risk, qmessagebox
+from xulpymoney.libxulpymoneyfunctions import relation_gains_risk
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libmanagers import ObjectManager_With_IdDate
 from xulpymoney.libxulpymoneytypes import eQColor, eInvestmentTypePosition
 from PyQt5.QtCore import QObject

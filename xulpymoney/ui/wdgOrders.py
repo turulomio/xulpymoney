@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
 from datetime import date
 from logging import debug
 from xulpymoney.objects.order import OrderManager
-from xulpymoney.libxulpymoneyfunctions import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
 from xulpymoney.ui.Ui_wdgOrders import Ui_wdgOrders
