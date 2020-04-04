@@ -17,122 +17,110 @@ def qmessagebox(text):
     m.setText(text)
     m.exec_()   
 
+
+## con is con_target, 
+## progress is a pointer to progressbar
+## returns a tuple (numberofproductssynced, numberofquotessynced)
 def sync_data(con_source, con_target, progress=None):
-    """con is con_target, 
-    progress is a pointer to progressbar
-    returns a tuple (numberofproductssynced, numberofquotessynced)"""
     #Checks if database has same version
-    cur_target=con_target.cursor()
-    cur2_target=con_target.cursor()
-    cur_source=con_source.cursor()
-    
-    
-    #Checks if database has same version
-    cur_source.execute("select value from globals where id=1")
-    cur_target.execute("select value from globals where id=1")
-    
-    if cur_source.fetchone()[0]!=cur_target.fetchone()[0]:
+    source_version=con_source.cursor_one_field("select value from globals where global='Version'")
+    target_version=con_target.cursor_one_field("select value from globals where global='Version'")
+    if source_version!=target_version:
         logging.critical ("Databases has diferent versions, please update them")
         sys.exit(0)
-    
+
     quotes=0#Number of quotes synced
     estimation_dps=0#Number of estimation_dps synced
     estimation_eps=0#Number of estimation_eps synced
     dps=0
     splits=0 #Number of splits synced
     products=0#Number of products synced
-    
+
     #Iterate all products
-    cur_target.execute("select id,name from products where id>0 order by name;")
-    logging.info ("Syncing {} products".format (cur_target.rowcount))
-    for row in cur_target:
-        output="{}: ".format(row['name'])
+    rows_target=con_target.cursor_rows("select id,name from products where id>0 order by name")
+    logging.info ("Syncing {} products".format (len(rows_target)))
+    for i_target, row in enumerate(rows_target):
+        output="Syncing {}: ".format(row['name'])
         ## QUOTES #####################################################################
         #Search last datetime
-        cur2_target.execute("select max(datetime) as max from quotes where id=%s", (row['id'], ))
-        max=cur2_target.fetchone()[0]
+        max=con_target.cursor_one_field("select max(datetime) as max from quotes where id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            cur_source.execute("select * from quotes where id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from quotes where id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            cur_source.execute("select * from quotes where id=%s and datetime>%s", (row['id'], max))
-        if cur_source.rowcount!=0:
-            print("  - Syncing {} since {} ".format(row['name'], max),end="")
-            for  row_source in cur_source: #Inserts them 
-                cur2_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
+            rows_source=con_source.cursor_rows("select * from quotes where id=%s and datetime>%s", (row['id'], max))
+        if len(rows_source)>0:
+            for  row_source in rows_source: #Inserts them 
+                con_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
                 quotes=quotes+1
                 output=output+"."
-                
+
         ## DPS ################################################################################
         #Search last datetime
-        cur2_target.execute("select max(date) as max from dps where id=%s", (row['id'], ))
-        max=cur2_target.fetchone()[0]
+        max=con_target.cursor_one_field("select max(date) as max from dps where id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            cur_source.execute("select * from dps where id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from dps where id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            cur_source.execute("select * from dps where id=%s and date>%s", (row['id'], max))
-        if cur_source.rowcount!=0:
-            for  row_source in cur_source: #Inserts them 
-                cur2_target.execute("insert into dps (date, gross, id) values (%s,%s,%s)", ( row_source['date'], row_source['gross'], row_source['id']))
+            rows_source=con_source.cursor_rows("select * from dps where id=%s and date>%s", (row['id'], max))
+        if len(rows_source)>0:
+            for row_source in rows_source: #Inserts them 
+                con_target.execute("insert into dps (date, gross, id) values (%s,%s,%s)", ( row_source['date'], row_source['gross'], row_source['id']))
                 dps=dps+1
                 output=output+"-"
 
         ## DPS ESTIMATIONS #####################################################################
         #Search last datetime
-        cur2_target.execute("select max(year) as max from estimations_dps where id=%s", (row['id'], ))
-        max=cur2_target.fetchone()[0]
+        max=con_target.cursor_one_field("select max(year) as max from estimations_dps where id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            cur_source.execute("select * from estimations_dps where id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from estimations_dps where id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            cur_source.execute("select * from estimations_dps where id=%s and year>%s", (row['id'], max))
-        if cur_source.rowcount!=0:
-            for  row_source in cur_source: #Inserts them 
-                cur2_target.execute("insert into estimations_dps (year, estimation, date_estimation, source, manual, id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['id']))
+            rows_source=con_source.cursor_rows("select * from estimations_dps where id=%s and year>%s", (row['id'], max))
+        if len(rows_source)>0:
+            for row_source in rows_source: #Inserts them 
+                con_target.execute("insert into estimations_dps (year, estimation, date_estimation, source, manual, id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['id']))
                 estimation_dps=estimation_dps+1
                 output=output+"+"
-                
+
         ## EPS ESTIMATIONS #####################################################################
         #Search last datetime
-        cur2_target.execute("select max(year) as max from estimations_eps where id=%s", (row['id'], ))
-        max=cur2_target.fetchone()[0]
+        max=con_target.cursor_one_field("select max(year) as max from estimations_eps where id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            cur_source.execute("select * from estimations_eps where id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from estimations_eps where id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            cur_source.execute("select * from estimations_eps where id=%s and year>%s", (row['id'], max))
-        if cur_source.rowcount!=0:
-            for  row_source in cur_source: #Inserts them 
-                cur2_target.execute("insert into estimations_eps (year, estimation, date_estimation, source, manual, id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['id']))
+            rows_source=con_source.cursor_rows("select * from estimations_eps where id=%s and year>%s", (row['id'], max))
+        if len(rows_source)>0:
+            for row_source in rows_source: #Inserts them 
+                con_target.execute("insert into estimations_eps (year, estimation, date_estimation, source, manual, id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['id']))
                 estimation_eps=estimation_eps+1
                 output=output+"*"
-                
+
         ## SPLITS  #####################################################################
         #Search last datetime
-        cur2_target.execute("select max(datetime) as max from splits where products_id=%s", (row['id'], ))
-        max=cur2_target.fetchone()[0]
+        max=con_target.cursor_one_field("select max(datetime) as max from splits where products_id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            cur_source.execute("select * from splits where products_id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from splits where products_id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            cur_source.execute("select * from splits where products_id=%s and datetime>%s", (row['id'], max))
-        if cur_source.rowcount!=0:
-            for  row_source in cur_source: #Inserts them 
-                cur2_target.execute("insert into splits (datetime, products_id, before, after, comment) values (%s,%s,%s,%s,%s)", ( row_source['datetime'], row_source['products_id'], row_source['before'], row_source['after'], row_source['comment']))
+            rows_source=con_source.cursor_rows("select * from splits where products_id=%s and datetime>%s", (row['id'], max))
+        if len(rows_source)>0:
+            for row_source in rows_source: #Inserts them 
+                con_target.execute("insert into splits (datetime, products_id, before, after, comment) values (%s,%s,%s,%s,%s)", ( row_source['datetime'], row_source['products_id'], row_source['before'], row_source['after'], row_source['comment']))
                 splits=splits+1
                 output=output+"s"
 
-        if output!="{}: ".format(row['name']):
+        if output!="Syncing {}: ".format(row['name']):
             products=products+1
             logging.debug(output)
-            
+
         if progress!=None:#If there's a progress bar
-            progress.setValue(cur_target.rownumber)
-            progress.setMaximum(cur_target.rowcount)
+            progress.setValue(i_target)
+            progress.setMaximum(len(rows_target))
             QCoreApplication.processEvents()
     con_target.commit()
-    
+
     if progress!=None:
         s=QCoreApplication.translate("Mem", """From {} desynchronized products added:
     - {} quotes
@@ -140,10 +128,8 @@ def sync_data(con_source, con_target, progress=None):
     - {} dividend per share estimations
     - {} earnings per share estimations
     - {} splits / contrasplits""").format(  products,  quotes, dps, estimation_dps,  estimation_eps, splits)
-            
-        qmessagebox(s)  
-    
 
+        qmessagebox(s)
 
 ## Relation between gains and risk. Should be over 2 to be a good investment
 ## @param target Decimal with investment price target
