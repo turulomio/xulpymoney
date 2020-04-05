@@ -204,8 +204,11 @@ class mqtw(QWidget):
     ## Used to order table progamatically
     def setOrderBy(self, index, reverse):
         if self._ordering_enabled==True:
-            self.drawOrderBy(index, reverse)
             action=self.actionListOrderBy[index]
+            if reverse==True:#Sort is made with action text, so I have to emulate. Text is changed from droawOrder By. It's how I will find in menu
+                action.setText(action.text() + " (desc)")
+            else: #No encontrado
+                action.setText(action.text().replace(self.tr(" (desc)"),""))
             action.triggered.emit()
             
     ## When data is loaded, usually it's from an ordered manager of an ordered sql, to avoid displaying and ordering data twice, you can only draw Order by in widget
@@ -228,15 +231,14 @@ class mqtw(QWidget):
                     other_action.setText(other_action.text().replace(self.tr(" (desc)"),""))
 
     ## Order data columns. None values are set at the beginning
-    def on_orderby_action_triggered(self):   
+    def on_orderby_action_triggered(self):
         action=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado
         self._sort_action_index=self.hh.index(action.text().replace(" (desc)",""))#Search the position in the headers of the action Text
         if action.text().find(self.tr(" (desc)"))>0:
             self._sort_action_reverse=True
         else: #No encontrado
             self._sort_action_reverse=False
-        output="Order by '{}'".format(self.actionListOrderBy[self._sort_action_index].text())#Must be set before changing direction
-        # -----------------------------------------------------------------------------
+        output="Order {}/{} by '{}'".format(self._settingsSection, self._settingsObject, self.actionListOrderBy[self._sort_action_index].text())#Must be set before changing direction        # -----------------------------------------------------------------------------
         start=datetime.now()
         nonull=[]
         null=[]
@@ -640,12 +642,12 @@ class mqtwManager(mqtw):
             self._sort_action_reverse=True
         else: #No encontrado
             self._sort_action_reverse=False
-        output="Order by '{}'".format(self.actionListOrderBy[self._sort_action_index].text())#Must be set before changing direction
-        self.drawOrderBy(self._sort_action_index, self._sort_action_reverse)
+        output="Order {}/{} by '{}'".format(self._settingsSection, self._settingsObject, self.actionListOrderBy[self._sort_action_index].text())#Must be set before changing direction
         start=datetime.now()
         self.manager.order_with_none(self.manager_attributes[self._sort_action_index], reverse=self._sort_action_reverse, none_at_top=self._none_at_top)
         debug("{} took {}".format(output, datetime.now()-start))
-        self.update()
+        self.update()        
+        self.drawOrderBy(self._sort_action_index, self._sort_action_reverse)
 
     def update(self):
         self.setDataFromManager(self.hh, self.hv, self.manager, self.manager_attributes, self.data_decimals, self.data_zonename, additional=self.additional)
@@ -919,7 +921,7 @@ def example():
     hh=["Id", "Name", "Date", "Last update","Mem.name", "Age"]
 
     mqtw_manager.setDataFromManager(hh, None, manager_manager, ["id", "name", "date", "datetime", "pruebita.name", ("pruebita.age", [1, ])], additional=manager_manager.prueba)
-    mqtw_manager.setOrderBy(2,  False)
+    mqtw_manager.setOrderBy(2,  True)
 
     lay.addWidget(mqtw_data)
     lay.addWidget(mqtw_data_with_object)

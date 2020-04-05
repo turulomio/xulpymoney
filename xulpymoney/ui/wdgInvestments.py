@@ -23,11 +23,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-    
-    def mqtwInvestments_reload(self):
-        self.investments.myqtablewidget(self.mqtwInvestments)
-        self.lblTotal_update()
-    
+
     ## Updates lblTotal
     def lblTotal_update(self):
         invested=self.investments.invested()
