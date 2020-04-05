@@ -13,6 +13,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.order=order
         self.parent=parent
 
+
         if order==None:
             self.deDate.setDate(date.today())
             self.lbl.setText("Add new order")
@@ -89,10 +90,20 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())
 
     def on_txtShares_textChanged(self):
+        self.txtAmount.blockSignals(True)
         if self.txtShares.isValid() and self.txtPrice.isValid():
             self.txtAmount.setText(round(self.txtShares.decimal()*self.txtPrice.decimal(), 2))
         else:
             self.txtAmount.setText("")
+        self.txtAmount.blockSignals(False)
 
     def on_txtPrice_textChanged(self):
         self.on_txtShares_textChanged()
+
+    def on_txtAmount_textChanged(self):
+        self.txtShares.blockSignals(True)
+        if self.txtAmount.isValid() and self.txtPrice.isValid():
+            self.txtShares.setText(round(self.txtAmount.decimal()/self.txtPrice.decimal(), 0))
+        else:
+            self.txtShares.setText("")
+        self.txtShares.blockSignals(False)

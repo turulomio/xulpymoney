@@ -1,13 +1,14 @@
-from PyQt5.QtCore import pyqtSlot, QSize
-from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget, QMenu, QMessageBox
 from datetime import date
 from logging import debug
 from xulpymoney.objects.order import OrderManager
+from xulpymoney.ui.Ui_wdgOrders import Ui_wdgOrders
+from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.wdgOrdersAdd import wdgOrdersAdd
 from xulpymoney.ui.wdgDisReinvest import wdgDisReinvest
-from xulpymoney.ui.Ui_wdgOrders import Ui_wdgOrders
-from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
 
 class wdgOrders(QWidget, Ui_wdgOrders):
     def __init__(self, mem,  parent=None):
@@ -26,24 +27,22 @@ class wdgOrders(QWidget, Ui_wdgOrders):
 
     @pyqtSlot()  
     def on_actionOrderNew_triggered(self):
-        d=QDialog(self)     
-        d.setModal(True)
+        d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Add new order"))
+        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd")
         w=wdgOrdersAdd(self.mem, None, None, d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
         d.exec_()    
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
     
     @pyqtSlot()  
     def on_actionOrderEdit_triggered(self):
-        d=QDialog(self)     
-        d.setModal(True)
+        d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Edit order"))
+        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd")
         w=wdgOrdersAdd(self.mem, self.mqtwOrders.selected, self.mqtwOrders.selected.investment, d)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        d.exec_()
+        d.setWidgets(w)
+        d.exec_()    
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
     @pyqtSlot() 
@@ -59,18 +58,14 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
-        
-        
-        d=QDialog()       
-        d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
+        d=MyModalQDialog()
         d.setWindowTitle(self.tr("Order reinvest simulation"))
+        d.setSettings(self.mem.settings, "wdgOrders", "frmDisReinvest")
         w=wdgDisReinvest(self.mem, self.mqtwOrders.selected.investment, False,  d)
         w.txtValorAccion.setText(self.mqtwOrders.selected.price)
         w.txtSimulacion.setText(self.mqtwOrders.selected.price*self.mqtwOrders.selected.shares)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
         d.exec_()
-        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
                 
     @pyqtSlot()
     def on_actionShowReinvestSameProduct_triggered(self):
@@ -78,16 +73,14 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
-        d=QDialog()       
-        d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
+        d=MyModalQDialog()
         d.setWindowTitle(self.tr("Order reinvest simulation with all investments with the same product"))
+        d.setSettings(self.mem.settings, "wdgOrders", "frmDisReinvest")
         w=wdgDisReinvest(self.mem, self.mqtwOrders.selected.investment, True,  d)
         w.txtValorAccion.setText(self.mqtwOrders.selected.price)
         w.txtSimulacion.setText(self.mqtwOrders.selected.price*self.mqtwOrders.selected.shares)
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
+        d.setWidgets(w)
         d.exec_()
-        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
         
     @pyqtSlot() 
     def on_actionExecute_triggered(self):
@@ -190,9 +183,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 self.actionExecute.setText("Remove execution time")
             self.actionShowReinvest.setEnabled(True)
             self.actionShowReinvestSameProduct.setEnabled(True)
-                
-                
-            
+
         menu=QMenu()
         menu.addAction(self.actionOrderNew)
         menu.addSeparator()
@@ -208,4 +199,3 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 
     def on_wdgYear_changed(self):
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
-        

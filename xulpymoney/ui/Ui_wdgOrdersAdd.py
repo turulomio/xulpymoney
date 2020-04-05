@@ -136,7 +136,6 @@ class Ui_wdgOrdersAdd(object):
         self.txtAmount.setSizePolicy(sizePolicy)
         self.txtAmount.setMinimumSize(QtCore.QSize(200, 0))
         self.txtAmount.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.txtAmount.setReadOnly(True)
         self.txtAmount.setObjectName("txtAmount")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.txtAmount)
         self.verticalLayout.addLayout(self.formLayout)
