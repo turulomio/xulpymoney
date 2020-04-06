@@ -125,41 +125,25 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
     ## Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
     ## show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)
     def myqtablewidget(self, wdg, show_accounts=False):
-        ##HEADERS
-        diff=0
-        if show_accounts==True:
-            wdg.table.setColumnCount(7)
-            diff=1
-        else:
-            wdg.table.setColumnCount(6)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
-        if show_accounts==True:
-            wdg.table.setHorizontalHeaderItem(diff, qcenter(self.tr("Account" )))
-        wdg.table.setHorizontalHeaderItem(1+diff, qcenter(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2+diff,  qcenter(self.tr("Amount" )))
-        wdg.table.setHorizontalHeaderItem(3+diff, qcenter(self.tr("Balance" )))
-        wdg.table.setHorizontalHeaderItem(4+diff, qcenter(self.tr("Comment" )))
-        wdg.table.setHorizontalHeaderItem(5+diff, qcenter("Id"))
-        ##DATA 
-        wdg.table.clearContents()
-        wdg.applySettings()
-        wdg.table.setRowCount(self.length())
-        wdg.table.setColumnHidden(5+diff, True)
+        hh=[self.tr("Date"), self.tr("Account"), self.tr("Concept"), self.tr("Amount"), self.tr("Balance"), self.tr("Comment")]
+        data=[]
+        for o in self.arr:
+            data.append([
+                o.datetime, 
+                o.account.name, 
+                o.concepto.name, 
+                o.account.money(o.importe), 
+                None, #Added in additional (Balance)
+                Comment(self.mem).decode(o.comentario), 
+                o
+            ])
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
+        
+    def myqtablewidget_additional(self, wdg):
         balance=0
-        self.order_by_datetime()
-        for rownumber, a in enumerate(self.arr):
-            balance=balance+a.importe
-            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
-            if show_accounts==True:
-                wdg.table.setItem(rownumber, diff, qleft(a.account.name))
-            wdg.table.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            wdg.table.setItem(rownumber, 2+diff, self.mem.localmoney(a.importe).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 3+diff, self.mem.localmoney(balance).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 4+diff, qleft(Comment(self.mem).decode(a.comentario)))
-            wdg.table.setItem(rownumber, 5+diff, qleft(a.id))
-#            if len(self.selected)>0:
-#                if a.id==self.selected.onl.id:
-#                    wdg.table.selectRow(rownumber+1)
+        for i, o in enumerate(wdg.objects()):
+            balance=balance+o.importe
+            wdg.table.setItem(i, 4, o.account.money(balance).qtablewidgetitem())#Sets balance after ordering
 
 class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
     def __init__(self, mem, account):

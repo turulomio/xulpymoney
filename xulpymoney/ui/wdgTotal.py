@@ -9,14 +9,13 @@ from xulpymoney.objects.dividend import DividendHeterogeneusManager
 from xulpymoney.objects.investmentoperation import InvestmentOperationHistoricalHeterogeneusManager
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0, lor_transposed
-from xulpymoney.ui.myqtablewidget import qcenter, qleft
+from xulpymoney.ui.myqtablewidget import qcenter, qleft, mqtwObjects
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.objects.annualtarget import AnnualTarget
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
 
@@ -557,7 +556,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowIncomes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -590,6 +589,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                         date_part('year',datetime)={1} and 
                                                         date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
         set.myqtablewidget(wdg,  True)
+        wdg.drawOrderBy(0, False)
         horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
@@ -599,7 +599,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowExpenses_triggered(self):     
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -616,7 +616,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                 from opertarjetas,tarjetas 
                                                 where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                             id_tiposoperaciones={0} and 
-                                                            date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year))
+                                                            date_part('year',datetime)={1}
+                                                order by datetime""".format (id_tiposoperaciones, self.wyData.year))
         else:#Month
             tabtitle=self.tr("Expenses of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
@@ -630,8 +631,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                 where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                             id_tiposoperaciones={0} and 
                                                             date_part('year',datetime)={1} and 
-                                                            date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month))
+                                                            date_part('month',datetime)={2}
+                                                order by datetime""".format (id_tiposoperaciones, self.wyData.year, self.month))
         set.myqtablewidget(wdg,  True)
+        wdg.drawOrderBy(0, False)
         horizontalLayout.addWidget(wdg)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)
@@ -641,7 +644,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_all():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg = mqtw(newtab)
+            wdg = mqtwObjects(newtab)
             wdg.setSettings(self.mem.settings, "wdgTotal","tblShowShellingOperations")
             
             positive=Money(self.mem, 0, self.mem.localcurrency)
@@ -678,7 +681,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_more():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg= mqtw(newtab)
+            wdg= mqtwObjects(newtab)
             wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
             positive=Decimal(0)
@@ -714,7 +717,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         def show_less():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
-            wdg = mqtw(newtab)
+            wdg = mqtwObjects(newtab)
             wdg.setSettings(self.mem.settings, "wdgTotal","tblShowSellingLessOperations")
             wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
             
@@ -759,7 +762,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","mqtwShowDividends")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
@@ -780,12 +783,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
 
-
     @pyqtSlot() 
     def on_actionShowComissions_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","mqtwShowComissions")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()
@@ -873,7 +875,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
         wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         wdg.table.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -945,7 +947,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QVBoxLayout(newtab)
-        wdg = mqtw(newtab)
+        wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","myqtwShowPaidTaxes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         wdg.table.verticalHeader().show()        
