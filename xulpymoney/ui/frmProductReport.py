@@ -15,6 +15,7 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import QuoteManager, Quote, QuoteAllIntradayManager
 from xulpymoney.objects.product import  Product
 from xulpymoney.ui.myqwidgets import qmessagebox
+from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.libxulpymoneyfunctions import setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
@@ -62,7 +63,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwTickers.table.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.mqtwDaily.setSettings(self.mem.settings, "frmProductReport", "mqtwDaily")    
         self.mqtwDaily.table.customContextMenuRequested.connect(self.on_mqtwDaily_customContextMenuRequested)
-        self.mqtwDaily.table.itemSelectionChanged.connect(self.on_mqtwDaily_itemSelectionChanged)
+        self.mqtwDaily.setSelectionMode(ManagerSelectionMode.List)
+        
         self.mqtwWeekly.setSettings(self.mem.settings, "frmProductReport", "mqtwWeekly")
         self.mqtwMonthly.setSettings(self.mem.settings, "frmProductReport", "mqtwMonthly")    
         self.mqtwMonthly.table.customContextMenuRequested.connect(self.on_mqtwMonthly_customContextMenuRequested)
@@ -667,17 +669,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             agr=self.mem.agrupations.clone()
         return agr
 
-    def on_mqtwDaily_itemSelectionChanged(self):
-        if self.product.result.ohclDaily.selected!=None:
-            del self.product.result.ohclDaily.selected
-            self.product.result.ohclDaily.selected=[]
-            
-        for i in self.mqtwDaily.table.selectedItems():#itera por cada item no row.
-            if i.column()==0:
-                self.product.result.ohclDaily.selected.append(self.product.result.ohclDaily.arr[i.row()])
-
     def on_mqtwDaily_customContextMenuRequested(self,  pos):
-        if len(self.product.result.ohclDaily.selected)>0:
+        if len(self.mqtwDaily.selected)>0:
             self.actionQuoteDeleteDays.setEnabled(True)
         else:
             self.actionQuoteDeleteDays.setEnabled(False)

@@ -54,7 +54,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @pyqtSlot()
     def on_actionShowReinvest_triggered(self):
-        if self.mqtwOrders.selected.price==None or self.mqtwOrders.selected.shares==None or self.mqtwOrders.selected.investment.shares()==0:
+        if self.mqtwOrders.selected.price is None or self.mqtwOrders.selected.shares is None or self.mqtwOrders.selected.investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
@@ -69,14 +69,15 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 
     @pyqtSlot()
     def on_actionShowReinvestSameProduct_triggered(self):
-        if self.mqtwOrders.selected.price==None or self.mqtwOrders.selected.shares==None or self.mqtwOrders.selected.investment.shares()==0:
+        investment=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(self.mqtwOrders.selected.investment.product)
+        if self.mqtwOrders.selected.price==None or self.mqtwOrders.selected.shares==None or investment.shares()==0:
             qmessagebox(self.tr("This order can't be simulated"))
             return
         
         d=MyModalQDialog()
         d.setWindowTitle(self.tr("Order reinvest simulation with all investments with the same product"))
         d.setSettings(self.mem.settings, "wdgOrders", "frmDisReinvest")
-        w=wdgDisReinvest(self.mem, self.mqtwOrders.selected.investment, True,  d)
+        w=wdgDisReinvest(self.mem, investment, True,  d)
         w.txtValorAccion.setText(self.mqtwOrders.selected.price)
         w.txtSimulacion.setText(self.mqtwOrders.selected.price*self.mqtwOrders.selected.shares)
         d.setWidgets(w)

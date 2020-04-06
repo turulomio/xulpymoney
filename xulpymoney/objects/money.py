@@ -76,6 +76,8 @@ class Money(Currency):
         if dt==None:
             dt=self.mem.localzone.now()
         factor=self.conversionFactor(currency, dt)
+        if factor is None:
+            return Money(self.mem, 0, currency)
         result=Money(self.mem, self.amount*factor, currency)
         debug("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.now()-init))
         return result
@@ -130,7 +132,10 @@ class Money(Currency):
     def currency_object(self):
         return Currency(self.amount, self.currency)
         
-        
+    ## Returns a new object with amount zero and same currency
+    def zero(self):
+        return Money(self.mem, Decimal(0), self.currency)
+
     ## returns a qtablewidgetitem colored in red is amount is smaller than target or green if greater
     def qtablewidgetitem_with_target(self, target, digits=2):
         item=qcurrency(self.currency_object(), digits)

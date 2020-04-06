@@ -1,11 +1,12 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 from xulpymoney.libmanagers import  ManagerSelectionMode
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.ui.myqwidgets import qmessagebox
 
+## Widget with cmd button to display a frmProductSelector
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
     incluso añadirlo a un layout."""
@@ -50,7 +51,7 @@ class wdgProductSelector(QWidget):
     def on_cmd_released(self):
         d=frmProductSelector(self, self.mem)
         d.exec_()
-        self.setSelected(d.products.selected)
+        self.setSelected(d.mqtwProducts.selected)
         
     def on_cmdProduct_released(self):
         from xulpymoney.ui.frmProductReport import frmProductReport
@@ -107,9 +108,9 @@ class frmProductSelector(QDialog):
         self.cmd.setIcon(icon)
         self.horizontalLayout.addWidget(self.cmd)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.mqtwInvestments = mqtw(self)
-        self.mqtwInvestments.setSettings(self.mem.settings, "frmProductSelector", "mqtwInvestments")
-        self.verticalLayout.addWidget(self.mqtwInvestments)
+        self.mqtwProducts = mqtwObjects(self)
+        self.mqtwProducts.setSettings(self.mem.settings, "frmProductSelector", "mqtwProducts")
+        self.verticalLayout.addWidget(self.mqtwProducts)
         self.lblFound = QLabel(self)
         self.verticalLayout.addWidget(self.lblFound)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
@@ -119,11 +120,10 @@ class frmProductSelector(QDialog):
         self.lblFound.setText(self.tr("Found registers"))
 
         self.setTabOrder(self.txt, self.cmd)
-        self.setTabOrder(self.cmd, self.mqtwInvestments)
+        self.setTabOrder(self.cmd, self.mqtwProducts)
         self.cmd.released.connect(self.on_cmd_released)
         self.txt.returnPressed.connect(self.on_cmd_released)                    
-        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
-        self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
+        self.mqtwProducts.table.cellDoubleClicked.connect(self.on_mqtwProducts_cellDoubleClicked)
         
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=2:            
@@ -135,14 +135,9 @@ class frmProductSelector(QDialog):
         self.products.needStatus(1, progress=True)
         self.products.order_by_name()
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
-        self.products.myqtablewidget(self.mqtwInvestments)  
+        self.products.myqtablewidget(self.mqtwProducts)  
         
-    def on_mqtwInvestments_cellDoubleClicked(self, row, column):
+    def on_mqtwProducts_cellDoubleClicked(self, row, column):
         self.done(0)
     
-    def on_mqtwInvestments_itemSelectionChanged(self):
-        self.products.selected=None
-        for i in self.mqtwInvestments.table.selectedItems():
-            if i.column()==0:
-                self.products.selected=self.products.arr[i.row()]
 
