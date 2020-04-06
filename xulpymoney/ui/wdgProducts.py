@@ -32,18 +32,19 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot()
     def on_actionFavorites_triggered(self):      
-        if self.mqtwInvestments.selected[0].id in self.favorites:
-            self.favorites.remove(self.mqtwInvestments.selected[0].id)
-        else:
-            self.favorites.append(self.mqtwInvestments.selected[0].id)
-        debug("Favorites: {}".format(self.favorites))
-        self.mem.settingsdb.setValue("mem/favorites", self.favorites)
+        if len(self.mqtwInvestments.selected)>0:
+            if self.mqtwInvestments.selected[0].id in self.favorites:
+                self.favorites.remove(self.mqtwInvestments.selected[0].id)
+            else:
+                self.favorites.append(self.mqtwInvestments.selected[0].id)
+            debug("Favorites: {}".format(self.favorites))
+            self.mem.settingsdb.setValue("mem/favorites", self.favorites)
         
-        del self.arrInt
-        self.arrInt=[]
-        for f in self.favorites:
-            self.arrInt.append(f)
-        self.build_array_from_arrInt()
+            del self.arrInt
+            self.arrInt=[]
+            for f in self.favorites:
+                self.arrInt.append(f)
+            self.build_array_from_arrInt()
 
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
@@ -56,20 +57,21 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionProductDelete_triggered(self):
-        if self.mqtwInvestments.selected[0].is_deletable()==False:
-            qmessagebox(self.tr("This product can't be removed, because is marked as not remavable"))
-            return
-            
-        if self.mqtwInvestments.selected[0].is_system()==True:
-            qmessagebox(self.tr("This product can't be removed, because is a system product"))
-            return
-            
-        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.mqtwInvestments.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
-        if respuesta==QMessageBox.Ok:
-            self.arrInt.remove(self.mqtwInvestments.selected[0].id)
-            self.mem.data.products.remove(self.mqtwInvestments.selected[0])
-            self.mem.con.commit()
-            self.build_array_from_arrInt()            
+        if len(self.mqtwInvestments.selected)>0:
+            if self.mqtwInvestments.selected[0].is_deletable()==False:
+                qmessagebox(self.tr("This product can't be removed, because is marked as not remavable"))
+                return
+                
+            if self.mqtwInvestments.selected[0].is_system()==True:
+                qmessagebox(self.tr("This product can't be removed, because is a system product"))
+                return
+                
+            respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.mqtwInvestments.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
+            if respuesta==QMessageBox.Ok:
+                self.arrInt.remove(self.mqtwInvestments.selected[0].id)
+                self.mem.data.products.remove(self.mqtwInvestments.selected[0])
+                self.mem.con.commit()
+                self.build_array_from_arrInt()            
 
     @pyqtSlot() 
     def on_actionProductNew_triggered(self):
@@ -82,27 +84,29 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionPurchaseGraphic_triggered(self):
-        from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
-        self.mqtwInvestments.selected[0].needStatus(2)
-        d=QDialog(self)     
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Purchase graph"))
-        lay = QVBoxLayout(d)
-        
-        wc=wdgProductHistoricalBuyChart()
-        wc.setProduct(self.mqtwInvestments.selected[0], None)
-        wc.setPrice(self.mqtwInvestments.selected[0].result.basic.last.quote)
-        wc.generate()
-        wc.display()
-        lay.addWidget(wc)
-        d.exec_()
+        if len(self.mqtwInvestments.selected)>0:
+            from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalBuyChart
+            self.mqtwInvestments.selected[0].needStatus(2)
+            d=QDialog(self)     
+            d.showMaximized()
+            d.setWindowTitle(self.tr("Purchase graph"))
+            lay = QVBoxLayout(d)
+            
+            wc=wdgProductHistoricalBuyChart()
+            wc.setProduct(self.mqtwInvestments.selected[0], None)
+            wc.setPrice(self.mqtwInvestments.selected[0].result.basic.last.quote)
+            wc.generate()
+            wc.display()
+            lay.addWidget(wc)
+            d.exec_()
         
     @pyqtSlot() 
     def on_actionProductReport_triggered(self):
-        from xulpymoney.ui.frmProductReport import frmProductReport
-        w=frmProductReport(self.mem, self.mqtwInvestments.selected[0], None,  self)
-        w.exec_()        
-        self.build_array_from_arrInt()
+        if len(self.mqtwInvestments.selected)>0:
+            from xulpymoney.ui.frmProductReport import frmProductReport
+            w=frmProductReport(self.mem, self.mqtwInvestments.selected[0], None,  self)
+            w.exec_()        
+            self.build_array_from_arrInt()
     
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
@@ -179,6 +183,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionProductPriceLastRemove.setEnabled(True)
         elif len(self.mqtwInvestments.selected)==2:
             self.actionMergeCodes.setEnabled(True)
+            self.actionFavorites.setEnabled(False)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductDelete.setEnabled(False)
@@ -196,44 +201,49 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSlot() 
     def on_actionMergeCodes_triggered(self):
-        #Only two checked in custom contest
-        d=QDialog(self)
-        d.setWindowTitle(self.tr("Merging codes"))
-        w=wdgProductsDataMove(self.mem, self.mqtwInvestments.selected[0], self.mqtwInvestments.selected[1])
-        lay = QVBoxLayout(d)
-        lay.addWidget(w)
-        d.resize(w.size())
-        d.exec_()
-        self.build_array_from_arrInt()
+        if len(self.mqtwInvestments.selected)>0:
+            #Only two checked in custom contest
+            d=QDialog(self)
+            d.setWindowTitle(self.tr("Merging codes"))
+            w=wdgProductsDataMove(self.mem, self.mqtwInvestments.selected[0], self.mqtwInvestments.selected[1])
+            lay = QVBoxLayout(d)
+            lay.addWidget(w)
+            d.resize(w.size())
+            d.exec_()
+            self.build_array_from_arrInt()
 
     @pyqtSlot()  
     def on_actionPurge_triggered(self):
-        all=QuoteAllIntradayManager(self.mem)
-        all.load_from_db(self.mqtwInvestments.selected[0])
-        numpurged=all.purge(progress=True)
-        if numpurged!=None:#Canceled
-            self.mem.con.commit()
-            qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.mqtwInvestments.selected[0].name)))
-        else:
-            self.mem.con.rollback()
+        if len(self.mqtwInvestments.selected)>0:
+            all=QuoteAllIntradayManager(self.mem)
+            all.load_from_db(self.mqtwInvestments.selected[0])
+            numpurged=all.purge(progress=True)
+            if numpurged!=None:#Canceled
+                self.mem.con.commit()
+                qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.mqtwInvestments.selected[0].name)))
+            else:
+                self.mem.con.rollback()
 
     @pyqtSlot()  
     def on_actionQuoteNew_triggered(self):
-        w=frmQuotesIBM(self.mem,  self.mqtwInvestments.selected[0])
-        w.exec_()
-        self.build_array_from_arrInt()
+        if len(self.mqtwInvestments.selected)>0:
+            w=frmQuotesIBM(self.mem,  self.mqtwInvestments.selected[0])
+            w.exec_()
+            self.build_array_from_arrInt()
 
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
-        self.mqtwInvestments.selected[0].result.basic.last.delete()
-        self.mem.con.commit()
-        self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
-        self.build_array_from_arrInt()
+        if len(self.mqtwInvestments.selected)>0:
+            self.mqtwInvestments.selected[0].result.basic.last.delete()
+            self.mem.con.commit()
+            self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
+            self.build_array_from_arrInt()
 
     @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
-        d=frmEstimationsAdd(self.mem, self.mqtwInvestments.selected[0], "dps")
-        d.exec_()
-        if d.result()==QDialog.Accepted:
-            self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
-            self.build_array_from_arrInt()
+        if len(self.mqtwInvestments.selected)>0:
+            d=frmEstimationsAdd(self.mem, self.mqtwInvestments.selected[0], "dps")
+            d.exec_()
+            if d.result()==QDialog.Accepted:
+                self.mqtwInvestments.selected[0].needStatus(1, downgrade_to=0)
+                self.build_array_from_arrInt()
