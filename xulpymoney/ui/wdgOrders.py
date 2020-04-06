@@ -29,7 +29,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
     def on_actionOrderNew_triggered(self):
         d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Add new order"))
-        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd")
+        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd", 600, 400)
         w=wdgOrdersAdd(self.mem, None, None, d)
         d.setWidgets(w)
         d.exec_()    
@@ -39,7 +39,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
     def on_actionOrderEdit_triggered(self):
         d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Edit order"))
-        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd")
+        d.setSettings(self.mem.settings, "wdgOrders", "frmOrderAdd", 600, 400)
         w=wdgOrdersAdd(self.mem, self.mqtwOrders.selected, self.mqtwOrders.selected.investment, d)
         d.setWidgets(w)
         d.exec_()    

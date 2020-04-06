@@ -12,13 +12,13 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.mem=mem
         self.order=order
         self.parent=parent
-
+        self.lblWarning.hide()
 
         if order==None:
             self.deDate.setDate(date.today())
             self.lbl.setText("Add new order")
             self.deExpiration.setDate(date.today())
-            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
+            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
             self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
         else:
             self.lbl.setText("Edit order")
@@ -29,7 +29,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         
         #Can be None or distinct of None with order None or distint of None
         if investment==None:
-            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
+            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
             self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
         else:
             self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, investment.product)
@@ -76,7 +76,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             else:
                 investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(product)
             investments.qcombobox(self.cmbInvestments, tipo=3, selected=None, obsolete_product=False, investments_active=None, accounts_active=None)
-            self.mem.settings.setValue("wdgCalculator/product", product.id)
+            self.mem.settings.setValue("wdgOrdersAdd/product", product.id)
 
     @pyqtSlot(int)  
     def on_cmbInvestments_currentIndexChanged(self, index):
@@ -96,6 +96,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         else:
             self.txtAmount.setText("")
         self.txtAmount.blockSignals(False)
+        self.setWarning()
 
     def on_txtPrice_textChanged(self):
         self.on_txtShares_textChanged()
@@ -107,3 +108,16 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         else:
             self.txtShares.setText("")
         self.txtShares.blockSignals(False)
+        self.setWarning()
+
+    def setWarning(self):
+        try:
+            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
+            if ((self.txtShares.decimal()>0 and self.txtPrice.decimal()>product.result.basic.last.quote) or
+                (self.txtShares.decimal()<0 and self.txtPrice.decimal()<product.result.basic.last.quote)):
+                self.lblWarning.setText(self.tr("Warning: You must set a stop loss order"))
+                self.lblWarning.show()
+            else:
+                self.lblWarning.hide()
+        except:
+            self.lblWarning.hide()
