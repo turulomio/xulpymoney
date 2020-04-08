@@ -152,7 +152,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if self.cmbPrices.currentIndex()>=0:
             index=self.cmbPrices.currentIndex()
         else:
-            index=9
+            index=10
         
         #quotes
         quote_current=self.investment.product.result.basic.last
