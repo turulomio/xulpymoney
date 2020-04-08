@@ -4,7 +4,6 @@ from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.dividend import Dividend
 from xulpymoney.objects.money import Money
 from xulpymoney.ui.myqwidgets import qmessagebox
-from xulpymoney.libxulpymoneytypes import eProductType
 from xulpymoney.ui.Ui_frmDividendsAdd import Ui_frmDividendsAdd
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
@@ -26,12 +25,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.lblGross.setText(self.tr("Gross in {}").format(currency_symbol(self.investment.product.currency)))
         self.lblGrossAccount.setText(self.tr("Gross converted to {}").format(currency_symbol(self.investment.account.currency)))
         if dividend==None:#insertar
-            if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
-                self.mem.conceptos.load_bonds_qcombobox(self.cmb)
-            elif self.investment.product.type.id in (eProductType.CFD,  eProductType.Future):
-                self.mem.conceptos.load_futures_qcombobox(self.cmb)
-            else:
-                self.mem.conceptos.load_dividend_qcombobox(self.cmb)
+            self.mem.conceptos.load_dividend_qcombobox(self.cmb)
             self.cmb.setCurrentIndex(0)
             self.dividend=Dividend(self.mem)
             self.dividend.investment=inversion
@@ -39,10 +33,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.wdgDT.set(None, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), None)
         else:#modificar 
-            if self.investment.product.type.id in (eProductType.PrivateBond, eProductType.PublicBond):#Bonds
-                self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
-            else:
-                self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
+            self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
             self.wdgDT.set(self.dividend.datetime, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
             self.txtBruto.setText(self.dividend.bruto)

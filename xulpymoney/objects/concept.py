@@ -102,24 +102,11 @@ class ConceptManager(ObjectManager_With_IdName_Selectable, QObject):
 
     def load_dividend_qcombobox(self, combo,  select=None):
         """Select es un class Concept"""
-        for n in (39, 50,  62):
+        for n in (eConcept.Dividends, eConcept.AssistancePremium,  eConcept.DividendsSaleRights, 
+        eConcept.RolloverPaid, eConcept.RolloverReceived, eConcept.BondsCouponRunPayment, 
+        eConcept.BondsCouponRunIncome, eConcept.BondsCoupon):
             c=self.find_by_id(n)
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id   )
-        if select!=None:
-            combo.setCurrentIndex(combo.findData(select.id))
-
-    def load_bonds_qcombobox(self, combo,  select=None):
-        """Carga conceptos operaciones 1,2,3"""
-        for n in (50, 63, 65, 66):
-            c=self.find_by_id(n)
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
-        if select!=None:
-            combo.setCurrentIndex(combo.findData(select.id))
-
-    def load_futures_qcombobox(self, combo,  select=None):
-        for n in (eConcept.RolloverPaid, eConcept.RolloverReceived):
-            c=self.find_by_id(n)
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
         if select!=None:
             combo.setCurrentIndex(combo.findData(select.id))
 

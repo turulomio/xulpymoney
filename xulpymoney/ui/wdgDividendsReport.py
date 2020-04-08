@@ -59,7 +59,16 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def on_cmd_pressed(self):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
-    def on_mqtw_customContextMenuRequested(self,  pos):        
+    def on_mqtw_customContextMenuRequested(self,  pos):
+        if self.mqtw.selected is None:
+            self.actionEstimationDPSEdit.setEnabled(False)
+            self.actionInvestmentReport.setEnabled(False)
+            self.actionProductReport.setEnabled(False)
+        else:
+            self.actionEstimationDPSEdit.setEnabled(True)
+            self.actionInvestmentReport.setEnabled(True)
+            self.actionProductReport.setEnabled(True)
+
         menu=QMenu()
         menu.addAction(self.actionEstimationDPSEdit)
         menu.addSeparator()

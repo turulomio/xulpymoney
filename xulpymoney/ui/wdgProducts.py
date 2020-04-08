@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox, Q
 from logging import debug
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
 from xulpymoney.objects.quote import QuoteAllIntradayManager
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.wdgProductsDataMove import wdgProductsDataMove
@@ -137,10 +138,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_array_from_arrInt()
 
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
-        if self.mqtwInvestments.selected is None:
-            debug("on_mqtwInvestments_customContextMenuRequested without selected. May be list selection mode")
-            return
-        debug("Customcontext: {}".format(self.mqtwInvestments.selected))
         menu=QMenu()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurchaseGraphic)
@@ -154,22 +151,29 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavorites)
-        if len(self.mqtwInvestments.selected)==1:
+        menu.addSeparator()
+        menu.addAction(self.actionPurge)
+        #Enabled disabled  
+        if self.mqtwInvestments.selected is None or len(self.mqtwInvestments.selected)>2:
+            self.actionMergeCodes.setEnabled(False)
+            self.actionProductDelete.setEnabled(False)
+            self.actionFavorites.setEnabled(False)
+            self.actionProductReport.setEnabled(False)
+            self.actionPurchaseGraphic.setEnabled(False)
+            self.actionIbex35.setEnabled(False)
+            self.actionQuoteNew.setEnabled(False)
+            self.actionEstimationDPSNew.setEnabled(False)
+            self.actionPurge.setEnabled(False)
+            self.actionProductPriceLastRemove.setEnabled(False)
+        elif len(self.mqtwInvestments.selected)==1:
             if self.mqtwInvestments.selected[0].id in self.favorites:
                 self.actionFavorites.setText(self.tr("Remove from favorites"))
             else:
                 self.actionFavorites.setText(self.tr("Add to favorites"))
-        menu.addSeparator()
-        menu.addAction(self.actionPurge)
 
-        if len (self.mqtwInvestments.selected)==1:
             if self.mqtwInvestments.selected[0].id==79329:
                 menu.addSeparator()
                 menu.addAction(self.actionIbex35)
-        #menu.addMenu(self.mqtwInvestments.qmenu()) MUST ADD A SET DATA IN MYQTABLEWIDGET
-        
-        #Enabled disabled  
-        if len(self.mqtwInvestments.selected)==1:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductDelete.setEnabled(True)
             self.actionFavorites.setEnabled(True)
@@ -183,31 +187,19 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         elif len(self.mqtwInvestments.selected)==2:
             self.actionMergeCodes.setEnabled(True)
             self.actionFavorites.setEnabled(False)
-        else:
-            self.actionMergeCodes.setEnabled(False)
-            self.actionProductDelete.setEnabled(False)
-            self.actionFavorites.setEnabled(False)
-            self.actionProductReport.setEnabled(False)
-            self.actionPurchaseGraphic.setEnabled(False)
-            self.actionIbex35.setEnabled(False)
-            self.actionQuoteNew.setEnabled(False)
-            self.actionEstimationDPSNew.setEnabled(False)
-            self.actionPurge.setEnabled(False)
-            self.actionProductPriceLastRemove.setEnabled(False)
         menu.addSeparator()
         menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
 
     @pyqtSlot() 
     def on_actionMergeCodes_triggered(self):
-        if len(self.mqtwInvestments.selected)>0:
+        if len(self.mqtwInvestments.selected)==2:
             #Only two checked in custom contest
-            d=QDialog(self)
+            d=MyModalQDialog(self)
             d.setWindowTitle(self.tr("Merging codes"))
+            d.setSettings(self.mem.settings, "wdgProducts", "frmMergeProducts")
             w=wdgProductsDataMove(self.mem, self.mqtwInvestments.selected[0], self.mqtwInvestments.selected[1])
-            lay = QVBoxLayout(d)
-            lay.addWidget(w)
-            d.resize(w.size())
+            d.setWidgets(w)
             d.exec_()
             self.build_array_from_arrInt()
 

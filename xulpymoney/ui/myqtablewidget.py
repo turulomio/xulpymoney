@@ -73,6 +73,8 @@ class mqtw(QWidget):
         self._none_at_top=True
         self._sort_action_reverse=None#Needed for first setData
         self._ordering_enabled=False
+        self.selected=None #Must be initializated
+        self.selected_items=None
         
     ## Sets if ordering must be enabled
     ## In mqtw id False by default. In mqtwManager and mqtwObjects is True by default

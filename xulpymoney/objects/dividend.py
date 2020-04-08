@@ -112,16 +112,12 @@ class Dividend:
         
         Actualiza la cuenta 
         """
-        cur=self.mem.con.cursor()
+        from xulpymoney.objects.accountoperation import AccountOperation
+        from xulpymoney.objects.comment import Comment
         if self.id==None:#Insertar
-
-            from xulpymoney.objects.accountoperation import AccountOperation
-
-            from xulpymoney.objects.comment import Comment
             self.opercuenta=AccountOperation(self.mem,  self.datetime,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account, None)
             self.opercuenta.save()
-            cur.execute("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
-            self.id=cur.fetchone()[0]
+            self.id=self.mem.con.cursor_one_field("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
             self.opercuenta.comentario=Comment(self.mem).encode(eComment.Dividend, self)
             self.opercuenta.save()
         else:
@@ -131,11 +127,7 @@ class Dividend:
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
-            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
-        cur.close()
-
-
-
+            self.mem.con.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
 
 class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Class that  groups dividends from a Xulpymoney Product"""

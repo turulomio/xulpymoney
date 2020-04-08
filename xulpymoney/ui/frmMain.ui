@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>34</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -71,12 +71,9 @@
     <property name="title">
      <string>&amp;Reports</string>
     </property>
-    <addaction name="actionPurchaseOpportunities"/>
-    <addaction name="separator"/>
     <addaction name="actionConcepts"/>
     <addaction name="actionDividendsReport"/>
     <addaction name="actionEvolutionReport"/>
-    <addaction name="actionIndexRange"/>
     <addaction name="actionTotalReport"/>
     <addaction name="separator"/>
     <addaction name="actionGlobalReport"/>
