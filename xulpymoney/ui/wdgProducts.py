@@ -1,8 +1,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox, QAbstractItemView
 from logging import debug
 from xulpymoney.ui.Ui_wdgProducts import Ui_wdgProducts
-from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.objects.quote import QuoteAllIntradayManager
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
@@ -14,7 +13,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.mqtwInvestments.setSelectionMode(ManagerSelectionMode.List)
+        self.mqtwInvestments.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
         self.mqtwInvestments.setSettings(self.mem.settings, "wdgProducts", "mqtwInvestments")
         self.mqtwInvestments.table.cellDoubleClicked.connect(self.on_mqtwInvestments_cellDoubleClicked)
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)

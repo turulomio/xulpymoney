@@ -1259,11 +1259,9 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         
     def setDistinctProducts(self):
         """Extracts distinct products in IO"""
-        s=set([])
-        for o in self.arr:
-            s.add(o.investment.product)
         result=ProductManager(self.mem)
-        result.arr=list(s)
+        for o in self.arr:
+            result.append_distinct(o.investment.product)
         return result
 
     def order_by_datetime(self):       

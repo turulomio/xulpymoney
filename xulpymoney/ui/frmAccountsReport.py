@@ -52,8 +52,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mqtwCreditCardOperations.setSettings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperations")
         self.mqtwCreditCardOperations.table.customContextMenuRequested.connect(self.on_mqtwCreditCardOperations_customContextMenuRequested)
         self.mqtwCreditCardOperations.table.itemSelectionChanged.connect(self.on_mqtwCreditCardOperations_itemSelectionChanged)
-
-        self.mqtwCreditCardOperations.table.setSelectionMode(QAbstractItemView.MultiSelection)        
+ 
+        self.mqtwCreditCardOperations.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
         self.mqtwCreditCardOperationsHistorical.setSettings(self.mem.settings, "frmAccountsReport", "mqtwCreditCardOperationsHistorical")
     
         self.wdgDtPago.set(datetime.now(), self.mem.localzone_name)

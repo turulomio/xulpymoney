@@ -878,7 +878,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         wdg = mqtwObjects(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
         wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        wdg.table.setSelectionMode(QAbstractItemView.SingleSelection)
         wdg.table.setColumnCount(5)
         
         wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))

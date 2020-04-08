@@ -661,17 +661,13 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     ## @param only_with_shares Boolean. If True only investments of products used with shares in current operations. If False all used products with investments
     def ProductManager_with_investments_distinct_products(self, only_with_shares=False):
         """Returns a SetProduct with all distinct products of the Set investments items"""
-        s=set([])
+        r=ProductManager(self.mem)
         for i in self.arr:
             if only_with_shares==True:
                 if i.shares()!=0:
-                    s.add(i.product)
+                    r.append_distinct(i.product)
             else:
-                s.add(i.product)
-            
-        r=ProductManager(self.mem)
-        for p in s:
-            r.append(p)        
+                r.append_distinct(i.product)
         return r
         
 

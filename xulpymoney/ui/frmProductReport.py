@@ -15,7 +15,6 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import QuoteManager, Quote, QuoteAllIntradayManager
 from xulpymoney.objects.product import  Product
 from xulpymoney.ui.myqwidgets import qmessagebox
-from xulpymoney.libmanagers import ManagerSelectionMode
 from xulpymoney.libxulpymoneyfunctions import setReadOnly
 from xulpymoney.casts import  c2b
 from xulpymoney.objects.stockmarket import StockMarketManager
@@ -47,7 +46,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mem=mem
         self.product=product
         self.investment=inversion#Used to generate puntos de venta, punto de compra....
-        self.setSelIntraday=set([])
         
         self.selDPS=None
         self.selEstimationDPS=None
@@ -63,7 +61,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwTickers.table.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.mqtwDaily.setSettings(self.mem.settings, "frmProductReport", "mqtwDaily")    
         self.mqtwDaily.table.customContextMenuRequested.connect(self.on_mqtwDaily_customContextMenuRequested)
-        self.mqtwDaily.setSelectionMode(ManagerSelectionMode.List)
+        self.mqtwDaily.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
         
         self.mqtwWeekly.setSettings(self.mem.settings, "frmProductReport", "mqtwWeekly")
         self.mqtwMonthly.setSettings(self.mem.settings, "frmProductReport", "mqtwMonthly")    
@@ -72,9 +70,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwYearly.setSettings(self.mem.settings, "frmProductReport", "mqtwYearly")    
         self.mqtwYearly.table.customContextMenuRequested.connect(self.on_mqtwYearly_customContextMenuRequested)
         self.mqtwYearly.table.itemSelectionChanged.connect(self.on_mqtwYearly_itemSelectionChanged)
+        
         self.mqtwIntradia.setSettings(self.mem.settings, "frmProductReport", "mqtwIntradia")    
         self.mqtwIntradia.table.customContextMenuRequested.connect(self.on_mqtwIntradia_customContextMenuRequested)
-        self.mqtwIntradia.table.itemSelectionChanged.connect(self.on_mqtwIntradia_itemSelectionChanged)
+        self.mqtwIntradia.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
+        
         self.mqtwMensuales.setSettings(self.mem.settings, "frmProductReport", "mqtwMensuales")    
         self.mqtwSplits.setSettings(self.mem.settings, "frmProductReport", "mqtwMensuales")
         self.mqtwSplits.table.customContextMenuRequested.connect(self.on_mqtwSplits_customContextMenuRequested)
@@ -463,7 +463,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
     @pyqtSlot()
     def on_actionQuoteEdit_triggered(self):
-        for quote in self.setSelIntraday:##Only is one, but i don't know how to refer to quote
+        for quote in self.mqtwIntradia.selected:##Only is one, but i don't know how to refer to quote
             w=frmQuotesIBM(self.mem,  self.product, quote)
             w.exec_()   
             if w.result()==QDialog.Accepted:
@@ -539,7 +539,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     @pyqtSlot()
     def on_actionQuoteDelete_triggered(self):
-        for q in self.setSelIntraday:
+        for q in self.mqtwIntradia.selected:
             q.delete()
             self.product.result.intradia.arr.remove(q)
         self.mem.con.commit()
@@ -721,12 +721,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionQuoteDeleteYears)        
         menu.exec_(self.mqtwYearly.table.mapToGlobal(pos))
     def on_mqtwIntradia_customContextMenuRequested(self,  pos):
-        if len (self.setSelIntraday)>0:
+        if len (self.mqtwIntradia.selected)>0:
             self.actionQuoteDelete.setEnabled(True)
         else:
             self.actionQuoteDelete.setEnabled(False)
 
-        if len(self.setSelIntraday)==1:
+        if len(self.mqtwIntradia.selected)==1:
             self.actionQuoteEdit.setEnabled(True)
         else:
             self.actionQuoteEdit.setEnabled(False)
@@ -739,15 +739,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionPurgeDay)
         menu.exec_(self.mqtwIntradia.table.mapToGlobal(pos))
 
-    def on_mqtwIntradia_itemSelectionChanged(self):
-        sel=[]
-        try:
-            for i in self.mqtwIntradia.table.selectedItems():#itera por cada item no row.
-                if i.column()==0:
-                    sel.append(self.product.result.intradia.arr[i.row()])
-            self.setSelIntraday=set(sel)
-        except:
-            self.setSelIntraday=set([])
+#    def on_mqtwIntradia_itemSelectionChanged(self):
+#        sel=[]
+#        try:
+#            for i in self.mqtwIntradia.table.selectedItems():#itera por cada item no row.
+#                if i.column()==0:
+#                    sel.append(self.product.result.intradia.arr[i.row()])
+#            self.mqtwIntradia.selected=set(sel)
+#        except:
+#            self.mqtwIntradia.selected=set([])
             
             
     def on_mqtwDividendsEstimations_itemSelectionChanged(self):
