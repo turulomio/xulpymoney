@@ -106,10 +106,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
         d.setWidgets(w)
         d.show()
-        if w.hasProducts==True:
-            d.show()
-        else:
-            d.close()
         
     @pyqtSlot()  
     def on_actionConcepts_triggered(self):

@@ -19,7 +19,6 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.mem=mem
 
         self.mqtw.setSettings(self.mem.settings, "wdgCalculator", "mqtw")
-        self.hasProducts=True#Permits to show/hide the widget from external dialog
 
         self.investments=None#SetINvestments of the selected product
         self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)), logging=True)
