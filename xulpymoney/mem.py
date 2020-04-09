@@ -199,7 +199,7 @@ class Mem(QObject):
     ## @param args It's the result of a argparse     args=parser.parse_args()        
     def addDebugSystem(self, level):
         logFormat = "%(asctime)s.%(msecs)03d %(levelname)s %(message)s [%(module)s:%(lineno)d]"
-        dateFormat='%F %I:%M:%S'
+        dateFormat='%F %H:%M:%S'
 
         if level=="DEBUG":#Show detailed information that can help with program diagnosis and troubleshooting. CODE MARKS
             basicConfig(level=DEBUG, format=logFormat, datefmt=dateFormat)

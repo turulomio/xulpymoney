@@ -22,7 +22,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.hasProducts=True#Permits to show/hide the widget from external dialog
 
         self.investments=None#SetINvestments of the selected product
-        self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)))
+        self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", -9999)), logging=True)
         self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, self.product)
         self.lblAmount.setText(self.tr("Amount to invest in {} ({})").format(self.mem.localcurrency, currency_symbol(self.mem.localcurrency)))
 
