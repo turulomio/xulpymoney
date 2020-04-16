@@ -175,43 +175,28 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
             oc=AccountOperation(self.mem, row['id_opercuentas'])
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
         cur.close()      
-                
-    def myqtablewidget(self, wdg,   show_investment=False):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
-        Devuelve sumatorios"""
-        diff=0
-        if show_investment==True:
-            diff=1
-        wdg.table.setColumnCount(7+diff)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date" )))
-        wdg.table.setHorizontalHeaderItem(diff, qcenter(self.tr( "Product" )))
-        wdg.table.setHorizontalHeaderItem(diff+1, qcenter(self.tr( "Concept" )))
-        wdg.table.setHorizontalHeaderItem(diff+2, qcenter(self.tr( "Gross" )))
-        wdg.table.setHorizontalHeaderItem(diff+3, qcenter(self.tr( "Withholding" )))
-        wdg.table.setHorizontalHeaderItem(diff+4, qcenter(self.tr( "Comission" )))
-        wdg.table.setHorizontalHeaderItem(diff+5, qcenter(self.tr( "Net" )))
-        wdg.table.setHorizontalHeaderItem(diff+6, qcenter(self.tr( "DPS" )))
-        #DATA  
-        wdg.applySettings()
-        wdg.table.clearContents()
 
+    def myqtablewidget(self, wdg,   type=eMoneyCurrency.User):
+        hh=[self.tr("Date"), self.tr("Product"), self.tr("Concept"), self.tr("Gross"), self.tr("Withholding"), self.tr("Commission"), self.tr("Net"), self.tr("DPS")]
+        data=[]
+        for i, o in enumerate(self.arr):
+            data.append([
+                o.datetime, 
+                o.investment.fullName(), 
+                o.opercuenta.concepto.name, 
+                o.gross(type), 
+                o.retention(type), 
+                o.commission(type), 
+                o.net(type), 
+                o.dps(type), 
+                o,
+            ])
 
-        wdg.table.setRowCount(len(self.arr)+1)
-        for i, d in enumerate(self.arr):
-            wdg.table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
-            if show_investment==True:
-                wdg.table.setItem(i, diff, qleft(d.investment.name))
-            wdg.table.setItem(i, diff+1, qleft(d.opercuenta.concepto.name))
-            wdg.table.setItem(i, diff+2, self.mem.localcurrency.qtablewidgetitem(d.bruto))
-            wdg.table.setItem(i, diff+3, self.mem.localcurrency.qtablewidgetitem(d.retencion))
-            wdg.table.setItem(i, diff+4, self.mem.localcurrency.qtablewidgetitem(d.comision))
-            wdg.table.setItem(i, diff+5, self.mem.localcurrency.qtablewidgetitem(d.neto))
-            wdg.table.setItem(i, diff+6, self.mem.localcurrency.qtablewidgetitem(d.dpa))
-        wdg.table.setItem(len(self.arr), diff+1, qleft(self.tr("TOTAL")))
-        wdg.table.setItem(len(self.arr), diff+2, self.gross().qtablewidgetitem())
-        wdg.table.setItem(len(self.arr), diff+3, self.retention().qtablewidgetitem())
-        wdg.table.setItem(len(self.arr), diff+4, self.commission().qtablewidgetitem())
-        wdg.table.setItem(len(self.arr), diff+5, self.net().qtablewidgetitem())
+        wdg.setDataWithObjects(hh, None, data, additional=self.myqtablewidget_additional, zonename=self.mem.localzone_name)
+
+    def myqtablewidget_additional(self, wdg):
+        wdg.table.setRowCount(wdg.length()+1)
+        wdg.addRow(wdg.length(), [self.tr("Total"), "#crossedout", "#crossedout", self.gross(), self.retention(), self.commission(),self.net(), "#crossedout",], zonename=self.mem.localzone_name)
 
 class DividendHomogeneusManager(DividendHeterogeneusManager):
     def __init__(self, mem, investment):
