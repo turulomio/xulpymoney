@@ -84,13 +84,14 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         d=MyModalQDialog(self)
         d.setWindowTitle(self.tr("Comission calculator"))
         d.setWindowIcon(QIcon(":/xulpymoney/tools-wizard.png"))
+        d.setSettings(self.mem.settings, "frmInvestmentOperationsAdd", "frmCommissionCalculator", 300, 50)
         t=wdgTwoCurrencyLineEdit(d)
         t.label.setWordWrap(True)
         t.set(self.mem, self.investment.product.currency, self.investment.account.currency, self.wdg2CCurrencyConversion.factor)
-        t.setLabel(self.tr("Please add the final amount annoted in your bank account, then close this window"))
+        t.setLabel(self.tr("Please add the final positive amount annoted in your bank account, then close this window"))
         d.setWidgets(t)
         d.exec_()
-        self.wdg2CComission.setTextA(t.decimalA()-self.wdg2CPrice.decimalA()*self.txtAcciones.decimal())
+        self.wdg2CComission.setTextA(abs(t.decimalA())-abs(self.wdg2CPrice.decimalA()*self.txtAcciones.decimal()))
 
     def on_cmd_released(self):        
         if self.wdg2CComission.isValid() and self.wdg2CCurrencyConversion.isValid() and self.wdg2CPrice.isValid() and self.wdg2CTaxes.isValid()==False:
