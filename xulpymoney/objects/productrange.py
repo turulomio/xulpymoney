@@ -99,10 +99,18 @@ class ProductRangeManager(ObjectManager, QObject):
         self.decimals=decimals
         
         # Create ranges
-        range_highest=self.product.highest_investment_operation_price()*Decimal(1+self.percentage_down.value*10)#5 times up value
-        range_lowest=self.product.lowest_investment_operation_price()*Decimal(1-self.percentage_down.value*10)#5 times down value
+        inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self.product)
+        if inv.op_actual.length()>0: #Investment with shares
+            range_highest=self.product.highest_investment_operation_price()*Decimal(1+self.percentage_down.value*10)#5 times up value
+            range_lowest=self.product.lowest_investment_operation_price()*Decimal(1-self.percentage_down.value*10)#5 times down value
+        else: # No investment jet and shows ranges from product current price
+            range_highest=self.product.result.basic.last.quote*Decimal(1+self.percentage_down.value*10)#5 times up value
+            range_lowest=self.product.result.basic.last.quote*Decimal(1-self.percentage_down.value*10)#5 times down value
+
         if range_lowest<Decimal(0.001):#To avoid infinity loop
             range_lowest=Decimal(0.001)
+
+
 
         self.highest_range_value=10000000
         current_value=self.highest_range_value
@@ -112,7 +120,7 @@ class ProductRangeManager(ObjectManager, QObject):
                 self.append(ProductRange(self.mem, i, self.product, current_value, percentage_down, percentage_up))
             current_value=current_value*(1-percentage_down.value)
             i=i+1
-            
+
     ## Set investment recomendations to all ProductRange objects in array 
     def setInvestRecomendation(self, method, method1_smas=[10, 50, 200]):
         if method==ProductRangeInvestRecomendation.All:

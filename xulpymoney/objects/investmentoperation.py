@@ -653,15 +653,18 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         else:#money in product currency
             balance_after_gains_product_currency=money+self.invertido(eMoneyCurrency.Product)
             
+            
         #Calculate price from gains in product concurrency
         if self.investment.op_actual.shares()>0:#Long position
             return Money(self.mem, balance_after_gains_product_currency.amount/self.shares()/leverage, self.investment.product.currency)
-        else:#Short position
+        elif self.investment.op_actual.shares()<0:#Short position
             #(Average price - PF) · Shares·Leverage=Gains. Despejando
             #Creo que esta mal por que el average price no cuenta lo que ha costado en divisa. En multidivisa
             #print(self.average_price(eMoneyCurrency.Product).amount, abs(self.shares()),  leverage,  money.amount)
             price=(self.average_price(eMoneyCurrency.Product).amount*abs(self.shares())*leverage-money.amount)/(abs(self.shares())*leverage)
             return Money(self.mem, price, self.investment.product.currency)
+        else: # Shares=0
+            return Money(self.mem, 0, self.investment.product.currency)
 
     ## Función que calcula la diferencia de balance entre last y penultimate
     ## Necesita haber cargado mq getbasic y operinversionesactual

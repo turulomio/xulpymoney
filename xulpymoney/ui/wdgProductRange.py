@@ -21,7 +21,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
         product_in_settings=self.mem.data.products.find_by_id(self.mem.settingsdb.value_integer("wdgProductRange/product", "79329"))
 
-        products=self.mem.data.investments.ProductManager_with_investments_distinct_products(only_with_shares=True)
+        products=self.mem.data.investments_active().ProductManager_with_investments_distinct_products(only_with_shares=False)
         products.order_by_name()
         products.qcombobox(self.cmbProducts, product_in_settings)
 
