@@ -207,7 +207,8 @@ class AssetsReport(ODT, QObject):
         #Dividend report
         self.header(self.tr("Dividend estimations report"), 1)
         self.mem.frmMain.on_actionDividendsReport_triggered()
-        self.table(self.mem.frmMain.w.mqtw.listHorizontalHeaders(), self.mem.frmMain.w.mqtw.data, [8, 6, 2.6, 2.6, 2.6, 2.6, 2.6], 8)
+        model=self.mem.frmMain.w.mqtw.officegeneratorModel("mqtwDividendsReport")
+        model.odt_table(self, 26, 8)
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(Assets(self.mem).dividends_estimated()))
 
     def sleep(self, seconds):
