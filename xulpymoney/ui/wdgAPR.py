@@ -1,16 +1,12 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import  QWidget, QProgressDialog
 from datetime import datetime, date
-from decimal import Decimal
 from logging import debug
-from xulpymoney.datetime_functions import date_last_of_the_year
+from xulpymoney.datetime_functions import date_last_of_the_year, dtaware_year_end, dtaware_year_start
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.money import Money
-from xulpymoney.objects.percentage import Percentage, percentage_between
-from xulpymoney.casts import none2decimal0
+from xulpymoney.objects.percentage import  percentage_between
 from xulpymoney.ui.Ui_wdgAPR import Ui_wdgAPR
-from xulpymoney.ui.myqtablewidget import qright
-from xulpymoney.libxulpymoneytypes import eConcept
 
 class wdgAPR(QWidget, Ui_wdgAPR):
     def __init__(self, mem,  parent=None):
@@ -43,6 +39,9 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.forceShow()
         self.progress.setValue(0)
         
+        self.dt_report_start=dtaware_year_start(self.wdgYear.year, self.mem.localzone_name)
+        self.dt_report_end=dtaware_year_end(date.today().year, self.mem.localzone_name)
+        
         self.mqtw.clear()
         self.mqtwReport.clear()
         self.dates=[]
@@ -56,12 +55,9 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
 
     def load_data(self):        
-        inicio=datetime.now()       
-        anoinicio=self.wdgYear.year
-        anofinal=date.today().year
-        
+        inicio=datetime.now()
         self.mqtw.applySettings()
-        self.mqtw.table.setRowCount(anofinal-anoinicio+1+1)
+        self.mqtw.table.setRowCount(date.today().year-self.wdgYear.year+1+1)
         lastsaldo=Money(self.mem)
         sumdividends=Money(self.mem)
         sumgains=Money(self.mem)
@@ -71,19 +67,21 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         
         hh=[self.tr("Year"), self.tr("Initial balance"), self.tr("Final balance"), self.tr("Difference"), self.tr("Incomes"), self.tr("Net gains"), self.tr("Net dividends"), self.tr("Expenses"), self.tr("I+G+D-E")]
         data=[]
-        for i in range(anoinicio, anofinal+1):
+        for i in range(self.dt_report_start.year, self.dt_report_end.year+1):
+            #dt_start=dtaware_year_start(i, self.mem.localzone_name)
+            dt_end=dtaware_year_end(i, self.mem.localzone_name)
             if self.progress.wasCanceled():
                 break;
             else:
                 self.progress.setValue(self.progress.value()+1)
             si=lastsaldo
-            sf=Assets(self.mem).saldo_total(self.mem.data.investments,  date(i, 12, 31))
+            sf=Assets(self.mem).saldo_total(self.mem.data.investments, dt_end.date())
             expenses=Assets(self.mem).saldo_anual_por_tipo_operacion( i,1)#+Assets(self.mem).saldo_anual_por_tipo_operacion (cur,i, 7)#expenses + Facturación de tarjeta
             dividends=Assets(self.mem).dividends_neto( i)
             incomes=Assets(self.mem).saldo_anual_por_tipo_operacion(  i,2)-dividends #Se quitan los dividends que luego se suman
             gains=Assets(self.mem).consolidado_neto(self.mem.data.investments,  i)
             
-            self.dates.append(datetime(i, 12, 31))
+            self.dates.append(dt_end.date())
             self.expenses.append(-expenses.amount)
             self.dividends.append(dividends.amount)
             self.incomes.append(incomes.amount)
@@ -106,53 +104,31 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             sumexpenses=sumexpenses+expenses
             sumincomes=sumincomes+incomes
             sumicdg=sumicdg+gi
-            self.mqtw.table.setItem(i-anoinicio, 9, Percentage(sf -si, si).qtablewidgetitem())
             lastsaldo=sf
         data.append([self.tr("Total"), "#crossedout","#crossedout","#crossedout",sumincomes,sumgains,sumdividends,sumexpenses,sumicdg])
         self.mqtw.setData(hh, None, data)
         debug("wdgAPR > load_data: {}".format(datetime.now()-inicio))
 
     def load_report(self):
-        inicio=datetime.now()       
-        anoinicio=self.wdgYear.year
-        anofinal=date.today().year
+        inicio=datetime.now()
         sumgd=Money(self.mem, 0, self.mem.localcurrency)
-        sumtaxes=Decimal(0)
-        sumcommissions=Decimal(0)
         self.mqtwReport.applySettings()
-        self.mqtwReport.table.setRowCount(anofinal-anoinicio+1+1)
-        hh=[self.tr("Year"), self.tr("Invested balance"), self.tr("Investment valoration"), self.tr("Difference"), self.tr("%"), "", self.tr("Net gains + Dividends"), "", self.tr("Taxes"), self.tr("Commissions")]
+        self.mqtwReport.table.setRowCount(date.today().year-self.wdgYear.year+1+1)
+        hh=[self.tr("Year"), self.tr("Invested balance"), self.tr("Investment valoration"), self.tr("Difference"), 
+            self.tr("%"), "", self.tr("Net gains + Dividends"), self.tr("Custody commissions"),  
+            self.tr("Taxes"), "", self.tr("Investments Commissions")]
         data=[]
-        for i in range(anoinicio, anofinal+1):
+        for i in range(self.wdgYear.year, date.today().year+1):
             if self.progress.wasCanceled():
                 break;
             else:
-                self.progress.setValue(self.progress.value()+1)                     
+                self.progress.setValue(self.progress.value()+1)          
+            dt_start=dtaware_year_start(i, self.mem.localzone_name)
+            dt_end=dtaware_year_end(i, self.mem.localzone_name)           
             sinvested=Assets(self.mem).invested(date_last_of_the_year(i))
             sbalance=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(i))
             gd=Assets(self.mem).consolidado_neto(self.mem.data.investments,  i)+Assets(self.mem).dividends_neto(i)
             sumgd=sumgd+gd
-            taxes=none2decimal0(self.mem.con.cursor_one_field("select sum(importe) from opercuentas where id_conceptos in (%s, %s) and date_part('year',datetime)=%s", (int(eConcept.TaxesReturn), int(eConcept.TaxesPayment), i)))
-            commissions=none2decimal0(self.mem.con.cursor_one_field("""
-select 
-    sum(suma) 
-from (
-            select 
-                sum(importe) as suma 
-            from 
-                opercuentas 
-            where 
-                id_conceptos in (%s, %s) and  
-                date_part('year',datetime)=%s
-            union 
-            select 
-                -sum(comision) as suma 
-            from 
-                operinversiones 
-            where  
-                date_part('year',datetime)=%s
-        ) as uni""", (int(eConcept.BankCommissions), int(eConcept.CommissionCustody), i,i)))
-            self.mqtwReport.table.setItem(i-anoinicio, 9, qright(commissions))
             
             data.append([
                 i, 
@@ -162,25 +138,39 @@ from (
                 percentage_between(sinvested, sbalance), 
                 "#crossedout", 
                 gd, 
+                Assets(self.mem).custody_commissions(dt_start, dt_end),
+                Assets(self.mem).taxes(dt_start, dt_end), 
                 "#crossedout", 
-                taxes, 
-                commissions
+                Assets(self.mem).investments_commissions(dt_start, dt_end)
             ])
-            sumtaxes=sumtaxes+taxes
-            sumcommissions=sumcommissions+commissions
-        data.append([self.tr("Total"), "#crossedout", "#crossedout", "#crossedout", "#crossedout", "#crossedout", sumgd, "#crossedout", sumtaxes, sumcommissions])
+            
+        report_custody_commissions=Assets(self.mem).custody_commissions(self.dt_report_start, self.dt_report_end)
+        report_taxes=Assets(self.mem).taxes(self.dt_report_start, self.dt_report_end)
+        data.append([
+            self.tr("Total"), 
+            "#crossedout", 
+            "#crossedout", 
+            "#crossedout", 
+            "#crossedout", 
+            "#crossedout", 
+            sumgd, 
+            report_custody_commissions,
+            report_taxes, 
+            "#crossedout", 
+            Assets(self.mem).investments_commissions(self.dt_report_start, self.dt_report_end)
+            ])
         self.mqtwReport.setData(hh, None, data)
 
-        diff=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(anofinal))-Assets(self.mem).invested(date_last_of_the_year(anofinal))
+        diff=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(date.today().year))-Assets(self.mem).invested(date_last_of_the_year(date.today().year))
         s=""
         s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, sumgd)
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(diff)
-        s=s+"\n"+self.tr("Sum of taxes and commissions is {}".format(sumtaxes+sumcommissions))
-        balance=(diff+sumgd).amount+sumtaxes+sumcommissions
-        if balance>=0:
-            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(self.mem.localmoney(balance), self.mem.localmoney(balance/(anofinal-self.wdgYear.year+1)))
+        s=s+"\n"+self.tr("Sum of taxes and custody commissions is {}".format(report_taxes+report_custody_commissions))
+        balance=diff+sumgd+report_taxes+report_custody_commissions
+        if balance.isGETZero():
+            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(balance, self.mem.localmoney(balance.amount/(date.today().year-self.wdgYear.year+1)))
         else:
-            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(self.mem.localmoney(balance), self.mem.localmoney(balance/(anofinal-self.wdgYear.year+1)))        
+            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(balance, self.mem.localmoney(balance.amount/(date.today().year-self.wdgYear.year+1)))        
 
         self.lblReport.setText(s)
 

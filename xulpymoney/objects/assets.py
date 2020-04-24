@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta, date
 from xulpymoney.objects.money import Money
+from xulpymoney.casts import none2decimal0
 from xulpymoney.objects.currency import MostCommonCurrencyTypes
-from xulpymoney.libxulpymoneytypes import eProductType
+from xulpymoney.libxulpymoneytypes import eProductType, eConcept
 
 class Assets:
     def __init__(self, mem):
@@ -224,14 +225,14 @@ class Assets:
         for i in setinversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_bruto(year, month)
         return resultado
+
     def consolidado_neto_antes_impuestos(self, setinversiones, year=None, month=None):
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_neto_antes_impuestos(year, month)
         return resultado
-        
-                
+
     def consolidado_neto(self, setinversiones, year=None, month=None):
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
@@ -239,3 +240,50 @@ class Assets:
             resultado=resultado+i.op_historica.consolidado_neto(year, month).local()
         return resultado        
 
+    ## Returns custody commissions from all accounts active and inactive between to datetimes
+    def custody_commissions(self, dt_start, dt_end):
+        #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
+        sql="""
+select 
+    sum(importe) 
+from 
+    opercuentas 
+where 
+    id_conceptos = %s and 
+    datetime>%s and datetime<= %s
+"""
+        sql_params=(eConcept.CommissionCustody, dt_start, dt_end)
+        amount= none2decimal0(self.mem.con.cursor_one_field(sql, sql_params))
+        return Money(self.mem, amount, self.mem.localcurrency)
+        
+        
+    ## Returns taxes balance from paid taxes and returned taxes between to datetimes
+    def taxes(self, dt_start, dt_end):
+        #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
+        sql="""
+select 
+    sum(importe) 
+from 
+    opercuentas 
+where 
+    id_conceptos in (%s, %s) and 
+    datetime>%s and datetime<= %s
+"""
+        sql_params=(eConcept.TaxesReturn, eConcept.TaxesPayment, dt_start, dt_end)
+        amount= none2decimal0(self.mem.con.cursor_one_field(sql, sql_params))
+        return Money(self.mem, amount, self.mem.localcurrency)
+
+    ## Returns investment commissions balance between to datetimes. Custody commisions are not included
+    def investments_commissions(self, dt_start, dt_end):
+        #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
+        sql="""
+            select 
+                -sum(comision) as suma 
+            from 
+                operinversiones 
+            where  
+                datetime>%s and datetime<= %s
+"""
+        sql_params=(dt_start, dt_end)
+        amount= none2decimal0(self.mem.con.cursor_one_field(sql, sql_params))
+        return Money(self.mem, amount, self.mem.localcurrency)
