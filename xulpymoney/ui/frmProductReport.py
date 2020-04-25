@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QFileDialog, QAbstractItemView
 from datetime import datetime, date, timedelta, time
 from logging import info, debug
-from officegenerator import ODS_Read, ODS_Write, Currency as ODSCurrency, Coord, ColumnWidthODS
+from officegenerator import ODS_Read, ODS_Write
 from pytz import timezone
 from xulpymoney.datetime_functions import dtnaive, dtaware, dt_day_end, dtaware2string
 from xulpymoney.investing_com import InvestingCom
@@ -411,16 +411,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         got=0
         if filename!="":
             ods=ODS_Read(filename)
-            sheet=ods.getSheetElementByIndex(0)
-            for number in range(2, ods.rowNumber(sheet)):
-                date=ods.getCellValue(sheet, "A", str(number))
-                value=ods.getCellValue(sheet, "B", str(number))
-                print (date, value)
-                dps=DPS(self.mem, self.product).init__create(date,  value)
-                dps.save()
-                self.product.dps.append(dps)
-                got=got+1
-            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
+            for number in range(2, ods.rowNumber(0)):
+                try:
+                    date=ods.getCellValue(0, "A", str(number))
+                    value=ods.getCellValue(0, "B", str(number))
+                    print (date, value)
+                    dps=DPS(self.mem, self.product).init__create(date,  value)
+                    dps.save()
+                    self.product.dps.append(dps)
+                    got=got+1
+                except:
+                    debug("I couldn't import {} and {} as a quote".format(date, value))
+            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(0)))
             self.mem.con.commit()
             self.product.needStatus(2, downgrade_to=1)
             self.update_due_to_quotes_change()
@@ -478,16 +480,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if filename:
             ods=ODS_Write(filename)
             ods.setMetadata(self.tr("Historical quotes of {}").format(self.product.name),  self.tr("Quotes export"), "Xulpymoney-{} ({})".format(__version__, __versiondate__))
-            s1=ods.createSheet(self.tr("Intraday"))
-            s1.add("A1", [["Date and time", "Close", "Open","High","Low"]], "OrangeCenter")
-            s1.setColumnsWidth([ColumnWidthODS.L])
-            for i, o in enumerate(self.product.result.ohclDaily.arr):
-                s1.add(Coord("A2").addRow(i), o.date, "WhiteDate")
-                s1.add(Coord("B2").addRow(i), ODSCurrency(o.close, self.product.currency), "WhiteEUR")
-                s1.add(Coord("C2").addRow(i), ODSCurrency(o.open, self.product.currency), "WhiteEUR")
-                s1.add(Coord("D2").addRow(i), ODSCurrency(o.high, self.product.currency), "WhiteEUR")
-                s1.add(Coord("E2").addRow(i), ODSCurrency(o.low, self.product.currency), "WhiteEUR")
-            s1.freezeAndSelect("A2", Coord("A1").addRow(self.product.result.ohclDaily.length()), "A2")
+            self.mqtwDaily.officegeneratorModel(self.tr("Daily quotes")).ods_sheet(ods)
             ods.save()
             qmessagebox(self.tr("Date export to {} took {}").format(filename, datetime.now()-start))
 
@@ -498,14 +491,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if filename!="":
             set=QuoteManager(self.mem)
             ods=ODS_Read(filename)
-            sheet=ods.getSheetElementByIndex(0)
-            for number in range(2, ods.rowNumber(sheet)):
-                date=ods.getCellValue(sheet, "A"+ str(number))
-                value=ods.getCellValue(sheet, "B"+ str(number))
+            
+            for number in range(2, ods.rowNumber(0)):
+                date=ods.getCellValue(0, "A"+ str(number))
+                value=ods.getCellValue(0, "B"+ str(number))
                 print (date, value)
-                set.append(Quote(self.mem).init__create(self.product, dtaware(date, self.product.stockmarket.closes, self.product.stockmarket.zone.name),  value))
-                got=got+1
-            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(sheet)-1))
+                try:
+                    set.append(Quote(self.mem).init__create(self.product, dtaware(date, self.product.stockmarket.closes, self.product.stockmarket.zone.name),  value))
+                    got=got+1
+                except:
+                    debug("I couldn't import {} and {} as a quote".format(date, value))
+            print("Added {} DPS from {} ODS rows".format(got, ods.rowNumber(0)))
             set.save()
             self.mem.con.commit()
             self.product.needStatus(2, downgrade_to=0)
