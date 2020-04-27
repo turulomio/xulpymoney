@@ -10,7 +10,7 @@ import datetime
 import logging
 from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_start
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqcharts import VCTemporalSeries, eOHCLDuration
+from xulpymoney.ui.myqcharts import eOHCLDuration
 from xulpymoney.objects.investment import Investment
 from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationHomogeneusManager
 from xulpymoney.objects.money import Money
@@ -26,7 +26,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     def __init__(self,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.view=None
         self.dtFrom.blockSignals(True)
         self.HistoricalChartAdjusts=eHistoricalChartAdjusts.Splits
         
@@ -40,6 +39,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.product=product
         self.investment=investment
         self.mem=self.product.mem
+        self.wdgTS.setSettings(self.mem.settings, "wdgProductHistoricalChart", "wdgTS")
         from_=datetime.datetime.today()-datetime.timedelta(days=365*3)
         if self.investment!=None:
             if self.investment.op_actual.length()>0:
@@ -83,87 +83,81 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
     ##
     ## self.setohcl is set calling this function
     def generate(self):
-        if self.view!=None:
-            self.view.hide()
-            self.view.close()
-            self.verticalLayout.removeWidget(self.view)
-
         selected_datetime= dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)
         self.setohcl=self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.Splits)
         
-        self.view=VCTemporalSeries()
-        self.verticalLayout.addWidget(self.view)
+        self.wdgTS.ts.clear()
         if self.cmbChartType.currentIndex()==0:#Lines
-            ls=self.view.appendTemporalSeries(self.product.name.upper())#Line seies
+            ls=self.wdgTS.ts.appendTemporalSeries(self.product.name.upper())#Line seies
             for ohcl in self.setohcl.arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, ohcl.datetime(), ohcl.close) #Added day_start to show the purchase circle the first day
+                    self.wdgTS.ts.appendTemporalSeriesData(ls, ohcl.datetime(), ohcl.close) #Added day_start to show the purchase circle the first day
         elif self.cmbChartType.currentIndex()==1:#Candles            
-            candle=self.view.appendCandlestickSeries(self.product.name)#Candle series
+            candle=self.wdgTS.ts.appendCandlestickSeries(self.product.name)#Candle series
             for ohcl in self.setohcl.arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendCandlestickSeriesData(candle, ohcl.datetime(), ohcl.open, ohcl.high, ohcl.close, ohcl.low)
-            self.view.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
+                    self.wdgTS.ts.appendCandlestickSeriesData(candle, ohcl.datetime(), ohcl.open, ohcl.high, ohcl.close, ohcl.low)
+            self.wdgTS.ts.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
             
         dvm=self.setohcl.DatetimeValueManager("close")
             
         if self.chkSMA10.isChecked() and self.setohcl.length()>10:#SMA10 line series
-            sma10=self.view.appendTemporalSeries(self.tr("SMA10"))
+            sma10=self.wdgTS.ts.appendTemporalSeries(self.tr("SMA10"))
             sma10.setColor(QColor(255, 165, 165))
             for dv in dvm.sma(10).arr:
                 if dv.datetime>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma10, dv.datetime, dv.value)
+                    self.wdgTS.ts.appendTemporalSeriesData(sma10, dv.datetime, dv.value)
 
         if self.chkSMA50.isChecked() and self.setohcl.length()>50:#SMA50 line series
-            sma50=self.view.appendTemporalSeries(self.tr("SMA50"))
+            sma50=self.wdgTS.ts.appendTemporalSeries(self.tr("SMA50"))
             sma50.setColor(QColor(255, 170, 255))
             for dv in dvm.sma(50).arr:
                 if dv.datetime>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma50, dv.datetime, dv.value)
+                    self.wdgTS.ts.appendTemporalSeriesData(sma50, dv.datetime, dv.value)
                 
         if self.chkSMA200.isChecked() and self.setohcl.length()>200:#SMA200 line series
-            sma200=self.view.appendTemporalSeries(self.tr("SMA200"))
+            sma200=self.wdgTS.ts.appendTemporalSeries(self.tr("SMA200"))
             sma200.setColor(QColor(165, 165, 165))
             for dv in dvm.sma(200).arr:
                 if dv.datetime>=selected_datetime:
-                    self.view.appendTemporalSeriesData(sma200, dv.datetime, dv.value)
+                    self.wdgTS.ts.appendTemporalSeriesData(sma200, dv.datetime, dv.value)
 
         if self.chkMedian.isChecked():#Median value
             median=self.setohcl.closes_median_value()
-            med=self.view.appendTemporalSeries(self.tr("Median at {}".format(self.product.money(median))))
+            med=self.wdgTS.ts.appendTemporalSeries(self.tr("Median at {}".format(self.product.money(median))))
             med.setColor(QColor(165, 165, 0))
-            self.view.appendTemporalSeriesData(med, selected_datetime, median)
-            self.view.appendTemporalSeriesData(med, self.mem.localzone.now(), median)
+            self.wdgTS.ts.appendTemporalSeriesData(med, selected_datetime, median)
+            self.wdgTS.ts.appendTemporalSeriesData(med, self.mem.localzone.now(), median)
 
         if not self.chkAdjustSplits.isChecked():#
-            ls=self.view.appendTemporalSeries(self.product.name.upper() + " (No adjust)")#Line seies
+            ls=self.wdgTS.ts.appendTemporalSeries(self.product.name.upper() + " (No adjust)")#Line seies
             for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.NoAdjusts).arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
+                    self.wdgTS.ts.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
 
         if self.chkAdjustDividends.isChecked():#
-            ls=self.view.appendTemporalSeries(self.product.name.upper() + (" (Dividend adjust)"))#Line seies
+            ls=self.wdgTS.ts.appendTemporalSeries(self.product.name.upper() + (" (Dividend adjust)"))#Line seies
             for ohcl in self.product.result.ohcl(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()), eHistoricalChartAdjusts.SplitsAndDividends).arr:
                 if ohcl.datetime()>=selected_datetime:
-                    self.view.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
+                    self.wdgTS.ts.appendTemporalSeriesData(ls, dt_day_start(ohcl.datetime()), ohcl.close) 
 
         #INVESTMENT
         if self.investment is not None:
             #Buy sell operations
-            buy=self.view.appendScatterSeries(self.tr("Buy operations"))
+            buy=self.wdgTS.ts.appendScatterSeries(self.tr("Buy operations"))
             buy.setColor(QColor(85, 170, 127))
-            sell=self.view.appendScatterSeries(self.tr("Sell operations"))
+            sell=self.wdgTS.ts.appendScatterSeries(self.tr("Sell operations"))
             sell.setColor(QColor(170, 85, 85))
             for op in self.investment.op.arr:
                 if (    op.tipooperacion.id in (eOperationType.SharesAdd, eOperationType.SharesPurchase, eOperationType.TransferSharesDestiny ) or 
                         (op.tipooperacion.id==eOperationType.TransferFunds and op.shares>0)
                     ) and op.datetime>=selected_datetime:
-                    self.view.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
+                    self.wdgTS.ts.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
                 if (    op.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.SharesSale) or 
                         (op.tipooperacion.id==eOperationType.TransferFunds and op.shares<0)
                     ) and op.datetime>=selected_datetime:
-                    self.view.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
+                    self.wdgTS.ts.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
 
             #Average price
             if self.investment.op_actual.length()>0:
@@ -171,19 +165,19 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 m_average_price=self.investment.op_actual.average_price(type=1)                
                 m_selling_price=self.investment.op_actual.average_price_after_a_gains_percentage(gains_percentage)
 
-                selling_price=self.view.appendTemporalSeries(self.tr("Selling price at {} to gain {}".format(m_selling_price,  self.investment.op_actual.gains_from_percentage(gains_percentage))))
+                selling_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Selling price at {} to gain {}".format(m_selling_price,  self.investment.op_actual.gains_from_percentage(gains_percentage))))
                 selling_price.setColor(QColor(170, 85, 85))
-                self.view.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, m_selling_price.amount)
-                self.view.appendTemporalSeriesData(selling_price, self.mem.localzone.now()+datetime.timedelta(days=1), m_selling_price.amount)
+                self.wdgTS.ts.appendTemporalSeriesData(selling_price, self.investment.op_actual.first().datetime, m_selling_price.amount)
+                self.wdgTS.ts.appendTemporalSeriesData(selling_price, self.mem.localzone.now()+datetime.timedelta(days=1), m_selling_price.amount)
 
-                average_price=self.view.appendTemporalSeries(self.tr("Average price at {}".format(m_average_price)))
+                average_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Average price at {}".format(m_average_price)))
                 average_price.setColor(QColor(85, 85, 170))
-                self.view.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
-                self.view.appendTemporalSeriesData(average_price, self.mem.localzone.now() + datetime.timedelta(days=1), m_average_price.amount)
+                self.wdgTS.ts.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
+                self.wdgTS.ts.appendTemporalSeriesData(average_price, self.mem.localzone.now() + datetime.timedelta(days=1), m_average_price.amount)
 
     def display(self):
-        self.view.display()
-            
+        self.wdgTS.display()
+
     @pyqtSlot(int)      
     def on_cmbChartType_currentIndexChanged(self, index):
         self.generate()
@@ -296,23 +290,23 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
             gains_1=self.sim_opactual.gains_from_percentage(percentage)
             
             #First reinvestment
-            new_selling_price=self.view.appendTemporalSeries(self.tr("Reinvestment selling price at {} to gain {}".format(new_sell_price_1, gains_1)))
+            new_selling_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Reinvestment selling price at {} to gain {}".format(new_sell_price_1, gains_1)))
             new_selling_price.setColor(QColor(170, 85, 85))
             new_selling_price.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
-            self.view.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price_1.amount)
-            self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price_1.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, self.investment.op_actual.first().datetime, new_sell_price_1.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(), new_sell_price_1.amount)
             
-            new_average_price=self.view.appendTemporalSeries(self.tr("Reinvestment average price at {}").format(new_avg_1))
+            new_average_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Reinvestment average price at {}").format(new_avg_1))
             new_average_price.setColor(QColor(85, 85, 170))
             new_average_price.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
-            self.view.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg_1.amount)
-            self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg_1.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_average_price, self.investment.op_actual.first().datetime, new_avg_1.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), new_avg_1.amount)
             
-            new_purchase_price=self.view.appendTemporalSeries(self.tr("Reinvestment purchase at {}").format(new_purchase_price_1))
+            new_purchase_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Reinvestment purchase at {}").format(new_purchase_price_1))
             new_purchase_price.setColor(QColor(85, 170, 127))
             new_purchase_price.setPen(self._pen(Qt.DashLine, QColor(85, 170, 127)))
-            self.view.appendTemporalSeriesData(new_purchase_price, self.sim_opactual.first().datetime, new_purchase_price_1.amount)
-            self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), new_purchase_price_1.amount) 
+            self.wdgTS.ts.appendTemporalSeriesData(new_purchase_price, self.sim_opactual.first().datetime, new_purchase_price_1.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), new_purchase_price_1.amount) 
 
 
 class ReinvestmentLines:
@@ -445,25 +439,25 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
                                                                                         )
             inv.op.append(lastIO)
             (inv.op_actual, inv.op_historica)=inv.op.get_current_and_historical_operations()
-            new_purchase_price=self.view.appendTemporalSeries(self.tr("Purchase price {}: {}").format(index, m_purchase.string()))
+            new_purchase_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Purchase price {}: {}").format(index, m_purchase.string()))
             new_purchase_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Buy))
             new_purchase_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Buy))
-            self.view.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_purchase.amount)
-            self.view.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_purchase.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_purchase_price, selected_datetime, m_purchase.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_purchase_price, self.mem.localzone.now(), m_purchase.amount)
         
             m_new_average_price=inv.op_actual.average_price()
             m_new_selling_price=inv.op_actual.average_price_after_a_gains_percentage(percentage)
-            new_average_price=self.view.appendTemporalSeries(self.tr("Average price {}: {}".format(index, m_new_average_price)))
+            new_average_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Average price {}: {}".format(index, m_new_average_price)))
             new_average_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Average))
             new_average_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Average))
-            self.view.appendTemporalSeriesData(new_average_price, selected_datetime, m_new_average_price.amount)
-            self.view.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_new_average_price.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_average_price, selected_datetime, m_new_average_price.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_average_price, self.mem.localzone.now(), m_new_average_price.amount)
 
-            new_selling_price=self.view.appendTemporalSeries(self.tr("Sell price {} at {} to gain {}".format(index, m_new_selling_price, inv.op_actual.gains_from_percentage(percentage))))
+            new_selling_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Sell price {} at {} to gain {}".format(index, m_new_selling_price, inv.op_actual.gains_from_percentage(percentage))))
             new_selling_price.setColor(self.__qcolor_by_reinvestment_line(ReinvestmentLines.Sell))
             new_selling_price.setPen(self.__qpen_by_amounts_index(index, ReinvestmentLines.Sell))
-            self.view.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
-            self.view.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
+            self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
 
             m_purchase=Money(self.mem, lastIO.valor_accion*(1-p_last_operation.value),  self.product.currency)
 
@@ -482,24 +476,24 @@ class wdgProductHistoricalOpportunity(wdgProductHistoricalChart):
             return
             
         if self.opportunity.entry!=None:
-            entry=self.view.appendTemporalSeries(self.tr("Entry"))
+            entry=self.wdgTS.ts.appendTemporalSeries(self.tr("Entry"))
             entry.setColor(QColor(85, 85, 170))
             entry.setPen(self._pen(Qt.DashLine, QColor(85, 85, 170)))
-            self.view.appendTemporalSeriesData(entry, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.entry)
-            self.view.appendTemporalSeriesData(entry, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.entry)
+            self.wdgTS.ts.appendTemporalSeriesData(entry, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.entry)
+            self.wdgTS.ts.appendTemporalSeriesData(entry, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.entry)
 
         if self.opportunity.target!=None:
-            target=self.view.appendTemporalSeries(self.tr("Target"))
+            target=self.wdgTS.ts.appendTemporalSeries(self.tr("Target"))
             target.setColor(QColor(85, 170, 85))
             target.setPen(self._pen(Qt.DashLine, QColor(85, 170, 85)))
-            self.view.appendTemporalSeriesData(target, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.target)
-            self.view.appendTemporalSeriesData(target, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.target)
+            self.wdgTS.ts.appendTemporalSeriesData(target, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.target)
+            self.wdgTS.ts.appendTemporalSeriesData(target, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.target)
 
         if self.opportunity.stoploss!=None:
-            stoploss=self.view.appendTemporalSeries(self.tr("Stop loss"))
+            stoploss=self.wdgTS.ts.appendTemporalSeries(self.tr("Stop loss"))
             stoploss.setColor(QColor(170, 85, 85))
             stoploss.setPen(self._pen(Qt.DashLine, QColor(170, 85, 85)))
-            self.view.appendTemporalSeriesData(stoploss, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.stoploss)
-            self.view.appendTemporalSeriesData(stoploss, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.stoploss)
+            self.wdgTS.ts.appendTemporalSeriesData(stoploss, dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)-datetime.timedelta(days=10), self.opportunity.stoploss)
+            self.wdgTS.ts.appendTemporalSeriesData(stoploss, self.mem.localzone.now()+datetime.timedelta(days=10), self.opportunity.stoploss)
 
                 

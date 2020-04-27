@@ -16,7 +16,6 @@ from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
-from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.Ui_wdgTotal import Ui_wdgTotal
 
 class TotalMonth:
@@ -236,7 +235,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyChart.initiate(dtFirst.year,  dtLast.year, date.today().year-3)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
-        self.view=None#QChart view
+        self.wdgTS.setSettings(self.mem.settings, "wdgTotal", "wdgTS")
 
         self.tab.setCurrentIndex(0)
         self.tabData.setCurrentIndex(0)
@@ -492,19 +491,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
 
-        if self.view!=None:
-            self.tabGraphTotal.removeWidget(self.view)
-            self.view.close()
-        self.view=VCTemporalSeries()
-        self.view.setAnimations(animations)
+        self.wdgTS.clear()
+        self.wdgTS.ts.setAnimations(animations)
         
         #Series creation
         last=self.setGraphic.find(date.today().year, date.today().month)
-        lsNoLoses=self.view.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
-        lsMain=self.view.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
-        lsZero=self.view.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
-        lsBonds=self.view.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
-        lsRisk=self.view.appendTemporalSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
+        lsNoLoses=self.wdgTS.ts.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
+        lsMain=self.wdgTS.ts.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
+        lsZero=self.wdgTS.ts.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
+        lsBonds=self.wdgTS.ts.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
+        lsRisk=self.wdgTS.ts.appendTemporalSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
 
         progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
         progress.setModal(True)
@@ -518,18 +514,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             total=m.total().amount
             zero=m.total_zerorisk().amount
             bonds=m.total_bonds().amount
-            self.view.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
-            self.view.appendTemporalSeriesData(lsZero, epoch, m.total_zerorisk().amount)
-            self.view.appendTemporalSeriesData(lsBonds, epoch, m.total_bonds().amount)
-            self.view.appendTemporalSeriesData(lsRisk, epoch, total-zero-bonds)
-            self.view.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
-        self.view.display()
+            self.wdgTS.ts.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsZero, epoch, m.total_zerorisk().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsBonds, epoch, m.total_bonds().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsRisk, epoch, total-zero-bonds)
+            self.wdgTS.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
+        self.wdgTS.display()
         
-        self.tabGraphTotal.addWidget(self.view)
-
         info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
-
-
 
     def on_wyData_mychanged(self):
         self.load_data()    
@@ -549,7 +541,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.load_targets_with_funds_revaluation()
 
     def on_tab_currentChanged(self, index):
-        if  index==1 and self.view==None: #If has not been plotted, plots it.
+        if  index==1 and self.wdgTS.isEmpty(): #If has not been plotted, plots it.
             self.on_wyChart_mychanged()
         
     @pyqtSlot() 

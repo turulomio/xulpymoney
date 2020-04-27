@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgProductHistoricalChart.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgProductHistoricalChart(object):
     def setupUi(self, wdgProductHistoricalChart):
         wdgProductHistoricalChart.setObjectName("wdgProductHistoricalChart")
-        wdgProductHistoricalChart.resize(1015, 141)
+        wdgProductHistoricalChart.resize(984, 607)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(wdgProductHistoricalChart)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
@@ -137,6 +137,9 @@ class Ui_wdgProductHistoricalChart(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_6)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
+        self.wdgTS = VCTemporalSeries(wdgProductHistoricalChart)
+        self.wdgTS.setObjectName("wdgTS")
+        self.verticalLayout.addWidget(self.wdgTS)
         self.verticalLayout_5.addLayout(self.verticalLayout)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
         self.actionProductReport = QtWidgets.QAction(wdgProductHistoricalChart)
@@ -261,4 +264,5 @@ class Ui_wdgProductHistoricalChart(object):
         self.actionPurchaseGraphic.setToolTip(_translate("wdgProductHistoricalChart", "Show purchase graphic"))
         self.actionProductPriceLastRemove.setText(_translate("wdgProductHistoricalChart", "Remove last product price"))
         self.actionProductPriceLastRemove.setToolTip(_translate("wdgProductHistoricalChart", "Remove last product price"))
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 import xulpymoney.images.xulpymoney_rc

@@ -27,8 +27,6 @@ from xulpymoney.ui.frmSplit import frmSplit
 from xulpymoney.ui.frmSplitManual import frmSplitManual
 from xulpymoney.ui.frmEstimationsAdd import frmEstimationsAdd
 from xulpymoney.ui.frmDPSAdd import frmDPSAdd
-from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
-from xulpymoney.ui.myqcharts import  VCTemporalSeries
 from xulpymoney.version import __version__, __versiondate__
 
 class frmProductReport(QDialog, Ui_frmProductReport):
@@ -89,7 +87,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwEPS.table.customContextMenuRequested.connect(self.on_mqtwEPS_customContextMenuRequested)
         self.mqtwEPS.table.itemSelectionChanged.connect(self.on_mqtwEPS_itemSelectionChanged)
 
-
+        self.wdgTSIntraday.setSettings(self.mem.settings, "frmProductReport", "wdgTSIntraday" )
 
         # PRODUCT INFORMATION
         if self.product==None: #Insertar
@@ -104,13 +102,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.__insert=False
         else:#Readonly
             self.__insert=None
-
-        
-        self.viewIntraday=VCTemporalSeries()
-        self.layIntraday.addWidget(self.viewIntraday)
-       
-        self.wdgHistorical=wdgProductHistoricalChart(self)
-        self.layHistorical.addWidget(self.wdgHistorical)
 
         self.update_due_to_quotes_change()    
         self.showMaximized()        
@@ -329,25 +320,18 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         #Canvas Historical
         if self.product.result.ohclDaily.length()>2:#Needs 2 to show just a line
-            self.wdgHistorical.setProduct(self.product, self.investment)
-            self.wdgHistorical.generate()
-            self.wdgHistorical.display()
+            self.wdgTSHistorical.setProduct(self.product, self.investment)
+            self.wdgTSHistorical.generate()
+            self.wdgTSHistorical.display()
 
         #Canvas Intradia
-        if self.product.result.intradia.length()<2:
-            self.viewIntraday.hide()
-        else:
-            self.viewIntraday.show()
-            self.layIntraday.removeWidget(self.viewIntraday)
-            self.viewIntraday.close()
-            
-            self.viewIntraday=VCTemporalSeries()
-            self.layIntraday.addWidget(self.viewIntraday)
-            self.viewIntraday.chart().setTitle(self.tr("Intraday graph"))
-            ls=self.viewIntraday.appendTemporalSeries(self.product.name.upper())
+        self.wdgTSIntraday.clear()
+        if self.product.result.intradia.length()>2:            
+            self.wdgTSIntraday.ts.setTitle(self.tr("Intraday graph"))
+            ls=self.wdgTSIntraday.ts.appendTemporalSeries(self.product.name.upper())
             for quote in self.product.result.intradia.arr:
-                self.viewIntraday.appendTemporalSeriesData(ls, quote.datetime, quote.quote)
-            self.viewIntraday.display()
+                self.wdgTSIntraday.ts.appendTemporalSeriesData(ls, quote.datetime, quote.quote)
+            self.wdgTSIntraday.display()
 
         #mqtwIntradia
         self.product.result.intradia.myqtablewidget(self.mqtwIntradia)

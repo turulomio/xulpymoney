@@ -105,6 +105,7 @@ class Compile(Command):
                  os.system("sed -i -e 's/from wdgInvestmentOperationsSelector/from xulpymoney.ui.wdgInvestmentOperationsSelector/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgCurrencyConversion/from xulpymoney.ui.wdgCurrencyConversion/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgProductSelector/from xulpymoney.ui.wdgProductSelector/' xulpymoney/ui/{}".format(filename))
+                 os.system("sed -i -e 's/from wdgProductHistoricalChart/from xulpymoney.ui.wdgProductHistoricalChart/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgQuotesSaveResult/from xulpymoney.ui.wdgQuotesSaveResult/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgDatetime/from xulpymoney.ui.wdgDatetime/' xulpymoney/ui/{}".format(filename))
                  os.system("sed -i -e 's/from wdgYear/from xulpymoney.ui.wdgYear/' xulpymoney/ui/{}".format(filename))

@@ -33,7 +33,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="tabsClosable">
         <bool>true</bool>
@@ -345,9 +345,9 @@
         <attribute name="title">
          <string>Chart</string>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
-          <layout class="QVBoxLayout" name="tabGraphTotal">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
@@ -380,6 +380,9 @@
               </spacer>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="VCTemporalSeries" name="wdgTS" native="true"/>
            </item>
           </layout>
          </item>
@@ -479,6 +482,12 @@
    <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCTemporalSeries</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

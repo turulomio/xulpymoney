@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/frmProductReport.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -361,6 +361,9 @@ class Ui_frmProductReport(object):
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.layIntraday = QtWidgets.QVBoxLayout()
         self.layIntraday.setObjectName("layIntraday")
+        self.wdgTSIntraday = VCTemporalSeries(self.grpGraphIntraday)
+        self.wdgTSIntraday.setObjectName("wdgTSIntraday")
+        self.layIntraday.addWidget(self.wdgTSIntraday)
         self.horizontalLayout_11.addLayout(self.layIntraday)
         self.horizontalLayout.addWidget(self.splitter)
         self.tabGraphics.addTab(self.tabGraphicsIntraday, "")
@@ -379,6 +382,9 @@ class Ui_frmProductReport(object):
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.layHistorical = QtWidgets.QVBoxLayout()
         self.layHistorical.setObjectName("layHistorical")
+        self.wdgTSHistorical = wdgProductHistoricalChart(self.groupBox_2)
+        self.wdgTSHistorical.setObjectName("wdgTSHistorical")
+        self.layHistorical.addWidget(self.wdgTSHistorical)
         self.verticalLayout_10.addLayout(self.layHistorical)
         self.horizontalLayout_34.addWidget(self.groupBox_2)
         self.tabGraphics.addTab(self.tabGraphicsHistorical, "")
@@ -671,8 +677,8 @@ class Ui_frmProductReport(object):
         self.actionQuoteImportInvestingCom.setObjectName("actionQuoteImportInvestingCom")
 
         self.retranslateUi(frmProductReport)
-        self.tab.setCurrentIndex(0)
-        self.tabGraphics.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
+        self.tabGraphics.setCurrentIndex(1)
         self.tabHistorical.setCurrentIndex(5)
         self.tabEstimaciones.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(frmProductReport)
@@ -801,5 +807,7 @@ class Ui_frmProductReport(object):
         self.actionQuoteImportInvestingCom.setText(_translate("frmProductReport", "Import historical csv from Investing.com"))
         self.actionQuoteImportInvestingCom.setToolTip(_translate("frmProductReport", "Import historical csv from Investing.com"))
 from xulpymoney.ui.frmSelector import cmbManagerSelector
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.myqtablewidget import mqtw, mqtwObjects
+from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
 import xulpymoney.images.xulpymoney_rc

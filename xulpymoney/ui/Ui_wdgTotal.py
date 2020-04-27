@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'xulpymoney/ui/wdgTotal.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -196,10 +196,10 @@ class Ui_wdgTotal(object):
         self.tab.addTab(self.tabDatos, icon, "")
         self.tabGraphic = QtWidgets.QWidget()
         self.tabGraphic.setObjectName("tabGraphic")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.tabGraphic)
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.tabGraphic)
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.tabGraphTotal = QtWidgets.QVBoxLayout()
-        self.tabGraphTotal.setObjectName("tabGraphTotal")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -209,8 +209,11 @@ class Ui_wdgTotal(object):
         self.horizontalLayout_6.addWidget(self.wyChart)
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_6.addItem(spacerItem5)
-        self.tabGraphTotal.addLayout(self.horizontalLayout_6)
-        self.verticalLayout_4.addLayout(self.tabGraphTotal)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_6)
+        self.wdgTS = VCTemporalSeries(self.tabGraphic)
+        self.wdgTS.setObjectName("wdgTS")
+        self.verticalLayout_4.addWidget(self.wdgTS)
+        self.horizontalLayout_12.addLayout(self.verticalLayout_4)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/xulpymoney/pie.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tab.addTab(self.tabGraphic, icon5, "")
@@ -246,7 +249,7 @@ class Ui_wdgTotal(object):
         self.actionGainsByProductType.setObjectName("actionGainsByProductType")
 
         self.retranslateUi(wdgTotal)
-        self.tab.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
         self.tabData.setCurrentIndex(0)
         self.tabPlus.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(wdgTotal)
@@ -277,6 +280,7 @@ class Ui_wdgTotal(object):
         self.actionShowTaxes.setToolTip(_translate("wdgTotal", "Show taxes"))
         self.actionGainsByProductType.setText(_translate("wdgTotal", "Gains by product type"))
         self.actionGainsByProductType.setToolTip(_translate("wdgTotal", "Gains by product type"))
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgYear import wdgYear
 import xulpymoney.images.xulpymoney_rc

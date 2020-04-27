@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -566,7 +566,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -636,7 +636,11 @@
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_11">
                  <item>
-                  <layout class="QVBoxLayout" name="layIntraday"/>
+                  <layout class="QVBoxLayout" name="layIntraday">
+                   <item>
+                    <widget class="VCTemporalSeries" name="wdgTSIntraday" native="true"/>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </widget>
@@ -662,7 +666,11 @@
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_10">
                 <item>
-                 <layout class="QVBoxLayout" name="layHistorical"/>
+                 <layout class="QVBoxLayout" name="layHistorical">
+                  <item>
+                   <widget class="wdgProductHistoricalChart" name="wdgTSHistorical" native="true"/>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
@@ -1322,6 +1330,18 @@
    <class>cmbManagerSelector</class>
    <extends>QWidget</extends>
    <header location="global">frmSelector</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCTemporalSeries</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>wdgProductHistoricalChart</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgProductHistoricalChart</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
