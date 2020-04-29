@@ -597,7 +597,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             self.mem.con.rollback()
         
-    def on_cmdSave_pressed(self):
+    def on_cmdSave_pressed(self):        
         if (self.mem.isProductsMaintenanceMode()==False and (self.product.id is None or self.product.id<0)) or (self.mem.isProductsMaintenanceMode()==True and (self.product.id is None or self.product.id>0)):
             self.product.name=self.txtName.text()
             self.product.isin=None if self.txtISIN.text()=="" else self.txtISIN.text()
@@ -615,7 +615,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
             self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
             for i in range(self.mqtwTickers.table.rowCount()):
-                print(i)
                 self.product.tickers[i]=None if self.mqtwTickers.table.item(i, 1).text()=="- - -" else  self.mqtwTickers.table.item(i, 1).text()
             self.product.comment=self.txtComentario.text()                
             self.product.decimals=self.spnDecimals.value()

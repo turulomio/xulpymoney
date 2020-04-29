@@ -323,7 +323,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             return
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
-        id_cuentas=int(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
+        account=self.mem.data.accounts_active().find_by_id(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
+        if account is None:
+            qmessagebox(self.tr("You must select an account"))
+            return
         product=self.ise.selected
         if self.chkExpiration.checkState()==Qt.Unchecked:
             expiration=None
@@ -337,7 +340,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.data.products.append(product)        
 
         if self.investment==None: #insertar
-            self.investment=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active().find_by_id(id_cuentas), product, expiration, True)      
+            self.investment=Investment(self.mem).init__create(inversion,   venta,  account, product, expiration, True)      
             self.investment.save()
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
