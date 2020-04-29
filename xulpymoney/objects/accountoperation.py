@@ -3,7 +3,6 @@ from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
 from xulpymoney.objects.comment import Comment
 from xulpymoney.objects.money import Money
-from xulpymoney.ui.myqtablewidget import qdatetime, qleft, qcenter
 
 ## Class to manage everything relationed with bank accounts operations
 class AccountOperation(QObject):
@@ -151,26 +150,36 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
         self.account=account
 
     def myqtablewidget_lastmonthbalance(self, wdg,    lastmonthbalance):
-        wdg.table.setColumnCount(6)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Amount" )))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Balance" )))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Comment" )))
-        wdg.applySettings()
-        wdg.table.clearContents()
-        wdg.table.setRowCount(self.length()+1)
-        wdg.table.setItem(0, 1, qleft(self.tr( "Starting month balance")))
-        wdg.table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-        self.order_by_datetime()
+        hh=[self.tr("Date" ), self.tr("Concept" ), self.tr("Amount" ), self.tr("Balance" ), self.tr("Comment" )]
+        data=[]
+        data.append(["#crossedout", self.tr("Starting month balance"), "#crossedout", lastmonthbalance, "#crossedout", None])
         for i, o in enumerate(self.arr):
             importe=Money(self.mem, o.importe, self.account.currency)
             lastmonthbalance=lastmonthbalance+importe
-            wdg.table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
-            wdg.table.setItem(i+1, 1, qleft(o.concepto.name))
-            wdg.table.setItem(i+1, 2, importe.qtablewidgetitem())
-            wdg.table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            wdg.table.setItem(i+1, 4, qleft(Comment(self.mem).decode(o.comentario)))
+            data.append([
+                o.datetime, 
+                o.concepto.name, 
+                importe, 
+                lastmonthbalance, 
+                Comment(self.mem).decode(o.comentario), 
+                o, 
+            ])
+            wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name)
+
+#    def myqtablewidget_lastmonthbalance_additional(self, wdg):        
+#        wdg.table.setItem(0, 1, qleft(self.tr( "Starting month balance")))
+#        wdg.table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
+#        self.order_by_datetime()
+#        data=[]
+#        for i, o in enumerate(self.arr):
+#            
+#            importe=Money(self.mem, o.importe, self.account.currency)
+#            lastmonthbalance=lastmonthbalance+importe
+#            wdg.table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
+#            wdg.table.setItem(i+1, 1, qleft(o.concepto.name))
+#            wdg.table.setItem(i+1, 2, importe.qtablewidgetitem())
+#            wdg.table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
+#            wdg.table.setItem(i+1, 4, qleft(Comment(self.mem).decode(o.comentario)))
 
 #            if self.selected.length()>0:
 #                if o.id==self.selected.only().id:

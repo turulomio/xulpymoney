@@ -3,7 +3,6 @@ from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.comment import Comment
-from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime
 
 class CreditCardOperation:
     def __init__(self, mem):
@@ -98,30 +97,17 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
         cur.close()
         
     def myqtablewidget(self, wdg):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
-        show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
-        ##HEADERS
-        wdg.table.setColumnCount(5)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr("Concept" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr("Amount" )))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr("Balance" )))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr("Comment" )))
-        ##DATA 
-        wdg.applySettings()
-        wdg.table.clearContents()   
-        wdg.table.setRowCount(self.length())
-        balance=Decimal(0)
-        self.order_by_datetime()
-        for rownumber, a in enumerate(self.arr):
-            balance=balance+a.importe
-            wdg.table.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone_name))
-            wdg.table.setItem(rownumber, 1, qleft(a.concepto.name))
-            wdg.table.setItem(rownumber, 2, self.mem.localmoney(a.importe).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 3, self.mem.localmoney(balance).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 4, qleft(Comment(self.mem).decode(a.comentario)))
-            if self.selected: #If selected is not necesary is None by default
-                if self.selected.length()>0:
-                    for sel in self.selected.arr:
-                        if a.id==sel.id:
-                            wdg.table.selectRow(rownumber)
+        hh=[self.tr("Date" ), self.tr("Concept" ), self.tr("Amount" ), self.tr("Balance" ), self.tr("Comment" )]
+        data=[]
+        balance=0
+        for rownumber, o in enumerate(self.arr):
+            balance=balance+o.importe
+            data.append([
+                o.datetime, 
+                o.concepto.name, 
+                o.tarjeta.account.money(o.importe), 
+                o.tarjeta.account.money(balance), 
+                Comment(self.mem).decode(o.comentario), 
+                o, 
+            ])
+            wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name)

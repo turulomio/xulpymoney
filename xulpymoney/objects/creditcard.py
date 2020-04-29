@@ -102,24 +102,28 @@ class CreditCardManager(QObject, ObjectManager_With_IdName_Selectable):
     def myqtablewidget(self, wdg, active):
         data=[]
         for i, o in enumerate(self.arr):
-#            if o.active==active:
-                data.append([
-                    o.name, 
-                    o.numero, 
-                    o.active, 
-                    o.pagodiferido, 
-                    o.saldomaximo, 
-                    o.saldo_pendiente()
-                ])
-        wdg.setData(
+            data.append([
+                o.name, 
+                o.numero, 
+                o.active, 
+                o.pagodiferido, 
+                o.saldomaximo, 
+                o.saldo_pendiente(), 
+                o, 
+            ])
+        wdg.auxiliar=active## Adds this auxiliar value to allow additional filter active / no active
+        wdg.setDataWithObjects(
             [self.tr("Credit card"), self.tr("Number"), self.tr("Active"), self.tr("Delayed payment"), self.tr("Maximum balance"), self.tr("Balance")], 
             None, 
             data, 
             decimals=2, 
-            zonename=self.mem.localzone_name
+            zonename=self.mem.localzone_name, 
+            additional=self.myqtablewidget_additional
         )
-        for i, t in enumerate(self.arr):            
-            if t.active!=active: #Hides active or inactive when necesary
+
+    def myqtablewidget_additional(self, wdg):
+        for i, t in enumerate(wdg.objects()):            
+            if t.active!=wdg.auxiliar: #Hides active or inactive when necesary
                 wdg.table.hideRow(i)
             else:
                 wdg.table.showRow(i)

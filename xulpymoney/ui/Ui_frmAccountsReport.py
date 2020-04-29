@@ -146,7 +146,7 @@ class Ui_frmAccountsReport(object):
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem5)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
-        self.mqtwOperations = mqtw(self.groupBox_2)
+        self.mqtwOperations = mqtwObjects(self.groupBox_2)
         self.mqtwOperations.setObjectName("mqtwOperations")
         self.verticalLayout_3.addWidget(self.mqtwOperations)
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
@@ -170,7 +170,7 @@ class Ui_frmAccountsReport(object):
         self.chkCreditCards = QtWidgets.QCheckBox(self.groupBox_3)
         self.chkCreditCards.setObjectName("chkCreditCards")
         self.verticalLayout_4.addWidget(self.chkCreditCards)
-        self.mqtwCreditCards = mqtw(self.groupBox_3)
+        self.mqtwCreditCards = mqtwObjects(self.groupBox_3)
         self.mqtwCreditCards.setObjectName("mqtwCreditCards")
         self.verticalLayout_4.addWidget(self.mqtwCreditCards)
         self.horizontalLayout_9.addLayout(self.verticalLayout_4)
@@ -194,7 +194,7 @@ class Ui_frmAccountsReport(object):
         self.grpOperTarjetas.setObjectName("grpOperTarjetas")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.grpOperTarjetas)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.mqtwCreditCardOperations = mqtw(self.grpOperTarjetas)
+        self.mqtwCreditCardOperations = mqtwObjects(self.grpOperTarjetas)
         self.mqtwCreditCardOperations.setObjectName("mqtwCreditCardOperations")
         self.verticalLayout_7.addWidget(self.mqtwCreditCardOperations)
         self.horizontalLayout_6.addWidget(self.grpOperTarjetas)
@@ -279,7 +279,7 @@ class Ui_frmAccountsReport(object):
         self.cmdDevolverPago.setObjectName("cmdDevolverPago")
         self.horizontalLayout_13.addWidget(self.cmdDevolverPago)
         self.verticalLayout_9.addLayout(self.horizontalLayout_13)
-        self.mqtwCreditCardOperationsHistorical = mqtw(self.tab_3)
+        self.mqtwCreditCardOperationsHistorical = mqtwObjects(self.tab_3)
         self.mqtwCreditCardOperationsHistorical.setObjectName("mqtwCreditCardOperationsHistorical")
         self.verticalLayout_9.addWidget(self.mqtwCreditCardOperationsHistorical)
         self.horizontalLayout_14.addLayout(self.verticalLayout_9)
@@ -408,7 +408,7 @@ class Ui_frmAccountsReport(object):
         self.actionConceptReport.setText(_translate("frmAccountsReport", "Show concept historical report"))
         self.actionConceptReport.setToolTip(_translate("frmAccountsReport", "Show concept historical report"))
 from xulpymoney.ui.myqlineedit import myQLineEditValidatingAccount
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 from xulpymoney.ui.wdgDatetime import wdgDatetime
 from xulpymoney.ui.wdgYearMonth import wdgYearMonth
 import xulpymoney.images.xulpymoney_rc
