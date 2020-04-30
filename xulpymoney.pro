@@ -1,5 +1,4 @@
 SOURCES         = \
-                  xulpymoney/libdbupdates.py \
                   xulpymoney/objects/account.py \
                   xulpymoney/objects/accountoperation.py \
                   xulpymoney/objects/agrupation.py \
@@ -31,7 +30,6 @@ SOURCES         = \
                   xulpymoney/objects/productrange.py \
                   xulpymoney/objects/producttype.py \
                   xulpymoney/objects/quote.py \
-                  xulpymoney/objects/settingsdb.py \
                   xulpymoney/objects/simulation.py \
                   xulpymoney/objects/simulationtype.py \
                   xulpymoney/objects/split.py \

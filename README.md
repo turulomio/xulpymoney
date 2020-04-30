@@ -57,6 +57,12 @@ Warning: Remember Xulpymoney it's still in beta status
 * https://pypi.org/project/PyQtChart/, to work with charts.
 
 # Changelog
+0.12.0
+  * wdgAPR is working again.
+  * Addapted code to new myqtablewidget and myqcharts objects
+  * Code is now compatible with officegenerator 1.23.0
+  * Added several products
+  * In wdgOrderAdd you can now modify amount and calculate the number of shares of an order.
 
 0.11.0
   * Added modules from reusingcode repository, myqcharts and myqtablewidget has big changes
