@@ -279,10 +279,6 @@ class Dump(Command):
 
     ########################################################################
 
-#Description
-with open('README.md', encoding='utf-8') as f:
-    long_description = f.read()
-
 #entry_points
 entry_points={
         'console_scripts': [
@@ -323,7 +319,7 @@ with open('xulpymoney/version.py', encoding='utf-8') as f:
 setup(name='xulpymoney',
     version=__version__,
     description='Home and financial accounting system',
-    long_description=long_description,
+    long_description="Project web page is in https://github.com/turulomio/xulpymoney/",
     long_description_content_type='text/markdown',
     classifiers=['Development Status :: 4 - Beta',
               'Intended Audience :: End Users/Desktop',
