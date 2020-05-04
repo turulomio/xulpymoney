@@ -311,9 +311,9 @@ class Ui_frmInvestmentReport(object):
         self.tabChart.setObjectName("tabChart")
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.tabChart)
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.layChart = QtWidgets.QVBoxLayout()
-        self.layChart.setObjectName("layChart")
-        self.horizontalLayout_20.addLayout(self.layChart)
+        self.wdgTS = VCTemporalSeries(self.tabChart)
+        self.wdgTS.setObjectName("wdgTS")
+        self.horizontalLayout_20.addWidget(self.wdgTS)
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/xulpymoney/report.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tab.addTab(self.tabChart, icon8, "")
@@ -384,7 +384,7 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setObjectName("actionContractEdit")
 
         self.retranslateUi(frmInvestmentReport)
-        self.tab.setCurrentIndex(2)
+        self.tab.setCurrentIndex(5)
         self.chkExpiration.toggled['bool'].connect(self.calExpiration.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(frmInvestmentReport)
 
@@ -456,6 +456,7 @@ class Ui_frmInvestmentReport(object):
         self.actionContractDelete.setToolTip(_translate("frmInvestmentReport", "Delete contract"))
         self.actionContractEdit.setText(_translate("frmInvestmentReport", "Edit contract"))
         self.actionContractEdit.setToolTip(_translate("frmInvestmentReport", "Edit contract"))
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.myqlineedit import myQLineEdit
 from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector

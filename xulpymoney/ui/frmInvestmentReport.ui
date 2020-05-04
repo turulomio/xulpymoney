@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -555,7 +555,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <item>
-          <layout class="QVBoxLayout" name="layChart"/>
+          <widget class="VCTemporalSeries" name="wdgTS" native="true"/>
          </item>
         </layout>
        </widget>
@@ -785,6 +785,12 @@
    <class>mqtw</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCTemporalSeries</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

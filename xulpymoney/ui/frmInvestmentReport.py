@@ -10,7 +10,6 @@ from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.investmentoperation import InvestmentOperationHomogeneusManager
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.ui.Ui_frmInvestmentReport import Ui_frmInvestmentReport
-from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
 from xulpymoney.ui.frmDividendsAdd import frmDividendsAdd
 from xulpymoney.ui.frmSellingPoint import frmSellingPoint
@@ -48,8 +47,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mqtwInvestmentHistoricalAccountCurrency.setSettings(self.mem.settings,  "frmInvestmentReport", "mqtwInvestmentHistoricalAccountCurrency")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
-        self.viewChart=None
-        
+
+        self.wdgTS.setSettings(self.mem.settings, "frmInvestmentReport", "wdgTS")
+            
         if self.investment==None:#ADD
             self.cmdInvestment.setText(self.tr("Add a new investment"))
             self.lblTitulo.setText(self.tr("New investment"))
@@ -483,50 +483,29 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.investment.dividends.selected=None
         print ("Dividend selected: " +  str(self.investment.dividends.selected))        
 
-
-        
     def on_tab_currentChanged(self, index): 
         if  index==5: #Repaints chart
-            if self.viewChart!=None:
-                self.layChart.removeWidget(self.viewChart)
-                self.viewChart.close()
-            self.viewChart=VCInvestment()
-            self.viewChart.setInvestment(self.investment)
-            self.viewChart.generate()
-            self.layChart.addWidget(self.viewChart)
+            self.wdgTS_update()
         
-##View chart of an investment
-class VCInvestment(VCTemporalSeries):
-    def __init__(self):
-        VCTemporalSeries.__init__(self)
         
-    def setInvestment(self, investment):
-        self.investment=investment
-        self.mem=self.investment.mem
-        if self.investment.op.length()>0:
-            self.from_=self.investment.op.first().datetime-timedelta(days=30)
-
-    ## Just draw the chart with selected options. To update it just close this object and create another one
-    def generate(self):
+    def wdgTS_update(self):
+        self.wdgTS.clear()
+        self.investment.needStatus(3)
         if self.investment.op.length()>0:
             #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
             datetimes=set()
             datetimes.add(self.investment.op.first().datetime -timedelta(days=30))
             for op in self.investment.op.arr:
                 datetimes.add(op.datetime)
-                datetimes.add(op.datetime.replace(hour=0, minute=0, second=0))
-            self.investment.needStatus(3)
             for dividend in self.investment.dividends.arr:
                 datetimes.add(dividend.datetime)
-                datetimes.add(dividend.datetime.replace(hour=0, minute=0, second=0))
             datetimes.add(self.mem.localzone.now())
-            datetimes.add(self.mem.localzone.now().replace(hour=0, minute=0, second=0))
             datetimes_list=list(datetimes)
             datetimes_list.sort()
-            
+                    
             #Progress dialog 
-            self.setProgressDialogEnabled(True)
-            self.setProgressDialogAttributes(
+            self.wdgTS.ts.setProgressDialogEnabled(True)
+            self.wdgTS.ts.setProgressDialogAttributes(
                     None, 
                     self.tr("Loading {} special datetimes").format(len(datetimes_list)), 
                     QIcon(":xulpymoney/coins.png"), 
@@ -535,14 +514,14 @@ class VCInvestment(VCTemporalSeries):
             )
             
             #Draw lines
-            invested=self.appendTemporalSeries(self.tr("Invested amount"))
-            balance=self.appendTemporalSeries(self.tr("Investment balance"))
-            gains=self.appendTemporalSeries(self.tr("Net gains"))
-            dividends=self.appendTemporalSeries(self.tr("Net dividends"))
-            gains_dividends=self.appendTemporalSeries(self.tr("Net gains with dividends"))
+            invested=self.wdgTS.ts.appendTemporalSeries(self.tr("Invested amount"))
+            balance=self.wdgTS.ts.appendTemporalSeries(self.tr("Investment balance"))
+            gains=self.wdgTS.ts.appendTemporalSeries(self.tr("Net gains"))
+            dividends=self.wdgTS.ts.appendTemporalSeries(self.tr("Net dividends"))
+            gains_dividends=self.wdgTS.ts.appendTemporalSeries(self.tr("Net gains with dividends"))
             for i, dt in enumerate(datetimes_list):
                 #Shows progress dialog
-                self.setProgressDialogNumber(i+1)
+                self.wdgTS.ts.setProgressDialogNumber(i+1)
                 #Calculate dividends in datetime
                 dividend_net=0
                 for dividend in self.investment.dividends.arr:
@@ -551,14 +530,14 @@ class VCInvestment(VCTemporalSeries):
                 #Append data of that datetime
                 tmp_investment=self.investment.Investment_At_Datetime(dt)
                 gains_net=tmp_investment.op_historica.consolidado_neto().amount
-                self.appendTemporalSeriesData(invested, dt, tmp_investment.invertido().amount)
-                self.appendTemporalSeriesData(gains_dividends, dt, gains_net+dividend_net)
-                self.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
-                self.appendTemporalSeriesData(dividends, dt, dividend_net)
-                self.appendTemporalSeriesData(gains, dt, gains_net)
-            self.setTitle(self.tr("Investment chart"))
-            self.display()
+                self.wdgTS.ts.appendTemporalSeriesData(invested, dt, tmp_investment.invertido().amount)
+                self.wdgTS.ts.appendTemporalSeriesData(gains_dividends, dt, gains_net+dividend_net)
+                self.wdgTS.ts.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
+                self.wdgTS.ts.appendTemporalSeriesData(dividends, dt, dividend_net)
+                self.wdgTS.ts.appendTemporalSeriesData(gains, dt, gains_net)
+            self.wdgTS.ts.setTitle(self.tr("Investment chart"))
+            self.wdgTS.display()
             #Markers are generated in display so working with markers must be after it
-            self.chart().legend().markers(gains)[0].clicked.emit()
-            self.chart().legend().markers(dividends)[0].clicked.emit()
-            self.chart().legend().markers(balance)[0].clicked.emit()
+            self.wdgTS.ts.chart().legend().markers(gains)[0].clicked.emit()
+            self.wdgTS.ts.chart().legend().markers(dividends)[0].clicked.emit()
+            self.wdgTS.ts.chart().legend().markers(balance)[0].clicked.emit()
