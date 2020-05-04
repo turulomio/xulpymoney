@@ -81,7 +81,7 @@ class AssetsReport(ODT, QObject):
         self.mem.frmMain.w.load_graphic(animations=False)
         self.mem.frmMain.w.tab.setCurrentIndex(1)
         savefile="{}/wdgTotal.png".format(self.dir)
-        self.mem.frmMain.w.view.save(savefile)
+        self.mem.frmMain.w.wdgTS.ts.save(savefile)
         self.addImage(savefile, savefile)
         self.illustration([savefile, ], 25, 13, savefile)
         self.pageBreak()
