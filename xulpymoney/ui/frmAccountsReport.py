@@ -381,11 +381,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         menu.exec_(self.mqtwCreditCardOperations.table.mapToGlobal(pos))
     
     def on_mqtwCreditCardOperations_tableSelectionChanged(self):
-        r=CreditCardOperationManager(self.mem)
+        #Manager of selection to be reused
+        self.mqtwCreditCardOperations_selectedmanager=CreditCardOperationManager(self.mem)
         for o in self.mqtwCreditCardOperations.selected:
-            r.append(o)
+            self.mqtwCreditCardOperations_selectedmanager.append(o)
         #Calcula el balance
-        self.lblPago.setText(self.mem.localmoney(r.balance()).string())
+        self.lblPago.setText(self.mem.localmoney(self.mqtwCreditCardOperations_selectedmanager.balance()).string())
 
     def mqtwCreditCardsOperations_update(self):
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)
@@ -400,14 +401,14 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.grpPago.setEnabled(False)
 
     def on_cmdPago_released(self):
-        c=AccountOperation(self.mem, self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.mqtwCreditCardOperations.selected.balance(), "Transaction in progress", self.account, None)
+        c=AccountOperation(self.mem, self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.mqtwCreditCardOperations_selectedmanager.balance(), "Transaction in progress", self.account, None)
         c.save()
         
         c.comentario=Comment(self.mem).encode(eComment.CreditCardBilling, self.mqtwCreditCards.selected, c)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
-        for o in self.mqtwCreditCardOperations.selected.arr:
+        for o in self.mqtwCreditCardOperations_selectedmanager.arr:
             o.fechapago=self.wdgDtPago.datetime()
             o.pagado=True
             o.opercuenta=c
