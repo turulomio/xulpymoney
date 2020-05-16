@@ -2233,44 +2233,6 @@ Purgadas en total en el proceso global: {1}</translation>
     </message>
 </context>
 <context>
-    <name>VCInvestment</name>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="538"/>
-        <source>Invested amount</source>
-        <translation>Cantidad invertida</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="539"/>
-        <source>Investment balance</source>
-        <translation>Saldo de la inversión</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="540"/>
-        <source>Net gains</source>
-        <translation>Ganancias netas</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="541"/>
-        <source>Net dividends</source>
-        <translation>Dividendos netos</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="542"/>
-        <source>Net gains with dividends</source>
-        <translation>Ganancias netas con dividendos</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="559"/>
-        <source>Investment chart</source>
-        <translation>Gráfico de la inversión</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="529"/>
-        <source>Loading {} special datetimes</source>
-        <translation>Cargando {} fechas especiales</translation>
-    </message>
-</context>
-<context>
     <name>VCPie</name>
     <message>
         <location filename="../ui/myqcharts.py" line="685"/>
@@ -2726,7 +2688,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>No puedo borrar la tarjeta de crédito, porque tiene registros dependientes</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="448"/>
+        <location filename="../ui/frmAccountsReport.py" line="449"/>
         <source>{0} was made a paid of {1}</source>
         <translation>{0} se hizo un pago de {1}</translation>
     </message>
@@ -3586,6 +3548,41 @@ Purgadas en total en el proceso global: {1}</translation>
         <location filename="../ui/frmInvestmentReport.py" line="328"/>
         <source>You must select an account</source>
         <translation>Debe seleccionar una cuenta</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="508"/>
+        <source>Loading {} special datetimes</source>
+        <translation type="unfinished">Cargando {} fechas especiales</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="517"/>
+        <source>Invested amount</source>
+        <translation type="unfinished">Cantidad invertida</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="518"/>
+        <source>Investment balance</source>
+        <translation type="unfinished">Saldo de la inversión</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="519"/>
+        <source>Net gains</source>
+        <translation type="unfinished">Ganancias netas</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="520"/>
+        <source>Net dividends</source>
+        <translation type="unfinished">Dividendos netos</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="521"/>
+        <source>Net gains with dividends</source>
+        <translation type="unfinished">Ganancias netas con dividendos</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="538"/>
+        <source>Investment chart</source>
+        <translation type="unfinished">Gráfico de la inversión</translation>
     </message>
 </context>
 <context>

@@ -2227,44 +2227,6 @@ Total purged in global process: {1}</source>
     </message>
 </context>
 <context>
-    <name>VCInvestment</name>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="538"/>
-        <source>Invested amount</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="539"/>
-        <source>Investment balance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="540"/>
-        <source>Net gains</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="541"/>
-        <source>Net dividends</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="542"/>
-        <source>Net gains with dividends</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="559"/>
-        <source>Investment chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentReport.py" line="529"/>
-        <source>Loading {} special datetimes</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>VCPie</name>
     <message>
         <location filename="../ui/myqcharts.py" line="685"/>
@@ -2720,7 +2682,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="448"/>
+        <location filename="../ui/frmAccountsReport.py" line="449"/>
         <source>{0} was made a paid of {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3579,6 +3541,41 @@ Total purged in global process: {1}</source>
     <message>
         <location filename="../ui/frmInvestmentReport.py" line="328"/>
         <source>You must select an account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="508"/>
+        <source>Loading {} special datetimes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="517"/>
+        <source>Invested amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="518"/>
+        <source>Investment balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="519"/>
+        <source>Net gains</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="520"/>
+        <source>Net dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="521"/>
+        <source>Net gains with dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentReport.py" line="538"/>
+        <source>Investment chart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
