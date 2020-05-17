@@ -197,11 +197,12 @@ def TotalMonthManager_from_manager_extracting_year(manager, year):
     return r
     
 ## Generate a TotalMonthManager extracting all TotalMonth from a a year from another manager
-def TotalMonthManager_from_manager_extracting_from_month(manager, year, month):
+def TotalMonthManager_from_manager_extracting_from_month(manager, from_year, from_month, to_year, to_month):
     r=TotalMonthManager(manager.mem)
-    from_=date_last_of_the_month(year, month)
+    from_=date_last_of_the_month(from_year, from_month)
+    to_=date_last_of_the_month(to_year, to_month)
     for tm in manager.arr:
-        if date_last_of_the_month(tm.year, tm.month)>=from_:
+        if date_last_of_the_month(tm.year, tm.month)>=from_ and date_last_of_the_month(tm.year, tm.month)<=to_:
             r.append(tm)
     return r
     

@@ -29,7 +29,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         dtLast=Assets(self.mem).last_datetime_allowed_estimated()              
 
         #Adding more months that needed to allow month and december previous calculations
-        self.total_manager=TotalMonthManager_from_month(self.mem, dtFirst.year, dtFirst.month, date.today().year, 12)
+        self.tmm=TotalMonthManager_from_month(self.mem, dtFirst.year, dtFirst.month, date.today().year, 12)
+
         
         self.mqtw.setSettings(self.mem.settings, "wdgTotal", "mqtw")
         self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
@@ -60,6 +61,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.pd.forceShow()
         self.progress_bar_update()
 
+        self.tmm_data=TotalMonthManager_from_manager_extracting_year(self.tmm, self.wyData.year)        
+        self.tmm_graphics=TotalMonthManager_from_manager_extracting_from_month(self.tmm, self.wyChart.year, 1, date.today().year, date.today().month)
+
         self.load_data()
         self.load_targets()
         self.load_targets_with_funds_revaluation()
@@ -81,9 +85,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         hh=[self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]
         hv=[self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D+E"), "", self.tr("Accounts"), self.tr("Investments"), self.tr("Total"), self.tr("Monthly difference"), "", self.tr("% Year to date")]
         data=[]
-        tmm_data=TotalMonthManager_from_manager_extracting_year(self.total_manager, self.wyData.year)
-        for m in tmm_data:
-            tm_previous=self.total_manager.find_previous(m)
+        tm_previous_december=self.tmm.find_previous_december(self.tmm_data.first())
+        for m in self.tmm_data:
+            tm_previous=self.tmm.find_previous(m)
             data.append([
                 m.incomes(),
                 m.gains(),
@@ -96,34 +100,33 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 m.total(),
                 m.total_difference(tm_previous),
                 "", 
-                m.total_difference_percentage(tm_previous),
+                m.total_difference_percentage(tm_previous_december),
             ])
             self.progress_bar_update()
-        tm_previous_december=self.total_manager.find_previous_december(tmm_data.first())
         data.append([
-            tmm_data.incomes(),
-            tmm_data.gains(),
-            tmm_data.dividends(),
-            tmm_data.expenses(),
-            tmm_data.i_d_g_e(),
+            self.tmm_data.incomes(),
+            self.tmm_data.gains(),
+            self.tmm_data.dividends(),
+            self.tmm_data.expenses(),
+            self.tmm_data.i_d_g_e(),
             "", 
             "", 
             "", 
             "", 
-            tmm_data.last().total_difference(tm_previous_december),
+            self.tmm_data.last().total_difference(tm_previous_december),
             "", 
-            tmm_data.last().total_difference_percentage(tm_previous_december),
+            self.tmm_data.last().total_difference_percentage(tm_previous_december),
         ])
         data=lor_transposed(data)
         self.mqtw.setData(hh, hv, data)
         
         self.mqtw.table.setCurrentCell(6, date.today().month-1)
-        tm_lastyear=self.total_manager.find(self.wyData.year-1, 12)
+        tm_lastyear=self.tmm.find(self.wyData.year-1, 12)
         self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(tm_lastyear.year, tm_lastyear.total())))
 
         invested=Assets(self.mem).invested(date.today())
         current=Assets(self.mem).saldo_todas_inversiones( date.today())
-        s=self.tr("This year I've generated {}.").format(self.total_manager.gains()+self.total_manager.dividends())
+        s=self.tr("This year I've generated {}.").format(self.tmm_data.gains()+self.tmm_data.dividends())
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)
 
@@ -144,8 +147,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwTargets.applySettings()
         inicio=datetime.now()     
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
-        tmm_data=TotalMonthManager_from_manager_extracting_year(self.total_manager, self.wyData.year)
-        for i, m in enumerate(tmm_data): 
+        for i, m in enumerate(self.tmm_data): 
             i=i+1
             sumd_g=sumd_g+m.d_g()
             self.mqtwTargets.table.setItem(0, i-1, self.mem.localmoney(self.annualtarget.monthly_balance()).qtablewidgetitem())
@@ -179,8 +181,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         sumd_g=Money(self.mem, 0, self.mem.localcurrency)
         sumf=Money(self.mem, 0, self.mem.localcurrency)
-        tmm_data=TotalMonthManager_from_manager_extracting_year(self.total_manager, self.wyData.year)
-        for i, m in enumerate(tmm_data): 
+        for i, m in enumerate(self.tmm_data): 
             i=i+1
             sumd_g=sumd_g+m.d_g()
             sumf=sumf+m.funds_revaluation()
@@ -233,17 +234,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwInvestOrWork.table.verticalHeader().show()       
         self.mqtwInvestOrWork.table.clearContents()
         self.mqtwInvestOrWork.applySettings()
-        tmm_data=TotalMonthManager_from_manager_extracting_year(self.total_manager, self.wyData.year)
-        for i, m in enumerate(tmm_data): 
+        for i, m in enumerate(self.tmm_data): 
             i=i+1
             self.mqtwInvestOrWork.table.setItem(0, i-1, m.d_g().qtablewidgetitem())
             self.mqtwInvestOrWork.table.setItem(1, i-1, m.expenses().qtablewidgetitem())
             self.mqtwInvestOrWork.table.setItem(3, i-1, (m.d_g()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
             self.mqtwInvestOrWork.table.setItem(5, i-1, qresult(m.d_g()+m.expenses()))
-        self.mqtwInvestOrWork.table.setItem(0, 12, self.total_manager.d_g().qtablewidgetitem())
-        self.mqtwInvestOrWork.table.setItem(1, 12, self.total_manager.expenses().qtablewidgetitem())
-        self.mqtwInvestOrWork.table.setItem(3, 12, (self.total_manager.d_g()+self.total_manager.expenses()).qtablewidgetitem())
-        self.mqtwInvestOrWork.table.setItem(5, 12, qresult(self.total_manager.d_g()+self.total_manager.expenses()))
+        self.mqtwInvestOrWork.table.setItem(0, 12, self.tmm_data.d_g().qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(1, 12, self.tmm_data.expenses().qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(3, 12, (self.tmm_data.d_g()+self.tmm_data.expenses()).qtablewidgetitem())
+        self.mqtwInvestOrWork.table.setItem(5, 12, qresult(self.tmm_data.d_g()+self.tmm_data.expenses()))
         self.mqtwInvestOrWork.table.setCurrentCell(2, date.today().month-1)   
         
         s=""
@@ -279,17 +279,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mqtwMakeEndsMeet.table.verticalHeader().show()      
         self.mqtwMakeEndsMeet.table.clearContents()
         self.mqtwMakeEndsMeet.applySettings()
-        tmm_data=TotalMonthManager_from_manager_extracting_year(self.total_manager, self.wyData.year)
-        for i, m in enumerate(tmm_data): 
+        for i, m in enumerate(self.tmm_data): 
             i=i+1
             self.mqtwMakeEndsMeet.table.setItem(0, i-1, m.incomes().qtablewidgetitem())
             self.mqtwMakeEndsMeet.table.setItem(1, i-1, m.expenses().qtablewidgetitem())
             self.mqtwMakeEndsMeet.table.setItem(3, i-1, (m.incomes()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
             self.mqtwMakeEndsMeet.table.setItem(5, i-1, qresult(m.incomes()+m.expenses()))
-        self.mqtwMakeEndsMeet.table.setItem(0, 12, self.total_manager.incomes().qtablewidgetitem())
-        self.mqtwMakeEndsMeet.table.setItem(1, 12, self.total_manager.expenses().qtablewidgetitem())
-        self.mqtwMakeEndsMeet.table.setItem(3, 12, (self.total_manager.incomes()+self.total_manager.expenses()).qtablewidgetitem())
-        self.mqtwMakeEndsMeet.table.setItem(5, 12, qresult(self.total_manager.incomes()+self.total_manager.expenses()))
+        self.mqtwMakeEndsMeet.table.setItem(0, 12, self.tmm_data.incomes().qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(1, 12, self.tmm_data.expenses().qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(3, 12, (self.tmm_data.incomes()+self.tmm_data.expenses()).qtablewidgetitem())
+        self.mqtwMakeEndsMeet.table.setItem(5, 12, qresult(self.tmm_data.incomes()+self.tmm_data.expenses()))
         self.mqtwMakeEndsMeet.table.setCurrentCell(2, date.today().month-1)   
         
         s=""
@@ -301,25 +300,23 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
     def load_graphic(self, animations=True):               
         inicio=datetime.now()  
-        
-        tmm_graphics=TotalMonthManager_from_manager_extracting_from_month(self.total_manager, self.wyChart.year, 1)
 
         self.wdgTS.clear()
         self.wdgTS.ts.setAnimations(animations)
         
         #Series creation
-        last=tmm_graphics.last()
+        last=self.tmm_graphics.last()
         lsNoLoses=self.wdgTS.ts.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
         lsMain=self.wdgTS.ts.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
         lsZero=self.wdgTS.ts.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
         lsBonds=self.wdgTS.ts.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
         lsRisk=self.wdgTS.ts.appendTemporalSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
 
-        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,tmm_graphics.length())
+        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.tmm_graphics.length())
         progress.setModal(True)
         progress.setWindowTitle(self.tr("Calculating data..."))
         progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        for m in tmm_graphics:
+        for m in self.tmm_graphics:
             if progress.wasCanceled():
                 break
             progress.setValue(progress.value()+1)
@@ -337,6 +334,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
 
     def on_wyData_mychanged(self):
+        self.tmm_data=TotalMonthManager_from_manager_extracting_year(self.tmm, self.wyData.year)
         self.load_data()    
         self.load_targets()
         self.load_targets_with_funds_revaluation()
@@ -344,6 +342,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.load_make_ends_meet()
 
     def on_wyChart_mychanged(self):
+        self.tmm_graphics=TotalMonthManager_from_manager_extracting_from_month(self.tmm, self.wyChart.year, 1, date.today().year, date.today().month)
         self.load_graphic()      
         
     def on_cmdTargets_released(self):
@@ -843,7 +842,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         elif row==3: #Expenses
             self.on_actionShowExpenses_triggered()
         elif row==7: #Investments
-            totalmonth=self.total_manager.arr[column]
+            totalmonth=self.tmm_data.arr[column]
             qmessagebox(self.tr("High Low Investments aren't sumarized here, due to they have daily adjustments in accounts.") + "\n\n" + self.tr("Their balance at the end of {}-{} is {}").format(totalmonth.year, totalmonth.month, totalmonth.total_investments_high_low()))
         else:
             qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see commission and tax reports"))
