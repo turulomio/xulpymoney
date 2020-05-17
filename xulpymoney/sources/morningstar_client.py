@@ -48,7 +48,7 @@ class CurrentPriceTickerETF(CurrentPriceTickerFund):
         if self.stockmarket.id==3:#Paris
             return "xpar"
             
-    ## #Returns LVE de LVE.PA
+    ## @return Returns LVE de LVE.PA
     def yahoo2url(self):
         return self.ticker.split(".")[0].lower()
         

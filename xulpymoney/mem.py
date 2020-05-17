@@ -159,6 +159,7 @@ class Mem(QObject):
         self.load_data_in_code()
         signal(SIGINT, self.signal_handler)
         
+    ## @param con
     ## @param mode Qt or Console
     def setConnection(self, con, mode):
         self.con=con
@@ -203,10 +204,9 @@ class Mem(QObject):
             self.con.disconnect()
         except:
             pass
-            
 
     ## Sets debug sustem, needs
-    ## @param args It's the result of a argparse     args=parser.parse_args()        
+    ## @param level
     def addDebugSystem(self, level):
         logFormat = "%(asctime)s.%(msecs)03d %(levelname)s %(message)s [%(module)s:%(lineno)d]"
         dateFormat='%F %H:%M:%S'

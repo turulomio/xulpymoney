@@ -4,24 +4,15 @@ from pytz import timezone
 
 ## Class to manage datetime timezone and its methods
 class Zone:
-    ## Constructor with the following attributes combination
-    ## 1. Zone(mem). Create a Zone with all attributes set to None, except mem
-    ## 2. Zone(mem, id, name, country). Create account passing all attributes
     ## @param mem MemXulpymoney object
     ## @param id Integer that represents the Zone Id
     ## @param name Zone Name
     ## @param country Country object asociated to the timezone
-    def __init__(self, *args):
-        def init__create(id, name, country):
-            self.id=id
-            self.name=name
-            self.country=country
-            return self
-        self.mem=args[0]
-        if len(args)==1:
-            init__create(None, None, None)
-        if len(args)==4:
-            init__create(args[1], args[2], args[3])
+    def __init__(self, mem, id=None, name=None, country=None):
+        self.mem=mem
+        self.id=id
+        self.name=name
+        self.country=country
 
     ## Returns a timezone
     def timezone(self):

@@ -15,7 +15,10 @@ from xulpymoney.ui.Ui_wdgDisReinvest import Ui_wdgDisReinvest
 from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalReinvestChart
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
+    ## @param mem
+    ## @param inversion
     ## @param allProduct true, make study with all active investments  of the product
+    ## @param parent QWidget parent
     def __init__(self, mem, inversion,  allProduct=False,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -147,7 +150,6 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         d.exec_()
 
     ## This function is created because self.cmbPrices.setCurrentIndex(1) wouldn't create prices
-    ## @param is the selected index after reload
     def cmbPrices_reload(self):
         if self.cmbPrices.currentIndex()>=0:
             index=self.cmbPrices.currentIndex()
