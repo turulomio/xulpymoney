@@ -79,7 +79,7 @@ class mqtw(QWidget):
         
     ## Sets if ordering must be enabled
     ## In mqtw id False by default. In mqtwManager and mqtwObjects is True by default
-    ## @param boolean. Booleano to set if ordering is enabled
+    ## @param boolean Booleano to set if ordering is enabled
     def setOrderingEnabled(self, boolean):
         self._ordering_enabled=boolean
 
@@ -558,11 +558,11 @@ class mqtwObjects(mqtw):
         mqtw.__init__(self, parent)
         self._ordering_enabled=True
         
-    ## REturn the last index of a row, where the object is
+    ## Return the last index of a row, where the object is
     def objectColumnIndex(self):
         return len(self.hh)
         
-    ## @row row integer
+    ## @param row integer
     def object(self, row):
         if row<self.length(): #Additional methods can add rows programatically
             return self.data[row][self.objectColumnIndex()]
@@ -617,8 +617,11 @@ class mqtwObjects(mqtw):
     ## Adds a horizontal header array , a vertical header array and a data array
     ##
     ## Automatically set alignment
-    ## @param manager Manager object from libmanagers
-    ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
+    ## @param header_horizontal List
+    ## @param header_vertical List
+    ## @param data lor
+    ## @param decimals
+    ## @param zonename
     ## @param additional Function without it's call, to add additional table information like Total Rows or icons. Additional method has only one parameter, mqtw
     def setDataWithObjects(self, header_horizontal, header_vertical, data, decimals=2, zonename='UTC', additional=None):
         self.additional=additional
@@ -649,11 +652,12 @@ class mqtwManager(mqtw):
         debug("{} manager selection: {}".format(self.manager.__class__.__name__,  self.manager.selected))
         self.tableSelectionChanged.emit()
 
-    ## Adds a horizontal header array , a vertical header array and a data array
-    ##
-    ## Automatically set alignment
-    ## @param manager Manager object from libmanagers
-    ## @param manager_attributes List of Strings with name of the object attributes, order by appareance
+    ## @param header_horizontal List
+    ## @param header_vertical List
+    ## @param manager ObjectManager
+    ## @param manager_attributes
+    ## @param decimals
+    ## @param zonename
     ## @param additional Function without it's call, to add additional table information like Total Rows or icons. Additional method has only one parameter, mqtw
     def setDataFromManager(self, header_horizontal, header_vertical, manager, manager_attributes, decimals=2, zonename='UTC', additional=None):
         self.manager_attributes=manager_attributes
@@ -826,6 +830,7 @@ def qnumber_limited(n, limit, digits=2, reverse=False):
 ## Shows the time of a datetime
 ## See function time2string of datetime_functions to see formats
 ## @param ti must be a time object
+## @param format
 def qtime(ti, format="HH:MM:SS"):
     if ti==None:
         return qnone()

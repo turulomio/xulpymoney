@@ -169,7 +169,10 @@ def lor_get_column(lor, column):
 
 ## Return sum of values of a column from and index to and other index position. This method ignores None values
 ## This method can sum several objects
-## @zerovalue 0 or Money(self.mem, 0, self.mem.localcurrency)....
+## @param row
+## @param from_index
+## @param to_index
+## @param zerovalue 0 or Money(self.mem, 0, self.mem.localcurrency)....
 def lor_sum_row(row, from_index, to_index, zerovalue=0):
     s=zerovalue
     for i, column in enumerate(row):

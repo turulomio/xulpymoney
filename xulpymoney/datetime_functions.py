@@ -327,7 +327,7 @@ def dtnaive2string(dt, format):
 ## - libcaloriestrackerfunctions.dtaware_changes_tz(a,"Europe/London")
 ## - datetime.datetime(2018, 5, 18, 7, 12, tzinfo=<DstTzInfo 'Europe/London' BST+1:00:00 DST>)
 ## @param dt datetime aware object
-## @tzname String with datetime zone. For example: "Europe/Madrid"
+## @param tzname String with datetime zone. For example: "Europe/Madrid"
 ## @return datetime aware object
 def dtaware_changes_tz(dt,  tzname):
     if dt==None:

@@ -65,6 +65,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.grp.setTitle(title)
 
     @staticmethod
+    ## @param combo QComboBox
     ## @param selected is a pytz name
     def pytz_zones_qcombobox(combo, selected):
         combo.completer().setCompletionMode(QCompleter.PopupCompletion)
@@ -75,7 +76,6 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
 
     ## @param dt can be a naive or aware. If aware it ignore it and set as naive with parmeter zone. If naive just put the zone to the dtnaive
     ## @param zone pytz name
-    ## @param localzone pytz name
     def set(self, dt=None, zone=None):
         if dt==None or zone==None:
             self.on_cmdNow_released()

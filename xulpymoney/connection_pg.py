@@ -160,12 +160,16 @@ class Connection:
             print(_("Write the password for {}").format(self.url_string()))
             self.password=getpass()
         return self.password
-        
+
 ## Function that adds an argparse argument group with connection parameters
 ## @param parser Argparse object
 ## @param gettext_module Gettext module
 ## @param gettex_locale Locale path
-def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_locale=None,  default_user="postgres", default_port=5432, default_server="127.0.0.1",  default_db="postgres"): 
+## @param default_user
+## @param default_port
+## @param default_server
+## @param default_db
+def argparse_connection_arguments_group(parser, gettext_module=None,  gettex_locale=None,  default_user="postgres", default_port=5432, default_server="127.0.0.1",  default_db="postgres"):
     try:
         import gettext
         t=gettext.translation(gettext_module,  gettex_locale)

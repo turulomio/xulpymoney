@@ -104,6 +104,7 @@ class ObjectManager(object):
     ## This function doen't make exact matches. Only if strings in s_list are contained
     ## @param string_or_tuple_list List of _string_or_tuple_to_command parameters
     ## @param s_list List of string to search
+    ## @param upper boolean
     def find_strings_contained_in_string_or_tuple_results(self, string_or_tuple_list, s_list, upper=False):
         r=self.emptyManager()
         for o in self.arr:
@@ -296,7 +297,7 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
                 
     ## Function that returns the same object manager, with a pointer to the of the objects that contains from the datetime given in the parameter.
     ## For example the constuctor of InvemestOperationHomogeneous is InvesmentOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_from_datetime(dt,mem,investment)
-    ## @param datetime. This function copies all object with datetime until this parameter
+    ## @param dt datetime This function copies all object with datetime until this parameter
     def ObjectManager_from_datetime(self, dt):
         result=self.emptyManager()
         for a in self.arr:
@@ -323,7 +324,7 @@ class ObjectManager_With_IdDatetime(ObjectManager_With_Id):
         
     ## Function that returns the same object manager, but with a copy of the objects that contains until the datetime given in the parameter.
     ## For exemple the constuctor of InvemestOperationHomogeneous is InvemestOperationHomogeneous(mem,investment). so to use this function you need ObjectManager_copy_until_datetime(dt,mem,investment)
-    ## @param datetime. This function copies all object with datetime until this parameter
+    ## @param dt datetime This function copies all object with datetime until this parameter
     def ObjectManager_copy_until_datetime(self, dt):
         result=self.emptyManager()
         for a in self.arr:
@@ -338,7 +339,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         
     ##Returns an array with all object name
     ## @param sort Boolean to sort or not the array
-    ## @oaram nones Boolean. If True adds None and empty strings values to the list. If False it doesn't
+    ## @param nones Boolean. If True adds None and empty strings values to the list. If False it doesn't
     def array_of_names(self, sort=True, nones=False):
         r=[]
         for o in self.arr:
@@ -355,7 +356,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
 
     ## Returns another object manager of the same class with the elements that contains a string in the name
     ## @param s string to search
-    ## @casesensitive Boolean if it's a case sensitive search    
+    ## @param casesensitive Boolean if it's a case sensitive search    
     def ObjectManager_which_name_contains(self, s, casesensitive):
         result=self.emptyManager()
         if s is None:
@@ -380,6 +381,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
 
 
     ## It doesn't emit selected if selected is None a nd needtoselect is False, in the rest of the cases it emmit itemChanged
+    ## @param combo
     ## @param selected it's an object
     ## @param needtoselect Adds a foo item with value==None with the text select one
     ## @param icons Boolean. If it's true uses o.qicon() method to add an icon to the item
@@ -416,8 +418,8 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
     ## Creates a libreoffice sheet from the ObjectManager
     ##
     ## This function needs the officegenerator package
+    ## @param ods Officegenerator ODS_Write object
     ## @param sheetname String with the name of the libreoffice sheet
-    ## @param Officegenerator ODS_Write object
     ## @param titles List of strings with the titles of the columns
     ## @param order_by_name Boolean. True: orders by name. False: orders by id
     ## @returns Officegenerator OdfSheet

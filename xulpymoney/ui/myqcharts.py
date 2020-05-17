@@ -78,7 +78,11 @@ class VCCommons(QChartView):
     ##Set progress dialog attributes
     ## Only will be shown if self.progressDialogEnabled()==True (By default)
     ## if None leaves default
+    ## @param title string
+    ## @param text string
     ## @param qicon Qicon object
+    ## @param min integer
+    ## @param max integer
     def setProgressDialogAttributes(self, title, text, qicon, min=0, max=0):       
         self.progressdialog=QProgressDialog()
         self.progressdialog.setWindowIcon(qicon)
