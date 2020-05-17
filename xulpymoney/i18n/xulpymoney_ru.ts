@@ -1329,38 +1329,38 @@ Do you want to activate it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="633"/>
+        <location filename="../ui/frmMain.py" line="630"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="370"/>
+        <location filename="../ui/frmMain.py" line="367"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="372"/>
+        <location filename="../ui/frmMain.py" line="369"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="633"/>
+        <location filename="../ui/frmMain.py" line="630"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="635"/>
+        <location filename="../ui/frmMain.py" line="632"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="642"/>
+        <location filename="../ui/frmMain.py" line="639"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="247"/>
+        <location filename="../ui/wdgTotal.py" line="60"/>
         <source>Generating total report...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1465,7 +1465,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="17"/>
+        <location filename="../xulpymoney.py" line="19"/>
         <source>Please login to the Xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3674,7 +3674,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="104"/>
+        <location filename="../ui/frmMain.py" line="101"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3724,7 +3724,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="660"/>
+        <location filename="../ui/frmMain.py" line="657"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3759,12 +3759,12 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="469"/>
+        <location filename="../ui/frmMain.py" line="466"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="39"/>
+        <location filename="../ui/frmMain.py" line="36"/>
         <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3849,12 +3849,12 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="367"/>
+        <location filename="../ui/frmMain.py" line="364"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="360"/>
+        <location filename="../ui/frmMain.py" line="357"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3864,7 +3864,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="347"/>
+        <location filename="../ui/frmMain.py" line="344"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3874,7 +3874,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="42"/>
+        <location filename="../ui/frmMain.py" line="39"/>
         <source>Xulpymoney 2010-{0} &#xa9;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4259,12 +4259,12 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="363"/>
+        <location filename="../ui/frmMain.py" line="360"/>
         <source>Error conecting to {} database in {} server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="75"/>
+        <location filename="../ui/frmMain.py" line="72"/>
         <source>Disconnecting due to {} minutes of inactivity.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4304,7 +4304,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="808"/>
+        <location filename="../ui/frmMain.py" line="805"/>
         <source>Price variation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4379,7 +4379,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="202"/>
+        <location filename="../ui/frmMain.py" line="199"/>
         <source>There isn&apos;t any benchmark data yet.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4432,17 +4432,17 @@ Total purged in global process: {1}</source>
 <context>
     <name>frmMainProductsMaintenance</name>
     <message>
-        <location filename="../ui/frmMain.py" line="962"/>
+        <location filename="../ui/frmMain.py" line="959"/>
         <source>Xulpymoney 2010-{0} &#xa9; (Products maintenance mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="995"/>
+        <location filename="../ui/frmMain.py" line="992"/>
         <source>Developer mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="995"/>
+        <location filename="../ui/frmMain.py" line="992"/>
         <source>You are in products maintenance mode.
 Changes will not be saved in database, but they will added to a SQL format file, for futures updates.
 Do you want to generate it?</source>
@@ -8492,7 +8492,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
 <context>
     <name>wdgTotal</name>
     <message>
-        <location filename="../ui/wdgTotal.py" line="966"/>
+        <location filename="../ui/wdgTotal.py" line="778"/>
         <source>Total</source>
         <translation type="unfinished">общий</translation>
     </message>
@@ -8512,62 +8512,62 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="465"/>
+        <location filename="../ui/wdgTotal.py" line="277"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="465"/>
+        <location filename="../ui/wdgTotal.py" line="277"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>Accounts</source>
         <translation type="unfinished">счета</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="947"/>
+        <location filename="../ui/wdgTotal.py" line="759"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="949"/>
+        <location filename="../ui/wdgTotal.py" line="761"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="950"/>
+        <location filename="../ui/wdgTotal.py" line="762"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="951"/>
+        <location filename="../ui/wdgTotal.py" line="763"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="952"/>
+        <location filename="../ui/wdgTotal.py" line="764"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="953"/>
+        <location filename="../ui/wdgTotal.py" line="765"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="957"/>
+        <location filename="../ui/wdgTotal.py" line="769"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="958"/>
+        <location filename="../ui/wdgTotal.py" line="770"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8592,42 +8592,42 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>Monthly difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>% Year to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="948"/>
+        <location filename="../ui/wdgTotal.py" line="760"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="954"/>
+        <location filename="../ui/wdgTotal.py" line="766"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="955"/>
+        <location filename="../ui/wdgTotal.py" line="767"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="956"/>
+        <location filename="../ui/wdgTotal.py" line="768"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8647,12 +8647,12 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="363"/>
+        <location filename="../ui/wdgTotal.py" line="175"/>
         <source>Monthly target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="363"/>
+        <location filename="../ui/wdgTotal.py" line="175"/>
         <source>Accumulated target</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8667,12 +8667,12 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="465"/>
+        <location filename="../ui/wdgTotal.py" line="277"/>
         <source>Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="363"/>
+        <location filename="../ui/wdgTotal.py" line="175"/>
         <source>Accumulated total gains</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8692,7 +8692,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="465"/>
+        <location filename="../ui/wdgTotal.py" line="277"/>
         <source>Incomes - Expenses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8712,333 +8712,333 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="236"/>
+        <location filename="../ui/wdgTotal.py" line="49"/>
         <source>Data from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="312"/>
+        <location filename="../ui/wdgTotal.py" line="125"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="317"/>
+        <location filename="../ui/wdgTotal.py" line="129"/>
         <source>This year I&apos;ve generated {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="318"/>
+        <location filename="../ui/wdgTotal.py" line="130"/>
         <source>Difference between invested amount and current invesment balance: {} - {} = {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="325"/>
+        <location filename="../ui/wdgTotal.py" line="137"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="390"/>
+        <location filename="../ui/wdgTotal.py" line="202"/>
         <source>This report shows if the user reaches the annual and monthly target.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="439"/>
+        <location filename="../ui/wdgTotal.py" line="251"/>
         <source>Total gains are the result of adding dividends to gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="392"/>
+        <location filename="../ui/wdgTotal.py" line="204"/>
         <source>The cumulative target row shows compliance of the target in the year.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="393"/>
+        <location filename="../ui/wdgTotal.py" line="205"/>
         <source>Green color shows that target has been reached.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="391"/>
+        <location filename="../ui/wdgTotal.py" line="203"/>
         <source>Total is the result of adding dividends to gain and funds revaluation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="408"/>
+        <location filename="../ui/wdgTotal.py" line="220"/>
         <source>Work</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="411"/>
+        <location filename="../ui/wdgTotal.py" line="223"/>
         <source>Invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="438"/>
+        <location filename="../ui/wdgTotal.py" line="250"/>
         <source>This report shows if the user could retire due to its investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="440"/>
+        <location filename="../ui/wdgTotal.py" line="252"/>
         <source>Difference between total gains and expenses shows if user could cover his expenses with his total gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="441"/>
+        <location filename="../ui/wdgTotal.py" line="253"/>
         <source>Investment taxes are not evaluated in this report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="453"/>
+        <location filename="../ui/wdgTotal.py" line="265"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="456"/>
+        <location filename="../ui/wdgTotal.py" line="268"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="483"/>
+        <location filename="../ui/wdgTotal.py" line="295"/>
         <source>This report shows if the user makes ends meet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="484"/>
+        <location filename="../ui/wdgTotal.py" line="296"/>
         <source>Difference between incomes and expenses shows if user could cover his expenses with his incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="499"/>
+        <location filename="../ui/wdgTotal.py" line="309"/>
         <source>Total without losses assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="500"/>
+        <location filename="../ui/wdgTotal.py" line="310"/>
         <source>Total assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="501"/>
+        <location filename="../ui/wdgTotal.py" line="311"/>
         <source>Zero risk assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="502"/>
+        <location filename="../ui/wdgTotal.py" line="312"/>
         <source>Bond assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="503"/>
+        <location filename="../ui/wdgTotal.py" line="313"/>
         <source>Risk assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="505"/>
+        <location filename="../ui/wdgTotal.py" line="315"/>
         <source>Filling report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="505"/>
+        <location filename="../ui/wdgTotal.py" line="315"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="507"/>
+        <location filename="../ui/wdgTotal.py" line="317"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="558"/>
+        <location filename="../ui/wdgTotal.py" line="370"/>
         <source>Incomes of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="570"/>
+        <location filename="../ui/wdgTotal.py" line="382"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="601"/>
+        <location filename="../ui/wdgTotal.py" line="413"/>
         <source>Expenses of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="614"/>
+        <location filename="../ui/wdgTotal.py" line="426"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="650"/>
+        <location filename="../ui/wdgTotal.py" line="462"/>
         <source>Selling operations of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="658"/>
+        <location filename="../ui/wdgTotal.py" line="470"/>
         <source>Selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="742"/>
+        <location filename="../ui/wdgTotal.py" line="554"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="687"/>
+        <location filename="../ui/wdgTotal.py" line="499"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="695"/>
+        <location filename="../ui/wdgTotal.py" line="507"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="724"/>
+        <location filename="../ui/wdgTotal.py" line="536"/>
         <source>Selling operations of {0} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="732"/>
+        <location filename="../ui/wdgTotal.py" line="544"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="765"/>
+        <location filename="../ui/wdgTotal.py" line="577"/>
         <source>Dividends of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="769"/>
+        <location filename="../ui/wdgTotal.py" line="581"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="804"/>
+        <location filename="../ui/wdgTotal.py" line="616"/>
         <source>Custody fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="862"/>
+        <location filename="../ui/wdgTotal.py" line="674"/>
         <source>Commision report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="875"/>
+        <location filename="../ui/wdgTotal.py" line="687"/>
         <source>Product type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="934"/>
+        <location filename="../ui/wdgTotal.py" line="746"/>
         <source>Gains by product type of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="962"/>
+        <location filename="../ui/wdgTotal.py" line="774"/>
         <source>Investment operation retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="963"/>
+        <location filename="../ui/wdgTotal.py" line="775"/>
         <source>Dividend retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="964"/>
+        <location filename="../ui/wdgTotal.py" line="776"/>
         <source>Other paid taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="965"/>
+        <location filename="../ui/wdgTotal.py" line="777"/>
         <source>Returned taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1011"/>
+        <location filename="../ui/wdgTotal.py" line="823"/>
         <source>Taxes report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1018"/>
+        <location filename="../ui/wdgTotal.py" line="830"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1036"/>
+        <location filename="../ui/wdgTotal.py" line="848"/>
         <source>You only can double click in incomes, gains, dividends and expenses.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1034"/>
+        <location filename="../ui/wdgTotal.py" line="846"/>
         <source>High Low Investments aren&apos;t sumarized here, due to they have daily adjustments in accounts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1034"/>
+        <location filename="../ui/wdgTotal.py" line="846"/>
         <source>Their balance at the end of {}-{} is {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="803"/>
+        <location filename="../ui/wdgTotal.py" line="615"/>
         <source>Bank commissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="805"/>
+        <location filename="../ui/wdgTotal.py" line="617"/>
         <source>Invesment operation commissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="859"/>
+        <location filename="../ui/wdgTotal.py" line="671"/>
         <source>Number of purchase and sale investment operations: {}. Commissions average: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="876"/>
+        <location filename="../ui/wdgTotal.py" line="688"/>
         <source>Gross gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="877"/>
+        <location filename="../ui/wdgTotal.py" line="689"/>
         <source>Gross dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="878"/>
+        <location filename="../ui/wdgTotal.py" line="690"/>
         <source>Net gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="879"/>
+        <location filename="../ui/wdgTotal.py" line="691"/>
         <source>Net dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="930"/>
+        <location filename="../ui/wdgTotal.py" line="742"/>
         <source>Gross gains + Gross dividends: {} + {} = {}
 Net gains + Net dividens: {} + {} = {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="1036"/>
+        <location filename="../ui/wdgTotal.py" line="848"/>
         <source>Make right click to see commission and tax reports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="273"/>
+        <location filename="../ui/wdgTotal.py" line="86"/>
         <source>I+G+D+E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="420"/>
+        <location filename="../ui/wdgTotal.py" line="232"/>
         <source>Total gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="363"/>
+        <location filename="../ui/wdgTotal.py" line="175"/>
         <source>Funds revaluation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="420"/>
+        <location filename="../ui/wdgTotal.py" line="232"/>
         <source>Total gains - Expenses</source>
         <translation type="unfinished"></translation>
     </message>

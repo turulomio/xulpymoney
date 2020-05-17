@@ -57,6 +57,12 @@ Warning: Remember Xulpymoney it's still in beta status
 * https://pypi.org/project/PyQtChart/, to work with charts.
 
 # Changelog
+
+0.13.0
+  * Added plus_minus external script
+  * Start time was reduced a 50%
+  * Improved wdgTotal
+
 0.12.0
   * wdgAPR is working again.
   * Addapted code to new myqtablewidget and myqcharts objects
