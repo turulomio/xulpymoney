@@ -770,7 +770,6 @@ class ProductUpdate:
         r=set()
         used=""
         ##### BOLSAMADRID #####
-        cur=mem.con.cursor()
         sqls=[
             "select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used), 
             "select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used), 
@@ -781,15 +780,9 @@ class ProductUpdate:
             "select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         ]
         for sql in sqls:
-            cur.execute(sql)
-            for row in cur:
+            for row in mem.con.cursor_rows(sql):
                 r.add(row['id'])
-        cur.close()
         return r
-
-
-
-
 
     ## Function that executes xulpymoney_run_client and generate a QuoteManager 
     ## Source commands must be created before in file "{}/clients.txt".format(dir_tmp)

@@ -18,17 +18,12 @@ class Doxygen(Command):
         pass
 
     def run(self):
-        os.system("cp doc/xulpymoney_er.png doc/html/")
-
         print("Creating Doxygen Documentation")
         os.system("""sed -i -e "41d" doc/Doxyfile""")#Delete line 41
         os.system("""sed -i -e "41iPROJECT_NUMBER         = {}" doc/Doxyfile""".format(__version__))#Insert line 41
         os.system("rm -Rf build")
         os.chdir("doc")
         os.system("doxygen Doxyfile")
-         
-        os.system("cp xulpymoney.html html/")
-
         os.system("rsync -avzP -e 'ssh -l turulomio' html/ frs.sourceforge.net:/home/users/t/tu/turulomio/userweb/htdocs/doxygen/xulpymoney/ --delete-after")
         os.chdir("..")
 
@@ -259,11 +254,10 @@ class Doc(Command):
         os.system("pylupdate5 -noobsolete -verbose xulpymoney.pro")
         os.system("lrelease -qt5 xulpymoney.pro")
         print("Updating Entity Relationship Schema")
-        os.chdir("doc")
+        os.chdir("doc/html")
         os.system("/usr/bin/postgresql_autodoc -d {} -h {} -u {} -p {} --password={} -t html".format(self.db,self.server,self.user, self.port,con.password))
         os.system("/usr/bin/postgresql_autodoc -d {} -h {} -u {} -p {} --password={} -t dot_shortfk".format(self.db,self.server,self.user, self.port,con.password))
         os.system("dot -Tpng {0}.dot_shortfk -o {0}_er.png".format(self.db))
-        os.system("rm xulpymoney.dot_shortfk")
 
 class Dump(Command):
     description = "Creates a database dump. Must be used before changing schema"

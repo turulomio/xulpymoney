@@ -27,13 +27,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
-
-        self.sqlvacio="select * from products where id=-999999"
         
         self.w=QWidget()       
         self.statusBar.addWidget(QLabel(self.mem.con.url_string()))
-
-        self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
+   
   
         if self.mem.con.is_superuser():
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(__versiondate__.year))#print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
