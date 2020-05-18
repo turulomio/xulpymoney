@@ -34,27 +34,57 @@ from xulpymoney.translationlanguages import TranslationLanguageManager
         
 getcontext().prec=20
 
-class DBData:
+class DBData(QObject):
     def __init__(self, mem):
+        QObject.__init__(self)
         self.mem=mem
+
+    ## Create a QProgressDialog to load Data
+    def __qpdStart(self):
+        qpdStart= QProgressDialog(self.tr("Loading Xulpymoney data"),None, 0, 6)
+        qpdStart.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        qpdStart.setModal(True)
+        qpdStart.setWindowTitle(QApplication.translate("Mem","Loading Xulpymoney..."))
+        qpdStart.forceShow()
+        return qpdStart
+                
+    ## Increases qpdStart value
+    ## @param qpdStart QProgressDialog
+    def __qpdStart_increaseValue(self, qpdStart):
+        qpdStart.setValue(qpdStart.value()+1)
+        if qpdStart.value()==1:
+            qpdStart.setLabelText(self.tr("Loading products definitions"))
+        elif qpdStart.value()==2:
+            qpdStart.setLabelText(self.tr("Loading benchmark"))
+        elif qpdStart.value()==3:
+            qpdStart.setLabelText(self.tr("Loading currencies"))
+        elif qpdStart.value()==4:
+            qpdStart.setLabelText(self.tr("Loading banks and accounts"))
+        elif qpdStart.value()==5:
+            qpdStart.setLabelText(self.tr("Loading investments"))
+        elif qpdStart.value()==6:
+            qpdStart.setLabelText(self.tr("Loading products information"))
+        qpdStart.update()
+        QApplication.processEvents()
 
     def load(self, progress=True):
         """
             This method will subsitute load_actives and load_inactives
         """
         inicio=datetime.now()
-        
-        self.mem.qpdStart_increaseValue()
+        qpdStart=self.__qpdStart()    
+
+        self.__qpdStart_increaseValue(qpdStart)
         start=datetime.now()
         self.products=ProductManager(self.mem)
         self.products.load_from_db("select * from products", progress=False)
         debug("DBData > Products took {}".format(datetime.now()-start))
         
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         self.benchmark=self.products.find_by_id(self.mem.settingsdb.value_integer("mem/benchmarkid", 79329 ))
         self.benchmark.needStatus(2)
         
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         #Loading currencies
         start=datetime.now()
         self.currencies=ProductManager(self.mem)
@@ -64,27 +94,27 @@ class DBData:
                 self.currencies.append(p)
         debug("DBData > Currencies took {}".format(datetime.now()-start))
         
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias order by entidadbancaria")
 
         self.accounts=AccountManager_from_sql(self.mem, "select * from cuentas order by cuenta")
 
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         start=datetime.now()
         self.investments=InvestmentManager(self.mem)
         self.investments.load_from_db("select * from inversiones", progress=False)
         self.investments.needStatus(2, progress=False)
         debug("DBData > Investments took {}".format(datetime.now()-start))
 
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         #change status to 1 to self.investments products
         start=datetime.now()
         pros=self.investments.ProductManager_with_investments_distinct_products()
         pros.needStatus(1, progress=False)
         debug("DBData > Products status 1 took {}".format(datetime.now()-start))
         
-        self.mem.qpdStart_increaseValue()
+        self.__qpdStart_increaseValue(qpdStart)
         info("DBData loaded: {}".format(datetime.now()-inicio))
 
     def accounts_active(self):        
@@ -314,23 +344,7 @@ class MemXulpymoney(Mem):
         self.closing=False#Used to close threads
         self.url_wiki="https://github.com/turulomio/xulpymoney/wiki"
 
-        
-    def qpdStart_increaseValue(self):
-        self.qpdStart.setValue(self.qpdStart.value()+1)
-        if self.qpdStart.value()==1:
-            self.qpdStart.setLabelText(self.tr("Loading products definitions"))
-        elif self.qpdStart.value()==2:
-            self.qpdStart.setLabelText(self.tr("Loading benchmark"))
-        elif self.qpdStart.value()==3:
-            self.qpdStart.setLabelText(self.tr("Loading currencies"))
-        elif self.qpdStart.value()==4:
-            self.qpdStart.setLabelText(self.tr("Loading banks and accounts"))
-        elif self.qpdStart.value()==5:
-            self.qpdStart.setLabelText(self.tr("Loading investments"))
-        elif self.qpdStart.value()==6:
-            self.qpdStart.setLabelText(self.tr("Loading products information"))
-        self.qpdStart.update()
-        QApplication.processEvents()
+
 
     def run(self):
         self.args=self.parse_arguments()
@@ -349,11 +363,6 @@ class MemXulpymoney(Mem):
         self.closing=False#Used to close threads
         self.url_wiki="https://github.com/turulomio/xulpymoney/wiki"
 
-        self.qpdStart= QProgressDialog(self.tr("Loading Xulpymoney data"),None, 0, 6)
-        self.qpdStart.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        self.qpdStart.setModal(True)
-        self.qpdStart.setWindowTitle(QApplication.translate("Mem","Loading Xulpymoney..."))
-        self.qpdStart.forceShow()
     
     def parse_arguments(self):
         self.parser=ArgumentParser(prog='xulpymoney', description=self.tr('Personal accounting system'), epilog=self.epilog(), formatter_class=RawTextHelpFormatter)
