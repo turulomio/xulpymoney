@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QInputDialog
-from xulpymoney.objects.concept import Concept
+from xulpymoney.objects.concept import Concept, ConceptManager_editables
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_frmAuxiliarTables import Ui_frmAuxiliarTables
 
@@ -19,7 +19,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.mqtwConcepts_reload()
     
     def regenerate_list(self):
-        self.concepts=self.mem.conceptos.ConceptManager_editables()
+        self.concepts=ConceptManager_editables(self.mem)
 
     @pyqtSlot()  
     def on_actionChangeName_triggered(self):

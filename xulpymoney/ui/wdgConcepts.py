@@ -2,6 +2,7 @@ from datetime import date
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout
 from xulpymoney.objects.assets import Assets
+from xulpymoney.objects.concept import ConceptManager_by_operationtype
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eQColor
@@ -23,9 +24,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.viewExpenses=VCPie()
         self.viewExpenses.setSettings(self.mem.settings, "wdgConcepts", "viewExpenses")
         self.layExpenses.addWidget(self.viewExpenses)
-        self.expenses=self.mem.conceptos.ConceptManager_by_operation_type(1)
+        self.expenses=ConceptManager_by_operationtype(mem, 1)
         self.expenseslist=None
-        self.incomes=self.mem.conceptos.ConceptManager_by_operation_type(2)
+        self.incomes=ConceptManager_by_operationtype(mem, 2)
         self.incomeslist=None
 
         self.mqtwExpenses.setSettings(self.mem.settings, "wdgConcepts", "mqtwExpenses")

@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QIcon
 from datetime import date, timedelta
 from decimal import Decimal
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
@@ -24,9 +25,15 @@ class Concept:
 
     def fullName(self):
         return self.mem.trHS(self.name)
+        
+    def fullNameWithOperationType(self):
+        return "{} - {}".format(self.fullName(), self.tipooperacion.fullName())
 
     def __repr__(self):
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
+
+    def qicon(self):
+        return QIcon(":/xulpymoney/hucha.png")
 
     def save(self):
         if self.id==None:
@@ -93,44 +100,15 @@ class ConceptManager(ObjectManager_With_IdName_Selectable, QObject):
         QObject.__init__(self)
         self.mem=mem 
 
-    def load_opercuentas_qcombobox(self, combo):
-        """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
-        for c in self.arr:
-            if c.tipooperacion.id in (1, 2, 3, 11):
-                if c.id not in (39, 50, 62, 63, 65, 66):
-                    combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id  )
-
-    def load_dividend_qcombobox(self, combo,  select=None):
-        """Select es un class Concept"""
-        for n in (eConcept.Dividends, eConcept.AssistancePremium,  eConcept.DividendsSaleRights, 
-        eConcept.RolloverPaid, eConcept.RolloverReceived, eConcept.BondsCouponRunPayment, 
-        eConcept.BondsCouponRunIncome, eConcept.BondsCoupon):
-            c=self.find_by_id(n)
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id   )
-        if select!=None:
-            combo.setCurrentIndex(combo.findData(select.id))
-
-    def considered_dividends_in_totals(self):
-        """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
-        return[39, 50, 62, 65, 66]
 
 
-    def ConceptManager_by_operation_type(self, id_tiposoperaciones):
-        """SSe usa clone y no init ya que ya están cargados en MEM"""
-        resultado=ConceptManager(self.mem)
-        for c in self.arr:
-            if c.tipooperacion.id==id_tiposoperaciones:
-                resultado.append(c)
-        return resultado
-        
-    def ConceptManager_editables(self):
-        """SSe usa clone y no init ya que ya están cargados en MEM"""
-        resultado=ConceptManager(self.mem)
-        for c in self.arr:
-            if c.editable==True:
-                resultado.append(c)
-        return resultado
-        
+    def qcombobox(self, combo, selected=None, needtoselect=False):
+        self.order_by_fullName()
+        ObjectManager_With_IdName_Selectable.qcombobox(self, combo, selected, needtoselect, icons=True, id_attr="id", name_attr=("fullNameWithOperationType", []))
+
+    def order_by_fullName(self):
+        self.order_with_none(["fullName", ()], False, True)
+
     def percentage_monthly(self, year, month):
         """ Generates an arr with:
         1) Concept:
@@ -190,3 +168,44 @@ def ConceptManager_from_sql(mem, sql):
     for row in mem.con.cursor_rows(sql):
         r.append(Concept_from_dict(mem, row))
     return r
+
+def ConceptManager_for_opercuentas(mem):
+        r=ConceptManager(mem)
+        for c in mem.conceptos:
+            if c.tipooperacion.id in (1, 2, 3, 11):
+                if c.id not in (39, 50, 62, 63, 65, 66):
+                    r.append(c)
+        return r
+
+def ConceptManager_for_dividends(mem):
+    r=ConceptManager(mem)
+    for c in mem.conceptos:
+        if c.id in (eConcept.Dividends, eConcept.AssistancePremium,  eConcept.DividendsSaleRights, 
+            eConcept.RolloverPaid, eConcept.RolloverReceived, eConcept.BondsCouponRunPayment, 
+            eConcept.BondsCouponRunIncome, eConcept.BondsCoupon):
+            r.append(c)
+    return r
+
+def ConceptManager_by_operationtype(mem, id_tiposoperaciones):
+        resultado=ConceptManager(mem)
+        for c in mem.conceptos:
+            if c.tipooperacion.id==id_tiposoperaciones:
+                resultado.append(c)
+        return resultado
+
+def ConceptManager_editables(mem):
+    """SSe usa clone y no init ya que ya están cargados en MEM"""
+    resultado=ConceptManager(mem)
+    for c in mem.conceptos:
+        if c.editable==True:
+            resultado.append(c)
+    return resultado
+    
+    
+def ConceptManager_considered_dividends_in_totals(mem):
+    """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
+    resultado=ConceptManager(mem)
+    for c in mem.conceptos:
+        if c.id in [39, 50, 62, 65, 66]:
+            resultado.append(c)
+    return resultado

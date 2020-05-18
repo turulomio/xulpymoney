@@ -6,6 +6,7 @@ from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.comment import Comment
+from xulpymoney.objects.concept import ConceptManager_for_opercuentas
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
@@ -32,8 +33,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.mem=mem
         
         self.refund=refund
-
-        self.mem.conceptos.load_opercuentas_qcombobox(self.cmbConcepts)
+        ConceptManager_for_opercuentas(self.mem).qcombobox(self.cmbConcepts)
         self.mem.data.accounts_active().qcombobox(self.cmbAccounts)
         self.mem.data.accounts_active().CreditCardManager_active().qcombobox(self.cmbCreditCards)
         self.wdgDT.setLocalzone(self.mem.localzone_name)
@@ -105,6 +105,9 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
     def on_cmd_released(self):
         concepto=self.mem.conceptos.find_by_id(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
+        if concepto is None:
+            qmessagebox(self.tr("You must select a concept"))
+            return
         importe=self.txtImporte.decimal()
         comentario=self.txtComentario.text()
         id_cuentas=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.

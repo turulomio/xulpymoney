@@ -385,7 +385,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
     ## @param selected it's an object
     ## @param needtoselect Adds a foo item with value==None with the text select one
     ## @param icons Boolean. If it's true uses o.qicon() method to add an icon to the item
-    def qcombobox(self, combo,  selected=None, needtoselect=False, icons=False):
+    def qcombobox(self, combo,  selected=None, needtoselect=False, icons=False, id_attr="id", name_attr="name"):
         combo.blockSignals(True)
         combo.clear()
 
@@ -396,10 +396,12 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
             else:
                 combo.addItem(combo.tr("No options to select"), None)
         for a in self.arr:
+            id_  =self._string_or_tuple_to_command(a, id_attr)
+            name_=self._string_or_tuple_to_command(a, name_attr)
             if icons==True:
-                combo.addItem(a.qicon(), a.name, a.id)
+                combo.addItem(a.qicon(), name_, id_)
             else:
-                combo.addItem(a.name, a.id)
+                combo.addItem(name_, id_)
 
         #Force without signals to be in -1. There were problems when 0 is selected, becouse it didn't emit anything
         combo.setCurrentIndex(-1)

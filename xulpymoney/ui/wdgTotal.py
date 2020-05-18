@@ -5,6 +5,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from logging import info, debug
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
+from xulpymoney.objects.concept import ConceptManager_considered_dividends_in_totals
 from xulpymoney.objects.dividend import DividendHeterogeneusManager
 from xulpymoney.objects.investmentoperation import InvestmentOperationHistoricalHeterogeneusManager
 from xulpymoney.objects.totalmonth import TotalMonthManager_from_manager_extracting_year, TotalMonthManager_from_month, TotalMonthManager_from_manager_extracting_from_month
@@ -366,6 +367,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         id_tiposoperaciones=2
         set=AccountOperationManagerHeterogeneus(self.mem)
+        conceptslist=ConceptManager_considered_dividends_in_totals(self.mem).array_of_ids()
         if self.month==13:#Year
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
@@ -377,7 +379,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                     from opertarjetas,tarjetas 
                                                     where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                         id_tiposoperaciones={0} and 
-                                                        date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year, list2string(self.mem.conceptos.considered_dividends_in_totals())))
+                                                        date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year, list2string(conceptslist)))
         else:#Month
             tabtitle=self.tr("Incomes of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
@@ -391,7 +393,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                                     where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                         id_tiposoperaciones={0} and 
                                                         date_part('year',datetime)={1} and 
-                                                        date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
+                                                        date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(conceptslist)))
         set.myqtablewidget(wdg,  True)
         wdg.drawOrderBy(0, False)
         horizontalLayout.addWidget(wdg)
