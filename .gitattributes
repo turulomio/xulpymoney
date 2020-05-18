@@ -2,3 +2,7 @@
 *.ts binary
 *.qm binary
 xulpymoney_rc.py binary
+
+
+.gitignore export-ignore
+.gitattributes export-ignore
