@@ -30,7 +30,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         dtLast=Assets(self.mem).last_datetime_allowed_estimated()              
 
         #Adding more months that needed to allow month and december previous calculations
-        self.tmm=TotalMonthManager_from_month(self.mem, dtFirst.year, dtFirst.month, date.today().year, 12)
+        self.tmm=TotalMonthManager_from_month(self.mem, dtFirst.year, dtFirst.month, dtLast.year, 12)
 
         
         self.mqtw.setSettings(self.mem.settings, "wdgTotal", "mqtw")
@@ -46,7 +46,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget=None#AnnualTarget Object
         
         self.wyData.initiate(dtFirst.year,  dtLast.year, date.today().year)
-        self.wyChart.initiate(dtFirst.year,  dtLast.year, date.today().year-3)
+        self.wyChart.initiate(dtFirst.year,  date.today().year, date.today().year-3)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
         self.wdgTS.setSettings(self.mem.settings, "wdgTotal", "wdgTS")
@@ -54,13 +54,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentIndex(0)
         self.tabData.setCurrentIndex(0)
         self.tabPlus.setCurrentIndex(0)
-        
-        self.pd= QProgressDialog("Loading data", None, 0, 13)
-        self.pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        self.pd.setModal(True)
-        self.pd.setWindowTitle(QApplication.translate("Mem","Generating total report..."))
-        self.pd.forceShow()
-        self.progress_bar_update()
+
 
         self.tmm_data=TotalMonthManager_from_manager_extracting_year(self.tmm, self.wyData.year)        
         self.tmm_graphics=TotalMonthManager_from_manager_extracting_from_month(self.tmm, self.wyChart.year, 1, date.today().year, date.today().month)
@@ -70,18 +64,19 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.load_targets_with_funds_revaluation()
         self.load_invest_or_work()
         self.load_make_ends_meet()
-        self.progress_bar_update()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
 
-    ## One step forward
-    def progress_bar_update(self):
-        self.pd.setValue(self.pd.value()+1)
-        self.pd.update()
-        QApplication.processEvents()
 
     def load_data(self):
         inicio=datetime.now()
+                
+        pd= QProgressDialog("Loading data", None, 0, 12)
+        pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        pd.setModal(True)
+        pd.setWindowTitle(QApplication.translate("Mem","Generating total report..."))
+        pd.forceShow()
+        
         
         hh=[self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]
         hv=[self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D+E"), "", self.tr("Accounts"), self.tr("Investments"), self.tr("Total"), self.tr("Monthly difference"), "", self.tr("% Year to date")]
@@ -103,7 +98,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 "", 
                 m.total_difference_percentage(tm_previous_december),
             ])
-            self.progress_bar_update()
+            pd.setValue(pd.value()+1)
+            QApplication.processEvents()
         data.append([
             self.tmm_data.incomes(),
             self.tmm_data.gains(),

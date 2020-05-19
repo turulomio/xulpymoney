@@ -13,17 +13,6 @@ class TotalMonth:
         self.mem=mem
         self.year=year
         self.month=month
-        self.expenses_value=None
-        self.no_loses_value=None
-        self.dividends_value=None
-        self.incomes_value=None
-        self.funds_revaluation_value=None
-        self.gains_value=None
-        self.total_accounts_value=None
-        self.total_investments_value=None
-        self.total_investments_high_low_value=None
-        self.total_zerorisk_value=None
-        self.total_bonds_value=None
         
     def __eq__(self, other):
         if self.year==other.year and self.month==other.month:
@@ -38,29 +27,29 @@ class TotalMonth:
         return self.gains()+self.dividends()
 
     def expenses(self):
-        if self.expenses_value==None:
-            self.expenses_value=Assets(self.mem).saldo_por_tipo_operacion( self.year,self.month, 1)#La facturación de tarjeta dentro esta por el union
-        return self.expenses_value
+        if hasattr(self, "_expenses") is False:
+            self._expenses=Assets(self.mem).saldo_por_tipo_operacion( self.year,self.month, 1)#La facturación de tarjeta dentro esta por el union
+        return self._expenses
 
     def dividends(self):
-        if self.dividends_value==None:
-            self.dividends_value=Assets(self.mem).dividends_neto(  self.year, self.month)
-        return self.dividends_value
+        if hasattr(self, "_dividends") is False:
+            self._dividends=Assets(self.mem).dividends_neto(  self.year, self.month)
+        return self._dividends
 
     def incomes(self):
-        if self.incomes_value==None:
-            self.incomes_value=Assets(self.mem).saldo_por_tipo_operacion(  self.year,self.month,2)-self.dividends()
-        return self.incomes_value
+        if hasattr(self, "_incomes") is False:
+            self._incomes=Assets(self.mem).saldo_por_tipo_operacion(  self.year,self.month,2)-self.dividends()
+        return self._incomes
 
     def gains(self):
-        if self.gains_value==None:
-            self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments, self.year, self.month)
-        return self.gains_value
+        if hasattr(self, "_gains") is False:
+            self._gains=Assets(self.mem).consolidado_neto(self.mem.data.investments, self.year, self.month)
+        return self._gains
 
     def funds_revaluation(self):
-        if self.funds_revaluation_value==None:
-            self.funds_revaluation_value=self.mem.data.investments_active().revaluation_monthly(2, self.year, self.month)#2 if type funds
-        return self.funds_revaluation_value
+        if hasattr(self, "_funds_revaluation") is False:
+            self._funds_revaluation=self.mem.data.investments_active().revaluation_monthly(2, self.year, self.month)#2 if type funds
+        return self._funds_revaluation
 
     def name(self):
         return "{}-{}".format(self.year, self.month)
@@ -84,36 +73,39 @@ class TotalMonth:
         return Percentage(self.total()-totalmonth.total(), totalmonth.total())
 
     def total_accounts(self):
-        if self.total_accounts_value==None:
-            self.total_accounts_value=Assets(self.mem).saldo_todas_cuentas( self.last_day())
-        return self.total_accounts_value
+        if hasattr(self, "_total_accounts") is False:
+            self._total_accounts=Assets(self.mem).saldo_todas_cuentas( self.last_day())
+        return self._total_accounts
 
     def total_investments(self):
-        if self.total_investments_value==None:
-            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.last_day())
-        return self.total_investments_value
+        if hasattr(self, "_total_investments") is False:
+            self._total_investments=Assets(self.mem).saldo_todas_inversiones(self.last_day())
+        return self._total_investments
 
     def total_investments_high_low(self):
-        if self.total_investments_high_low_value==None:
-            self.total_investments_high_low_value=Assets(self.mem).saldo_todas_inversiones_high_low(self.last_day())
-        return self.total_investments_high_low_value
-
+        if hasattr(self, "_total_investments_high_low") is False:
+            self._total_investments_high_low=Assets(self.mem).saldo_todas_inversiones_high_low(self.last_day())
+        return self._total_investments_high_low
 
     def total_zerorisk(self): 
-        if self.total_zerorisk_value==None:
-            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.last_day())
-        return self.total_zerorisk_value
+        if hasattr(self, "_total_zerorisk") is False:
+            self._total_zerorisk=Assets(self.mem).patrimonio_riesgo_cero(self.last_day())
+        return self._total_zerorisk
 
     def total_bonds(self):
-        if self.total_bonds_value==None:
-            self.total_bonds_value=Assets(self.mem).saldo_todas_inversiones_bonds(self.last_day())
-        return self.total_bonds_value
+        if hasattr(self, "_total_bonds") is False:
+            self._total_bonds=Assets(self.mem).saldo_todas_inversiones_bonds(self.last_day())
+        return self._total_bonds
 
     def total_no_losses(self):
-        if self.no_loses_value==None:
-            self.no_loses_value=Assets(self.mem).invested(self.last_day())+self.total_accounts()
-        return self.no_loses_value
-
+        if hasattr(self, "_total_no_losses") is False:
+            self._total_no_losses=self.total_invested()+self.total_accounts()
+        return self._total_no_losses
+        
+    def total_invested(self):
+        if hasattr(self, "_total_invested") is False:
+            self._total_invested=Assets(self.mem).invested(self.last_day())
+        return self._total_invested
 
 ## TotalMonth Manager
 class TotalMonthManager(ObjectManager):
