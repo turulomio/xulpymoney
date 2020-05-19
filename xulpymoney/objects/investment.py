@@ -300,10 +300,7 @@ class Investment(QObject):
         if date==None or date==date.today():#Current
             return self.op_actual.invertido(type)
         else:
-            # Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
-            invfake=self.copy()
-            invfake.op=self.op.ObjectManager_copy_until_datetime(dtaware_day_end_from_date(date, self.mem.localzone_name))
-            (invfake.op_actual,  invfake.op_historica)=invfake.op.get_current_and_historical_operations()
+            invfake=self.Investment_At_Datetime(dtaware_day_end_from_date(date, self.mem.localzone_name))
             return invfake.op_actual.invertido(type)
                 
     def percentage_to_selling_point(self):       

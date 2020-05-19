@@ -50,6 +50,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
         self.wdgTS.setSettings(self.mem.settings, "wdgTotal", "wdgTS")
+        self.wdgTSInvested.setSettings(self.mem.settings, "wdgTotal", "wdgTSInvested")
 
         self.tab.setCurrentIndex(0)
         self.tabData.setCurrentIndex(0)
@@ -76,6 +77,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         pd.setModal(True)
         pd.setWindowTitle(QApplication.translate("Mem","Generating total report..."))
         pd.forceShow()
+        pd.setValue(0)
         
         
         hh=[self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")]
@@ -313,6 +315,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         progress.setModal(True)
         progress.setWindowTitle(self.tr("Calculating data..."))
         progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        progress.setValue(0)
         for m in self.tmm_graphics:
             if progress.wasCanceled():
                 break
@@ -329,6 +332,39 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wdgTS.display()
         
         info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
+        self.load_graphic_invested(animations)
+        
+        
+    def load_graphic_invested(self, animations=True):               
+        inicio=datetime.now()  
+
+        self.wdgTSInvested.clear()
+        self.wdgTSInvested.ts.setAnimations(animations)
+        
+        #Series creation
+        last=self.tmm_graphics.last()
+        lsNoLoses=self.wdgTSInvested.ts.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
+        lsMain=self.wdgTSInvested.ts.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
+        lsInvested=self.wdgTSInvested.ts.appendTemporalSeries(self.tr("Invested assets") + ": {}".format(last.total_invested()))
+        lsAccounts=self.wdgTSInvested.ts.appendTemporalSeries(self.tr("Accounts assets") + ": {}".format(last.total_accounts()))
+
+        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.tmm_graphics.length())
+        progress.setModal(True)
+        progress.setWindowTitle(self.tr("Calculating data..."))
+        progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        progress.setValue(0)
+        for m in self.tmm_graphics:
+            if progress.wasCanceled():
+                break
+            progress.setValue(progress.value()+1)
+            epoch=dtaware_day_end_from_date(m.last_day(), self.mem.localzone_name)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsInvested, epoch, m.total_invested().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsAccounts, epoch, m.total_accounts().amount)
+        self.wdgTSInvested.display()
+        
+        info("wdgTotal > load_graphic_invested: {0}".format(datetime.now()-inicio))
 
     def on_wyData_mychanged(self):
         self.tmm_data=TotalMonthManager_from_manager_extracting_year(self.tmm, self.wyData.year)
