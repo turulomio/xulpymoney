@@ -3,9 +3,9 @@
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries, QScatterSeries, QCandlestickSeries,  QCandlestickSet
-from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize
+from PyQt5.QtCore import Qt, pyqtSlot, QObject, QPoint, pyqtSignal, QSize, QMutex
 from PyQt5.QtGui import QPainter, QFont, QIcon, QColor, QImage, QClipboard
-from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QGraphicsSimpleTextItem
+from PyQt5.QtWidgets import QWidget, QAction, QMenu, QFileDialog, QProgressDialog, QApplication, QDialog, QLabel, QVBoxLayout, QHBoxLayout, QFrame
 from .myqtablewidget import mqtw
 from .. objects.percentage import Percentage
 from .. casts import object2value
@@ -146,6 +146,7 @@ class VCTemporalSeriesAlone(VCCommons):
     def __init__(self):
         VCCommons.__init__(self)
         self.clear()
+        self.popuplock=QMutex()
 
 
     ## To clean pie, removes serie and everithing is like create an empty pie
@@ -278,15 +279,11 @@ class VCTemporalSeriesAlone(VCCommons):
             if event.y()>self.height()-self.popup.height()-15:
                 resultado.setY(event.y()-self.popup.height()-15)
             return resultado
-        def showCurrentPosition():
-            if hasattr(self, "qgstiCurrentX")==False:
-                self.qgstiCurrentX=QGraphicsSimpleTextItem(self.chart())
-                self.qgstiCurrentY=QGraphicsSimpleTextItem(self.chart())
-            self.qgstiCurrentX.setPos(event.pos().x(), maxY-10)
-            self.qgstiCurrentY.setPos(self.chart().size().width()-47, event.pos().y())
-            self.qgstiCurrentX.setText(str(epochms2dtaware(xVal).date()))
-            self.qgstiCurrentY.setText(str(round(yVal,2)))
+
         # ---------------------------------------
+        if self.popuplock.tryLock()==False:
+            event.reject()
+            return
         QChartView.mouseMoveEvent(self, event)
         xVal = self.chart().mapToValue(event.pos()).x()
         yVal = self.chart().mapToValue(event.pos()).y()
@@ -298,10 +295,10 @@ class VCTemporalSeriesAlone(VCCommons):
         if xVal <= maxX and  xVal >= minX and yVal <= maxY and yVal >= minY:
             self.popup.move(self.mapToGlobal(placePopUp()))
             self.popup.refresh(self, xVal, yVal)
-            showCurrentPosition()
             self.popup.show()
         else:
             self.popup.hide()
+        self.popuplock.unlock()
 
     ## Return the value of the serie in x
     def series_value(self, serie, x):
@@ -584,6 +581,20 @@ class MyPopup(QDialog):
         #Creating empy labels
         if hasattr(self, 'lblTitles')==False:
             self.lay = QVBoxLayout(self)
+            self.lblPosition=QLabel()
+            self.lblPosition.setAlignment(Qt.AlignCenter)
+            font = QFont()
+            font.setPointSize(12)
+            font.setBold(True)
+            font.setWeight(75)
+            self.lblPosition.setFont(font)
+            self.lay.addWidget(self.lblPosition)
+            
+            line = QFrame(self)
+            line.setFrameShape(QFrame.HLine)
+            line.setFrameShadow(QFrame.Sunken)
+            self.lay.addWidget(line)
+            
             self.lblTitles=[]
             self.lblValues=[]
             for serie in self.vc.series:
@@ -596,7 +607,8 @@ class MyPopup(QDialog):
                 layh.addWidget(value)
                 self.lay.addLayout(layh)
             self.setLayout(self.lay)
-
+            
+        self.lblPosition.setText("{}, {}".format(epochms2dtaware(xVal).date(), str(round(yVal,2))))
         #Displaying values
         for i, serie in enumerate(self.vc.series):
             if serie.isVisible():

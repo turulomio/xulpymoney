@@ -109,8 +109,10 @@ class Connection:
     def url_string(self):
         return "psql://{}@{}:{}/{}".format(self.user, self.server, self.port, self.db)
 
+
+    ## @param connection_string string. If None automatic connection_string is generated from attributes
+    ## @return boolean True if connection was made
     def connect(self, connection_string=None):
-        """Used in code to connect using last self.strcon"""
         if connection_string==None:
             s=self.connection_string()
         else:
@@ -119,9 +121,12 @@ class Connection:
             self._con=DictConnection(s)
             self.init=datetime.now()
             self._active=True
+            return True
         except OperationalError as e:
             self._active=False
             print('Unable to connect: {}'.format(e))
+            print('Connection string used: {}'.format(s))
+            return False
 
     def disconnect(self):
         if self.is_active()==True:
@@ -208,6 +213,7 @@ def script_with_connection_arguments(name="",  description="", epilog="", versio
 if __name__ == "__main__":
     con=script_with_connection_arguments("connection_pg_demo", "This is a connection script demo",  "Developed by Mariano Muñoz", "",  None, None)
     print("Is connection active?",  con.is_active())
-    con.execute("SELECT datname FROM pg_database WHERE datistemplate = false;")
-    print(con.last_sql)
+    if con.is_active():
+        con.execute("SELECT datname FROM pg_database WHERE datistemplate = false;")
+        print(con.last_sql)
     
