@@ -33,19 +33,7 @@ class InvestmentOperation:
     def __repr__(self):
         return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}. Currency conversion {7}".format(self.investment.name, self.investment.id,  self.datetime, self.tipooperacion.name,  self.shares,  self.valor_accion, id(self), self.currency_conversion))
 
-    def init__from_accountoperation(self, accountoperation):
-        """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
-        IO returned is an object already created in investments_all()"""
-        cur=self.mem.con.cursor()
-        cur.execute("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
-        if cur.rowcount==0:
-            cur.close()
-            return None
-        row=cur.fetchone()
-        cur.close()
-        investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
-        return investment.op.find(row['id_operinversiones'])
-        
+
     def price(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.valor_accion, self.investment.product.currency)
@@ -1262,6 +1250,9 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, additional=self.myqtablewidget_additional)
 
     def myqtablewidget_additional(self, wdg):
+        wdg.table.setRowCount(wdg.length()+1)
+        wdg.addRow(wdg.length(), [self.tr("Total"), "#crossedout", "#crossedout", "#crossedout","#crossedout", self.gross(), self.commissions(),self.taxes(),self.net()])
+
         for rownumber, a in enumerate(wdg.objects()):
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 wdg.table.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
@@ -1270,12 +1261,31 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
             else:
                 wdg.table.item(rownumber, 2).setIcon(QIcon(":/xulpymoney/eye_red.png"))
 
-    def find(self,  investmentoperation_id):
-        """Returns an investmenoperation with the id equals to the parameter"""
+
+    def gross(self):
+        resultado=Money(self.mem,  0,  self.mem.localcurrency)
         for o in self.arr:
-            if o.id==investmentoperation_id:
-                return o
-        return None
+            resultado=resultado+o.gross(eMoneyCurrency.User)
+        return resultado
+
+    def net(self):
+        resultado=Money(self.mem,  0,  self.mem.localcurrency)
+        for o in self.arr:
+            resultado=resultado+o.net(eMoneyCurrency.User)
+        return resultado
+
+    def commissions(self):
+        resultado=Money(self.mem,  0,  self.mem.localcurrency)
+        for o in self.arr:
+            resultado=resultado+o.commission(eMoneyCurrency.User)
+        return resultado
+
+    def taxes(self):
+        resultado=Money(self.mem,  0,  self.mem.localcurrency)
+        for o in self.arr:
+            resultado=resultado+o.taxes(eMoneyCurrency.User)
+        return resultado
+
 
 class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManager):
     def __init__(self, mem, investment):
@@ -1400,6 +1410,16 @@ def InvestmentOperation_from_row(mem, row):
         r.show_in_ranges=row['show_in_ranges']
         r.currency_conversion=row['currency_conversion']
         return r
+
+def InvestmentOperation_from_accountoperation(mem, accountoperation):
+    """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
+    IO returned is an object already created in investments_all()"""
+    row=mem.con.cursor_one_row("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
+    if row is not None:
+        investment=mem.data.investments.find_by_id(row['id_inversiones'])
+        return investment.op.find_by_id(row['id_operinversiones'])
+    return None
+    
 
 def InvestmentOperationHeterogeneusManager_from_sql(mem, sql, sql_params=[]):
     r=InvestmentOperationHeterogeneusManager(mem)

@@ -2,8 +2,9 @@
 ## THIS IS FILE IS FROM https://github.com/turulomio/reusingcode IF YOU NEED TO UPDATE IT PLEASE MAKE A PULL REQUEST IN THAT PROJECT
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
-from datetime import datetime
 from .casts import b2s
+from datetime import datetime
+from logging import debug
 from psycopg2 import OperationalError
 from psycopg2.extras import DictConnection
 
@@ -56,9 +57,17 @@ class Connection:
         cur=self._con.cursor()
         s=self.mogrify(sql,arr)
         cur.execute(s)
-        row=cur.fetchone()
-        cur.close()
-        return row
+        if cur.rowcount==0:
+            cur.close()
+            return None
+        elif cur.rowcount==1:
+            row=cur.fetchone()
+            cur.close()
+            return row
+        else:
+            cur.close()
+            debug("More than one row is returned in cursor_one_row. Use cursor_rows instead.")
+            return None
 
     def cursor_rows(self, sql, arr=[]):
         cur=self._con.cursor()

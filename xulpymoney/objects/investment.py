@@ -816,7 +816,6 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 if i.product.obsolete==True:
                     continue
 
-
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:

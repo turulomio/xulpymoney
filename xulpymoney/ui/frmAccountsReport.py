@@ -10,7 +10,7 @@ from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.comment import Comment
 from xulpymoney.objects.creditcardoperation import CreditCardOperationManager
 from xulpymoney.objects.currency import currencies_qcombobox
-from xulpymoney.objects.investmentoperation import InvestmentOperation
+from xulpymoney.objects.investmentoperation import InvestmentOperation_from_accountoperation
 from xulpymoney.ui.Ui_frmAccountsReport import Ui_frmAccountsReport
 from xulpymoney.ui.frmAccountOperationsAdd import frmAccountOperationsAdd
 from xulpymoney.ui.frmCreditCardsAdd import frmCreditCardsAdd
@@ -227,7 +227,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             
     @pyqtSlot() 
     def on_actionInvestmentOperationDelete_triggered(self):
-        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.mqtwOperations.selected)
+        investmentoperation=InvestmentOperation_from_accountoperation(self.mem, self.mqtwOperations.selected)
         investmentoperation.investment.op.remove(investmentoperation)
         self.mem.con.commit()     
         debug("Borrando investment operation "+  investmentoperation)
@@ -236,7 +236,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
-        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.mqtwOperations.selected)
+        investmentoperation=InvestmentOperation_from_accountoperation(self.mem, self.mqtwOperations.selected)
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
         debug("Edit investmentoperation {}".format(self.mqtwOperations.selected))
