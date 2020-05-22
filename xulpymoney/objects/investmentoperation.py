@@ -16,53 +16,23 @@ from xulpymoney.objects.quote import Quote
 from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime, qright, qdate, qnone, qnumber
 
 class InvestmentOperation:
-    def __init__(self, mem):
+    def __init__(self, mem, operation_type=None, datetime=None,  investment=None, shares=None, taxes=None, commission=None, price=None, comment=None, show_in_ranges=None, currency_conversion=None, id=None):
         self.mem=mem
-        self.id=None
-        self.tipooperacion=None
-        self.investment=None
-        self.shares=None
-        self.impuestos=None
-        self.comision=None
-        self.valor_accion=None
-        self.datetime=None
-        self.comentario=None
-        self.archivada=None
-        self.currency_conversion=None
-        self.show_in_ranges=True
+        self.id=id
+        self.tipooperacion=operation_type
+        self.investment=investment
+        self.shares=shares
+        self.impuestos=taxes
+        self.comision=commission
+        self.valor_accion=price
+        self.datetime=datetime
+        self.comentario=comment
+        self.currency_conversion=currency_conversion
+        self.show_in_ranges=show_in_ranges
         
     def __repr__(self):
         return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}. Currency conversion {7}".format(self.investment.name, self.investment.id,  self.datetime, self.tipooperacion.name,  self.shares,  self.valor_accion, id(self), self.currency_conversion))
-        
-        
-    def init__db_row(self,  row, inversion,  tipooperacion):
-        self.id=row['id_operinversiones']
-        self.tipooperacion=tipooperacion
-        self.investment=inversion
-        self.shares=row['acciones']
-        self.impuestos=row['impuestos']
-        self.comision=row['comision']
-        self.valor_accion=row['valor_accion']
-        self.datetime=row['datetime']
-        self.comentario=row['comentario']
-        self.show_in_ranges=row['show_in_ranges']
-        self.currency_conversion=row['currency_conversion']
-        return self
-        
-    def init__create(self, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
-        self.id=id
-        self.tipooperacion=tipooperacion
-        self.datetime=datetime
-        self.investment=inversion
-        self.shares=acciones
-        self.impuestos=impuestos
-        self.comision=comision
-        self.valor_accion=valor_accion
-        self.comentario=comentario
-        self.show_in_ranges=show_in_ranges
-        self.currency_conversion=currency_conversion
-        return self
-        
+
     def init__from_accountoperation(self, accountoperation):
         """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
         IO returned is an object already created in investments_all()"""
@@ -156,7 +126,7 @@ class InvestmentOperation:
             Si el parametro investment es pasado usa el objeto investment  en vez de una referencia a self.investmen
         """
         inv=self.investment if investment==None else investment
-        return InvestmentOperation(self.mem).init__create(self.tipooperacion, self.datetime, inv , self.shares, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
+        return InvestmentOperation(self.mem, self.tipooperacion, self.datetime, inv , self.shares, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
 
     def less_than_a_year(self):
         if date.today()-self.datetime.date()<=timedelta(days=365):
@@ -1416,3 +1386,24 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
             if self.investment.hasSameAccountCurrency()==False:
                 wdg.table.setItem(rownumber, 8, qright(a.currency_conversion))
 
+def InvestmentOperation_from_row(mem, row):
+        r=InvestmentOperation(mem)
+        r.id=row['id_operinversiones']
+        r.tipooperacion=mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])
+        r.investment=mem.data.investments.find_by_id(row['id_inversiones'])
+        r.shares=row['acciones']
+        r.impuestos=row['impuestos']
+        r.comision=row['comision']
+        r.valor_accion=row['valor_accion']
+        r.datetime=row['datetime']
+        r.comentario=row['comentario']
+        r.show_in_ranges=row['show_in_ranges']
+        r.currency_conversion=row['currency_conversion']
+        return r
+
+def InvestmentOperationHeterogeneusManager_from_sql(mem, sql, sql_params=[]):
+    r=InvestmentOperationHeterogeneusManager(mem)
+    for row in mem.con.cursor_rows(sql, sql_params):
+        r.append(InvestmentOperation_from_row(mem, row))
+    return r
+    

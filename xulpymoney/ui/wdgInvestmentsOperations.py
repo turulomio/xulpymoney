@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QWidget
 from datetime import date
-from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperationHeterogeneusManager
+from xulpymoney.objects.investmentoperation import InvestmentOperationHeterogeneusManager_from_sql, InvestmentOperationCurrentHeterogeneusManager
 from xulpymoney.objects.assets import Assets
 from xulpymoney.ui.Ui_wdgInvestmentsOperations import Ui_wdgInvestmentsOperations
 from xulpymoney.ui.frmInvestmentReport import frmInvestmentReport
@@ -27,10 +27,6 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
         
-        self.setOperations=InvestmentOperationHeterogeneusManager(self.mem)
-        self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
-        self.mqtw.selected=None#For table
-        self.mqtwCurrent.selected=None#For tblCurrent
         self.mqtw.setSettings(self.mem.settings,  "wdgInvestmentsOperations", "mqtw")
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtwCurrent.setSettings(self.mem.settings, "wdgInvestmentsOperations", "mqtwCurrent")
@@ -40,9 +36,6 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load_current()
         
     def load(self):
-        del self.setOperations.arr
-        self.setOperations.arr=[]
-        cur=self.mem.con.cursor()
         filters=""
         if self.cmbFilters.currentIndex()==0:#All
             filters=""
@@ -52,27 +45,22 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             filters=" and id_tiposoperaciones in (5)"
         elif self.cmbFilters.currentIndex()==3:#Purchasing
             filters=" and id_tiposoperaciones not in (4, 5)"
-        
-        
+
         if self.radYear.isChecked()==True:
-            cur.execute("select * from operinversiones where date_part('year',datetime)=%s "+filters+" order by datetime",(self.wy.year,  ) )
+            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from operinversiones where date_part('year',datetime)=%s "+filters+" order by datetime",(self.wy.year,  ) )
         else:
-            cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
-        for row in cur:
-            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments.find_by_id(row['id_inversiones']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
-        cur.close()
-        
-        self.setOperations.myqtablewidget(self.mqtw)
-        self.mqtw.setOrderBy(0, False)
-        
+            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
+        self.operations.myqtablewidget(self.mqtw)
+        self.mqtw.drawOrderBy(0, False)
+
     def load_current(self):
-        for inv in self.mem.data.investments_active().arr:
+        self.setCurrent=InvestmentOperationCurrentHeterogeneusManager(self.mem)
+        for inv in self.mem.data.investments_active():
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.myqtablewidget(self.mqtwCurrent)
-        self.mqtwCurrent.setOrderBy(0, False)
+        self.mqtwCurrent.drawOrderBy(0, False)
 
-        
     @pyqtSlot(int) 
     def on_cmbFilters_currentIndexChanged(self, index):
         self.load()
@@ -147,12 +135,10 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.actionShowInvestment.setEnabled(False)
         self.actionShowInvestmentOperation.setEnabled(False)
         self.actionShowProduct.setEnabled(False)
-        if self.mqtw.selected!=None:
-            if self.mqtw.selected.investment.account.active==True:#only enabled if it's active
-                self.actionShowAccount.setEnabled(True)
-            if self.mqtw.selected.investment.active==True:
-                self.actionShowInvestment.setEnabled(True)
-                self.actionShowInvestmentOperation.setEnabled(True)
+        if self.mqtw.selected is not None:
+            self.actionShowAccount.setEnabled(True)
+            self.actionShowInvestment.setEnabled(True)
+            self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
             if self.mqtw.selected.show_in_ranges==True:
                 self.actionRangeReport.setText(self.tr("Hide in range report"))
@@ -176,7 +162,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.exec_(self.mqtw.table.mapToGlobal(pos))
                 
     def on_mqtwCurrent_customContextMenuRequested(self,  pos):
-        if self.mqtwCurrent.selected==None:
+        if self.mqtwCurrent.selected is None:
             self.actionShowAccount.setEnabled(False)
             self.actionShowInvestment.setEnabled(False)
             self.actionShowProduct.setEnabled(False)

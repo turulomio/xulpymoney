@@ -15,7 +15,7 @@ from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.bank import Bank
 from xulpymoney.objects.dividend import DividendHomogeneusManager
-from xulpymoney.objects.investmentoperation import InvestmentOperationHomogeneusManager, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager
+from xulpymoney.objects.investmentoperation import InvestmentOperationHomogeneusManager, InvestmentOperation, InvestmentOperationCurrentHeterogeneusManager, InvestmentOperation_from_row
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.order import OrderManager
 from xulpymoney.objects.percentage import Percentage
@@ -75,12 +75,10 @@ class Investment(QObject):
         #0
         if self.status==0 and statusneeded==1: #MAIN
             start=datetime.now()
-            cur=self.mem.con.cursor()
             self.op=InvestmentOperationHomogeneusManager(self.mem, self)
-            cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
-            for row in cur:
-                self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
-            cur.close()
+            rows=self.mem.con.cursor_rows("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+            for row in rows:
+                self.op.append(InvestmentOperation_from_row(self.mem, row))
             self.status=1
         elif self.status==0 and statusneeded==2:
             self.needStatus(1)
@@ -724,7 +722,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id:
                 inv.needStatus(3)
                 for o in inv.op_actual.arr:
-                    r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+                    r.op.append(InvestmentOperation(self.mem, o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
                 for d in inv.DividendManager_of_current_operations().arr:
                     r.dividends.append(d)
         r.dividends.order_by_datetime()

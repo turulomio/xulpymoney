@@ -72,7 +72,7 @@ class AssetsReport(ODT, QObject):
         target=AnnualTarget(self.mem).init__from_db(date.today().year)
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(self.mem.localmoney(target.annual_balance())) +" " +
-                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(self.mem.frmMain.w.setData.dividends()+self.mem.frmMain.w.setData.gains(), Percentage(self.mem.frmMain.w.setData.gains()+self.mem.frmMain.w.setData.dividends(), target.annual_balance())))
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(self.mem.frmMain.w.tmm.dividends()+self.mem.frmMain.w.tmm.gains(), Percentage(self.mem.frmMain.w.tmm.gains()+self.mem.frmMain.w.tmm.dividends(), target.annual_balance())))
         self.pageBreak(True)
         
         ### Assets evolution graphic

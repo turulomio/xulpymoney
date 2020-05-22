@@ -425,18 +425,19 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         #index=0 purchase, 1 = first reinvestment
         lastIO=None
         for index, amount in enumerate(self.amounts):
-            lastIO=InvestmentOperation(self.mem).init__create  (   self.mem.tiposoperaciones.find_by_id(4), 
-                                                                                            self.mem.localzone.now(), 
-                                                                                            inv, 
-                                                                                            int(self.amounts[index]/m_purchase.amount), 
-                                                                                            0, 
-                                                                                            0, 
-                                                                                            m_purchase.amount, 
-                                                                                            "",  
-                                                                                            True, 
-                                                                                            1,  
-                                                                                            -10000
-                                                                                        )
+            lastIO=InvestmentOperation(self.mem, 
+                                                            self.mem.tiposoperaciones.find_by_id(4), 
+                                                            self.mem.localzone.now(), 
+                                                            inv, 
+                                                            int(self.amounts[index]/m_purchase.amount), 
+                                                            0, 
+                                                            0, 
+                                                            m_purchase.amount, 
+                                                            "",  
+                                                            True, 
+                                                            1,  
+                                                            -10000
+                                                        )
             inv.op.append(lastIO)
             (inv.op_actual, inv.op_historica)=inv.op.get_current_and_historical_operations()
             new_purchase_price=self.wdgTS.ts.appendTemporalSeries(self.tr("Purchase price {}: {}").format(index, m_purchase.string()))
