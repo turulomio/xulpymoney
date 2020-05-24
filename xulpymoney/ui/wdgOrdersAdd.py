@@ -28,12 +28,13 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             self.txtPrice.setText(self.order.price)
         
         #Can be None or distinct of None with order None or distint of None
-        if investment==None:
+        if investment is None:
             product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
             self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, product)
         else:
             self.mem.data.investments.ProductManager_with_investments_distinct_products().qcombobox_not_obsolete(self.cmbProducts, investment.product)
             self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
+        self.setWarning()
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
@@ -69,7 +70,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
         product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
-        if product!=None:
+        if product is not None:
             #Fills self.cmbInvestments with all product investments or with zero shares product investments
             if self.chkWithoutShares.checkState()==Qt.Checked:
                 investments=self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product_with_zero_shares(product)
@@ -111,13 +112,11 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.setWarning()
 
     def setWarning(self):
-        try:
-            product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
+        product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgOrdersAdd/product", -9999)))
+        if product is not None and self.txtShares.isValid() and self.txtPrice.isValid():
             if ((self.txtShares.decimal()>0 and self.txtPrice.decimal()>product.result.basic.last.quote) or
                 (self.txtShares.decimal()<0 and self.txtPrice.decimal()<product.result.basic.last.quote)):
                 self.lblWarning.setText(self.tr("Warning: You must set a stop loss order"))
                 self.lblWarning.show()
             else:
                 self.lblWarning.hide()
-        except:
-            self.lblWarning.hide()

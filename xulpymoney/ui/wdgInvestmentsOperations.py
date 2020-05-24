@@ -59,7 +59,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.myqtablewidget(self.mqtwCurrent)
-        self.mqtwCurrent.drawOrderBy(0, False)
+        self.mqtwCurrent.setOrderBy(0, False)
 
     @pyqtSlot(int) 
     def on_cmbFilters_currentIndexChanged(self, index):

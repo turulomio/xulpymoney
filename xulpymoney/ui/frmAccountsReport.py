@@ -230,7 +230,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         investmentoperation=InvestmentOperation_from_accountoperation(self.mem, self.mqtwOperations.selected)
         investmentoperation.investment.op.remove(investmentoperation)
         self.mem.con.commit()     
-        debug("Borrando investment operation "+  investmentoperation)
+        debug("Borrando investment operation "+  str(investmentoperation))
         self.on_wdgYM_changed()
 
 
@@ -239,7 +239,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         investmentoperation=InvestmentOperation_from_accountoperation(self.mem, self.mqtwOperations.selected)
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
-        debug("Edit investmentoperation {}".format(self.mqtwOperations.selected))
+        debug("Edit investmentoperation {}".format(investmentoperation))
         self.on_wdgYM_changed()
 
     @pyqtSlot()
