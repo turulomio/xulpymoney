@@ -497,6 +497,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             datetimes.add(self.investment.op.first().datetime -timedelta(days=30))
             for op in self.investment.op.arr:
                 datetimes.add(op.datetime)
+                datetimes.add(op.datetime-timedelta(seconds=1))
             for dividend in self.investment.dividends.arr:
                 datetimes.add(dividend.datetime)
             datetimes.add(self.mem.localzone.now())
