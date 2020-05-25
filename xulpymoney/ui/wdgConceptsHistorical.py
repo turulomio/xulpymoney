@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QHBoxLayout, QAbstractItemView
 from datetime import date
 from logging import debug
 from xulpymoney.casts import lor_sum_column, lor_sum_row
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 from xulpymoney.objects.accountoperation import AccountOperationManagerHeterogeneus
 from xulpymoney.objects.money import Money
 from xulpymoney.ui.myqwidgets import qmessagebox
@@ -61,7 +61,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def on_actionShowMonth_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        mqtwMonth = mqtw(newtab)
+        mqtwMonth = mqtwObjects(newtab)
         mqtwMonth.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwMonth")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("""
@@ -88,7 +88,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def on_actionShowYear_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        mqtwYear = mqtw(newtab)
+        mqtwYear = mqtwObjects(newtab)
         mqtwYear.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwYear")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
@@ -100,11 +100,10 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def on_mqtwReport_table_customContextMenuRequested(self,  pos):
         self.actionShowYear.setEnabled(False)
         self.actionShowMonth.setEnabled(False)
-        if self.month!=None:
-            if self.month==0 and self.year<=date.today().year:#Avoid total:
-                self.actionShowYear.setEnabled(True)
-            elif self.month>0:
-                self.actionShowMonth.setEnabled(True)
+        if self.month is not None and self.year is not None:
+            self.actionShowMonth.setEnabled(True)
+        if self.year is not None:
+            self.actionShowYear.setEnabled(True)
 
         menu=QMenu()
         menu.addAction(self.actionShowYear)
@@ -118,12 +117,13 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def on_mqtwReport_tableSelectionChanged(self):
         self.month=None
         self.year=None
-        if self.mqtwReport.selected is not None:
-            if self.mqtwReport.selected.column()==0 or self.mqtwReport.selected.column()==13:
-                self.month=0
-            else:
-                self.month=self.mqtwReport.selected.column()
-            self.year=self.firstyear+self.mqtwReport.selected.row()
+        if self.mqtwReport.selected_items is not None:
+            if self.mqtwReport.selected_items.column()>0 and self.mqtwReport.selected_items.column()<=12:
+                self.month=self.mqtwReport.selected_items.column()
+            year_=self.firstyear+self.mqtwReport.selected_items.row()
+            if year_<=date.today().year:
+                self.year=year_
+            
         debug("Selected year: {0}. Selected month: {1}.".format(self.year, self.month))
 
     def on_tab_tabCloseRequested(self, index):
