@@ -12,7 +12,6 @@ from .. casts import object2value
 from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2string
 from collections import OrderedDict
 from datetime import timedelta, datetime
-from decimal import Decimal
 
 class eOHCLDuration:
     Day=1
@@ -147,7 +146,13 @@ class VCTemporalSeriesAlone(VCCommons):
         VCCommons.__init__(self)
         self.clear()
         self.popuplock=QMutex()
-
+        self._x_format="auto"
+        self._x_timezone="UTC"
+        self._x_tickcount=8
+        self._x_title=""
+        self._y_format="Decimal"
+        self._y_decimals=2
+        self._y_title=""
 
     ## To clean pie, removes serie and everithing is like create an empty pie
     def clear(self):
@@ -156,20 +161,13 @@ class VCTemporalSeriesAlone(VCCommons):
         self.setRenderHint(QPainter.Antialiasing)
         self._allowHideSeries=True
 
-        #Axis cration
         self.axisX=QDateTimeAxis()
-        self.axisX.setTickCount(8);
-        self.axisX.setFormat("yyyy-MM");
         self.maxx=None
-        self.maxy=None
         self.minx=None
-        self.miny=None
 
-#        self.__ohclduration=eOHCLDuration.Day
         self.axisY = QValueAxis()
-        self.axisY.setLabelFormat("%i")
-
-        self.setRenderHint(QPainter.Antialiasing);
+        self.maxy=None
+        self.miny=None
         
         self.data=[]
         self.series=[]
@@ -201,8 +199,6 @@ class VCTemporalSeriesAlone(VCCommons):
         if x<self.minx:
             self.minx=x
 
-#    def setOHCLDuration(self, ohclduration):
-#        self.__ohclduration=ohclduration
 
     def appendScatterSeries(self, name):
         ls=QScatterSeries()
@@ -212,28 +208,46 @@ class VCTemporalSeriesAlone(VCCommons):
 
     def appendScatterSeriesData(self, ls, x, y):
         self.appendTemporalSeriesData(ls, x, y)
+        
+    ## @param stringtype is one of the types in casts.value2object. Can be auto too to auto select best datetime format
+    def setXFormat(self, stringtype, title="",  zone_name="UTC", tickcount=8):
+        self._x_format=stringtype
+        self._x_zone_name=zone_name
+        self._x_tickcount=tickcount
+        self._x_title=title
+        
+        
+        
+    def _applyXFormat(self):
+        self.axisX.setTickCount(8)
+        self.axisX.setTitleText(self._x_title)
+        max_=epochms2dtaware(self.maxx)#UTC aware
+        min_=epochms2dtaware(self.minx)
+        if self._x_format=="auto":
+            if max_-min_<timedelta(days=1):
+                self.axisX.setFormat("hh:mm")
+            else:
+                self.axisX.setFormat("yyyy-MM-dd")
+        
 
-    def setAxisFormat(self, axis,  min, max, type, zone=None):
-        """
-            type=0 #Value
-            type=1 # Datetime
-            
-            if zone=None remains in UTC, zone is a zone object.
-        """
-        if type==0:
-            if max-min<=Decimal(0.01):
-                axis.setLabelFormat("%.4f")
-            elif max-min<=Decimal(100):
-                axis.setLabelFormat("%.2f")
-            else:
-                axis.setLabelFormat("%i")
-        elif type==1:
-            max=epochms2dtaware(max)#UTC aware
-            min=epochms2dtaware(min)
-            if max-min<timedelta(days=1):
-                axis.setFormat("hh:mm")
-            else:
-                axis.setFormat("yyyy-MM-dd")
+    def setYFormat(self, stringtype,   title="", decimals=2):
+        self._y_format=stringtype
+        self._y_decimals=decimals
+        self._y_title=title
+
+    def _applyYFormat(self):
+#        if type==0:
+#            if max-min<=Decimal(0.01):
+#                axis.setLabelFormat("%.4f")
+#            elif max-min<=Decimal(100):
+#                axis.setLabelFormat("%.2f")
+#            else:
+#                axis.setLabelFormat("%i")
+        self.axisY.setTitleText(self._y_title)
+        if self._y_format=="int":
+            self.axisY.setLabelFormat("%i")
+        elif self._y_format in ["float", "Decimal"]:
+            self.axisY.setLabelFormat("%.{}f".format(self._y_decimals))
 
     def setAllowHideSeries(self, boolean):
         self._allowHideSeries=boolean
@@ -349,8 +363,8 @@ class VCTemporalSeriesAlone(VCCommons):
         self.chart().layout().setContentsMargins(0,0,0,0)
         self._display_set_title()
 
-        self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
-        self.setAxisFormat(self.axisY, self.miny, self.maxy, 0)
+        self._applyXFormat()
+        self._applyYFormat()
         self.chart().addAxis(self.axisY, Qt.AlignLeft);
         self.chart().addAxis(self.axisX, Qt.AlignBottom);
 
@@ -387,6 +401,7 @@ class VCTemporalSeriesAlone(VCCommons):
     ## If you use VCPieAlone you can add a context menu setting boolean to True
     def setCustomContextMenu(self, boolean):
         self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+
     def on_customContextMenuRequested(self, pos):
         self.qmenu().exec_(self.mapToGlobal(pos))
 
@@ -742,7 +757,10 @@ def example():
     
     #Temporal series
     vcts=VCTemporalSeries()
+    vcts.ts.setTitle("Example of VCTemporalSeries")
     vcts.setSettings(settings, "example", "vcts")
+    vcts.ts.setXFormat("auto", "Time")
+    vcts.ts.setYFormat("EUR", "Money (€)" , decimals=2)
     sBasic=vcts.ts.appendTemporalSeries("Basic")
     for i in range(20):
         vcts.ts.appendTemporalSeriesData(sBasic, datetime.now()+timedelta(days=i),  i % 5)

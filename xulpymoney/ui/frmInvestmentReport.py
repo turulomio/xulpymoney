@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QDialog,  QMenu
 from datetime import date, timedelta
 from xulpymoney.casts import c2b
 from xulpymoney.datetime_functions import days2string
+from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.investment import Investment
 from xulpymoney.objects.percentage import Percentage
@@ -537,6 +538,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.wdgTS.ts.appendTemporalSeriesData(dividends, dt, dividend_net)
                 self.wdgTS.ts.appendTemporalSeriesData(gains, dt, gains_net)
             self.wdgTS.ts.setTitle(self.tr("Investment chart"))
+            self.wdgTS.ts.setYFormat("int", self.tr("Amount ({})").format(currency_symbol(self.investment.account.currency)))
             self.wdgTS.display()
             #Markers are generated in display so working with markers must be after it
             self.wdgTS.ts.chart().legend().markers(gains)[0].clicked.emit()
