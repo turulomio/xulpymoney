@@ -4,7 +4,7 @@ from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.myqtablewidget import qcenter, qdate, qleft, qnumber, wdgBool, qcurrency
+from xulpymoney.ui.myqtablewidget import qcenter, qdate, qleft, qnumber, wdgBool
 class EstimationDPS:
     """Dividends por acción"""
     def __init__(self, mem):
@@ -238,7 +238,7 @@ class EstimationEPSManager(ObjectManager, QObject):
         wdg.table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
             wdg.table.setItem(i, 0, qcenter(str(e.year)))
-            wdg.table.setItem(i, 1, qcurrency(e.estimation, 6))       
+            wdg.table.setItem(i, 1, self.product.money(e.estimation).qtablewidgetitem())       
             wdg.table.setItem(i, 2, qnumber(e.PER(Quote(self.mem).init__from_query(self.product, dtaware_day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone.name)))))
             wdg.table.setItem(i, 3, qdate(e.date_estimation))
             wdg.table.setItem(i, 4, qleft(e.source))

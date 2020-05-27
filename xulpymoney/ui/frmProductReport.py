@@ -64,10 +64,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mqtwWeekly.setSettings(self.mem.settings, "frmProductReport", "mqtwWeekly")
         self.mqtwMonthly.setSettings(self.mem.settings, "frmProductReport", "mqtwMonthly")    
         self.mqtwMonthly.table.customContextMenuRequested.connect(self.on_mqtwMonthly_customContextMenuRequested)
-        self.mqtwMonthly.table.itemSelectionChanged.connect(self.on_mqtwMonthly_itemSelectionChanged)
+        self.mqtwMonthly.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
         self.mqtwYearly.setSettings(self.mem.settings, "frmProductReport", "mqtwYearly")    
         self.mqtwYearly.table.customContextMenuRequested.connect(self.on_mqtwYearly_customContextMenuRequested)
-        self.mqtwYearly.table.itemSelectionChanged.connect(self.on_mqtwYearly_itemSelectionChanged)
+        self.mqtwYearly.setSelectionMode(QAbstractItemView.SelectRows, QAbstractItemView.MultiSelection)
         
         self.mqtwIntradia.setSettings(self.mem.settings, "frmProductReport", "mqtwIntradia")    
         self.mqtwIntradia.table.customContextMenuRequested.connect(self.on_mqtwIntradia_customContextMenuRequested)
@@ -293,10 +293,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if self.product.id is not None:
             self.product.needStatus(2)
             if self.product.result.ohclDaily.length()>0:
-                self.product.result.ohclDaily.selected=[]
-                self.product.result.ohclMonthly.selected=[]
-                self.product.result.ohclWeekly.selected=[]
-                self.product.result.ohclYearly.selected=[]
                 self.product.estimations_dps.load_from_db()#No cargada por defecto en product
                 self.product.estimations_eps.load_from_db()#No cargada por defecto en product
 
@@ -528,7 +524,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
     @pyqtSlot()
     def on_actionQuoteDeleteDays_triggered(self):
-        for ohcl in self.product.result.ohclDaily.selected:
+        for ohcl in self.mqtwDaily.selected:
             ohcl.delete()
         self.mem.con.commit()
         self.product.needStatus(2, downgrade_to=0)
@@ -536,7 +532,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     
     @pyqtSlot()
     def on_actionQuoteDeleteMonths_triggered(self):
-        for ohcl in self.product.result.ohclMonthly.selected:
+        for ohcl in self.mqtwMonthly.selected:
             ohcl.delete()
         self.mem.con.commit()
         self.product.needStatus(2, downgrade_to=0)
@@ -544,7 +540,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     
     @pyqtSlot()
     def on_actionQuoteDeleteYears_triggered(self):
-        for ohcl in self.product.result.ohclYearly.selected:
+        for ohcl in self.mqtwYearly.selected:
             ohcl.delete()
         self.mem.con.commit()
         self.product.needStatus(2, downgrade_to=0)
@@ -662,17 +658,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu.addAction(self.actionQuoteExport)
         menu.exec_(self.mqtwDaily.table.mapToGlobal(pos))
         
-    def on_mqtwMonthly_itemSelectionChanged(self):
-        if self.product.result.ohclMonthly.selected!=None:
-            del self.product.result.ohclMonthly.selected
-            self.product.result.ohclMonthly.selected=[]
-            
-        for i in self.mqtwMonthly.table.selectedItems():#itera por cada item no row.
-            if i.column()==0:
-                self.product.result.ohclMonthly.selected.append(self.product.result.ohclMonthly.arr[i.row()])
-
     def on_mqtwMonthly_customContextMenuRequested(self,  pos):
-        if len(self.product.result.ohclMonthly.selected)>0:
+        if len(self.mqtwMonthly.selected)>0:
             self.actionQuoteDeleteMonths.setEnabled(True)
         else:
             self.actionQuoteDeleteMonths.setEnabled(False)
@@ -680,18 +667,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteMonths)        
         menu.exec_(self.mqtwMonthly.table.mapToGlobal(pos))  
-        
-    def on_mqtwYearly_itemSelectionChanged(self):
-        if self.product.result.ohclYearly.selected!=None:
-            del self.product.result.ohclYearly.selected
-            self.product.result.ohclYearly.selected=[]
-            
-        for i in self.mqtwYearly.table.selectedItems():#itera por cada item no row.
-            if i.column()==0:
-                self.product.result.ohclYearly.selected.append(self.product.result.ohclYearly.arr[i.row()])
 
     def on_mqtwYearly_customContextMenuRequested(self,  pos):
-        if len(self.product.result.ohclYearly.selected)>0:
+        if len(self.mqtwYearly.selected)>0:
             self.actionQuoteDeleteYears.setEnabled(True)
         else:
             self.actionQuoteDeleteYears.setEnabled(False)
@@ -699,6 +677,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionQuoteDeleteYears)        
         menu.exec_(self.mqtwYearly.table.mapToGlobal(pos))
+
     def on_mqtwIntradia_customContextMenuRequested(self,  pos):
         if len (self.mqtwIntradia.selected)>0:
             self.actionQuoteDelete.setEnabled(True)
