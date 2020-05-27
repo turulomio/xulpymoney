@@ -85,7 +85,7 @@ class mqtw(QWidget):
 
     @pyqtSlot()
     ## This is for mqtw only object
-    def on_itemSelectionChanged(self):
+    def on_itemSelectionChanged(self):        
         self.selected_items=None
         self.selected=None
         if hasattr(self, "data"):#Data is set
@@ -94,6 +94,10 @@ class mqtw(QWidget):
                 self.selected_items=[]
                 self.selected=[]
                 for i in self.table.selectedItems():
+                    if i.row()>=len(self.data):## Se pulsa un row fuera del data, por ejemplo un total
+                        self.selected_items==None
+                        self.selected==None
+                        break
                     self.selected_items.append(i)
                     self.selected.append(self.itemData(i))
             elif self.table.selectionBehavior()==QAbstractItemView.SelectRows and self.table.selectionMode()==QAbstractItemView.MultiSelection:
@@ -104,6 +108,10 @@ class mqtw(QWidget):
                 lastrow=[]
                 lastrowitems=[]
                 for i in self.table.selectedItems():
+                    if i.row()>=len(self.data):## Se pulsa un row fuera del data, por ejemplo un total
+                        self.selected_items==None
+                        self.selected==None
+                        break
                     lastrowitems.append(i)
                     lastrow.append(self.itemData(i))
                     if len(lastrow)==self.lengthRow():#Create a new row if len lastrow == leng. Minus 1 because it adds the last
@@ -114,6 +122,10 @@ class mqtw(QWidget):
             elif self.table.selectionBehavior()==QAbstractItemView.SelectItems and self.table.selectionMode()==QAbstractItemView.SingleSelection:
                 # Returns the item selected
                 for i in self.table.selectedItems():
+                    if i.row()>=len(self.data):## Se pulsa un row fuera del data, por ejemplo un total
+                        self.selected_items==None
+                        self.selected==None
+                        break
                     self.selected_items=i
                     self.selected=self.itemData(i)
             debug("{} data selection: {}".format(self.__class__.__name__,  self.selected))
@@ -322,6 +334,7 @@ class mqtw(QWidget):
         self.hh=header_horizontal
         self.hv=header_vertical
         self.data=data
+        
         self.table.setColumnCount(len(self.hh))
         if self.hh is not None:
             for i in range(len(self.hh)):

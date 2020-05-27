@@ -210,6 +210,13 @@ class AssetsReport(ODT, QObject):
         model=self.mem.frmMain.w.mqtw.officegeneratorModel("mqtwDividendsReport")
         model.odt_table(self, 26, 8)
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(Assets(self.mem).dividends_estimated()))
+        self.pageBreak(True)
+        
+        # Ranking de inversiones
+        self.header(self.tr("Historical investments ranking"), 1)    
+        self.mem.frmMain.on_actionInvestmentRanking_triggered()
+        model=self.mem.frmMain.w.mqtwCurrentOperations.officegeneratorModel("mqtwCurrentOperations")
+        model.odt_table(self, 26, 8)        
 
     def sleep(self, seconds):
         dieTime= QTime.currentTime().addSecs(seconds);
