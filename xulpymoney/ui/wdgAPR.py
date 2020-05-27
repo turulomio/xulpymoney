@@ -163,9 +163,10 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
         diff=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(date.today().year))-Assets(self.mem).invested(date_last_of_the_year(date.today().year))
         s=""
-        s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, sumgd)
-        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(diff)
-        s=s+"\n"+self.tr("Sum of taxes and custody commissions is {}".format(report_taxes+report_custody_commissions))
+        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}.").format(diff)
+        s=s+"\n"+self.tr("From {} I've generated {} gains (investment commisions are included).").format(self.wdgYear.year, sumgd)
+        s=s+"\n"+self.tr("Sum of taxes and custody commissions is {}.".format(report_taxes+report_custody_commissions))
+        s=s+"\n"+self.tr("So, I've generated {} gains.").format(sumgd+report_taxes+report_custody_commissions)
         balance=diff+sumgd+report_taxes+report_custody_commissions
         if balance.isGETZero():
             s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(balance, self.mem.localmoney(balance.amount/(date.today().year-self.wdgYear.year+1)))
