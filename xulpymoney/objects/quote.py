@@ -6,12 +6,10 @@ from decimal import Decimal
 from logging import debug, info, critical
 from xulpymoney.datetime_functions import dt_day_end,  dtaware_day_start_from_date, string2dtaware
 from  xulpymoney.libmanagers import ObjectManager
-from xulpymoney.libxulpymoneytypes import   eHistoricalChartAdjusts, eQColor
+from xulpymoney.libxulpymoneytypes import   eHistoricalChartAdjusts, eQColor, eOHCLDuration
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage, percentage_between
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLMonthlyManager, OHCLWeeklyManager, OHCLYearlyManager
-from xulpymoney.ui.myqcharts import eOHCLDuration
-
 ## Class that represents a Quote
 ## A quote can be a datetime duplicated
 class Quote:

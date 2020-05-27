@@ -10,13 +10,12 @@ import datetime
 import logging
 from xulpymoney.datetime_functions import dtaware_day_start_from_date, dt_day_start
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqcharts import eOHCLDuration
 from xulpymoney.objects.investment import Investment
 from xulpymoney.objects.investmentoperation import InvestmentOperation, InvestmentOperationHomogeneusManager
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.casts import string2list_of_integers
-from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOperationType
+from xulpymoney.libxulpymoneytypes import eHistoricalChartAdjusts, eOperationType, eOHCLDuration
 from xulpymoney.ui.wdgOpportunitiesAdd import wdgOpportunitiesAdd
 
 ## Main class that sets a product (can add an investment too) with setProduct function
@@ -34,6 +33,10 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         pen.setStyle(style)
         pen.setColor(color)
         return pen
+
+
+    def setOHCLDuration(self, ohclduration):
+        self.__ohclduration=ohclduration
 
     def setProduct(self, product, investment=None):
         self.product=product
@@ -97,7 +100,6 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
             for ohcl in self.setohcl.arr:
                 if ohcl.datetime()>=selected_datetime:
                     self.wdgTS.ts.appendCandlestickSeriesData(candle, ohcl.datetime(), ohcl.open, ohcl.high, ohcl.close, ohcl.low)
-            self.wdgTS.ts.setOHCLDuration(self.cmbOHCLDuration.itemData(self.cmbOHCLDuration.currentIndex()))
             
             
         dvm=self.setohcl.DatetimeValueManager("close")

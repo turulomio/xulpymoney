@@ -13,20 +13,6 @@ from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2stri
 from collections import OrderedDict
 from datetime import timedelta, datetime
 
-class eOHCLDuration:
-    Day=1
-    Week=2
-    Month=3
-    Year=4
-
-    @classmethod
-    def qcombobox(self, combo, selected_eOHCLDuration):
-        combo.addItem(QApplication.translate("Mem", "Day"), 1)
-        combo.addItem(QApplication.translate("Mem", "Week"), 2)
-        combo.addItem(QApplication.translate("Mem", "Month"), 3)
-        combo.addItem(QApplication.translate("Mem", "Year"), 4)
-        combo.setCurrentIndex(combo.findData(selected_eOHCLDuration))
-
 class VCCommons(QChartView):
     displayed=pyqtSignal()
     def __init__(self):
@@ -169,7 +155,6 @@ class VCTemporalSeriesAlone(VCCommons):
         self.maxy=None
         self.miny=None
         
-        self.data=[]
         self.series=[]
         self.chart().legend().hide()
         self.popup=MyPopup(self)
@@ -316,9 +301,25 @@ class VCTemporalSeriesAlone(VCCommons):
 
     ## Return the value of the serie in x
     def series_value(self, serie, x):
-        for point in serie.pointsVector():
-            if point.x()>=x:
-                return point.y()
+        if serie.__class__.__name__=="QLineSeries":
+            for point in serie.pointsVector():
+                if point.x()>=x:
+                    return point.y()
+        elif serie.__class__.__name__=="QCandlestickSeries":
+            for qohcl in serie.sets():
+                if qohcl.timestamp()>=x:
+                    return qohcl.close
+
+    ## Returns values from QSeries objects in an ordereddict d[x]=y, key is a dtaware
+    def series_dictionary(self, serie):
+        d=OrderedDict()
+        if serie.__class__.__name__=="QLineSeries":
+            for point in serie.pointsVector():
+                d[epochms2dtaware(point.x())]=point.y()
+        elif serie.__class__.__name__=="QCandlestickSeries":
+            for qohcl in serie.sets():
+                d[epochms2dtaware(qohcl.timestamp())]=qohcl.close()
+        return d
 
     @pyqtSlot()
     def on_marker_clicked(self):
@@ -492,15 +493,15 @@ class VCTemporalSeries(QWidget):
         #Initiate dictionary
         for serie in self.ts.series:
             hh.append(serie.name())
-            for point in serie.pointsVector():
-                unordered[epochms2dtaware(point.x())]=[None]*len(self.ts.series)
+            for dt, value in self.ts.series_dictionary(serie).items():
+                unordered[dt]=[None]*len(self.ts.series)
         
         d= OrderedDict(sorted(unordered.items(), key=lambda t: t[0]))
                 
         #Filling
         for i, serie in enumerate(self.ts.series):
-            for point in serie.pointsVector():
-                d[epochms2dtaware(point.x())][i]=point.y()            
+            for dt, value in self.ts.series_dictionary(serie).items():
+                d[dt][i]=value           
 
         data=[]
         for key, value in d.items():
@@ -509,8 +510,6 @@ class VCTemporalSeries(QWidget):
         self.table.drawOrderBy(0, False)
         self.table.on_actionSizeMinimum_triggered()
         self.table.settings().sync()
-
-
 
 class VCPieAlone(VCCommons):
     def __init__(self):
