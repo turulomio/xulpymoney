@@ -34,7 +34,7 @@ class Ui_wdgInvestmentsRanking(object):
         self.tab_.setObjectName("tab_")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tab_)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.mqtwCurrentOperations = mqtw(self.tab_)
+        self.mqtwCurrentOperations = mqtwObjects(self.tab_)
         self.mqtwCurrentOperations.setObjectName("mqtwCurrentOperations")
         self.horizontalLayout_3.addWidget(self.mqtwCurrentOperations)
         icon = QtGui.QIcon()
@@ -44,7 +44,7 @@ class Ui_wdgInvestmentsRanking(object):
         self.tab_2.setObjectName("tab_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tab_2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.mqtwOperations = mqtw(self.tab_2)
+        self.mqtwOperations = mqtwObjects(self.tab_2)
         self.mqtwOperations.setObjectName("mqtwOperations")
         self.horizontalLayout_2.addWidget(self.mqtwOperations)
         self.tab.addTab(self.tab_2, icon, "")
@@ -65,7 +65,7 @@ class Ui_wdgInvestmentsRanking(object):
         self.actionProduct.setObjectName("actionProduct")
 
         self.retranslateUi(wdgInvestmentsRanking)
-        self.tab.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(wdgInvestmentsRanking)
 
     def retranslateUi(self, wdgInvestmentsRanking):
@@ -79,5 +79,5 @@ class Ui_wdgInvestmentsRanking(object):
         self.actionSameProductFIFO.setToolTip(_translate("wdgInvestmentsRanking", "Same product Investments merging operations"))
         self.actionProduct.setText(_translate("wdgInvestmentsRanking", "Product report"))
         self.actionProduct.setToolTip(_translate("wdgInvestmentsRanking", "Product report"))
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtwObjects
 import xulpymoney.images.xulpymoney_rc
