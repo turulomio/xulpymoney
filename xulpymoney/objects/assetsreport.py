@@ -216,6 +216,7 @@ class AssetsReport(ODT, QObject):
         self.header(self.tr("Historical investments ranking"), 1)    
         self.mem.frmMain.on_actionInvestmentRanking_triggered()
         model=self.mem.frmMain.w.mqtwCurrentOperations.officegeneratorModel("mqtwCurrentOperations")
+        model.vh=list(range(1, len(model.data)+1))
         model.odt_table(self, 26, 8)        
 
     def sleep(self, seconds):

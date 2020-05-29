@@ -102,12 +102,14 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         self.mqtwOperations.table.verticalHeader().show()
         self.ranking_operations=RankingManager_from_operations(self.mem)
         self.ranking_operations.myqtablewidget(self.mqtwOperations)
+        self.mqtwOperations.drawOrderBy(4, True)
 
         self.mqtwCurrentOperations.setSettings(self.mem.settings,"wdgInvestmentsRanking" , "mqtwCurrentOperations")
         self.mqtwCurrentOperations.table.customContextMenuRequested.connect(self.on_mqtwCurrentOperations_customContextMenuRequested)        
         self.mqtwCurrentOperations.table.verticalHeader().show()
         self.ranking_currrent_operations=RankingManager_from_current_operations(self.mem)
         self.ranking_currrent_operations.myqtablewidget(self.mqtwCurrentOperations)
+        self.mqtwCurrentOperations.drawOrderBy(4, True)
 
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
@@ -143,7 +145,9 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         menu=QMenu()
         menu.addAction(self.actionProduct)
         menu.addSeparator()
-        menu.addAction(self.actionSameProductFIFO)      
+        menu.addAction(self.actionSameProductFIFO)   
+        menu.addSeparator()
+        menu.addMenu(self.mqtwOperations.qmenu())
         menu.exec_(self.mqtwOperations.table.mapToGlobal(pos))
         
     def on_mqtwCurrentOperations_customContextMenuRequested(self,  pos):
@@ -158,4 +162,6 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
         menu.addAction(self.actionProduct)
         menu.addSeparator()
         menu.addAction(self.actionSameProduct)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwCurrentOperations.qmenu())
         menu.exec_(self.mqtwCurrentOperations.table.mapToGlobal(pos))
