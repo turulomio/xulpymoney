@@ -310,13 +310,13 @@ class Investment(QObject):
             return Percentage(self.venta-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
         else:#Long short products
             return Percentage(-(self.venta-self.product.result.basic.last.quote), self.product.result.basic.last.quote)
-        
 
 class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
         QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
+        self.setConstructorParameters(self.mem)
 
     def load_from_db(self, sql,  progress=False):
         cur=self.mem.con.cursor()
@@ -972,4 +972,10 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         except:
             error("InvestmentManager can't order by balance")
             return False
-        
+
+def InvestmentManager_from_list_of_ids( mem, l):
+    invs=InvestmentManager(mem)
+    for inv in mem.data.investments:
+        if inv.id in l:
+            invs.append(inv)
+    return invs

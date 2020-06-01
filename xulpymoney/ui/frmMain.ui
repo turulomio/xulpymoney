@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>30</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -257,6 +257,8 @@
     <addaction name="actionStrategySpreads"/>
     <addaction name="separator"/>
     <addaction name="actionDerivativesReport"/>
+    <addaction name="separator"/>
+    <addaction name="actionStrategyResults"/>
    </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
@@ -342,6 +344,7 @@
    <addaction name="actionProductRange"/>
    <addaction name="actionLastOperation"/>
    <addaction name="actionStrategySpreads"/>
+   <addaction name="actionStrategyResults"/>
   </widget>
   <widget class="QToolBar" name="tbReports">
    <property name="windowTitle">
@@ -1273,6 +1276,18 @@
    </property>
    <property name="toolTip">
     <string>Spreads</string>
+   </property>
+  </action>
+  <action name="actionStrategyResults">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Strategy Results</string>
+   </property>
+   <property name="toolTip">
+    <string>Strategy Results</string>
    </property>
   </action>
  </widget>

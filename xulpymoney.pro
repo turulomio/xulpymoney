@@ -150,6 +150,8 @@ SOURCES         = \
                   xulpymoney/ui/Ui_wdgOrders.py \
                   xulpymoney/ui/wdgOrdersAdd.py \
                   xulpymoney/ui/Ui_wdgOrdersAdd.py \
+                  xulpymoney/ui/wdgStrategyResults.py \
+                  xulpymoney/ui/Ui_wdgStrategyResults.py \
                   xulpymoney/ui/wdgStrategySpreads.py \
                   xulpymoney/ui/Ui_wdgStrategySpreads.py \
                   xulpymoney/ui/wdgTotal.py \
@@ -214,6 +216,7 @@ FORMS           = \
                   xulpymoney/ui/wdgProductsDataMove.ui \
                   xulpymoney/ui/wdgQuotesUpdate.ui \
                   xulpymoney/ui/wdgQuotesSaveResult.ui \
+                  xulpymoney/ui/wdgStrategyResults.ui \
                   xulpymoney/ui/wdgStrategySpreads.ui \
                   xulpymoney/ui/wdgSimulations.ui \
                   xulpymoney/ui/wdgSimulationsAdd.ui \

@@ -268,6 +268,34 @@ CREATE SEQUENCE public.dividendosestimaciones_seq
     CACHE 1;
 
 
+
+--
+-- Name: cuentas; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cuentas (
+    id_cuentas integer DEFAULT nextval(('"seq_cuentas"'::text)::regclass) NOT NULL,
+    cuenta text,
+    id_entidadesbancarias integer,
+    active boolean,
+    numerocuenta character varying(24),
+    currency text DEFAULT 'EUR'::text NOT NULL
+);
+
+
+ALTER TABLE public.cuentas OWNER TO postgres;
+
+--
+-- Name: dividendosestimaciones_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.dividendosestimaciones_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 ALTER TABLE public.dividendosestimaciones_seq OWNER TO postgres;
 
 --
