@@ -1,7 +1,6 @@
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
+
+from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgStrategySpreads import Ui_wdgStrategySpreads
-from xulpymoney.ui.myqwidgets import qmessagebox
 
 class wdgStrategySpreads(QWidget, Ui_wdgStrategySpreads):
     def __init__(self, mem,  parent = None, name = None):

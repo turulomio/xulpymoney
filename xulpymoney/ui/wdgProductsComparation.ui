@@ -185,7 +185,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QWidget" name="viewCompare" native="true">
+      <widget class="VCTemporalSeries" name="viewCompare" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -203,6 +203,12 @@
    <class>wdgProductSelector</class>
    <extends>QWidget</extends>
    <header location="global">wdgProductSelector</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCTemporalSeries</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

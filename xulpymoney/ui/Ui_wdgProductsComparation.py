@@ -92,7 +92,7 @@ class Ui_wdgProductsComparation(object):
         self.cmdComparation.setObjectName("cmdComparation")
         self.horizontalLayout.addWidget(self.cmdComparation)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.viewCompare = QtWidgets.QWidget(wdgProductsComparation)
+        self.viewCompare = VCTemporalSeries(wdgProductsComparation)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -121,5 +121,6 @@ class Ui_wdgProductsComparation(object):
         self.deCompare.setDisplayFormat(_translate("wdgProductsComparation", "yyyy-MM-dd"))
         self.cmdComparationData.setToolTip(_translate("wdgProductsComparation", "Shows comparation data"))
         self.cmdComparation.setText(_translate("wdgProductsComparation", "Compare"))
+from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

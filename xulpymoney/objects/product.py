@@ -626,19 +626,9 @@ class ProductComparation(QObject):
         for i, dat in enumerate(self.__commonDates):
             arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close))
             
-        wdg.table.setColumnCount(3)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr("Date" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.product1.name))
-        wdg.table.setHorizontalHeaderItem(2,  qcenter(self.product2.name))
-        ##DATA 
-        wdg.table.clearContents()
-        wdg.applySettings()  
-        wdg.table.setRowCount(len(self.__commonDates))
+        hh=[self.tr("Date"), self.product1.name, self.product2.name]
         
-        for i, a in enumerate(arr):
-            wdg.table.setItem(i, 0, qdate(a[0]))
-            wdg.table.setItem(i, 1, self.product1.money(a[1]).qtablewidgetitem())
-            wdg.table.setItem(i, 2, self.product1.money(a[2]).qtablewidgetitem())
+        wdg.setData(hh, None, arr)
         
     def index(self, date):
         """Returns date index in array"""

@@ -124,6 +124,7 @@ class eLeverageType:
     X4=4
     X5=5
     X10=10
+    X25=25
     X50=50
     X100=100
 

@@ -645,7 +645,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         return agr
 
     def on_mqtwDaily_customContextMenuRequested(self,  pos):
-        if len(self.mqtwDaily.selected)>0:
+        if self.mqtwDaily.selected is not None and len(self.mqtwDaily.selected)>0:
             self.actionQuoteDeleteDays.setEnabled(True)
         else:
             self.actionQuoteDeleteDays.setEnabled(False)

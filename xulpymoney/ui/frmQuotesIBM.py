@@ -22,7 +22,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
                 self.wdgDT.setLocalzone(self.mem.localzone_name)
                 if self.product.type.id in (eProductType.CFD, eProductType.Future) and self.mem.localzone.now()>=self.product.stockmarket.dtaware_today_closes_futures():
                     self.wdgDT.set(self.product.stockmarket.dtaware_today_closes_futures(),  self.mem.localzone_name)
-                elif self.mem.localzone.now()>=self.product.stockmarket.dtaware_today_closes():#Si ya ha cerrado la bolsa
+                elif self.product.type.id not in (eProductType.CFD, eProductType.Future) and self.mem.localzone.now()>=self.product.stockmarket.dtaware_today_closes():#Si ya ha cerrado la bolsa
                     self.wdgDT.set(self.product.stockmarket.dtaware_today_closes(),  self.mem.localzone_name)
                 else:
                     self.wdgDT.set()
