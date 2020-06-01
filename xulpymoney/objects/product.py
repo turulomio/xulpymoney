@@ -11,11 +11,11 @@ from xulpymoney.libmanagers import ManagerSelectionMode, ObjectManager_With_IdNa
 from xulpymoney.libxulpymoneytypes import eTickerPosition, eProductType, eQColor
 from xulpymoney.objects.dps import DPSManager
 from xulpymoney.objects.money import Money
+from xulpymoney.objects.percentage import percentage_between, Percentage
 from xulpymoney.objects.quote import Quote, QuoteManager, QuotesResult
 from xulpymoney.objects.ohcl import OHCLDailyManager, OHCLDaily
 from xulpymoney.objects.split import SplitManager
 from xulpymoney.objects.estimation import EstimationDPSManager, EstimationEPSManager
-from xulpymoney.ui.myqtablewidget import qdate, qcenter
 
 class Product(QObject):
     def __init__(self, mem):
@@ -623,10 +623,16 @@ class ProductComparation(QObject):
 
     def myqtablewidget(self, wdg):
         arr=[]#date, product1, product2
+        productcloses1=self.product1PercentageEvolution()
+        productcloses2=self.product2PercentageEvolution()
         for i, dat in enumerate(self.__commonDates):
-            arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close))
+            if i==0:
+                arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close, Percentage(None), Percentage(None)))
+            else:
+                arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close, Percentage(productcloses1[i-1], 100), Percentage(productcloses2[i-1], 100)))
+
             
-        hh=[self.tr("Date"), self.product1.name, self.product2.name]
+        hh=[self.tr("Date"), self.product1.name, self.product2.name, self.tr("Gains 1"), self.tr("Gains 2")]
         
         wdg.setData(hh, None, arr)
         
@@ -648,12 +654,24 @@ class ProductComparation(QObject):
         for ohcl in self.set1.arr:
             r.append(ohcl.close)
         return r[self.index(self.__fromDate):len(self.__commonDates)]
+    def product1PercentageEvolution(self):
+        r=[]
+        productcloses=self.product1Closes()
+        for i in range(1, len(productcloses)):
+            r.append(percentage_between(productcloses[i-1], productcloses[i]).float_100())
+        return r
 
     def product2Closes(self):
         r=[]
         for ohcl in self.set2.arr:
             r.append(ohcl.close)
         return r[self.index(self.__fromDate):len(self.__commonDates)]
+    def product2PercentageEvolution(self):
+        r=[]
+        productcloses=self.product2Closes()
+        for i in range(1, len(productcloses)):
+            r.append(percentage_between(productcloses[i-1], productcloses[i]).float_100())
+        return r
     
     def product1ClosesDividingFirst(self):
         """Divides set1 by a factor to get the same price in the first ohcl"""
@@ -718,6 +736,13 @@ class ProductComparation(QObject):
             r.append(last)
         return r
         
+        
+
+    def correlacion_lineal(self):
+        from scipy.stats import linregress
+        slope, intercept, r_value, p_value, std_err =  linregress(self.product1PercentageEvolution(), self.product2PercentageEvolution())
+        r_squared=r_value**2
+        return  "{4} = {0} {3} + {1}. R²={2}".format(slope, intercept, r_squared, self.product1.name, self.product2.name)
 
                 
 ## Class to manage source xulpymoney_run_client and other scripts

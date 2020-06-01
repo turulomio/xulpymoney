@@ -122,12 +122,15 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
-        self.verticalLayout.addWidget(self.viewCompare)            
 
         self.mem.settings.setValue("wdgProductsComparation/product1", str(self.comparation.product1.id))
         self.mem.settings.setValue("wdgProductsComparation/product2", str(self.comparation.product2.id))
         self.mem.settings.setValue("wdgProductsComparation/cmbCompareTypes", str(self.cmbCompareTypes.currentIndex()))
         self.mem.settings.sync()
+
+
+
+        self.lblCorrelation.setText(self.comparation.correlacion_lineal())
 
         print ("Comparation took {}".format(datetime.now()-inicio))
 
