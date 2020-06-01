@@ -254,6 +254,8 @@
     <addaction name="separator"/>
     <addaction name="actionLastOperation"/>
     <addaction name="separator"/>
+    <addaction name="actionStrategySpreads"/>
+    <addaction name="separator"/>
     <addaction name="actionDerivativesReport"/>
    </widget>
    <addaction name="menuXulpymoney"/>
@@ -324,6 +326,12 @@
    <property name="windowTitle">
     <string>Strategies toolbar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>26</width>
+     <height>26</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -333,10 +341,17 @@
    <addaction name="actionIndexRange"/>
    <addaction name="actionProductRange"/>
    <addaction name="actionLastOperation"/>
+   <addaction name="actionStrategySpreads"/>
   </widget>
   <widget class="QToolBar" name="tbReports">
    <property name="windowTitle">
     <string>Reports toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>26</width>
+     <height>26</height>
+    </size>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -353,6 +368,12 @@
   <widget class="QToolBar" name="tbSettings">
    <property name="windowTitle">
     <string>Settings toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>26</width>
+     <height>26</height>
+    </size>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -1240,6 +1261,18 @@
    </property>
    <property name="toolTip">
     <string>Product range</string>
+   </property>
+  </action>
+  <action name="actionStrategySpreads">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
+   </property>
+   <property name="text">
+    <string>Spreads</string>
+   </property>
+   <property name="toolTip">
+    <string>Spreads</string>
    </property>
   </action>
  </widget>

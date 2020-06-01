@@ -343,7 +343,16 @@ class frmMain(QMainWindow, Ui_frmMain):
         d.setSettings(self.mem.settings, "wdgSimulations", "mqdSimulations")
         d.setWindowTitle(self.tr("Xulpymoney Simulations"))
         d.setWidgets(wdgSimulations(self.mem, d))
-        d.exec_() 
+        d.exec_()
+
+    @pyqtSlot()  
+    def on_actionStrategySpreads_triggered(self):
+        self.w.close()
+        from xulpymoney.ui.wdgStrategySpreads import wdgStrategySpreads
+        self.w=wdgStrategySpreads(self.mem, self)
+        self.layout.addWidget(self.w)
+        self.w.show()
+
 
     @pyqtSlot()  
     def on_actionSyncProducts_triggered(self):

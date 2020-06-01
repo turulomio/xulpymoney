@@ -57,6 +57,9 @@ class wdgProductSelector(QWidget):
         from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.selected, self.investment,  self)
         w.exec_()
+        
+    def setLabel(self, s):
+        self.label.setText(s)
             
     def setSelected(self, product):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
