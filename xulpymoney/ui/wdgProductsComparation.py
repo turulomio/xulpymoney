@@ -97,6 +97,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewScatter.show()    
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1PercentageEvolution(), self.comparation.product2PercentageEvolution())
+            self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
+            self.viewScatter.scatter.setYFormat("float", self.comparation.product2.name)
             self.viewScatter.display()
 
 
