@@ -4,6 +4,7 @@ from platform import python_version
 from stdnum import __version__ as stdnum__version__
 from psycopg2 import __version__ as psycopg2__version__
 from pytz import __version__ as pytz__version__
+from scipy import __version__ as scipy__version__
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl, PYQT_VERSION_STR
@@ -91,6 +92,7 @@ class frmAbout(QDialog, Ui_frmAbout):
         data.append(["PyQt5", PYQT_VERSION_STR,  "https://riverbankcomputing.com/software/pyqt/intro"])
         data.append(["PyQtChart", PYQT_CHART_VERSION_STR,  "https://riverbankcomputing.com/software/pyqtchart/intro"])        
         data.append(["Pytz", pytz__version__,  "https://pypi.org/project/pytz"])
+        data.append(["Scipy", scipy__version__,  "https://www.scipy.org/"])
         self.mqtwSoftware.setData(hh, None, data)
 
     def load_mqtwRegisters(self):

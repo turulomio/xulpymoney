@@ -55,6 +55,7 @@ Warning: Remember Xulpymoney it's still in beta status
 * https://pypi.org/project/pytz/, to work with timezones.
 * https://pypi.org/project/officegenerator/, to work with LibreOffice and Microsoft Office documents.
 * https://pypi.org/project/PyQtChart/, to work with charts.
+* https://www.scipy.org/, to work with statistics.
 
 # Changelog
 
