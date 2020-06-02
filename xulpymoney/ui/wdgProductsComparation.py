@@ -28,8 +28,11 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.selector2.setupUi(self.mem)
         self.selector2.label.setText(self.tr("Select a product to compare"))
         self.selector2.setSelected(product2)
-            
+
         self.viewCompare.setSettings(self.mem.settings, "wdgProductsComparation", "viewCompare")
+        self.viewScatter.setSettings(self.mem.settings, "wdgProductsComparation", "viewScatter")
+        self.viewScatter.hide()
+
         self.cmbCompareTypes.setCurrentIndex(int(self.mem.settings.value("wdgProductsComparation/cmbCompareTypes", "0")))
         self.comparation=None
 
@@ -51,6 +54,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
         ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
         if self.cmbCompareTypes.currentIndex()==0:#Not changed data
+            self.viewCompare.show()
+            self.viewScatter.hide()
 
             dates=self.comparation.dates()
             closes1=self.comparation.product1Closes()
@@ -88,9 +93,16 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewCompare.display()
 
         elif self.cmbCompareTypes.currentIndex()==1:#Scatter
-            pass
+            self.viewCompare.hide()
+            self.viewScatter.show()    
+            self.viewScatter.scatter.setTitle("Scatter chart")
+            self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1PercentageEvolution(), self.comparation.product2PercentageEvolution())
+            self.viewScatter.display()
+
 
         elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
+            self.viewCompare.show()
+            self.viewScatter.hide()
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2Price()
             closes2=self.comparation.product2Closes()
@@ -99,6 +111,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution reducing leverage.
+            self.viewCompare.show()
+            self.viewScatter.hide()
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
@@ -107,6 +121,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==4:#Controlling inverse percentage evolution.
+            self.viewCompare.show()
+            self.viewScatter.hide()
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePrice()
             closes2=self.comparation.product2Closes()
@@ -115,6 +131,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
         elif self.cmbCompareTypes.currentIndex()==5:#Controlling inverse percentage evolution reducing leverage.
+            self.viewCompare.show()
+            self.viewScatter.hide()
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
@@ -127,8 +145,6 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.mem.settings.setValue("wdgProductsComparation/product2", str(self.comparation.product2.id))
         self.mem.settings.setValue("wdgProductsComparation/cmbCompareTypes", str(self.cmbCompareTypes.currentIndex()))
         self.mem.settings.sync()
-
-
 
         self.lblCorrelation.setText(self.comparation.correlacion_lineal())
 

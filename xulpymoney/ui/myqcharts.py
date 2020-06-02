@@ -184,16 +184,6 @@ class VCTemporalSeriesAlone(VCCommons):
         if x<self.minx:
             self.minx=x
 
-
-    def appendScatterSeries(self, name):
-        ls=QScatterSeries()
-        ls.setName(name)
-        self.series.append(ls)
-        return ls
-
-    def appendScatterSeriesData(self, ls, x, y):
-        self.appendTemporalSeriesData(ls, x, y)
-        
     ## @param stringtype is one of the types in casts.value2object. Can be auto too to auto select best datetime format
     def setXFormat(self, stringtype, title="",  zone_name="UTC", tickcount=8):
         self._x_format=stringtype
@@ -510,6 +500,330 @@ class VCTemporalSeries(QWidget):
         self.table.drawOrderBy(0, False)
         self.table.on_actionSizeMinimum_triggered()
         self.table.settings().sync()
+        
+
+
+class VCScatterAlone(VCCommons):
+    def __init__(self):
+        VCCommons.__init__(self)
+        self.clear()
+        self.popuplock=QMutex()
+        self._x_format="Decimal"
+        self._x_decimals=2
+        self._x_title=""
+        self._y_format="Decimal"
+        self._y_decimals=2
+        self._y_title=""
+
+    ## To clean pie, removes serie and everithing is like create an empty pie
+    def clear(self):
+        self.__chart=QChart()
+        self.setChart(self.__chart)
+        self.setRenderHint(QPainter.Antialiasing)
+        self._allowHideSeries=True
+
+        self.axisX=QValueAxis()
+        self.maxx=None
+        self.minx=None
+
+        self.axisY = QValueAxis()
+        self.maxy=None
+        self.miny=None
+        
+        self.series=[]
+        self.chart().legend().hide()
+        self.popup=MyPopup(self)
+
+    def appendScatterSeries(self, name, list_x, list_y):
+        ls=QScatterSeries()
+        ls.setName(name)
+        self.series.append(ls)
+        for i in range(len(list_x)):
+            x=float(list_x[i])
+            y=float(list_y[i])
+            ls.append(x, y)
+            
+            if self.maxy==None:#Gives first maxy and miny
+                self.maxy=y*1.01
+                self.miny=y*0.99
+                self.maxx=x*1.01
+                self.minx=x*0.99
+                
+            if y>self.maxy:
+                self.maxy=y
+            if y<self.miny:
+                self.miny=y
+            if x>self.maxx:
+                self.maxx=x
+            if x<self.minx:
+                self.minx=x
+        
+
+    def setXFormat(self, stringtype,   title="", decimals=2):
+        self._x_format=stringtype
+        self._x_decimals=decimals
+        self._x_title=title
+        
+        
+        
+    def _applyXFormat(self):
+#        self.axisX.setTickCount(8)
+        self.axisX.setTitleText(self._x_title)
+        if self._x_format=="int":
+            self.axisX.setLabelFormat("%i")
+        elif self._x_format in ["float", "Decimal"]:
+            self.axisX.setLabelFormat("%.{}f".format(self._x_decimals))
+
+
+    def setYFormat(self, stringtype,   title="", decimals=2):
+        self._y_format=stringtype
+        self._y_decimals=decimals
+        self._y_title=title
+
+    def _applyYFormat(self):
+        self.axisY.setTitleText(self._y_title)
+        if self._y_format=="int":
+            self.axisY.setLabelFormat("%i")
+        elif self._y_format in ["float", "Decimal"]:
+            self.axisY.setLabelFormat("%.{}f".format(self._y_decimals))
+
+    def setAllowHideSeries(self, boolean):
+        self._allowHideSeries=boolean
+
+    def mouseMoveEvent(self, event):     
+        ##Sets the place of the popup in the windows to avoid getout of the screen
+        ##frmshow can be a frmShowCasilla or a frmShowFicha
+        def placePopUp():
+            resultado=QPoint(event.x()+15, event.y()+15)
+            if event.x()>self.width()-self.popup.width()-15:
+                resultado.setX(event.x()-self.popup.width()-15)
+            if event.y()>self.height()-self.popup.height()-15:
+                resultado.setY(event.y()-self.popup.height()-15)
+            return resultado
+
+        # ---------------------------------------
+        if self.popuplock.tryLock()==False:
+            event.reject()
+            return
+        QChartView.mouseMoveEvent(self, event)
+        xVal = self.chart().mapToValue(event.pos()).x()
+        yVal = self.chart().mapToValue(event.pos()).y()
+
+        maxX = self.axisX.max()
+        minX = self.axisX.min()
+        maxY = self.axisY.max()
+        minY = self.axisY.min()
+        if xVal <= maxX and  xVal >= minX and yVal <= maxY and yVal >= minY:
+            self.popup.move(self.mapToGlobal(placePopUp()))
+            self.popup.refresh(self, xVal, yVal)
+            self.popup.show()
+        else:
+            self.popup.hide()
+        self.popuplock.unlock()
+
+#    ## Return the value of the serie in x
+#    def series_value(self, x):
+#            for point in self.series[0].pointsVector():
+#                if point.x()>=x:
+#                    return point.y()
+
+#    ## Returns values from QSeries objects in an ordereddict d[x]=y, key is a dtaware
+#    def series_dictionary(self, serie):
+#        d=OrderedDict()
+#        for point in serie.pointsVector():
+#            d[point.x())]=point.y()
+#        return d
+
+    @pyqtSlot()
+    def on_marker_clicked(self):
+        marker=QObject.sender(self)#Busca el objeto que ha hecho la signal en el slot en el que está conectado, ya que estaban conectados varios objetos a una misma señal
+        marker.series().setVisible(not marker.series().isVisible())
+        marker.setVisible(True)
+        if marker.series().isVisible():
+            alpha = 1
+        else:
+            alpha=0.5
+
+        lbrush=marker.labelBrush()
+        color=lbrush.color()
+        color.setAlphaF(alpha)
+        lbrush.setColor(color)
+        marker.setLabelBrush(lbrush)
+
+        brush=marker.brush()
+        color=brush.color()
+        color.setAlphaF(alpha)
+        brush.setColor(color)
+        marker.setBrush(brush)
+        
+        pen=marker.pen()
+        color=pen.color()
+        color.setAlphaF(alpha)
+        pen.setColor(color)
+        marker.setPen(pen)
+
+
+
+    ## Used to display chart. You cannot use it twice. close the view widget and create another one
+    def display(self):
+        if self.__chart!=None:
+            del self.__chart
+        self.__chart=QChart()
+        self.setChart(self.__chart)
+        if self._animations==True:
+            self.chart().setAnimationOptions(QChart.AllAnimations);
+        else:
+            self.chart().setAnimationOptions(QChart.NoAnimation)
+        self.chart().layout().setContentsMargins(0,0,0,0)
+        self._display_set_title()
+
+        self._applyXFormat()
+        self._applyYFormat()
+        self.chart().addAxis(self.axisY, Qt.AlignLeft);
+        self.chart().addAxis(self.axisX, Qt.AlignBottom);
+
+        for s in self.series:
+            self.chart().addSeries(s)
+            s.attachAxis(self.axisX)
+            s.attachAxis(self.axisY)
+        self.axisY.setRange(self.miny, self.maxy)
+
+        #Legend positions
+        if len(self.chart().legend().markers())>6:
+            self.chart().legend().setAlignment(Qt.AlignLeft)
+        else:
+            self.chart().legend().setAlignment(Qt.AlignTop)
+
+        if self._allowHideSeries==True:
+            for marker in self.chart().legend().markers():
+                try:
+                    marker.clicked.disconnect()
+                except:
+                    pass
+                marker.clicked.connect(self.on_marker_clicked)
+        self.repaint()
+
+    ## Returns a qmenu to be used in other qmenus
+    def qmenu(self, title="Chart options"):
+        menu=QMenu(self)
+        menu.setTitle(self.tr(title))
+        menu.addAction(self.actionCopyToClipboard)
+        menu.addSeparator()
+        menu.addAction(self.actionSave)
+        return menu
+
+    ## If you use VCPieAlone you can add a context menu setting boolean to True
+    def setCustomContextMenu(self, boolean):
+        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+
+    def on_customContextMenuRequested(self, pos):
+        self.qmenu().exec_(self.mapToGlobal(pos))
+
+
+
+## Yo must:
+## 1. Create widget
+## 1. Append data
+## 1. Display
+
+## If you use clear, you must append data and display again
+
+class VCScatter(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.parent=parent
+        
+        self.lay=QHBoxLayout()
+        
+        self.layTable=QVBoxLayout()
+        
+        self.scatter=VCScatterAlone()
+        self.table=mqtw(self)
+        self.table.setGenericContextMenu()
+        self.table.hide()
+
+        self.lay.addWidget(self.scatter)
+        self.layTable.addWidget(self.table)
+        self.lay.addLayout(self.layTable)
+        self.setLayout(self.lay)
+
+        self.actionShowData=QAction(self.tr("Show chart data"))
+        self.actionShowData.setIcon(QIcon(":/reusingcode/database.png"))
+        self.actionShowData.triggered.connect(self.on_actionShowData_triggered)
+
+        self.scatter.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+
+    ## Returns if the Widget hasn't series loaded
+    def isEmpty(self):
+        if len(self.scatter.series)==0:
+            return True
+        return False
+
+    def setSettings(self, settings, settingsSection,  settingsObject):
+        self._settings=settings
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.setObjectName(self._settingsObject)
+        self.table.setSettings(self._settings, self._settingsSection, self._settingsObject+"_mqtw")
+
+    def settings(self):
+        return self._settings
+
+    def on_actionShowData_triggered(self):
+        if self.actionShowData.text()==self.tr("Show chart data"):
+            self.table.setMinimumSize(QSize(self.width()*3/8, self.height()*3/8))
+            self.table.show()
+            self.actionShowData.setText(self.tr("Hide chart data"))
+        else:
+            self.table.hide()
+            self.actionShowData.setText(self.tr("Show chart data"))
+
+    ## Returns a qmenu to be used in other qmenus
+    def qmenu(self, title="Scatter chart options"):
+        menu=QMenu(self)
+        menu.setTitle(self.tr(title))
+        menu.addAction(self.scatter.actionCopyToClipboard)
+        menu.addSeparator()
+        menu.addAction(self.scatter.actionSave)
+        menu.addSeparator()
+        menu.addAction(self.actionShowData)
+        return menu
+
+    def on_customContextMenuRequested(self, pos):
+        self.qmenu().exec_(self.mapToGlobal(pos))
+
+    ## Widget is restored to fabric, it's like instanciate a new one
+    def clear(self):
+        self.scatter.clear()
+        self.table.clear()
+
+    def display(self):
+        self.scatter.display()
+        return 
+#        hh=["Datetime"]
+#        #I create a dictionary con d[datetime]=(valor_serie0, valor_serie1)...
+#        unordered={}
+#        
+#        #Initiate dictionary
+#        for serie in self.scatter.series:
+#            hh.append(serie.name())
+#            for dt, value in self.scatter.series_dictionary(serie).items():
+#                unordered[dt]=[None]*len(self.scatter.series)
+#        
+#        d= OrderedDict(sorted(unordered.items(), key=lambda t: t[0]))
+#                
+#        #Filling
+#        for i, serie in enumerate(self.scatter.series):
+#            for dt, value in self.scatter.series_dictionary(serie).items():
+#                d[dt][i]=value           
+#
+#        data=[]
+#        for key, value in d.items():
+#            data.append((key, *value))
+#        self.table.setData(hh, None, data)
+#        self.table.drawOrderBy(0, False)
+#        self.table.on_actionSizeMinimum_triggered()
+#        self.table.settings().sync()
 
 class VCPieAlone(VCCommons):
     def __init__(self):
@@ -622,7 +936,7 @@ class MyPopup(QDialog):
                 self.lay.addLayout(layh)
             self.setLayout(self.lay)
             
-        self.lblPosition.setText("{}, {}".format(epochms2dtaware(xVal).date(), str(round(yVal,2))))
+        self.lblPosition.setText("{}, {}".format(str(round(xVal, 2)), str(round(yVal,2))))
         #Displaying values
         for i, serie in enumerate(self.vc.series):
             if serie.isVisible():
@@ -781,11 +1095,21 @@ def example():
     for k, v in d.items():
         wdgvcpie.pie.appendData(k, v)
     wdgvcpie.display()
+    
+    
+    #Scatter
+    wdgscatter=VCScatter(w)
+    wdgscatter.scatter.setTitle("Scatter chart")
+    wdgscatter.setSettings(settings, "example", "scatter")
+    wdgscatter.scatter.appendScatterSeries("Correlation", [1, 2, 3, 4, 5], [0, 2, 1, 3, 3])
+    wdgscatter.display()
+    
 
     #Widget
     lay=QHBoxLayout(w)
     lay.addWidget(vcts)
     lay.addWidget(wdgvcpie)
+    lay.addWidget(wdgscatter)
     w.resize(1500, 450)
     w.move(300, 300)
     w.setWindowTitle('myqcharts example')

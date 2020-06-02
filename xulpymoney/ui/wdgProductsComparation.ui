@@ -185,6 +185,9 @@
       </layout>
      </item>
      <item>
+      <widget class="VCScatter" name="viewScatter" native="true"/>
+     </item>
+     <item>
       <widget class="VCTemporalSeries" name="viewCompare" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -224,6 +227,12 @@
   </customwidget>
   <customwidget>
    <class>VCTemporalSeries</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCScatter</class>
    <extends>QWidget</extends>
    <header location="global">myqcharts</header>
    <container>1</container>
