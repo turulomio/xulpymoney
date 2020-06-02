@@ -100,6 +100,14 @@ class InvestingCom(QuoteManager):
             for row in csv_reader:
                 if line_count >0:#Ignores headers line
                     for product in self.mem.data.products.find_all_by_ticker(row[1], eTickerPosition.InvestingCom):
+                        ## Casos especiales por ticker repetido se compara con más información.
+                        if row[1]=="DE30" and row[2]=="DE":
+                            product=self.mem.data.products.find_by_id(78094)#DAX 30
+                            print("DAX30")
+                        elif row [1]=="DE30" and row[2]=="Eurex":
+                            product=self.mem.data.products.find_by_id(81752)#CFD DAX 30
+                            print("CDFDAX")
+                        
                         if row[16].find(":")==-1:#It's a date
                             try:
                                 quote=Quote(self.mem)

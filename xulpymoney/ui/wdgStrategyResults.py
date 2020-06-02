@@ -1,47 +1,72 @@
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QWidget, QInputDialog
+from PyQt5.QtWidgets import QWidget, QMenu
+from xulpymoney.objects.strategy import StrategyManager_all
 from xulpymoney.ui.Ui_wdgStrategyResults import Ui_wdgStrategyResults
-from xulpymoney.objects.strategy import StrategyManager_all, Strategy
+from xulpymoney.ui.myqdialog import MyModalQDialog
+from xulpymoney.ui.myqwidgets import qmessagebox_question
+from xulpymoney.ui.wdgStrategyResultsAdd import wdgStrategyResultsAdd
 
 class wdgStrategyResults(QWidget, Ui_wdgStrategyResults):
-    def __init__(self, mem,  parent = None, name = None):
-        QWidget.__init__(self,  parent)
+    def __init__(self, mem,  parent=None):
+        QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.parent=parent  
-        self.update_strategies(self.mem.settingsdb.value_integer("wdgStrategyResults/cmbStrategies", None))
-        
-    def update_strategies(self, strategy_id=None):
-        self.strategies=StrategyManager_all(self.mem)
-        self.strategies.order_by_name()
-        if strategy_id is not None:
-            self.strategies.selected=self.strategies.find_by_id(strategy_id)
-        else:
-            self.strategies.selected=None
-        self.strategies.qcombobox(self.cmbStrategies, self.strategies.selected)
-        
-        if self.strategies.selected is not None:
-        
-            self.wdgDtFrom.setLocalzone(self.mem.localzone_name)
-            self.wdgDtFrom.show_microseconds(False)
-            self.wdgDtTo.setLocalzone(self.mem.localzone_name)
-            self.wdgDtTo.show_microseconds(False)
-        
-        self.cmsInvestments.setManagers(self.mem.settings,"wdgStrategyResults", "cmsInvestments", self.mem.data.investments, None)
-        
-
-    @pyqtSlot(int)
-    def on_cmbLanguages_currentIndexChanged(self, index):
-        self.strategies.selected=self.strategies.find_by_id(self.cmbStrategies.itemData(index))
-        self.mem.settingsdb.setValue("wdgStrategyResults/cmbStrategies", self.strategies.selected.id )
-        self.update_strategies()
-
-    def on_cmdStrategyAdd_released(self):
-        self.strategies.selected=Strategy(self.mem)
-        self.strategies.selected.name=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Change name"))
-        self.strategies.selected.save()
-        self.strategies.append(self.strategies.selected)
-        self.mem.settingsdb.setValue("wdgStrategyResults/cmbStrategies", self.strategies.selected.id )
+        self.mqtwStrategies.setSettings(self.mem.settings, "wdgStrategyResults", "mqtwStrategies")
+        self.mqtwStrategies.table.customContextMenuRequested.connect(self.on_mqtwStrategies_customContextMenuRequested) 
+        self.update()
+         
+    @pyqtSlot()  
+    def on_actionStrategyNew_triggered(self):
+        d=MyModalQDialog(self)
+        d.setWindowTitle(self.tr("Add new strategy"))
+        d.setSettings(self.mem.settings, "wdgStrategyResults", "wdgStrategyResultsAdd_dialog", 600, 400)
+        w=wdgStrategyResultsAdd(self.mem, None, d)
+        d.setWidgets(w)
+        d.exec_() 
         self.update()
         
+    @pyqtSlot()  
+    def on_actionStrategyEdit_triggered(self):
+        d=MyModalQDialog(self)
+        d.setWindowTitle(self.tr("Edit a strategy"))
+        d.setSettings(self.mem.settings, "wdgStrategyResults", "wdgStrategyResultsAdd_dialog", 600, 400)
+        w=wdgStrategyResultsAdd(self.mem, self.mqtwStrategies.selected, d)
+        d.setWidgets(w)
+        d.exec_()
+        self.update()
+
+    @pyqtSlot()  
+    def on_actionStrategyDelete_triggered(self):
+        if qmessagebox_question(self.tr("Do you want to delete this strategy?")) is True:
+            self.mqtwStrategies.selected.delete()
+        self.mem.con.commit()
+        self.update()
+
+    def on_txtName_textChanged(self):
+        self.update()
+        
+    def on_chkFinished_stateChanged(self, state):
+        self.update()
+
+    def on_mqtwStrategies_customContextMenuRequested(self,  pos):
+        if self.mqtwStrategies.selected==None:
+            self.actionStrategyDelete.setEnabled(False)
+            self.actionStrategyEdit.setEnabled(False)
+        else:
+            self.actionStrategyDelete.setEnabled(True)
+            self.actionStrategyEdit.setEnabled(True)
+
+        menu=QMenu()
+        menu.addAction(self.actionStrategyNew)
+        menu.addSeparator()
+        menu.addAction(self.actionStrategyEdit)
+        menu.addAction(self.actionStrategyDelete)
+        menu.addSeparator()
+        menu.addMenu(self.mqtwStrategies.qmenu())
+        menu.exec_(self.mqtwStrategies.table.mapToGlobal(pos))
+        
+        
+    def update(self):
+        self.strategies=StrategyManager_all(self.mem)
+        self.strategies.myqtablewidget(self.mqtwStrategies, self.chkFinished.isChecked())
         

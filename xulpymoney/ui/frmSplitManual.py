@@ -47,7 +47,6 @@ class frmSplitManual(QDialog, Ui_frmSplitManual):
         except:
             self.lblExample.setText("")
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(False)
-        
 
     def on_wdgDtEnd_changed(self):
         self.generateExample()

@@ -130,7 +130,7 @@ class wdgManagerSelector(QWidget):
         self.mqtwSelected.applySettings() 
         self.mqtwSelected.table.setRowCount(self.selected.length())
         for i, o in enumerate(self.selected.arr):
-            self.mqtwSelected.table.setItem(i, 0, QTableWidgetItem(str(o)))
+            self.mqtwSelected.table.setItem(i, 0, QTableWidgetItem(str(o.fullName())))
             if self._showObjectIcons==True:
                 self.mqtwSelected.table.item(i, 0).setIcon(o.qicon())
         
@@ -140,7 +140,7 @@ class wdgManagerSelector(QWidget):
         self.mqtw.applySettings()
         self.mqtw.table.setRowCount(self.manager.length())
         for i, o in enumerate(self.manager.arr):
-            self.mqtw.table.setItem(i, 0, QTableWidgetItem(str(o)))
+            self.mqtw.table.setItem(i, 0, QTableWidgetItem(str(o.fullName())))
             if self._showObjectIcons==True:
                 self.mqtw.table.item(i, 0).setIcon(o.qicon())
 
