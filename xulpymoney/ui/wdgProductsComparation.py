@@ -1,5 +1,3 @@
-from PyQt5.QtChart import QValueAxis
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from datetime import datetime
 from xulpymoney.ui.myqtablewidget import mqtw
@@ -31,10 +29,27 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
 
         self.viewCompare.setSettings(self.mem.settings, "wdgProductsComparation", "viewCompare")
         self.viewScatter.setSettings(self.mem.settings, "wdgProductsComparation", "viewScatter")
-        self.viewScatter.hide()
+        self.viewTwoAxis.setSettings(self.mem.settings, "wdgProductsComparation", "viewTwoAxis")
 
         self.cmbCompareTypes.setCurrentIndex(int(self.mem.settings.value("wdgProductsComparation/cmbCompareTypes", "0")))
         self.comparation=None
+        self.__hide_or_show_views()
+
+
+    def __hide_or_show_views(self):
+        if self.cmbCompareTypes.currentIndex() in (3, 4, 5, 6, 7):
+            self.viewCompare.show()
+            self.viewScatter.hide()
+            self.viewTwoAxis.hide()
+        elif self.cmbCompareTypes.currentIndex() in (0, ):
+            self.viewCompare.hide()
+            self.viewScatter.hide()
+            self.viewTwoAxis.show()
+        else:
+            self.viewCompare.hide()
+            self.viewScatter.show()
+            self.viewTwoAxis.hide()
+        
 
     def on_cmdComparation_released(self):
         inicio=datetime.now()
@@ -42,7 +57,7 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             qmessagebox(self.tr("You must select a product to compare with"))
             return
         self.comparation=ProductComparation(self.mem, self.selector1.selected, self.selector2.selected)
-        self.viewCompare.clear()
+
         if self.comparation.canBeMade()==False:
             qmessagebox(self.tr("Comparation can't be made."))
             return
@@ -51,50 +66,37 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.deCompare.setMaximumDate(self.comparation.dates()[len(self.comparation.dates())-1-1])#Es menos 2, ya que hay alguna funcion de comparation que lo necesita
         self.comparation.setFromDate(self.deCompare.date())
 
-        ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
-        ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
-        if self.cmbCompareTypes.currentIndex()==0:#Not changed data
-            self.viewCompare.show()
-            self.viewScatter.hide()
+        self.__hide_or_show_views()
+        
+        if self.cmbCompareTypes.currentIndex()==0:#Not changed data        
+            self.viewTwoAxis.clear()
+            ls1=self.viewTwoAxis.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewTwoAxis.ts.appendTemporalSeriesAxis2(self.comparation.product2.name.upper())#Line seies
 
             dates=self.comparation.dates()
             closes1=self.comparation.product1Closes()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
-                self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
-                self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
+                self.viewTwoAxis.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
+                self.viewTwoAxis.ts.appendTemporalSeriesDataAxis2(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
+            self.viewTwoAxis.display()
+
+
+        elif self.cmbCompareTypes.currentIndex()==1:#Scatter prices
+            self.viewScatter.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
+            self.viewScatter.scatter.setTitle("Scatter chart")
+            self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1Closes(), self.comparation.product2Closes())
+            self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
+            self.viewScatter.scatter.setYFormat("float", self.comparation.product2.name)
+            self.viewScatter.display()
             
-            # BEGIN DISPLAY)
-            self.viewCompare.ts.setAxisFormat(self.viewCompare.ts.axisX, self.viewCompare.ts.minx, self.viewCompare.ts.maxx, 1)
-            self.viewCompare.ts.setAxisFormat(self.viewCompare.ts.axisY, min(self.comparation.product1Closes()), max(self.comparation.product1Closes()),  0)
-            axis3=QValueAxis()
-            self.viewCompare.ts.chart().addAxis(self.viewCompare.ts.axisY, Qt.AlignLeft);
-            self.viewCompare.ts.chart().addAxis(self.viewCompare.ts.axisX, Qt.AlignBottom);
-            self.viewCompare.ts.chart().addAxis(axis3, Qt.AlignRight)
-
-            self.viewCompare.ts.chart().addSeries(ls1)
-            ls1.attachAxis(self.viewCompare.ts.axisX)
-            ls1.attachAxis(self.viewCompare.ts.axisY)
-            self.viewCompare.ts.axisY.setRange(min(self.comparation.product1Closes()), max(self.comparation.product1Closes()))
-
-            self.viewCompare.ts.chart().addSeries(ls2)
-            ls2.attachAxis(self.viewCompare.ts.axisX)
-            ls2.attachAxis(axis3)
-            axis3.setRange (min(self.comparation.product2Closes()), max(self.comparation.product2Closes()))
-
-            if self.viewCompare.ts._allowHideSeries==True:
-                for marker in self.viewCompare.ts.chart().legend().markers():
-                    try:
-                        marker.clicked.disconnect()
-                    except:
-                        pass
-                    marker.clicked.connect(self.viewCompare.ts.on_marker_clicked)
-
-            self.viewCompare.display()
-
-        elif self.cmbCompareTypes.currentIndex()==1:#Scatter
-            self.viewCompare.hide()
-            self.viewScatter.show()    
+            
+        elif self.cmbCompareTypes.currentIndex()==2:#Scatter daily gains percentage
+            self.viewScatter.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1PercentageEvolution(), self.comparation.product2PercentageEvolution())
             self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
@@ -102,9 +104,10 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewScatter.display()
 
 
-        elif self.cmbCompareTypes.currentIndex()==2:#Controlling percentage evolution.
-            self.viewCompare.show()
-            self.viewScatter.hide()
+        elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution.
+            self.viewCompare.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2Price()
             closes2=self.comparation.product2Closes()
@@ -112,9 +115,12 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
-        elif self.cmbCompareTypes.currentIndex()==3:#Controlling percentage evolution reducing leverage.
-            self.viewCompare.show()
-            self.viewScatter.hide()
+
+
+        elif self.cmbCompareTypes.currentIndex()==4:#Controlling percentage evolution reducing leverage.
+            self.viewCompare.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
@@ -122,9 +128,12 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
-        elif self.cmbCompareTypes.currentIndex()==4:#Controlling inverse percentage evolution.
-            self.viewCompare.show()
-            self.viewScatter.hide()
+
+
+        elif self.cmbCompareTypes.currentIndex()==5:#Controlling inverse percentage evolution.
+            self.viewCompare.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePrice()
             closes2=self.comparation.product2Closes()
@@ -132,15 +141,30 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
                 self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
             self.viewCompare.display()
-        elif self.cmbCompareTypes.currentIndex()==5:#Controlling inverse percentage evolution reducing leverage.
-            self.viewCompare.show()
-            self.viewScatter.hide()
+        
+        
+        elif self.cmbCompareTypes.currentIndex()==6:#Controlling inverse percentage evolution reducing leverage.
+            self.viewCompare.clear()
+            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             dates=self.comparation.dates()
             closes1=self.comparation.product1PercentageFromFirstProduct2InversePriceLeveragedReduced()
             closes2=self.comparation.product2Closes()
             for i,  date in enumerate(dates):
                 self.viewCompare.ts.appendTemporalSeriesData(ls1, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes1[i])
                 self.viewCompare.ts.appendTemporalSeriesData(ls2, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i])
+            self.viewCompare.display()
+
+        elif self.cmbCompareTypes.currentIndex()==7:# Spreading prices joining first scaling.
+            self.viewCompare.clear()
+            ls=self.viewCompare.ts.appendTemporalSeries(self.tr("Spread of {} - {}").format(self.comparation.product1.name, self.comparation.product2.name))#Line seies
+            dates=self.comparation.dates()
+            closes1=self.comparation.product1Closes()
+            closes2=self.comparation.product2Closes()
+            multiplier=closes1[0]/closes2[0]
+            for i,  date in enumerate(dates):
+                print(date, closes1[i], closes2[i], closes2[i]*multiplier-closes1[i], multiplier)
+                self.viewCompare.ts.appendTemporalSeriesData(ls, dtaware_day_end_from_date(date, self.mem.localzone_name) , closes2[i]*multiplier-closes1[i])
             self.viewCompare.display()
 
         self.mem.settings.setValue("wdgProductsComparation/product1", str(self.comparation.product1.id))

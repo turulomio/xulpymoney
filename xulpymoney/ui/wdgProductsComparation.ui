@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>967</width>
+    <width>1074</width>
     <height>261</height>
    </rect>
   </property>
@@ -62,7 +62,7 @@
        <item>
         <widget class="QComboBox" name="cmbCompareTypes">
          <property name="currentIndex">
-          <number>-1</number>
+          <number>0</number>
          </property>
          <property name="sizeAdjustPolicy">
           <enum>QComboBox::AdjustToContents</enum>
@@ -73,12 +73,21 @@
           </property>
           <property name="icon">
            <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
           </property>
          </item>
          <item>
           <property name="text">
            <string>Scattering product prices</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Scattering product daily gains percentage</string>
           </property>
           <property name="icon">
            <iconset resource="../images/xulpymoney.qrc">
@@ -119,6 +128,15 @@
           <property name="icon">
            <iconset resource="../images/xulpymoney.qrc">
             <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Spread of prices joining first value with multiplier</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
           </property>
          </item>
         </widget>
@@ -198,6 +216,9 @@
       </widget>
      </item>
      <item>
+      <widget class="VCTemporalSeriesWithTwoYAxis" name="viewTwoAxis" native="true"/>
+     </item>
+     <item>
       <widget class="QLabel" name="lblCorrelation">
        <property name="font">
         <font>
@@ -233,6 +254,12 @@
   </customwidget>
   <customwidget>
    <class>VCScatter</class>
+   <extends>QWidget</extends>
+   <header location="global">myqcharts</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCTemporalSeriesWithTwoYAxis</class>
    <extends>QWidget</extends>
    <header location="global">myqcharts</header>
    <container>1</container>

@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgProductsComparation(object):
     def setupUi(self, wdgProductsComparation):
         wdgProductsComparation.setObjectName("wdgProductsComparation")
-        wdgProductsComparation.resize(967, 261)
+        wdgProductsComparation.resize(1074, 261)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(wdgProductsComparation)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -50,10 +50,12 @@ class Ui_wdgProductsComparation(object):
         self.cmbCompareTypes.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.cmbCompareTypes.setObjectName("cmbCompareTypes")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/eye.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/xulpymoney/eye_red.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cmbCompareTypes.addItem(icon, "")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/xulpymoney/eye_red.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/xulpymoney/eye.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.cmbCompareTypes.addItem(icon1, "")
+        self.cmbCompareTypes.addItem(icon, "")
         self.cmbCompareTypes.addItem(icon1, "")
         self.cmbCompareTypes.addItem(icon, "")
         self.cmbCompareTypes.addItem(icon1, "")
@@ -103,6 +105,9 @@ class Ui_wdgProductsComparation(object):
         self.viewCompare.setSizePolicy(sizePolicy)
         self.viewCompare.setObjectName("viewCompare")
         self.verticalLayout.addWidget(self.viewCompare)
+        self.viewTwoAxis = VCTemporalSeriesWithTwoYAxis(wdgProductsComparation)
+        self.viewTwoAxis.setObjectName("viewTwoAxis")
+        self.verticalLayout.addWidget(self.viewTwoAxis)
         self.lblCorrelation = QtWidgets.QLabel(wdgProductsComparation)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -116,7 +121,7 @@ class Ui_wdgProductsComparation(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(wdgProductsComparation)
-        self.cmbCompareTypes.setCurrentIndex(-1)
+        self.cmbCompareTypes.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(wdgProductsComparation)
 
     def retranslateUi(self, wdgProductsComparation):
@@ -126,14 +131,16 @@ class Ui_wdgProductsComparation(object):
         self.label_2.setText(_translate("wdgProductsComparation", "Select a method to compare"))
         self.cmbCompareTypes.setItemText(0, _translate("wdgProductsComparation", "Not changed data"))
         self.cmbCompareTypes.setItemText(1, _translate("wdgProductsComparation", "Scattering product prices"))
-        self.cmbCompareTypes.setItemText(2, _translate("wdgProductsComparation", "Controling percentage evolution"))
-        self.cmbCompareTypes.setItemText(3, _translate("wdgProductsComparation", "Controlling percentage evolution. Leveraged reduced"))
-        self.cmbCompareTypes.setItemText(4, _translate("wdgProductsComparation", "Controling inverse percentage evolution"))
-        self.cmbCompareTypes.setItemText(5, _translate("wdgProductsComparation", "Controling inverse percentage evolultion. Leveraged reduced"))
+        self.cmbCompareTypes.setItemText(2, _translate("wdgProductsComparation", "Scattering product daily gains percentage"))
+        self.cmbCompareTypes.setItemText(3, _translate("wdgProductsComparation", "Controling percentage evolution"))
+        self.cmbCompareTypes.setItemText(4, _translate("wdgProductsComparation", "Controlling percentage evolution. Leveraged reduced"))
+        self.cmbCompareTypes.setItemText(5, _translate("wdgProductsComparation", "Controling inverse percentage evolution"))
+        self.cmbCompareTypes.setItemText(6, _translate("wdgProductsComparation", "Controling inverse percentage evolultion. Leveraged reduced"))
+        self.cmbCompareTypes.setItemText(7, _translate("wdgProductsComparation", "Spread of prices joining first value with multiplier"))
         self.label_7.setText(_translate("wdgProductsComparation", "From date"))
         self.deCompare.setDisplayFormat(_translate("wdgProductsComparation", "yyyy-MM-dd"))
         self.cmdComparationData.setToolTip(_translate("wdgProductsComparation", "Shows comparation data"))
         self.cmdComparation.setText(_translate("wdgProductsComparation", "Compare"))
-from xulpymoney.ui.myqcharts import VCScatter, VCTemporalSeries
+from xulpymoney.ui.myqcharts import VCScatter, VCTemporalSeries, VCTemporalSeriesWithTwoYAxis
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

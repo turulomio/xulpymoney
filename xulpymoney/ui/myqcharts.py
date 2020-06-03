@@ -142,8 +142,8 @@ class VCTemporalSeriesAlone(VCCommons):
 
     ## To clean pie, removes serie and everithing is like create an empty pie
     def clear(self):
-        self.__chart=QChart()
-        self.setChart(self.__chart)
+        self._chart=QChart()
+        self.setChart(self._chart)
         self.setRenderHint(QPainter.Antialiasing)
         self._allowHideSeries=True
 
@@ -354,12 +354,12 @@ class VCTemporalSeriesAlone(VCCommons):
 
     ## Used to display chart. You cannot use it twice. close the view widget and create another one
     def display(self):
-        if self.__chart!=None:
-            del self.__chart
-        self.__chart=QChart()
-        self.setChart(self.__chart)
+        if self._chart!=None:
+            del self._chart
+        self._chart=QChart()
+        self.setChart(self._chart)
         if self._animations==True:
-            self.chart().setAnimationOptions(QChart.AllAnimations);
+            self.chart().setAnimationOptions(QChart.AllAnimations)
         else:
             self.chart().setAnimationOptions(QChart.NoAnimation)
         self.chart().layout().setContentsMargins(0,0,0,0)
@@ -367,8 +367,8 @@ class VCTemporalSeriesAlone(VCCommons):
 
         self._applyXFormat()
         self._applyYFormat()
-        self.chart().addAxis(self.axisY, Qt.AlignLeft);
-        self.chart().addAxis(self.axisX, Qt.AlignBottom);
+        self.chart().addAxis(self.axisY, Qt.AlignLeft)
+        self.chart().addAxis(self.axisX, Qt.AlignBottom)
 
         for s in self.series:
             self.chart().addSeries(s)
@@ -513,6 +513,117 @@ class VCTemporalSeries(QWidget):
         self.table.settings().sync()
         
 
+class VCTemporalSeriesWithTwoYAxisAlone(VCTemporalSeriesAlone):
+    def __init__(self):
+        VCTemporalSeriesAlone.__init__(self)
+        self.series2=[]
+        self._y2_format="Decimal"
+        self._y2_decimals=2
+        self._y2_title=""
+
+    ## To clean pie, removes serie and everithing is like create an empty pie
+    def clear(self):
+        VCTemporalSeriesAlone.clear(self)
+        self.axisY2 = QValueAxis()
+        self.maxy2=None
+        self.miny2=None
+
+        
+    def appendTemporalSeriesAxis2(self, name):
+        ls=QLineSeries()
+        ls.setName(name)
+        self.series2.append(ls)
+        return ls
+
+
+    def setY2Format(self, stringtype,   title="", decimals=2):
+        self._y2_format=stringtype
+        self._y2_decimals=decimals
+        self._y2_title=title
+        
+    def appendTemporalSeriesDataAxis2(self, ls, x, y):
+        x=dtaware2epochms(x)
+        x=float(x)
+        y=float(y)
+        ls.append(x, y)
+
+        if self.maxy2==None:#Gives first maxy and miny
+            self.maxy2=y*1.01
+            self.miny2=y*0.99
+            self.maxx=x*1.01
+            self.minx=x*0.99
+            
+        if y>self.maxy2:
+            self.maxy2=y
+        if y<self.miny2:
+            self.miny2=y
+        if x>self.maxx:
+            self.maxx=x
+        if x<self.minx:
+            self.minx=x
+
+
+    def _applyY2Format(self):
+        self.axisY2.setTitleText(self._y2_title)
+        if self._y2_format=="int":
+            self.axisY2.setLabelFormat("%i")
+        elif self._y2_format in ["float", "Decimal"]:
+            self.axisY2.setLabelFormat("%.{}f".format(self._y2_decimals))
+
+    ## Used to display chart. You cannot use it twice. close the view widget and create another one
+    def display(self):
+        if self._chart!=None:
+            del self._chart
+        self._chart=QChart()
+        self.setChart(self._chart)
+        if self._animations==True:
+            self.chart().setAnimationOptions(QChart.AllAnimations);
+        else:
+            self.chart().setAnimationOptions(QChart.NoAnimation)
+        self.chart().layout().setContentsMargins(0,0,0,0)
+        self._display_set_title()
+
+        self._applyXFormat()
+        self._applyYFormat()
+        self._applyY2Format()
+        self.chart().addAxis(self.axisY, Qt.AlignLeft)
+        self.chart().addAxis(self.axisX, Qt.AlignBottom)
+        self.chart().addAxis(self.axisY2, Qt.AlignRight)
+
+        for s in self.series:
+            self.chart().addSeries(s)
+            s.attachAxis(self.axisX)
+            s.attachAxis(self.axisY)
+        self.axisY.setRange(self.miny, self.maxy)
+
+        for s in self.series2:
+            self.chart().addSeries(s)
+            s.attachAxis(self.axisX)
+            s.attachAxis(self.axisY2)
+        self.axisY2.setRange(self.miny2, self.maxy2)
+
+        #Legend positions
+        if len(self.chart().legend().markers())>6:
+            self.chart().legend().setAlignment(Qt.AlignLeft)
+        else:
+            self.chart().legend().setAlignment(Qt.AlignTop)
+
+        if self._allowHideSeries==True:
+            for marker in self.chart().legend().markers():
+                try:
+                    marker.clicked.disconnect()
+                except:
+                    pass
+                marker.clicked.connect(self.on_marker_clicked)
+        self.repaint()
+
+class VCTemporalSeriesWithTwoYAxis(VCTemporalSeries):
+    def __init__(self,parent=None):
+        VCTemporalSeries.__init__(self,parent)
+        self.lay.removeWidget(self.ts)
+        
+        self.ts=VCTemporalSeriesWithTwoYAxisAlone()
+        self.lay.addWidget(self.ts)
 
 class VCScatterAlone(VCCommons):
     def __init__(self):
@@ -528,8 +639,8 @@ class VCScatterAlone(VCCommons):
 
     ## To clean pie, removes serie and everithing is like create an empty pie
     def clear(self):
-        self.__chart=QChart()
-        self.setChart(self.__chart)
+        self._chart=QChart()
+        self.setChart(self._chart)
         self.setRenderHint(QPainter.Antialiasing)
         self._allowHideSeries=True
 
@@ -677,10 +788,10 @@ class VCScatterAlone(VCCommons):
 
     ## Used to display chart. You cannot use it twice. close the view widget and create another one
     def display(self):
-        if self.__chart!=None:
-            del self.__chart
-        self.__chart=QChart()
-        self.setChart(self.__chart)
+        if self._chart!=None:
+            del self._chart
+        self._chart=QChart()
+        self.setChart(self._chart)
         if self._animations==True:
             self.chart().setAnimationOptions(QChart.AllAnimations);
         else:
@@ -853,8 +964,8 @@ class VCPieAlone(VCCommons):
     
     ## To clean pie, removes serie and everithing is like create an empty pie
     def clear(self):
-        self.__chart=QChart()
-        self.setChart(self.__chart)
+        self._chart=QChart()
+        self.setChart(self._chart)
         self.setRenderHint(QPainter.Antialiasing)
         self.data=[]
         self.serie=QPieSeries()
@@ -1114,16 +1225,41 @@ def example():
     wdgscatter.setSettings(settings, "example", "scatter")
     wdgscatter.scatter.appendScatterSeries("Correlation", [1, 2, 3, 4, 5], [0, 2, 1, 3, 3])
     wdgscatter.display()
+    print("SEGUNDO")
+    wdgscatter.clear()
+    wdgscatter.scatter.setTitle("Scatter chart")
+    wdgscatter.setSettings(settings, "example", "scatter")
+    wdgscatter.scatter.appendScatterSeries("Correlation", [1, 2, 3, 4, 5], [0, 2, 1, 3, 3])
+    wdgscatter.display()
     
+
+    #Temporal series two axis
+    vcts2=VCTemporalSeriesWithTwoYAxis(w)
+    vcts2.ts.setTitle("Example of VCTemporalSeries with two axis")
+    vcts2.setSettings(settings, "example", "vcts2")
+    vcts2.ts.setXFormat("auto", "Time")
+    vcts2.ts.setYFormat("EUR", "Money (€)" , decimals=2)
+    vcts2.ts.setY2Format("EUR", "Money (€)" , decimals=2)
+    sBasic=vcts2.ts.appendTemporalSeries("Basic")
+    for i in range(20):
+        vcts2.ts.appendTemporalSeriesData(sBasic, datetime.now()+timedelta(days=i),  i % 5)
+    sBasic2=vcts2.ts.appendTemporalSeriesAxis2("Basic 2")
+    for i in range(20):
+        vcts2.ts.appendTemporalSeriesDataAxis2(sBasic2, datetime.now()+timedelta(days=i),  i % 8)
+    vcts2.display()
+
 
     #Widget
     lay=QHBoxLayout(w)
     lay.addWidget(vcts)
     lay.addWidget(wdgvcpie)
     lay.addWidget(wdgscatter)
+    lay.addWidget(vcts2)
     w.resize(1500, 450)
     w.move(300, 300)
     w.setWindowTitle('myqcharts example')
     w.show()
     
+
+
     app.exec()
