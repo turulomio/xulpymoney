@@ -49,6 +49,14 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             self.teTime.setDisplayFormat("HH:mm:ss")
         else:
             self.teTime.setDisplayFormat("HH:mm")
+            
+    ## Sets if chkNone is showed
+    ## @param show Boolean
+    def show_none(self, show):
+        if show is True:
+            self.chkNone.show()
+        else:
+            self.chkNone.hide()
 
     def show_timezone(self, show):
         """Hiding this all zones will have localzone defined in self.mem.localzone"""
@@ -97,11 +105,15 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.changed.emit()
 
     def date(self):
-        return self.teDate.selectedDate().toPyDate()
-
+        if self.chkNone.isChecked():
+            return None
+        else:
+            return self.teDate.selectedDate().toPyDate()
 
     ## Returns a dtaware datetime or None if something is wrong
     def datetime(self):
+        if self.chkNone.isChecked():
+            return None
         #qt only miliseconds
         time=self.teTime.time().toPyTime()
         time=time.replace(microsecond=self.teMicroseconds.value())
@@ -115,6 +127,15 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             return dtaware(self.teDate.selectedDate().toPyDate(), time , zone)
         except:
             return None
+            
+    def on_chkNone_stateChanged(self, state):
+            self.teDate.setEnabled(not self.chkNone.isChecked())
+            self.teMicroseconds.setEnabled(not self.chkNone.isChecked())
+            self.teTime.setEnabled(not self.chkNone.isChecked())
+            self.cmbZone.setEnabled(not self.chkNone.isChecked())
+            self.cmdNow.setEnabled(not self.chkNone.isChecked())
+            self.updateTooltip()
+            self.changed.emit()
         
     def on_teDate_selectionChanged(self):
         self.updateTooltip()

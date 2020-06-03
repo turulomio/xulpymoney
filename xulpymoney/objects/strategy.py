@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from datetime import timedelta
 from xulpymoney.casts import list2string, string2list_of_integers
 from xulpymoney.libmanagers import ObjectManager_With_IdName_Selectable
 from xulpymoney.objects.dividend import DividendHeterogeneusManager
@@ -33,9 +34,10 @@ class Strategy(QObject):
     def delete(self):
         self.mem.con.execute("delete from strategies where id=%s", (self.id, ))
         
-    def __dt_to_for_comparations(self):
+    ## Replaces None for dt_to and sets a very big datetine
+    def dt_to_for_comparations(self):
         if self.dt_to is None:
-            return self.mem.localzone_now()
+            return self.mem.localzone_now()+timedelta(days=365*100)
         return self.dt_to
             
         
@@ -45,7 +47,7 @@ class Strategy(QObject):
         for inv in self.investments:
             inv.needStatus(3)
             for o in inv.dividends:
-                if self.dt_from<=o.datetime and o.datetime<=self.__dt_to_for_comparations():
+                if self.dt_from<=o.datetime and o.datetime<=self.dt_to_for_comparations():
                     r.append(o)
         return r          
 
@@ -54,7 +56,7 @@ class Strategy(QObject):
         r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         for inv in self.investments:
             for o in inv.op_actual:
-                if self.dt_from<=o.datetime and o.datetime<=self.__dt_to_for_comparations():
+                if self.dt_from<=o.datetime and o.datetime<=self.dt_to_for_comparations():
                     r.append(o)
         return r        
         
@@ -63,7 +65,7 @@ class Strategy(QObject):
         r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
         for inv in self.investments:
             for o in inv.op_historica:
-                if self.dt_from.date()<=o.fecha_venta and o.fecha_venta<=self.__dt_to_for_comparations().date():
+                if self.dt_from.date()<=o.fecha_venta and o.fecha_venta<=self.dt_to_for_comparations().date():
                     r.append(o)
         return r
 
@@ -104,12 +106,12 @@ class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):
     def myqtablewidget_additional(self, wdg):
         for i, o in enumerate(wdg.objects()):            
             if wdg.auxiliar is True:#Only finished
-                if o.dt_to is None or o.dt_to>self.mem.localzone_now(): #Hides active or inactive when necesary
-                    wdg.table.hideRow(i)
-                else:
+                if o.dt_to is not None:
                     wdg.table.showRow(i)
+                else:
+                    wdg.table.hideRow(i)
             else:# Current strategies
-                if o.dt_from is None or o.dt_to>self.mem.localzone_now():
+                if o.dt_to is None:
                     wdg.table.showRow(i)
                 else:
                     wdg.table.hideRow(i)
