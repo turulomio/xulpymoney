@@ -125,6 +125,7 @@ class Reusing(Command):
         path.append("xulpymoney")
         from github import download_from_github
         download_from_github('turulomio','reusingcode','python/admin_pg.py', 'xulpymoney')
+        download_from_github('turulomio','reusingcode','python/call_by_name.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/libmanagers.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/connection_pg.py', 'xulpymoney')
         download_from_github('turulomio','reusingcode','python/connection_pg_qt.py', 'xulpymoney')

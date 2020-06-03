@@ -7,6 +7,7 @@
 from datetime import datetime, timedelta, date
 from logging import critical, debug
 from .datetime_functions import dtaware_day_end_from_date, dtaware_day_start_from_date, dtnaive_day_end_from_date, dtnaive_day_start_from_date
+from .call_by_name import call_by_name
 
 ## Defines who self.selected is managed
 ## If can take the following values
@@ -89,12 +90,12 @@ class ObjectManager(object):
         nonull=[]
         null=[]
         for o in self.arr:
-            com=self._string_or_tuple_to_command(o, string_or_tuple)
+            com=call_by_name(o, string_or_tuple)
             if com is None:
                 null.append(o)
             else:
                 nonull.append(o)
-        nonull=sorted(nonull, key=lambda c: self._string_or_tuple_to_command(c,string_or_tuple), reverse=reverse)
+        nonull=sorted(nonull, key=lambda c: call_by_name(c,string_or_tuple), reverse=reverse)
         if none_at_top==True:#Set None at top of the list
             self.arr=null+nonull
         else:
@@ -110,7 +111,7 @@ class ObjectManager(object):
         for o in self.arr:
             string_=""
             for string_or_tuple in string_or_tuple_list:
-                string_=string_+str(self._string_or_tuple_to_command(o, string_or_tuple))
+                string_=string_+str(call_by_name(o, string_or_tuple))
                 
             for s in s_list:
                 if upper==True:
@@ -127,33 +128,12 @@ class ObjectManager(object):
         r=self.emptyManager()
         for o in self.arr:
             if upper==True:
-                if s.upper() == self._string_or_tuple_to_command(o, string_or_tuple).upper():
+                if s.upper() == call_by_name(o, string_or_tuple).upper():
                     r.append(o)
             else:#upper False
-                if s == self._string_or_tuple_to_command(o, string_or_tuple):
+                if s == call_by_name(o, string_or_tuple):
                     r.append(o)
         return r
-
-    ## @param attribute str or list
-    ## Class Person, has self.name, self.age(), self.age_years_ago(year) self.son (another Person object)
-    ## manager_attributes of setDataFromManager must be called in a PersonManager
-    ## - ["name", ["age",[]], ["age_years_ago", [year]], ["son.age",[]]
-    def _string_or_tuple_to_command(self, o, string_or_tuple):
-        ## Returns an object 
-        def string_with_points(o, string_):
-            for s in string_.split("."): # With .
-                if "()" in s:#object.method1().attirbute
-                    o=getattr(o, s)()
-                else:#object.attribute1
-                    o=getattr(o, s)
-            return o
-        # --------------------------------------
-        if string_or_tuple.__class__.__name__=="str":
-            return string_with_points(o, string_or_tuple)
-        else:#List
-            function=string_with_points(o, string_or_tuple[0])
-            parameters=string_or_tuple[1]
-            return function(*parameters)
 
 ## Manager Selection class
 ## By default selectionmode is
@@ -396,8 +376,8 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
             else:
                 combo.addItem(combo.tr("No options to select"), None)
         for a in self.arr:
-            id_  =self._string_or_tuple_to_command(a, id_attr)
-            name_=self._string_or_tuple_to_command(a, name_attr)
+            id_  =call_by_name(a, id_attr)
+            name_=call_by_name(a, name_attr)
             if icons==True:
                 combo.addItem(a.qicon(), name_, id_)
             else:
@@ -437,8 +417,7 @@ class ObjectManager_With_IdName(ObjectManager_With_Id):
         for number, o in enumerate(self.arr):
             s.add(Coord("A2").addRow(number), o.id, "WhiteRight")        
             s.add(Coord("B2").addRow(number), o.name, "WhiteLeft")
-        s.setSplitPosition("A1")
-        s.setCursorPosition(Coord("B2").addRow(self.length()))
+        s.freezeAndSelect("A1")
         return s
 
 ## Usefull when creating a class with two attributes self.id and self.name only

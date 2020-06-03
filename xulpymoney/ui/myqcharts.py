@@ -184,6 +184,17 @@ class VCTemporalSeriesAlone(VCCommons):
         if x<self.minx:
             self.minx=x
 
+    ## Used to draw poinnts in a temporal series
+    def appendScatterSeries(self, name):
+        ls=QScatterSeries()
+        ls.setName(name)
+        self.series.append(ls)
+        return ls
+
+    def appendScatterSeriesData(self, ls, x, y):
+        self.appendTemporalSeriesData(ls, x, y)
+
+
     ## @param stringtype is one of the types in casts.value2object. Can be auto too to auto select best datetime format
     def setXFormat(self, stringtype, title="",  zone_name="UTC", tickcount=8):
         self._x_format=stringtype

@@ -4,6 +4,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot, QObject,  pyqtSignal
 from PyQt5.QtGui import QKeySequence, QColor, QIcon, QBrush, QFont
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog,  QTableWidgetItem, QWidget, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QAction, QMenu, QToolButton, QAbstractItemView
+from .. call_by_name import call_by_name
 from .. datetime_functions import dtaware2string, dtaware_changes_tz, time2string
 from .. libmanagers import ManagerSelectionMode
 from .. casts import lor_remove_columns
@@ -689,7 +690,7 @@ class mqtwManager(mqtw):
         for o in manager.arr:
             row=[]
             for attribute in self.manager_attributes:
-                row.append(self.manager._string_or_tuple_to_command(o,attribute))
+                row.append(call_by_name(o,attribute))
             data.append(row)
         self.setData(header_horizontal, header_vertical, data, decimals, zonename)
 
