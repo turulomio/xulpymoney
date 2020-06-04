@@ -82,7 +82,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             dtFirst=Assets(self.mem).first_datetime_allowed_estimated()       
             dtLast=Assets(self.mem).last_datetime_allowed_estimated()
             self.wdgYM.initiate(dtFirst.year,  dtLast.year, date.today().year, date.today().month)
-            self.wdgYM.changed.connect(self.on_wdgYM_changed)
             self.on_wdgYM_changed()
             self.mqtwCreditCards_update()
 
@@ -150,11 +149,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.cmdDatos.setEnabled(False)   
 
     def on_wdgYM_changed(self):
-        print(self.wdgYM.year, self.wdgYM.month)
         lastMonthBalance=self.account.balance(date(self.wdgYM.year, self.wdgYM.month, 1)-timedelta(days=1), type=2)     
         self.accountoperations=AccountOperationManagerHomogeneus(self.mem, self.account)     
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
-        print(self.accountoperations.length())
         self.accountoperations.myqtablewidget_lastmonthbalance(self.mqtwOperations,  lastMonthBalance)   
 
     @pyqtSlot() 

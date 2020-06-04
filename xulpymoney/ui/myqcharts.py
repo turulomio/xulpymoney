@@ -1073,21 +1073,25 @@ class MyPopup(QDialog):
         
         self.lblPosition.setText("{}, {}".format(self.parent.value2formated_string(xVal, self.parent._x_format, self.parent._x_decimals), self.parent.value2formated_string(yVal, self.parent._y_format, self.parent._y_decimals)))
         #Displaying values
+        modifiers = QApplication.keyboardModifiers()
         for i, serie in enumerate(self.vc.series):
             if serie.isVisible():
                 self.lblValues[i].show()
                 self.lblTitles[i].show()
 
-                self.lblTitles[i].setText(serie.name())
-                try:
-                    value=round(self.vc.series_value(serie, self.xVal),2)
-                except:
-                    value="---"
-                try:
-                    last=round(serie.pointsVector()[len(serie.pointsVector())-1].y(),2)
-                except:
-                    last="---"
-                self.lblValues[i].setText(self.tr("{} (Last: {})").format(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals),self.parent.value2formated_string(last, self.parent._y_format, self.parent._y_decimals)))
+                if modifiers == Qt.ShiftModifier: #LAST VALUE
+                    self.lblTitles[i].setText(serie.name() + " (Last value)")
+                    try:
+                        value=serie.pointsVector()[len(serie.pointsVector())-1].y()
+                    except:
+                        value="---"
+                else: #POSITION VALUE          
+                    self.lblTitles[i].setText(serie.name())
+                    try:
+                        value=self.vc.series_value(serie, self.xVal)
+                    except:
+                        value="---"
+                self.lblValues[i].setText(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals))
             else:
                 self.lblValues[i].hide()
                 self.lblTitles[i].hide()

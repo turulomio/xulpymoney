@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_wdgYearMonth(object):
     def setupUi(self, wdgYearMonth):
         wdgYearMonth.setObjectName("wdgYearMonth")
-        wdgYearMonth.resize(673, 38)
+        wdgYearMonth.resize(673, 48)
         self.verticalLayout = QtWidgets.QVBoxLayout(wdgYearMonth)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -56,6 +56,7 @@ class Ui_wdgYearMonth(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(wdgYearMonth)
+        self.cmbMonth.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(wdgYearMonth)
 
     def retranslateUi(self, wdgYearMonth):
