@@ -258,8 +258,6 @@ def value2object(value, stringtypes):
         return Percentage(value, 1)
     return value
 
-
-
 if __name__ == "__main__":
     def print_lor(lor):
         print("")

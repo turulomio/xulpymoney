@@ -31,13 +31,16 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if invested.isZero():
             self.lblTotal.setText(self.tr("There aren't invested assets"))
         else:
-            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(
-                            invested,self.investments.pendiente_positivo(),
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Current balance {7}\nPending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(
+                            invested,
+                            self.investments.pendiente_positivo(),
                             self.investments.pendiente_negativo(),  
                             pendiente, 
                             Percentage(pendiente, invested),  
-                            self.investments.gains_last_day()
-                            , days2string(self.investments.average_age())))
+                            self.investments.gains_last_day(), 
+                            days2string(self.investments.average_age()), 
+                            self.investments.balance()
+                            ))
 
     @pyqtSlot() 
     def on_actionActive_triggered(self):

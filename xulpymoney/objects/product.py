@@ -608,6 +608,15 @@ class ProductComparation(QObject):
         self.__commonDates=None 
         self.__removeNotCommon()
         
+    ## Changes product1 by product2
+    def swap(self):
+        tmp_product=self.product2
+        tmp_set=self.set2
+        self.product2=self.product1
+        self.product1=tmp_product
+        self.set2=self.set1
+        self.set1=tmp_set
+        
     def setFromDate(self, date):
         """Only affect to functions returning data, not to constructor"""
         self.__fromDate=date            

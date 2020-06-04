@@ -53,10 +53,15 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewCompare.hide()
             self.viewScatter.show()
             self.viewTwoAxis.hide()
+            
+    def on_cmdSwap_released(self):
+        tmp=self.selector1.selected
+        self.selector1.setSelected(self.selector2.selected)
+        self.selector2.setSelected(tmp)
 
     def on_cmdComparation_released(self):
         inicio=datetime.now()
-        if self.selector1.selected==None or self.selector2.selected==None:
+        if self.selector1.selected is None or self.selector2.selected is None:
             qmessagebox(self.tr("You must select a product to compare with"))
             return
         self.comparation=ProductComparation(self.mem, self.selector1.selected, self.selector2.selected)

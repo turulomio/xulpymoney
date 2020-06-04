@@ -40,7 +40,6 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.update()
 
     def on_wdgDtTo_changed(self):
-        self.cmdSave.setEnabled(True)
         self.update()
         
     def on_cmdSave_released(self):
@@ -53,6 +52,9 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.mem.settingsdb.setValue("wdgStrategyResultsAdd/cmbStrategies", self.strategy.id )
         self.update()
         
+    def on_txtName_textChanged(self):
+        self.cmdSave.setEnabled(True)
+        self.update()
         
     def update(self):
         current=self.strategy.currentOperations()

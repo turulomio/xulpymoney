@@ -50,6 +50,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
 
         self.wdgTS.setSettings(self.mem.settings, "frmInvestmentReport", "wdgTS")
+        self.wdgTS.ts.setTitle(self.tr("Investment chart"))
+        self.wdgTS.ts.setXFormat("date", self.tr("Date"))
+        self.wdgTS.ts.setYFormat(self.investment.product.currency, self.tr("Amount ({})").format(currency_symbol(self.investment.account.currency)), self.investment.product.decimals)
             
         if self.investment==None:#ADD
             self.cmdInvestment.setText(self.tr("Add a new investment"))
@@ -537,8 +540,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.wdgTS.ts.appendTemporalSeriesData(balance, dt, tmp_investment.balance(dt.date()).amount)
                 self.wdgTS.ts.appendTemporalSeriesData(dividends, dt, dividend_net)
                 self.wdgTS.ts.appendTemporalSeriesData(gains, dt, gains_net)
-            self.wdgTS.ts.setTitle(self.tr("Investment chart"))
-            self.wdgTS.ts.setYFormat("int", self.tr("Amount ({})").format(currency_symbol(self.investment.account.currency)))
             self.wdgTS.display()
             #Markers are generated in display so working with markers must be after it
             self.wdgTS.ts.chart().legend().markers(gains)[0].clicked.emit()

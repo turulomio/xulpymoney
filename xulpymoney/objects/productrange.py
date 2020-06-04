@@ -26,8 +26,8 @@ class ProductRange(QObject):
         
     def __repr__(self):
         return "({}, {}]".format(
-            round(self.range_highest_value(), self.decimals), 
             round(self.range_lowest_value(),  self.decimals), 
+            round(self.range_highest_value(), self.decimals), 
         )
     
     ## Returns the value rounded to the number of decimals

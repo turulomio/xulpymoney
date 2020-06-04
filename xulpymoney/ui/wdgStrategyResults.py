@@ -48,8 +48,6 @@ class wdgStrategyResults(QWidget, Ui_wdgStrategyResults):
         self.mem.con.commit()
         self.update()
 
-    def on_txtName_textChanged(self):
-        self.update()
         
     def on_chkFinished_stateChanged(self, state):
         self.update()

@@ -12,6 +12,7 @@ from .. casts import object2value
 from .. datetime_functions import epochms2dtaware, dtaware2epochms, dtnaive2string
 from collections import OrderedDict
 from datetime import timedelta, datetime
+from logging import error
 
 class VCCommons(QChartView):
     displayed=pyqtSignal()
@@ -125,18 +126,42 @@ class VCCommons(QChartView):
     ## Sets if the chart must show animations
     def setAnimations(self, boolean):
         self._animations=boolean
-
+        
+    ## Used to represent values in charts, using predefined formats set with setXFormat
+    ## Value willbe epochms for datetimes
+    ## @param value
+    ## @param  format 
+    def value2formated_string(self, value, format, decimals=2):
+        if value=="---" or value is None:# Valores nulos
+            return "---"
+        
+        if format=="date":
+            return str(epochms2dtaware(value).date())
+        elif format=="time":
+            time=epochms2dtaware(value).time()
+            return "{}:{}".format(time.hour, time.minute)
+        elif format=="datetime":
+            return str(epochms2dtaware(value))
+        elif format=="int":
+            return str(value)
+        elif format=="float":
+            return str(round(value, decimals))
+        elif format=="EUR":
+            return "{} €".format(round(value, decimals))
+        else:
+            error("{} is not a valid format in value2formated_string".format(format))
 
 class VCTemporalSeriesAlone(VCCommons):
     def __init__(self):
         VCCommons.__init__(self)
         self.clear()
         self.popuplock=QMutex()
-        self._x_format="auto"
+        self._x_format="date"
         self._x_timezone="UTC"
+        self._x_decimals=0#Needed in popup
         self._x_tickcount=8
         self._x_title=""
-        self._y_format="Decimal"
+        self._y_format="float"
         self._y_decimals=2
         self._y_title=""
 
@@ -207,13 +232,10 @@ class VCTemporalSeriesAlone(VCCommons):
     def _applyXFormat(self):
         self.axisX.setTickCount(8)
         self.axisX.setTitleText(self._x_title)
-        max_=epochms2dtaware(self.maxx)#UTC aware
-        min_=epochms2dtaware(self.minx)
-        if self._x_format=="auto":
-            if max_-min_<timedelta(days=1):
-                self.axisX.setFormat("hh:mm")
-            else:
-                self.axisX.setFormat("yyyy-MM-dd")
+        if self._x_format=="time":
+            self.axisX.setFormat("hh:mm")
+        else:
+            self.axisX.setFormat("yyyy-MM-dd")
         
 
     def setYFormat(self, stringtype,   title="", decimals=2):
@@ -222,13 +244,6 @@ class VCTemporalSeriesAlone(VCCommons):
         self._y_title=title
 
     def _applyYFormat(self):
-#        if type==0:
-#            if max-min<=Decimal(0.01):
-#                axis.setLabelFormat("%.4f")
-#            elif max-min<=Decimal(100):
-#                axis.setLabelFormat("%.2f")
-#            else:
-#                axis.setLabelFormat("%i")
         self.axisY.setTitleText(self._y_title)
         if self._y_format=="int":
             self.axisY.setLabelFormat("%i")
@@ -250,7 +265,6 @@ class VCTemporalSeriesAlone(VCCommons):
             x is a datetime zone aware
         """
         x=dtaware2epochms(x)
-        x=float(x)
         y=float(y)
         ls.append(x, y)
         
@@ -319,7 +333,7 @@ class VCTemporalSeriesAlone(VCCommons):
                 d[epochms2dtaware(point.x())]=point.y()
         elif serie.__class__.__name__=="QCandlestickSeries":
             for qohcl in serie.sets():
-                d[epochms2dtaware(qohcl.timestamp())]=qohcl.close()
+                d[epochms2dtaware(qohcl.timestamp())]=qohcl.close
         return d
 
     @pyqtSlot()
@@ -543,7 +557,6 @@ class VCTemporalSeriesWithTwoYAxisAlone(VCTemporalSeriesAlone):
         
     def appendTemporalSeriesDataAxis2(self, ls, x, y):
         x=dtaware2epochms(x)
-        x=float(x)
         y=float(y)
         ls.append(x, y)
 
@@ -630,10 +643,10 @@ class VCScatterAlone(VCCommons):
         VCCommons.__init__(self)
         self.clear()
         self.popuplock=QMutex()
-        self._x_format="Decimal"
+        self._x_format="float"
         self._x_decimals=2
         self._x_title=""
-        self._y_format="Decimal"
+        self._y_format="float"
         self._y_decimals=2
         self._y_title=""
 
@@ -1057,8 +1070,8 @@ class MyPopup(QDialog):
                 layh.addWidget(value)
                 self.lay.addLayout(layh)
             self.setLayout(self.lay)
-            
-        self.lblPosition.setText("{}, {}".format(str(round(xVal, 2)), str(round(yVal,2))))
+        
+        self.lblPosition.setText("{}, {}".format(self.parent.value2formated_string(xVal, self.parent._x_format, self.parent._x_decimals), self.parent.value2formated_string(yVal, self.parent._y_format, self.parent._y_decimals)))
         #Displaying values
         for i, serie in enumerate(self.vc.series):
             if serie.isVisible():
@@ -1074,13 +1087,14 @@ class MyPopup(QDialog):
                     last=round(serie.pointsVector()[len(serie.pointsVector())-1].y(),2)
                 except:
                     last="---"
-                self.lblValues[i].setText(self.tr("{} (Last: {})").format(value,last))
+                self.lblValues[i].setText(self.tr("{} (Last: {})").format(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals),self.parent.value2formated_string(last, self.parent._y_format, self.parent._y_decimals)))
             else:
                 self.lblValues[i].hide()
                 self.lblTitles[i].hide()
 
     def mousePressEvent(self, event):
         self.hide()
+
 
 
 ## Yo must:
@@ -1194,7 +1208,7 @@ def example():
     vcts=VCTemporalSeries()
     vcts.ts.setTitle("Example of VCTemporalSeries")
     vcts.setSettings(settings, "example", "vcts")
-    vcts.ts.setXFormat("auto", "Time")
+    vcts.ts.setXFormat("date", "Time")
     vcts.ts.setYFormat("EUR", "Money (€)" , decimals=2)
     sBasic=vcts.ts.appendTemporalSeries("Basic")
     for i in range(20):
@@ -1237,7 +1251,7 @@ def example():
     vcts2=VCTemporalSeriesWithTwoYAxis(w)
     vcts2.ts.setTitle("Example of VCTemporalSeries with two axis")
     vcts2.setSettings(settings, "example", "vcts2")
-    vcts2.ts.setXFormat("auto", "Time")
+    vcts2.ts.setXFormat("time", "Time")
     vcts2.ts.setYFormat("EUR", "Money (€)" , decimals=2)
     vcts2.ts.setY2Format("EUR", "Money (€)" , decimals=2)
     sBasic=vcts2.ts.appendTemporalSeries("Basic")
