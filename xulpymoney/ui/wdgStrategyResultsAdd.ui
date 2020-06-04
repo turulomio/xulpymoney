@@ -137,7 +137,18 @@
       </layout>
      </item>
      <item>
-      <widget class="cmbManagerSelector" name="cmsInvestments" native="true"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Select strategy investments</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="cmbManagerSelector" name="cmsInvestments" native="true"/>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QPushButton" name="cmdSave">
@@ -190,21 +201,21 @@
        </widget>
       </widget>
      </item>
+     <item>
+      <widget class="QLabel" name="lblResults">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="lblResults">
-     <property name="font">
-      <font>
-       <pointsize>11</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

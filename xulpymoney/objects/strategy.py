@@ -49,6 +49,7 @@ class Strategy(QObject):
             for o in inv.dividends:
                 if self.dt_from<=o.datetime and o.datetime<=self.dt_to_for_comparations():
                     r.append(o)
+        r.order_by_datetime()
         return r          
 
     ## Returns strategy current operations
@@ -58,6 +59,7 @@ class Strategy(QObject):
             for o in inv.op_actual:
                 if self.dt_from<=o.datetime and o.datetime<=self.dt_to_for_comparations():
                     r.append(o)
+        r.order_by_datetime()
         return r        
         
     ## Returns strategy current operations
@@ -67,6 +69,7 @@ class Strategy(QObject):
             for o in inv.op_historica:
                 if self.dt_from.date()<=o.fecha_venta and o.fecha_venta<=self.dt_to_for_comparations().date():
                     r.append(o)
+        r.order_by_fechaventa()
         return r
 
 class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):   
