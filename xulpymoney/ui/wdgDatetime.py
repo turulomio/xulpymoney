@@ -30,6 +30,8 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.pytz_zones_qcombobox(self.cmbZone, None)
         self.cmbZone.blockSignals(False)
         self.cmdNow.setFocus()
+        self.chkNone.hide()
+        self.lineNone.hide()
 
     def setLocalzone(self, localzone):
         self.localzone=localzone
@@ -55,8 +57,10 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     def show_none(self, show):
         if show is True:
             self.chkNone.show()
+            self.lineNone.show()
         else:
             self.chkNone.hide()
+            self.lineNone.hide()
 
     def show_timezone(self, show):
         """Hiding this all zones will have localzone defined in self.mem.localzone"""
@@ -85,9 +89,14 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     ## @param dt can be a naive or aware. If aware it ignore it and set as naive with parmeter zone. If naive just put the zone to the dtnaive
     ## @param zone pytz name
     def set(self, dt=None, zone=None):
-        if dt==None or zone==None:
-            self.on_cmdNow_released()
-            return
+        if self.chkNone.isHidden():# chkNone hidden will set now
+            if dt is None or zone is None:
+                self.on_cmdNow_released()
+                return
+        else:# chkNone visible witll set check to None
+            if dt is None or zone is None:
+                self.chkNone.setCheckState(Qt.Checked)
+                return
 
         self.cmbZone.setCurrentIndex(self.cmbZone.findData(zone))
 
@@ -175,6 +184,7 @@ if __name__ == '__main__':
 
     w = wdgDatetime()
     w.move(300, 300)
+    w.show_none(True)
     w.set()
     w.setWindowTitle('wdgDatetime example')
     w.show()

@@ -348,6 +348,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.account.qmessagebox_inactive() or self.account.bank.qmessagebox_inactive() or self.mqtwCreditCards.selected.qmessagebox_inactive():
             return
 
+        if self.mqtwCreditCardOperations.selected is None:
+            return 
+
         if len(self.mqtwCreditCardOperations.selected)==0: # 0 o más de 1
             self.grpPago.setEnabled(False)
             self.actionCreditCardOperDelete.setEnabled(False)

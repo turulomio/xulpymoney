@@ -13,6 +13,7 @@ class wdgStrategyResults(QWidget, Ui_wdgStrategyResults):
         self.mem=mem
         self.mqtwStrategies.setSettings(self.mem.settings, "wdgStrategyResults", "mqtwStrategies")
         self.mqtwStrategies.table.customContextMenuRequested.connect(self.on_mqtwStrategies_customContextMenuRequested) 
+        self.mqtwStrategies.table.cellDoubleClicked.connect(self.on_mqtwStrategies_cellDoubleClicked)
         self.update()
          
     @pyqtSlot()  
@@ -24,6 +25,11 @@ class wdgStrategyResults(QWidget, Ui_wdgStrategyResults):
         d.setWidgets(w)
         d.exec_() 
         self.update()
+        
+        
+    def on_mqtwStrategies_cellDoubleClicked(self, row, column):
+        self.on_actionStrategyEdit_triggered()
+        
         
     @pyqtSlot()  
     def on_actionStrategyEdit_triggered(self):

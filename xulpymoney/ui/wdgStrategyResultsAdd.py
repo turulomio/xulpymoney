@@ -14,6 +14,7 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.wdgDtFrom.show_microseconds(False)
         self.wdgDtTo.setLocalzone(self.mem.localzone_name)
         self.wdgDtTo.show_microseconds(False)
+        self.wdgDtTo.show_none(True)
         
         self.mqtwCurrent.setSettings(self.mem.settings, "wdgStrategyResultsAdd", "mqtwCurrent")
         self.mqtwHistorical.setSettings(self.mem.settings, "wdgStrategyResultsAdd", "mqtwHistorical")
@@ -54,6 +55,14 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         
         
     def update(self):
-        self.strategy.currentOperations().myqtablewidget(self.mqtwCurrent)
-        self.strategy.historicalOperations().myqtablewidget(self.mqtwHistorical)
+        current=self.strategy.currentOperations()
+        current.myqtablewidget(self.mqtwCurrent)
+        historical=self.strategy.historicalOperations()
+        historical.myqtablewidget(self.mqtwHistorical)
+        dividends=self.strategy.dividends()
+        dividends.myqtablewidget(self.mqtwDividends)
+        
+        s="Total = Current net gains + Historical net gains + Net dividends = {} + {} + {} = {}".format(
+            current.pendiente(), historical.consolidado_neto(), dividends.net(),  current.pendiente()+ historical.consolidado_neto()+ dividends.net())
+        self.lblResults.setText(s)
 
