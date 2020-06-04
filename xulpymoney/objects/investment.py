@@ -291,6 +291,11 @@ class Investment(QObject):
                 debug ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Money(self.mem, 0, self.resultsCurrency(type) )
             return self.Investment_At_Datetime(dtaware_day_end_from_date(fecha, self.mem.localzone_name)).op_actual.balance(quote, type)
+            
+    ## Cuando tengo inversiones apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
+    ## Necesito usar solo la cantidad sin apalancar.
+    def balance_real(self, fecha, type=eMoneyCurrency.Product):
+        return self.balance(fecha, type)/self.product.real_leveraged_multiplier()
         
     ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
@@ -300,7 +305,12 @@ class Investment(QObject):
         else:
             invfake=self.Investment_At_Datetime(dtaware_day_end_from_date(date, self.mem.localzone_name))
             return invfake.op_actual.invertido(type)
-                
+                            
+    ## Cuando tengo inversiones apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
+    ## Necesito usar solo la cantidad sin apalancar.
+    def invested_real(self, date, type=eMoneyCurrency.Product):
+        return self.invertido(date, type)/self.product.real_leveraged_multiplier()
+
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""

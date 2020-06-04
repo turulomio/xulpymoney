@@ -60,6 +60,15 @@ class Assets:
             if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
+    ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
+    ##
+    ## Esta función se calcula en cliente
+    def saldo_todas_inversiones_real(self, fecha):
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for i in self.mem.data.investments.arr:
+            if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
+                resultado=resultado+i.balance_real(fecha, type=3)
+        return resultado
 
     ## This method gets all High-Low investments balance
     ##
@@ -128,6 +137,17 @@ class Assets:
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in array:
             r=r+inv.invertido(date, type=3)
+        return r
+    def invested_real(self, date=None):
+        """Devuelve el patrimonio invertido en una determinada fecha"""
+        if date==None or date==date.today():
+            array=self.mem.data.investments_active().arr #Current and active
+        else:
+            array=self.mem.data.investments.arr#All, because i don't know witch one was active.
+        
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in array:
+            r=r+inv.invested_real(date, type=3)
         return r
         
     def saldo_todas_inversiones_bonds(self, fecha=None):        

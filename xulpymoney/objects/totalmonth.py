@@ -63,6 +63,9 @@ class TotalMonth:
     def total(self):
         """Total assests in the month"""
         return self.total_accounts()+self.total_investments()
+    def total_real(self):
+        """Total assests in the month"""
+        return self.total_accounts()+self.total_investments_real()
 
     ## Calculates total() difference of this TotalMonth and the one passed as parameter
     def total_difference(self, totalmonth):
@@ -81,6 +84,11 @@ class TotalMonth:
         if hasattr(self, "_total_investments") is False:
             self._total_investments=Assets(self.mem).saldo_todas_inversiones(self.last_day())
         return self._total_investments
+
+    def total_investments_real(self):
+        if hasattr(self, "_total_investments_real") is False:
+            self._total_investments_real=Assets(self.mem).saldo_todas_inversiones_real(self.last_day())
+        return self._total_investments_real
 
     def total_investments_high_low(self):
         if hasattr(self, "_total_investments_high_low") is False:

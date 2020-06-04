@@ -50,11 +50,14 @@ class Money(Currency):
     
     def __truediv__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero"""
-        if self.currency==money.currency:
-            return Money(self.mem, self.amount/money.amount, self.currency)
-        else:
-            error("Before true dividing, please convert to the same currency")
-            exit(1)
+        if money.__class__.__name__ in ("int", "float", "Decimal"):
+            return Money(self.mem, self.amount/money, self.currency)
+        else: #Money
+            if self.currency==money.currency:
+                return Money(self.mem, self.amount/money.amount, self.currency)
+            else:
+                error("Before true dividing, please convert to the same currency")
+                exit(1)
             
     def __neg__(self):
         """Devuelve otro money con el amount con signo cambiado"""

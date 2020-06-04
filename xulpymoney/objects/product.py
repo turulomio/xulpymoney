@@ -311,6 +311,13 @@ class Product(QObject):
     ## REturn a money object with the amount and account currency
     def money(self, amount):
         return Money(self.mem, amount, self.currency)
+        
+    ## IBEXA es x2 pero esta en el pricio
+    ## CFD DAX no está en el precio
+    def real_leveraged_multiplier(self):
+        if self.type in (eProductType.CFD, eProductType.Future):
+            return self.leveraged.multiplier
+        return 1
 
     def mqtw_tickers(self, mqtw):
         data=[]
