@@ -38,8 +38,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.wdgDtPago.show_timezone(False)
         self.wdgDtPago.setTitle(self.tr("Select payment time"))
         
-        
-        self.accountoperations=None#AccountOperationManager. Selected will be an AccountOperation
         self.creditcardoperations=CreditCardOperationManager(self.mem)#CreditCardOperationManager. Selected will be another CreditCardOperationManager
           
         self.mqtwOperations.setSettings(self.mem.settings, "frmAccountsReport", "mqtwOperations")
@@ -151,11 +149,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.done(0)
         self.cmdDatos.setEnabled(False)   
 
-    @pyqtSlot()
     def on_wdgYM_changed(self):
+        print(self.wdgYM.year, self.wdgYM.month)
         lastMonthBalance=self.account.balance(date(self.wdgYM.year, self.wdgYM.month, 1)-timedelta(days=1), type=2)     
         self.accountoperations=AccountOperationManagerHomogeneus(self.mem, self.account)     
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
+        print(self.accountoperations.length())
         self.accountoperations.myqtablewidget_lastmonthbalance(self.mqtwOperations,  lastMonthBalance)   
 
     @pyqtSlot() 

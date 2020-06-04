@@ -335,7 +335,7 @@ class mqtw(QWidget):
         self.hh=header_horizontal
         self.hv=header_vertical
         self.data=data
-        
+
         self.table.setColumnCount(len(self.hh))
         if self.hh is not None:
             for i in range(len(self.hh)):
@@ -349,7 +349,7 @@ class mqtw(QWidget):
         # Data
         self.applySettings()
         self.table.clearContents()
-        self.table.setRowCount(len(self.data))        
+        self.table.setRowCount(len(self.data))
         for row in range(len(self.data)):
             for column in range(len(self.hh)):
                 wdg=self.object2qtablewidgetitem(self.data[row][column], decimals[column], zonename)

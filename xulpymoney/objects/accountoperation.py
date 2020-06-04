@@ -164,26 +164,7 @@ class AccountOperationManagerHomogeneus(AccountOperationManagerHeterogeneus):
                 Comment(self.mem).decode(o.comentario), 
                 o, 
             ])
-            wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name)
-
-#    def myqtablewidget_lastmonthbalance_additional(self, wdg):        
-#        wdg.table.setItem(0, 1, qleft(self.tr( "Starting month balance")))
-#        wdg.table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
-#        self.order_by_datetime()
-#        data=[]
-#        for i, o in enumerate(self.arr):
-#            
-#            importe=Money(self.mem, o.importe, self.account.currency)
-#            lastmonthbalance=lastmonthbalance+importe
-#            wdg.table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone_name))
-#            wdg.table.setItem(i+1, 1, qleft(o.concepto.name))
-#            wdg.table.setItem(i+1, 2, importe.qtablewidgetitem())
-#            wdg.table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-#            wdg.table.setItem(i+1, 4, qleft(Comment(self.mem).decode(o.comentario)))
-
-#            if self.selected.length()>0:
-#                if o.id==self.selected.only().id:
-#                    table.selectRow(i+1)
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name)
 
 ## Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones
 class AccountOperationOfInvestmentOperation(QObject):
