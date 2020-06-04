@@ -324,11 +324,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             total=m.total().amount
             zero=m.total_zerorisk().amount
             bonds=m.total_bonds().amount
-            self.wdgTS.ts.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsMain, epoch, m.total_real().amount)
             self.wdgTS.ts.appendTemporalSeriesData(lsZero, epoch, m.total_zerorisk().amount)
             self.wdgTS.ts.appendTemporalSeriesData(lsBonds, epoch, m.total_bonds().amount)
             self.wdgTS.ts.appendTemporalSeriesData(lsRisk, epoch, total-zero-bonds)
-            self.wdgTS.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses_real().amount)
         self.wdgTS.display()
         
         info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
@@ -358,9 +358,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 break
             progress.setValue(progress.value()+1)
             epoch=dtaware_day_end_from_date(m.last_day(), self.mem.localzone_name)
-            self.wdgTSInvested.ts.appendTemporalSeriesData(lsMain, epoch, m.total().amount)
-            self.wdgTSInvested.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses().amount)
-            self.wdgTSInvested.ts.appendTemporalSeriesData(lsInvested, epoch, m.total_invested().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsMain, epoch, m.total_real().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses_real().amount)
+            self.wdgTSInvested.ts.appendTemporalSeriesData(lsInvested, epoch, m.total_invested_real().amount)
             self.wdgTSInvested.ts.appendTemporalSeriesData(lsAccounts, epoch, m.total_accounts().amount)
         self.wdgTSInvested.display()
         

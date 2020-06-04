@@ -109,11 +109,20 @@ class TotalMonth:
         if hasattr(self, "_total_no_losses") is False:
             self._total_no_losses=self.total_invested()+self.total_accounts()
         return self._total_no_losses
+
+    def total_no_losses_real(self):
+        if hasattr(self, "_total_no_losses_real") is False:
+            self._total_no_losses_real=self.total_invested_real()+self.total_accounts()
+        return self._total_no_losses_real
         
     def total_invested(self):
         if hasattr(self, "_total_invested") is False:
             self._total_invested=Assets(self.mem).invested(self.last_day())
-        return self._total_invested
+        return self._total_invested        
+    def total_invested_real(self):
+        if hasattr(self, "_total_invested_real") is False:
+            self._total_invested_real=Assets(self.mem).invested_real(self.last_day())
+        return self._total_invested_real
 
 ## TotalMonth Manager
 class TotalMonthManager(ObjectManager):
