@@ -408,32 +408,54 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     def myqtablewidget_lastCurrent(self, wdg,  percentage):
         type=eMoneyCurrency.User
         data=[]
+        wdg.auxiliar=percentage
         for i, inv in enumerate(self.arr):
-            data.append([
-                "{0} ({1})".format(inv.name, inv.account.name), 
-                inv.op_actual.last().datetime, 
-                inv.op_actual.last().shares, 
-                inv.op_actual.shares(), 
-                inv.balance(None,  type), 
-                inv.op_actual.pendiente(inv.product.result.basic.last, type), 
-                inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3), 
-                inv.op_actual.tpc_total(inv.product.result.basic.last, type=3),
-                inv.percentage_to_selling_point(), 
-            ])
-        wdg.setData(
+            print(inv.op_actual.last())
+            if inv.op_actual.last() is None:
+                data.append([
+                    "{0} ({1})".format(inv.name, inv.account.name), 
+                    None, 
+                    None, 
+                    inv.op_actual.shares(), 
+                    inv.balance(None,  type), 
+                    inv.op_actual.pendiente(inv.product.result.basic.last, type), 
+                    None,
+                    None,
+                    inv.percentage_to_selling_point(), 
+                    inv, 
+                ])
+            else:
+                data.append([
+                    "{0} ({1})".format(inv.name, inv.account.name), 
+                    inv.op_actual.last().datetime, 
+                    inv.op_actual.last().shares, 
+                    inv.op_actual.shares(), 
+                    inv.balance(None,  type), 
+                    inv.op_actual.pendiente(inv.product.result.basic.last, type), 
+                    inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3), 
+                    inv.op_actual.tpc_total(inv.product.result.basic.last, type=3),
+                    inv.percentage_to_selling_point(), 
+                    inv, 
+                ])
+        wdg.setDataWithObjects(
             [self.tr("Investment"), self.tr("Last operation"), self.tr("Last shares"), 
             self.tr("Total shares"), self.tr("Balance"), self.tr("Pending"), 
             self.tr("% Last"),  self.tr("% Invested"), self.tr("% Selling point")
             ], 
             None, 
             data,  
-            decimals=[0, 0, 6, 6, 2, 2, 2, 2, 2], 
+            decimals=[0, 0, 6, 6, 2, 2, 2, 2, 2, 2], 
             zonename=self.mem.localzone_name, 
+            additional=self.myqtablewidget_lastCurrent_additional
         )   
-        for i, inv in enumerate(self.arr):
-            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
-            if lasttpc<percentage:
-                wdg.table.item(i, 6).setBackground(eQColor.Red)
+        
+    def myqtablewidget_lastCurrent_additional(self, wdg):
+        percentage=wdg.auxiliar
+        for i, inv in enumerate(wdg.objects()):
+            if inv.op_actual.last() is not None:
+                lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
+                if lasttpc<percentage:
+                    wdg.table.item(i, 6).setBackground(eQColor.Red)
 
     def mqtw_sellingpoints(self, wdg):                
         data=[]

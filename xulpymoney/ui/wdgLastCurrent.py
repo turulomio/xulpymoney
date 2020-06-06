@@ -15,14 +15,16 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.mem=mem
         self.mqtwInvestments.setSettings(self.mem.settings, "wdgLastCurrent", "mqtwInvestments")
         self.mqtwInvestments.table.customContextMenuRequested.connect(self.on_mqtwInvestments_customContextMenuRequested)
-        self.mqtwInvestments.table.itemSelectionChanged.connect(self.on_mqtwInvestments_itemSelectionChanged)
+        
         self.spin.blockSignals(True)
         self.spin.setValue(self.mem.settingsdb.value_integer("wdgLastCurrent/spin", "-33"))
         self.spin.blockSignals(False)
+
         self.cmbSameProduct.setCurrentIndex(self.mem.settingsdb.value_integer("wdgLastCurrent/viewmode", "0"))
         
     def mqtwInvestments_reload(self):
         self.investments.myqtablewidget_lastCurrent(self.mqtwInvestments, Percentage(self.spin.value(), 100))
+        self.mqtwInvestments.setOrderBy(6, True)
 
     @pyqtSlot(int) 
     def on_spin_valueChanged(self, value):
@@ -32,7 +34,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
 
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
-        w=frmInvestmentReport(self.mem, self.investments.selected, self)
+        w=frmInvestmentReport(self.mem, self.mqtwInvestments.selected, self)
         w.exec_()
         self.mqtwInvestments_reload()
         
@@ -42,8 +44,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment last operation calculator"))
         w=wdgCalculator(self.mem)
-        w.setInvestment(self.investments.selected)
-        price=self.investments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-
+        w.setInvestment(self.mqtwInvestments.selected)
+        price=self.mqtwInvestments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-
         w.txtFinalPrice.setText(price)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
@@ -54,8 +56,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investments.selected, False,  d)
-        price=self.investments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-        
+        w=wdgDisReinvest(self.mem, self.mqtwInvestments.selected, False,  d)
+        price=self.mqtwInvestments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-        
         w.txtValorAccion.setText(price)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
@@ -67,7 +69,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investments.selected, False,  d)
+        w=wdgDisReinvest(self.mem, self.mqtwInvestments.selected, False,  d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -75,12 +77,12 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
                 
     @pyqtSlot() 
     def on_actionProduct_triggered(self):
-        w=frmProductReport(self.mem, self.investments.selected.product, self.investments.selected, self)
+        w=frmProductReport(self.mem, self.mqtwInvestments.selected.product, self.mqtwInvestments.selected, self)
         w.exec_()
         self.mqtwInvestments_reload()
       
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
-        if self.investments.selected==None:
+        if self.mqtwInvestments.selected==None:
             self.actionInvestmentReport.setEnabled(False)
             self.actionProduct.setEnabled(False)
         else:
@@ -101,12 +103,6 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         menu.addSeparator()
         menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
-
-    def on_mqtwInvestments_itemSelectionChanged(self):
-        self.investments.selected=None
-        for i in self.mqtwInvestments.table.selectedItems():#itera por cada item no row.
-            if i.column()==0:
-                self.investments.selected=self.investments.arr[i.row()]
 
     @pyqtSlot(int)
     def on_cmbSameProduct_currentIndexChanged(self, index):
