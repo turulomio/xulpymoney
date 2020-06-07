@@ -51,8 +51,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
         self.wdgTS.setSettings(self.mem.settings, "frmInvestmentReport", "wdgTS")
         self.wdgTS.ts.setTitle(self.tr("Investment chart"))
-        self.wdgTS.ts.setXFormat("date", self.tr("Date"))
-        self.wdgTS.ts.setYFormat(self.investment.product.currency, self.tr("Amount ({})").format(currency_symbol(self.investment.account.currency)), self.investment.product.decimals)
             
         if self.investment==None:#ADD
             self.cmdInvestment.setText(self.tr("Add a new investment"))
@@ -496,6 +494,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.wdgTS.clear()
         self.investment.needStatus(3)
         if self.investment.op.length()>0:
+            self.wdgTS.ts.setXFormat("date", self.tr("Date"))
+            self.wdgTS.ts.setYFormat(self.investment.product.currency, self.tr("Amount ({})").format(currency_symbol(self.investment.account.currency)), self.investment.product.decimals)
             #Gets investment important datetimes: operations, dividends, init and current time. For each datetime adds another at the beginning of the day, to get mountains in graph
             datetimes=set()
             datetimes.add(self.investment.op.first().datetime -timedelta(days=30))
