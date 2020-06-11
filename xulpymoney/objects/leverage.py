@@ -28,6 +28,7 @@ class LeverageManager(ObjectManager_With_IdName_Selectable, QObject):
         self.append(Leverage(self.mem).init__create(eLeverageType.X4,self.tr("Leverage x4"), eLeverageType.X4))
         self.append(Leverage(self.mem).init__create(eLeverageType.X5,self.tr("Leverage x5"), eLeverageType.X5))
         self.append(Leverage(self.mem).init__create(eLeverageType.X10,self.tr("Leverage x10"), eLeverageType.X10))
+        self.append(Leverage(self.mem).init__create(eLeverageType.X20,self.tr("Leverage x20"), eLeverageType.X20))
         self.append(Leverage(self.mem).init__create(eLeverageType.X25, self.tr( "Leverage x25"), eLeverageType.X25))
         self.append(Leverage(self.mem).init__create(eLeverageType.X50, self.tr( "Leverage x50"), eLeverageType.X50))
         self.append(Leverage(self.mem).init__create(eLeverageType.X100, self.tr( "Leverage x100"), eLeverageType.X100))
