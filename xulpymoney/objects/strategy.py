@@ -67,7 +67,7 @@ class Strategy(QObject):
         r=InvestmentOperationHistoricalHeterogeneusManager(self.mem)
         for inv in self.investments:
             for o in inv.op_historica:
-                if self.dt_from.date()<=o.fecha_venta and o.fecha_venta<=self.dt_to_for_comparations().date():
+                if self.dt_from<=o.dt_end and o.dt_end<=self.dt_to_for_comparations():
                     r.append(o)
         r.order_by_fechaventa()
         return r

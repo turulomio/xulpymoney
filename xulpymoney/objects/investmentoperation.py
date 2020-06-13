@@ -13,7 +13,7 @@ from xulpymoney.objects.money import Money
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime, qright, qdate, qnone, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime, qright, qnone, qnumber
 
 class InvestmentOperation:
     def __init__(self, mem, operation_type=None, datetime=None,  investment=None, shares=None, taxes=None, commission=None, price=None, comment=None, show_in_ranges=None, currency_conversion=None, id=None):
@@ -771,10 +771,10 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
                 resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_bruto(eMoneyCurrency.User)
         return resultado        
         
@@ -785,10 +785,10 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
                 resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_neto(eMoneyCurrency.User)
         return resultado
         
@@ -799,10 +799,10 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
                 resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos(eMoneyCurrency.User)
         return resultado
 
@@ -859,7 +859,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
 
     def myqtablewidget(self, wdg):
         wdg.table.setColumnCount(14)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date" )))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date and time" )))
         wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr( "Years" )))
         wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr( "Product" )))
         wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr( "Account" )))
@@ -878,7 +878,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
         wdg.table.clearContents()
         wdg.table.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):    
-            wdg.table.setItem(rownumber, 0, qdate(a.fecha_venta))
+            wdg.table.setItem(rownumber, 0, qdatetime(a.dt_end, self.mem.localzone_name))
             wdg.table.setItem(rownumber, 1, qnumber(a.years(), 2))
             wdg.table.setItem(rownumber, 2, qleft(a.investment.name))
             wdg.table.setItem(rownumber, 3, qleft(a.investment.account.name))
@@ -905,7 +905,7 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
     
     def order_by_fechaventa(self):
         """Sort by selling date"""
-        self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
+        self.arr=sorted(self.arr, key=lambda o: o.dt_end,  reverse=False)      
 
 class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoricalHeterogeneusManager):
     def __init__(self, mem, investment):
@@ -932,10 +932,10 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                 resultado=resultado+o.consolidado_bruto(type)
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_bruto(type)
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_bruto(type)
         return resultado
         
@@ -946,10 +946,10 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                 resultado=resultado+o.consolidado_neto(type)
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_neto(type)
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_neto(type)
         return resultado
         
@@ -960,10 +960,10 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                 resultado=resultado+o.consolidado_neto_antes_impuestos()
             else:                
                 if month==None:#Calculo anual
-                    if o.fecha_venta.year==year:
+                    if o.dt_end.year==year:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
                 else:#Calculo mensual
-                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                    if o.dt_end.year==year and o.dt_end.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
         
@@ -1001,7 +1001,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
             diff=2
             
         wdg.table.setColumnCount(12+diff)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date" )))
+        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date and time" )))
         wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr( "Years" )))
         if show_accounts==True:
             wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr( "Product" )))
@@ -1021,7 +1021,7 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         wdg.table.clearContents()
         wdg.table.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):    
-            wdg.table.setItem(rownumber, 0,qdate(a.fecha_venta))
+            wdg.table.setItem(rownumber, 0,qdatetime(a.dt_end, self.mem.localzone_name))
             wdg.table.setItem(rownumber, 1, qnumber(round(a.years(), 2)))
             if show_accounts==True:
                 wdg.table.setItem(rownumber, 2, qleft(a.investment.name))
@@ -1054,31 +1054,31 @@ class InvestmentOperationHistorical:
         self.id=None
         self.operinversion=None
         self.investment=None
-        self.fecha_inicio=None
+        self.dt_start=None #Datetime with the start of the operation
         self.tipooperacion=None
         self.shares=None#Es negativo
         self.comision=None
         self.impuestos=None
-        self.fecha_venta=None
+        self.dt_end=None 
         self.valor_accion_compra=None
         self.valor_accion_venta=None     
         self.currency_conversion_compra=None
         self.currency_conversion_venta=None
             
     def __repr__(self):
-        return ("IOH {0}. {1} {2}. Acciones: {3}. Valor:{4}. Currency conversion: {5} y {6}".format(self.investment.name,  self.fecha_venta, self.tipooperacion.name,  self.shares,  self.valor_accion_venta, self.currency_conversion_compra,  self.currency_conversion_venta))
+        return ("IOH {0}. {1} {2}. Acciones: {3}. Valor:{4}. Currency conversion: {5} y {6}".format(self.investment.name,  self.dt_end, self.tipooperacion.name,  self.shares,  self.valor_accion_venta, self.currency_conversion_compra,  self.currency_conversion_venta))
         
     def init__create(self, operinversion, inversion, fecha_inicio, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
         """Genera un objeto con los parametros. id_operinversioneshistoricas es puesto a new"""
         self.id=id
         self.operinversion=operinversion
         self.investment=inversion
-        self.fecha_inicio=fecha_inicio
+        self.dt_start=fecha_inicio
         self.tipooperacion=tipooperacion
         self.shares=acciones
         self.comision=comision
         self.impuestos=impuestos
-        self.fecha_venta=fecha_venta
+        self.dt_end=fecha_venta
         self.valor_accion_compra=valor_accion_compra
         self.valor_accion_venta=valor_accion_venta
         self.currency_conversion_compra=currency_conversion_compra
@@ -1087,7 +1087,7 @@ class InvestmentOperationHistorical:
         
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
-        if self.fecha_venta-self.fecha_inicio<=timedelta(days=365):
+        if self.dt_end-self.dt_start<=timedelta(days=365):
             return True
         return False
         
@@ -1115,7 +1115,7 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_compra
             
         money=Money(self.mem, value, self.investment.product.currency)
-        dt=dtaware_day_end_from_date(self.fecha_inicio, self.mem.localzone_name)
+        dt=dtaware_day_end_from_date(self.dt_start, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -1137,7 +1137,7 @@ class InvestmentOperationHistorical:
             value=abs(self.shares)*self.valor_accion_venta
 
         money=Money(self.mem, value, self.investment.product.currency)
-        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
+        dt=dtaware_day_end_from_date(self.dt_end, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -1147,7 +1147,7 @@ class InvestmentOperationHistorical:
 
     def taxes(self, type=eMoneyCurrency.Product):
         money=Money(self.mem, self.impuestos, self.investment.product.currency)
-        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
+        dt=dtaware_day_end_from_date(self.dt_end, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -1157,7 +1157,7 @@ class InvestmentOperationHistorical:
     
     def commission(self, type=eMoneyCurrency.Product):
         money=Money(self.mem, self.comision, self.investment.product.currency)
-        dt=dtaware_day_end_from_date(self.fecha_venta, self.mem.localzone_name)
+        dt=dtaware_day_end_from_date(self.dt_end, self.mem.localzone_name)
         if type==eMoneyCurrency.Product:
             return money
         elif type==eMoneyCurrency.Account:
@@ -1166,7 +1166,7 @@ class InvestmentOperationHistorical:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion_venta).local(dt)
 
     def days(self):
-        return (self.fecha_venta-self.fecha_inicio).days
+        return (self.dt_end-self.dt_start).days
         
     def years(self):
         dias=self.days()
@@ -1182,7 +1182,7 @@ class InvestmentOperationHistorical:
         return Percentage(self.consolidado_bruto(), self.bruto_compra())
         
     def tpc_tae_neto(self):
-        dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
+        dias=(self.dt_end-self.dt_start).days +1 #Account el primer día
         if dias==0:
             dias=1
         return Percentage(self.tpc_total_neto()*365, dias)
@@ -1328,7 +1328,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
 #CURRENT operinversion, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, show_in_ranges,  currency_conversion, id=None):                            
 #HISTORICA (operinversion, inversion, fecha_inicio, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
 
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime, tipo_operacion(number), number, comisiones, impuestos, o.datetime, sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
                             if rest+sioc.first().shares!=0:
                                 sioc.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(sioc.first(),sioc.first().tipooperacion, sioc.first().datetime, sioc.first().investment, rest+sioc.first().shares , sioc.first().impuestos, sioc.first().comision, sioc.first().valor_accion,  sioc.first().show_in_ranges, sioc.first().currency_conversion,  sioc.first().id))
                                 sioc.arr.pop(1)
@@ -1338,7 +1338,7 @@ class InvestmentOperationHomogeneusManager(InvestmentOperationHeterogeneusManage
                             break
                         else: #Mayor el resto                
                             number=set_sign_of_other_number(o.shares, sioc.first().shares)
-                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime.date(), tipo_operacion(number), number, comisiones, impuestos, o.datetime.date(), sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
+                            sioh.append(InvestmentOperationHistorical(self.mem).init__create(o, o.investment, sioc.first().datetime, tipo_operacion(number), number, comisiones, impuestos, o.datetime, sioc.first().valor_accion, o.valor_accion, sioc.first().currency_conversion, o.currency_conversion, next_ioh_id()))
                             rest=rest+sioc.first().shares
                             rest=set_sign_of_other_number(o.shares, rest)
                             sioc.arr.pop(0)

@@ -494,7 +494,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}").format(self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year:
+                        if o.dt_end.year==self.wyData.year:
                             set.arr.append(o)
                             if o.consolidado_bruto().isGETZero():
                                 positive=positive+o.consolidado_bruto().local()
@@ -502,7 +502,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                 negative=negative+o.consolidado_bruto().local()
                     else:#Month
                         tabtitle=self.tr("Selling operations of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month:#Venta y traspaso fondos inversion
+                        if o.dt_end.year==self.wyData.year and o.dt_end.month==self.month:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto().isGETZero():
                                 positive=positive+o.consolidado_bruto().local()
@@ -531,7 +531,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}  (Sold after a year)").format(self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8)  and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
+                        if o.dt_end.year==self.wyData.year and o.tipooperacion.id in (5, 8)  and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
                                 positive=positive+o.consolidado_bruto()
@@ -539,7 +539,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                 negative=negative+o.consolidado_bruto()
                     else:#Month
                         tabtitle=self.tr("Selling operations of {0} of {1} (Sold after a year)").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8)  and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
+                        if o.dt_end.year==self.wyData.year and o.dt_end.month==self.month and o.tipooperacion.id in (5, 8)  and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
                                 positive=positive+o.consolidado_bruto()
@@ -568,7 +568,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0} (Sold before a year)").format(self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
+                        if o.dt_end.year==self.wyData.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
                                 positive=positive+o.consolidado_bruto()
@@ -576,7 +576,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                                 negative=negative+o.consolidado_bruto()
                     else:#Month
                         tabtitle=self.tr("Selling operations of {0} of {1} (Sold before a year)").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-                        if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
+                        if o.dt_end.year==self.wyData.year and o.dt_end.month==self.month and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                             set.arr.append(o)
                             if o.consolidado_bruto()>=0:
                                 positive=positive+o.consolidado_bruto()
@@ -742,7 +742,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if inv.product.type.id==type.id:
                     #gains
                     for o in inv.op_historica.arr:
-                        if o.fecha_venta.year==self.wyData.year:
+                        if o.dt_end.year==self.wyData.year:
                             gains=gains+o.consolidado_bruto(eMoneyCurrency.User)
                             netgains=netgains+o.consolidado_neto(eMoneyCurrency.User)
                     #dividends
