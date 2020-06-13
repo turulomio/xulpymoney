@@ -11,8 +11,10 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.parent=parent  
         self.strategy=strategy
         
+        self.wdgDtFrom.setTitle(self.tr("Select strategy start date and time"))
         self.wdgDtFrom.setLocalzone(self.mem.localzone_name)
         self.wdgDtFrom.show_microseconds(False)
+        self.wdgDtTo.setTitle(self.tr("Select strategy end date and time"))
         self.wdgDtTo.setLocalzone(self.mem.localzone_name)
         self.wdgDtTo.show_microseconds(False)
         self.wdgDtTo.show_none(True)
@@ -39,12 +41,16 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.cmdSave.setEnabled(False)
         self.update()
 
+    def on_cmsInvestments_comboSelectionChanged(self):
+        self.cmdSave.setEnabled(True)
+        self.update()
 
     def on_wdgDtFrom_changed(self):
         self.cmdSave.setEnabled(True)
         self.update()
 
     def on_wdgDtTo_changed(self):
+        self.cmdSave.setEnabled(True)
         self.update()
         
     def on_cmdSave_released(self):

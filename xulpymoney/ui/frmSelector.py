@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QLabel, QComboBox, QDialog, QDialogButtonBox, QWidget, QTableWidgetItem, QVBoxLayout, QToolButton, QHBoxLayout
 from logging import debug
@@ -217,6 +217,7 @@ class wdgManagerSelector(QWidget):
 ## - ":/reusingcode/search.png"
 ## Shows selected objects in a QComboBox. You can press a button to open frmManagerSelector
 class cmbManagerSelector(QWidget):
+    comboSelectionChanged=pyqtSignal()
     def __init__(self, parent=None):
         QDialog.__init__(self, parent=None)
         self.combo=QComboBox(self)
@@ -245,6 +246,7 @@ class cmbManagerSelector(QWidget):
                 self.combo.addItem(o.qicon(), call_by_name(o, self.frm.widget._showObjectCallingByName))
             else:
                 self.combo.addItem(call_by_name(o, self.frm.widget._showObjectCallingByName))
+        self.comboSelectionChanged.emit()
 
     def setManagers(self, settings, settingsSection, settingsObject, manager, selected):
         self._settings=settings
