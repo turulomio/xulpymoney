@@ -3,10 +3,11 @@
 
 
 from PyQt5.QtCore import pyqtSignal,  pyqtSlot,  Qt
-from PyQt5.QtWidgets import QWidget, QCompleter
+from PyQt5.QtWidgets import QWidget, QCompleter, QToolButton, QLineEdit, QHBoxLayout, QVBoxLayout, QApplication, QLabel
 from datetime import datetime
 from .Ui_wdgDatetime import Ui_wdgDatetime
 from .. datetime_functions import dtaware
+from .myqdialog import MyModalQDialog
 from logging import debug
 from pytz import all_timezones
 
@@ -175,18 +176,69 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     def updateTooltip(self):
         self.setToolTip(self.tr("Selected datetime:\n{0}").format(self.datetime()))
 
+class wdgDatetimeOneLine(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self._lbl=QLabel(self)
+        self.setLabel(self.tr("Select date and time"))
+        self._dt=wdgDatetime(self)
+        self._button=QToolButton(self)
+        self._txt=QLineEdit(self)
+        self._txt.setReadOnly(True)
+        self._button.released.connect(self.on_button_released)
+        lay=QHBoxLayout(self)
+        lay.addWidget(self._lbl)
+        lay.addWidget(self._txt)
+        lay.addWidget(self._button)
+        
+        
+        self._dialog=MyModalQDialog(self)
+        self._dialog.setWindowTitle(self.tr("Select date and time"))
+        self._dialog.setWidgets(self._dt)
+        
+    def setLabel(self, s):
+        self._lbl.setText(s)
+
+    def setSettings(self, settings, settingsSection="wdgDatetime",  settingsObject="qdialog"):
+        self._settings=settings
+        self._settingsSection=settingsSection
+        self._settingsObject=settingsObject
+        self.setObjectName(self._settingsObject)
+        self._dialog.setSettings(self._settings, self._settingsSection, self._settingsObject+"_qdialog")
+
+    def wdgDatetime(self):
+        return self._dt
+        
+    def button(self):
+        return self._button
+        
+    def on_button_released(self):
+        self._dialog.exec_()
+        self._txt.setText(str(self._dt.datetime()))
 
 
 if __name__ == '__main__':
     from sys import exit
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtCore import QSettings
     app = QApplication([])
 
+    main=QWidget()
+    
     w = wdgDatetime()
-    w.move(300, 300)
     w.show_none(True)
     w.set()
-    w.setWindowTitle('wdgDatetime example')
-    w.show()
+   
+    oneline = wdgDatetimeOneLine()
+    oneline.setSettings(QSettings())
+    oneline.wdgDatetime().show_none(True)
+    oneline.wdgDatetime().set()
 
+    #Widget
+    lay=QVBoxLayout(main)
+    lay.addWidget(w)
+    lay.addWidget(oneline)
+    main.resize(300, 550)
+    main.move(300, 300)
+    main.setWindowTitle('wdgDatetime example')
+    main.show()
     exit(app.exec_())

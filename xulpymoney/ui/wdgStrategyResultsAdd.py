@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgStrategyResultsAdd import Ui_wdgStrategyResultsAdd
+from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.objects.strategy import Strategy
 
 class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
@@ -16,12 +17,16 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         self.wdgDtTo.show_microseconds(False)
         self.wdgDtTo.show_none(True)
         
+        self.cmsInvestments.frm.widget.setShowObjectCallingByName(["fullName", ()])
         self.mqtwCurrent.setSettings(self.mem.settings, "wdgStrategyResultsAdd", "mqtwCurrent")
         self.mqtwHistorical.setSettings(self.mem.settings, "wdgStrategyResultsAdd", "mqtwHistorical")
         self.mqtwDividends.setSettings(self.mem.settings, "wdgStrategyResultsAdd", "mqtwDividends")
         
+        
+        
         if self.strategy is None:# New one
             self.strategy=Strategy(self.mem)
+            self.strategy.investments=InvestmentManager(self.mem)
             self.wdgDtFrom.set()
             self.wdgDtTo.set()
             self.cmsInvestments.setManagers(self.mem.settings,"wdgStrategyResultsAdd", "cmsInvestments", self.mem.data.investments, None)
