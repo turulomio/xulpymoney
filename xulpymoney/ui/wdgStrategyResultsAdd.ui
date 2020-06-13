@@ -69,7 +69,7 @@
           </size>
          </property>
          <property name="pixmap">
-          <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/tools-wizard.png</pixmap>
+          <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/strategy.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>

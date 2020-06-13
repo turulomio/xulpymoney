@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>34</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -254,7 +254,6 @@
     <addaction name="separator"/>
     <addaction name="actionLastOperation"/>
     <addaction name="separator"/>
-    <addaction name="actionStrategySpreads"/>
     <addaction name="separator"/>
     <addaction name="actionDerivativesReport"/>
     <addaction name="separator"/>
@@ -343,7 +342,6 @@
    <addaction name="actionIndexRange"/>
    <addaction name="actionProductRange"/>
    <addaction name="actionLastOperation"/>
-   <addaction name="actionStrategySpreads"/>
    <addaction name="actionStrategyResults"/>
   </widget>
   <widget class="QToolBar" name="tbReports">
@@ -1266,22 +1264,10 @@
     <string>Product range</string>
    </property>
   </action>
-  <action name="actionStrategySpreads">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
-   </property>
-   <property name="text">
-    <string>Spreads</string>
-   </property>
-   <property name="toolTip">
-    <string>Spreads</string>
-   </property>
-  </action>
   <action name="actionStrategyResults">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+     <normaloff>:/xulpymoney/strategy.png</normaloff>:/xulpymoney/strategy.png</iconset>
    </property>
    <property name="text">
     <string>Strategy Results</string>

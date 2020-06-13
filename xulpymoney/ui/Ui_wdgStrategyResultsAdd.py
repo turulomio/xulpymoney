@@ -40,7 +40,7 @@ class Ui_wdgStrategyResultsAdd(object):
         self.lblPixmap.setSizePolicy(sizePolicy)
         self.lblPixmap.setMinimumSize(QtCore.QSize(48, 48))
         self.lblPixmap.setMaximumSize(QtCore.QSize(48, 48))
-        self.lblPixmap.setPixmap(QtGui.QPixmap(":/xulpymoney/tools-wizard.png"))
+        self.lblPixmap.setPixmap(QtGui.QPixmap(":/xulpymoney/strategy.png"))
         self.lblPixmap.setScaledContents(True)
         self.lblPixmap.setAlignment(QtCore.Qt.AlignCenter)
         self.lblPixmap.setObjectName("lblPixmap")
