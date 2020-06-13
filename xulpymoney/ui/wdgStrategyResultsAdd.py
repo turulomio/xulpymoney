@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QFileDialog
 from xulpymoney.ui.Ui_wdgStrategyResultsAdd import Ui_wdgStrategyResultsAdd
 from xulpymoney.objects.investment import InvestmentManager
 from xulpymoney.objects.strategy import Strategy
@@ -52,6 +52,23 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
     def on_wdgDtTo_changed(self):
         self.cmdSave.setEnabled(True)
         self.update()
+        
+    def on_cmdProductsUpdate_released(self):
+        from xulpymoney.investing_com import InvestingCom
+        filename=QFileDialog.getOpenFileName(self, "", "", "Texto CSV (*.csv)")[0]
+        if filename!="":
+            set=InvestingCom(self.mem, filename)
+            result=set.save()
+            self.mem.con.commit()
+            #Display result
+            from xulpymoney.ui.wdgQuotesSaveResult import frmQuotesSaveResult
+            d=frmQuotesSaveResult()
+            d.setFileToDelete(filename)
+            d.setQuotesManagers(*result)
+            d.exec_()
+            #Reloads changed data
+            set.change_products_status_after_save(result[0], result[2], 1, downgrade_to=0, progress=True)
+            self.update()
         
     def on_cmdSave_released(self):
         self.strategy.name=self.txtName.text()
