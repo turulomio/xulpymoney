@@ -995,58 +995,56 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
         return r
 
     def myqtablewidget(self, wdg, show_accounts=False, type=eMoneyCurrency.Product):
-        """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
-        diff=0
-        if show_accounts==True:
-            diff=2
+        wdg.auxiliar=(show_accounts, type)
+        hh=[self.tr( "Date and time" ), self.tr( "Years" ), self.tr( "Investment" ), self.tr( "Operation type" ), self.tr( "Shares" ), 
+            self.tr( "Initial gross" ), self.tr( "Final gross" ), self.tr( "Gross gains" ), self.tr( "Commissions" ), self.tr( "Taxes" ), self.tr( "Net gains" ), 
+            self.tr( "% Net APR" ), self.tr( "% Net Total" )]
             
-        wdg.table.setColumnCount(12+diff)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date and time" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr( "Years" )))
-        if show_accounts==True:
-            wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr( "Product" )))
-            wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr( "Account" )))
-        wdg.table.setHorizontalHeaderItem(2+diff, qcenter(self.tr( "Operation type" )))
-        wdg.table.setHorizontalHeaderItem(3+diff, qcenter(self.tr( "Shares" )))
-        wdg.table.setHorizontalHeaderItem(4+diff, qcenter(self.tr( "Initial gross" )))
-        wdg.table.setHorizontalHeaderItem(5+diff, qcenter(self.tr( "Final gross" )))
-        wdg.table.setHorizontalHeaderItem(6+diff, qcenter(self.tr( "Gross gains" )))
-        wdg.table.setHorizontalHeaderItem(7+diff, qcenter(self.tr( "Commissions" )))
-        wdg.table.setHorizontalHeaderItem(8+diff, qcenter(self.tr( "Taxes" )))
-        wdg.table.setHorizontalHeaderItem(9+diff, qcenter(self.tr( "Net gains" )))
-        wdg.table.setHorizontalHeaderItem(10+diff, qcenter(self.tr( "% Net APR" )))
-        wdg.table.setHorizontalHeaderItem(11+diff, qcenter(self.tr( "% Net Total" )))
+        data=[]
+        for rownumber, a in enumerate(self):    
+            data.append([
+                a.dt_end, 
+                round(a.years(), 2), 
+                a.investment.fullName(), 
+                a.tipooperacion.name, 
+                a.shares, 
+                a.bruto_compra(type), 
+                a.bruto_venta(type), 
+                a.consolidado_bruto(type), 
+                a.commission(type), 
+                a.taxes(type), 
+                a.consolidado_neto(type), 
+                a.tpc_tae_neto(), 
+                a.tpc_total_neto(), 
+                a, 
+            ])
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, decimals=self.investment.product.decimals, additional=self.myqtablewidget_additional)
 
-        wdg.applySettings()
-        wdg.table.clearContents()
+    
+    def myqtablewidget_additional(self, wdg):
+        show_accounts, type=wdg.auxiliar
+        
+        if show_accounts is True:
+            wdg.table.setColumnHidden(2, True)
+            wdg.table.setColumnHidden(3, True)
+            
         wdg.table.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):    
-            wdg.table.setItem(rownumber, 0,qdatetime(a.dt_end, self.mem.localzone_name))
-            wdg.table.setItem(rownumber, 1, qnumber(round(a.years(), 2)))
-            if show_accounts==True:
-                wdg.table.setItem(rownumber, 2, qleft(a.investment.name))
-                wdg.table.setItem(rownumber, 3, qleft(a.investment.account.name))
-            wdg.table.setItem(rownumber, 2+diff, qleft(a.tipooperacion.name))
-            wdg.table.setItem(rownumber, 3+diff, qright(a.shares))
-            wdg.table.setItem(rownumber, 4+diff, a.bruto_compra(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 5+diff, a.bruto_venta(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 6+diff, a.consolidado_bruto(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 7+diff,a.commission(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 8+diff,a.taxes(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 9+diff, a.consolidado_neto(type).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 11+diff, a.tpc_total_neto().qtablewidgetitem())
-
-        if self.length()>0:
-            wdg.table.setItem(self.length(), 2, qleft("TOTAL"))
-            wdg.table.setItem(self.length(), 4+diff, self.gross_purchases(type).qtablewidgetitem())
-            wdg.table.setItem(self.length(), 5+diff, self.gross_sales(type).qtablewidgetitem())
-            wdg.table.setItem(self.length(), 6+diff, self.consolidado_bruto(type=type).qtablewidgetitem())  
-            wdg.table.setItem(self.length(), 7+diff, self.commissions(type).qtablewidgetitem())    
-            wdg.table.setItem(self.length(), 8+diff, self.taxes(type).qtablewidgetitem())    
-            wdg.table.setItem(self.length(), 9+diff, self.consolidado_neto(type=type).qtablewidgetitem())
-            wdg.table.setItem(self.length(), 11+diff, self.tpc_total_neto().qtablewidgetitem())
-            wdg.table.setCurrentCell(self.length(), 4+diff)
+        wdg.addRow(self.length(), 
+                [ 
+                    self.tr("Total"), 
+                    "#crossedout", 
+                    "#crossedout",
+                    "#crossedout",  
+                    "#crossedout", 
+                    self.gross_purchases(type), 
+                    self.gross_sales(type), 
+                    self.consolidado_bruto(type), 
+                    self.commissions(type), 
+                    self.taxes(type), 
+                    self.consolidado_neto(type),     
+                    "#crossedout",
+                    self.tpc_total_neto(),
+             ])
     
 class InvestmentOperationHistorical:
     def __init__(self, mem):

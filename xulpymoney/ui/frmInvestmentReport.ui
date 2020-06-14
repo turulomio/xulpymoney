@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -413,7 +413,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_12">
               <item>
-               <widget class="mqtw" name="mqtwInvestmentHistorical" native="true"/>
+               <widget class="mqtwObjects" name="mqtwInvestmentHistorical" native="true"/>
               </item>
              </layout>
             </widget>
@@ -425,7 +425,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_13">
               <item>
-               <widget class="mqtw" name="mqtwInvestmentHistoricalAccountCurrency" native="true"/>
+               <widget class="mqtwObjects" name="mqtwInvestmentHistoricalAccountCurrency" native="true"/>
               </item>
              </layout>
             </widget>
@@ -791,6 +791,12 @@
    <class>VCTemporalSeries</class>
    <extends>QWidget</extends>
    <header location="global">myqcharts</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtwObjects</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

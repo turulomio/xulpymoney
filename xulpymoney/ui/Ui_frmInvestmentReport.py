@@ -229,7 +229,7 @@ class Ui_frmInvestmentReport(object):
         self.grpHistoricalInvestmentCurrency.setObjectName("grpHistoricalInvestmentCurrency")
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.grpHistoricalInvestmentCurrency)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.mqtwInvestmentHistorical = mqtw(self.grpHistoricalInvestmentCurrency)
+        self.mqtwInvestmentHistorical = mqtwObjects(self.grpHistoricalInvestmentCurrency)
         self.mqtwInvestmentHistorical.setObjectName("mqtwInvestmentHistorical")
         self.verticalLayout_12.addWidget(self.mqtwInvestmentHistorical)
         self.verticalLayout_14.addWidget(self.grpHistoricalInvestmentCurrency)
@@ -237,7 +237,7 @@ class Ui_frmInvestmentReport(object):
         self.grpHistoricalAccountCurrency.setObjectName("grpHistoricalAccountCurrency")
         self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.grpHistoricalAccountCurrency)
         self.verticalLayout_13.setObjectName("verticalLayout_13")
-        self.mqtwInvestmentHistoricalAccountCurrency = mqtw(self.grpHistoricalAccountCurrency)
+        self.mqtwInvestmentHistoricalAccountCurrency = mqtwObjects(self.grpHistoricalAccountCurrency)
         self.mqtwInvestmentHistoricalAccountCurrency.setObjectName("mqtwInvestmentHistoricalAccountCurrency")
         self.verticalLayout_13.addWidget(self.mqtwInvestmentHistoricalAccountCurrency)
         self.verticalLayout_14.addWidget(self.grpHistoricalAccountCurrency)
@@ -385,7 +385,7 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setObjectName("actionContractEdit")
 
         self.retranslateUi(frmInvestmentReport)
-        self.tab.setCurrentIndex(5)
+        self.tab.setCurrentIndex(1)
         self.chkExpiration.toggled['bool'].connect(self.calExpiration.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(frmInvestmentReport)
 
@@ -459,6 +459,6 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setToolTip(_translate("frmInvestmentReport", "Edit contract"))
 from xulpymoney.ui.myqcharts import VCTemporalSeries
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtw, mqtwObjects
 from xulpymoney.ui.wdgProductSelector import wdgProductSelector
 import xulpymoney.images.xulpymoney_rc

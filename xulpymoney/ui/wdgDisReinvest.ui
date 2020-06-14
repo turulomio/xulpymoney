@@ -346,7 +346,7 @@
      <item>
       <widget class="QTabWidget" name="tabOps">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_13">
         <attribute name="title">
@@ -374,7 +374,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
-          <widget class="mqtw" name="mqtwHistoricalOps" native="true"/>
+          <widget class="mqtwObjects" name="mqtwHistoricalOps" native="true"/>
          </item>
         </layout>
        </widget>
@@ -392,6 +392,12 @@
   </customwidget>
   <customwidget>
    <class>mqtw</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtwObjects</class>
    <extends>QWidget</extends>
    <header location="global">myqtablewidget</header>
    <container>1</container>

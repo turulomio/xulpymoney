@@ -205,7 +205,7 @@ class Ui_wdgDisReinvest(object):
         self.tab.setObjectName("tab")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.tab)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.mqtwHistoricalOps = mqtw(self.tab)
+        self.mqtwHistoricalOps = mqtwObjects(self.tab)
         self.mqtwHistoricalOps.setObjectName("mqtwHistoricalOps")
         self.horizontalLayout_9.addWidget(self.mqtwHistoricalOps)
         self.tabOps.addTab(self.tab, "")
@@ -213,7 +213,7 @@ class Ui_wdgDisReinvest(object):
         self.horizontalLayout_21.addLayout(self.verticalLayout_3)
 
         self.retranslateUi(wdgDisReinvest)
-        self.tabOps.setCurrentIndex(0)
+        self.tabOps.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(wdgDisReinvest)
 
     def retranslateUi(self, wdgDisReinvest):
@@ -235,5 +235,5 @@ class Ui_wdgDisReinvest(object):
         self.tabOps.setTabText(self.tabOps.indexOf(self.Situac_3), _translate("wdgDisReinvest", "Investment current state"))
         self.tabOps.setTabText(self.tabOps.indexOf(self.tab), _translate("wdgDisReinvest", "Investment historical operations"))
 from xulpymoney.ui.myqlineedit import myQLineEdit
-from xulpymoney.ui.myqtablewidget import mqtw
+from xulpymoney.ui.myqtablewidget import mqtw, mqtwObjects
 import xulpymoney.images.xulpymoney_rc
