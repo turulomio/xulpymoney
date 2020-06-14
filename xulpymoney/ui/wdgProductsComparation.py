@@ -45,7 +45,7 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             self.viewCompare.hide()
             self.viewScatter.hide()
             self.viewTwoAxis.show()
-        elif self.cmbCompareTypes.currentIndex() in (7, ):
+        elif self.cmbCompareTypes.currentIndex() in (7, 8):
             self.viewCompare.show()
             self.viewScatter.hide()
             self.viewTwoAxis.show()
@@ -76,7 +76,7 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
 
         self.__hide_or_show_views()
         
-        if self.cmbCompareTypes.currentIndex() in (0, 7):#Not changed data        
+        if self.cmbCompareTypes.currentIndex() in (0, 7, 8):#Not changed data        
             self.viewTwoAxis.clear()
             ls1=self.viewTwoAxis.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
             ls2=self.viewTwoAxis.ts.appendTemporalSeriesAxis2(self.comparation.product2.name.upper())#Line seies
@@ -92,8 +92,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
 
         if self.cmbCompareTypes.currentIndex()==1:#Scatter prices
             self.viewScatter.clear()
-            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
-            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
+            ls1=self.viewScatter.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewScatter.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1Closes(), self.comparation.product2Closes())
             self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
@@ -103,8 +103,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             
         if self.cmbCompareTypes.currentIndex()==2:#Scatter daily gains percentage
             self.viewScatter.clear()
-            ls1=self.viewCompare.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
-            ls2=self.viewCompare.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
+            ls1=self.viewScatter.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
+            ls2=self.viewScatter.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1PercentageEvolution(), self.comparation.product2PercentageEvolution())
             self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
@@ -172,8 +172,19 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             multiplier=closes2[0]/closes1[0]
             for i,  date in enumerate(dates):
                 diff=closes2[i]-closes1[i]*multiplier
-                #print(date, closes1[i], closes2[i], diff, multiplier)
                 self.viewCompare.ts.appendTemporalSeriesData(ls, dtaware_day_end_from_date(date, self.mem.localzone_name) , diff)
+            self.viewCompare.display()
+
+
+        if self.cmbCompareTypes.currentIndex()==8:# Price ratio A/B
+            self.viewCompare.clear()
+            ls=self.viewCompare.ts.appendTemporalSeries(self.tr("Price Ratio of {} / {}").format(self.comparation.product1.name, self.comparation.product2.name))#Line seies
+            dates=self.comparation.dates()
+            closes1=self.comparation.product1Closes()
+            closes2=self.comparation.product2Closes()
+            for i,  date in enumerate(dates):
+                ratio=closes1[i]/closes2[i]
+                self.viewCompare.ts.appendTemporalSeriesData(ls, dtaware_day_end_from_date(date, self.mem.localzone_name) , ratio)
             self.viewCompare.display()
 
         self.mem.settings.setValue("wdgProductsComparation/product1", str(self.comparation.product1.id))

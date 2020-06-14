@@ -538,9 +538,11 @@ class VCTemporalSeriesWithTwoYAxisAlone(VCTemporalSeriesAlone):
     ## To clean pie, removes serie and everithing is like create an empty pie
     def clear(self):
         VCTemporalSeriesAlone.clear(self)
+
         self.axisY2 = QValueAxis()
         self.maxy2=None
         self.miny2=None
+        self.series2=[]
 
         
     def appendTemporalSeriesAxis2(self, name):

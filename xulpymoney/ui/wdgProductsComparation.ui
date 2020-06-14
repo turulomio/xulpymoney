@@ -150,6 +150,15 @@
             <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Price Ratio</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
