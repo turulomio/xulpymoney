@@ -13,7 +13,7 @@ from xulpymoney.objects.money import Money
 from xulpymoney.objects.product import ProductManager
 from xulpymoney.objects.percentage import Percentage
 from xulpymoney.objects.quote import Quote
-from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime, qright, qnone, qnumber
+from xulpymoney.ui.myqtablewidget import qcenter, qleft, qdatetime, qright, qnone
 
 class InvestmentOperation:
     def __init__(self, mem, operation_type=None, datetime=None,  investment=None, shares=None, taxes=None, commission=None, price=None, comment=None, show_in_ranges=None, currency_conversion=None, id=None):
@@ -856,52 +856,50 @@ class InvestmentOperationHistoricalHeterogeneusManager(ObjectManager_With_Id_Sel
             if a.bruto(eMoneyCurrency.User).isLTZero():
                 r=r+a.bruto(eMoneyCurrency.User)
         return r
-
+        
     def myqtablewidget(self, wdg):
-        wdg.table.setColumnCount(14)
-        wdg.table.setHorizontalHeaderItem(0, qcenter(self.tr( "Date and time" )))
-        wdg.table.setHorizontalHeaderItem(1, qcenter(self.tr( "Years" )))
-        wdg.table.setHorizontalHeaderItem(2, qcenter(self.tr( "Product" )))
-        wdg.table.setHorizontalHeaderItem(3, qcenter(self.tr( "Account" )))
-        wdg.table.setHorizontalHeaderItem(4, qcenter(self.tr( "Operation type" )))
-        wdg.table.setHorizontalHeaderItem(5, qcenter(self.tr( "Shares" )))
-        wdg.table.setHorizontalHeaderItem(6, qcenter(self.tr( "Initial balance" )))
-        wdg.table.setHorizontalHeaderItem(7, qcenter(self.tr( "Final balance" )))
-        wdg.table.setHorizontalHeaderItem(8, qcenter(self.tr( "Gross gains" )))
-        wdg.table.setHorizontalHeaderItem(9, qcenter(self.tr( "Commissions" )))
-        wdg.table.setHorizontalHeaderItem(10, qcenter(self.tr( "Taxes" )))
-        wdg.table.setHorizontalHeaderItem(11, qcenter(self.tr( "Net gains" )))
-        wdg.table.setHorizontalHeaderItem(12, qcenter(self.tr( "% Net APR" )))
-        wdg.table.setHorizontalHeaderItem(13, qcenter(self.tr( "% Net Total" )))
+        hh=[self.tr( "Date and time" ), self.tr( "Years" ), self.tr( "Investment" ), self.tr( "Operation type" ), self.tr( "Shares" ), 
+            self.tr( "Initial balance" ), self.tr( "Final balance" ), self.tr( "Gross gains" ), self.tr( "Commissions" ), self.tr( "Taxes" ), self.tr( "Net gains" ), 
+            self.tr( "% Net APR" ), self.tr( "% Net Total" )]
+            
+        data=[]
+        for rownumber, a in enumerate(self):    
+            data.append([
+                a.dt_end, 
+                round(a.years(), 2), 
+                a.investment.fullName(), 
+                a.tipooperacion.name, 
+                a.shares, 
+                a.bruto_compra(eMoneyCurrency.User), 
+                a.bruto_venta(eMoneyCurrency.User), 
+                a.consolidado_bruto(eMoneyCurrency.User), 
+                a.commission(eMoneyCurrency.User), 
+                a.taxes(eMoneyCurrency.User), 
+                a.consolidado_neto(eMoneyCurrency.User), 
+                a.tpc_tae_neto(), 
+                a.tpc_total_neto(), 
+                a, 
+            ])
+        wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name, decimals=2, additional=self.myqtablewidget_additional)
 
-        wdg.applySettings()
-        wdg.table.clearContents()
+    def myqtablewidget_additional(self, wdg):            
         wdg.table.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):    
-            wdg.table.setItem(rownumber, 0, qdatetime(a.dt_end, self.mem.localzone_name))
-            wdg.table.setItem(rownumber, 1, qnumber(a.years(), 2))
-            wdg.table.setItem(rownumber, 2, qleft(a.investment.name))
-            wdg.table.setItem(rownumber, 3, qleft(a.investment.account.name))
-            wdg.table.setItem(rownumber, 4, qleft(a.tipooperacion.name))
-            wdg.table.setItem(rownumber, 5,qright(a.shares))
-            wdg.table.setItem(rownumber, 6,a.bruto_compra(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 7,a.bruto_venta(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 8,a.consolidado_bruto(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 9,a.commission(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 10,a.taxes(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 11,a.consolidado_neto(eMoneyCurrency.User).qtablewidgetitem())
-            wdg.table.setItem(rownumber, 12,a.tpc_tae_neto().qtablewidgetitem())
-            wdg.table.setItem(rownumber, 13,a.tpc_total_neto().qtablewidgetitem())
-
-        wdg.table.setItem(self.length(), 2,qcenter("TOTAL"))
-        wdg.table.setItem(self.length(), 6,self.gross_purchases().qtablewidgetitem())    
-        wdg.table.setItem(self.length(), 7,self.gross_sales().qtablewidgetitem())    
-        wdg.table.setItem(self.length(), 8,self.consolidado_bruto().qtablewidgetitem())    
-        wdg.table.setItem(self.length(), 9,self.commissions().qtablewidgetitem())    
-        wdg.table.setItem(self.length(), 10,self.taxes().qtablewidgetitem())    
-        wdg.table.setItem(self.length(), 11,self.consolidado_neto().qtablewidgetitem())
-        wdg.table.setItem(self.length(), 13,self.tpc_total_neto().qtablewidgetitem())
-        wdg.table.setCurrentCell(self.length(), 5)       
+        wdg.addRow(self.length(), 
+                [ 
+                    self.tr("Total"), 
+                    "#crossedout", 
+                    "#crossedout",
+                    "#crossedout",  
+                    "#crossedout", 
+                    self.gross_purchases(), 
+                    self.gross_sales(), 
+                    self.consolidado_bruto(), 
+                    self.commissions(), 
+                    self.taxes(), 
+                    self.consolidado_neto(),     
+                    "#crossedout",
+                    self.tpc_total_neto(),
+             ])
     
     def order_by_fechaventa(self):
         """Sort by selling date"""
