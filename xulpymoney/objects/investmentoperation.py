@@ -418,7 +418,26 @@ class InvestmentOperationCurrentHeterogeneusManager(ObjectManager_With_IdDatetim
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
             resultado=resultado+o.balance(o.investment.product.result.basic.last, type=3)
-        return resultado        
+        return resultado
+       
+    
+    ## @return Money Balance of long (call) operations
+    def balance_long_operations(self):
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for o in self.arr:
+            balance=o.balance(o.investment.product.result.basic.last, type=eMoneyCurrency.User)
+            if o.shares>=0:
+                resultado=resultado+balance
+        return resultado
+
+    ## @return Money Balance of sort (put) operations
+    def balance_short_operations(self):
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for o in self.arr:
+            balance=o.balance(o.investment.product.result.basic.last, type=eMoneyCurrency.User)
+            if o.shares<0:
+                resultado=resultado+balance
+        return resultado       
 
     def shares(self):
         """Devuelve el número de acciones de la inversión actual"""

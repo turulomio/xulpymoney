@@ -92,7 +92,8 @@ class wdgStrategyResultsAdd(QWidget, Ui_wdgStrategyResultsAdd):
         dividends=self.strategy.dividends()
         dividends.myqtablewidget(self.mqtwDividends)
         
-        s="Total = Current net gains + Historical net gains + Net dividends = {} + {} + {} = {}".format(
-            current.pendiente(), historical.consolidado_neto(), dividends.net(),  current.pendiente()+ historical.consolidado_neto()+ dividends.net())
+        s=self.tr("Total = Current net gains + Historical net gains + Net dividends = {} + {} + {} = {}").format(current.pendiente(), historical.consolidado_neto(), dividends.net(),  current.pendiente()+ historical.consolidado_neto()+ dividends.net()) 
+        s= s + "\n"
+        s= s + self.tr("Call operations balance: {}. Put operations balance: {}").format(current.balance_long_operations(), current.balance_short_operations())
         self.lblResults.setText(s)
 
