@@ -104,10 +104,10 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
 
     def on_txtAmount_textChanged(self):
         self.txtShares.blockSignals(True)
-        if self.txtAmount.isValid() and self.txtPrice.isValid():
+        try:
             self.txtShares.setText(round(self.txtAmount.decimal()/self.txtPrice.decimal(), 0))
-        else:
-            self.txtShares.setText("")
+        except:
+            self.txtShares.setText(0)
         self.txtShares.blockSignals(False)
         self.setWarning()
 
