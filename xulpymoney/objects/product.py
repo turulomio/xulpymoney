@@ -315,7 +315,7 @@ class Product(QObject):
     ## IBEXA es x2 pero esta en el pricio
     ## CFD DAX no está en el precio
     def real_leveraged_multiplier(self):
-        if self.type in (eProductType.CFD, eProductType.Future):
+        if self.type.id in (eProductType.CFD, eProductType.Future):
             return self.leveraged.multiplier
         return 1
 
