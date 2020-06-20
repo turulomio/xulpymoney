@@ -642,6 +642,7 @@ class ProductComparation(QObject):
         productcloses1=self.product1PercentageEvolution()
         productcloses2=self.product2PercentageEvolution()
         for i, dat in enumerate(self.__commonDates):
+            print(i)
             if i==0:
                 arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close, Percentage(None), Percentage(None)))
             else:

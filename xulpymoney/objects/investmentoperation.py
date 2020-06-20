@@ -631,7 +631,6 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             PF=(-Gains+AveragePrice*Shares*Leverage)/(Shares*Leverage)
         else:
             PF=0
-        print(Leverage, AveragePrice, Gains, Shares, PF)
         return Money(self.mem, PF, self.investment.product.currency)
 
     ## Función que calcula la diferencia de balance entre last y penultimate
