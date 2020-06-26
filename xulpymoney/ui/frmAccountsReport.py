@@ -131,7 +131,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.account==None:
-            cu=Account(self.mem, cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency), None)
+            cu=Account(self.mem, cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, currency, None)
             cu.save()
             self.mem.data.accounts.append(cu) #Always to active
         else:

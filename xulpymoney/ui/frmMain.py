@@ -38,6 +38,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(__versiondate__.year))
             self.actionDocumentsPurge.setEnabled(False)
+            
+            
+        ## TRENDING AND A HALF
+        from xulpymoney.objects.trending_half import start
+        start(self.mem)
+            
 
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)

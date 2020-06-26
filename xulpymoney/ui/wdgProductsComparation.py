@@ -93,8 +93,6 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
 
         if self.cmbCompareTypes.currentIndex()==1:#Scatter prices
             self.viewScatter.clear()
-            ls1=self.viewScatter.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
-            ls2=self.viewScatter.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1Closes(), self.comparation.product2Closes())
             self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
@@ -104,8 +102,6 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
             
         if self.cmbCompareTypes.currentIndex()==2:#Scatter daily gains percentage
             self.viewScatter.clear()
-            ls1=self.viewScatter.ts.appendTemporalSeries(self.comparation.product1.name.upper())#Line seies
-            ls2=self.viewScatter.ts.appendTemporalSeries(self.comparation.product2.name.upper())#Line seies
             self.viewScatter.scatter.setTitle("Scatter chart")
             self.viewScatter.scatter.appendScatterSeries("Correlation", self.comparation.product1PercentageEvolution(), self.comparation.product2PercentageEvolution())
             self.viewScatter.scatter.setXFormat("float", self.comparation.product1.name)
