@@ -13,7 +13,7 @@
     <height>781</height>
    </rect>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -34,27 +34,111 @@
       </widget>
      </item>
      <item>
-      <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSLong" native="true"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="wdgYear" name="wyData" native="true"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSShort" native="true"/>
-     </item>
-     <item>
-      <widget class="QTextBrowser" name="textBrowser">
-       <property name="openExternalLinks">
+      <widget class="QTabWidget" name="tab">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="tabsClosable">
         <bool>true</bool>
        </property>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Historical evolution</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="mqtw" name="mqtwTotal" native="true"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Old</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSLong" native="true"/>
+           </item>
+           <item>
+            <widget class="wdgInvestmentOperationHistoricalSelector" name="wdgIOHSShort" native="true"/>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="textBrowser">
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
+  <action name="actionShowAdjustments">
+   <property name="text">
+    <string>Show adjustments</string>
+   </property>
+   <property name="toolTip">
+    <string>Show adjustments</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>wdgInvestmentOperationHistoricalSelector</class>
    <extends>QWidget</extends>
    <header location="global">wdgInvestmentOperationsSelector</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>wdgYear</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYear</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mqtw</class>
+   <extends>QWidget</extends>
+   <header location="global">myqtablewidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

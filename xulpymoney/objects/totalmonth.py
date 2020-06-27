@@ -3,6 +3,7 @@ from datetime import date
 from logging import debug
 from xulpymoney.datetime_functions import date_last_of_the_month, months
 from xulpymoney.libmanagers import ObjectManager
+from xulpymoney.libxulpymoneytypes import eConcept
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
@@ -25,6 +26,21 @@ class TotalMonth:
     def d_g(self):
         """Dividends+gains"""
         return self.gains()+self.dividends()
+        
+    def derivatives_adjustments(self):
+        if hasattr(self, "_derivatives_adjustments") is False:
+            ## WRONG IF SEVERAL CURRENCY IN ADJUSTMENTS
+            self._derivatives_adjustments=self.mem.con.cursor_one_field("""
+select 
+    sum(importe)
+from 
+    opercuentas 
+where 
+    id_conceptos in (%s) AND
+    date_part('year',datetime)=%s and 
+    date_part('month',datetime)=%s
+""", (eConcept.DerivativesAdjustment, self.year, self.month ))
+        return Money(self.mem, self._derivatives_adjustments, self.mem.localcurrency)
 
     def expenses(self):
         if hasattr(self, "_expenses") is False:
@@ -184,6 +200,11 @@ class TotalMonthManager(ObjectManager):
         result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.dividends()
+        return result
+    def derivatives_adjustments(self):
+        result=Money(self.mem, 0, self.mem.localcurrency)
+        for m in self.arr:
+            result=result+m.derivatives_adjustments()
         return result
 
     def d_g(self):

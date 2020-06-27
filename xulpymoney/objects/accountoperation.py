@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject
+from xulpymoney.decorators import deprecated
 from xulpymoney.libmanagers import ObjectManager_With_IdDatetime_Selectable
 from xulpymoney.libxulpymoneytypes import eConcept, eComment
 from xulpymoney.objects.comment import Comment
@@ -30,6 +31,7 @@ class AccountOperation(QObject):
             self.comentario=comentario
             self.account=cuenta
             
+        @deprecated
         def init__db_row(row, concepto,  tipooperacion, cuenta):
             init__create(row['datetime'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
 
@@ -98,6 +100,7 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
                 r=r+Money(self.mem, o.importe, o.account.currency).convert(self.mem.localcurrency, o.datetime)
         return r
 
+    @deprecated
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
@@ -106,6 +109,7 @@ class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectab
             self.append(co)
         cur.close()
 
+    @deprecated
     def load_from_db_with_creditcard(self, sql):
         """Usado en unionall opercuentas y opertarjetas y se crea un campo id_tarjetas con el id de la tarjeta y -1 sino tiene es decir opercuentas"""
         cur=self.mem.con.cursor()
@@ -207,3 +211,20 @@ class AccountOperationOfInvestmentOperation(QObject):
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
         
+def AccountOperation_from_row(mem, row): 
+    r=AccountOperation(mem)
+    r.id=row['id_opercuentas']
+    r.datetime=row['datetime']
+    r.concepto=mem.conceptos.find_by_id(row['id_conceptos'])
+    r.tipooperacion=mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])
+    r.importe=row['importe']
+    r.comentario=row['comentario']
+    r.account=mem.data.accounts.find_by_id(row['id_cuentas'])
+    return r
+
+def AccountOperationManagerHeterogeneus_from_sql(mem, sql, params=()):
+    rows=mem.con.cursor_rows(sql, params)
+    r=AccountOperationManagerHeterogeneus(mem)
+    for row in rows:
+        r.append(AccountOperation_from_row(mem,  row))
+    return r
