@@ -877,7 +877,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.on_actionShowExpenses_triggered()
         elif row==7: #Investments
             totalmonth=self.tmm_data.arr[column]
-            qmessagebox(self.tr("High Low Investments aren't sumarized here, due to they have daily adjustments in accounts.") + "\n\n" + self.tr("Their balance at the end of {}-{} is {}").format(totalmonth.year, totalmonth.month, totalmonth.total_investments_high_low()))
+            qmessagebox(self.tr("Investments with daily adjustments aren't sumarized here, due to they are sumarized in accounts.") + "\n\n" + self.tr("Their balance at the end of {}-{} is {}").format(totalmonth.year, totalmonth.month, totalmonth.total_investments_with_daily_adjustments()))
         else:
             qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see commission and tax reports"))
 

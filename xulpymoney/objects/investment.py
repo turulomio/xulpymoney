@@ -47,6 +47,7 @@ class Investment(QObject):
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
         self.merged=False#If this investment is the result of merge several Investments
+        self.daily_adjustment=None
 
         ## Variable with the current product status
         ## 0 No data
@@ -101,7 +102,7 @@ class Investment(QObject):
             debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.now()-start, self.status, statusneeded))
             self.status=3
 
-    def init__create(self, name, venta, cuenta, product, selling_expiration, active, id=None):
+    def init__create(self, name, venta, cuenta, product, selling_expiration, active, daily_adjustment, id=None):
         self.name=name
         self.venta=venta
         self.account=cuenta
@@ -109,6 +110,7 @@ class Investment(QObject):
         self.active=active
         self.selling_expiration=selling_expiration
         self.id=id
+        self.daily_adjustment=daily_adjustment
         return self
 
     ## Replicates an investment with data at datetime
@@ -125,16 +127,16 @@ class Investment(QObject):
         return r
 
     def copy(self ):
-        return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
+        return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.daily_adjustment,  self.id)
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id) values (%s, %s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id,daily_adjustment) values (%s, %s,%s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment))    
             self.id=cur.fetchone()[0]      
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
         cur.close()
 
     def selling_price(self, type=eMoneyCurrency.Product):
@@ -160,6 +162,7 @@ class Investment(QObject):
         self.product=mqinvestment
         self.active=row['active']
         self.selling_expiration=row['selling_expiration']
+        self.daily_adjustment=row['daily_adjustment']
         return self
 
     ## Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes.
@@ -714,7 +717,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         name=self.tr( "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
-        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, False, -1)
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
@@ -747,7 +750,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         name=self.tr( "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem, "Merging account",  bank, True, "", self.mem.localcurrency, -1)
-        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, False,  -1)    
         r.op=InvestmentOperationHomogeneusManager(self.mem, r)
         r.dividends=DividendHomogeneusManager(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array

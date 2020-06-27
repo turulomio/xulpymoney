@@ -68,6 +68,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.lblTitulo.setText(self.investment.name)
             self.txtInvestment.setText(self.investment.name)
             self.txtVenta.setText(self.investment.venta)
+            self.chkDailyAdjustment.setChecked(self.investment.daily_adjustment)
             if self.investment.selling_expiration==None:
                 self.chkExpiration.setCheckState(Qt.Unchecked)
             else:
@@ -76,10 +77,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.ise.setSelected(self.investment.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.investment.account.id))
-
-            #Removes contract tab when it isn't neccessary
-            if self.investment.product.high_low==False:
-                self.tab.removeTab(6)
             
             #CmbAccount está desabilitado si hay dividends o operinversiones
             if self.investment.op.length()!=0:
@@ -316,6 +313,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment==None or self.investment.merged==False:
             self.cmdInvestment.setEnabled(True)
 
+    def on_chkDailyAdjustment_stateChanged(self, state):
+        if self.investment==None or self.investment.merged==False:
+            self.cmdInvestment.setEnabled(True)
+
     def on_cmdToday_released(self):
         self.calExpiration.setSelectedDate(date.today())
 
@@ -325,6 +326,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             return
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
+        daily_adjustment=self.chkDailyAdjustment.isChecked()
         account=self.mem.data.accounts_active().find_by_id(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
         if account is None:
             qmessagebox(self.tr("You must select an account"))
@@ -342,7 +344,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.data.products.append(product)        
 
         if self.investment==None: #insertar
-            self.investment=Investment(self.mem).init__create(inversion,   venta,  account, product, expiration, True)      
+            self.investment=Investment(self.mem).init__create(inversion,   venta,  account, product, expiration, True, daily_adjustment )
             self.investment.save()
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
@@ -355,6 +357,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.investment.venta=venta
             self.investment.product=product
             self.investment.selling_expiration=expiration
+            self.investment.daily_adjustment=daily_adjustment
             self.investment.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)

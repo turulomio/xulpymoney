@@ -126,7 +126,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             dt_start=dtaware_year_start(i, self.mem.localzone_name)
             dt_end=dtaware_year_end(i, self.mem.localzone_name)           
             sinvested=Assets(self.mem).invested(date_last_of_the_year(i))
-            sbalance=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(i))+Assets(self.mem).saldo_todas_inversiones_high_low(date_last_of_the_year(i))
+            sbalance=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(i))+Assets(self.mem).saldo_todas_inversiones_with_daily_adjustment(date_last_of_the_year(i))
             gd=Assets(self.mem).consolidado_neto(self.mem.data.investments,  i)+Assets(self.mem).dividends_neto(i)
             sumgd=sumgd+gd
             
@@ -161,7 +161,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             ])
         self.mqtwReport.setData(hh, None, data)
 
-        diff=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(date.today().year)) + Assets(self.mem).saldo_todas_inversiones_high_low(date_last_of_the_year(date.today().year)) - Assets(self.mem).invested(date_last_of_the_year(date.today().year))
+        diff=Assets(self.mem).saldo_todas_inversiones(date_last_of_the_year(date.today().year)) + Assets(self.mem).saldo_todas_inversiones_with_daily_adjustment(date_last_of_the_year(date.today().year)) - Assets(self.mem).invested(date_last_of_the_year(date.today().year))
         s=""
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}.").format(diff)
         s=s+"\n"+self.tr("From {} I've generated {} gains (investment commisions are included).").format(self.wdgYear.year, sumgd)

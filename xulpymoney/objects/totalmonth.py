@@ -90,10 +90,10 @@ class TotalMonth:
             self._total_investments_real=Assets(self.mem).saldo_todas_inversiones_real(self.last_day())
         return self._total_investments_real
 
-    def total_investments_high_low(self):
-        if hasattr(self, "_total_investments_high_low") is False:
-            self._total_investments_high_low=Assets(self.mem).saldo_todas_inversiones_high_low(self.last_day())
-        return self._total_investments_high_low
+    def total_investments_with_daily_adjustments(self):
+        if hasattr(self, "_total_investments_with_daily_adjustments") is False:
+            self._total_investments_with_daily_adjustments=Assets(self.mem).saldo_todas_inversiones_with_daily_adjustment(self.last_day())
+        return self._total_investments_with_daily_adjustments
 
     def total_zerorisk(self): 
         if hasattr(self, "_total_zerorisk") is False:
@@ -107,12 +107,12 @@ class TotalMonth:
 
     def total_no_losses(self):
         if hasattr(self, "_total_no_losses") is False:
-            self._total_no_losses=self.total_invested()+self.total_accounts()-self.total_investments_high_low()
+            self._total_no_losses=self.total_invested()+self.total_accounts()-self.total_investments_with_daily_adjustments()
         return self._total_no_losses
 
     def total_no_losses_real(self):
         if hasattr(self, "_total_no_losses_real") is False:
-            self._total_no_losses_real=self.total_invested_real()+self.total_accounts()-self.total_investments_high_low()
+            self._total_no_losses_real=self.total_invested_real()+self.total_accounts()-self.total_investments_with_daily_adjustments()
         return self._total_no_losses_real
         
     def total_invested(self):

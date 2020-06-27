@@ -15,7 +15,7 @@ def start(mem):
     account=None
     product=mem.data.products.find_by_id(81752)
     expiration=None
-    inv=Investment(mem).init__create("DAX ALCISTA",   0,  account, product, expiration, True, id=-9999)
+    inv=Investment(mem).init__create("DAX ALCISTA",   0,  account, product, expiration, True, False, id=-9999)
     inv.needStatus(1)
     print(inv)
     

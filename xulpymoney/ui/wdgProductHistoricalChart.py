@@ -419,7 +419,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
         percentage=Percentage(self.spnGainsPercentage.value(), 100)
         selected_datetime= dtaware_day_start_from_date(self.dtFrom.date().toPyDate(), self.mem.localzone_name)
 
-        inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, -1)
+        inv=Investment(self.mem).init__create("Buy Chart", None, None, self.product, None, True, False -1)
         inv.op=InvestmentOperationHomogeneusManager(self.mem, inv)
         p_last_operation=Percentage(self.txtLastOperationPercentage.decimal(), 100)
 

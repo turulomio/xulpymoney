@@ -87,7 +87,7 @@ class InvestmentOperation:
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
         
-        if self.investment.product.high_low==True: #Because it uses adjustment information
+        if self.investment.daily_adjustment is True: #Because it uses adjustment information
             return
         
         self.comentario=Comment(self.mem).encode(eComment.InvestmentOperation, self)
@@ -187,6 +187,7 @@ class InvestmentOperationCurrent:
         else:
             self.referenciaindice=quote
         return self.referenciaindice
+
     ## Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
     ## Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
     def invertido(self, type=eMoneyCurrency.Product):

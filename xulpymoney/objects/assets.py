@@ -57,7 +57,7 @@ class Assets:
     def saldo_todas_inversiones(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in self.mem.data.investments.arr:
-            if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
+            if i.daily_adjustment is False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
     ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
@@ -66,17 +66,17 @@ class Assets:
     def saldo_todas_inversiones_real(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in self.mem.data.investments.arr:
-            if i.product.high_low==False:#Due to there is a daily adjustments in accouts 
+            if i.daily_adjustment is False:#Due to there is a daily adjustments in accouts 
                 resultado=resultado+i.balance_real(fecha, type=3)
         return resultado
 
     ## This method gets all High-Low investments balance
     ##
     ## Esta función se calcula en cliente
-    def saldo_todas_inversiones_high_low(self, fecha):
+    def saldo_todas_inversiones_with_daily_adjustment(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in self.mem.data.investments.arr:
-            if i.product.high_low==True:
+            if i.daily_adjustment is True:
                 resultado=resultado+i.balance(fecha, type=3)
         return resultado
 

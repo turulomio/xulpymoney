@@ -139,6 +139,9 @@ class Ui_frmInvestmentReport(object):
         self.calExpiration.setObjectName("calExpiration")
         self.horizontalLayout_10.addWidget(self.calExpiration)
         self.verticalLayout.addLayout(self.horizontalLayout_10)
+        self.chkDailyAdjustment = QtWidgets.QCheckBox(self.groupBox)
+        self.chkDailyAdjustment.setObjectName("chkDailyAdjustment")
+        self.verticalLayout.addWidget(self.chkDailyAdjustment)
         self.cmdInvestment = QtWidgets.QPushButton(self.groupBox)
         self.cmdInvestment.setEnabled(False)
         icon3 = QtGui.QIcon()
@@ -385,7 +388,7 @@ class Ui_frmInvestmentReport(object):
         self.actionContractEdit.setObjectName("actionContractEdit")
 
         self.retranslateUi(frmInvestmentReport)
-        self.tab.setCurrentIndex(1)
+        self.tab.setCurrentIndex(0)
         self.chkExpiration.toggled['bool'].connect(self.calExpiration.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(frmInvestmentReport)
 
@@ -399,6 +402,7 @@ class Ui_frmInvestmentReport(object):
         self.txtVenta.setText(_translate("frmInvestmentReport", "0"))
         self.chkExpiration.setText(_translate("frmInvestmentReport", "Add selling order expiration"))
         self.cmdToday.setToolTip(_translate("frmInvestmentReport", "Change calendar date to today"))
+        self.chkDailyAdjustment.setText(_translate("frmInvestmentReport", "Investment with daily adjustments (CFD and Futures of some banks)"))
         self.cmdInvestment.setText(_translate("frmInvestmentReport", "Update investment"))
         self.tab.setTabText(self.tab.indexOf(self.tab_12), _translate("frmInvestmentReport", "Investment data"))
         self.grpCurrentInvestmentCurrency.setTitle(_translate("frmInvestmentReport", "Current status in investment currency"))
