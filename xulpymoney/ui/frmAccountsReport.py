@@ -347,27 +347,27 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.mqtwCreditCardOperations.selected is None:
             return 
 
-        if len(self.mqtwCreditCardOperations.selected)==0: # 0 o más de 1
+        if len(self.mqtwCreditCardOperations.selected)==0:
             self.grpPago.setEnabled(False)
             self.actionCreditCardOperDelete.setEnabled(False)
             self.actionCreditCardOperEdit.setEnabled(False)
             self.actionCreditCardOperRefund.setEnabled(False)
             self.actionConceptReport.setEnabled(False)
-        elif len(self.mqtwCreditCardOperations.selected)==1: # 0 o más de 1
-            self.grpPago.setEnabled(True)
-            self.actionCreditCardOperDelete.setEnabled(False)
-            self.actionCreditCardOperEdit.setEnabled(False)
-            self.actionCreditCardOperRefund.setEnabled(False)
-            self.actionConceptReport.setEnabled(False)
-        else:
+        elif len(self.mqtwCreditCardOperations.selected)==1:
             self.grpPago.setEnabled(True)
             self.actionCreditCardOperDelete.setEnabled(True)
             self.actionCreditCardOperEdit.setEnabled(True)
+            self.actionConceptReport.setEnabled(True)
             if self.mqtwCreditCards.selected.pagodiferido==True and self.mqtwCreditCardOperations.selected[0].importe<0:#Only difered purchases
                 self.actionCreditCardOperRefund.setEnabled(True)
             else:
                 self.actionCreditCardOperRefund.setEnabled(False)
-            self.actionConceptReport.setEnabled(True)
+        else:# >=2
+            self.grpPago.setEnabled(True)
+            self.actionCreditCardOperDelete.setEnabled(False)
+            self.actionCreditCardOperEdit.setEnabled(False)
+            self.actionConceptReport.setEnabled(False)
+            self.actionCreditCardOperRefund.setEnabled(False)
             
         menu=QMenu()
         menu.addAction(self.actionCreditCardOperAdd)
