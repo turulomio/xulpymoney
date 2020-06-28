@@ -389,6 +389,60 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                     wdg.table.item(i, 7).setBackground(eQColor.Red)
                 if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
                     wdg.table.item(i, 8).setBackground(eQColor.Green)
+                
+
+    def myqtablewidget_information(self, wdg):
+#        type=eMoneyCurrency.User
+        data=[]
+        for i, inv in enumerate(self.arr):
+            data.append([
+                inv.fullName(), 
+                inv.invertido(), 
+                inv.balance(), 
+                0, 
+                inv#Data with objects
+            ])
+        wdg.setDataWithObjects(
+            [self.tr("Investment"), self.tr("Invested"), self.tr("Balance"), self.tr("Gains")
+            ], 
+            None, 
+            data,  
+            decimals=[0, 0, 6, 2, 2, 2, 2, 2, 2], 
+            zonename=self.mem.localzone_name, 
+            additional=self.myqtablewidget_information_additional
+        )   
+        
+    def myqtablewidget_information_additional(self, wdg):
+        wdg.table.setRowCount(len(wdg.objects())+1)
+#        type=eMoneyCurrency.User
+        wdg.addRow(
+            len(wdg.objects()), 
+            [
+                self.tr("Total"), 
+                self.invested(), 
+                self.balance(), 
+                self.pendiente(), 
+                None
+            ], 
+            zonename=self.mem.localzone_name)
+            
+#            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
+#            tpc_venta=inv.percentage_to_selling_point()
+#            if inv.op_actual.shares()>=0: #Long operation
+#                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/up.png"))
+#            else:
+#                wdg.table.item(i, 0).setIcon(QIcon(":/xulpymoney/down.png"))         
+#            if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
+#                wdg.table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
+#            if inv.selling_expiration!=None:
+#                if inv.selling_expiration<date.today():
+#                    wdg.table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+#
+#            if tpc_invertido.isValid() and tpc_venta.isValid():
+#                if tpc_invertido.value_100()<=-Decimal(50):   
+#                    wdg.table.item(i, 7).setBackground(eQColor.Red)
+#                if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
+#                    wdg.table.item(i, 8).setBackground(eQColor.Green)
 
     def mqtw_active(self, wdg):                
         wdg.setDataFromManager(

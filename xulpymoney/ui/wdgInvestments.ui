@@ -183,6 +183,18 @@
     <string>Update product</string>
    </property>
   </action>
+  <action name="actionInformation">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>More information</string>
+   </property>
+   <property name="toolTip">
+    <string>More information</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

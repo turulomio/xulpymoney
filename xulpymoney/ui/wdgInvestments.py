@@ -55,6 +55,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
     @pyqtSlot() 
+    def on_actionInformation_triggered(self):
+        self.investments=self.mem.data.investments_active()
+        self.investments.myqtablewidget_information(self.mqtwInvestments)
+        self.mqtwInvestments.setOrderBy(0,  False)
+        self.lblTotal_update()
+        
+
+    @pyqtSlot() 
     def on_actionInvestmentDelete_triggered(self):
         self.mqtwInvestments.selected.borrar()
         self.mem.data.investments.remove(self.mqtwInvestments.selected)
@@ -129,7 +137,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.lblTotal_update()
 
     def on_mqtwInvestments_customContextMenuRequested(self,  pos):
-        if self.mqtwInvestments.selected==None:
+        if self.mqtwInvestments.selected is None:
             self.actionInvestmentReport.setEnabled(False)
             self.actionInvestmentDelete.setEnabled(False)
             self.actionActive.setEnabled(False)
@@ -139,10 +147,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionProductUpdate.setEnabled(False)
             self.actionSameProduct.setEnabled(False)
             self.actionSameProductFIFO.setEnabled(False)
+            self.actionInformation.setEnabled(False)
         else:
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       
             self.actionProduct.setEnabled(True)
+            self.actionInformation.setEnabled(True)
             if self.mem.data.investments.numberWithSameProduct(self.mqtwInvestments.selected.product)>1:
                 self.actionSameProduct.setEnabled(True)
                 self.actionSameProductFIFO.setEnabled(True)
@@ -179,6 +189,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addAction(self.actionProductUpdate)
         menu.addSeparator()
         menu.addAction(self.actionActive)
+        menu.addSeparator()
+        menu.addAction(self.actionInformation)
         menu.addSeparator()
         menu.addMenu(self.mqtwInvestments.qmenu())
         menu.exec_(self.mqtwInvestments.table.mapToGlobal(pos))
