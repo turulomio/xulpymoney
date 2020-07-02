@@ -295,6 +295,7 @@ class VCTemporalSeriesAlone(VCCommons):
             return resultado
 
         # ---------------------------------------
+        
         if self.popuplock.tryLock()==False:
             event.reject()
             return
@@ -309,9 +310,6 @@ class VCTemporalSeriesAlone(VCCommons):
         if xVal <= maxX and  xVal >= minX and yVal <= maxY and yVal >= minY:
             self.popup.move(self.mapToGlobal(placePopUp()))
             self.popup.refresh(self, xVal, yVal)
-            self.popup.show()
-        else:
-            self.popup.hide()
         self.popuplock.unlock()
 
     ## Return the value of the serie in x
@@ -753,23 +751,7 @@ class VCScatterAlone(VCCommons):
         if xVal <= maxX and  xVal >= minX and yVal <= maxY and yVal >= minY:
             self.popup.move(self.mapToGlobal(placePopUp()))
             self.popup.refresh(self, xVal, yVal)
-            self.popup.show()
-        else:
-            self.popup.hide()
         self.popuplock.unlock()
-
-#    ## Return the value of the serie in x
-#    def series_value(self, x):
-#            for point in self.series[0].pointsVector():
-#                if point.x()>=x:
-#                    return point.y()
-
-#    ## Returns values from QSeries objects in an ordereddict d[x]=y, key is a dtaware
-#    def series_dictionary(self, serie):
-#        d=OrderedDict()
-#        for point in serie.pointsVector():
-#            d[point.x())]=point.y()
-#        return d
 
     @pyqtSlot()
     def on_marker_clicked(self):
@@ -1055,10 +1037,10 @@ class MyPopup(QDialog):
             self.lblPosition.setFont(font)
             self.lay.addWidget(self.lblPosition)
             
-            line = QFrame(self)
-            line.setFrameShape(QFrame.HLine)
-            line.setFrameShadow(QFrame.Sunken)
-            self.lay.addWidget(line)
+            self.line = QFrame(self)
+            self.line.setFrameShape(QFrame.HLine)
+            self.line.setFrameShadow(QFrame.Sunken)
+            self.lay.addWidget(self.line)
             
             self.lblTitles=[]
             self.lblValues=[]
@@ -1073,30 +1055,57 @@ class MyPopup(QDialog):
                 self.lay.addLayout(layh)
             self.setLayout(self.lay)
         
-        self.lblPosition.setText("{}, {}".format(self.parent.value2formated_string(xVal, self.parent._x_format, self.parent._x_decimals), self.parent.value2formated_string(yVal, self.parent._y_format, self.parent._y_decimals)))
-        #Displaying values
-        modifiers = QApplication.keyboardModifiers()
-        for i, serie in enumerate(self.vc.series):
-            if serie.isVisible():
-                self.lblValues[i].show()
-                self.lblTitles[i].show()
+        modifiers = QApplication.keyboardModifiers()        
+        
+        if modifiers== Qt.ShiftModifier: #SHOW CCURRENT VALUE
+            self.lblPosition.setText("{}, {}".format(self.parent.value2formated_string(xVal, self.parent._x_format, self.parent._x_decimals), self.parent.value2formated_string(yVal, self.parent._y_format, self.parent._y_decimals)))
+            for i, serie in enumerate(self.vc.series):
+                    self.lblValues[i].hide()
+                    self.lblTitles[i].hide()
+                    self.line.hide()
+            self.show()
 
-                if modifiers == Qt.ShiftModifier: #LAST VALUE
-                    self.lblTitles[i].setText(serie.name() + " (Last value)")
-                    try:
-                        value=serie.pointsVector()[len(serie.pointsVector())-1].y()
-                    except:
-                        value="---"
-                else: #POSITION VALUE          
+        elif modifiers== Qt.ControlModifier: #SHOW CURRENT VALUES OF SERIES
+            self.lblPosition.setText("{}, {}".format(self.parent.value2formated_string(xVal, self.parent._x_format, self.parent._x_decimals), self.parent.value2formated_string(yVal, self.parent._y_format, self.parent._y_decimals)))
+            for i, serie in enumerate(self.vc.series):
+                if serie.isVisible():
+                    self.lblValues[i].show()
+                    self.lblTitles[i].show()
                     self.lblTitles[i].setText(serie.name())
                     try:
                         value=self.vc.series_value(serie, self.xVal)
                     except:
                         value="---"
-                self.lblValues[i].setText(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals))
-            else:
-                self.lblValues[i].hide()
-                self.lblTitles[i].hide()
+                    self.lblValues[i].setText(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals))
+                    self.line.show()
+                    self.show()
+                else:
+                    self.lblValues[i].hide()
+                    self.lblTitles[i].hide()
+            self.show()
+
+        elif modifiers ==Qt.ShiftModifier|Qt.ControlModifier: #SHOW LAST VALUES OF SERIES
+            self.lblPosition.setText(self.tr("Last value") )
+            for i, serie in enumerate(self.vc.series):
+                if serie.isVisible():
+                    self.lblValues[i].show()
+                    self.lblTitles[i].show()
+                    self.lblTitles[i].setText(serie.name())
+                    try:
+                        value=serie.pointsVector()[len(serie.pointsVector())-1].y()
+                    except:
+                        value="---"
+                    self.lblValues[i].setText(self.parent.value2formated_string(value, self.parent._y_format, self.parent._y_decimals))
+                    self.line.show()
+                    self.show()
+                else:
+                    self.lblValues[i].hide()
+                    self.lblTitles[i].hide()
+            self.show()
+        
+        else:
+            self.hide()
+
 
     def mousePressEvent(self, event):
         self.hide()
