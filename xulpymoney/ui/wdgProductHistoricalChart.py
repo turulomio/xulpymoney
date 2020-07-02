@@ -184,7 +184,9 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
 
         if hasattr(self,  "_drawRangeLines") is True: #Draws range linbes
             for range in self._drawRangeLines:
-                tsrange=self.wdgTS.ts.appendTemporalSeries(self.tr("Range at {}".format(range)))
+                range=round(range, self.product.decimals)
+                m_range=self.product.money(range)
+                tsrange=self.wdgTS.ts.appendTemporalSeries(self.tr("Range at {}".format(m_range)))
                 tsrange.setColor(QColor(95, 154, 12))
                 self.wdgTS.ts.appendTemporalSeriesData(tsrange, selected_datetime, range)
                 self.wdgTS.ts.appendTemporalSeriesData(tsrange, self.mem.localzone.now(), range)

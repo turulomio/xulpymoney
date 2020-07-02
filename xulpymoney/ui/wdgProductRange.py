@@ -81,6 +81,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains_product_{}".format(self.product.id), "5"))
             self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest_product_{}".format(self.product.id), "10000"))
             self.load_data()
+
     def on_cmdIRAnalisis_pressed(self):
         from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.product, None,  self)
