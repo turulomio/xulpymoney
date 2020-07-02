@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMenu, QWidget, QDialog, QVBoxLayout, QAction
 from datetime import date
 from logging import debug
 from xulpymoney.decorators import timeit
+from xulpymoney.ui.myqdialog import MyModalQDialog
 from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.assets import Assets
@@ -80,12 +81,23 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains_product_{}".format(self.product.id), "5"))
             self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest_product_{}".format(self.product.id), "10000"))
             self.load_data()
-
     def on_cmdIRAnalisis_pressed(self):
         from xulpymoney.ui.frmProductReport import frmProductReport
         w=frmProductReport(self.mem, self.product, None,  self)
         w.exec_()
-        self.load_data()
+
+    def on_cmdDrawRanges_pressed(self):       
+        from xulpymoney.ui.wdgProductHistoricalChart import wdgProductHistoricalChart
+        d=MyModalQDialog(self)     
+        d.setSettings(self.mem.settings, "wdgProductRange","MyModalQDialog")
+        d.setWindowTitle(self.tr("Historical report of {}").format(self.product.name))
+        wdgTSHistorical=wdgProductHistoricalChart(d)
+        wdgTSHistorical.setProduct(self.product, None)
+        wdgTSHistorical.setDrawRangeLines(self.prm.list_of_range_values())
+        wdgTSHistorical.generate()
+        wdgTSHistorical.display()
+        d.setWidgets(wdgTSHistorical)
+        d.exec_()
 
     def on_cmdIRInsertar_pressed(self):
         from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM

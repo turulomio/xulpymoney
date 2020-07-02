@@ -121,6 +121,10 @@ class ProductRangeManager(ObjectManager, QObject):
             current_value=current_value*(1-percentage_down.value)
             i=i+1
 
+    ## @return LIst of range values of the manager
+    def list_of_range_values(self):
+        return self.list_of("value")
+
     ## Set investment recomendations to all ProductRange objects in array 
     def setInvestRecomendation(self, method, method1_smas=[10, 50, 200]):
         if method==ProductRangeInvestRecomendation.All:

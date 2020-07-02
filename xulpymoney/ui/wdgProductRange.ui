@@ -86,6 +86,14 @@
                </widget>
               </item>
               <item>
+               <widget class="QToolButton" name="cmdDrawRanges">
+                <property name="icon">
+                 <iconset resource="../images/xulpymoney.qrc">
+                  <normaloff>:/xulpymoney/layers2.png</normaloff>:/xulpymoney/layers2.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QToolButton" name="cmdIRInsertar">
                 <property name="toolTip">
                  <string>Add a price to the benchmark</string>

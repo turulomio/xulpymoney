@@ -100,7 +100,15 @@ class ObjectManager(object):
             self.arr=null+nonull
         else:
             self.arr=nonull+null
-            
+
+    ## @param string_or_tuple String or tuple used with a call_by_name method
+    ## @return List returned with a call_by_name string or tuplen array with all object ids
+    def list_of(self, string_or_tuple):
+        r=[]
+        for o in self:
+            r.append(call_by_name(o, string_or_tuple))
+        return r
+
     ## Returns a new manager with the objects that have found a list of strings in several commands, passed as 
     ## This function doen't make exact matches. Only if strings in s_list are contained
     ## @param string_or_tuple_list List of _string_or_tuple_to_command parameters

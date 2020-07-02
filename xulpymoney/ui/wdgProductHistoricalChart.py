@@ -37,6 +37,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
 
     def setOHCLDuration(self, ohclduration):
         self.__ohclduration=ohclduration
+        
+        
+    ## @param list_decimals List of Decimlas with the range value where a line must be drawn
+    def setDrawRangeLines(self, list_decimals):
+        self._drawRangeLines=list_decimals
 
     def setProduct(self, product, investment=None):
         self.product=product
@@ -176,6 +181,13 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 average_price.setColor(QColor(85, 85, 170))
                 self.wdgTS.ts.appendTemporalSeriesData(average_price, self.investment.op_actual.first().datetime, m_average_price.amount)
                 self.wdgTS.ts.appendTemporalSeriesData(average_price, self.mem.localzone.now() + datetime.timedelta(days=1), m_average_price.amount)
+
+        if hasattr(self,  "_drawRangeLines") is True: #Draws range linbes
+            for range in self._drawRangeLines:
+                tsrange=self.wdgTS.ts.appendTemporalSeries(self.tr("Range at {}".format(range)))
+                tsrange.setColor(QColor(95, 154, 12))
+                self.wdgTS.ts.appendTemporalSeriesData(tsrange, selected_datetime, range)
+                self.wdgTS.ts.appendTemporalSeriesData(tsrange, self.mem.localzone.now(), range)
 
     def display(self):
         self.wdgTS.display()
