@@ -396,6 +396,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.grpPago.setEnabled(True)
                 self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.mqtwCreditCards.selected.id, ]))
                 self.creditcardoperations.myqtablewidget(self.mqtwCreditCardOperations)
+                self.mqtwCreditCardOperations.setOrderBy(0, False)
             else:
                 self.grpPago.setEnabled(False)
 
