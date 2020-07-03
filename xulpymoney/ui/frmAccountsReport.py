@@ -1,8 +1,7 @@
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QAbstractItemView
 from datetime import date,  timedelta, datetime
 from logging import debug
-from xulpymoney.casts import b2c,  c2b
 from xulpymoney.objects.account import Account
 from xulpymoney.libxulpymoneytypes import eComment, eConcept
 from xulpymoney.objects.accountoperation import AccountOperation, AccountOperationManagerHomogeneus
@@ -57,16 +56,19 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currencies_qcombobox(self.cmbCurrency)
         self.mem.data.banks_active().qcombobox(self.cmbEB)
                     
-        if self.account==None:
+        if self.account is None:
+            self.account_insert=True
+            self.account=Account(self.mem)
             self.lblTitulo.setText(self.tr("New account data"))
             self.tab.setCurrentIndex(0)
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
-            self.chkActiva.setChecked(Qt.Checked)
+            self.chkActiva.setChecked(True)
             self.chkActiva.setEnabled(False)
             self.mqtwOperations.setEnabled(False)
             self.cmdDatos.setText(self.tr("Add a new account"))
         else:
+            self.account_insert=False
             self.account.needStatus(1)
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.account.name)
@@ -76,7 +78,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmbEB.setEnabled(False)    
             self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.account.currency))
             self.cmbCurrency.setEnabled(False)
-            self.chkActiva.setChecked(b2c(self.account.active))
+            self.chkActiva.setChecked(self.account.active)
             self.cmdDatos.setText(self.tr("Update account data"))
 
             dtFirst=Assets(self.mem).first_datetime_allowed_estimated()       
@@ -124,29 +126,25 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mqtwCreditCards_update()
 
     def on_cmdDatos_released(self):
-        id_entidadesbancarias=int(self.cmbEB.itemData(self.cmbEB.currentIndex()))
-        cuenta=self.txtAccount.text()
-        numerocuenta=self.txtNumero.text()
-        active=c2b(self.chkActiva.checkState())
-        currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
+        id_entidadesbancarias=self.cmbEB.itemData(self.cmbEB.currentIndex())
+        if id_entidadesbancarias is None:
+            qmessagebox(self.tr("You must select a bank"))
+            return
 
-        if self.account==None:
-            cu=Account(self.mem, cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, currency, None)
-            cu.save()
-            self.mem.data.accounts.append(cu) #Always to active
-        else:
-            self.account.bank=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
-            self.account.name=cuenta
-            self.account.number=numerocuenta
-            self.account.active=active
-            self.account.currency=currency
-            self.account.save()
-            self.lblTitulo.setText(self.account.name)
+        self.account.bank=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
+        self.account.name=self.txtAccount.text()
+        self.account.number=self.txtNumero.text()
+        self.account.active=self.chkActiva.isChecked()
+        self.account.currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
+        self.account.save()
         self.mem.con.commit()
         
-        if self.account==None:
+        self.lblTitulo.setText(self.account.name)
+        self.cmdDatos.setEnabled(False)
+        
+        if self.account_insert is True:
+            self.mem.data.accounts.append(self.account)
             self.done(0)
-        self.cmdDatos.setEnabled(False)   
 
     def on_wdgYM_changed(self):
         lastMonthBalance=self.account.balance(date(self.wdgYM.year, self.wdgYM.month, 1)-timedelta(days=1), type=2)     
@@ -229,7 +227,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         debug("Borrando investment operation "+  str(investmentoperation))
         self.on_wdgYM_changed()
 
-
     @pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
         investmentoperation=InvestmentOperation_from_accountoperation(self.mem, self.mqtwOperations.selected)
@@ -250,7 +247,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         d.setWindowTitle(self.tr("Historical report of {}").format(concepto.name))
         d.setWidgets(wdgConceptsHistorical(self.mem, concepto, d))
         d.exec_()
-
 
     ## Selection can be only one row, due to table definitions
     def on_mqtwOperations_customContextMenuRequested(self,  pos):      
@@ -299,9 +295,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 menu.addAction(self.actionInvestmentOperationDelete)
         menu.exec_(self.mqtwOperations.table.mapToGlobal(pos))
 
-
     def on_mqtwCreditCards_tableSelectionChanged(self):
             self.mqtwCreditCardsOperations_update()
+
     def on_mqtwCreditCards_customContextMenuRequested(self,  pos):
         if self.account.qmessagebox_inactive():
             return 
@@ -452,9 +448,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     def on_txtAccount_textChanged(self):
         self.cmdDatos.setEnabled(True)
+
     def on_txtNumero_textChanged(self):
         self.cmdDatos.setEnabled(True)
+
     def on_cmbEB_currentIndexChanged(self, index):
         self.cmdDatos.setEnabled(True)
+
     def on_chkActiva_stateChanged(self,  state):
         self.cmdDatos.setEnabled(True)

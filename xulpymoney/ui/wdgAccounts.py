@@ -19,36 +19,35 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
     def on_actionAccountReport_triggered(self):
         f=frmAccountsReport(self.mem, self.mqtwAccounts.selected)
         f.exec_()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionAccountAdd_triggered(self):
         f=frmAccountsReport(self.mem, None)
         f.exec_()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
       
     @pyqtSlot() 
     def on_actionAccountDelete_triggered(self):
         if self.mqtwAccounts.selected.bank.qmessagebox_inactive() or self.mqtwAccounts.selected.qmessagebox_inactive():
             return
-        cur = self.mem.con.cursor()
         if self.mqtwAccounts.selected.is_deletable()==False:
             qmessagebox(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
         else:
-            self.mqtwAccounts.selected.borrar(cur)
+            self.mqtwAccounts.selected.borrar()
             self.mem.con.commit()
             #Only can't be deleted an active account, so I remove from active set
             self.mem.data.accounts.remove(self.mqtwAccounts.selected)
-        cur.close()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.accounts=self.mem.data.accounts_active()
         else:
             self.accounts=self.mem.data.accounts_inactive()
-        self.update()
-        
+        self.accounts.mqtw(self.mqtwAccounts)
+        self.mqtwAccounts.setOrderBy(0, False)
+        self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.accounts.balance())))
 
     def on_mqtwAccounts_customContextMenuRequested(self,  pos):
         if self.mqtwAccounts.selected==None:
@@ -85,19 +84,14 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mqtwAccounts.selected.active=self.chkInactivas.isChecked()
         self.mqtwAccounts.selected.save()
         self.mem.con.commit()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot()  
     def on_actionTransfer_triggered(self):
         f=frmTransfer(self.mem, self.mqtwAccounts.selected)
         f.exec_()
-        self.update()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     def on_mqtwAccounts_cellDoubleClicked(self, row,  column):
         self.on_actionAccountReport_triggered()
 
-    ## Updates table
-    def update(self):
-        self.accounts.mqtw(self.mqtwAccounts)
-        self.mqtwAccounts.setOrderBy(0, False)
-        self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.accounts.balance())))

@@ -66,7 +66,7 @@ class Account(QObject):
 
     def save(self):
         if self.id==None:
-            self.mem.con.cursor_one_field("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
+            self.id=self.mem.con.cursor_one_field("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
         else:
             self.mem.con.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
 
@@ -90,9 +90,9 @@ class Account(QObject):
         cur.close()
         return True
         
-    def borrar(self, cur):
+    def borrar(self):
         if self.is_deletable()==True:
-            cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
+            self.mem.con.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
         """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
