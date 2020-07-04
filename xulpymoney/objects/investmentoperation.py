@@ -171,6 +171,22 @@ class InvestmentOperationCurrent:
         self.currency_conversion=currency_conversion
         return self
         
+    ## This method could be used as InvestmentOperation too, although it's usually needed for current investment operations
+    ## @return string Letter p: put, c: call; i:inline
+    def pci_position(self):
+        if self.investment.product.mode.id=="i":
+            return "i"
+        elif self.investment.product.mode.id=="c":
+            if self.shares>=0:
+                return "c"
+            else:
+                return "p"
+        elif self.investment.product.mode.id=="p":
+            if self.shares>=0:
+                return "p"
+            else:
+                return "c"
+    
     def copy(self):
         return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.investment, self.shares, self.impuestos, self.comision, self.valor_accion, self.show_in_ranges, self.currency_conversion,   self.id)
                 

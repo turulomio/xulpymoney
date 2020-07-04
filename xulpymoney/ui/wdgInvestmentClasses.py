@@ -3,7 +3,7 @@ from datetime import date
 from math import ceil
 from xulpymoney.ui.Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 from xulpymoney.ui.myqcharts import VCPie
-from xulpymoney.libxulpymoneytypes import eLeverageType
+from xulpymoney.libxulpymoneytypes import eLeverageType, eMoneyCurrency
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.money import Money
 
@@ -77,17 +77,18 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
     def scriptPCI(self):
         self.viewPCI.clear()
-        for m in self.mem.investmentsmodes.arr:
+        for mode in self.mem.investmentsmodes.arr:
             total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
-                if i.product.mode==m:
-                    if self.radCurrent.isChecked():
-                        total=total+i.balance().local()
-                    else:
-                        total=total+i.invertido().local()
-            if m.id=='c':
+                for o in i.op_actual:
+                    if o.pci_position()==mode.id:
+                        if self.radCurrent.isChecked():
+                            total=total+o.balance(i.product.result.basic.last, eMoneyCurrency.User)
+                        else:
+                            total=total+o.invertido(eMoneyCurrency.User)
+            if mode.id=='c':
                 total=total+self.accounts
-            self.viewPCI.pie.appendData(m.name.upper(), total)
+            self.viewPCI.pie.appendData(mode.name.upper(), total)
         if self.radCurrent.isChecked():    
             self.viewPCI.pie.setTitle(self.tr("Investment current balance by Put / Call / Inline"))   
         else:
