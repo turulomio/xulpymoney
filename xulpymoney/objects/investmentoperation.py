@@ -1046,10 +1046,10 @@ class InvestmentOperationHistoricalHomogeneusManager(InvestmentOperationHistoric
                     "#crossedout", 
                     self.gross_purchases(type), 
                     self.gross_sales(type), 
-                    self.consolidado_bruto(type), 
+                    self.consolidado_bruto(type=type), 
                     self.commissions(type), 
                     self.taxes(type), 
-                    self.consolidado_neto(type),     
+                    self.consolidado_neto(type=type), 
                     "#crossedout",
                     self.tpc_total_neto(),
              ])
