@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1064</width>
+    <width>1422</width>
     <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout_6">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -34,27 +34,31 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="wdgProductSelector" name="selector1" native="true"/>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="wdgProductSelector" name="selector1" native="true"/>
+           </item>
+           <item>
+            <widget class="wdgProductSelector" name="selector2" native="true"/>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="wdgProductSelector" name="selector2" native="true"/>
+          <widget class="QToolButton" name="cmdSwap">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../images/xulpymoney.qrc">
+             <normaloff>:/xulpymoney/swap.png</normaloff>:/xulpymoney/swap.png</iconset>
+           </property>
+          </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QToolButton" name="cmdSwap">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../images/xulpymoney.qrc">
-           <normaloff>:/xulpymoney/swap.png</normaloff>:/xulpymoney/swap.png</iconset>
-         </property>
-        </widget>
        </item>
        <item>
         <widget class="Line" name="line_3">
@@ -64,102 +68,106 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Select a method to compare</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cmbCompareTypes">
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QComboBox::AdjustToContents</enum>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <property name="text">
-           <string>Not changed data</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
-          </property>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Select a method to compare</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>Scattering product prices</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-          </property>
+          <widget class="QComboBox" name="cmbCompareTypes">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToContents</enum>
+           </property>
+           <item>
+            <property name="text">
+             <string>Not changed data</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Scattering product prices</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Scattering product daily gains percentage</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Controling percentage evolution</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Controlling percentage evolution. Leveraged reduced</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Controling inverse percentage evolution</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Controling inverse percentage evolultion. Leveraged reduced</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Spread of prices joining first value with multiplier</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Price Ratio</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+            </property>
+           </item>
+          </widget>
          </item>
-         <item>
-          <property name="text">
-           <string>Scattering product daily gains percentage</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Controling percentage evolution</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Controlling percentage evolution. Leveraged reduced</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Controling inverse percentage evolution</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Controling inverse percentage evolultion. Leveraged reduced</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Spread of prices joining first value with multiplier</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Price Ratio</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
-          </property>
-         </item>
-        </widget>
+        </layout>
        </item>
        <item>
         <widget class="Line" name="line">
@@ -169,16 +177,16 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>From date</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Use data from</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QComboBox" name="cmbDateSelector">
              <property name="currentIndex">
@@ -239,10 +247,77 @@
            </item>
           </layout>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Group data by</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbGroupBy">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToContents</enum>
+             </property>
+             <item>
+              <property name="text">
+               <string>Last 7 days</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Last 30 days</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>last 90 days</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Last 365 days</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Last 3 years</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
        <item>
         <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="cmdReport">
+         <property name="toolTip">
+          <string>Generate report</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>

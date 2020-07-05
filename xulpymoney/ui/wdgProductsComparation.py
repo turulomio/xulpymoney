@@ -5,7 +5,7 @@ from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.objects.product import ProductComparation
-from xulpymoney.ui.myqwidgets import qmessagebox
+from xulpymoney.ui.myqwidgets import qmessagebox, qmessagebox_developing
 
 class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
     def __init__(self, mem,  product1=None,  product2=None, parent = None, name = None):
@@ -59,6 +59,9 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         tmp=self.selector1.selected
         self.selector1.setSelected(self.selector2.selected)
         self.selector2.setSelected(tmp)
+
+    def on_cmdReport_released(self):
+        qmessagebox_developing()
 
     def on_cmdComparation_released(self):
         inicio=datetime.now()
