@@ -272,7 +272,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment.account.currency==self.investment.product.currency:
             self.grpDividendsAccountCurrency.hide()
         else:
-            self.investment.dividends.myqtablewidget(self.mqtwDividendsAccountCurrency, type=2)
+            self.investment.dividends.myqtablewidget(self.mqtwDividendsAccountCurrency, eMoneyCurrency.Product, not self.chkHistoricalDividends.isChecked())
         if state==Qt.Unchecked:
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
