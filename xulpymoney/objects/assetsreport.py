@@ -87,6 +87,13 @@ class AssetsReport(ODT, QObject):
         self.pageBreak()
         
         
+        ### Current year investment gains by product type
+        self.header(self.tr("Current year investment gains group by product type"), 2)
+        self.mem.frmMain.w.on_actionGainsByProductType_triggered()
+        model=self.mem.frmMain.w.tab.currentWidget().children()[1].officegeneratorModel("mqtwTotal")#Widget generated dinamically. mqtw is childre[1]
+        model.odt_table(self, 18, 9)
+        self.pageBreak()
+
         ## Accounts
         self.header(self.tr("Current Accounts"), 1)
         data=[]

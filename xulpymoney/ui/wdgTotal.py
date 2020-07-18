@@ -11,7 +11,7 @@ from xulpymoney.objects.investmentoperation import InvestmentOperationHistorical
 from xulpymoney.objects.totalmonth import TotalMonthManager_from_manager_extracting_year, TotalMonthManager_from_month, TotalMonthManager_from_manager_extracting_from_month
 from xulpymoney.libxulpymoneyfunctions import  qmessagebox
 from xulpymoney.casts import list2string, none2decimal0, lor_transposed
-from xulpymoney.ui.myqtablewidget import qcenter, qleft, mqtwObjects
+from xulpymoney.ui.myqtablewidget import qcenter, qleft, mqtwObjects, mqtw
 from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.objects.annualtarget import AnnualTarget
 from xulpymoney.objects.assets import Assets
@@ -713,16 +713,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
-        wdg = mqtwObjects(newtab)
+        wdg = mqtw(newtab)
         wdg.setSettings(self.mem.settings,"wdgTotal","mqtwGainsByProductType")
-        wdg.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        wdg.table.setColumnCount(5)
+        headers=[self.tr( "Product type" ), self.tr( "Gross gains" ), self.tr("Gross dividends"), self.tr( "Net gains" ), self.tr("Net dividends")]
         
-        wdg.table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))
-        wdg.table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Gross gains" )))
-        wdg.table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Gross dividends")))
-        wdg.table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "Net gains" )))
-        wdg.table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr("Net dividends")))
+        
         wdg.applySettings()
         sum_gains=Money(self.mem)
         sum_dividens=Money(self.mem)
@@ -732,12 +727,13 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         settypes=self.mem.types.investment_types()
         wdg.table.setRowCount(settypes.length()+1)
         
+        data=[]
         for i, type in enumerate(settypes.arr):
             wdg.table.setItem(i, 0, qleft(type.name))    
             gains=Money(self.mem,  0,  self.mem.localcurrency)
             netgains=Money(self.mem, 0, self.mem.localcurrency)
             dividends=Money(self.mem,  0,  self.mem.localcurrency)
-            netdividens=Money(self.mem,  0, self.mem.localcurrency)
+            netdividends=Money(self.mem,  0, self.mem.localcurrency)
             for inv in self.mem.data.investments.arr:
                 if inv.product.type.id==type.id:
                     #gains
@@ -750,22 +746,15 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     for d in inv.dividends.arr:
                         if d.datetime.year==self.wyData.year:
                             dividends=dividends+d.gross(eMoneyCurrency.User)
-                            netdividens=netdividens+d.net(eMoneyCurrency.User)
-            wdg.table.setItem(i, 1, gains.qtablewidgetitem())
-            wdg.table.setItem(i, 2, dividends.qtablewidgetitem())
-            wdg.table.setItem(i, 3, netgains.qtablewidgetitem())
-            wdg.table.setItem(i, 4, netdividens.qtablewidgetitem())
+                            netdividends=netdividends+d.net(eMoneyCurrency.User)
+            data.append([type.name, gains, dividends, netgains, netdividends])
             sum_gains=sum_gains+gains
             sum_netgains=sum_netgains+netgains
             sum_dividens=sum_dividens+dividends
-            sum_netdividends=sum_netdividends+netdividens
-            
-        wdg.table.setItem(i+1, 0, qleft(self.tr("Total")))
-        wdg.table.setItem(i+1, 1, sum_gains.qtablewidgetitem())
-        wdg.table.setItem(i+1, 2, sum_dividens.qtablewidgetitem())
-        wdg.table.setItem(i+1, 3, sum_netgains.qtablewidgetitem())
-        wdg.table.setItem(i+1, 4, sum_netdividends.qtablewidgetitem())
-        
+            sum_netdividends=sum_netdividends+netdividends
+        data.append([self.tr("Total"), sum_gains, sum_dividens, sum_netgains, sum_netdividends])
+        wdg.setData(headers, None, data)
+
         label=QLabel(newtab)
         font = QFont()
         font.setPointSize(8)
@@ -779,7 +768,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         vlayout.addWidget(label)
         self.tab.addTab(newtab, self.tr("Gains by product type of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
-            
+
     @pyqtSlot() 
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
