@@ -66,6 +66,9 @@
                 <property name="text">
                  <string>Select a product</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
                </widget>
               </item>
               <item>
@@ -231,6 +234,51 @@
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                 </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Select an investment recomendation method</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cmbRecomendations">
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>All ranges</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../images/xulpymoney.qrc">
+                   <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Three simple movil average</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../images/xulpymoney.qrc">
+                   <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Over simple movil average 100</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../images/xulpymoney.qrc">
+                   <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>

@@ -10,6 +10,7 @@ from xulpymoney.objects.order import OrderManager
 class ProductRangeInvestRecomendation:
     All=0
     ThreeSMA=1
+    SMA100=2
 
 class ProductRange(QObject):
     def __init__(self, mem=None, id=None,  product=None,  value=None, percentage_down=None,  percentage_up=None, decimals=2):
@@ -144,6 +145,22 @@ class ProductRangeManager(ObjectManager, QObject):
                     o.recomendation_invest=True
                 elif number_sma_over_price<=1:
                     o.recomendation_invest=True
+        elif method==ProductRangeInvestRecomendation.SMA100:           
+            dvm=self.product.result.ohclDaily.DatetimeValueManager("close")
+            dvm_smas=[]
+            for sma in [100, ]:
+                dvm_smas.append(dvm.sma(sma))
+            
+            for o in self.arr:
+                number_sma_over_price=len(self.product.result.ohclDaily.list_of_sma_over_price(self.mem.localzone_now(), o.value, [100, ], dvm_smas,  "close"))
+                if number_sma_over_price==0:
+                    o.recomendation_invest=True
+                elif number_sma_over_price==1 and o.id % 4==0:
+                    o.recomendation_invest=True
+                else: #number_sma_over_price=1 and o.id%4!=0
+                    o.recomendation_invest=False
+
+            
             
     def mqtw(self, wdg):
         data=[]

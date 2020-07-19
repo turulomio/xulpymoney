@@ -8,7 +8,7 @@ from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.percentage import Percentage, percentage_between
-from xulpymoney.objects.productrange import ProductRangeManager, ProductRangeInvestRecomendation
+from xulpymoney.objects.productrange import ProductRangeManager
 from xulpymoney.ui.Ui_wdgProductRange import Ui_wdgProductRange
 
 class wdgProductRange(QWidget, Ui_wdgProductRange):
@@ -32,12 +32,13 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         percentage_down=Percentage(self.spnDown.value(), 100)
         percentage_gains=Percentage(self.spnGains.value(), 100)
         self.prm=ProductRangeManager(self.mem, self.product, percentage_down, percentage_gains)
-        self.prm.setInvestRecomendation(ProductRangeInvestRecomendation.ThreeSMA)
+        self.prm.setInvestRecomendation(self.cmbRecomendations.currentIndex())
         self.prm.mqtw(self.mqtw)
 
         self.mem.settingsdb.setValue("wdgProductRange/spnDown_product_{}".format(self.product.id), self.spnDown.value())
         self.mem.settingsdb.setValue("wdgProductRange/spnGains_product_{}".format(self.product.id), self.spnGains.value())
         self.mem.settingsdb.setValue("wdgProductRange/invest_product_{}".format(self.product.id), self.txtInvertir.text())
+        self.mem.settingsdb.setValue("wdgProductRange/invest_recomendation_{}".format(self.product.id), self.cmbRecomendations.currentIndex())
         self.mem.settingsdb.setValue("wdgProductRange/product", self.product.id)
         self.mem.settings.sync()
 
@@ -80,6 +81,7 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
             self.spnDown.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnDown_product_{}".format(self.product.id), "5"))
             self.spnGains.setValue(self.mem.settingsdb.value_float("wdgProductRange/spnGains_product_{}".format(self.product.id), "5"))
             self.txtInvertir.setText(self.mem.settingsdb.value_decimal("wdgProductRange/invest_product_{}".format(self.product.id), "10000"))
+            self.cmbRecomendations.setCurrentIndex(self.mem.settingsdb.value_integer("wdgProductRange/invest_recomendation_{}".format(self.product.id), "2"))
             self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
