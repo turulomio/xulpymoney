@@ -112,6 +112,8 @@
   </qresource>
   <qresource prefix="/reusingcode">
     <file>clipboard_copy.png</file>
+    <file>frmaccess_pixmap.png</file>
+    <file>frmaccess_icon.png</file>
     <file>save.png</file>
     <file>database.png</file>
     <file>database_new.png</file>
