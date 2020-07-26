@@ -436,6 +436,9 @@ class MemXulpymoney(Mem):
     def localmoney(self, amount):
         return Money(self, amount, self.localcurrency)
         
+    def localmoney_zero(self):
+        return self.localmoney(0)
+        
     def setProductsMaintenanceMode(self, boolean):
         self._products_maintenance_mode=boolean
         

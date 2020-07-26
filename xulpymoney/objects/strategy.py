@@ -34,13 +34,18 @@ class Strategy(QObject):
     def delete(self):
         self.mem.con.execute("delete from strategies where id=%s", (self.id, ))
         
+    ## @return boolean True if it's dt_end is None or greater than current time
+    def is_active(self):
+        if self.dt_from<=self.mem.localzone_now() and self.mem.localzone_now()<=self.dt_to_for_comparations():
+            return True
+        return False
+        
     ## Replaces None for dt_to and sets a very big datetine
     def dt_to_for_comparations(self):
         if self.dt_to is None:
             return self.mem.localzone_now()+timedelta(days=365*100)
         return self.dt_to
-            
-        
+
     ## Returns strategy current operations
     def dividends(self):
         r=DividendHeterogeneusManager(self.mem)
@@ -77,7 +82,31 @@ class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):
         QObject.__init__(self)
         ObjectManager_With_IdName_Selectable.__init__(self)
         self.mem=mem
-        
+
+    ## @param active_strategies Boolean. True uses active strategies. False uses inactive strategies
+    def current_gains(self, active_strategies=True):
+        r=self.mem.localmoney_zero()
+        for o in self:
+            if o.is_active()==active_strategies:
+                r=r+o.currentOperations().pendiente()
+        return r     
+
+    ## @param active_strategies Boolean. True uses active strategies. False uses inactive strategies
+    def historical_gains_net(self, active_strategies=True):
+        r=self.mem.localmoney_zero()
+        for o in self:
+            if o.is_active()==active_strategies:
+                r=r+o.historicalOperations().consolidado_neto()
+        return r
+
+    ## @param active_strategies Boolean. True uses active strategies. False uses inactive strategies
+    def dividends_net(self, active_strategies=True):
+        r=self.mem.localmoney_zero()
+        for o in self:
+            if o.is_active()==active_strategies:
+                r=r+o.dividends().net()
+        return r
+    
     ## @param table myQTableWidget
     ## @param active Boolean to show active or inactive rows
     def myqtablewidget(self, wdg, finished):
@@ -98,7 +127,7 @@ class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):
             ])
         wdg.auxiliar=finished## Adds this auxiliar value to allow additional filter active / no active
         wdg.setDataWithObjects(
-            [self.tr("Name"), self.tr("Date from"), self.tr("Date to"), self.tr("Current balance"), self.tr("Net historical balance"), self.tr("Net dividends"), self.tr("Total")], 
+            [self.tr("Name"), self.tr("Date from"), self.tr("Date to"), self.tr("Gains"), self.tr("Net historical gains"), self.tr("Net dividends"), self.tr("Total gains")], 
             None, 
             data, 
             decimals=2, 
@@ -107,6 +136,7 @@ class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):
         )
 
     def myqtablewidget_additional(self, wdg):
+        wdg.table.setRowCount(wdg.length()+1)
         for i, o in enumerate(wdg.objects()):            
             if wdg.auxiliar is True:#Only finished
                 if o.dt_to is not None:
@@ -118,6 +148,10 @@ class StrategyManager(QObject, ObjectManager_With_IdName_Selectable):
                     wdg.table.showRow(i)
                 else:
                     wdg.table.hideRow(i)
+        current=self.current_gains(not wdg.auxiliar)
+        historical=self.historical_gains_net(not wdg.auxiliar)
+        dividends=self.dividends_net(not wdg.auxiliar)
+        wdg.addRow(wdg.length(), [self.tr("Total"), "#crossedout", "#crossedout", current,historical,dividends,current+historical+dividends])
 
 def Strategy_from_dict(mem, row):
     r=Strategy(mem)
