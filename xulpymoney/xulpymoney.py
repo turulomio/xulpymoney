@@ -8,6 +8,17 @@ from xulpymoney.ui.frmAccess import frmAccess
 from xulpymoney.ui.frmMain import frmMain, frmMainProductsMaintenance
 from sys import exit
 
+
+def on_database_created(connectionqt):
+        from xulpymoney.database_update import database_update
+        from xulpymoney.version import __versiondatetime__
+        from xulpymoney.ui.myqwidgets import qmessagebox
+        database_update(connectionqt, "xulpymoney", __versiondatetime__, "Console")
+        connectionqt.commit()
+        qmessagebox(qApp.translate("Mem", "Xulpymoney have been correctly installed. Please login again"))
+        exit(qApp.exec_())
+        
+
 def main():
     from PyQt5 import QtWebEngineWidgets # To avoid error must be imported before QCoreApplication
     dir(QtWebEngineWidgets)
@@ -15,6 +26,7 @@ def main():
     mem=MemXulpymoney()
     mem.run()
     mem.frmAccess=frmAccess("xulpymoney","frmAccess")
+    mem.frmAccess.databaseCreated.connect(on_database_created)
     mem.frmAccess.setResources(":/xulpymoney/books.png", ":/xulpymoney/xulpymoney.png")
     mem.frmAccess.setLabel(qApp.translate("Mem","Please login to the Xulpymoney database"))
     mem.frmAccess.exec_()

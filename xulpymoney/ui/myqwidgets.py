@@ -2,7 +2,7 @@
 ## DO NOT UPDATE IT IN YOUR CODE IT WILL BE REPLACED USING FUNCTION IN README
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMessageBox, QApplication
+from PyQt5.QtWidgets import QMessageBox, QApplication, QInputDialog, QLineEdit
 from os import path, remove
 
 def qmessagebox(text, resource=":/reusingcode/qmessagebox"):
@@ -12,6 +12,13 @@ def qmessagebox(text, resource=":/reusingcode/qmessagebox"):
     m.setText(text)
     m.exec_()
 
+def qinputbox_string(text):
+    text,  ok_pressed=QInputDialog.getText(None,  QApplication.translate("Reusing","Enter a string"), text , QLineEdit.Normal)
+    if ok_pressed is True:
+        return text
+    else:
+        return None
+ 
 
 def qmessagebox_developing():
     qmessagebox(QApplication.translate("Reusing", "This part is being developed."))

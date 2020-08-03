@@ -46,7 +46,6 @@ class PyInstaller(Command):
         os.system("python setup.py install")
         
         self.entry_point("xulpymoney.xulpymoney","xulpymoney")
-        self.entry_point("xulpymoney.xulpymoney_init","xulpymoney_init")
 
     ## Makes a entry_point for this module, fuction should be main. It also executes pyinstaller
     ## @param module strings with the module to import
@@ -299,7 +298,6 @@ entry_points={
         ],
         'gui_scripts':  [
             'xulpymoney=xulpymoney.xulpymoney:main',
-            'xulpymoney_init=xulpymoney.xulpymoney_init:main',
         ],
     }
 if platform.system()=="Windows":
