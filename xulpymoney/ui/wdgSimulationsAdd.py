@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget
 from xulpymoney.ui.Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
 from xulpymoney.objects.assets import Assets
 from xulpymoney.objects.simulation import Simulation
-from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
+#from xulpymoney.xulpymoney_schema import XulpymoneyDatabase
 from xulpymoney.ui.myqwidgets import qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
@@ -31,7 +31,8 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.simulation=Simulation(self.mem, self.mem.con.db).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
         self.simulation.save()
         
-        newdb=XulpymoneyDatabase(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
+        newdb=None
+        #newdb=XulpymoneyDatabase(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
         if newdb.create()==False:
             qmessagebox(self.tr("I couldn't create simulation"))
             return
