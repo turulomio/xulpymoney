@@ -56,10 +56,13 @@ class wdgManagerSelector(QWidget):
         self.mqtw.showSearchOptions(True)
         self.mqtw.showSearchCloseButton(False)
         self.mqtw.setGenericContextMenu()
+        self.mqtw.table.cellDoubleClicked.connect(self.on_mqtw_cellDoubleClicked)
+        
         self.mqtwSelected=mqtw(self)
         self.mqtwSelected.showSearchOptions(True)
         self.mqtwSelected.showSearchCloseButton(False)
         self.mqtwSelected.setGenericContextMenu()
+        self.mqtwSelected.table.cellDoubleClicked.connect(self.on_mqtwSelected_cellDoubleClicked)
         
         self.laybuttons = QVBoxLayout()
         self.cmdLeft=QToolButton(self)
@@ -206,10 +209,10 @@ class wdgManagerSelector(QWidget):
         self._load_tbl()
         self._load_tblSelected()        
         
-    def on_tbl_cellDoubleClicked(self, row, column):
+    def on_mqtw_cellDoubleClicked(self, row, column):
         self.on_cmdRight_released()
         
-    def on_tblSelected_cellDoubleClicked(self, row, column):
+    def on_mqtwSelected_cellDoubleClicked(self, row, column):
         self.on_cmdLeft_released()
         
 
@@ -281,7 +284,7 @@ def example():
         def __init__(self):
             ObjectManager_With_IdName.__init__(self)
             
-    d={'one':1, 'two':2, 'three':3, 'four':4}
+    d={'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6}
     manager=PruebaManager()
     manager.setConstructorParameters()
     for k, v in d.items():
