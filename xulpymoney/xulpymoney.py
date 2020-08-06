@@ -26,8 +26,8 @@ def main():
     mem=MemXulpymoney()
     mem.run()
     mem.frmAccess=frmAccess("xulpymoney","frmAccess")
-    mem.frmAccess.databaseCreated.connect(on_database_created)
     mem.frmAccess.setResources(":/xulpymoney/books.png", ":/xulpymoney/xulpymoney.png")
+    mem.frmAccess.databaseCreated.connect(on_database_created)
     mem.frmAccess.setLabel(qApp.translate("Mem","Please login to the Xulpymoney database"))
     mem.frmAccess.exec_()
 

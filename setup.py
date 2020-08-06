@@ -45,19 +45,20 @@ class PyInstaller(Command):
         os.system("python setup.py uninstall")
         os.system("python setup.py install")
         
-        self.entry_point("xulpymoney.xulpymoney","xulpymoney")
+        self.entry_point("xulpymoney.xulpymoney","xulpymoney", True)
+        self.entry_point("xulpymoney.xulpymoney","xulpymoney", False)
 
     ## Makes a entry_point for this module, fuction should be main. It also executes pyinstaller
     ## @param module strings with the module to import
     ## @param name string with the name of the name of the file
-    def entry_point(self,module,name):
+    def entry_point(self,module,name, onefile):
         from stdnum import __file__
         iban_dat=os.path.dirname(__file__)+"/iban.dat" #Due to package resources in pyinstaller doesn't work fine 
         filename=module.replace(".","_")+".py"
+        s_onefile="--onefile" if onefile is True else ""
         f=open(filename,"w")
         f.write("""import {0}
 import sys
-import os
 # NO funciona con PyQt5-2.13 tuve que bajar a PyQt5-2.12.1, PyQtWebengine y Pyqtchart, con la version 3.5. Bug de Pyinstaller. Probar mas adelante. Comprobado el 20190720
 if hasattr(sys,'frozen'): #CREO QUE CON ESTO SI FUNCIONARIA EN 2.13
     sys.path.append( sys._MEIPASS)
@@ -66,12 +67,12 @@ print(sys.path)
 """.format(module))
         f.close()        
         ##Para depurar poner --debug bootloader y quitar --onefile y --windowed
-        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico --onefile --windowed \
+        os.system("""pyinstaller -n {}-{} --icon xulpymoney/images/xulpymoney.ico {} --windowed \
             --noconfirm  --distpath ./dist  --clean {}  \
             --add-data xulpymoney/i18n/*.qm;i18n \
             --add-data xulpymoney/sql/*;sql \
             --add-data "{};stdnum" \
-        """.format(name,__version__,filename, iban_dat))
+        """.format(name,__version__, s_onefile, filename, iban_dat))
 
 class Compile(Command):
     description = "Compile ui and images"
