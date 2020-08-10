@@ -8,9 +8,10 @@ from xulpymoney.objects.investmentoperation import InvestmentOperationCurrentHet
 from xulpymoney.objects.order import OrderManager
 
 class ProductRangeInvestRecomendation:
-    All=0
-    ThreeSMA=1
-    SMA100=2
+    None_=0
+    All=1
+    ThreeSMA=2
+    SMA100=3
 
 class ProductRange(QObject):
     def __init__(self, mem=None, id=None,  product=None,  value=None, percentage_down=None,  percentage_up=None, decimals=2):
@@ -128,7 +129,10 @@ class ProductRangeManager(ObjectManager, QObject):
 
     ## Set investment recomendations to all ProductRange objects in array 
     def setInvestRecomendation(self, method, method1_smas=[10, 50, 200]):
-        if method==ProductRangeInvestRecomendation.All:
+        if method==ProductRangeInvestRecomendation. None_:
+            for o in self.arr:
+                o.recomendation_invest=False
+        elif method==ProductRangeInvestRecomendation.All:
             for o in self.arr:
                 o.recomendation_invest=True
         elif method==ProductRangeInvestRecomendation.ThreeSMA:      

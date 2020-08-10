@@ -254,6 +254,15 @@
                 </property>
                 <item>
                  <property name="text">
+                  <string>None ranges</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../images/xulpymoney.qrc">
+                   <normaloff>:/xulpymoney/button_cancel.png</normaloff>:/xulpymoney/button_cancel.png</iconset>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
                   <string>All ranges</string>
                  </property>
                  <property name="icon">
