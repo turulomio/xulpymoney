@@ -33,7 +33,10 @@ class Concept:
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
 
     def qicon(self):
-        return QIcon(":/xulpymoney/hucha.png")
+        if self.editable is True:
+            return QIcon(":/xulpymoney/hucha.png")
+        else:
+            return QIcon(":/xulpymoney/gear.svg")
 
     def save(self):
         if self.id==None:
