@@ -4,43 +4,9 @@ from datetime import datetime, date, timedelta
 from xulpymoney.ui.myqtablewidget import mqtw
 from xulpymoney.ui.Ui_wdgProductsComparation import Ui_wdgProductsComparation
 from xulpymoney.datetime_functions import dtaware_day_end_from_date
-from xulpymoney.libmanagers import ObjectManager
-from xulpymoney.objects.product import ProductComparation
+from xulpymoney.objects.productcomparation import ProductComparation, ProductComparationManager_from_settingsdb
 from xulpymoney.ui.myqwidgets import qmessagebox, qmessagebox_developing
 
-
-
-class Pair:
-    def __init__(self, mem, name=None, product1=None, product2=None):
-        self.mem=mem
-        self.name=name
-        self.product1=product1
-        self.product2=product2
-        
-class PairManager(ObjectManager):
-    def __init__(self, mem):
-        ObjectManager.__init__(self)
-        self.mem=mem
-        self.load()
-        
-        
-    def load(self):
-        s=self.mem.settingsdb.value("wdgProductsComparation/pairs", "[]")
-        l=eval(s)
-        for name,  id1, id2 in l:
-            p=Pair(self.mem, name, self.mem.data.products.find_by_id(id1), self.mem.data.products.find_by_id(id2))
-            self.append(p)
-        
-
-    def save(self):
-        self.mem.settingsdb.setValue("wdgProductsComparation/pairs", self.data_string())
-        
-    ## Convert arr to a data_string (name, product1.id, product2.id)
-    def data_string(self):
-        r=[]
-        for o in self:
-            r.append((o.name,  o.product1.id, o.product2.id))
-        return str(r)
 
 class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
     def __init__(self, mem,  product1=None,  product2=None, parent = None, name = None):
@@ -49,7 +15,8 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.mem=mem
         self.parent=parent
         
-        self.pairs=PairManager(self.mem)
+        self.pcmanager=ProductComparationManager_from_settingsdb(self.mem)
+        self.cmbPairs_refresh()
 
         if product1 is None:
             product1=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgProductsComparation/product1", "79228")))
@@ -72,15 +39,22 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.cmbCompareTypes.setCurrentIndex(int(self.mem.settings.value("wdgProductsComparation/cmbCompareTypes", "0")))
         self.comparation=None
         self.__hide_or_show_views()
-        
-        
-    def __cmbPairs_refresh(self):
-        pass
-        
+
+    def cmbPairs_refresh(self, selected=None):
+        self.pcmanager.save_to_settingsdb()
+        self.pcmanager=ProductComparationManager_from_settingsdb(self.mem)
+        self.pcmanager.qcombobox(self.cmbPairs, selected=selected, id_attr=None,  name_attr=None)
+
     def on_cmdPairsNew_released(self):
-        p=Pair(self.mem, "{}-{}".format(self.product1.name, self.product2.name), self.product1, self.product2)
-        self.pairs.append(p)
-        self.pairs.save()
+        if self.selector1.selected is None or self.selector2.selected is None:
+            qmessagebox(self.tr("You need to select both products"))
+            return
+        p=ProductComparation(self.mem, self.selector1.selected, self.selector2.selected)
+        if p in self.pcmanager:
+            qmessagebox(self.tr("This pair is already added"))
+            return 
+        self.pcmanager.append(p)
+        self.cmbPairs_refresh(p)
 
     def on_cmdPairsDelete_released(self):
         pass
