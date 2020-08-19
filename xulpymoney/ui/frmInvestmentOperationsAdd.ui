@@ -23,7 +23,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -118,7 +118,25 @@
       </layout>
      </item>
      <item>
-      <widget class="wdgTwoCurrencyLineEdit" name="wdg2CCurrencyConversion" native="true"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="wdgTwoCurrencyLineEdit" name="wdg2CCurrencyConversion" native="true"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="cmdGuestCurrencyConversion">
+         <property name="toolTip">
+          <string>Guest de currency convertion using all shares and asking for the final price</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="wdgTwoCurrencyLineEdit" name="wdg2CPrice" native="true"/>
@@ -168,6 +186,7 @@
    </item>
   </layout>
   <zorder></zorder>
+  <zorder>cmdGuestCurrencyConversion</zorder>
  </widget>
  <customwidgets>
   <customwidget>

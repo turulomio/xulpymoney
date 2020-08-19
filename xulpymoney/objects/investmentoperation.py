@@ -220,11 +220,11 @@ class InvestmentOperationCurrent:
             return money.convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
     
     def price(self, type=eMoneyCurrency.Product):
-        if type==1:
+        if type==eMoneyCurrency.Product:
             return Money(self.mem, self.valor_accion, self.investment.product.currency)
-        elif type==2:
+        elif type==eMoneyCurrency.Account:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
-        elif type==3:
+        elif type==eMoneyCurrency.User:
             return Money(self.mem, self.valor_accion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
 
 
@@ -588,8 +588,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         for o in self.arr:
             sharesxprice=sharesxprice+o.shares*o.price(type).amount
         return Money(self.mem, 0, currency) if shares==Decimal(0) else Money(self.mem, sharesxprice/shares,  currency)
-        
-        
+
     def average_price_after_a_gains_percentage(self, percentage,  type=eMoneyCurrency.Product):
         """
             percentage is a Percentage object
@@ -668,6 +667,15 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
             percentage is a Percentage object
         """        
         return self.average_price(type)*percentage.value*self.shares()
+
+    ## Guess total sale operation currency conversion from gains in account currency and selling_price
+    ## @param gains Decimal
+    ## @return Decimal C_V={ G+ Ac_C Pm_€ A_p} over {Ac_v Pv_$ A_p} (Libreoffice formula)
+    def guess_operation_currency_conversion(self, selling_price_product_currency, gains):
+        shares=self.shares()
+        average_price_acount_currency=self.average_price(eMoneyCurrency.Account).amount
+        leverage=self.investment.product.real_leveraged_multiplier()
+        return (gains+shares*average_price_acount_currency*leverage)/(shares*selling_price_product_currency*leverage)
 
     def pendiente(self, lastquote, type=eMoneyCurrency.Product):
         currency=self.investment.resultsCurrency(type)

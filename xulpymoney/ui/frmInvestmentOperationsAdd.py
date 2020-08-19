@@ -7,7 +7,7 @@ from xulpymoney.objects.investmentoperation import InvestmentOperation
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.operationtype import OperationTypeManager_for_InvestmentOperations
 from xulpymoney.ui.myqdialog import MyModalQDialog
-from xulpymoney.ui.myqwidgets import  qmessagebox
+from xulpymoney.ui.myqwidgets import  qmessagebox, qinputbox_decimal
 from xulpymoney.ui.frmQuotesIBM import frmQuotesIBM
 from xulpymoney.ui.Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
 from decimal import Decimal
@@ -79,6 +79,13 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CTaxes.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CGross.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CNet.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+
+    def on_cmdGuestCurrencyConversion_released(self):
+        price_product_currency=qinputbox_decimal(self.tr("Please add the operation close price in product currency"))
+        gains_account_currency=qinputbox_decimal(self.tr("Please add the final gains in account currency"))
+        self.txtAcciones.setText(-self.investment.op_actual.shares())
+        self.wdg2CCurrencyConversion.setTextB(self.investment.op_actual.guess_operation_currency_conversion(price_product_currency, gains_account_currency))
+        self.wdg2CPrice.setTextA(price_product_currency)
 
     def on_cmdComissionCalculator_released(self):
         d=MyModalQDialog(self)

@@ -3,6 +3,7 @@
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication, QInputDialog, QLineEdit, qApp
+from decimal import Decimal
 from os import path, remove
 
 def qmessagebox(text, resource=":/reusingcode/qmessagebox"):
@@ -21,7 +22,20 @@ def qinputbox_string(text, resource=":/reusingcode/qmessagebox"):
         return text
     else:
         return None
- 
+
+def qinputbox_decimal(text, resource=":/reusingcode/qmessagebox"):
+    while True:
+        m=QInputDialog()
+        qApp.setWindowIcon(QIcon(resource)) #In windows m.setWindowIcon fails, so I need o set qApp window
+        text,  ok_pressed=m.getText(None,  QApplication.translate("Reusing","Enter a number"), text , QLineEdit.Normal)
+        if ok_pressed is True:
+            try:
+                return Decimal(text)
+            except:
+                pass
+        else:
+            return None
+
 def qmessagebox_developing():
     qmessagebox(QApplication.translate("Reusing", "This part is being developed."))
 
