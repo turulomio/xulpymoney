@@ -144,6 +144,16 @@ class ObjectManager(object):
         return r
 
 
+    ## Search by id iterating array
+    def find_by_id_builtin(self, id_, logging=False):
+        start=datetime.now()
+        for o in self.arr:
+            if id(o)==id_:
+                if logging==True:
+                    debug("{} took {} to find by id builtin {} with list".format(self.__class__.__name__, datetime.now()-start, id))
+                return o
+        return None
+
 
     ## It doesn't emit selected if selected is None a nd needtoselect is False, in the rest of the cases it emmit itemChanged
     ## @param combo

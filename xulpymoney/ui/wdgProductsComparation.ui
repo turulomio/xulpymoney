@@ -57,7 +57,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="cmdPairsDeete">
+        <widget class="QToolButton" name="cmdPairsDelete">
          <property name="text">
           <string/>
          </property>

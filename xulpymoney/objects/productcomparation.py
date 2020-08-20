@@ -67,7 +67,6 @@ class ProductComparation(QObject):
         productcloses1=self.product1PercentageEvolution()
         productcloses2=self.product2PercentageEvolution()
         for i, dat in enumerate(self.__commonDates):
-            print(i)
             if i==0:
                 arr.append((dat, self.set1.arr[i].close, self.set2.arr[i].close, Percentage(None), Percentage(None)))
             else:
@@ -203,7 +202,6 @@ class ProductComparationManager(ObjectManager):
     def data_string(self):
         r=[]
         for o in self:
-            print((o.name,  o.product1.id, o.product2.id))
             r.append((o.name,  o.product1.id, o.product2.id))
         return str(r)
 
@@ -211,7 +209,6 @@ def ProductComparationManager_from_settingsdb(mem):
     r=ProductComparationManager(mem)
     s=mem.settingsdb.value("wdgProductsComparation/pairs", "[]")
     l=eval(s)
-    print(l)
     for name,  id1, id2 in l:
         p=ProductComparation(mem, mem.data.products.find_by_id(id1), mem.data.products.find_by_id(id2))
         p.setName(name)

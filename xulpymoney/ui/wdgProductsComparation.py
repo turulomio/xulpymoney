@@ -43,7 +43,7 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
     def cmbPairs_refresh(self, selected=None):
         self.pcmanager.save_to_settingsdb()
         self.pcmanager=ProductComparationManager_from_settingsdb(self.mem)
-        self.pcmanager.qcombobox(self.cmbPairs, selected=selected, id_attr=None,  name_attr=None)
+        self.pcmanager.qcombobox(self.cmbPairs, selected=selected, id_attr=None,  name_attr=None, needtoselect=True)
 
     def on_cmdPairsNew_released(self):
         if self.selector1.selected is None or self.selector2.selected is None:
@@ -57,11 +57,19 @@ class wdgProductsComparation(QWidget, Ui_wdgProductsComparation):
         self.cmbPairs_refresh(p)
 
     def on_cmdPairsDelete_released(self):
-        pass
+        self.pcmanager.selected=self.pcmanager.find_by_id_builtin(self.cmbPairs.itemData(self.cmbPairs.currentIndex()))
+        if self.pcmanager.selected is not None:
+            self.pcmanager.remove(self.pcmanager.selected)
+            self.cmbPairs_refresh()
+        else:
+            qmessagebox(self.tr("You must select a pair"))
         
     @pyqtSlot(int)
     def on_cmbPairs_currentIndexChanged(self, index):
-        pass
+        self.pcmanager.selected=self.pcmanager.find_by_id_builtin(self.cmbPairs.itemData(self.cmbPairs.currentIndex()))
+        if self.pcmanager.selected is not None:
+            self.selector1.setSelected(self.pcmanager.selected.product1)
+            self.selector2.setSelected(self.pcmanager.selected.product2)
 
 
     def __hide_or_show_views(self):
