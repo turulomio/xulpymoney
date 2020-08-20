@@ -20,7 +20,9 @@ If you use another distribution, you nee to install PyQtChart and PyQtWebEngine 
 
 # Install in Windows
 
-You just must download xulpymoney-X.X.X.exe and xulpymoney_init-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
+You just must download xulpymoney-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
+
+If you prefer there is a binary zip version in xulpymoney-X.X.X.zip. You can extract it and execute xulpymoney executable.
 
 # Install in Windows with Python
 
@@ -36,7 +38,7 @@ If you want to create a Desktop shortcut you can write in console
 
 # How to launch Xulpymoney
 
-Once database has been created, just log into Xulpymoney after typing:
+Just type:
 
 `xulpymoney`
 
