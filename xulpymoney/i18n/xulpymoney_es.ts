@@ -382,12 +382,12 @@
 <context>
     <name>ConceptManager</name>
     <message>
-        <location filename="../objects/concept.py" line="156"/>
+        <location filename="../objects/concept.py" line="159"/>
         <source>Name</source>
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../objects/concept.py" line="156"/>
+        <location filename="../objects/concept.py" line="159"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
@@ -978,52 +978,52 @@ Do you want to activate it?</source>
 <context>
     <name>InvestmentOperationCurrentHomogeneusManager</name>
     <message>
-        <location filename="../objects/investmentoperation.py" line="738"/>
+        <location filename="../objects/investmentoperation.py" line="746"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="739"/>
+        <location filename="../objects/investmentoperation.py" line="747"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="740"/>
+        <location filename="../objects/investmentoperation.py" line="748"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="741"/>
+        <location filename="../objects/investmentoperation.py" line="749"/>
         <source>Invested</source>
         <translation>Invertido</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="742"/>
+        <location filename="../objects/investmentoperation.py" line="750"/>
         <source>Current balance</source>
         <translation>Saldo actual</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="743"/>
+        <location filename="../objects/investmentoperation.py" line="751"/>
         <source>Pending</source>
         <translation>Pendiente</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="744"/>
+        <location filename="../objects/investmentoperation.py" line="752"/>
         <source>% annual</source>
         <translation>% Anual</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="745"/>
+        <location filename="../objects/investmentoperation.py" line="753"/>
         <source>% APR</source>
         <translation>% TAE</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="746"/>
+        <location filename="../objects/investmentoperation.py" line="754"/>
         <source>% Total</source>
         <translation>% Total</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="747"/>
+        <location filename="../objects/investmentoperation.py" line="755"/>
         <source>Benchmark</source>
         <translation>Índice de referencia</translation>
     </message>
@@ -1031,47 +1031,47 @@ Do you want to activate it?</source>
 <context>
     <name>InvestmentOperationHeterogeneusManager</name>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1254"/>
+        <location filename="../objects/investmentoperation.py" line="1262"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1254"/>
+        <location filename="../objects/investmentoperation.py" line="1262"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1254"/>
+        <location filename="../objects/investmentoperation.py" line="1262"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1254"/>
+        <location filename="../objects/investmentoperation.py" line="1262"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1255"/>
+        <location filename="../objects/investmentoperation.py" line="1263"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1255"/>
+        <location filename="../objects/investmentoperation.py" line="1263"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1276"/>
+        <location filename="../objects/investmentoperation.py" line="1284"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1254"/>
+        <location filename="../objects/investmentoperation.py" line="1262"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1255"/>
+        <location filename="../objects/investmentoperation.py" line="1263"/>
         <source>Commission</source>
         <translation>Comisión</translation>
     </message>
@@ -1079,72 +1079,72 @@ Do you want to activate it?</source>
 <context>
     <name>InvestmentOperationHistoricalHeterogeneusManager</name>
     <message>
-        <location filename="../objects/investmentoperation.py" line="887"/>
+        <location filename="../objects/investmentoperation.py" line="895"/>
         <source>Years</source>
         <translation>Años</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="887"/>
+        <location filename="../objects/investmentoperation.py" line="895"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="887"/>
+        <location filename="../objects/investmentoperation.py" line="895"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Initial balance</source>
         <translation>Saldo inicial</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Final balance</source>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Gross gains</source>
         <translation>Ganancias brutas</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Commissions</source>
         <translation>Comisiones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="888"/>
+        <location filename="../objects/investmentoperation.py" line="896"/>
         <source>Net gains</source>
         <translation>Ganancias netas</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="889"/>
+        <location filename="../objects/investmentoperation.py" line="897"/>
         <source>% Net APR</source>
         <translation>% TAE Neto</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="889"/>
+        <location filename="../objects/investmentoperation.py" line="897"/>
         <source>% Net Total</source>
         <translation>% Total neto</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="887"/>
+        <location filename="../objects/investmentoperation.py" line="895"/>
         <source>Date and time</source>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="887"/>
+        <location filename="../objects/investmentoperation.py" line="895"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="913"/>
+        <location filename="../objects/investmentoperation.py" line="921"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
@@ -1152,72 +1152,72 @@ Do you want to activate it?</source>
 <context>
     <name>InvestmentOperationHistoricalHomogeneusManager</name>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1023"/>
+        <location filename="../objects/investmentoperation.py" line="1031"/>
         <source>Years</source>
         <translation>Años</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1023"/>
+        <location filename="../objects/investmentoperation.py" line="1031"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1023"/>
+        <location filename="../objects/investmentoperation.py" line="1031"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Initial gross</source>
         <translation>Bruto inicial</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Final gross</source>
         <translation>Bruto final</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Gross gains</source>
         <translation>Ganancias brutas</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Commissions</source>
         <translation>Comisiones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1024"/>
+        <location filename="../objects/investmentoperation.py" line="1032"/>
         <source>Net gains</source>
         <translation>Ganancias netas</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1025"/>
+        <location filename="../objects/investmentoperation.py" line="1033"/>
         <source>% Net APR</source>
         <translation>% TAE Neto</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1025"/>
+        <location filename="../objects/investmentoperation.py" line="1033"/>
         <source>% Net Total</source>
         <translation>% Total neto</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1023"/>
+        <location filename="../objects/investmentoperation.py" line="1031"/>
         <source>Date and time</source>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1023"/>
+        <location filename="../objects/investmentoperation.py" line="1031"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1056"/>
+        <location filename="../objects/investmentoperation.py" line="1064"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
@@ -1225,47 +1225,47 @@ Do you want to activate it?</source>
 <context>
     <name>InvestmentOperationHomogeneusManager</name>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1385"/>
+        <location filename="../objects/investmentoperation.py" line="1393"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1386"/>
+        <location filename="../objects/investmentoperation.py" line="1394"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1387"/>
+        <location filename="../objects/investmentoperation.py" line="1395"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1388"/>
+        <location filename="../objects/investmentoperation.py" line="1396"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1389"/>
+        <location filename="../objects/investmentoperation.py" line="1397"/>
         <source>Gross</source>
         <translation>Bruto</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1390"/>
+        <location filename="../objects/investmentoperation.py" line="1398"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1391"/>
+        <location filename="../objects/investmentoperation.py" line="1399"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1392"/>
+        <location filename="../objects/investmentoperation.py" line="1400"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../objects/investmentoperation.py" line="1394"/>
+        <location filename="../objects/investmentoperation.py" line="1402"/>
         <source>Currency conversion</source>
         <translation>Conversión de divisa</translation>
     </message>
@@ -1498,7 +1498,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Renta fija. Cobro de cupón</translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="19"/>
+        <location filename="../xulpymoney.py" line="31"/>
         <source>Please login to the Xulpymoney database</source>
         <translation>Por favor autentíquese  a la base de datos de Xulpymoney</translation>
     </message>
@@ -1733,12 +1733,12 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="390"/>
+        <location filename="../objects/product.py" line="389"/>
         <source>Loading {0} products from database</source>
         <translation>Cargando {0} productos de la base de datos</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="393"/>
+        <location filename="../objects/product.py" line="392"/>
         <source>Loading products...</source>
         <translation>Cargando productos...</translation>
     </message>
@@ -1791,6 +1791,11 @@ Purgadas en total en el proceso global: {1}</translation>
         <location filename="../objects/operationtype.py" line="33"/>
         <source>HL investment guarantee</source>
         <translation>Derivados. Garantía</translation>
+    </message>
+    <message>
+        <location filename="../xulpymoney.py" line="18"/>
+        <source>Xulpymoney have been correctly installed. Please login again</source>
+        <translation>Xulpymoney ha sido instalado correctamente. Por favor autentícate otra vez</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="../hardcoded_strings.py" line="14"/>
@@ -1979,83 +1984,65 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>Product</name>
     <message>
-        <location filename="../objects/product.py" line="329"/>
+        <location filename="../objects/product.py" line="328"/>
         <source>Name</source>
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="329"/>
+        <location filename="../objects/product.py" line="328"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
 </context>
 <context>
-    <name>ProductComparation</name>
-    <message>
-        <location filename="../objects/product.py" line="652"/>
-        <source>Date</source>
-        <translation>Fecha</translation>
-    </message>
-    <message>
-        <location filename="../objects/product.py" line="652"/>
-        <source>Gains 1</source>
-        <translation>Ganancias 1</translation>
-    </message>
-    <message>
-        <location filename="../objects/product.py" line="652"/>
-        <source>Gains 2</source>
-        <translation>Ganancias 2</translation>
-    </message>
-</context>
-<context>
     <name>ProductManager</name>
     <message>
-        <location filename="../objects/product.py" line="411"/>
+        <location filename="../objects/product.py" line="410"/>
         <source>Loading additional data to {0} products from database</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando datos adicionales para {0} productos de la base de datos</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="414"/>
+        <location filename="../objects/product.py" line="413"/>
         <source>Loading products...</source>
         <translation>Cargando productos...</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="561"/>
+        <location filename="../objects/product.py" line="560"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="561"/>
+        <location filename="../objects/product.py" line="560"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="561"/>
+        <location filename="../objects/product.py" line="560"/>
         <source>ISIN</source>
         <translation>ISIN</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="561"/>
+        <location filename="../objects/product.py" line="560"/>
         <source>Last update</source>
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="561"/>
+        <location filename="../objects/product.py" line="560"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="562"/>
+        <location filename="../objects/product.py" line="561"/>
         <source>% Daily</source>
         <translation>% Diario</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="562"/>
+        <location filename="../objects/product.py" line="561"/>
         <source>% Year to date</source>
         <translation>% año actual</translation>
     </message>
     <message>
-        <location filename="../objects/product.py" line="562"/>
+        <location filename="../objects/product.py" line="561"/>
         <source>% Dividend</source>
         <translation>% Dividendo</translation>
     </message>
@@ -2081,22 +2068,22 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>ProductRangeManager</name>
     <message>
-        <location filename="../objects/productrange.py" line="158"/>
+        <location filename="../objects/productrange.py" line="179"/>
         <source>Center</source>
         <translation>Centro</translation>
     </message>
     <message>
-        <location filename="../objects/productrange.py" line="158"/>
+        <location filename="../objects/productrange.py" line="179"/>
         <source>Product operations</source>
         <translation>Operaciones del producto</translation>
     </message>
     <message>
-        <location filename="../objects/productrange.py" line="158"/>
+        <location filename="../objects/productrange.py" line="179"/>
         <source>Product orders</source>
         <translation>Órdenes del producto</translation>
     </message>
     <message>
-        <location filename="../objects/productrange.py" line="158"/>
+        <location filename="../objects/productrange.py" line="179"/>
         <source>Invest</source>
         <translation>Invertir</translation>
     </message>
@@ -2392,7 +2379,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>cmbManagerSelector</name>
     <message>
-        <location filename="../ui/frmSelector.py" line="226"/>
+        <location filename="../ui/frmSelector.py" line="229"/>
         <source>Press to open a manager selector</source>
         <translation>Pulsa para seleccionar los datos</translation>
     </message>
@@ -2493,44 +2480,89 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="163"/>
+        <location filename="../ui/Ui_frmAccess.py" line="213"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="164"/>
+        <location filename="../ui/Ui_frmAccess.py" line="214"/>
         <source>Server</source>
         <translation>Servidor</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="165"/>
+        <location filename="../ui/Ui_frmAccess.py" line="215"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="166"/>
+        <location filename="../ui/Ui_frmAccess.py" line="216"/>
         <source>Database</source>
         <translation>Base de datos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="167"/>
+        <location filename="../ui/Ui_frmAccess.py" line="217"/>
         <source>User</source>
         <translation>Usuario</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="168"/>
+        <location filename="../ui/Ui_frmAccess.py" line="218"/>
         <source>Password</source>
         <translation>Contraseña</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="109"/>
+        <location filename="../ui/frmAccess.py" line="148"/>
         <source>Error conecting to {} database in {} server</source>
         <translation>Error al conectar a la base de datos {} del servidor {}</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="53"/>
+        <location filename="../ui/frmAccess.py" line="56"/>
         <source>Log in PostreSQL database</source>
         <translation>Autentíquese en la base de datos de PostgreSQL</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccess.py" line="209"/>
+        <source>Select a profile</source>
+        <translation>Selecciona un perfil</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccess.py" line="210"/>
+        <source>Create a new profile</source>
+        <translation>Crea un nuevo perfil</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccess.py" line="211"/>
+        <source>Update current profile name</source>
+        <translation>Actualiza el nombre del perfil actual</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccess.py" line="212"/>
+        <source>Delete current profile</source>
+        <translation>Borra el perfil actual</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccess.py" line="219"/>
+        <source>New Database</source>
+        <translation>Nueva base de datos</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="162"/>
+        <source>Profile name</source>
+        <translation>Nombre del perfil</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="197"/>
+        <source>Do you want to create {} database in {}?</source>
+        <translation>¿Quieres crear la base de datos {} en {}?</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="202"/>
+        <source>Xulpymoney database already exists</source>
+        <translation>La base de datos de Xulpymoney ya existe</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="214"/>
+        <source>Error conecting to {} database in {} server, after creating database</source>
+        <translation>Error al conectar a la base de datos {} en el servidor {}, después de crearla</translation>
     </message>
 </context>
 <context>
@@ -3163,102 +3195,24 @@ Purgadas en total en el proceso global: {1}</translation>
     </message>
 </context>
 <context>
-    <name>frmInit</name>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="139"/>
-        <source>127.0.0.1</source>
-        <translation>127.0.0.1</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="141"/>
-        <source>5432</source>
-        <translation>5432</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="143"/>
-        <source>postgres</source>
-        <translation>postgres</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="145"/>
-        <source>Xulpymoney Database</source>
-        <translation>Base de datos Xulpymoney</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="138"/>
-        <source>Server</source>
-        <translation>Servidor</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="140"/>
-        <source>Port</source>
-        <translation>Puerto</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="142"/>
-        <source>User</source>
-        <translation>Usuario</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="144"/>
-        <source>Password</source>
-        <translation>Contraseña</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="146"/>
-        <source>xulpymoney</source>
-        <translation>xulpymoney</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="135"/>
-        <source>Initializating Xulpymoney database</source>
-        <translation>Iniciando la base de datos de Xulpymoney</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="137"/>
-        <source>Database language</source>
-        <translation>Idioma de la base de datos</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="147"/>
-        <source>Create database</source>
-        <translation>Crear base de datos</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="136"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing the button below, you will create needed database to run Xulpymoney. It&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;body&gt;&lt;p&gt;Pulsando el botón inferior, crearás la base de datos necesarias para la ejecución de Xulpymoney. Será creada en el lenguaje seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="34"/>
-        <source>Database created. User xulpymoney_user and xulpymoney_admin have been created. Please run Xulpymoney and login</source>
-        <translation>Base de datos creado. Se han creado los usuarios xulpymoney_user y xulpymoney_admin. Por favor ejecute Xulpymoney y autentíquese</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="28"/>
-        <source>Do you want to create {} database in {}?</source>
-        <translation>¿Quieres crear la base de datos {} en {}?</translation>
-    </message>
-</context>
-<context>
     <name>frmInvestmentOperationsAdd</name>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="112"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="121"/>
         <source>New investment operation</source>
         <translation>Nueva operación de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="113"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="122"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="114"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="123"/>
         <source>Number of shares</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="115"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="124"/>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -3278,7 +3232,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="117"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="127"/>
         <source>Save</source>
         <translation>Grabar</translation>
     </message>
@@ -3293,17 +3247,17 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Edición de la operación de {}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="111"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="118"/>
         <source>Sale Shares number must be negative</source>
         <translation>El número de acciones en la venta no puede ser negativo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="115"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="122"/>
         <source>Purchase shares number must be positive</source>
         <translation>El número de acciones en la compra no puede ser positivo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="119"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="126"/>
         <source>Added shares number must be positive</source>
         <translation>El número de acciones añadidas debe ser positivo</translation>
     </message>
@@ -3313,7 +3267,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Factor de conversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="98"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="105"/>
         <source>Some fields are wrong</source>
         <translation>Algunos campos son erróneos</translation>
     </message>
@@ -3328,19 +3282,34 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Neto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="116"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="126"/>
         <source>Comission calculator</source>
         <translation>Calculadora de comisiones</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="123"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="130"/>
         <source>Share price, taxes and commission must be positive amounts</source>
         <translation>El precio de la acción, los impuestos y las comisiones deben ser positivas</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="91"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="98"/>
         <source>Please add the final positive amount annoted in your bank account, then close this window</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="125"/>
+        <source>Guest de currency convertion using all shares and asking for the final price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="84"/>
+        <source>Please add the operation close price in product currency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="85"/>
+        <source>Please add the final gains in account currency</source>
+        <translation>Por favor añada las ganancias finales en la divisa de la cuenta</translation>
     </message>
 </context>
 <context>
@@ -5822,7 +5791,7 @@ Los cambios no serán guardados en la base de datos, pero serán añadidos a un 
     <message>
         <location filename="../ui/wdgAPR.py" line="168"/>
         <source>Sum of taxes and custody commissions is {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>La suma de los impuestos y las comisiones de custodia es {}.</translation>
     </message>
     <message>
         <location filename="../ui/wdgAPR.py" line="169"/>
@@ -7418,7 +7387,7 @@ Saldo de los activos de riesgo cero: {2} ( {3} del patrimonio total {4} )</trans
 <context>
     <name>wdgManagerSelector</name>
     <message>
-        <location filename="../ui/frmSelector.py" line="146"/>
+        <location filename="../ui/frmSelector.py" line="149"/>
         <source>Object</source>
         <translation>Objeto</translation>
     </message>
@@ -8057,134 +8026,159 @@ Do you want to execute this oportunity?</source>
 <context>
     <name>wdgProductRange</name>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="188"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="207"/>
         <source>Product ranges</source>
         <translation>Rangos del producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="189"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="208"/>
         <source>Settings of your range</source>
         <translation>Configuración de tu rango</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="190"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="209"/>
         <source>Select a product</source>
         <translation>Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="191"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="210"/>
         <source>Show benchmark report</source>
         <translation>Mostrar el informe del índice de referencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="194"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="213"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="193"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="212"/>
         <source>Add a price to the benchmark</source>
         <translation>Añadir una cotización del índice de referencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="195"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="214"/>
         <source>Percentage between ranges</source>
         <translation>Tanto por ciento entre rangos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="198"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="217"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="197"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="216"/>
         <source>Gains percentage</source>
         <translation>Porcentaje de ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="199"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="218"/>
         <source>Money to invest</source>
         <translation>Dinero a invertir</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="200"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="219"/>
         <source>4000</source>
         <translation>4000</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="201"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="225"/>
         <source>Update ranges</source>
         <translation>Actualizar los rangos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="203"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="227"/>
         <source>Add order at this price</source>
         <translation>Añadir una orden a este precio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="205"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="229"/>
         <source>Investment merging current operations</source>
         <translation>Inversión uniendo las operaciones actuales</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductRange.py" line="207"/>
+        <location filename="../ui/Ui_wdgProductRange.py" line="231"/>
         <source>Range information</source>
         <translation>Información del rango</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="44"/>
+        <location filename="../ui/wdgProductRange.py" line="45"/>
         <source>Product current price: {} at {}</source>
         <translation>Precio actual del producto: {} a {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="48"/>
+        <location filename="../ui/wdgProductRange.py" line="49"/>
         <source>Product price limits: {}</source>
         <translation>Límites de precio del producto: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="49"/>
+        <location filename="../ui/wdgProductRange.py" line="50"/>
         <source>Total invested: {}. Current balance: {} ({})</source>
         <translation>Total invertido: {}. Saldo actual: {} ({})</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="54"/>
+        <location filename="../ui/wdgProductRange.py" line="55"/>
         <source>Average price: {}</source>
         <translation>Precio medio: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="57"/>
+        <location filename="../ui/wdgProductRange.py" line="58"/>
         <source>Selling price to gain {}: {}. Gains at this selling price: {} ({})</source>
         <translation>Precio de venta para ganar {}: {}. Ganancias en este punto de venta: {} ({})</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="64"/>
+        <location filename="../ui/wdgProductRange.py" line="65"/>
         <source>Zero risk assets: {}</source>
         <translation>Patrimonio de riesgo cero: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="72"/>
+        <location filename="../ui/wdgProductRange.py" line="73"/>
         <source>You must select a product</source>
         <translation>Debe seleccionar un producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="131"/>
+        <location filename="../ui/wdgProductRange.py" line="133"/>
         <source>Investments in this range</source>
         <translation>Inversiones en este rango</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="148"/>
+        <location filename="../ui/wdgProductRange.py" line="150"/>
         <source>Range limits are {}</source>
         <translation>Los limites del rango son {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="162"/>
+        <location filename="../ui/wdgProductRange.py" line="164"/>
         <source>Add new order</source>
         <translation>Añade una nueva orden</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductRange.py" line="94"/>
+        <location filename="../ui/wdgProductRange.py" line="96"/>
         <source>Historical report of {}</source>
         <translation>Informe histórico de {}</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductRange.py" line="220"/>
+        <source>Select an investment recomendation method</source>
+        <translation>Selecciona un método para las recomendaciones de inversión</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductRange.py" line="221"/>
+        <source>None ranges</source>
+        <translation>Ningún rango</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductRange.py" line="222"/>
+        <source>All ranges</source>
+        <translation>Todos los rangos</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductRange.py" line="223"/>
+        <source>Three simple movil average</source>
+        <translation>Tres medias móviles simples</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductRange.py" line="224"/>
+        <source>Over simple movil average 100</source>
+        <translation>Encima de la media móvil simple 100</translation>
     </message>
 </context>
 <context>
@@ -8376,164 +8370,184 @@ Do you want to execute this oportunity?</source>
 <context>
     <name>wdgProductsComparation</name>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="28"/>
+        <location filename="../ui/wdgProductsComparation.py" line="32"/>
         <source>Select a product to compare</source>
         <translation>Selecciona un producto para comparar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="69"/>
+        <location filename="../ui/wdgProductsComparation.py" line="104"/>
         <source>You must select a product to compare with</source>
         <translation>Debe seleccionar un producto con el que comparar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="74"/>
+        <location filename="../ui/wdgProductsComparation.py" line="109"/>
         <source>Comparation can&apos;t be made.</source>
         <translation>La comparción no se puede realizar.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="224"/>
+        <location filename="../ui/wdgProductsComparation.py" line="259"/>
         <source>Comparation data table</source>
         <translation>Tabla de datos de comparación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="190"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="213"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="191"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="214"/>
         <source>Products comparation</source>
         <translation>Comparación de productos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="192"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="216"/>
         <source>Select a method to compare</source>
         <translation>Selecciona un método de comparación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="193"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="217"/>
         <source>Not changed data</source>
         <translation>Los datos no han cambiado</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="194"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="218"/>
         <source>Scattering product prices</source>
         <translation>Dispersando los precios de los productos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="196"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="220"/>
         <source>Controling percentage evolution</source>
         <translation>Controlando la evolución del porcentaje</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="197"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="221"/>
         <source>Controlling percentage evolution. Leveraged reduced</source>
         <translation>Controlando la evolución del porcentaje. Reduciendo el apalancamiento</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="198"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="222"/>
         <source>Controling inverse percentage evolution</source>
         <translation>Controlando la evolución inversa del porcentaje</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="199"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="223"/>
         <source>Controling inverse percentage evolultion. Leveraged reduced</source>
         <translation>Controlando la evolución inversa del porcentaje. Reduciendo el apalancamiento</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="210"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="234"/>
         <source>yyyy-MM-dd</source>
         <translation>yyyy-MM-dd</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="218"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="242"/>
         <source>Shows comparation data</source>
         <translation>Mostrar los datos de la comparación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="219"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="243"/>
         <source>Compare</source>
         <translation>Comparar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="220"/>
+        <location filename="../ui/wdgProductsComparation.py" line="255"/>
         <source>You need to compare products first</source>
         <translation>Necesita comparar los productos antes</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="195"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="219"/>
         <source>Scattering product daily gains percentage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="200"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="224"/>
         <source>Spread of prices joining first value with multiplier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="201"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="225"/>
         <source>Price Ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="202"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="226"/>
         <source>Use data from</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar datos de</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="212"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="236"/>
         <source>Last 7 days</source>
         <translation>Últimos 7 días</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="213"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="237"/>
         <source>Last 30 days</source>
         <translation>Últimos 30 días</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="214"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="238"/>
         <source>last 90 days</source>
         <translation>Últimos 90 días</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="215"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="239"/>
         <source>Last 365 days</source>
         <translation>Últimos 365 días</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="216"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="240"/>
         <source>Last 3 years</source>
         <translation>Últimos 3 años</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="208"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="232"/>
         <source>Last 10 years</source>
         <translation>Últimos 10 añoñs</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="209"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="233"/>
         <source>All data</source>
         <translation>Todos los datos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="211"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="235"/>
         <source>Group data by</source>
         <translation>Agrupar datos por</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProductsComparation.py" line="217"/>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="241"/>
         <source>Generate report</source>
         <translation>Generar informe</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="168"/>
+        <location filename="../ui/wdgProductsComparation.py" line="203"/>
         <source>Spread of {} - {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductsComparation.py" line="181"/>
+        <location filename="../ui/wdgProductsComparation.py" line="216"/>
         <source>Price Ratio of {} / {}</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgProductsComparation.py" line="215"/>
+        <source>Select a pair of products</source>
+        <translation>Selecciona un par de productos</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgProductsComparation.py" line="50"/>
+        <source>You need to select both products</source>
+        <translation>Necesita seleccionar los dos productos</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgProductsComparation.py" line="54"/>
+        <source>This pair is already added</source>
+        <translation>Este par ya ha sido añadido</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgProductsComparation.py" line="65"/>
+        <source>You must select a pair</source>
+        <translation>Debe seleccionar un par</translation>
     </message>
 </context>
 <context>
@@ -8764,7 +8778,7 @@ If origin is a user product, you can delete afterwards, because it won&apos;t ha
         <translation>Fecha y hora de finalización</translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulationsAdd.py" line="36"/>
+        <location filename="../ui/wdgSimulationsAdd.py" line="37"/>
         <source>I couldn&apos;t create simulation</source>
         <translation>No pude crear la simulación</translation>
     </message>

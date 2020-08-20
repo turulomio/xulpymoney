@@ -159,7 +159,6 @@ SOURCES         = \
                   xulpymoney/ui/wdgYearMonth.py \
                   xulpymoney/ui/Ui_wdgYearMonth.py \
                   xulpymoney/xulpymoney.py \
-                  xulpymoney/xulpymoney_init.py \
                   xulpymoney/hardcoded_strings.py
 
 FORMS           = \

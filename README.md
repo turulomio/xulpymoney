@@ -59,6 +59,15 @@ Warning: Remember Xulpymoney it's still in beta status
 
 # Changelog
 
+0.14.0
+  * Added stop loss warning for orders
+  * Improved assets report
+  * Added more product comparation charts
+  * Added strategies
+  * Added more products
+  * Improved CFD support
+  * Updated reusing project files
+
 0.13.0
   * Added plus_minus external script
   * Start time was reduced a 50%
