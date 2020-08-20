@@ -4,5 +4,6 @@
 xulpymoney_rc.py binary
 
 
+xulpymoney/external/geckodriver
 .gitignore export-ignore
 .gitattributes export-ignore

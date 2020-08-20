@@ -3,3 +3,4 @@ recursive-include xulpymoney i18n *.ts *.qm *.png *.jpg *.gif xulpymoney.qrc *.p
 include xulpymoney/templates/*
 prune __pycache__
 global-exclude *.pyc .gitattributes .gitignore
+global-exclude xulpymoney/external/geckodriver
