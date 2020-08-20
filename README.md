@@ -64,6 +64,7 @@ Xulpymoney uses PostgreSQL database as its backend. So you need to create a data
   * Added more products
   * Improved CFD support
   * Updated reusing project files
+  * xulpymoney_init has been removed. You can create a new database from login dialog
 
 0.13.0
   * Added plus_minus external script
