@@ -67,6 +67,7 @@ Warning: Remember Xulpymoney it's still in beta status
   * Added more products
   * Improved CFD support
   * Updated reusing project files
+  * xulpymoney_init has been removed. You can create a new database from login dialog
 
 0.13.0
   * Added plus_minus external script
