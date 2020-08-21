@@ -96,7 +96,7 @@ class DBData(QObject):
         
         self.__qpdStart_increaseValue(qpdStart)
         self.banks=BankManager(self.mem)
-        self.banks.load_from_db("select * from entidadesbancarias order by entidadbancaria")
+        self.banks.load_from_db("select * from banks order by name")
 
         self.accounts=AccountManager_from_sql(self.mem, "select * from cuentas order by cuenta")
 

@@ -43,7 +43,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
             cur.execute("delete from public.products")
             cur.execute("delete from public.conceptos")
             cur.close()
-            newdb.copy(self.mem.con, newdb.newdbcon, "select * from entidadesbancarias where id_entidadesbancarias not in (3)",  "entidadesbancarias")#Due to 3 already is in schema
+            newdb.copy(self.mem.con, newdb.newdbcon, "select * from banks where id not in (3)",  "banks")#Due to 3 already is in schema
             newdb.copy(self.mem.con, newdb.newdbcon, "select * from cuentas where id_cuentas not in (4)",  "cuentas")
             newdb.copy(self.mem.con, newdb.newdbcon, "select * from tarjetas",  "tarjetas")
             newdb.copy(self.mem.con, newdb.newdbcon, "select * from products",  "products")

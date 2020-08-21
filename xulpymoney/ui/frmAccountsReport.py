@@ -126,12 +126,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mqtwCreditCards_update()
 
     def on_cmdDatos_released(self):
-        id_entidadesbancarias=self.cmbEB.itemData(self.cmbEB.currentIndex())
-        if id_entidadesbancarias is None:
+        bank_id=self.cmbEB.itemData(self.cmbEB.currentIndex())
+        if bank_id is None:
             qmessagebox(self.tr("You must select a bank"))
             return
 
-        self.account.bank=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
+        self.account.bank=self.mem.data.banks_active().find_by_id(bank_id)
         self.account.name=self.txtAccount.text()
         self.account.number=self.txtNumero.text()
         self.account.active=self.chkActiva.isChecked()

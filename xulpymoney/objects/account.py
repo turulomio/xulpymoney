@@ -66,9 +66,9 @@ class Account(QObject):
 
     def save(self):
         if self.id==None:
-            self.id=self.mem.con.cursor_one_field("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
+            self.id=self.mem.con.cursor_one_field("insert into cuentas (banks_id, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
         else:
-            self.mem.con.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
+            self.mem.con.execute("update cuentas set cuenta=%s, banks_id=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
 
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
@@ -243,7 +243,7 @@ def Account_from_dict(mem, row):
     r=Account(mem)
     r.id=row['id_cuentas']
     r.name=mem.trHS(row['cuenta'])
-    r.bank=mem.data.banks.find_by_id(row['id_entidadesbancarias'])
+    r.bank=mem.data.banks.find_by_id(row['banks_id'])
     r.active=row['active']
     r.number=row['numerocuenta']
     r.currency=row['currency']

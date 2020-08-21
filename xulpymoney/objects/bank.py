@@ -5,7 +5,6 @@ from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.objects.money import Money
 
 class Bank(QObject):
-    """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
     def __init__(self, mem):
         """Constructor que inicializa los atributos a None"""
         QObject.__init__(self)
@@ -27,8 +26,8 @@ class Bank(QObject):
         return QIcon(":/xulpymoney/bank.png")
 
     def init__db_row(self, row):
-        self.id=row['id_entidadesbancarias']
-        self.name=self.tr(row['entidadbancaria'])
+        self.id=row['id']
+        self.name=self.tr(row['name'])
         self.active=row['active']
         return self
         
@@ -41,10 +40,10 @@ class Bank(QObject):
         """Función que inserta si self.id es nulo y actualiza si no es nulo"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into entidadesbancarias (entidadbancaria, active) values (%s,%s) returning id_entidadesbancarias", (self.name, self.active))
+            cur.execute("insert into banks (name, active) values (%s,%s) returning id", (self.name, self.active))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update entidadesbancarias set entidadbancaria=%s, active=%s where id_entidadesbancarias=%s", (self.name, self.active, self.id))
+            cur.execute("update banks set name=%s, active=%s where id=%s", (self.name, self.active, self.id))
         cur.close()
         
     def balance(self):
@@ -72,7 +71,7 @@ class Bank(QObject):
     def delete(self):
         """Función que borra. You must use is_deletable before"""
         cur=self.mem.con.cursor()
-        cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
+        cur.execute("delete from banks where id=%s", (self.id, ))  
         cur.close()
         
 class BankManager(ObjectManager_With_IdName_Selectable, QObject):
@@ -83,7 +82,7 @@ class BankManager(ObjectManager_With_IdName_Selectable, QObject):
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
-        cur.execute(sql)#"select * from entidadesbancarias"
+        cur.execute(sql)#"select * from banks"
         for row in cur:
             self.append(Bank(self.mem).init__db_row(row))
         cur.close()            

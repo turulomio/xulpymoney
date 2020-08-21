@@ -63,7 +63,6 @@ class ZoneManager(ObjectManager_With_IdName_Selectable):
         self.append(Zone(self.mem,15,'Europe/Luxembourg', self.mem.countries.find_by_id("lu")))
         
     def qcombobox(self, combo, zone=None):
-        """Carga entidades bancarias en combo"""
         combo.clear()
         for a in self.arr:
             combo.addItem(a.country.qicon(), a.name, a.id)
