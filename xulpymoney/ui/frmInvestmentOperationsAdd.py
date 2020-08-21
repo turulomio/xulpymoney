@@ -22,6 +22,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
 
         if self.investment.hasSameAccountCurrency():
             self.wdg2CCurrencyConversion.hide()
+            self.cmdGuestCurrencyConversion.hide()
             
         self.lblType.setFixedWidth(200)
         self.lblShares.setFixedWidth(200)

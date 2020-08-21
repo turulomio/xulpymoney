@@ -20,7 +20,7 @@ If you use another distribution, you nee to install PyQtChart and PyQtWebEngine 
 
 # Install in Windows
 
-You just must download xulpymoney-X.X.X.exe and execute them. They are portable apps so they took a little more time to start.
+You just must download xulpymoney-X.X.X.exe and execute it. It's a portable app so it tooks a little more time to start.
 
 If you prefer there is a binary zip version in xulpymoney-X.X.X.zip. You can extract it and execute xulpymoney executable.
 
