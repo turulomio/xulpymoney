@@ -38,13 +38,9 @@ class Assets:
     def last_datetime_allowed_estimated(self):
         return self.last_database_datetime()+timedelta(days=365*5)
 
-    def saldo_todas_cuentas(self,  datetime=None):
-        """Si cur es none y datetime calcula el balance actual."""
-        cur=self.mem.con.cursor()
-        cur.execute("select cuentas_saldo('"+str(datetime)+"') as balance")
-        resultado=cur.fetchone()[0] 
-        cur.close()
-        return Money(self.mem, resultado, self.mem.localcurrency)
+    def saldo_todas_cuentas(self,  datetime):
+        r=self.mem.con.cursor_one_field("select accounts_balance(%s,%s)", (datetime, self.mem.localcurrency))
+        return Money(self.mem, r, self.mem.localcurrency)
 
         
     def saldo_total(self, setinversiones,  datetime):
