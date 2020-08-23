@@ -58,10 +58,10 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
                     resultado=resultado+rec.shares
                     perdida=perdida+pendiente
                 elif (perdida+pendiente).isLTZero():
-                    # Si de tantas acciones queda pendiente "pendiente"
+                    # Si de tantas shares queda pendiente "pendiente"
                     # X                                queda la perdida
-                    acciones=abs(int(perdida.amount*rec.shares/pendiente.amount))
-                    resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
+                    shares=abs(int(perdida.amount*rec.shares/pendiente.amount))
+                    resultado=resultado+Decimal(shares)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
         else:#REINVERSION
             resultado=Decimal(int(self.txtSimulacion.decimal()/self.txtValorAccion.decimal()))
@@ -88,28 +88,28 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             qmessagebox(self.tr("Simulation value must be positive"))
             return
 
-        valor_accion=self.txtValorAccion.decimal()
-        impuestos=0
-        comision=self.txtComision.decimal()
+        price=self.txtValorAccion.decimal()
+        taxes=0
+        commission=self.txtComision.decimal()
 
-        if valor_accion==0:
+        if price==0:
             qmessagebox(self.tr("Share price can't be 0"))
             return
 
-        acciones=self.shares()
-        importe=valor_accion*acciones
-        self.txtAcciones.setText(acciones)
-        self.txtImporte.setText(importe)
+        shares=self.shares()
+        amount=price*shares
+        self.txtAcciones.setText(shares)
+        self.txtamount.setText(amount)
 
         error("Factor de conversion no siempre es 1")
         currency_conversion=1
 
-        #Creamos un nuevo operinversiones 
-        id_operinversiones=self.investment_simulated.op.get_highest_io_id ()+1##Para simular un id_operinversiones real, le asignamos uno
+        #Creamos un nuevo investmentsoperations 
+        investmentsoperations_id=self.investment_simulated.op.get_highest_io_id ()+1##Para simular un investmentsoperations_id real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d=InvestmentOperation(self.mem, self.mem.tiposoperaciones.find_by_id(5), datetime.now(timezone(self.mem.localzone_name)), self.investment, -acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem, self.mem.tiposoperaciones.find_by_id(5), datetime.now(timezone(self.mem.localzone_name)), self.investment, -shares, taxes, commission, price, "",  True, currency_conversion,  investmentsoperations_id)
         else:#REINVERSION
-            d=InvestmentOperation(self.mem, self.mem.tiposoperaciones.find_by_id(4), datetime.now(timezone(self.mem.localzone_name)), self.investment, acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem, self.mem.tiposoperaciones.find_by_id(4), datetime.now(timezone(self.mem.localzone_name)), self.investment, shares, taxes, commission, price, "",  True, currency_conversion,  investmentsoperations_id)
         self.investment_simulated.op.append(d)
         (self.investment_simulated.op_actual, self.investment_simulated.op_historica)=self.investment_simulated.op.get_current_and_historical_operations()
         

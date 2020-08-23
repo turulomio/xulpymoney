@@ -263,7 +263,7 @@ class Product(QObject):
 
     def fecha_ultima_actualizacion_historica(self):
         """
-            Si es acciones, etf, indexes, warrants, currencies, publicbond, private bond buscará el microsegundo 4
+            Si es shares, etf, indexes, warrants, currencies, publicbond, private bond buscará el microsegundo 4
             Si es fondo, plan de pensiones buscará la última cotización
         """
         cur=self.mem.con.cursor()
@@ -285,8 +285,8 @@ class Product(QObject):
         r=0
         inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self)
         for op in inv.op_actual.arr:
-            if op.valor_accion>r:
-                r=op.valor_accion
+            if op.price>r:
+                r=op.price
         return r
     ## Returns the highest operation price of all investments in mem of this product
     ## Used in wdgProductRange
@@ -295,10 +295,10 @@ class Product(QObject):
         r=100000000
         inv=self.mem.data.investments.Investment_merging_current_operations_with_same_product(self)
         for op in inv.op_actual.arr:
-            if op.valor_accion<r:
-                if op.valor_accion==0 and ignore_zero==True:
+            if op.price<r:
+                if op.price==0 and ignore_zero==True:
                     continue
-                r=op.valor_accion
+                r=op.price
         return r
 
     ## Search in Internet for last quote information
@@ -364,9 +364,9 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
         
     @deprecated
     def load_from_inversiones_query(self, sql, progress=True):
-        """sql es una query sobre la tabla inversiones"""
+        """sql es una query sobre la tabla investments"""
         cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select distinct(products_id) from inversiones"
+        cur.execute(sql)#"Select distinct(products_id) from investments"
         ##Conviert cur a lista separada comas
         lista=""
         for row in cur:
@@ -379,7 +379,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
             self.load_from_db("select * from products where id in ("+lista+")", progress )
 
     def load_from_db(self, sql,  progress=False):
-        """sql es una query sobre la tabla inversiones
+        """sql es una query sobre la tabla investments
         Carga estimations_dbs, y basic
         """
         self.clean()
@@ -553,7 +553,7 @@ class ProductManager(ObjectManager_With_IdName_Selectable, QObject):
         cur.execute("update estimations_eps set id=%s where id=%s",(product_to.id,product_from.id))      
         cur.execute("update splits set products_id=%s where products_id=%s",(product_to.id,product_from.id))
         cur.execute("update opportunities set products_id=%s where products_id=%s",(product_to.id,product_from.id))
-        cur.execute("update inversiones set products_id=%s where products_id=%s",(product_to.id,product_from.id))
+        cur.execute("update investments set products_id=%s where products_id=%s",(product_to.id,product_from.id))
         cur.close()
 
     def myqtablewidget(self, wdg):
@@ -681,7 +681,7 @@ class ProductUpdate:
         if all==True:
             used=""
         else:
-            used=" and id in (select products_id from inversiones) "
+            used=" and id in (select products_id from investments) "
         ##### BOLSAMADRID #####
         sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used)
         products=ProductManager(self.mem)

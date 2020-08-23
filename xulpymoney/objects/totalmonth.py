@@ -32,11 +32,11 @@ class TotalMonth:
             ## WRONG IF SEVERAL CURRENCY IN ADJUSTMENTS
             self._derivatives_adjustments=self.mem.con.cursor_one_field("""
 select 
-    sum(importe)
+    sum(amount)
 from 
-    opercuentas 
+    accountsoperations 
 where 
-    id_conceptos in (%s) AND
+    concepts_id in (%s) AND
     date_part('year',datetime)=%s and 
     date_part('month',datetime)=%s
 """, (eConcept.DerivativesAdjustment, self.year, self.month ))
@@ -93,7 +93,7 @@ where
 
     def total_accounts(self):
         if hasattr(self, "_total_accounts") is False:
-            self._total_accounts=Assets(self.mem).saldo_todas_cuentas( self.last_day())
+            self._total_accounts=Assets(self.mem).saldo_todas_accounts( self.last_day())
         return self._total_accounts
 
     def total_investments(self):

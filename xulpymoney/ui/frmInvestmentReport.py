@@ -67,7 +67,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.investment.needStatus(3)
             self.lblTitulo.setText(self.investment.name)
             self.txtInvestment.setText(self.investment.name)
-            self.txtVenta.setText(self.investment.venta)
+            self.txtVenta.setText(self.investment.selling_price)
             self.chkDailyAdjustment.setChecked(self.investment.daily_adjustment)
             if self.investment.selling_expiration==None:
                 self.chkExpiration.setCheckState(Qt.Unchecked)
@@ -78,7 +78,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.investment.account.id))
             
-            #CmbAccount está desabilitado si hay dividends o operinversiones
+            #CmbAccount está desabilitado si hay dividends o investmentsoperations
             if self.investment.op.length()!=0:
                 self.cmbAccount.setEnabled(False)
     
@@ -276,11 +276,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if state==Qt.Unchecked:
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
-                acciones=self.investment.shares()
+                shares=self.investment.shares()
                 tpccalculado=Percentage(estimacion.estimation, self.investment.product.result.basic.last.quote)
                 self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
                 self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.money(estimacion.estimation)))
-                self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.money(acciones*estimacion.estimation),  self.investment.money(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
+                self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.money(shares*estimacion.estimation),  self.investment.money(shares*estimacion.estimation*(1-self.mem.dividendwithholding))))
             self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.investment.dividends.percentage_from_invested(eMoneyCurrency.Product, current=True)))
             self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.investment.dividends.percentage_tae_from_invested(eMoneyCurrency.Product, current=True)))
             self.grpDividendsEstimation.show()
@@ -325,7 +325,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             qmessagebox(self.tr("You must select a product to continue."), ":/xulpymoney/coins.png")
             return
         inversion=self.txtInvestment.text()
-        venta=self.txtVenta.decimal()
+        selling_price=self.txtVenta.decimal()
         daily_adjustment=self.chkDailyAdjustment.isChecked()
         account=self.mem.data.accounts_active().find_by_id(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
         if account is None:
@@ -344,7 +344,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.data.products.append(product)        
 
         if self.investment==None: #insertar
-            self.investment=Investment(self.mem).init__create(inversion,   venta,  account, product, expiration, True, daily_adjustment )
+            self.investment=Investment(self.mem).init__create(inversion,   selling_price,  account, product, expiration, True, daily_adjustment )
             self.investment.save()
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
@@ -354,11 +354,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.done(0)
         else:#UPDATE
             self.investment.name=inversion
-            self.investment.venta=venta
+            self.investment.selling_price=selling_price
             self.investment.product=product
             self.investment.selling_expiration=expiration
             self.investment.daily_adjustment=daily_adjustment
-            self.investment.save()##El id y el id_cuentas no se pueden modificar
+            self.investment.save()##El id y el accounts_id no se pueden modificar
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)
         
@@ -534,7 +534,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 dividend_net=0
                 for dividend in self.investment.dividends.arr:
                     if dividend.datetime<=dt:
-                        dividend_net=dividend_net+dividend.neto
+                        dividend_net=dividend_net+dividend.net
                 #Append data of that datetime
                 tmp_investment=self.investment.Investment_At_Datetime(dt)
                 gains_net=tmp_investment.op_historica.consolidado_neto().amount

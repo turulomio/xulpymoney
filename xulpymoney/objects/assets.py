@@ -10,7 +10,7 @@ class Assets:
     
     def first_database_datetime(self):        
         cur=self.mem.con.cursor()
-        sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime limit 1;'
+        sql='select datetime from accountsoperations UNION all select datetime from investmentsoperations UNION all select datetime from creditcardsoperations order by datetime limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
             cur.close()
@@ -25,7 +25,7 @@ class Assets:
 
     def last_database_datetime(self):        
         cur=self.mem.con.cursor()
-        sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime desc limit 1;'
+        sql='select datetime from accountsoperations UNION all select datetime from investmentsoperations UNION all select datetime from creditcardsoperations order by datetime desc limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
             cur.close()
@@ -38,14 +38,14 @@ class Assets:
     def last_datetime_allowed_estimated(self):
         return self.last_database_datetime()+timedelta(days=365*5)
 
-    def saldo_todas_cuentas(self,  datetime):
+    def saldo_todas_accounts(self,  datetime):
         r=self.mem.con.cursor_one_field("select accounts_balance(%s,%s)", (datetime, self.mem.localcurrency))
         return Money(self.mem, r, self.mem.localcurrency)
 
         
     def saldo_total(self, setinversiones,  datetime):
         """Versión que se calcula en cliente muy optimizada"""
-        return self.saldo_todas_cuentas(datetime)+self.saldo_todas_inversiones(datetime)
+        return self.saldo_todas_accounts(datetime)+self.saldo_todas_inversiones(datetime)
 
     ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
     ##
@@ -161,77 +161,77 @@ class Assets:
 
     def patrimonio_riesgo_cero(self, fecha):
         """CAlcula el patrimonio de riego cero"""
-        return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones_riesgo_cero(fecha)
+        return self.saldo_todas_accounts(fecha)+self.saldo_todas_inversiones_riesgo_cero(fecha)
 
-    def saldo_anual_por_tipo_operacion(self,  year,  id_tiposoperaciones):   
-        """Opercuentas y opertarjetas"""
+    def saldo_anual_por_tipo_operacion(self,  year,  operationstypes_id):   
+        """accountsoperations y creditcardsoperations"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for currency in MostCommonCurrencyTypes():
             cur=self.mem.con.cursor()
             sql="""
-                select sum(Importe) as importe 
+                select sum(amount) as amount 
                 from 
-                    opercuentas,
-                    cuentas
+                    accountsoperations,
+                    accounts
                 where 
-                    id_tiposoperaciones={0} and 
+                    operationstypes_id={0} and 
                     date_part('year',datetime)={1} and
-                    cuentas.currency='{2}' and
-                    cuentas.id_cuentas=opercuentas.id_cuentas   
+                    accounts.currency='{2}' and
+                    accounts.id=accountsoperations.accounts_id   
             union all 
-                select sum(Importe) as importe 
+                select sum(amount) as amount 
                 from 
-                    opertarjetas ,
-                    tarjetas,
-                    cuentas
+                    creditcardsoperations ,
+                    creditcards,
+                    accounts
                 where 
-                    id_tiposoperaciones={0} and 
+                    operationstypes_id={0} and 
                     date_part('year',datetime)={1} and
-                    cuentas.currency='{2}' and
-                    cuentas.id_cuentas=tarjetas.id_cuentas and
-                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year,  currency)
+                    accounts.currency='{2}' and
+                    accounts.id=creditcards.accounts_id and
+                    creditcards.id=creditcardsoperations.creditcards_id""".format(operationstypes_id, year,  currency)
             cur.execute(sql)        
             for i in cur:
-                if i['importe']==None:
+                if i['amount']==None:
                     continue
-                resultado=resultado+Money(self.mem, i['importe'], currency).local()
+                resultado=resultado+Money(self.mem, i['amount'], currency).local()
             cur.close()
         return resultado
 
-    def saldo_por_tipo_operacion(self,  year,  month,  id_tiposoperaciones):   
-        """Opercuentas y opertarjetas"""
+    def saldo_por_tipo_operacion(self,  year,  month,  operationstypes_id):   
+        """accountsoperations y creditcardsoperations"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for currency in MostCommonCurrencyTypes():
             cur=self.mem.con.cursor()
             sql="""
-                select sum(Importe) as importe 
+                select sum(amount) as amount 
                 from 
-                    opercuentas,
-                    cuentas
+                    accountsoperations,
+                    accounts
                 where 
-                    id_tiposoperaciones={0} and 
+                    operationstypes_id={0} and 
                     date_part('year',datetime)={1} and
                     date_part('month',datetime)={2} and
-                    cuentas.currency='{3}' and
-                    cuentas.id_cuentas=opercuentas.id_cuentas   
+                    accounts.currency='{3}' and
+                    accounts.id=accountsoperations.accounts_id   
             union all 
-                select sum(Importe) as importe 
+                select sum(amount) as amount 
                 from 
-                    opertarjetas ,
-                    tarjetas,
-                    cuentas
+                    creditcardsoperations ,
+                    creditcards,
+                    accounts
                 where 
-                    id_tiposoperaciones={0} and 
+                    operationstypes_id={0} and 
                     date_part('year',datetime)={1} and
                     date_part('month',datetime)={2} and
-                    cuentas.currency='{3}' and
-                    cuentas.id_cuentas=tarjetas.id_cuentas and
-                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year, month,  currency)
+                    accounts.currency='{3}' and
+                    accounts.id=creditcards.accounts_id and
+                    creditcards.id=creditcardsoperations.creditcards_id""".format(operationstypes_id, year, month,  currency)
             cur.execute(sql)        
             for i in cur:
-                if i['importe']==None:
+                if i['amount']==None:
                     continue
-                resultado=resultado+Money(self.mem, i['importe'], currency).local()
+                resultado=resultado+Money(self.mem, i['amount'], currency).local()
             cur.close()
         return resultado
         
@@ -261,11 +261,11 @@ class Assets:
         #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
         sql="""
 select 
-    sum(importe) 
+    sum(amount) 
 from 
-    opercuentas 
+    accountsoperations 
 where 
-    id_conceptos = %s and 
+    concepts_id = %s and 
     datetime>%s and datetime<= %s
 """
         sql_params=(eConcept.CommissionCustody, dt_start, dt_end)
@@ -278,11 +278,11 @@ where
         #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
         sql="""
 select 
-    sum(importe) 
+    sum(amount) 
 from 
-    opercuentas 
+    accountsoperations 
 where 
-    id_conceptos in (%s, %s) and 
+    concepts_id in (%s, %s) and 
     datetime>%s and datetime<= %s
 """
         sql_params=(eConcept.TaxesReturn, eConcept.TaxesPayment, dt_start, dt_end)
@@ -294,9 +294,9 @@ where
         #TODO IT SHOULD CONVERT AMOUNTS FROM ACCOUNTS WITH DIFFERENT CURRENCIES
         sql="""
             select 
-                -sum(comision) as suma 
+                -sum(commission) as suma 
             from 
-                operinversiones 
+                investmentsoperations 
             where  
                 datetime>%s and datetime<= %s
 """

@@ -40,16 +40,16 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         if self.cmbFilters.currentIndex()==0:#All
             filters=""
         elif self.cmbFilters.currentIndex()==1:#Purchasing
-            filters=" and id_tiposoperaciones in (4)"
+            filters=" and operationstypes_id in (4)"
         elif self.cmbFilters.currentIndex()==2:#Purchasing
-            filters=" and id_tiposoperaciones in (5)"
+            filters=" and operationstypes_id in (5)"
         elif self.cmbFilters.currentIndex()==3:#Purchasing
-            filters=" and id_tiposoperaciones not in (4, 5)"
+            filters=" and operationstypes_id not in (4, 5)"
 
         if self.radYear.isChecked()==True:
-            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from operinversiones where date_part('year',datetime)=%s "+filters+" order by datetime",(self.wy.year,  ) )
+            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from investmentsoperations where date_part('year',datetime)=%s "+filters+" order by datetime",(self.wy.year,  ) )
         else:
-            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
+            self.operations=InvestmentOperationHeterogeneusManager_from_sql(self.mem,"select * from investmentsoperations where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
         self.operations.myqtablewidget(self.mqtw)
         self.mqtw.drawOrderBy(0, False)
 

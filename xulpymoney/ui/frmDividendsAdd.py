@@ -18,7 +18,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.dividend=dividend
         self.investment=inversion
         
-        self.neto=0
+        self.net=0
         self.tpc=0
         self.wdgDT.setLocalzone(self.mem.localzone_name)
         self.wdgDT.show_microseconds(False)
@@ -34,13 +34,13 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.wdgDT.set(None, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), None)
         else:#modificar 
-            ConceptManager_for_dividends(mem).qcombobox(self.cmb, self.dividend.concepto)
+            ConceptManager_for_dividends(mem).qcombobox(self.cmb, self.dividend.concept)
             self.wdgDT.set(self.dividend.datetime, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
-            self.txtBruto.setText(self.dividend.bruto)
-            self.txtNeto.setText(self.dividend.neto)
-            self.txtRetencion.setText(self.dividend.retencion)
-            self.txtComision.setText(self.dividend.comision)
+            self.txtBruto.setText(self.dividend.gross)
+            self.txtNeto.setText(self.dividend.net)
+            self.txtRetencion.setText(self.dividend.taxes)
+            self.txtComision.setText(self.dividend.commission)
             self.txtDPA.setText(self.dividend.dpa)
             self.cmd.setText(self.tr("Edit dividend"))
  
@@ -63,15 +63,15 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.txtRetencion.setText(0)
                 self.txtDPA.setText(0)
                 self.txtComision.setText(0)
-                self.neto=self.txtBruto.decimal()-self.txtComision.decimal()
+                self.net=self.txtBruto.decimal()-self.txtComision.decimal()
                 self.tpc=0
             else:
                 self.txtRetencion.setEnabled(True)
                 self.txtDPA.setEnabled(True)
                 self.txtComision.setEnabled(True)
-                self.neto=self.txtBruto.decimal()-self.txtRetencion.decimal()-self.txtComision.decimal()
+                self.net=self.txtBruto.decimal()-self.txtRetencion.decimal()-self.txtComision.decimal()
                 self.tpc=100*self.txtRetencion.decimal()/self.txtBruto.decimal()
-            self.txtNeto.setText(self.neto)
+            self.txtNeto.setText(self.net)
             self.lblTPC.setText(self.tr("Withhonding tax retention percentage: {} %".format(self.tpc)))
             self.cmd.setEnabled(True)
         except:
@@ -82,8 +82,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
 
 
     def on_cmd_pressed(self):
-        concepto=self.mem.conceptos.find_by_id(self.cmb.itemData(self.cmb.currentIndex()))
-        tipooperacion=concepto.tipooperacion
+        concept=self.mem.concepts.find_by_id(self.cmb.itemData(self.cmb.currentIndex()))
+        tipooperacion=concept.tipooperacion
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
             qmessagebox(self.tr("Expenses can't have a positive amount"))
@@ -98,13 +98,13 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         
         
         try:
-            self.dividend.concepto=concepto
-            self.dividend.bruto=self.txtBruto.decimal()
-            self.dividend.retencion=self.txtRetencion.decimal()
-            self.dividend.neto=self.neto
+            self.dividend.concept=concept
+            self.dividend.gross=self.txtBruto.decimal()
+            self.dividend.taxes=self.txtRetencion.decimal()
+            self.dividend.net=self.net
             self.dividend.dpa=self.txtDPA.decimal()
             self.dividend.datetime=self.wdgDT.datetime()
-            self.dividend.comision=self.txtComision.decimal()
+            self.dividend.commission=self.txtComision.decimal()
             self.dividend.currency_conversion=self.wdgCurrencyConversion.factor
         except:
             qmessagebox(self.tr("Data error. Please check them."))

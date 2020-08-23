@@ -33,7 +33,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.viewProduct.setSettings(self.mem.settings, "wdgInvestmentClasses", "viewProduct")
         self.layProduct.addWidget(self.viewProduct)
         
-        self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy).local()
+        self.accounts=Assets(self.mem).saldo_todas_accounts(self.hoy).local()
         self.tab.setCurrentIndex(2)
 
     ## @param animations boolean True to show animations

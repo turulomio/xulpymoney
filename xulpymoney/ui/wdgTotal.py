@@ -397,35 +397,35 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowIncomes")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
-        id_tiposoperaciones=2
+        operationstypes_id=2
         set=AccountOperationManagerHeterogeneus(self.mem)
         conceptslist=ConceptManager_considered_dividends_in_totals(self.mem).array_of_ids()
         if self.month==13:#Year
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
-            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
-                                                    from opercuentas 
-                                                    where id_tiposoperaciones={0} and 
+            set.load_from_db("""select id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+                                                    from accountsoperations 
+                                                    where operationstypes_id={0} and 
                                                         date_part('year',datetime)={1} and
-                                                        id_conceptos not in ({2}) 
-                                                union all select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
-                                                    from opertarjetas,tarjetas 
-                                                    where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
-                                                        id_tiposoperaciones={0} and 
-                                                        date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year, list2string(conceptslist)))
+                                                        concepts_id not in ({2}) 
+                                                union all select accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+                                                    from creditcardsoperations,creditcards 
+                                                    where creditcardsoperations.creditcards_id=creditcards.id and 
+                                                        operationstypes_id={0} and 
+                                                        date_part('year',datetime)={1}""".format (operationstypes_id, self.wyData.year, list2string(conceptslist)))
         else:#Month
             tabtitle=self.tr("Incomes of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
-                                                    from opercuentas 
-                                                    where id_tiposoperaciones={0} and 
+            set.load_from_db("""select id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+                                                    from accountsoperations 
+                                                    where operationstypes_id={0} and 
                                                         date_part('year',datetime)={1} and 
                                                         date_part('month',datetime)={2} and 
-                                                        id_conceptos not in ({3}) 
-                                                union all select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
-                                                    from opertarjetas,tarjetas 
-                                                    where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
-                                                        id_tiposoperaciones={0} and 
+                                                        concepts_id not in ({3}) 
+                                                union all select accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+                                                    from creditcardsoperations,creditcards 
+                                                    where creditcardsoperations.creditcards_id=creditcards.id and 
+                                                        operationstypes_id={0} and 
                                                         date_part('year',datetime)={1} and 
-                                                        date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(conceptslist)))
+                                                        date_part('month',datetime)={2}""".format (operationstypes_id, self.wyData.year, self.month, list2string(conceptslist)))
         set.myqtablewidget(wdg,  True)
         wdg.drawOrderBy(0, False)
         horizontalLayout.addWidget(wdg)
@@ -441,36 +441,36 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         wdg.setSettings(self.mem.settings, "wdgTotal","mqtwShowExpenses")
         wdg.table.setSelectionBehavior(QAbstractItemView.SelectItems)
         
-        id_tiposoperaciones=1
+        operationstypes_id=1
         set=AccountOperationManagerHeterogeneus(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Expenses of {0}").format(self.wyData.year)
-            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
-                                                from opercuentas 
-                                                where id_tiposoperaciones={0} and 
+            set.load_from_db("""select id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id , -1 as creditcards_id 
+                                                from accountsoperations 
+                                                where operationstypes_id={0} and 
                                                            date_part('year',datetime)={1} 
                                                 union all 
-                                                select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
-                                                from opertarjetas,tarjetas 
-                                                where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
-                                                            id_tiposoperaciones={0} and 
+                                                select accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id ,creditcards.creditcards_id as creditcards_id 
+                                                from creditcardsoperations,creditcards 
+                                                where creditcardsoperations.creditcards_id=creditcards.id and 
+                                                            operationstypes_id={0} and 
                                                             date_part('year',datetime)={1}
-                                                order by datetime""".format (id_tiposoperaciones, self.wyData.year))
+                                                order by datetime""".format (operationstypes_id, self.wyData.year))
         else:#Month
             tabtitle=self.tr("Expenses of {0} of {1}").format(self.mqtw.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
-                                                from opercuentas 
-                                                where id_tiposoperaciones={0} and 
+            set.load_from_db("""select id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id , -1 as creditcards_id 
+                                                from accountsoperations 
+                                                where operationstypes_id={0} and 
                                                            date_part('year',datetime)={1} and 
                                                            date_part('month',datetime)={2} 
                                                 union all 
-                                                select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
-                                                from opertarjetas,tarjetas 
-                                                where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
-                                                            id_tiposoperaciones={0} and 
+                                                select accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id ,creditcards.creditcards_id as creditcards_id 
+                                                from creditcardsoperations,creditcards 
+                                                where creditcardsoperations.creditcards_id=creditcards.id and 
+                                                            operationstypes_id={0} and 
                                                             date_part('year',datetime)={1} and 
                                                             date_part('month',datetime)={2}
-                                                order by datetime""".format (id_tiposoperaciones, self.wyData.year, self.month))
+                                                order by datetime""".format (operationstypes_id, self.wyData.year, self.month))
         set.myqtablewidget(wdg,  True)
         wdg.drawOrderBy(0, False)
         horizontalLayout.addWidget(wdg)
@@ -654,24 +654,24 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         (sum_bank_commissions, sum_custody_fees, sum_investment_commissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
-            bank_commissions=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
-                                                                                                            from opercuentas 
-                                                                                                            where id_conceptos=%s and 
+            bank_commissions=none2decimal0(self.mem.con.cursor_one_row("""select sum(amount) 
+                                                                                                            from accountsoperations 
+                                                                                                            where concepts_id=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (38, self.wyData.year, column+1))[0])
             wdg.table.setItem(0, column, self.mem.localmoney(bank_commissions).qtablewidgetitem())
             sum_bank_commissions=sum_bank_commissions+bank_commissions
             
-            custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
-                                                                                                            from opercuentas 
-                                                                                                            where id_conceptos=%s and 
+            custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(amount) 
+                                                                                                            from accountsoperations 
+                                                                                                            where concepts_id=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (59, self.wyData.year, column+1))[0])
             wdg.table.setItem(1, column, self.mem.localmoney(custody_fees).qtablewidgetitem())
             sum_custody_fees=sum_custody_fees+custody_fees
             
-            investment_commissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
-                                                                                                            from operinversiones  
+            investment_commissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(commission) 
+                                                                                                            from investmentsoperations  
                                                                                                             where date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
             wdg.table.setItem(2, column, self.mem.localmoney(investment_commissions).qtablewidgetitem())
@@ -804,31 +804,31 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         (sum_io_retentions, sum_div_retentions, sum_other_taxes,  sum_returned_taxes)=(Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
-            io_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(impuestos) 
-                                                                                                                                from operinversiones  
+            io_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(taxes) 
+                                                                                                                                from investmentsoperations  
                                                                                                                                 where date_part('year',datetime)=%s and 
                                                                                                                                     date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
             wdg.table.setItem(0, column, self.mem.localmoney(io_retentions).qtablewidgetitem())
             sum_io_retentions=sum_io_retentions+io_retentions
             
-            div_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(retencion) 
+            div_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(taxes) 
                                                                                                             from dividends 
                                                                                                             where date_part('year',fecha)=%s and 
                                                                                                                 date_part('month',fecha)=%s;""", (self.wyData.year, column+1))[0])
             wdg.table.setItem(1, column, self.mem.localmoney(div_retentions).qtablewidgetitem())
             sum_div_retentions=sum_div_retentions+div_retentions
             
-            other_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
-                                                                                                            from opercuentas 
-                                                                                                            where id_conceptos=%s and 
+            other_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(amount) 
+                                                                                                            from accountsoperations 
+                                                                                                            where concepts_id=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (37, self.wyData.year, column+1))[0])
             wdg.table.setItem(2, column, self.mem.localmoney(other_taxes).qtablewidgetitem())
             sum_other_taxes=sum_other_taxes+other_taxes         
             
-            returned_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
-                                                                                                            from opercuentas 
-                                                                                                            where id_conceptos=%s and 
+            returned_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(amount) 
+                                                                                                            from accountsoperations 
+                                                                                                            where concepts_id=%s and 
                                                                                                                 date_part('year',datetime)=%s and 
                                                                                                                 date_part('month',datetime)=%s;""", (6, self.wyData.year, column+1))[0])
             wdg.table.setItem(3, column, self.mem.localmoney(returned_taxes).qtablewidgetitem())

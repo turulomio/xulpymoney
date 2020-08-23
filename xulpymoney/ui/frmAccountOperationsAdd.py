@@ -6,7 +6,7 @@ from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.libxulpymoneytypes import eComment
 from xulpymoney.objects.accountoperation import AccountOperation
 from xulpymoney.objects.comment import Comment
-from xulpymoney.objects.concept import ConceptManager_for_opercuentas
+from xulpymoney.objects.concept import ConceptManager_for_accountsoperations
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
@@ -14,11 +14,11 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
     CreditCardOperationChanged=pyqtSignal(CreditCardOperation)
     def __init__(self, mem, account=None, opercuenta=None, tarjeta=None ,  opertarjeta=None,  refund=False,  parent=None, ):
         """TIPOS DE ENTRADAS:        
-         1   selAccount=x: Inserción de Opercuentas y edición de cuentas
-         2   selAccount=x, opercuenta=x Modificación de opercuentas e insecioon de opertarjetas a débito
-         3   selAccount=x, opercuenta=None , tarjeta=x, Inserción de opertarjetas en diferido
-         4   selAccount=x, opercuenta=None , tarjeta=x, opertarjeta=x Modificación de opertarjetas
-         5   selAccount=None, opercuenta=None, tarjeta=None, opertarjeta=x, refund=True Refund of opertarjetas. 
+         1   selAccount=x: Inserción de accountsoperations y edición de accounts
+         2   selAccount=x, opercuenta=x Modificación de accountsoperations e insecioon de creditcardsoperations a débito
+         3   selAccount=x, opercuenta=None , tarjeta=x, Inserción de creditcardsoperations en diferido
+         4   selAccount=x, opercuenta=None , tarjeta=x, opertarjeta=x Modificación de creditcardsoperations
+         5   selAccount=None, opercuenta=None, tarjeta=None, opertarjeta=x, refund=True Refund of creditcardsoperations. 
          
          Debido a que se puede cambiar de opercuenta a opercreditcard grabo el producto original, en el caso de modificación
          Original puede ser un 
@@ -33,7 +33,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.mem=mem
         
         self.refund=refund
-        ConceptManager_for_opercuentas(self.mem).qcombobox(self.cmbConcepts)
+        ConceptManager_for_accountsoperations(self.mem).qcombobox(self.cmbConcepts)
         self.mem.data.accounts_active().qcombobox(self.cmbAccounts)
         self.mem.data.accounts_active().CreditCardManager_active().qcombobox(self.cmbCreditCards)
         self.wdgDT.setLocalzone(self.mem.localzone_name)
@@ -52,7 +52,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbConcepts.setEnabled(False)
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
-            self.txtImporte.setText(-opertarjeta.importe)
+            self.txtamount.setText(-opertarjeta.amount)
             self.txtComentario.setEnabled(False)
         elif opertarjeta!=None:
             self.original=opertarjeta
@@ -60,11 +60,11 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.lblTitulo.setText(self.tr("Credit card operation update"))
             self.radCreditCards.setChecked(True)
             self.wdgDT.set(opertarjeta.datetime, self.mem.localzone_name)
-            self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opertarjeta.concepto.id))
+            self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opertarjeta.concept.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
-            self.txtImporte.setText(opertarjeta.importe)
-            self.txtComentario.setText(opertarjeta.comentario)
+            self.txtamount.setText(opertarjeta.amount)
+            self.txtComentario.setText(opertarjeta.comment)
         elif tarjeta!=None:
             self.original=None
             self.radCreditCards.setChecked(True)
@@ -78,10 +78,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.setWindowTitle(self.tr("Account operation update"))
             self.lblTitulo.setText(self.tr("Account operation update"))
             self.wdgDT.set(opercuenta.datetime, self.mem.localzone_name)
-            self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opercuenta.concepto.id))
+            self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opercuenta.concept.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opercuenta.account.id))
-            self.txtImporte.setText(opercuenta.importe)
-            self.txtComentario.setText(opercuenta.comentario)
+            self.txtamount.setText(opercuenta.amount)
+            self.txtComentario.setText(opercuenta.comment)
         else:
             self.original=None
             self.radAccounts.setChecked(True)
@@ -104,26 +104,26 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
 
     def on_cmd_released(self):
-        concepto=self.mem.conceptos.find_by_id(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
-        if concepto is None:
+        concept=self.mem.concepts.find_by_id(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
+        if concept is None:
             qmessagebox(self.tr("You must select a concept"))
             return
-        importe=self.txtImporte.decimal()
-        comentario=self.txtComentario.text()
-        id_cuentas=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
-        id_tarjetas=self.cmbCreditCards.itemData(self.cmbCreditCards.currentIndex())
-        cuenta=self.mem.data.accounts_active().find_by_id(id_cuentas)
-        tarjeta=self.mem.data.accounts.find_creditcard_by_id(id_tarjetas)
+        amount=self.txtamount.decimal()
+        comment=self.txtComentario.text()
+        accounts_id=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
+        creditcards_id=self.cmbCreditCards.itemData(self.cmbCreditCards.currentIndex())
+        cuenta=self.mem.data.accounts_active().find_by_id(accounts_id)
+        tarjeta=self.mem.data.accounts.find_creditcard_by_id(creditcards_id)
         
-        if not importe:
+        if not amount:
             qmessagebox(self.tr("You must set the operation amount"))
             return        
         
-        if concepto.tipooperacion.id==1 and importe>0:
+        if concept.tipooperacion.id==1 and amount>0:
             qmessagebox(self.tr("Expenses can not have a positive amount"))
             return
             
-        if concepto.tipooperacion.id==2 and importe<0:
+        if concept.tipooperacion.id==2 and amount<0:
             qmessagebox(self.tr("Incomes can not have a negative amount"))
             return
             
@@ -134,10 +134,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             if self.original==None:#Producto nuevo
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
-                final.concepto=concepto
-                final.tipooperacion=concepto.tipooperacion
-                final.importe=importe
-                final.comentario=comentario
+                final.concept=concept
+                final.tipooperacion=concept.tipooperacion
+                final.amount=amount
+                final.comment=comment
                 final.account=cuenta
                 final.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
@@ -147,10 +147,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             elif self.original.__class__==CreditCardOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
-                final.concepto=concepto
-                final.tipooperacion=concepto.tipooperacion
-                final.importe=importe
-                final.comentario=comentario
+                final.concept=concept
+                final.tipooperacion=concept.tipooperacion
+                final.amount=amount
+                final.comment=comment
                 final.account=cuenta
                 final.save()
                 self.original.borrar()
@@ -161,10 +161,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             elif self.original.__class__==AccountOperation:
 #                origi=self.type_and_id(self.original)#Ya que se cambia en el save
                 self.original.datetime=self.wdgDT.datetime()
-                self.original.concepto=concepto
-                self.original.tipooperacion=concepto.tipooperacion
-                self.original.importe=importe
-                self.original.comentario=comentario
+                self.original.concept=concept
+                self.original.tipooperacion=concept.tipooperacion
+                self.original.amount=amount
+                self.original.comment=comment
                 self.original.account=cuenta
                 self.original.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
@@ -176,13 +176,13 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             if tarjeta==None:
                 qmessagebox(self.tr("You need to select a credit card"))
                 return
-            if tarjeta.pagodiferido==False:#Pago débito
+            if tarjeta.deferred==False:#Pago débito
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
-                final.concepto=concepto
-                final.tipooperacion=concepto.tipooperacion
-                final.importe=importe
-                final.comentario=self.tr("CreditCard {0}. {1}".format(tarjeta.name, comentario))
+                final.concept=concept
+                final.tipooperacion=concept.tipooperacion
+                final.amount=amount
+                final.comment=self.tr("CreditCard {0}. {1}".format(tarjeta.name, comment))
                 final.account=tarjeta.account
                 final.save()
                 if self.original!=None:
@@ -192,7 +192,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 self.done(0)
                 return
             elif self.original==None:#CreditCardOperation nueva
-                final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, tarjeta, False, None, None )
+                final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concept, concept.tipooperacion, amount, comment, tarjeta, False, None, None )
                 final.save()
                 self.mem.con.commit()
                 self.CreditCardOperationChanged.emit(final)
@@ -201,19 +201,19 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             elif self.refund==True:#Refun d         
                 refund=CreditCardOperation(self.mem)
                 refund.datetime=self.wdgDT.datetime()
-                refund.concepto=concepto
+                refund.concept=concept
                 refund.tarjeta=tarjeta
-                refund.tipooperacion=concepto.tipooperacion
-                refund.pagado=False
-                refund.importe=importe
-                refund.comentario=Comment(self.mem).encode(eComment.CreditCardRefund, self.original)
+                refund.tipooperacion=concept.tipooperacion
+                refund.paid=False
+                refund.amount=amount
+                refund.comment=Comment(self.mem).encode(eComment.CreditCardRefund, self.original)
                 refund.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
                 self.CreditCardOperationChanged.emit(refund)
                 self.done(0) 
                 return
             elif self.original.__class__==AccountOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
-                final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, tarjeta, False, None, None )
+                final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concept, concept.tipooperacion, amount, comment, tarjeta, False, None, None )
                 final.save()
                 self.original.borrar()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
@@ -223,10 +223,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             elif self.original.__class__==CreditCardOperation:
 #                origi=self.type_and_id(self.original)#Ya que se cambia en el save
                 self.original.datetime=self.wdgDT.datetime()
-                self.original.concepto=concepto
-                self.original.tipooperacion=concepto.tipooperacion
-                self.original.importe=importe
-                self.original.comentario=comentario
+                self.original.concept=concept
+                self.original.tipooperacion=concept.tipooperacion
+                self.original.amount=amount
+                self.original.comment=comment
                 self.original.tarjeta=tarjeta
                 self.original.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos

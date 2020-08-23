@@ -47,14 +47,14 @@ def main(arguments=None):
             call.append(precio_inicial+step*i)
         else:
             call.append(precio_inicial+step*(i+1))
-        acciones_call.append(acciones)
+        acciones_call.append(shares)
 
     for i in range(n_p):
          if call_direction is True:
               put.append(precio_inicial -step*(i+1))
          else:
               put.append(precio_inicial - step*i)
-         acciones_put.append(acciones)
+         acciones_put.append(shares)
          
     #Precios medios
     if len(call)==0:
@@ -93,7 +93,7 @@ def main(arguments=None):
      
     if sel_index is not None:
            print("Ganancia call:", results[sel_index][3],"Ganancia put:", results[sel_index][4])
-           print("precio venta:", precio_venta, "Ganancia:", results[sel_index][1], "Porcentage", results[sel_index][2],"%")
+           print("precio selling_price:", precio_venta, "Ganancia:", results[sel_index][1], "Porcentage", results[sel_index][2],"%")
     else:
            print("No se encontró resultado")
 

@@ -61,11 +61,11 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
 
         c=wdgCuriosity(self.mem)
         operations=AccountOperationManagerHeterogeneus(self.mem)
-        operations.load_from_db("select * from opercuentas where importe = (select max(importe) from opercuentas) order by datetime desc limit 1")
+        operations.load_from_db("select * from accountsoperations where amount = (select max(amount) from accountsoperations) order by datetime desc limit 1")
         c.setTitle(self.tr("Which is the amount of the largest account operation?"))
         if operations.length()==1:
             o=operations.first()
-            c.setText(self.tr("The largest account operation took place at {}. It's concept was '{}' and it's amount was {}.".format(o.datetime, o.concepto.name, o.account.money(o.importe))))
+            c.setText(self.tr("The largest account operation took place at {}. It's concept was '{}' and it's amount was {}.".format(o.datetime, o.concept.name, o.account.money(o.amount))))
         else:
             c.setText(self.tr("There are not account operations yet."))
         self.layout.addWidget(c)

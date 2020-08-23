@@ -198,7 +198,7 @@ class SplitManual:
                 for oi in inv.op.arr:
                     if self.dtinitial<=oi.datetime and self.dtfinal>=oi.datetime:
                         oi.shares=self.convertShares(oi.shares)
-                        oi.valor_accion=self.convertPrices(oi.valor_accion)
+                        oi.price=self.convertPrices(oi.price)
                         oi.save(autocommit=False)
 
         
@@ -207,7 +207,7 @@ class SplitManual:
         for inv in self.mem.data.investments.arr:
             if inv.product.id==self.product.id:
                 dividends=DividendHomogeneusManager(self.mem, inv)
-                dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
+                dividends.load_from_db("select * from dividends where investments_id={0} order by datetime".format(inv.id ))  
                 for d in dividends.arr:
                     if self.dtinitial<=d.datetime and self.dtfinal>=d.datetime:
                         d.dpa=self.convertPrices(d.dpa)

@@ -57,7 +57,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
         self.dtFrom.setDate(from_)
         self.dtFrom.blockSignals(False)
 
-        if self.__class__.__name__=="wdgProductHistoricalChart" and self.investment is not None and self.investment.venta is not None and self.investment.venta!=0:
+        if self.__class__.__name__=="wdgProductHistoricalChart" and self.investment is not None and self.investment.selling_price is not None and self.investment.selling_price!=0:
             m_average_price=self.investment.op_actual.average_price(type=1)       
             gains_percentage=Percentage(self.investment.selling_price().amount-m_average_price.amount, m_average_price.amount)
             self.spnGainsPercentage.blockSignals(True)
@@ -160,11 +160,11 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
                 if (    op.tipooperacion.id in (eOperationType.SharesAdd, eOperationType.SharesPurchase, eOperationType.TransferSharesDestiny ) or 
                         (op.tipooperacion.id==eOperationType.TransferFunds and op.shares>0)
                     ) and op.datetime>=selected_datetime:
-                    self.wdgTS.ts.appendScatterSeriesData(buy, op.datetime, op.valor_accion)
+                    self.wdgTS.ts.appendScatterSeriesData(buy, op.datetime, op.price)
                 if (    op.tipooperacion.id in (eOperationType.TransferSharesOrigin, eOperationType.SharesSale) or 
                         (op.tipooperacion.id==eOperationType.TransferFunds and op.shares<0)
                     ) and op.datetime>=selected_datetime:
-                    self.wdgTS.ts.appendScatterSeriesData(sell, op.datetime, op.valor_accion)
+                    self.wdgTS.ts.appendScatterSeriesData(sell, op.datetime, op.price)
 
             #Average price
             if self.investment.op_actual.length()>0:
@@ -302,7 +302,7 @@ class wdgProductHistoricalReinvestChart(wdgProductHistoricalChart):
             percentage=Percentage(self.spnGainsPercentage.value(), 100)
             new_avg_1=self.sim_opactual.average_price()
             new_sell_price_1=self.sim_opactual.average_price_after_a_gains_percentage(percentage)                
-            new_purchase_price_1=self.sim_opactual.last().price()
+            new_purchase_price_1=self.sim_opactual.last().money_price()
             gains_1=self.sim_opactual.gains_from_percentage(percentage)
             
             #First reinvestment
@@ -476,7 +476,7 @@ class wdgProductHistoricalBuyChart(wdgProductHistoricalChart):
             self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, selected_datetime, m_new_selling_price.amount)
             self.wdgTS.ts.appendTemporalSeriesData(new_selling_price, self.mem.localzone.now(),m_new_selling_price.amount)
 
-            m_purchase=Money(self.mem, lastIO.valor_accion*(1-p_last_operation.value),  self.product.currency)
+            m_purchase=Money(self.mem, lastIO.price*(1-p_last_operation.value),  self.product.currency)
 
 
 class wdgProductHistoricalOpportunity(wdgProductHistoricalChart):

@@ -123,7 +123,7 @@ if __name__ == '__main__':
     #iterate quotes
     for quote in quotes:
         
-        #Hay venta
+        #Hay selling_price
         
         #Hay cambio de rango
         if mem.range_change(quote.quote):

@@ -92,18 +92,19 @@ class DBData(QObject):
             if p.type.id==6:
                 p.needStatus(3)
                 self.currencies.append(p)
+                print(p.name, p.result.all.length())
         debug("DBData > Currencies took {}".format(datetime.now()-start))
         
         self.__qpdStart_increaseValue(qpdStart)
         self.banks=BankManager(self.mem)
         self.banks.load_from_db("select * from banks order by name")
 
-        self.accounts=AccountManager_from_sql(self.mem, "select * from cuentas order by cuenta")
+        self.accounts=AccountManager_from_sql(self.mem, "select * from accounts order by name")
 
         self.__qpdStart_increaseValue(qpdStart)
         start=datetime.now()
         self.investments=InvestmentManager(self.mem)
-        self.investments.load_from_db("select * from inversiones", progress=False)
+        self.investments.load_from_db("select * from investments", progress=False)
         self.investments.needStatus(2, progress=False)
         debug("DBData > Investments took {}".format(datetime.now()-start))
 
@@ -406,7 +407,7 @@ class MemXulpymoney(Mem):
         
         self.tiposoperaciones=OperationTypeManager_hardcoded(self)
         
-        self.conceptos=ConceptManager_from_sql(self, "select * from conceptos order by concepto")
+        self.concepts=ConceptManager_from_sql(self, "select * from concepts order by name")
 
         self.types=ProductTypeManager(self)
         self.types.load_all()

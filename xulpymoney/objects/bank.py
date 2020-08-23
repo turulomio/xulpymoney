@@ -48,12 +48,12 @@ class Bank(QObject):
         
     def balance(self):
         resultado=Money(self, 0, self.mem.localcurrency)
-        #Recorre balance cuentas
+        #Recorre balance accounts
         for c in self.mem.data.accounts_active().arr:
             if c.bank.id==self.id:
                 resultado=resultado+c.balance().local()
         
-        #Recorre balance inversiones
+        #Recorre balance investments
         for i in self.mem.data.investments_active().arr:
             if i.account.bank.id==self.id:
                 resultado=resultado+i.balance().local()
@@ -61,7 +61,7 @@ class Bank(QObject):
         
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
-        #Recorre balance cuentas
+        #Recorre balance accounts
         for c  in self.mem.data.accounts.arr:
             if c.bank.id==self.id:
                 if c.is_deletable()==self.id:

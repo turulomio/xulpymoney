@@ -43,7 +43,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         self.mem=mem
         self.product=product
-        self.investment=inversion#Used to generate puntos de venta, punto de compra....
+        self.investment=inversion#Used to generate puntos de selling_price, punto de compra....
         
         self.selDPS=None
         self.selEstimationDPS=None

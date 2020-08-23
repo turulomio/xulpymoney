@@ -28,7 +28,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             return
         
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
-        self.operinversiones=None 
+        self.investmentsoperations=None 
 
         if self.mem.gainsyear==True:
             self.chkGainsTime.setCheckState(Qt.Checked)
@@ -44,19 +44,19 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.lblAmountSymbol.setText(currency_symbol(self.investment.account.currency))
         
     def __calcular(self):
-        #Setting self.operinversiones variable
+        #Setting self.investmentsoperations variable
         if self.chkPonderanAll.checkState()==Qt.Checked:#Results are in self.mem.localcurrency
-            self.operinversiones=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(self.investment.product).op_actual
-            self.operinversiones.myqtablewidget(self.mqtw)
+            self.investmentsoperations=self.mem.data.investments_active().Investment_merging_current_operations_with_same_product(self.investment.product).op_actual
+            self.investmentsoperations.myqtablewidget(self.mqtw)
         else:#Results in account currency
-            self.operinversiones=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
+            self.investmentsoperations=InvestmentOperationCurrentHomogeneusManager(self.mem, self.investment)
 
             if self.chkGainsTime.checkState()==Qt.Checked:
-                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone.now()-datetime.timedelta(days=365))
+                self.investmentsoperations=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone.now()-datetime.timedelta(days=365))
             else:
-                self.operinversiones=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone.now())
-            self.operinversiones.myqtablewidget(self.mqtw, self.investment.product.result.basic.last,  eMoneyCurrency.Account)
-        sumacciones=self.operinversiones.shares()
+                self.investmentsoperations=self.investment.op_actual.ObjectManager_copy_until_datetime(self.mem.localzone.now())
+            self.investmentsoperations.myqtablewidget(self.mqtw, self.investment.product.result.basic.last,  eMoneyCurrency.Account)
+        sumacciones=self.investmentsoperations.shares()
         
         #Calculations
         if sumacciones==Decimal(0):
@@ -64,17 +64,17 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         else:
             if self.radTPC.isChecked()==True:
                 percentage=Percentage(self.spnGainsPercentage.value(), 100)
-                self.puntoventa=self.operinversiones.selling_price_to_gain_percentage_of_invested(percentage, eMoneyCurrency.Account)
+                self.puntoventa=self.investmentsoperations.selling_price_to_gain_percentage_of_invested(percentage, eMoneyCurrency.Account)
             elif self.radPrice.isChecked()==True:
-                if self.txtPrice.isValid():#Si hay un numero bien
+                if self.txtPrice.isValid():#Si hay un number bien
                     self.puntoventa=Money(self.mem,  self.txtPrice.decimal(),  self.investment.product.currency)
                     self.cmd.setEnabled(True)
                 else:
                     self.puntoventa=Money(self.mem, 0, self.investment.product.currency)
                     self.cmd.setEnabled(False)
             elif self.radGain.isChecked()==True:
-                if self.txtGanancia.isValid():#Si hay un numero bien
-                    self.puntoventa=self.operinversiones.selling_price_to_gain_money(Money(self.mem, self.txtGanancia.decimal(), self.investment.product.currency))
+                if self.txtGanancia.isValid():#Si hay un number bien
+                    self.puntoventa=self.investmentsoperations.selling_price_to_gain_money(Money(self.mem, self.txtGanancia.decimal(), self.investment.product.currency))
                     self.cmd.setEnabled(True)
                 else:
                     self.puntoventa=Money(self.mem, 0, self.investment.account.currency)
@@ -83,12 +83,12 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         quote=Quote(self.mem).init__create(self.investment.product, self.mem.localzone.now(), self.puntoventa.amount)
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.puntoventa)))
         self.tab.setTabText(0, self.tr("Current state: {0}".format(quote.money())))
-        self.operinversiones.myqtablewidget(self.mqtwSP, quote, eMoneyCurrency.Account) 
+        self.investmentsoperations.myqtablewidget(self.mqtwSP, quote, eMoneyCurrency.Account) 
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, self.operinversiones.pendiente(quote, eMoneyCurrency.Account)))
+            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, self.investmentsoperations.pendiente(quote, eMoneyCurrency.Account)))
         else:
-            self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.puntoventa, self.operinversiones.pendiente(quote, eMoneyCurrency.Account)))
+            self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.puntoventa, self.investmentsoperations.pendiente(quote, eMoneyCurrency.Account)))
 
     def on_radTPC_clicked(self):
         self.__calcular()
@@ -120,7 +120,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         if self.chkPonderanAll.checkState()==Qt.Checked:
             for inv in self.mem.data.investments_active().arr:
                 if inv.product.id==self.investment.product.id:
-                    inv.venta=self.puntoventa.round(inv.product.decimals)
+                    inv.selling_price=self.puntoventa.round(inv.product.decimals)
                     inv.save()
             self.mem.con.commit()
         

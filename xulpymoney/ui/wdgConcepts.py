@@ -163,9 +163,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
     def on_actionHistoricalReport_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
-        concepto=self.selected[0]
-        wch = wdgConceptsHistorical(self.mem, concepto, newtab)
+        concept=self.selected[0]
+        wch = wdgConceptsHistorical(self.mem, concept, newtab)
         horizontalLayout.addWidget(wch)
-        self.tab.addTab(newtab, "{0}".format(concepto.name))
+        self.tab.addTab(newtab, "{0}".format(concept.name))
         self.tab.setCurrentWidget(newtab)
 

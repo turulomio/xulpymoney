@@ -65,9 +65,9 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.wdgDT.set(self.operinversion.datetime, self.mem.localzone_name)
             self.wdg2CGross.setTextA(self.operinversion.net(type=1))
             self.wdg2CNet.setTextA(self.operinversion.gross(type=1))
-            self.wdg2CTaxes.setTextA(self.operinversion.impuestos)
-            self.wdg2CComission.setTextA(self.operinversion.comision)
-            self.wdg2CPrice.setTextA(self.operinversion.valor_accion)
+            self.wdg2CTaxes.setTextA(self.operinversion.taxes)
+            self.wdg2CComission.setTextA(self.operinversion.commission)
+            self.wdg2CPrice.setTextA(self.operinversion.price)
             self.txtAcciones.setText(self.operinversion.shares)
 
         self.wdg2CTaxes.textChanged.connect(self.on_wdg2CTaxes_mytextChanged)
@@ -106,28 +106,28 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             qmessagebox(self.tr("Some fields are wrong"))
             return
 
-        id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
-        self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(id_tiposoperaciones)
-        self.operinversion.impuestos=self.wdg2CTaxes.decimalA()
-        self.operinversion.comision=self.wdg2CComission.decimalA()
-        self.operinversion.valor_accion=self.wdg2CPrice.decimalA()
+        operationstypes_id=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
+        self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(operationstypes_id)
+        self.operinversion.taxes=self.wdg2CTaxes.decimalA()
+        self.operinversion.commission=self.wdg2CComission.decimalA()
+        self.operinversion.price=self.wdg2CPrice.decimalA()
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
         self.operinversion.shares=self.txtAcciones.decimal()
-        if id_tiposoperaciones==5: #Venta
+        if operationstypes_id==5: #Venta
             self.operinversion.show_in_ranges=False
             if self.operinversion.shares>Decimal('0'):
                 qmessagebox(self.tr("Sale Shares number must be negative"))
                 return        
-        elif id_tiposoperaciones==4: #Compra
+        elif operationstypes_id==4: #Compra
             if self.operinversion.shares<0: 
                 qmessagebox(self.tr("Purchase shares number must be positive"))
                 return
-        elif id_tiposoperaciones==6: #Añadido
+        elif operationstypes_id==6: #Añadido
             if self.operinversion.shares<0: 
                 qmessagebox(self.tr("Added shares number must be positive"))
                 return
         
-        if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
+        if self.operinversion.taxes<Decimal('0') or  self.operinversion.commission<Decimal('0') or self.operinversion.price<Decimal('0'):            
             qmessagebox(self.tr("Share price, taxes and commission must be positive amounts"))
             return
             
@@ -136,7 +136,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.mem.con.commit()#Guarda todos los cambios en bd.
         
         ##Mete indice referencia.
-        if self.type==1  and id_tiposoperaciones==4:#Añadir y compra
+        if self.type==1  and operationstypes_id==4:#Añadir y compra
             w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None, self)
             #Quita un minuto para que enganche con operación
             w.wdgDT.set(self.wdgDT.datetime()-datetime.timedelta(seconds=1), self.mem.localzone_name)
@@ -148,8 +148,8 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
 
     @pyqtSlot(int)
     def on_cmbTiposOperaciones_currentIndexChanged(self, index):
-        id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(index))
-        if id_tiposoperaciones==6:#Añadido acciones
+        operationstypes_id=int(self.cmbTiposOperaciones.itemData(index))
+        if operationstypes_id==6:#Añadido shares
             self.wdg2CPrice.setTextA(0)
             self.wdg2CPrice.setEnabled(False)
         else:
@@ -157,25 +157,25 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.on_txtAcciones_textChanged()
 
     def on_txtAcciones_textChanged(self):
-        """El importe a grabar en BD cuando es una compra es el importe neto, cuando es una venta es el importe bruto"""
+        """El amount a grabar en BD cuando es una compra es el amount net, cuando es una selling_price es el amount gross"""
         if self.txtAcciones.isValid() and self.wdg2CPrice.isValid():
             self.cmdComissionCalculator.setEnabled(True)
         else:
             self.cmdComissionCalculator.setEnabled(False)
-        id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
+        operationstypes_id=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         try:
-            if id_tiposoperaciones==4:#Compra
-                importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.wdg2CGross.setTextA(importe)
-                self.wdg2CNet.setTextA(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
-            if id_tiposoperaciones==5:#Venta
-                importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.wdg2CGross.setTextA(importe)
-                self.wdg2CNet.setTextA(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
-            if id_tiposoperaciones==8:#Traspaso
-                importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.wdg2CGross.setTextA(importe)
-                self.wdg2CNet.setTextA(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+            if operationstypes_id==4:#Compra
+                amount=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
+                self.wdg2CGross.setTextA(amount)
+                self.wdg2CNet.setTextA(amount+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+            if operationstypes_id==5:#Venta
+                amount=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
+                self.wdg2CGross.setTextA(amount)
+                self.wdg2CNet.setTextA(amount-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
+            if operationstypes_id==8:#Traspaso
+                amount=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
+                self.wdg2CGross.setTextA(amount)
+                self.wdg2CNet.setTextA(amount+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
         except:
             pass
 

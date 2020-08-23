@@ -20,7 +20,7 @@ def on_database_created(connectionqt):
         
 
 def main():
-    from PyQt5 import QtWebEngineWidgets # To avoid error must be imported before QCoreApplication
+    from PyQt5 import QtWebEngineWidgets # To avoid error must be amountd before QCoreApplication
     dir(QtWebEngineWidgets)
     
     mem=MemXulpymoney()

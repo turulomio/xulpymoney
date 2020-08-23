@@ -219,7 +219,7 @@ class AssetsReport(ODT, QObject):
         self.simpleParagraph(self.tr("If I keep this investment during a year, I'll get {0}").format(Assets(self.mem).dividends_estimated()))
         self.pageBreak(True)
         
-        # Ranking de inversiones
+        # Ranking de investments
         self.header(self.tr("Historical investments ranking"), 1)    
         self.mem.frmMain.on_actionInvestmentRanking_triggered()
         model=self.mem.frmMain.w.mqtwCurrentOperations.officegeneratorModel("mqtwCurrentOperations")

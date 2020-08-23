@@ -58,7 +58,7 @@ class ProductRange(QObject):
         r=InvestmentManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
             for op in o.op_actual.arr:
-                if self.isInside(op.valor_accion)==True:
+                if self.isInside(op.price)==True:
                     r.append(o)
         return r        
 
@@ -67,7 +67,7 @@ class ProductRange(QObject):
         r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
             for op in o.op_actual.arr:
-                if self.isInside(op.valor_accion)==True:
+                if self.isInside(op.price)==True:
                     r.append(op)
         return r
         

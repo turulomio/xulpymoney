@@ -28,7 +28,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
             self.mqtwConcepts.selected.name=t[0]
             self.mqtwConcepts.selected.save()
             self.mem.con.commit()
-            self.mem.conceptos.order_by_name()
+            self.mem.concepts.order_by_name()
             self.regenerate_list()
             self.mqtwConcepts_reload()
 
@@ -36,11 +36,11 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def on_actionExpensesAdd_triggered(self):
         t=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new expense concept"))
         if t[1]==True:
-            concepto=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(1), True, None)
-            concepto.save()
+            concept=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(1), True, None)
+            concept.save()
             self.mem.con.commit()
-            self.mem.conceptos.append(concepto)
-            self.mem.conceptos.order_by_name()
+            self.mem.concepts.append(concept)
+            self.mem.concepts.order_by_name()
             self.regenerate_list()
             self.mqtwConcepts_reload()
 
@@ -48,11 +48,11 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def on_actionIncomesAdd_triggered(self):
         t=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new income concept"))
         if t[1]==True:
-            concepto=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(2), True, None)
-            concepto.save()
+            concept=Concept(self.mem, t[0], self.mem.tiposoperaciones.find_by_id(2), True, None)
+            concept.save()
             self.mem.con.commit()
-            self.mem.conceptos.append(concepto)
-            self.mem.conceptos.order_by_name()
+            self.mem.concepts.append(concept)
+            self.mem.concepts.order_by_name()
             self.regenerate_list()
             self.mqtwConcepts_reload()
 
@@ -60,7 +60,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def on_actionConceptDelete_triggered(self):
         if self.mqtwConcepts.selected.borrar():
             self.mem.con.commit()
-            self.mem.conceptos.remove(self.mqtwConcepts.selected)
+            self.mem.concepts.remove(self.mqtwConcepts.selected)
             self.regenerate_list()
             self.mqtwConcepts.table.clearSelection()
             self.mqtwConcepts.selected=None

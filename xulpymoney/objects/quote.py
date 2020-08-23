@@ -35,7 +35,7 @@ class Quote:
         """Función que comprueba si existe en la base de datos y devuelve el valor de quote en caso positivo en una dupla""" 
         (status, reg)=(False, None)
         cur=self.mem.con.cursor()
-        cur.execute("select quote from quotes where id=%s and  datetime=%s;", (self.product.id, self.datetime))
+        cur.execute("select quote from quotes where products_id=%s and  datetime=%s;", (self.product.id, self.datetime))
         if cur.rowcount!=0:
             reg=cur.fetchone()[0]
             status=True
@@ -66,11 +66,11 @@ class Quote:
         cur=self.mem.con.cursor()
         exists=self.exists()
         if exists[0]==False:
-            cur.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
+            cur.execute('insert into quotes (products_id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
             r=1
         else:
             if exists[1]!=self.quote:
-                cur.execute("update quotes set quote=%s where id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
+                cur.execute("update quotes set quote=%s where products_id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
                 r=2
             else: #ignored
                 r=3
@@ -79,7 +79,7 @@ class Quote:
                 
     def delete(self):
         cur=self.mem.con.cursor()
-        cur.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
+        cur.execute("delete from quotes where products_id=%s and datetime=%s", (self.product.id, self.datetime))
         cur.close()
 
     def init__db_row(self, row, product):
@@ -231,15 +231,15 @@ class QuotesResult:
         
         self.ohclDailyBeforeSplits.load_from_db("""
             select 
-                id, 
+                products_id, 
                 datetime::date as date, 
                 (array_agg(quote order by datetime))[1] as first, 
                 min(quote) as low, 
                 max(quote) as high, 
                 (array_agg(quote order by datetime desc))[1] as last 
             from quotes 
-            where id={} 
-            group by id, datetime::date 
+            where products_id={} 
+            group by products_id, datetime::date 
             order by datetime::date 
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
@@ -257,7 +257,7 @@ class QuotesResult:
             
         self.ohclMonthly.load_from_db("""
             select 
-                id, 
+                products_id, 
                 date_part('year',datetime) as year, 
                 date_part('month', datetime) as month, 
                 (array_agg(quote order by datetime))[1] as first, 
@@ -265,14 +265,14 @@ class QuotesResult:
                 max(quote) as high, 
                 (array_agg(quote order by datetime desc))[1] as last 
             from quotes 
-            where id={} 
-            group by id, year, month 
+            where products_id={} 
+            group by products_id, year, month 
             order by year, month
         """.format(self.product.id))
         
         self.ohclWeekly.load_from_db("""
             select 
-                id, 
+                products_id, 
                 date_part('year',datetime) as year, 
                 date_part('week', datetime) as week, 
                 (array_agg(quote order by datetime))[1] as first, 
@@ -280,21 +280,21 @@ class QuotesResult:
                 max(quote) as high, 
                 (array_agg(quote order by datetime desc))[1] as last 
             from quotes 
-            where id={} 
-            group by id, year, week 
+            where products_id={} 
+            group by products_id, year, week 
             order by year, week 
         """.format(self.product.id))
         
         self.ohclYearly.load_from_db("""
             select 
-                id, 
+                products_id, 
                 date_part('year',datetime) as year, 
                 (array_agg(quote order by datetime))[1] as first, 
                 min(quote) as low, max(quote) as high, 
                 (array_agg(quote order by datetime desc))[1] as last 
             from quotes 
-            where id={} 
-            group by id, year 
+            where products_id={} 
+            group by products_id, year 
             order by year 
         """.format(self.product.id))
         
@@ -335,7 +335,7 @@ class QuoteAllIntradayManager(ObjectManager):
         self.arr=[]
         self.product=product
         cur=self.mem.con.cursor()
-        cur.execute("select * from quotes where id=%s order by datetime", (self.product.id,  ))
+        cur.execute("select * from quotes where products_id=%s order by datetime", (self.product.id,  ))
         
         intradayarr=[]
         dt_end=None
@@ -373,7 +373,7 @@ class QuoteAllIntradayManager(ObjectManager):
             
     def purge(self, progress=False):
         """Purga todas las quotes de la inversión. Si progress es true muestra un QProgressDialog. 
-        Devuelve el numero de quotes purgadas
+        Devuelve el number de quotes purgadas
         Si devuelve None, es que ha sido cancelado por el usuario, y no debería hacerse un comiti en el UI
         Sólo purga fichas menores a hoy()-30"""
         if progress==True:
@@ -452,7 +452,7 @@ class QuoteIntradayManager(QuoteManager):
         cur=self.mem.con.cursor()
         iniciodia=dtaware_day_start_from_date(date, self.product.stockmarket.zone.name)
         siguientedia=iniciodia+timedelta(days=1)
-        cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
+        cur.execute("select * from quotes where products_id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in cur:
             self.append(Quote(self.mem).init__db_row(row,  self.product))
         cur.close()

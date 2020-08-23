@@ -37,7 +37,7 @@ class Money(Currency):
        
     def __mul__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero
-        En caso de querer multiplicar por un numero debe ser despues
+        En caso de querer multiplicar por un number debe ser despues
         money*4
         """
         if money.__class__ in (int,  float, Decimal):
@@ -89,6 +89,8 @@ class Money(Currency):
         """Factor to convert from self currency to parameter currency, using datetime from result. allsetquotesintraday, uses mem"""
         if self.currency==currency:
             return Decimal(1)
+        
+        print("QaiO", self.mem.data.currencies.find_by_id(74747).result.all.length())
         
         if self.currency=="EUR":
             if currency=="USD":

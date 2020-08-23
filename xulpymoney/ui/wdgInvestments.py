@@ -200,8 +200,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if column==8:#TPC Venta
             qmessagebox(self.tr("Shares number: {0}").format(self.mqtwInvestments.selected.shares())+"\n"+
                     self.tr("Purchase price average: {0}").format(self.mqtwInvestments.selected.op_actual.average_price().local())+"\n"+
-                    self.tr("Selling point: {}").format(self.mqtwInvestments.selected.venta)+"\n"+
-                    self.tr("Selling all shares you get {}").format(self.mqtwInvestments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.mqtwInvestments.selected.product, self.mem.localzone.now(),  self.mqtwInvestments.selected.venta)).local())
+                    self.tr("Selling point: {}").format(self.mqtwInvestments.selected.selling_price)+"\n"+
+                    self.tr("Selling all shares you get {}").format(self.mqtwInvestments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.mqtwInvestments.selected.product, self.mem.localzone.now(),  self.mqtwInvestments.selected.selling_price)).local())
             )  
         else:
             self.on_actionInvestmentReport_triggered()

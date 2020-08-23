@@ -24,8 +24,8 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         try:
             id_origen=int(self.cmbOrigen.itemData(self.cmbOrigen.currentIndex()))
             id_destino=int(self.cmbDestino.itemData(self.cmbDestino.currentIndex()))
-            importe=abs(self.txtImporte.decimal())
-            comision=abs(self.txtComision.decimal())
+            amount=abs(self.txtamount.decimal())
+            commission=abs(self.txtComision.decimal())
         except:
             qmessagebox(self.tr("Error adding data"))
             return            
@@ -33,7 +33,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
             qmessagebox(self.tr("Origin and destiny accounts can't be the same"))
             return 
             
-        Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.accounts_active().find_by_id(id_origen), self.mem.data.accounts_active().find_by_id(id_destino),  importe,  comision)
+        Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.accounts_active().find_by_id(id_origen), self.mem.data.accounts_active().find_by_id(id_destino),  amount,  commission)
         self.mem.con.commit()##Para commit la transferencia   
         
         self.done(0)

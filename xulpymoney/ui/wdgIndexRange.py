@@ -81,12 +81,12 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             return self.benchmark.result.basic.penultimate.quote
 
     def load_data(self):
-        def inversiones(arr,min,max):
+        def investments(arr,min,max):
             resultado=""
             for i in arr:
                 if i[0]>=min and i[0]<max:
                     o=i[1]
-                    resultado=resultado+ self.tr("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.investment.name, o.investment.account.name, round(o.shares, 0),  o.price(type=1), o.gross(type=1)))
+                    resultado=resultado+ self.tr("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.investment.name, o.investment.account.name, round(o.shares, 0),  o.money_price(type=1), o.gross(type=1)))
             return resultado[:-1]
         ######################################################
         inicio=datetime.datetime.now()
@@ -146,7 +146,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             top=r*(1+Decimal(self.spin.value()/100))
             bottom=r
             self.mqtw.table.setItem(i, 0,qcenter("{}-{}".format(int(bottom), int(top))))
-            self.mqtw.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
+            self.mqtw.table.setItem(i, 1,QTableWidgetItem(investments(arr, bottom, top)))
             if bottom<self.cmbBenchmarkCurrent_price():
                 if self.cmbBenchmarkCurrent_price()<=top: ##Colorize current price
                     self.mqtw.table.item(i, 0).setBackground(eQColor.Red)

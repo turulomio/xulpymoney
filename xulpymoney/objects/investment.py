@@ -38,7 +38,7 @@ class Investment(QObject):
         self.mem=mem
         self.id=None
         self.name=None
-        self.venta=None
+        self.selling_price=None
         self.product=None#Puntero a objeto MQInvestment
         self.account=None#Vincula a un objeto  Account
         self.active=None
@@ -77,7 +77,7 @@ class Investment(QObject):
         if self.status==0 and statusneeded==1: #MAIN
             start=datetime.now()
             self.op=InvestmentOperationHomogeneusManager(self.mem, self)
-            rows=self.mem.con.cursor_rows("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+            rows=self.mem.con.cursor_rows("select * from investmentsoperations where investments_id=%s order by datetime", (self.id, ))
             for row in rows:
                 self.op.append(InvestmentOperation_from_row(self.mem, row))
             self.status=1
@@ -98,13 +98,13 @@ class Investment(QObject):
         elif self.status==2 and statusneeded==3:#MAIN
             start=datetime.now()
             self.dividends=DividendHomogeneusManager(self.mem, self)
-            self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
+            self.dividends.load_from_db("select * from dividends where investments_id={0} order by datetime".format(self.id ))  
             debug("Investment {} took {} to pass from status {} to {}".format(self.name, datetime.now()-start, self.status, statusneeded))
             self.status=3
 
-    def init__create(self, name, venta, cuenta, product, selling_expiration, active, daily_adjustment, id=None):
+    def init__create(self, name, selling_price, cuenta, product, selling_expiration, active, daily_adjustment, id=None):
         self.name=name
-        self.venta=venta
+        self.selling_price=selling_price
         self.account=cuenta
         self.product=product
         self.active=active
@@ -127,21 +127,21 @@ class Investment(QObject):
         return r
 
     def copy(self ):
-        return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.daily_adjustment,  self.id)
+        return Investment(self.mem).init__create(self.name, self.selling_price, self.account, self.product, self.selling_expiration, self.active, self.daily_adjustment,  self.id)
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id,daily_adjustment) values (%s, %s,%s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment))    
+            cur.execute("insert into investments (name, selling_price, accounts_id, active, selling_expiration,products_id,daily_adjustment) values (%s, %s,%s,%s,%s,%s,%s) returning investments_id", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment))    
             self.id=cur.fetchone()[0]      
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
+            cur.execute("update investments set name=%s, selling_price=%s, accounts_id=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where investments_id=%s", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
         cur.close()
 
     def selling_price(self, type=eMoneyCurrency.Product):
         if type==1:
-            return Money(self.mem, self.venta, self.product.currency)
+            return Money(self.mem, self.selling_price, self.product.currency)
 
     ## This function is in Investment because uses investment information
     def DividendManager_of_current_operations(self):
@@ -155,9 +155,9 @@ class Investment(QObject):
         return ("Instancia de Investment: {0} ({1})".format( self.name, self.id))
         
     def init__db_row(self, row, cuenta, mqinvestment):
-        self.id=row['id_inversiones']
-        self.name=row['inversion']
-        self.venta=row['venta']
+        self.id=row['id']
+        self.name=row['name']
+        self.selling_price=row['selling_price']
         self.account=cuenta
         self.product=mqinvestment
         self.active=row['active']
@@ -177,17 +177,17 @@ class Investment(QObject):
         return True
         
 
-    def actualizar_cuentasoperaciones_asociadas(self):
-        #Borra las opercuentasdeoperinversiones de la inversión actual
+    def actualizar_accountsoperaciones_asociadas(self):
+        #Borra las investmentsaccountsoperations de la inversión actual
         cur=self.mem.con.cursor()
-        cur.execute("delete from opercuentasdeoperinversiones where id_inversiones=%s", (self.id, ));
+        cur.execute("delete from investmentsaccountsoperations where investments_id=%s", (self.id, ));
         cur.close()
         for o in self.op.arr:
             o.actualizar_cuentaoperacion_asociada()
             
     def borrar(self):
         cur=self.mem.con.cursor()
-        cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
+        cur.execute("delete from investments where id=%s", (self.id, ))
         cur.close()
 
     ## @returns Decimal. Amount to invest considering Zero risk assets and the number of the reinvestment
@@ -221,11 +221,11 @@ class Investment(QObject):
         cur=self.mem.con.cursor()
         self.op=InvestmentOperationHomogeneusManager(self.mem, self)
         if date==None:
-            cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+            cur.execute("select * from investmentsoperations where investments_id=%s order by datetime", (self.id, ))
         else:
-            cur.execute("select * from operinversiones where id_inversiones=%s and datetime::date<=%s order by datetime", (self.id, date))
+            cur.execute("select * from investmentsoperations where investments_id=%s and datetime::date<=%s order by datetime", (self.id, date))
         for row in cur:
-            self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
+            self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find_by_id(row['operationstypes_id'])))
         (self.op_actual,  self.op_historica)=self.op.get_current_and_historical_operations()
         
         cur.close()
@@ -234,7 +234,7 @@ class Investment(QObject):
         """
             Si el year es None es el año actual
             Calcula el dividend estimado de la inversion se ha tenido que cargar:
-                - El inversiones mq
+                - El investments mq
                 - La estimacion de dividends mq"""
         if year==None:
             year=date.today().year
@@ -245,7 +245,7 @@ class Investment(QObject):
 
 
     def shares(self, fecha=None):
-        """Función que saca el número de acciones de las self.op_actual"""
+        """Función que saca el número de shares de las self.op_actual"""
         if fecha==None:
             dat=self.mem.localzone.now()
         else:
@@ -295,12 +295,12 @@ class Investment(QObject):
                 return Money(self.mem, 0, self.resultsCurrency(type) )
             return self.Investment_At_Datetime(dtaware_day_end_from_date(fecha, self.mem.localzone_name)).op_actual.balance(quote, type)
             
-    ## Cuando tengo inversiones apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
+    ## Cuando tengo investments apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
     ## Necesito usar solo la cantidad sin apalancar.
     def balance_real(self, fecha, type=eMoneyCurrency.Product):
         return self.balance(fecha, type)/self.product.real_leveraged_multiplier()
         
-    ## Función que calcula el balance invertido partiendo de las acciones y el precio de compra
+    ## Función que calcula el balance invertido partiendo de las shares y el precio de compra
     ## Necesita haber cargado mq getbasic y operinversionesactual
     def invertido(self, date=None, type=eMoneyCurrency.Product):
         if date==None or date==date.today():#Current
@@ -309,20 +309,20 @@ class Investment(QObject):
             invfake=self.Investment_At_Datetime(dtaware_day_end_from_date(date, self.mem.localzone_name))
             return invfake.op_actual.invertido(type)
                             
-    ## Cuando tengo inversiones apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
+    ## Cuando tengo investments apalancadas, se aumenta ficticiamente el saldo y la cantidad invertida, para calculos de totales de patrimonio_riesgo_cero
     ## Necesito usar solo la cantidad sin apalancar.
     def invested_real(self, date, type=eMoneyCurrency.Product):
         return self.invertido(date, type)/self.product.real_leveraged_multiplier()
 
     def percentage_to_selling_point(self):       
-        """Función que calcula el tpc venta partiendo de las el last y el valor_venta
+        """Función que calcula el tpc selling_price partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        if self.venta==0 or self.venta==None:
+        if self.selling_price==0 or self.selling_price==None:
             return Percentage()
         if self.op_actual.shares()>0:
-            return Percentage(self.venta-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
+            return Percentage(self.selling_price-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
         else:#Long short products
-            return Percentage(-(self.venta-self.product.result.basic.last.quote), self.product.result.basic.last.quote)
+            return Percentage(-(self.selling_price-self.product.result.basic.last.quote), self.product.result.basic.last.quote)
 
 class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
     def __init__(self, mem):
@@ -333,9 +333,9 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
 
     def load_from_db(self, sql,  progress=False):
         cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from inversiones"
+        cur.execute(sql)#"Select * from investments"
         for row in cur:
-            inv=Investment(self.mem).init__db_row(row,  self.mem.data.accounts.find_by_id(row['id_cuentas']), self.mem.data.products.find_by_id(row['products_id']))
+            inv=Investment(self.mem).init__db_row(row,  self.mem.data.accounts.find_by_id(row['accounts_id']), self.mem.data.products.find_by_id(row['products_id']))
             self.append(inv)
         cur.close()  
 
@@ -521,7 +521,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
                 o.fullName(), 
                 o.selling_expiration, 
                 o.shares(), 
-                o.money(o.venta), 
+                o.money(o.selling_price), 
                 o.percentage_to_selling_point(), 
                 o, #mqtwObjects
             ])
@@ -765,7 +765,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
-            Realmente es aplicar el m´etodo FIFO  a todas las inversiones.
+            Realmente es aplicar el m´etodo FIFO  a todas las investments.
             
         """
         name=self.tr( "Virtual investment merging all operations of {}".format(product.name))
@@ -796,10 +796,10 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
 
     def Investment_merging_current_operations_with_same_product(self, product):
         """
-            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como parámetro
+            Funci´on que convierte el set actual de investments, sacando las del producto pasado como parámetro
             Crea una inversi´on nueva cogiendo las  operaciones actuales, juntándolas , convirtiendolas en operaciones normales 
             
-            se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
+            se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las shares actuales.
         """
         name=self.tr( "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
@@ -811,7 +811,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id:
                 inv.needStatus(3)
                 for o in inv.op_actual.arr:
-                    r.op.append(InvestmentOperation(self.mem, o.tipooperacion, o.datetime, r, o.shares, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+                    r.op.append(InvestmentOperation(self.mem, o.tipooperacion, o.datetime, r, o.shares, o.taxes, o.commission,  o.price,  o.commission,  o.show_in_ranges,  o.currency_conversion,  o.id))
                 for d in inv.DividendManager_of_current_operations().arr:
                     r.dividends.append(d)
         r.dividends.order_by_datetime()
@@ -835,7 +835,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         
     def InvestmentManager_merging_investments_with_same_product_merging_operations(self):
         """
-            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
+            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las investments con el mismo producto
             
             Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
@@ -849,7 +849,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
 
     def InvestmentManager_merging_investments_with_same_product_merging_current_operations(self):
         """
-            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
+            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las investments con el mismo producto
             
             Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
@@ -862,7 +862,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         return invs
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
-        """Muestra las inversiones activas que tienen el mq pasado como parametro"""
+        """Muestra las investments activas que tienen el mq pasado como parametro"""
         arr=[]
         for i in self.arr:
             if i.active==True and i.product==investmentmq:
@@ -923,18 +923,18 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         else:
             combo.setCurrentIndex(combo.findData(selected.id))
             
-    def traspaso_valores(self, origen, destino, numacciones, comision):
+    def traspaso_valores(self, origen, destino, numacciones, commission):
         """Función que realiza un traspaso de valores desde una inversion origen a destino
         
         En origen:
             - Debe comprobar que origen y destino es el mismo
-            - Se añade una operinversion con traspaso de valores origen que tendrá un balance de acciones negativo
-            - Se añadirá un comentario con id_inversiondestino
+            - Se añade una operinversion con traspaso de valores origen que tendrá un balance de shares negativo
+            - Se añadirá un comment con id_inversiondestino
             
         En destino:
             - Se añaden tantas operaciones como operinversionesactual con misma datetime 
             - Tendrán balance positivo y el tipo operacion es traspaso de valores. destino 
-            - Se añadirá un comentario con id_operinversion origen
+            - Se añadirá un comment con id_operinversion origen
             
         Devuelve False si ha habido algún problema
         
@@ -945,23 +945,23 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             return False
         now=self.mem.localzone.now()
         currency_conversion=1
-        if comision!=0:
-            op_cuenta=AccountOperation(self.mem, now.date(), self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, "Traspaso de valores", origen.account, None)
+        if commission!=0:
+            op_cuenta=AccountOperation(self.mem, now.date(), self.mem.concepts.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -commission, "Traspaso de valores", origen.account, None)
             op_cuenta.save()           
-            comentario="{0}|{1}".format(destino.id, op_cuenta.id)
+            comment="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
-            comentario="{0}|{1}".format(destino.id, "None")
+            comment="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(9), now, origen,  -numacciones, 0,0, comision, 0, comentario, True, currency_conversion)
+        op_origen=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(9), now, origen,  -numacciones, 0,0, commission, 0, comment, True, currency_conversion)
         op_origen.save( False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
-        comentario="{0}".format(op_origen.id)
+        comment="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(10), now, destino,  o.shares, o.importe, o.impuestos, o.comision, o.valor_accion, comentario,  o.show_in_ranges, currency_conversion)
+            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(10), now, destino,  o.shares, o.amount, o.taxes, o.commission, o.price, comment,  o.show_in_ranges, currency_conversion)
             op_destino.save( False)
             
-        #Vuelvo a introducir el comentario de la opercuenta
+        #Vuelvo a introducir el comment de la opercuenta
         self.mem.con.commit()
         (origen.op_actual,  origen.op_historica)=origen.op.get_current_and_historical_operations()   
         (destino.op_actual,  destino.op_historica)=destino.op.get_current_and_historical_operations()   
@@ -969,21 +969,21 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         
     def traspaso_valores_deshacer(self, operinversionorigen):
         """Da marcha atrás a un traspaso de valores realizado por equivocación
-        Solo se podrá hacer desde el listado de operinversiones
-        Elimina todos los operinversion cuyo id_tipooperacion=10 (destino) cuyo comentario tengo "idorigen|"
-        Se comprobará antes de eliminar que el id_inversiondestino del comentario coincide con los que quiero eliminar
+        Solo se podrá hacer desde el listado de investmentsoperations
+        Elimina todos los operinversion cuyo id_tipooperacion=10 (destino) cuyo comment tengo "idorigen|"
+        Se comprobará antes de eliminar que el id_inversiondestino del comment coincide con los que quiero eliminar
         Elimina el id_operinversionorigen"""        
 #        try:
-        (id_inversiondestino, id_opercuentacomision)=operinversionorigen.comentario.split("|")
+        (id_inversiondestino, id_opercuentacomision)=operinversionorigen.comment.split("|")
         origen=operinversionorigen.investment
         destino=self.find_by_id(int(id_inversiondestino))
         cur=self.mem.con.cursor()
-#        print (cur.mogrify("delete from operinversiones where id_tiposoperaciones=10 and id_inversiones=%s and comentario=%s", (id_inversiondestino, str(operinversionorigen.id))))
+#        print (cur.mogrify("delete from investmentsoperations where operationstypes_id=10 and investments_id=%s and comment=%s", (id_inversiondestino, str(operinversionorigen.id))))
 
-        cur.execute("delete from operinversiones where id_tiposoperaciones=10 and id_inversiones=%s and comentario=%s", (destino.id, str(operinversionorigen.id)))
-        cur.execute("delete from operinversiones where id_operinversiones=%s", (operinversionorigen.id, ))
+        cur.execute("delete from investmentsoperations where operationstypes_id=10 and investments_id=%s and comment=%s", (destino.id, str(operinversionorigen.id)))
+        cur.execute("delete from investmentsoperations where investmentsoperations_id=%s", (operinversionorigen.id, ))
         if id_opercuentacomision!="None":
-            cur.execute("delete from opercuentas where id_opercuentas=%s", (int(id_opercuentacomision), ))
+            cur.execute("delete from accountsoperations where accountsoperations_id=%s", (int(id_opercuentacomision), ))
             
         self.mem.con.commit()
         origen.get_operinversiones()

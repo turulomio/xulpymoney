@@ -48,7 +48,7 @@ class Currency:
 
     ## Si las divisas son distintas, queda el resultado con la divisa del primero
     ##
-    ## En caso de querer multiplicar por un numero debe ser despues. For example: money*4
+    ## En caso de querer multiplicar por un number debe ser despues. For example: money*4
     def __mul__(self, money):
         if money.__class__.__name__ in ("int",  "float", "Decimal"):
             return self.__class__(self.amount*money, self.currency)

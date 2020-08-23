@@ -7,10 +7,10 @@ class Maintenance:
     def __init__(self, mem):
         self.mem=mem
         
-    def regenera_todas_opercuentasdeoperinversiones(self):
+    def regenera_todas_investmentsaccountsoperations(self):
          
         for inv in self.mem.data.investments.arr:
-            inv.actualizar_cuentasoperaciones_asociadas()
+            inv.actualizar_accountsoperaciones_asociadas()
         self.mem.con.commit()        
         
         
@@ -22,8 +22,8 @@ class Maintenance:
         for inv in self.mem.data.investments.arr:
             balance=inv.balance(date)
             sumbalance=sumbalance+balance
-            acciones=inv.shares(date)
+            shares=inv.shares(date)
             price=Quote(self.mem).init__from_query(inv.product, datet)
-            if acciones!=0:
-                print ("{0:<40s} {1:>15f} {2:>15s} {3:>15s}".format(inv.name, acciones, self.mem.localmoney(price.quote),  self.mem.localmoney(balance)))
+            if shares!=0:
+                print ("{0:<40s} {1:>15f} {2:>15s} {3:>15s}".format(inv.name, shares, self.mem.localmoney(price.quote),  self.mem.localmoney(balance)))
         print ("{0:>40s} {1:>15s} {2:>15s} {3:>15s}".format("Total balance at {0}".format(date), "","", self.mem.localmoney(sumbalance)))

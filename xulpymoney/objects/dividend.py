@@ -11,36 +11,36 @@ class Dividend:
         self.mem=mem
         self.id=None
         self.investment=None
-        self.bruto=None
-        self.retencion=None
-        self.neto=None
+        self._gross=None
+        self.taxes=None
+        self._net=None
         self.dpa=None
         self.datetime=None
         self.opercuenta=None
-        self.comision=None
-        self.concepto=None#Puedeser 39 o 62 para derechos venta
+        self._commission=None
+        self.concept=None#Puedeser 39 o 62 para derechos selling_price
         self.currency_conversion=None
 
     def __repr__(self):
-        return ("Instancia de Dividend: {0} ({1})".format( self.neto, self.id))
+        return ("Instancia de Dividend: {0} ({1})".format( self._net, self.id))
         
-    def init__create(self,  inversion,  bruto,  retencion, neto,  dpa,  fecha,  comision,  concepto, currency_conversion,  opercuenta=None,  id=None):
+    def init__create(self,  inversion,  gross,  taxes, net,  dpa,  fecha,  commission,  concept, currency_conversion,  opercuenta=None,  id=None):
         """Opercuenta puede no aparecer porque se asigna al hacer un save que es cuando se crea. Si id=None,opercuenta debe ser None"""
         self.id=id
         self.investment=inversion
-        self.bruto=bruto
-        self.retencion=retencion
-        self.neto=neto
+        self._gross=gross
+        self.taxes=taxes
+        self._net=net
         self.dpa=dpa
         self.datetime=fecha
         self.opercuenta=opercuenta
-        self.comision=comision
-        self.concepto=concepto
+        self._commission=commission
+        self.concept=concept
         self.currency_conversion=currency_conversion
         return self
         
-    def init__db_row(self, row, inversion,  opercuenta,  concepto):
-        return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, row['currency_conversion'], opercuenta, row['id_dividends'])
+    def init__db_row(self, row, inversion,  opercuenta,  concept):
+        return self.init__create(inversion,  row['gross'],  row['taxes'], row['net'],  row['dps'],  row['datetime'],   row['commission'],  concept, row['currency_conversion'], opercuenta, row['id'])
         
     def init__db_query(self, id):
         """
@@ -48,12 +48,12 @@ class Dividend:
         """
         row=self.mem.con.cursor_one_row("select * from dividends where id_dividends=%s", (id, ))
         from xulpymoney.objects.accountoperation import AccountOperation
-        accountoperation=AccountOperation(self.mem,  row['id_opercuentas'])
-        return self.init__db_row(row, self.mem.data.investments.find_by_id(row['id_inversiones']), accountoperation, self.mem.conceptos.find_by_id(row['id_conceptos']))
+        accountoperation=AccountOperation(self.mem,  row['accountsoperations_id'])
+        return self.init__db_row(row, self.mem.data.investments.find_by_id(row['investments_id']), accountoperation, self.mem.concepts.find_by_id(row['concepts_id']))
         
     def borrar(self):
         """Borra un dividend, para ello borra el registro de la tabla dividends 
-            y el asociado en la tabla opercuentas
+            y el asociado en la tabla accountsoperations
             
             También actualiza el balance de la cuenta."""
         cur=self.mem.con.cursor()
@@ -63,26 +63,26 @@ class Dividend:
         
     def gross(self, type=eMoneyCurrency.Product):
         if type==1:
-            return Money(self.mem, self.bruto, self.investment.product.currency)
+            return Money(self.mem, self._gross, self.investment.product.currency)
         elif type==2:
-            return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            return Money(self.mem, self._gross, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.bruto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            return Money(self.mem, self._gross, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
 
     def net(self, type=eMoneyCurrency.Product):
         if type==1:
-            return Money(self.mem, self.neto, self.investment.product.currency)
+            return Money(self.mem, self._net, self.investment.product.currency)
         elif type==2:
-            return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            return Money(self.mem, self._net, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.neto, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            return Money(self.mem, self._net, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def retention(self, type=eMoneyCurrency.Product):
         if type==1:
-            return Money(self.mem, self.retencion, self.investment.product.currency)
+            return Money(self.mem, self.taxes, self.investment.product.currency)
         elif type==2:
-            return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            return Money(self.mem, self.taxes, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.retencion, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            return Money(self.mem, self.taxes, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def dps(self, type=eMoneyCurrency.Product):
         "Dividend per share"
         if type==1:
@@ -93,20 +93,20 @@ class Dividend:
             return Money(self.mem, self.dpa, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
     def commission(self, type=eMoneyCurrency.Product):
         if type==1:
-            return Money(self.mem, self.comision, self.investment.product.currency)
+            return Money(self.mem, self._commission, self.investment.product.currency)
         elif type==2:
-            return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
+            return Money(self.mem, self._commission, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion)
         elif type==3:
-            return Money(self.mem, self.comision, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
+            return Money(self.mem, self._commission, self.investment.product.currency).convert_from_factor(self.investment.account.currency, self.currency_conversion).local(self.datetime)
             
     def copy(self ):
-        return Dividend(self.mem).init__create(self.investment, self.bruto, self.retencion, self.neto, self.dpa, self.datetime, self.comision, self.concepto, self.currency_conversion, self.opercuenta, self.id)
+        return Dividend(self.mem).init__create(self.investment, self._gross, self.taxes, self._net, self.dpa, self.datetime, self._commission, self.concept, self.currency_conversion, self.opercuenta, self.id)
         
     def neto_antes_impuestos(self):
-        return self.bruto-self.comision
+        return self._gross-self._commission
     
     def save(self):
-        """Insertar un dividend y una opercuenta vinculada a la tabla dividends en el campo id_opercuentas
+        """Insertar un dividend y una opercuenta vinculada a la tabla dividends en el campo accountsoperations_id
         
         En caso de que sea actualizar un dividend hay que actualizar los datos de opercuenta y se graba desde aquí. No desde el objeto opercuenta
         
@@ -115,19 +115,19 @@ class Dividend:
         from xulpymoney.objects.accountoperation import AccountOperation
         from xulpymoney.objects.comment import Comment
         if self.id==None:#Insertar
-            self.opercuenta=AccountOperation(self.mem,  self.datetime,self.concepto, self.concepto.tipooperacion, self.neto, "Transaction not finished", self.investment.account, None)
+            self.opercuenta=AccountOperation(self.mem,  self.datetime,self.concept, self.concept.tipooperacion, self._net, "Transaction not finished", self.investment.account, None)
             self.opercuenta.save()
-            self.id=self.mem.con.cursor_one_field("insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion))
-            self.opercuenta.comentario=Comment(self.mem).encode(eComment.Dividend, self)
+            self.id=self.mem.con.cursor_one_field("insert into dividends (datetime, dps, gross, taxes, net, investments_id,accountsoperations_id, commission, concepts_id,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion))
+            self.opercuenta.comment=Comment(self.mem).encode(eComment.Dividend, self)
             self.opercuenta.save()
         else:
             self.opercuenta.datetime=self.datetime
-            self.opercuenta.importe=self.neto
-            self.opercuenta.comentario=Comment(self.mem).encode(eComment.Dividend, self)
-            self.opercuenta.concepto=self.concepto
-            self.opercuenta.tipooperacion=self.concepto.tipooperacion
+            self.opercuenta.amount=self._net
+            self.opercuenta.comment=Comment(self.mem).encode(eComment.Dividend, self)
+            self.opercuenta.concept=self.concept
+            self.opercuenta.tipooperacion=self.concept.tipooperacion
             self.opercuenta.save()
-            self.mem.con.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self.bruto, self.retencion, self.neto, self.investment.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
+            self.mem.con.execute("update dividends set datetime=%s, dps=%s, gross=%s, taxes=%s, net=%s, investments_id=%s, accountsoperations_id=%s, commission=%s, concepts_id=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion, self.id))
 
 class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Class that  groups dividends from a Xulpymoney Product"""
@@ -168,12 +168,12 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
         del self.arr
         self.arr=[]
         cur=self.mem.con.cursor()
-        cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.investment.id, )
+        cur.execute( sql)#"select * from dividends where investments_id=%s order by datetime", (self.investment.id, )
         for row in cur:
             from xulpymoney.objects.accountoperation import AccountOperation
-            inversion=self.mem.data.investments.find_by_id(row['id_inversiones'])
-            oc=AccountOperation(self.mem, row['id_opercuentas'])
-            self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
+            inversion=self.mem.data.investments.find_by_id(row['investments_id'])
+            oc=AccountOperation(self.mem, row['accountsoperations_id'])
+            self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.concepts.find_by_id(row['concepts_id']) ))
         cur.close()      
 
     def myqtablewidget(self, wdg,   type=eMoneyCurrency.User):
@@ -183,7 +183,7 @@ class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObj
             data.append([
                 o.datetime, 
                 o.investment.fullName(), 
-                o.opercuenta.concepto.name, 
+                o.opercuenta.concept.name, 
                 o.gross(type), 
                 o.retention(type), 
                 o.commission(type), 
@@ -275,7 +275,7 @@ class DividendHomogeneusManager(DividendHeterogeneusManager):
             sumretencion=sumretencion+d.retention(emoneycurrency)
             sumcomision=sumcomision+d.commission(emoneycurrency)
             wdg.table.setItem(i, 0, qdatetime(d.datetime, self.mem.localzone_name))
-            wdg.table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
+            wdg.table.setItem(i, 1, qleft(d.opercuenta.concept.name))
             wdg.table.setItem(i, 2, d.gross(emoneycurrency).qtablewidgetitem())
             wdg.table.setItem(i, 3, d.retention(emoneycurrency).qtablewidgetitem())
             wdg.table.setItem(i, 4, d.commission(emoneycurrency).qtablewidgetitem())

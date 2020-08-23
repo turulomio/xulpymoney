@@ -23,9 +23,9 @@ def start(mem):
     io.tipooperacion=mem.tiposoperaciones.find_by_id(eOperationType.SharesPurchase)
     io.investment=inv
     io.shares=0.03
-    io.impuestos=0
-    io.comision=0
-    io.valor_accion=12458
+    io.taxes=0
+    io.commission=0
+    io.price=12458
     io.datetime=dtaware_now(mem.localzone_name)
     io.currency_conversion=1
     io.show_in_ranges=True   

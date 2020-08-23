@@ -774,7 +774,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()       
         prod=ProductManager(self.mem)
-        prod.load_from_db("select * from products where id in (select products_id from inversiones where active=true) order by name")
+        prod.load_from_db("select * from products where id in (select products_id from investments where active=true) order by name")
         arrInt=[]
         for p in prod.arr:
             arrInt.append(p.id)
@@ -847,7 +847,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
-        prod.load_from_db("select * from products where id in (select products_id from inversiones where active=false) order by name")
+        prod.load_from_db("select * from products where id in (select products_id from investments where active=false) order by name")
         arrInt=[]
         for p in prod.arr:
             arrInt.append(p.id)

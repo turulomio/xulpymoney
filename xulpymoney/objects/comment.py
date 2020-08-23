@@ -6,20 +6,20 @@ from xulpymoney.datetime_functions import dtaware2string
 from xulpymoney.libxulpymoneytypes import eComment, eMoneyCurrency
 from xulpymoney.objects.dividend import Dividend
 from xulpymoney.objects.money import Money
-## Class who controls all comments from opercuentas, operinversiones ...
+## Class who controls all comments from accountsoperations, investmentsoperations ...
 class Comment(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
         self.mem=mem
 
-    ##Obtiene el codigo de un comentario
+    ##Obtiene el codigo de un comment
     def getCode(self, string):
         (code, args)=self.get(string)
         return code        
 
     def getArgs(self, string):
         """
-            Obtiene los argumentos enteros de un comentario
+            Obtiene los argumentos enteros de un comment
         """
         (code, args)=self.get(string)
         return args
@@ -86,9 +86,9 @@ class Comment(QObject):
                 io=self.mem.data.investments.findInvestmentOperation(args[0])
                 if io==None: return string
                 if io.investment.hasSameAccountCurrency():
-                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.commission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
+                    return self.tr("{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.money_commission(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Product))
                 else:
-                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.commission(eMoneyCurrency.Product), io.commission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
+                    return self.tr("{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.investment.name, io.shares, io.gross(eMoneyCurrency.Product), io.gross(eMoneyCurrency.Account),  io.money_commission(eMoneyCurrency.Product), io.money_commission(eMoneyCurrency.Account),  io.taxes(eMoneyCurrency.Product), io.taxes(eMoneyCurrency.Account))
 
             elif code==eComment.AccountTransferOrigin:#Operaccount transfer origin
                 if not self.validateLength(3, code, args): return string
@@ -100,11 +100,11 @@ class Comment(QObject):
                 aoo=AccountOperation(self.mem, args[0])
                 return QApplication.translate("Mem","Transfer received from {}").format(aoo.account.name)
 
-            elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin comision
+            elif code==eComment.AccountTransferOriginCommission:#Operaccount transfer origin commission
                 if not self.validateLength(3, code, args): return string
                 aoo=AccountOperation(self.mem, args[0])
                 aod=AccountOperation(self.mem, args[1])
-                return QApplication.translate("Mem","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
+                return QApplication.translate("Mem","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.amount), aoo.account.name, aod.account.name)
 
             elif code==eComment.Dividend:#Comentario de cuenta asociada al dividendo
                 if not self.validateLength(1, code, args): return string
@@ -118,14 +118,14 @@ class Comment(QObject):
             elif code==eComment.CreditCardBilling:#Facturaci´on de tarjeta diferida
                 if not self.validateLength(2, code, args): return string
                 creditcard=self.mem.data.accounts.find_creditcard_by_id(args[0])
-                number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
+                number=self.mem.con.cursor_one_field("select count(*) from creditcardsoperations where accountsoperations_id=%s", (args[1], ))
                 return QApplication.translate("Mem","Billing {} movements of {}").format(number, creditcard.name)
 
             elif code==eComment.CreditCardRefund:#Devolución de tarjeta
                 from xulpymoney.objects.creditcardoperation import CreditCardOperation
                 if not self.validateLength(1, code, args): return string
                 cco=CreditCardOperation(self.mem).init__db_query(args[0])
-                money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
+                money=Money(self.mem, cco.amount, cco.tarjeta.account.currency)
                 return QApplication.translate("Mem","Refund of {} payment of which had an amount of {}").format(dtaware2string(cco.datetime), money)
         except:
             return self.tr("Error decoding comment {}").format(string)

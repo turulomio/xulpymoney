@@ -10,11 +10,11 @@ from xulpymoney.ui.myqwidgets import qmessagebox
 from xulpymoney.ui.Ui_wdgConceptsHistorical import Ui_wdgConceptsHistorical
 
 class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
-    def __init__(self, mem, concepto,  parent=None):
+    def __init__(self, mem, concept,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.concepto=concepto
+        self.concept=concept
 
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
@@ -25,16 +25,16 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.reload()
 
     def reload(self):
-        #Junta opercuentas y opertarjetas y sobre esa subquery uni hace un group by
+        #Junta accountsoperations y creditcardsoperations y sobre esa subquery uni hace un group by
         rows=self.mem.con.cursor_rows("""
-        select date_part('year',datetime)::int as year,  date_part('month',datetime)::int as month, sum(importe) as value 
+        select date_part('year',datetime)::int as year,  date_part('month',datetime)::int as month, sum(amount) as value 
         from ( 
-                    SELECT opercuentas.datetime, opercuentas.id_conceptos,  opercuentas.importe  FROM opercuentas where id_conceptos={0} 
+                    SELECT accountsoperations.datetime, accountsoperations.concepts_id,  accountsoperations.amount  FROM accountsoperations where concepts_id={0} 
                         UNION ALL 
-                    SELECT opertarjetas.datetime, opertarjetas.id_conceptos, opertarjetas.importe FROM opertarjetas where id_conceptos={0}
+                    SELECT creditcardsoperations.datetime, creditcardsoperations.concepts_id, creditcardsoperations.amount FROM creditcardsoperations where concepts_id={0}
                 ) as uni 
         group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;
-        """.format(self.concepto.id))
+        """.format(self.concept.id))
 
         if len(rows)==0: #Due it may have no data
             return
@@ -65,20 +65,20 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         mqtwMonth.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwMonth")
         set=AccountOperationManagerHeterogeneus(self.mem)
         set.load_from_db_with_creditcard("""
-             select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
-             from opercuentas 
+             select datetime, concepts_id, operationstypes_id, amount, comment, accounts_id , -1 as creditcards_id 
+             from accountsoperations 
              where
-                 id_conceptos={0} and 
+                 concepts_id={0} and 
                  date_part('year',datetime)={1} and 
                  date_part('month',datetime)={2} 
              union all 
-             select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
-             from opertarjetas, tarjetas 
+             select datetime, concepts_id, operationstypes_id, amount, comment, accounts_id ,creditcards.creditcards_id as creditcards_id 
+             from creditcardsoperations, creditcards 
              where 
-                 opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
-                 id_conceptos={0} and 
+                 creditcardsoperations.creditcards_id=creditcards.creditcards_id and 
+                 concepts_id={0} and 
                  date_part('year',datetime)={1} and 
-                 date_part('month',datetime)={2}""".format (self.concepto.id, self.year, self.month))
+                 date_part('month',datetime)={2}""".format (self.concept.id, self.year, self.month))
         set.myqtablewidget(mqtwMonth, True)
         horizontalLayout.addWidget(mqtwMonth)
         self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.mqtwReport.table.horizontalHeaderItem(self.month).text(), self.year)))
@@ -91,7 +91,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         mqtwYear = mqtwObjects(newtab)
         mqtwYear.setSettings(self.mem.settings, "wdgConceptsHistorical",  "mqtwYear")
         set=AccountOperationManagerHeterogeneus(self.mem)
-        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
+        set.load_from_db_with_creditcard("select datetime, concepts_id, operationstypes_id, amount, comment, accounts_id , -1 as creditcards_id from accountsoperations where concepts_id={0} and date_part('year',datetime)={1} union all select datetime, concepts_id, operationstypes_id, amount, comment, accounts_id ,creditcards.creditcards_id as creditcards_id from creditcardsoperations,creditcards where creditcardsoperations.creditcards_id=creditcards.creditcards_id and concepts_id={0} and date_part('year',datetime)={1}".format (self.concept.id, self.year))
         set.myqtablewidget(mqtwYear, True)
         horizontalLayout.addWidget(mqtwYear)
         self.tab.addTab(newtab, self.tr("Report of {0}".format(self.year)))

@@ -18,7 +18,7 @@ class Account(QObject):
     ## @param bank Bank object
     ## @param name Account name
     ## @param active Boolean that sets if the Account is active
-    ## @param numero String with the account number
+    ## @param number String with the account number
     ## @param currency Currency object that sets the currency of the Account
     ## @param id Integer that sets the id of an account. If id=None it's not in the database. id is set in the save method
     def __init__(self, mem=None,name=None,  bank=None, active=None, number=None, currency=None, id=None):
@@ -50,7 +50,7 @@ class Account(QObject):
         cur=self.mem.con.cursor()
         if fecha==None:
             fecha=date.today()
-        cur.execute('select sum(importe) from opercuentas where id_cuentas='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
+        cur.execute('select sum(amount) from accountsoperations where accounts_id='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
         res=cur.fetchone()[0]
         cur.close()
         if res==None:
@@ -66,24 +66,24 @@ class Account(QObject):
 
     def save(self):
         if self.id==None:
-            self.id=self.mem.con.cursor_one_field("insert into cuentas (banks_id, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.bank.id, self.name, self.number, self.active, self.currency))
+            self.id=self.mem.con.cursor_one_field("insert into accounts (banks_id, name, number, active,currency) values (%s,%s,%s,%s,%s) returning accounts_id", (self.bank.id, self.name, self.number, self.active, self.currency))
         else:
-            self.mem.con.execute("update cuentas set cuenta=%s, banks_id=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
+            self.mem.con.execute("update accounts set name=%s, banks_id=%s, number=%s, active=%s, currency=%s where accounts_id=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
 
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         if self.id==4:#Cash
             return False
         cur=self.mem.con.cursor()
-        cur.execute("select count(*) from tarjetas where id_cuentas=%s", (self.id, ))
+        cur.execute("select count(*) from creditcards where accounts_id=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
             cur.close()
             return False
-        cur.execute("select count(*) from inversiones where id_cuentas=%s", (self.id, ))
+        cur.execute("select count(*) from investments where accounts_id=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
             cur.close()
             return False
-        cur.execute("select count(*) from opercuentas where id_cuentas=%s", (self.id, ))
+        cur.execute("select count(*) from accountsoperations where accounts_id=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
             cur.close()
             return False
@@ -92,27 +92,27 @@ class Account(QObject):
         
     def borrar(self):
         if self.is_deletable()==True:
-            self.mem.con.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
+            self.mem.con.execute("delete from accounts where id=%s", (self.id, ))
 
-    def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
-        """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
-        #Ojo los comentarios están dependientes.
+    def transferencia(self, datetime, cuentaorigen, cuentadestino, amount, commission):
+        """Si el oc_comision_id es 0 es que no hay commission porque también es 0"""
+        #Ojo los comments están dependientes.
         oc_comision=None
         notfinished="Tranfer not fully finished"
-        if comision>0:
-            oc_comision=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.BankCommissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -comision, notfinished, cuentaorigen, None)
+        if commission>0:
+            oc_comision=AccountOperation(self.mem, datetime, self.mem.concepts.find_by_id(eConcept.BankCommissions), self.mem.tiposoperaciones.find_by_id(eOperationType.Expense), -commission, notfinished, cuentaorigen, None)
             oc_comision.save()
-        oc_origen=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -importe, notfinished, cuentaorigen, None)
+        oc_origen=AccountOperation(self.mem, datetime, self.mem.concepts.find_by_id(eConcept.TransferOrigin), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), -amount, notfinished, cuentaorigen, None)
         oc_origen.save()
-        oc_destino=AccountOperation(self.mem, datetime, self.mem.conceptos.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), importe, notfinished, cuentadestino, None)
+        oc_destino=AccountOperation(self.mem, datetime, self.mem.concepts.find_by_id(eConcept.TransferDestiny), self.mem.tiposoperaciones.find_by_id(eOperationType.Transfer), amount, notfinished, cuentadestino, None)
         oc_destino.save()
         
-        oc_origen.comentario=Comment(self.mem).encode(eComment.AccountTransferOrigin, oc_origen, oc_destino, oc_comision)
+        oc_origen.comment=Comment(self.mem).encode(eComment.AccountTransferOrigin, oc_origen, oc_destino, oc_comision)
         oc_origen.save()
-        oc_destino.comentario=Comment(self.mem).encode(eComment.AccountTransferDestiny, oc_origen, oc_destino, oc_comision)
+        oc_destino.comment=Comment(self.mem).encode(eComment.AccountTransferDestiny, oc_origen, oc_destino, oc_comision)
         oc_destino.save()
         if oc_comision!=None:
-            oc_comision.comentario=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
+            oc_comision.comment=Comment(self.mem).encode(eComment.AccountTransferOriginCommission, oc_origen, oc_destino, oc_comision)
             oc_comision.save()
             
     ## REturn a money object with the amount and account currency
@@ -134,7 +134,7 @@ class Account(QObject):
 
         if self.status==0 and statusneeded==1: #MAIN
             self.creditcards=CreditCardManager(self.mem)
-            self.creditcards.load_from_db(self.mem.con.mogrify("select * from tarjetas where id_cuentas=%s", (self.id, )))
+            self.creditcards.load_from_db(self.mem.con.mogrify("select * from creditcards where accounts_id=%s", (self.id, )))
             self.status=1
 
     def qicon(self):
@@ -241,11 +241,11 @@ class AccountManager(QObject, ObjectManager_With_IdName_Selectable):
 
 def Account_from_dict(mem, row):
     r=Account(mem)
-    r.id=row['id_cuentas']
-    r.name=mem.trHS(row['cuenta'])
+    r.id=row['id']
+    r.name=mem.trHS(row['name'])
     r.bank=mem.data.banks.find_by_id(row['banks_id'])
     r.active=row['active']
-    r.number=row['numerocuenta']
+    r.number=row['number']
     r.currency=row['currency']
     return r
 

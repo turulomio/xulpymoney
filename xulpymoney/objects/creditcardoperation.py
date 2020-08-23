@@ -6,69 +6,69 @@ from xulpymoney.objects.comment import Comment
 
 class CreditCardOperation:
     def __init__(self, mem):
-        """CreditCard es un objeto CreditCardOperation. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
+        """CreditCard es un objeto CreditCardOperation. paid, paid_datetime y opercuenta solo se rellena cuando se paga"""
         self.mem=mem
         self.id=None
         self.datetime=None
-        self.concepto=None
+        self.concept=None
         self.tipooperacion=None
-        self.importe=None
-        self.comentario=None
+        self.amount=None
+        self.comment=None
         self.tarjeta=None
-        self.pagado=None
-        self.fechapago=None
+        self.paid=None
+        self.paid_datetime=None
         self.opercuenta=None
         
     def __repr__(self):
         return "CreditCardOperation: {}".format(self.id)
 
-    def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
-        """pagado, fechapago y opercuenta solo se rellena cuando se paga"""
-        self.id=id_opertarjetas
+    def init__create(self, dt,  concept, tipooperacion, amount, comment, tarjeta, paid=None, paid_datetime=None, opercuenta=None, id_creditcardsoperations=None):
+        """paid, paid_datetime y opercuenta solo se rellena cuando se paga"""
+        self.id=id_creditcardsoperations
         self.datetime=dt
-        self.concepto=concepto
+        self.concept=concept
         self.tipooperacion=tipooperacion
-        self.importe=importe
-        self.comentario=comentario
+        self.amount=amount
+        self.comment=comment
         self.tarjeta=tarjeta
-        self.pagado=pagado
-        self.fechapago=fechapago
+        self.paid=paid
+        self.paid_datetime=paid_datetime
         self.opercuenta=opercuenta
         return self
             
             
     def init__db_query(self, id):
-        """Creates a CreditCardOperation querying database for an id_opertarjetas"""
+        """Creates a CreditCardOperation querying database for an id_creditcardsoperations"""
         if id==None:
             return None
         cur=self.mem.con.cursor()
-        cur.execute("select * from opertarjetas where id_opertarjetas=%s", (id, ))
+        cur.execute("select * from creditcardsoperations where id=%s", (id, ))
         for row in cur:
-            concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
-            self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']))
+            concept=self.mem.concepts.find_by_id(row['concepts_id'])
+            self.init__db_row(row, concept, concept.tipooperacion, self.mem.data.accounts.find_creditcard_by_id(row['creditcards_id']))
         cur.close()
         return self
 
-    def init__db_row(self, row, concepto, tipooperacion, tarjeta, opercuenta=None):
-        return self.init__create(row['datetime'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
+    def init__db_row(self, row, concept, tipooperacion, tarjeta, opercuenta=None):
+        return self.init__create(row['datetime'],  concept, tipooperacion, row['amount'], row['comment'], tarjeta, row['paid'], row['paid_datetime'], opercuenta, row['id'])
         
     def borrar(self):
         cur=self.mem.con.cursor()
-        sql="delete from opertarjetas where id_opertarjetas="+ str(self.id)
+        sql="delete from creditcardsoperations where id="+ str(self.id)
         cur.execute(sql)
         cur.close()
         
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            sql="insert into opertarjetas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + str(self.datetime) + "'," + str(self.concepto.id)+","+ str(self.tipooperacion.id) +","+str(self.importe)+", '"+self.comentario+"', "+str(self.tarjeta.id)+", "+str(self.pagado)+") returning id_opertarjetas"
+            sql="insert into creditcardsoperations (datetime, concepts_id, operationstypes_id, amount, comment, creditcards_id, paid) values ('" + str(self.datetime) + "'," + str(self.concept.id)+","+ str(self.tipooperacion.id) +","+str(self.amount)+", '"+self.comment+"', "+str(self.tarjeta.id)+", "+str(self.paid)+") returning id_creditcardsoperations"
             cur.execute(sql);
             self.id=cur.fetchone()[0]
         else:
-            if self.tarjeta.pagodiferido==True and self.pagado==False:#No hay opercuenta porque es en diferido y no se ha pagado
-                cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, None, self.id))
+            if self.tarjeta.deferred==True and self.paid==False:#No hay opercuenta porque es en diferido y no se ha paid
+                cur.execute("update creditcardsoperations set datetime=%s, concepts_id=%s, operationstypes_id=%s, amount=%s, comment=%s, creditcards_id=%s, paid=%s, paid_datetime=%s, accountsoperations_id=%s where id=%s", (self.datetime, self.concept.id, self.tipooperacion.id,  self.amount,  self.comment, self.tarjeta.id, self.paid, self.paid_datetime, None, self.id))
             else:
-                cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
+                cur.execute("update creditcardsoperations set datetime=%s, concepts_id=%s, operationstypes_id=%s, amount=%s, comment=%s, creditcards_id=%s, paid=%s, paid_datetime=%s, accountsoperations_id=%s where id=%s", (self.datetime, self.concept.id, self.tipooperacion.id,  self.amount,  self.comment, self.tarjeta.id, self.paid, self.paid_datetime, self.opercuenta.id, self.id))
         cur.close()
 
 
@@ -83,16 +83,16 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
         """Returns the balance of all credit card operations"""
         result=Decimal(0)
         for o in self.arr:
-            result=result+o.importe
+            result=result+o.amount
         return result
         
     def load_from_db(self, sql):
         del self.arr
         self.arr=[]
         cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select * from opercuentas"
+        cur.execute(sql)#"Select * from accountsoperations"
         for row in cur:        
-            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.accounts.find_creditcard_by_id(row['id_tarjetas']), AccountOperation(self.mem,  row['id_opercuentas']))
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.concepts.find_by_id(row['concepts_id']), self.mem.tiposoperaciones.find_by_id(row['operationstypes_id']), self.mem.data.accounts.find_creditcard_by_id(row['creditcards_id']), AccountOperation(self.mem,  row['accountsoperations_id']))
             self.append(co)
         cur.close()
         
@@ -101,13 +101,13 @@ class CreditCardOperationManager(ObjectManager_With_IdDatetime_Selectable, QObje
         data=[]
         balance=0
         for rownumber, o in enumerate(self.arr):
-            balance=balance+o.importe
+            balance=balance+o.amount
             data.append([
                 o.datetime, 
-                o.concepto.name, 
-                o.tarjeta.account.money(o.importe), 
+                o.concept.name, 
+                o.tarjeta.account.money(o.amount), 
                 o.tarjeta.account.money(balance), 
-                Comment(self.mem).decode(o.comentario), 
+                Comment(self.mem).decode(o.comment), 
                 o, 
             ])
             wdg.setDataWithObjects(hh, None, data, zonename=self.mem.localzone_name)

@@ -26,17 +26,17 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             self.creditcard=creditcard
             self.lblTitle.setText(self.tr("Updating {} credit card").format(self.creditcard.name))
             self.txtCreditCard.setText(self.creditcard.name)
-            self.chkDelayed.setChecked(b2c(self.creditcard.pagodiferido))
-            self.txtMaximum.setText(str(self.creditcard.saldomaximo))
-            self.txtNumber.setText(self.creditcard.numero)
+            self.chkDelayed.setChecked(b2c(self.creditcard.deferred))
+            self.txtMaximum.setText(str(self.creditcard.maximumbalance))
+            self.txtNumber.setText(self.creditcard.number)
             
     def on_cmd_pressed(self):
         if self.txtMaximum.isValid():
             self.creditcard.name=self.txtCreditCard.text()
             self.creditcard.account=self.account
-            self.creditcard.pagodiferido=c2b(self.chkDelayed.checkState())
-            self.creditcard.saldomaximo=self.txtMaximum.decimal()
-            self.creditcard.numero=self.txtNumber.text()
+            self.creditcard.deferred=c2b(self.chkDelayed.checkState())
+            self.creditcard.maximumbalance=self.txtMaximum.decimal()
+            self.creditcard.number=self.txtNumber.text()
             self.creditcard.save()
             self.mem.con.commit()        
             self.account.needStatus(1, downgrade_to=0)

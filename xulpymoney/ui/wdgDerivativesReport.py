@@ -47,10 +47,10 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         
 
     def load_data_second_tab(self):        
-        adjustments=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from opercuentas where id_conceptos in (%s)", (eConcept.DerivativesAdjustment, ))
-        guarantees=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from opercuentas where id_conceptos in (%s)", (eConcept.DerivativesGuarantee, ))
-        commissions=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from opercuentas where id_conceptos in (%s)", (eConcept.DerivativesCommission, ))
-        rollover=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from opercuentas where id_conceptos in (%s)", (eConcept.RolloverPaid, ))
+        adjustments=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from accountsoperations where concepts_id in (%s)", (eConcept.DerivativesAdjustment, ))
+        guarantees=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from accountsoperations where concepts_id in (%s)", (eConcept.DerivativesGuarantee, ))
+        commissions=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from accountsoperations where concepts_id in (%s)", (eConcept.DerivativesCommission, ))
+        rollover=AccountOperationManagerHeterogeneus_from_sql(self.mem, "select * from accountsoperations where concepts_id in (%s)", (eConcept.RolloverPaid, ))
         iohhm=self.InvestmentOperationHistoricalHeterogeneusManager_derivatives()
         iochm=self.InvestmentOperationCurrentHeterogeneusManager_derivatives()
         s=""
@@ -59,7 +59,7 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
         s=s+"Total comisiones: {}\n".format(commissions.balance())
         s=s+"Total operaciones históricas: {}\n".format(iohhm.consolidado_bruto())
         s=s+"Total operaciones actuales: {}\n".format(iochm.pendiente())
-        s=s+"Total rollover pagado: {}\n".format(rollover.balance())
+        s=s+"Total rollover paid: {}\n".format(rollover.balance())
         s=s+"Comisiones actuales e históricas: {} + {} = {}\n".format(iochm.commissions(), iohhm.commissions(), iohhm.commissions()+iochm.commissions())
         s=s+"Resultado=OpHist+OpActu-Comisiones-Rollover= {} + {} + {} + {} = {}".format(iohhm.consolidado_bruto(), iochm.pendiente(), commissions.balance(), rollover.balance(), iohhm.consolidado_bruto()+iochm.pendiente()+commissions.balance()+rollover.balance())
         self.textBrowser.setText(s)
@@ -168,22 +168,22 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
             manager=AccountOperationManagerHeterogeneus_from_sql(self.mem, """
 select 
-    id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+    accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
 from 
-    opercuentas 
+    accountsoperations 
 where 
-    id_conceptos in (%s) AND
+    concepts_id in (%s) AND
     date_part('year',datetime)=%s
 """, (eConcept.DerivativesAdjustment, self.wyData.year ))
         else:#Month
             tabtitle=self.tr("Incomes of {0} of {1}").format(self.mqtwTotal.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             manager=AccountOperationManagerHeterogeneus_from_sql(self.mem, """
 select 
-    id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+    accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
 from 
-    opercuentas 
+    accountsoperations 
 where 
-    id_conceptos in (%s) AND
+    concepts_id in (%s) AND
     date_part('year',datetime)=%s and 
     date_part('month',datetime)=%s
 """, (eConcept.DerivativesAdjustment, self.wyData.year, self.month ))

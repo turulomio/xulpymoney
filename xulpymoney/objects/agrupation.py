@@ -33,7 +33,7 @@ class Agrupation:
 
     
 class AgrupationManager(ObjectManager_With_IdName_Selectable):
-    """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
+    """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las investments"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
         ObjectManager_With_IdName_Selectable.__init__(self)
