@@ -61,7 +61,7 @@ class Product(QObject):
         self.name=row['name'].upper()
         self.isin=row['isin']
         self.currency=row['currency']
-        self.type=self.mem.types.find_by_id(row['type'])
+        self.type=self.mem.types.find_by_id(row['productstypes_id'])
         self.agrupations=self.mem.agrupations.clone_from_dbstring(row['agrupations'])
         self.id=row['id']
         self.web=row['web']
@@ -70,7 +70,7 @@ class Product(QObject):
         self.mail=row['mail']
         self.percentage=row['percentage']
         self.mode=self.mem.investmentsmodes.find_by_id(row['pci'])
-        self.leveraged=self.mem.leverages.find_by_id(row['leveraged'])
+        self.leveraged=self.mem.leverages.find_by_id(row['leverages_id'])
         self.stockmarket=self.mem.stockmarkets.find_by_id(row['stockmarkets_id'])
         self.tickers=row['tickers']
         self.comment=row['comment']
@@ -631,12 +631,12 @@ class ProductUpdate:
         used=""
         ##### BOLSAMADRID #####
         sqls=[
-            "select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used), 
-            "select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used), 
-            "select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used), 
-            "select * from products where type in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google)), 
-            "select * from products where type in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo)), 
-            "select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used), 
+            "select * from products where productstypes_id in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used), 
+            "select * from products where productstypes_id in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used), 
+            "select * from products where productstypes_id in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used), 
+            "select * from products where productstypes_id in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google)), 
+            "select * from products where productstypes_id in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo)), 
+            "select * from products where productstypes_id={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used), 
             "select * from products where tickers[{}] is not null and obsolete=false {} order by name".format(eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         ]
         for sql in sqls:
@@ -683,7 +683,7 @@ class ProductUpdate:
         else:
             used=" and id in (select products_id from investments) "
         ##### BOLSAMADRID #####
-        sql="select * from products where type in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used)
+        sql="select * from products where productstypes_id in (1,4) and obsolete=false and stockmarkets_id=1 and isin is not null and isin<>'' {} order by name".format(used)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
         for p in products.arr:
@@ -698,7 +698,7 @@ class ProductUpdate:
 
         self.appendCommand(["xulpymoney_bolsamadrid_client","--etf"]+products.ProductManager_with_same_type(self.mem.types.find_by_id(eProductType.ETF.value)).list_ISIN_XULPYMONEY()) # SHARES INTRADAY
 
-        sql="select * from products where type in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used)        
+        sql="select * from products where productstypes_id in ({}) and obsolete=false and stockmarkets_id=1 and isin is not null {} order by name".format(eProductType.PublicBond, used)        
         bm_publicbonds=ProductManager(self.mem)
         bm_publicbonds.load_from_db(sql)    
         self.appendCommand(["xulpymoney_bolsamadrid_client","--publicbond"]+bm_publicbonds.list_ISIN_XULPYMONEY())#MUST BE INTRADAY
@@ -707,7 +707,7 @@ class ProductUpdate:
         self.appendCommand(["xulpymoney_bolsamadrid_client","--ISIN_XULPYMONEY",  ibex.isin, str(ibex.id),"--index","--fromdate", str(ibex.fecha_ultima_actualizacion_historica()+oneday)])
 
         ##### GOOGLE #####
-        sql="select * from products where type in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used)
+        sql="select * from products where productstypes_id in ({},{}) and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.ETF, eProductType.Share, eTickerPosition.postgresql(eTickerPosition.Google), used)
         debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
@@ -715,7 +715,7 @@ class ProductUpdate:
             self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
         ##### GOOGLE INDICES  #####
-        sql="select * from products where type in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google))
+        sql="select * from products where productstypes_id in ({}) and obsolete=false and tickers[{}] is not null order by name".format(eProductType.Index,  eTickerPosition.postgresql(eTickerPosition.Google))
         debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
@@ -723,7 +723,7 @@ class ProductUpdate:
             self.appendCommand(["xulpymoney_google_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Google], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
         ##### INFOBOLSA CURRENCIES  #####
-        sql="select * from products where type in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo))
+        sql="select * from products where productstypes_id in ({}) and tickers[{}] is not null and obsolete=false is not null order by name".format(eProductType.Currency,  eTickerPosition.postgresql(eTickerPosition.Yahoo))
         debug(sql)
         products=ProductManager(self.mem)
         products.load_from_db(sql)    
@@ -731,7 +731,7 @@ class ProductUpdate:
             self.appendCommand(["xulpymoney_infobolsa_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Yahoo], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])
 
         ##### QUE FONDOS ####
-        sql="select * from products where type={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
+        sql="select * from products where productstypes_id={} and stockmarkets_id=1 and obsolete=false and tickers[{}] is not null {} order by name".format(eProductType.PensionPlan.value, eTickerPosition.postgresql(eTickerPosition.QueFondos), used)
         products_quefondos=ProductManager(self.mem)#Total of products_quefondos of an Agrupation
         products_quefondos.load_from_db(sql)    
         for p in products_quefondos.arr:
@@ -740,7 +740,7 @@ class ProductUpdate:
                 self.appendCommand(["xulpymoney_quefondos_client","--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.QueFondos], str(p.id),  "--STOCKMARKET", str(p.stockmarket.id)])    
                 
         ##### MORNINGSTAR FONDOS #####
-        sql="select * from products where type={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.Fund, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        sql="select * from products where productstypes_id={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.Fund, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         products_morningstar=ProductManager(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:
@@ -749,7 +749,7 @@ class ProductUpdate:
                 self.appendCommand(["xulpymoney_morningstar_client", "--fund", "--TICKER_XULPYMONEY",  p.tickers[eTickerPosition.Morningstar], str(p.id), "--STOCKMARKET", str(p.stockmarket.id)])         
                 
         ##### MORNINGSTAR ETF #####
-        sql="select * from products where type={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.ETF, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
+        sql="select * from products where productstypes_id={} and tickers[{}] is not null and obsolete=false {} order by name".format(eProductType.ETF, eTickerPosition.postgresql(eTickerPosition.Morningstar),  used)
         products_morningstar=ProductManager(self.mem)#Total of products_morningstar of an Agrupation
         products_morningstar.load_from_db(sql)    
         for p in products_morningstar.arr:

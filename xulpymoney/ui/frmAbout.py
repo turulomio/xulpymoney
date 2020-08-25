@@ -57,8 +57,8 @@ class frmAbout(QDialog, Ui_frmAbout):
         for i, tipo in enumerate(self.mem.types.arr):
             row=[]
             for j, stockmarket in enumerate(self.mem.stockmarkets.arr):
-                row.append(self.mem.con.cursor_one_field("select count(*) from products where type=%s and stockmarkets_id=%s and obsolete=False", (tipo.id, stockmarket.id)))
-            row.append(self.mem.con.cursor_one_field("select count(*) from products where type=%s and obsolete=False", (tipo.id, )))#Total
+                row.append(self.mem.con.cursor_one_field("select count(*) from products where productstypes_id=%s and stockmarkets_id=%s and obsolete=False", (tipo.id, stockmarket.id)))
+            row.append(self.mem.con.cursor_one_field("select count(*) from products where productstypes_id=%s and obsolete=False", (tipo.id, )))#Total
             data.append(row)
         
         row=[]#Total last row

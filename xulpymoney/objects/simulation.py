@@ -67,7 +67,7 @@ class Simulation:
         self.id=row['id']
         self.database=row['database']
         self.creation=row['creation']
-        self.type=self.mem.simulationtypes.find_by_id(row['type'])
+        self.type=self.mem.simulationtypes.find_by_id(row['productstypes_id'])
         self.starting=row['starting']
         self.ending=row['ending']
         return self

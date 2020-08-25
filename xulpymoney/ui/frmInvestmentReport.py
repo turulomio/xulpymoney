@@ -65,7 +65,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:#UPDATE
             self.tab.setCurrentIndex(1)
             self.investment.needStatus(3)
-            self.lblTitulo.setText(self.investment.name)
+            self.lblTitulo.setText("{} ({})".format(self.investment.name,  self.investment.id))
             self.txtInvestment.setText(self.investment.name)
             self.txtVenta.setText(self.investment.selling_price)
             self.chkDailyAdjustment.setChecked(self.investment.daily_adjustment)
