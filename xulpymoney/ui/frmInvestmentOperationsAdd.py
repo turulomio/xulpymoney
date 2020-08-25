@@ -65,7 +65,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.wdgDT.set(self.operinversion.datetime, self.mem.localzone_name)
             self.wdg2CGross.setTextA(self.operinversion.net(type=1))
             self.wdg2CNet.setTextA(self.operinversion.gross(type=1))
-            self.wdg2CTaxes.setTextA(self.operinversion.taxes)
+            self.wdg2CTaxes.setTextA(self.operinversion._taxes)
             self.wdg2CComission.setTextA(self.operinversion.commission)
             self.wdg2CPrice.setTextA(self.operinversion.price)
             self.txtAcciones.setText(self.operinversion.shares)
@@ -108,7 +108,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
 
         operationstypes_id=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(operationstypes_id)
-        self.operinversion.taxes=self.wdg2CTaxes.decimalA()
+        self.operinversion._taxes=self.wdg2CTaxes.decimalA()
         self.operinversion.commission=self.wdg2CComission.decimalA()
         self.operinversion.price=self.wdg2CPrice.decimalA()
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
@@ -127,7 +127,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 qmessagebox(self.tr("Added shares number must be positive"))
                 return
         
-        if self.operinversion.taxes<Decimal('0') or  self.operinversion.commission<Decimal('0') or self.operinversion.price<Decimal('0'):            
+        if self.operinversion._taxes<Decimal('0') or  self.operinversion.commission<Decimal('0') or self.operinversion.price<Decimal('0'):            
             qmessagebox(self.tr("Share price, taxes and commission must be positive amounts"))
             return
             

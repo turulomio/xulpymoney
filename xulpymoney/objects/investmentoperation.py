@@ -124,11 +124,11 @@ class InvestmentOperation:
     def save(self, recalculate=True,  autocommit=True):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into investmentsoperations(datetime, operationstypes_id,  shares,  taxes,  commission,  price, comment, show_in_ranges, investments_id, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning investmentsoperations_id", (self.datetime, self.tipooperacion.id, self.shares, self._taxes, self.commission, self.price, self.comment, self.show_in_ranges,  self.investment.id,  self.currency_conversion))
+            cur.execute("insert into investmentsoperations(datetime, operationstypes_id,  shares,  taxes,  commission,  price, comment, show_in_ranges, investments_id, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning id", (self.datetime, self.tipooperacion.id, self.shares, self._taxes, self.commission, self.price, self.comment, self.show_in_ranges,  self.investment.id,  self.currency_conversion))
             self.id=cur.fetchone()[0]
             self.investment.op.append(self)
         else:
-            cur.execute("update investmentsoperations set datetime=%s, operationstypes_id=%s, shares=%s, taxes=%s, commission=%s, price=%s, comment=%s, investments_id=%s, show_in_ranges=%s, currency_conversion=%s where investmentsoperations_id=%s", (self.datetime, self.tipooperacion.id, self.shares, self._taxes, self.commission, self.price, self.comment, self.investment.id, self.show_in_ranges,  self.currency_conversion,  self.id))
+            cur.execute("update investmentsoperations set datetime=%s, operationstypes_id=%s, shares=%s, taxes=%s, commission=%s, price=%s, comment=%s, investments_id=%s, show_in_ranges=%s, currency_conversion=%s where id=%s", (self.datetime, self.tipooperacion.id, self.shares, self._taxes, self.commission, self.price, self.comment, self.investment.id, self.show_in_ranges,  self.currency_conversion,  self.id))
         if recalculate==True:
             (self.investment.op_actual,  self.investment.op_historica)=self.investment.op.get_current_and_historical_operations()   
             self.actualizar_cuentaoperacion_asociada()

@@ -133,10 +133,10 @@ class Investment(QObject):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into investments (name, selling_price, accounts_id, active, selling_expiration,products_id,daily_adjustment) values (%s, %s,%s,%s,%s,%s,%s) returning investments_id", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment))    
+            cur.execute("insert into investments (name, selling_price, accounts_id, active, selling_expiration,products_id,daily_adjustment) values (%s, %s,%s,%s,%s,%s,%s) returning id", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment))    
             self.id=cur.fetchone()[0]      
         else:
-            cur.execute("update investments set name=%s, selling_price=%s, accounts_id=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where investments_id=%s", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
+            cur.execute("update investments set name=%s, selling_price=%s, accounts_id=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where id=%s", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
         cur.close()
 
     def selling_price(self, type=eMoneyCurrency.Product):
