@@ -66,9 +66,9 @@ class Account(QObject):
 
     def save(self):
         if self.id==None:
-            self.id=self.mem.con.cursor_one_field("insert into accounts (banks_id, name, number, active,currency) values (%s,%s,%s,%s,%s) returning accounts_id", (self.bank.id, self.name, self.number, self.active, self.currency))
+            self.id=self.mem.con.cursor_one_field("insert into accounts (banks_id, name, number, active,currency) values (%s,%s,%s,%s,%s) returning id", (self.bank.id, self.name, self.number, self.active, self.currency))
         else:
-            self.mem.con.execute("update accounts set name=%s, banks_id=%s, number=%s, active=%s, currency=%s where accounts_id=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
+            self.mem.con.execute("update accounts set name=%s, banks_id=%s, number=%s, active=%s, currency=%s where id=%s", (self.name, self.bank.id, self.number, self.active, self.currency, self.id))
 
     def is_deletable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""

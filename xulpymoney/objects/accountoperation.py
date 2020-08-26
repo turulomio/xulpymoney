@@ -78,10 +78,10 @@ class AccountOperation(QObject):
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into accountsoperations (datetime, concepts_id, operationstypes_id, amount, comment, accounts_id) values ( %s,%s,%s,%s,%s,%s) returning accountsoperations_id",(self.datetime, self.concept.id, self.tipooperacion.id, self.amount, self.comment, self.account.id))
+            cur.execute("insert into accountsoperations (datetime, concepts_id, operationstypes_id, amount, comment, accounts_id) values ( %s,%s,%s,%s,%s,%s) returning id",(self.datetime, self.concept.id, self.tipooperacion.id, self.amount, self.comment, self.account.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update accountsoperations set datetime=%s, concepts_id=%s, operationstypes_id=%s, amount=%s, comment=%s, accounts_id=%s where accountsoperations_id=%s", (self.datetime, self.concept.id, self.tipooperacion.id,  self.amount,  self.comment,  self.account.id,  self.id))
+            cur.execute("update accountsoperations set datetime=%s, concepts_id=%s, operationstypes_id=%s, amount=%s, comment=%s, accounts_id=%s where id=%s", (self.datetime, self.concept.id, self.tipooperacion.id,  self.amount,  self.comment,  self.account.id,  self.id))
         cur.close()
 
 class AccountOperationManagerHeterogeneus(ObjectManager_With_IdDatetime_Selectable, QObject):

@@ -168,7 +168,7 @@ class wdgDerivativesReport(QWidget, Ui_wdgDerivativesReport):
             tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
             manager=AccountOperationManagerHeterogeneus_from_sql(self.mem, """
 select 
-    accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+    id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
 from 
     accountsoperations 
 where 
@@ -179,7 +179,7 @@ where
             tabtitle=self.tr("Incomes of {0} of {1}").format(self.mqtwTotal.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             manager=AccountOperationManagerHeterogeneus_from_sql(self.mem, """
 select 
-    accountsoperations_id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
+    id, datetime, concepts_id, operationstypes_id, amount, comment, accounts_id 
 from 
     accountsoperations 
 where 

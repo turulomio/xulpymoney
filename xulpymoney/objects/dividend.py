@@ -46,7 +46,7 @@ class Dividend:
         """
             Searches in db dividend, investment from memory, operaccount from db
         """
-        row=self.mem.con.cursor_one_row("select * from dividends where id_dividends=%s", (id, ))
+        row=self.mem.con.cursor_one_row("select * from dividends where id=%s", (id, ))
         from xulpymoney.objects.accountoperation import AccountOperation
         accountoperation=AccountOperation(self.mem,  row['accountsoperations_id'])
         return self.init__db_row(row, self.mem.data.investments.find_by_id(row['investments_id']), accountoperation, self.mem.concepts.find_by_id(row['concepts_id']))
