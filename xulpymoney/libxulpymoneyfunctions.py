@@ -32,15 +32,15 @@ def sync_data(con_source, con_target, progress=None):
         output="Syncing {}: ".format(row['name'])
         ## QUOTES #####################################################################
         #Search last datetime
-        max=con_target.cursor_one_field("select max(datetime) as max from quotes where id=%s", (row['id'], ))
+        max=con_target.cursor_one_field("select max(datetime) as max from quotes where products_id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            rows_source=con_source.cursor_rows("select * from quotes where id=%s", (row['id'], ))
+            rows_source=con_source.cursor_rows("select * from quotes where products_id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            rows_source=con_source.cursor_rows("select * from quotes where id=%s and datetime>%s", (row['id'], max))
+            rows_source=con_source.cursor_rows("select * from quotes where products_id=%s and datetime>%s", (row['id'], max))
         if len(rows_source)>0:
             for  row_source in rows_source: #Inserts them 
-                con_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
+                con_target.execute("insert into quotes (products_id, datetime, quote) values (%s,%s,%s)", ( row_source['products_id'], row_source['datetime'], row_source['quote']))
                 quotes=quotes+1
                 output=output+"."
 

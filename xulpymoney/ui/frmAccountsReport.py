@@ -392,7 +392,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.grpPago.setEnabled(True)
                 self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from creditcardsoperations where creditcards_id=%s and paid=false", [self.mqtwCreditCards.selected.id, ]))
                 self.creditcardoperations.myqtablewidget(self.mqtwCreditCardOperations)
-                self.mqtwCreditCardOperations.setOrderBy(0, False)
+#                self.mqtwCreditCardOperations.setOrderBy(0, False)
             else:
                 self.grpPago.setEnabled(False)
 
@@ -416,7 +416,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_cmdDevolverPago_released(self):
         accountsoperations_id=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         cur = self.mem.con.cursor()      
-        cur.execute("delete from accountsoperations where accountsoperations_id=%s", (accountsoperations_id, ))#No merece crear objeto
+        cur.execute("delete from accountsoperations where id=%s", (accountsoperations_id, ))#No merece crear objeto
         cur.execute("update creditcardsoperations set paid_datetime=null, paid=false, accountsoperations_id=null where accountsoperations_id=%s", (accountsoperations_id, ) )
         self.mem.con.commit()
         cur.close()     

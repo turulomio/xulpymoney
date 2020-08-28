@@ -78,7 +78,10 @@ where
 
     def total(self):
         """Total assests in the month"""
+        print(self.total_accounts(), self.total_investments(), self.year, self.month)
         return self.total_accounts()+self.total_investments()
+        
+        
     def total_real(self):
         """Total assests in the month"""
         return self.total_accounts()+self.total_investments_real()

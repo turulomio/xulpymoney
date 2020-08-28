@@ -3,6 +3,7 @@ from xulpymoney.objects.money import Money
 from xulpymoney.casts import none2decimal0
 from xulpymoney.objects.currency import MostCommonCurrencyTypes
 from xulpymoney.libxulpymoneytypes import eProductType, eConcept
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 
 class Assets:
     def __init__(self, mem):
@@ -38,32 +39,39 @@ class Assets:
     def last_datetime_allowed_estimated(self):
         return self.last_database_datetime()+timedelta(days=365*5)
 
-    def saldo_todas_accounts(self,  datetime):
-        r=self.mem.con.cursor_one_field("select accounts_balance(%s,%s)", (datetime, self.mem.localcurrency))
+    def saldo_todas_accounts(self,  fecha):
+        dt=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
+        r=self.mem.con.cursor_one_field("select accounts_balance(%s,%s)", (dt, self.mem.localcurrency))
         return Money(self.mem, r, self.mem.localcurrency)
 
         
-    def saldo_total(self, setinversiones,  datetime):
+    def saldo_total(self, setinversiones,  fe):
         """Versión que se calcula en cliente muy optimizada"""
-        return self.saldo_todas_accounts(datetime)+self.saldo_todas_inversiones(datetime)
+        return self.saldo_todas_accounts(fe)+self.saldo_todas_inversiones(fe)
 
     ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
     ##
     ## Esta función se calcula en cliente
     def saldo_todas_inversiones(self, fecha):
-        resultado=Money(self.mem, 0, self.mem.localcurrency)
-        for i in self.mem.data.investments.arr:
-            if i.daily_adjustment is False:#Due to there is a daily adjustments in accouts 
-                resultado=resultado+i.balance(fecha, type=3)
-        return resultado
+#        resultado=Money(self.mem, 0, self.mem.localcurrency)
+#        for i in self.mem.data.investments.arr:
+#            if i.daily_adjustment is False:#Due to there is a daily adjustments in accouts 
+#                resultado=resultado+i.balance(fecha, type=3)
+#        return resultado
+        dt=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
+        r=self.mem.con.cursor_one_row("select * from total_balance(%s,%s)", (dt, self.mem.localcurrency))
+        print(r, fecha)
+        return Money(self.mem, r[1], self.mem.localcurrency)
+
     ## This method gets all investments balance. High-Low investments are not sumarized, due to they have daily account adjustments
     ##
     ## Esta función se calcula en cliente
     def saldo_todas_inversiones_real(self, fecha):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
+        dt=dtaware_day_end_from_date(fecha, self.mem.localzone_name)
         for i in self.mem.data.investments.arr:
             if i.daily_adjustment is False:#Due to there is a daily adjustments in accouts 
-                resultado=resultado+i.balance_real(fecha, type=3)
+                resultado=resultado+i.balance_real(dt, type=3)
         return resultado
 
     ## This method gets all High-Low investments balance
