@@ -114,7 +114,7 @@ class InvestmentOperation:
             Si el parametro investment es pasado usa el objeto investment  en vez de una referencia a self.investmen
         """
         inv=self.investment if investment==None else investment
-        return InvestmentOperation(self.mem, self.tipooperacion, self.datetime, inv , self.shares, self.taxes(), self.commission, self.price, self.comment,  self.show_in_ranges, self.currency_conversion, self.id)
+        return InvestmentOperation(self.mem, self.tipooperacion, self.datetime, inv , self.shares, self._taxes, self.commission, self.price, self.comment,  self.show_in_ranges, self.currency_conversion, self.id)
 
     def less_than_a_year(self):
         if date.today()-self.datetime.date()<=timedelta(days=365):

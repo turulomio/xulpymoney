@@ -811,7 +811,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
             if inv.product.id==product.id:
                 inv.needStatus(3)
                 for o in inv.op_actual.arr:
-                    r.op.append(InvestmentOperation(self.mem, o.tipooperacion, o.datetime, r, o.shares, o.taxes, o.commission,  o.price,  o.commission,  o.show_in_ranges,  o.currency_conversion,  o.id))
+                    r.op.append(InvestmentOperation(self.mem, o.tipooperacion, o.datetime, r, o.shares, o._taxes, o.commission,  o.price,  o.commission,  o.show_in_ranges,  o.currency_conversion,  o.id))
                 for d in inv.DividendManager_of_current_operations().arr:
                     r.dividends.append(d)
         r.dividends.order_by_datetime()
@@ -958,7 +958,7 @@ class InvestmentManager(QObject, ObjectManager_With_IdName_Selectable):
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comment="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(10), now, destino,  o.shares, o.amount, o.taxes, o.commission, o.price, comment,  o.show_in_ranges, currency_conversion)
+            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find_by_id(10), now, destino,  o.shares, o.amount, o._taxes, o.commission, o.price, comment,  o.show_in_ranges, currency_conversion)
             op_destino.save( False)
             
         #Vuelvo a introducir el comment de la opercuenta

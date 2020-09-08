@@ -305,7 +305,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         #Series creation
         last=self.tmm_graphics.last()
-        lsNoLoses=self.wdgTS.ts.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
+        lsNoLoses=self.wdgTS.ts.appendTemporalSeries(self.tr("Total without losses assets")+": {}".format(last.total()+abs(last.gains())))
         lsMain=self.wdgTS.ts.appendTemporalSeries(self.tr("Total assets")+": {}".format(last.total()))
         lsZero=self.wdgTS.ts.appendTemporalSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
         lsBonds=self.wdgTS.ts.appendTemporalSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
@@ -328,7 +328,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.wdgTS.ts.appendTemporalSeriesData(lsZero, epoch, m.total_zerorisk().amount)
             self.wdgTS.ts.appendTemporalSeriesData(lsBonds, epoch, m.total_bonds().amount)
             self.wdgTS.ts.appendTemporalSeriesData(lsRisk, epoch, total-zero-bonds)
-            self.wdgTS.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_no_losses_real().amount)
+            self.wdgTS.ts.appendTemporalSeriesData(lsNoLoses, epoch, m.total_real().amount+abs(m.gains().amount))
         self.wdgTS.display()
         
         info("wdgTotal > load_graphic: {0}".format(datetime.now()-inicio))
