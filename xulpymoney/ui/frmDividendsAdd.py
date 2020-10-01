@@ -96,15 +96,15 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             qmessagebox(self.tr("Retention, earnings por share and commission must be greater than zero"))
             return
         
-        
+        print(self.net)
         try:
             self.dividend.concept=concept
-            self.dividend.gross=self.txtBruto.decimal()
+            self.dividend._gross=self.txtBruto.decimal()
             self.dividend.taxes=self.txtRetencion.decimal()
-            self.dividend.net=self.net
+            self.dividend._net=self.net
             self.dividend.dpa=self.txtDPA.decimal()
             self.dividend.datetime=self.wdgDT.datetime()
-            self.dividend.commission=self.txtComision.decimal()
+            self.dividend._commission=self.txtComision.decimal()
             self.dividend.currency_conversion=self.wdgCurrencyConversion.factor
         except:
             qmessagebox(self.tr("Data error. Please check them."))

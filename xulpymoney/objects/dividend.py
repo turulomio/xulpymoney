@@ -117,7 +117,7 @@ class Dividend:
         if self.id==None:#Insertar
             self.opercuenta=AccountOperation(self.mem,  self.datetime,self.concept, self.concept.tipooperacion, self._net, "Transaction not finished", self.investment.account, None)
             self.opercuenta.save()
-            self.id=self.mem.con.cursor_one_field("insert into dividends (datetime, dps, gross, taxes, net, investments_id,accountsoperations_id, commission, concepts_id,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id_dividends", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion))
+            self.id=self.mem.con.cursor_one_field("insert into dividends (datetime, dps, gross, taxes, net, investments_id,accountsoperations_id, commission, concepts_id,currency_conversion) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) returning id", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion))
             self.opercuenta.comment=Comment(self.mem).encode(eComment.Dividend, self)
             self.opercuenta.save()
         else:
@@ -127,7 +127,7 @@ class Dividend:
             self.opercuenta.concept=self.concept
             self.opercuenta.tipooperacion=self.concept.tipooperacion
             self.opercuenta.save()
-            self.mem.con.execute("update dividends set datetime=%s, dps=%s, gross=%s, taxes=%s, net=%s, investments_id=%s, accountsoperations_id=%s, commission=%s, concepts_id=%s, currency_conversion=%s where id_dividends=%s", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion, self.id))
+            self.mem.con.execute("update dividends set datetime=%s, dps=%s, gross=%s, taxes=%s, net=%s, investments_id=%s, accountsoperations_id=%s, commission=%s, concepts_id=%s, currency_conversion=%s where id=%s", (self.datetime, self.dpa, self._gross, self.taxes, self._net, self.investment.id, self.opercuenta.id, self._commission, self.concept.id, self.currency_conversion, self.id))
 
 class DividendHeterogeneusManager(ObjectManager_With_IdDatetime_Selectable, QObject):
     """Class that  groups dividends from a Xulpymoney Product"""
