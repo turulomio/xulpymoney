@@ -59,7 +59,7 @@ class wdgProductHistoricalChart(QWidget, Ui_wdgProductHistoricalChart):
 
         if self.__class__.__name__=="wdgProductHistoricalChart" and self.investment is not None and self.investment.selling_price is not None and self.investment.selling_price!=0:
             m_average_price=self.investment.op_actual.average_price(type=1)       
-            gains_percentage=Percentage(self.investment.selling_price().amount-m_average_price.amount, m_average_price.amount)
+            gains_percentage=Percentage(self.investment.money_selling_price().amount-m_average_price.amount, m_average_price.amount)
             self.spnGainsPercentage.blockSignals(True)
             self.spnGainsPercentage.setValue(gains_percentage.value_100())
             self.spnGainsPercentage.blockSignals(False)

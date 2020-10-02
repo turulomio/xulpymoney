@@ -139,7 +139,7 @@ class Investment(QObject):
             cur.execute("update investments set name=%s, selling_price=%s, accounts_id=%s, active=%s, selling_expiration=%s, products_id=%s,daily_adjustment=%s where id=%s", (self.name, self.selling_price, self.account.id, self.active, self.selling_expiration,  self.product.id, self.daily_adjustment, self.id))
         cur.close()
 
-    def selling_price(self, type=eMoneyCurrency.Product):
+    def money_selling_price(self, type=eMoneyCurrency.Product):
         if type==1:
             return Money(self.mem, self.selling_price, self.product.currency)
 

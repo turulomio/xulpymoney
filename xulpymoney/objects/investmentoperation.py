@@ -657,7 +657,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
     def gains_in_selling_point(self, type=eMoneyCurrency.Product):
         """Gains in investment defined selling point"""
         if self.investment.selling_price!=None:
-            return self.investment.selling_price(type)*self.investment.shares()-self.investment.invertido(None, type)
+            return self.investment.money_selling_price(type)*self.investment.shares()-self.investment.invertido(None, type)
         return Money(self.mem,  0, self.investment.resultsCurrency(type) )
         
 

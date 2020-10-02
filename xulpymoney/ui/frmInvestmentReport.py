@@ -534,7 +534,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 dividend_net=0
                 for dividend in self.investment.dividends.arr:
                     if dividend.datetime<=dt:
-                        dividend_net=dividend_net+dividend.net
+                        dividend_net=dividend_net+dividend._net
                 #Append data of that datetime
                 tmp_investment=self.investment.Investment_At_Datetime(dt)
                 gains_net=tmp_investment.op_historica.consolidado_neto().amount
