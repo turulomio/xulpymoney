@@ -328,7 +328,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     def mqtwCreditCards_update(self):
         if self.mqtwCreditCards.selected is None:#No1 selected
-            self.tabOpercreditcardsDiferidas.setEnabled(False)
+#            self.tabOpercreditcardsDiferidas.setEnabled(False)
             self.account.creditcards.myqtablewidget(self.mqtwCreditCards, not self.chkCreditCards.isChecked())
             self.mqtwCreditCardOperations.table.setRowCount(0)
         else:

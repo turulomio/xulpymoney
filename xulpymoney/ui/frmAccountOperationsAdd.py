@@ -52,7 +52,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbConcepts.setEnabled(False)
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
-            self.txtamount.setText(-opertarjeta.amount)
+            self.txtImporte.setText(-opertarjeta.amount)
             self.txtComentario.setEnabled(False)
         elif opertarjeta!=None:
             self.original=opertarjeta
@@ -63,7 +63,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opertarjeta.concept.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
-            self.txtamount.setText(opertarjeta.amount)
+            self.txtImporte.setText(opertarjeta.amount)
             self.txtComentario.setText(opertarjeta.comment)
         elif tarjeta!=None:
             self.original=None
@@ -80,7 +80,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.wdgDT.set(opercuenta.datetime, self.mem.localzone_name)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(opercuenta.concept.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opercuenta.account.id))
-            self.txtamount.setText(opercuenta.amount)
+            self.txtImporte.setText(opercuenta.amount)
             self.txtComentario.setText(opercuenta.comment)
         else:
             self.original=None
@@ -108,7 +108,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         if concept is None:
             qmessagebox(self.tr("You must select a concept"))
             return
-        amount=self.txtamount.decimal()
+        amount=self.txtImporte.decimal()
         comment=self.txtComentario.text()
         accounts_id=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
         creditcards_id=self.cmbCreditCards.itemData(self.cmbCreditCards.currentIndex())
