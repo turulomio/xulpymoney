@@ -328,11 +328,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     def mqtwCreditCards_update(self):
         if self.mqtwCreditCards.selected is None:#No1 selected
-#            self.tabOpercreditcardsDiferidas.setEnabled(False)
+            self.tabOpertarjetasDiferidas.setEnabled(False)
             self.account.creditcards.myqtablewidget(self.mqtwCreditCards, not self.chkCreditCards.isChecked())
             self.mqtwCreditCardOperations.table.setRowCount(0)
         else:
-            self.tabOpercreditcardsDiferidas.setEnabled(self.mqtwCreditCards.selected.deferred)
+            self.tabOpertarjetasDiferidas.setEnabled(self.mqtwCreditCards.selected.deferred)
             self.account.creditcards.myqtablewidget(self.mqtwCreditCards, not self.chkCreditCards.isChecked())
             self.mqtwCreditCardsOperations_update()
 
@@ -384,15 +384,15 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.lblPago.setText(self.mem.localmoney(self.mqtwCreditCardOperations_selectedmanager.balance()).string())
 
     def mqtwCreditCardsOperations_update(self):
-        self.tabOpercreditcardsDiferidas.setCurrentIndex(0)
+        self.tabOpertarjetasDiferidas.setCurrentIndex(0)
         self.mqtwCreditCardOperations.table.setRowCount(0)
         if self.mqtwCreditCards.selected is not None:
-            self.tabOpercreditcardsDiferidas.setEnabled(self.mqtwCreditCards.selected.deferred)
+            self.tabOpertarjetasDiferidas.setEnabled(self.mqtwCreditCards.selected.deferred)
             if self.mqtwCreditCards.selected.deferred==True:#Solo se muestran operaciones si es diferido
                 self.grpPago.setEnabled(True)
                 self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from creditcardsoperations where creditcards_id=%s and paid=false", [self.mqtwCreditCards.selected.id, ]))
                 self.creditcardoperations.myqtablewidget(self.mqtwCreditCardOperations)
-#                self.mqtwCreditCardOperations.setOrderBy(0, False)
+                #self.mqtwCreditCardOperations.setOrderBy(0, False)
             else:
                 self.grpPago.setEnabled(False)
 
@@ -422,7 +422,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         cur.close()     
         self.on_wdgYM_changed()
         self.mqtwCreditCardsOperations_update()
-        self.tabOpercreditcardsDiferidas.setCurrentIndex(0)     
+        self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
     @pyqtSlot(int) 
     def on_cmbFechasPago_currentIndexChanged(self, index):
@@ -434,7 +434,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         setPaidCreditCardOperations.load_from_db("select * from creditcardsoperations where accountsoperations_id={};".format(accountsoperations_id, ))
         setPaidCreditCardOperations.myqtablewidget(self.mqtwCreditCardOperationsHistorical)
 
-    def on_tabOpercreditcardsDiferidas_currentChanged(self, index): 
+    def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
             self.cmbFechasPago.clear()
