@@ -61,7 +61,7 @@ class CreditCardOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            sql="insert into creditcardsoperations (datetime, concepts_id, operationstypes_id, amount, comment, creditcards_id, paid) values ('" + str(self.datetime) + "'," + str(self.concept.id)+","+ str(self.tipooperacion.id) +","+str(self.amount)+", '"+self.comment+"', "+str(self.tarjeta.id)+", "+str(self.paid)+") returning id_creditcardsoperations"
+            sql="insert into creditcardsoperations (datetime, concepts_id, operationstypes_id, amount, comment, creditcards_id, paid) values ('" + str(self.datetime) + "'," + str(self.concept.id)+","+ str(self.tipooperacion.id) +","+str(self.amount)+", '"+self.comment+"', "+str(self.tarjeta.id)+", "+str(self.paid)+") returning id"
             cur.execute(sql);
             self.id=cur.fetchone()[0]
         else:
