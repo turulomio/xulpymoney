@@ -63,16 +63,23 @@ class ProductRange(QObject):
         return r        
 
     ## Search for investments in self.mem.data and 
-    def getInvestmentsOperationsInside(self):
+    def getInvestmentsOperationsInside(self, only_first, only_account):
         r=InvestmentOperationCurrentHeterogeneusManager(self.mem)
         for o in self.mem.data.investments.InvestmentManager_with_investments_with_the_same_product(self.product).arr:
+            if only_account>=0:#If different account continues
+                if o.account.id != only_account:
+                    continue
+            
             for op in o.op_actual.arr:
+                if only_first is True:#Only first when neccesary
+                    if o.op_actual.arr.index(op)!=0:
+                        continue
                 if self.isInside(op.price)==True:
                     r.append(op)
         return r
         
     ## Search for orders in self.mem.data and 
-    def getOrdersInside(self): 
+    def getOrdersInside(self, only_account): 
         orders=OrderManager(self.mem).init__from_db("""
             SELECT * 
             FROM 
@@ -84,6 +91,9 @@ class ProductRange(QObject):
        """)
         r=OrderManager(self.mem)
         for o in orders.arr:
+            if only_account>=0:#If different account continues
+                if o.investment.account.id != only_account:
+                    continue
             if o.investment.product==self.product and self.isInside(o.price)==True:
                 r.append(o)
         return r
@@ -166,14 +176,14 @@ class ProductRangeManager(ObjectManager, QObject):
 
             
             
-    def mqtw(self, wdg):
+    def mqtw(self, wdg, only_first, only_account):
         data=[]
         for i, o in enumerate(self.arr):
             data.append([
                 o.value, 
                 o.recomendation_invest, 
-                o.getInvestmentsOperationsInside().string_with_names(), 
-                o.getOrdersInside().string_with_names(), 
+                o.getInvestmentsOperationsInside(only_first, only_account).string_with_names(), 
+                o.getOrdersInside( only_account).string_with_names(), 
                 o, 
             ])
         wdg.setDataWithObjects(

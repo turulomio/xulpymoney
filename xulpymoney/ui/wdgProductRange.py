@@ -21,6 +21,9 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         self.mqtw.table.customContextMenuRequested.connect(self.on_mqtw_customContextMenuRequested)
         self.mqtw.setVerticalHeaderHeight(None)#Must be after settings, to allow wrap text in qtablewidgetitems
         product_in_settings=self.mem.data.products.find_by_id(self.mem.settingsdb.value_integer("wdgProductRange/product", "79329"))
+        
+        self.mem.data.accounts_active().qcombobox(self.cmbOnlyAccount)
+        self.cmbOnlyAccount.setCurrentIndex(0)
 
         products=self.mem.data.investments_active().ProductManager_with_investments_distinct_products(only_with_shares=False)
         products.order_by_name()
@@ -33,7 +36,9 @@ class wdgProductRange(QWidget, Ui_wdgProductRange):
         percentage_gains=Percentage(self.spnGains.value(), 100)
         self.prm=ProductRangeManager(self.mem, self.product, percentage_down, percentage_gains)
         self.prm.setInvestRecomendation(self.cmbRecomendations.currentIndex())
-        self.prm.mqtw(self.mqtw)
+        
+        onlyaccount=-1 if self.chkOnlyAccount.isChecked() is False else self.cmbOnlyAccount.itemData(self.cmbOnlyAccount.currentIndex())
+        self.prm.mqtw(self.mqtw, self.chkOnlyFirst.isChecked(), onlyaccount)
 
         self.mem.settingsdb.setValue("wdgProductRange/spnDown_product_{}".format(self.product.id), self.spnDown.value())
         self.mem.settingsdb.setValue("wdgProductRange/spnGains_product_{}".format(self.product.id), self.spnGains.value())

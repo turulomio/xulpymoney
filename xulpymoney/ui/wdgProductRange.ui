@@ -113,6 +113,35 @@
              </layout>
             </item>
             <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <item>
+               <widget class="QCheckBox" name="chkOnlyFirst">
+                <property name="text">
+                 <string>Show only first investment operation</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <item>
+               <widget class="QCheckBox" name="chkOnlyAccount">
+                <property name="text">
+                 <string>Show only from an account</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cmbOnlyAccount">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
                <widget class="QLabel" name="label_2">
@@ -412,5 +441,22 @@
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>chkOnlyAccount</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbOnlyAccount</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>363</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
