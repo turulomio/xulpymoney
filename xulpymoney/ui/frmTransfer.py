@@ -24,7 +24,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         try:
             id_origen=int(self.cmbOrigen.itemData(self.cmbOrigen.currentIndex()))
             id_destino=int(self.cmbDestino.itemData(self.cmbDestino.currentIndex()))
-            amount=abs(self.txtamount.decimal())
+            amount=abs(self.txtImporte.decimal())
             commission=abs(self.txtComision.decimal())
         except:
             qmessagebox(self.tr("Error adding data"))

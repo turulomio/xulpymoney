@@ -99,7 +99,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         shares=self.shares()
         amount=price*shares
         self.txtAcciones.setText(shares)
-        self.txtamount.setText(amount)
+        self.txtImporte.setText(amount)
 
         error("Factor de conversion no siempre es 1")
         currency_conversion=1
