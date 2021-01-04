@@ -1443,7 +1443,7 @@ def InvestmentOperation_from_row(mem, row):
 def InvestmentOperation_from_accountoperation(mem, accountoperation):
     """AccountOperation is a object, and must have concepts_id share of sale or purchase. 
     IO returned is an object already created in investments_all()"""
-    row=mem.con.cursor_one_row("select investments_id,investmentsoperations_id from investmentsaccountsoperations where accountsoperations_id=%s", (accountoperation.id, ))
+    row=mem.con.cursor_one_row("select investments_id,investmentsoperations_id from investmentsaccountsoperations where id=%s", (accountoperation.id, ))
     if row is not None:
         investment=mem.data.investments.find_by_id(row['investments_id'])
         return investment.op.find_by_id(row['investmentsoperations_id'])
