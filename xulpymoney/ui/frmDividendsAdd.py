@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
+from xulpymoney.libxulpymoneytypes import eMoneyCurrency
 from xulpymoney.objects.concept import ConceptManager_for_dividends
 from xulpymoney.objects.currency import currency_symbol
 from xulpymoney.objects.dividend import Dividend
@@ -37,10 +38,10 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             ConceptManager_for_dividends(mem).qcombobox(self.cmb, self.dividend.concept)
             self.wdgDT.set(self.dividend.datetime, self.mem.localzone_name)
             self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.investment.product.currency), self.investment.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
-            self.txtBruto.setText(self.dividend.gross)
-            self.txtNeto.setText(self.dividend.net)
+            self.txtBruto.setText(self.dividend.gross(eMoneyCurrency.Account).amount)
+            self.txtNeto.setText(self.dividend.net(eMoneyCurrency.Account).amount)
             self.txtRetencion.setText(self.dividend.taxes)
-            self.txtComision.setText(self.dividend.commission)
+            self.txtComision.setText(self.dividend.commission(eMoneyCurrency.Account).amount)
             self.txtDPA.setText(self.dividend.dpa)
             self.cmd.setText(self.tr("Edit dividend"))
  
