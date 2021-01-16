@@ -1,11 +1,13 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
 from datetime import date
+from xulpymoney.datetime_functions import dtaware_day_end_from_date
 from xulpymoney.libmanagers import ObjectManager_With_Id_Selectable
 from xulpymoney.ui.myqwidgets import qmessagebox
-from xulpymoney.libxulpymoneytypes import eQColor
+from xulpymoney.libxulpymoneytypes import eQColor, eMoneyCurrency
 from xulpymoney.objects.money import Money
 from xulpymoney.objects.percentage import Percentage
+
 class Order(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
@@ -47,9 +49,18 @@ class Order(QObject):
             return True
         return False
         
-    def amount(self):
-        return Money(self.mem, self.shares*self.price, self.investment.product.currency)
-
+    ## Returns whole orders amount
+    def amount(self, type=eMoneyCurrency.Product):
+        money=Money(self.mem, self.shares*self.price*self.investment.product.real_leveraged_multiplier(), self.investment.product.currency)
+        if type==eMoneyCurrency.Product:
+            return money
+        elif type==eMoneyCurrency.Account:
+            dt=dtaware_day_end_from_date(self.date, self.mem.localzone_name)
+            return money.convert(self.investment.account.currency, dt)
+        elif type==eMoneyCurrency.User:
+            dt=dtaware_day_end_from_date(self.date, self.mem.localzone_name)
+            return money.convert(self.investment.account.currency, dt).convert(self.mem.localcurrency, dt)
+        
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
@@ -124,10 +135,11 @@ class OrderManager(ObjectManager_With_Id_Selectable, QObject):
             return resultado[:-1]
 
     ## Sum of all order amounts in manager. It's showed in user currency
+    ##  Always return is user currency
     def amount(self):
         r=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
-            r=r+abs(o.amount()) #abs due to can be negative amounts.
+            r=r+abs(o.amount(eMoneyCurrency.User)) #abs due to can be negative amounts.
         return r
         
     def date_first_db_order(self):
