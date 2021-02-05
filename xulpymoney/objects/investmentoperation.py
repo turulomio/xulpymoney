@@ -1239,7 +1239,7 @@ class InvestmentOperationHeterogeneusManager(ObjectManager_With_IdDatetime_Selec
         """io is an InvestmentOPeration object
         Deletes from db and removes from array, and recalculate things"""  
         cur=self.mem.con.cursor()
-        cur.execute("delete from investmentsoperations where investmentsoperations_id=%s",(io.id, ))
+        cur.execute("delete from investmentsoperations where id=%s",(io.id, ))
         cur.close()
         
         super(InvestmentOperationHeterogeneusManager, self).remove(io)
