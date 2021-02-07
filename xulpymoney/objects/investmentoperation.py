@@ -675,6 +675,7 @@ class InvestmentOperationCurrentHomogeneusManager(InvestmentOperationCurrentHete
         shares=self.shares()
         average_price_acount_currency=self.average_price(eMoneyCurrency.Account).amount
         leverage=self.investment.product.real_leveraged_multiplier()
+        print(gains, shares, average_price_acount_currency, leverage, selling_price_product_currency)
         return (gains+shares*average_price_acount_currency*leverage)/(shares*selling_price_product_currency*leverage)
 
     def pendiente(self, lastquote, type=eMoneyCurrency.Product):
