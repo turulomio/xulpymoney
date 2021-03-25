@@ -360,20 +360,21 @@ class frmMain(QMainWindow, Ui_frmMain):
         from xulpymoney.libxulpymoneyfunctions import sync_data
         from xulpymoney.ui.frmAccess import frmAccess   
         self.w.hide()
-        
+
         source=frmAccess("xulpymoney", "frmSync", self.mem.frmAccess.settings, self)
         source.setResources(":/xulpymoney/database.png", ":/xulpymoney/database.png")
         source.setLanguagesVisible(False)
         source.setLabel(self.tr("Please login to the source xulpymoney database"))
+        source.setProfilesVisible(False)
         source.exec_()
-        if source.result()==QDialog.Rejected:             
+        if source.result()==QDialog.Rejected:
             qmessagebox(self.tr("Error conecting to {} database in {} server").format(source.con.db, source.con.server))
             return
         else:
             if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip() and source.con.port==self.mem.con.port:
                 qmessagebox(self.tr("Databases can't be the same"))
                 return
-                
+
             pd= QProgressDialog(QApplication.translate("Mem","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Mem","Processing products..."))
