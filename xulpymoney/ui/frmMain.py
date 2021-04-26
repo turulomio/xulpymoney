@@ -314,7 +314,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         from xulpymoney.ui.wdgProducts import wdgProducts
         self.w.close()
         prod=ProductManager(self.mem)
-        prod.load_from_db("select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()))")
+        prod.load_from_db("select * from products where id in (select products_id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()))")
         self.w=wdgProducts(self.mem,  prod.array_of_ids())
         self.layout.addWidget(self.w)
         self.w.on_actionSortDividend_triggered()

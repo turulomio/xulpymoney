@@ -31,7 +31,7 @@ class EstimationDPS:
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
         cur=self.mem.con.cursor()
-        cur.execute("select estimation, date_estimation ,source,manual from estimations_dps where id=%s and year=%s", (product.id, currentyear))
+        cur.execute("select estimation, date_estimation ,source,manual from estimations_dps where products_id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
             self.init__create(product, currentyear, row['date_estimation'], row['source'], row['manual'], row['estimation'])
@@ -43,17 +43,17 @@ class EstimationDPS:
             
     def borrar(self):
         cur=self.mem.con.cursor()
-        cur.execute("delete from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
+        cur.execute("delete from estimations_dps where products_id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
         cur=self.mem.con.cursor()
-        cur.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
+        cur.execute("select count(*) from estimations_dps where products_id=%s and year=%s", (self.product.id, self.year))
         if cur.fetchone()[0]==0:
-            cur.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
+            cur.execute("insert into estimations_dps(products_id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
         elif self.estimation!=None:            
-            cur.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
+            cur.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where products_id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
         cur.close()
         
     def percentage(self):
@@ -86,7 +86,7 @@ class EstimationEPS:
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
         cur=self.mem.con.cursor()
-        cur.execute("select estimation, date_estimation ,source,manual from estimations_eps where id=%s and year=%s", (product.id, currentyear))
+        cur.execute("select estimation, date_estimation ,source,manual from estimations_eps where products_id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
             self.init__create(product, currentyear, row['date_estimation'], row['source'], row['manual'], row['estimation'])
@@ -98,17 +98,17 @@ class EstimationEPS:
             
     def borrar(self):
         cur=self.mem.con.cursor()
-        cur.execute("delete from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
+        cur.execute("delete from estimations_eps where products_id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
         cur=self.mem.con.cursor()
-        cur.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
+        cur.execute("select count(*) from estimations_eps where products_id=%s and year=%s", (self.product.id, self.year))
         if cur.fetchone()[0]==0:
-            cur.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
+            cur.execute("insert into estimations_eps(products_id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
         elif self.estimation!=None:            
-            cur.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
+            cur.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where products_id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
         cur.close()
         
         
@@ -133,7 +133,7 @@ class EstimationDPSManager(ObjectManager, QObject):
         del self.arr
         self.arr=[]
         cur=self.mem.con.cursor()
-        cur.execute( "select * from estimations_dps where id=%s order by year", (self.product.id, ))
+        cur.execute( "select * from estimations_dps where products_id=%s order by year", (self.product.id, ))
         for row in cur:
             self.arr.append(EstimationDPS(self.mem).init__from_db(self.product, row['year']))
         cur.close()            
@@ -198,7 +198,7 @@ class EstimationEPSManager(ObjectManager, QObject):
         del self.arr
         self.arr=[]
         cur=self.mem.con.cursor()
-        cur.execute( "select * from estimations_eps where id=%s order by year", (self.product.id, ))
+        cur.execute( "select * from estimations_eps where products_id=%s order by year", (self.product.id, ))
         for row in cur:
             self.arr.append(EstimationEPS(self.mem).init__from_db(self.product, row['year']))
         cur.close()            
