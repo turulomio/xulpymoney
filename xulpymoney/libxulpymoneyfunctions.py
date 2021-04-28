@@ -60,12 +60,12 @@ def sync_data(con_source, con_target, progress=None):
 
         ## DPS ESTIMATIONS #####################################################################
         #Search last datetime
-        max=con_target.cursor_one_field("select max(year) as max from estimations_dps where products_id=%s", (row['products_id'], ))
+        max=con_target.cursor_one_field("select max(year) as max from estimations_dps where products_id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            rows_source=con_source.cursor_rows("select * from estimations_dps where products_id=%s", (row['products_id'], ))
+            rows_source=con_source.cursor_rows("select * from estimations_dps where products_id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            rows_source=con_source.cursor_rows("select * from estimations_dps where products_id=%s and year>%s", (row['products_id'], max))
+            rows_source=con_source.cursor_rows("select * from estimations_dps where products_id=%s and year>%s", (row['id'], max))
         if len(rows_source)>0:
             for row_source in rows_source: #Inserts them 
                 con_target.execute("insert into estimations_dps (year, estimation, date_estimation, source, manual, products_id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['products_id']))
@@ -74,12 +74,12 @@ def sync_data(con_source, con_target, progress=None):
 
         ## EPS ESTIMATIONS #####################################################################
         #Search last datetime
-        max=con_target.cursor_one_field("select max(year) as max from estimations_eps where products_id=%s", (row['products_id'], ))
+        max=con_target.cursor_one_field("select max(year) as max from estimations_eps where products_id=%s", (row['id'], ))
         #Ask for quotes in source with last datetime
         if max==None:#No hay ningun registro y selecciona todos
-            rows_source=con_source.cursor_rows("select * from estimations_eps where products_id=%s", (row['products_id'], ))
+            rows_source=con_source.cursor_rows("select * from estimations_eps where products_id=%s", (row['id'], ))
         else:#Hay registro y selecciona los posteriores a el
-            rows_source=con_source.cursor_rows("select * from estimations_eps where products_id=%s and year>%s", (row['products_id'], max))
+            rows_source=con_source.cursor_rows("select * from estimations_eps where products_id=%s and year>%s", (row['id'], max))
         if len(rows_source)>0:
             for row_source in rows_source: #Inserts them 
                 con_target.execute("insert into estimations_eps (year, estimation, date_estimation, source, manual, products_id) values (%s,%s,%s,%s,%s,%s)", ( row_source['year'], row_source['estimation'], row_source['date_estimation'], row_source['source'], row_source['manual'],  row_source['products_id']))
