@@ -128,6 +128,8 @@ class eLeverageType:
     X25=25
     X50=50
     X100=100
+    X500=500
+    X1000=1000
 
 class eMoneyCurrency:
     Product=1
